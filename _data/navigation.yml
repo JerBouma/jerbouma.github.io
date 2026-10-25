@@ -96,16 +96,26 @@ financetoolkit:
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
     children:
-      - title: "Finding Companies"
-        url: /projects/financetoolkit#finding-companies
-      - title: "Loading Prices and Financial Statements"
-        url: /projects/financetoolkit#loading-prices-and-financial-statements
-      - title: "Analysing the Fundamentals"
-        url: /projects/financetoolkit#analysing-the-fundamentals
+      - title: "Discovering the Sector"
+        url: /projects/financetoolkit#discovering-the-sector
+      - title: "Following the Market"
+        url: /projects/financetoolkit#following-the-market
+      - title: "Zooming in on Competitors"
+        url: /projects/financetoolkit#zooming-in-on-competitors
       - title: "Weighing Risk and Return"
         url: /projects/financetoolkit#weighing-risk-and-return
-      - title: "Understanding the Economic Environment"
-        url: /projects/financetoolkit#understanding-the-economic-environment
+      - title: "What the Option Market Expects"
+        url: /projects/financetoolkit#what-the-option-market-expects
+      - title: "The Economic Environment"
+        url: /projects/financetoolkit#the-economic-environment
+      - title: "Economic Relations"
+        url: /projects/financetoolkit#economic-relations
+      - title: "Comparing the Sector's ETFs"
+        url: /projects/financetoolkit#comparing-the-sectors-etfs
+      - title: "Building a Diversified Portfolio"
+        url: /projects/financetoolkit#building-a-diversified-portfolio
+      - title: "Following the Portfolio"
+        url: /projects/financetoolkit#following-the-portfolio
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:
@@ -179,6 +189,10 @@ financetoolkit-docs:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -259,14 +273,6 @@ financetoolkit-docs:
         url: /projects/financetoolkit/docs#get_commitment_of_traders
   - title: ETF Data
     children:
-      - title: "ETF Information"
-        url: /projects/financetoolkit/docs#get_etf_information
-      - title: "ETF Holdings"
-        url: /projects/financetoolkit/docs#get_etf_holdings
-      - title: "ETF Country Weightings"
-        url: /projects/financetoolkit/docs#get_etf_country_weightings
-      - title: "ETF Sector Weightings"
-        url: /projects/financetoolkit/docs#get_etf_sector_weightings
   - title: Cache
     children:
       - title: "Cache Contents"
@@ -299,6 +305,10 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -341,6 +351,8 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/discovery#get_etf_list
     - title: Index List
       url: /projects/financetoolkit/docs/discovery#get_index_list
+    - title: Index Constituents
+      url: /projects/financetoolkit/docs/discovery#get_index_constituents
   - title: News
     children:
     - title: Stock Market News
@@ -416,6 +428,10 @@ financetoolkit-docs-ratios:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -657,6 +673,10 @@ financetoolkit-docs-models:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -713,6 +733,28 @@ financetoolkit-docs-models:
         url:  /projects/financetoolkit/docs/models#get_grover_score
       - title: Fulmer H-Score
         url:  /projects/financetoolkit/docs/models#get_fulmer_h_score
+      - title: Reverse Discounted Cash Flow
+        url: /projects/financetoolkit/docs/models#get_reverse_discounted_cash_flow
+      - title: Earnings Power Value
+        url: /projects/financetoolkit/docs/models#get_earnings_power_value
+      - title: Monte Carlo Intrinsic Valuation
+        url: /projects/financetoolkit/docs/models#get_monte_carlo_intrinsic_valuation
+      - title: Merton Distance to Default
+        url: /projects/financetoolkit/docs/models#get_merton_distance_to_default
+      - title: Synthetic Credit Rating
+        url: /projects/financetoolkit/docs/models#get_synthetic_credit_rating
+      - title: Peer Comparison
+        url: /projects/financetoolkit/docs/models#get_peer_comparison
+      - title: Magic Formula
+        url: /projects/financetoolkit/docs/models#get_magic_formula
+      - title: Mohanram G-Score
+        url: /projects/financetoolkit/docs/models#get_mohanram_g_score
+      - title: Dechow F-Score
+        url: /projects/financetoolkit/docs/models#get_dechow_f_score
+      - title: Montier C-Score
+        url: /projects/financetoolkit/docs/models#get_montier_c_score
+      - title: Accruals Ratio
+        url: /projects/financetoolkit/docs/models#get_accruals_ratio
 financetoolkit-docs-options:
   - title: Modules
     children:
@@ -738,6 +780,10 @@ financetoolkit-docs-options:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -823,6 +869,24 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_color
       - title: Ultima
         url: /projects/financetoolkit/docs/options#get_ultima
+  - title: Option Market
+    children:
+      - title: Put-Call Ratio
+        url: /projects/financetoolkit/docs/options#get_put_call_ratio
+      - title: Max Pain
+        url: /projects/financetoolkit/docs/options#get_max_pain
+      - title: Gamma Exposure
+        url: /projects/financetoolkit/docs/options#get_gamma_exposure
+      - title: Implied Volatility Term Structure
+        url: /projects/financetoolkit/docs/options#get_implied_volatility_term_structure
+      - title: Volatility Skew
+        url: /projects/financetoolkit/docs/options#get_volatility_skew
+      - title: Implied Move
+        url: /projects/financetoolkit/docs/options#get_implied_move
+      - title: Model-Free Implied Volatility
+        url: /projects/financetoolkit/docs/options#get_model_free_implied_volatility
+      - title: Volatility Risk Premium
+        url: /projects/financetoolkit/docs/options#get_volatility_risk_premium
 financetoolkit-docs-technicals:
   - title: Modules
     children:
@@ -848,6 +912,10 @@ financetoolkit-docs-technicals:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -880,6 +948,8 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_positive_volume_index
       - title: Negative Volume Index (NVI)
         url: /projects/financetoolkit/docs/technicals#get_negative_volume_index
+      - title: Market Breadth
+        url: /projects/financetoolkit/docs/technicals#get_market_breadth
   - title: Momentum Indicators
     children:
       - title: All Momentum Indicators
@@ -928,6 +998,8 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_vortex_indicator
       - title: Choppiness Index
         url: /projects/financetoolkit/docs/technicals#get_choppiness_index
+      - title: Relative Strength
+        url: /projects/financetoolkit/docs/technicals#get_relative_strength
   - title: Overlap Indicators
     children:
       - title: All Overlap Indicators
@@ -976,6 +1048,10 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_volatility_cone
       - title: Supertrend
         url: /projects/financetoolkit/docs/technicals#get_supertrend
+  - title: Seasonality
+    children:
+      - title: Seasonality
+        url: /projects/financetoolkit/docs/technicals#get_seasonality
 financetoolkit-docs-risk:
   - title: Modules
     children:
@@ -1001,6 +1077,10 @@ financetoolkit-docs-risk:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -1137,6 +1217,10 @@ financetoolkit-docs-performance:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -1167,6 +1251,8 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_henriksson_merton_model
       - title: "Fama Decomposition"
         url: /projects/financetoolkit/docs/performance#get_fama_decomposition
+      - title: Style Analysis
+        url: /projects/financetoolkit/docs/performance#get_style_analysis
   - title: Risk-Adjusted
     children:
       - title: "Sharpe Ratio"
@@ -1255,6 +1341,10 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -1285,6 +1375,8 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_bond_equivalent_yield
     - title: Taylor Series Price Change
       url: /projects/financetoolkit/docs/fixedincome#get_taylor_price_change
+    - title: Option-Adjusted Spread
+      url: /projects/financetoolkit/docs/fixedincome#get_option_adjusted_spread
   - title: Derivative Valuations
     children:
     - title: Black Model
@@ -1303,6 +1395,8 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_government_bond_yield_curve
     - title: Bank of England Yield Curve
       url: /projects/financetoolkit/docs/fixedincome#get_bank_of_england_yield_curve
+    - title: Treasury Auctions
+      url: /projects/financetoolkit/docs/fixedincome#get_treasury_auctions
   - title: Corporate Bonds
     children:
     - title: Option Adjusted Spread (OAS)
@@ -1333,6 +1427,8 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_excess_bond_premium
     - title: Financial Stress Index (CISS)
       url: /projects/financetoolkit/docs/fixedincome#get_financial_stress_index
+    - title: Implied Default Probability
+      url: /projects/financetoolkit/docs/fixedincome#get_implied_default_probability
   - title: Regulatory Curves
     children:
     - title: EIOPA Risk-Free Rate
@@ -1359,6 +1455,20 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
     - title: Broad General Collateral Rate (BGCR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+  - title: Yield Curves
+    children:
+      - title: Zero-Coupon Curve
+        url: /projects/financetoolkit/docs/fixedincome#get_zero_coupon_curve
+      - title: Nelson-Siegel-Svensson
+        url: /projects/financetoolkit/docs/fixedincome#get_nelson_siegel_svensson
+      - title: Yield Curve Principal Components
+        url: /projects/financetoolkit/docs/fixedincome#get_yield_curve_principal_components
+  - title: Short-Rate Models
+    children:
+      - title: Short-Rate Model
+        url: /projects/financetoolkit/docs/fixedincome#get_short_rate_model
+      - title: Short-Rate Simulation
+        url: /projects/financetoolkit/docs/fixedincome#get_short_rate_simulation
 financetoolkit-docs-econometrics:
   - title: Modules
     children:
@@ -1384,6 +1494,10 @@ financetoolkit-docs-econometrics:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -1408,6 +1522,8 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_johansen_cointegration
       - title: Granger Causality
         url: /projects/financetoolkit/docs/econometrics#get_granger_causality
+      - title: Pairs Trading
+        url: /projects/financetoolkit/docs/econometrics#get_pairs_trading
   - title: Regression
     children:
       - title: Ordinary Least Squares (OLS)
@@ -1424,6 +1540,8 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_quantile_regression
       - title: Fama-MacBeth Regression
         url: /projects/financetoolkit/docs/econometrics#get_fama_macbeth_regression
+      - title: Time-Varying Beta
+        url: /projects/financetoolkit/docs/econometrics#get_time_varying_beta
   - title: Panel Data
     children:
       - title: Fixed Effects
@@ -1492,6 +1610,8 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_impulse_response_function
       - title: Variance Decomposition
         url: /projects/financetoolkit/docs/econometrics#get_variance_decomposition
+      - title: DCC-GARCH
+        url: /projects/financetoolkit/docs/econometrics#get_dcc_garch
   - title: Forecast Evaluation
     children:
       - title: Root Mean Squared Error (RMSE)
@@ -1506,6 +1626,12 @@ financetoolkit-docs-econometrics:
     children:
       - title: Event Study
         url: /projects/financetoolkit/docs/econometrics#get_event_study
+  - title: Regimes & Structural Breaks
+    children:
+      - title: Markov Regime Switching
+        url: /projects/financetoolkit/docs/econometrics#get_markov_regime_switching
+      - title: Structural Breaks (Bai-Perron)
+        url: /projects/financetoolkit/docs/econometrics#get_structural_breaks
 financetoolkit-docs-economics:
   - title: Modules
     children:
@@ -1531,6 +1657,10 @@ financetoolkit-docs-economics:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -1724,6 +1854,130 @@ financetoolkit-docs-economics:
       - title: Regulatory Scenario Set
         url: /projects/financetoolkit/docs/economics#get_scenario_set
 
+financetoolkit-docs-etf:
+  - title: Modules
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Econometrics"
+      url: /projects/financetoolkit/docs/econometrics
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
+  - title: Holdings & Weightings
+    children:
+      - title: Holdings
+        url: /projects/financetoolkit/docs/etf#get_holdings
+      - title: Country Weightings
+        url: /projects/financetoolkit/docs/etf#get_country_weightings
+      - title: Sector Weightings
+        url: /projects/financetoolkit/docs/etf#get_sector_weightings
+      - title: Concentration
+        url: /projects/financetoolkit/docs/etf#get_concentration
+      - title: Overlap
+        url: /projects/financetoolkit/docs/etf#get_overlap
+  - title: Fund Data
+    children:
+      - title: Fund Information
+        url: /projects/financetoolkit/docs/etf#get_information
+      - title: Fund Profile
+        url: /projects/financetoolkit/docs/etf#get_profile
+  - title: Fund Analysis
+    children:
+      - title: Tracking
+        url: /projects/financetoolkit/docs/etf#get_tracking
+      - title: Look-Through Valuation
+        url: /projects/financetoolkit/docs/etf#get_look_through_valuation
+      - title: Liquidity
+        url: /projects/financetoolkit/docs/etf#get_liquidity
+financetoolkit-docs-portfolio-optimization:
+  - title: Modules
+    children:
+    - title: "Toolkit"
+      url: /projects/financetoolkit/docs
+    - title: "Discovery"
+      url: /projects/financetoolkit/docs/discovery
+    - title: "Ratios"
+      url: /projects/financetoolkit/docs/ratios
+    - title: "Models"
+      url: /projects/financetoolkit/docs/models
+    - title: "Options"
+      url: /projects/financetoolkit/docs/options
+    - title: "Technicals"
+      url: /projects/financetoolkit/docs/technicals
+    - title: "Fixed Income"
+      url: /projects/financetoolkit/docs/fixedincome
+    - title: "Risk"
+      url: /projects/financetoolkit/docs/risk
+    - title: "Performance"
+      url: /projects/financetoolkit/docs/performance
+    - title: "Econometrics"
+      url: /projects/financetoolkit/docs/econometrics
+    - title: "Economics"
+      url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
+    - title: "Portfolio"
+      url: /projects/financetoolkit/docs/portfolio
+    - title: "External Datasets"
+      url: /projects/financetoolkit/docs/external-datasets
+  - title: Portfolio Weights
+    children:
+      - title: Minimum Variance
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_minimum_variance_weights
+      - title: Maximum Sharpe Ratio
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_maximum_sharpe_weights
+      - title: Mean-Variance
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_mean_variance_weights
+      - title: Risk Parity
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_risk_parity_weights
+      - title: Hierarchical Risk Parity
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_hierarchical_risk_parity_weights
+      - title: Inverse Volatility
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_inverse_volatility_weights
+      - title: Minimum CVaR
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_minimum_cvar_weights
+      - title: Black-Litterman
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_black_litterman_weights
+  - title: Efficient Frontier
+    children:
+      - title: Efficient Frontier
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_efficient_frontier
+  - title: Risk & Attribution
+    children:
+      - title: Risk Contributions
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_risk_contributions
+      - title: Stress Test
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_stress_test
+      - title: Look-Through Exposure
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_look_through_exposure
+      - title: Brinson Attribution
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_brinson_attribution
 financetoolkit-docs-portfolio:
   - title: Modules
     children:
@@ -1749,6 +2003,10 @@ financetoolkit-docs-portfolio:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
@@ -1772,6 +2030,14 @@ financetoolkit-docs-portfolio:
   - title: Transactions Performance
     url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
 
+  - title: Portfolio Performance
+    children:
+      - title: Money-Weighted Return
+        url: /projects/financetoolkit/docs/portfolio#get_money_weighted_return
+  - title: Presets
+    children:
+      - title: Classic Portfolios
+        url: /projects/financetoolkit/docs/portfolio#get_presets
 financetoolkit-docs-external-datasets:
   - title: Modules
     children:
@@ -1797,6 +2063,10 @@ financetoolkit-docs-external-datasets:
       url: /projects/financetoolkit/docs/econometrics
     - title: "Economics"
       url: /projects/financetoolkit/docs/economics
+    - title: "ETF"
+      url: /projects/financetoolkit/docs/etf
+    - title: "Portfolio Optimization"
+      url: /projects/financetoolkit/docs/portfolio-optimization
     - title: "Portfolio"
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"

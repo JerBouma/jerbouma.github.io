@@ -1,0 +1,103 @@
+get_minimum_variance_weights:
+  question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil gave the lowest-volatility portfolio based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_maximum_sharpe_weights:
+  question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil, with at most 40% in any one stock, gave the highest Sharpe ratio based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    maximum_weight: 0.4
+get_mean_variance_weights:
+  question: Which mix of Apple, Microsoft, Johnson & Johnson and ExxonMobil had the lowest volatility for a 15% expected return, based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    target_return: 0.15
+get_efficient_frontier:
+  question: What does the efficient frontier of Apple, Microsoft, Johnson & Johnson and ExxonMobil look like in five portfolios, from the lowest risk to the highest return, based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    points: 5
+get_risk_parity_weights:
+  question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil gave each stock an equal share of the portfolio risk, based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_hierarchical_risk_parity_weights:
+  question: How would hierarchical risk parity weight Apple, Microsoft, Johnson & Johnson and ExxonMobil, based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_inverse_volatility_weights:
+  question: What are the inverse-volatility weights of Apple, Microsoft, Johnson & Johnson and ExxonMobil, based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_minimum_cvar_weights:
+  question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil minimized the 95% conditional value at risk, based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_black_litterman_weights:
+  question: What Black-Litterman weights do Apple, Microsoft, Johnson & Johnson and ExxonMobil get with the views that ExxonMobil returns 10% and Apple beats Microsoft by 2 percentage points, based on 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    views:
+      XOM: 0.1
+      AAPL-MSFT: 0.02
+get_risk_contributions:
+  question: How much did each stock contribute to the risk of a portfolio of 40% Apple, 30% Microsoft, 20% Johnson & Johnson and 10% ExxonMobil from 2021 to 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    weights:
+      AAPL: 0.4
+      MSFT: 0.3
+      JNJ: 0.2
+      XOM: 0.1
+get_stress_test:
+  question: How would an equal-weight portfolio of Apple, Microsoft, Johnson & Johnson and ExxonMobil have done in the Dot-com Crash, the Global Financial Crisis, the COVID-19 crash and the other major sell-offs, compared with the S&P 500?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_look_through_exposure:
+  question: What is the sector exposure of an equal-weight portfolio of QQQ, Apple, the Energy Select Sector SPDR (XLE) and Johnson & Johnson, looking through the ETFs, compared with the S&P 500?
+  tool: portfolio
+  arguments:
+    tickers: QQQ,AAPL,XLE,JNJ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    by: sector
+get_brinson_attribution:
+  question: Which sector allocation and stock selection effects explain how an equal-weight portfolio of Apple, Microsoft, Johnson & Johnson, ExxonMobil and JPMorgan Chase did against the S&P 500 in 2025?
+  tool: portfolio
+  arguments:
+    tickers: AAPL,MSFT,JNJ,XOM,JPM
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"

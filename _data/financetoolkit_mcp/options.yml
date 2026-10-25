@@ -1,345 +1,376 @@
 get_option_chains:
-  question: Which of Apple's call options at the nearest expiration are in the money, and how are they priced?
+  question: What are the bid and ask prices of Microsoft's call options at the nearest expiration, for strikes within 5% of the share price?
   tool: options
   arguments:
-    tickers: AAPL
+    tickers: MSFT
+    strike_price_range: 0.05
+    show_columns: Bid,Ask
 get_black_scholes_model:
-  question: What were Amazon's short-dated call options worth across strikes under the Black-Scholes model at the end of 2025?
+  question: What were Nvidia's call options worth under the Black-Scholes model at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AMZN
-    start_date: "2021-01-01"
+    tickers: NVDA
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.15
     strike_step_size: 5
-    expiration_time_range: 10
+    expiration_time_range: 91
 get_implied_volatility:
-  question: What is the implied volatility of Apple's call options at each strike for the nearest expiration?
+  question: What is the implied volatility of Apple's call options at the 20 highest strikes for the nearest expiration?
   tool: options
   arguments:
     tickers: AAPL
+    limit: -20
+get_volatility_surface:
+  question: What does the implied volatility surface of JPMorgan Chase's call options look like across strikes for its next four expirations?
+  tool: options
+  arguments:
+    tickers: JPM
+    number_of_expirations: 4
+get_risk_neutral_density:
+  question: What probability distribution for the price of SPY at its nearest option expiration do current call prices imply, on 81 strikes within 10% of the price?
+  tool: options
+  arguments:
+    tickers: SPY
+    strike_price_range: 0.1
+    number_of_strikes: 81
+    benchmark_ticker: None
 get_binomial_model:
-  question: What does a ten-step binomial tree look like for a one-year European call on Apple with a $140 strike, from 2 February 2024?
+  question: What does a five-step binomial tree look like for a one-year European call on Coca-Cola struck at the money from the close of 31 December 2025?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
-    end_date: "2024-02-02"
+    tickers: KO
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
     strike_price_range: 0
-    strike_step_size: 140
+    strike_step_size: 1
     time_to_expiration: 1
-    timesteps: 10
+    timesteps: 5
 get_stock_price_simulation:
-  question: Which share prices can Amazon reach along every path of a one-year binomial tree with four steps, starting from the close of 20 June 2025?
+  question: Which share prices can AMD reach in a one-year binomial tree with five steps from the close of 31 December 2025, for each unique combination of up and down moves?
   tool: options
   arguments:
-    tickers: AMZN
-    start_date: "2021-01-01"
-    end_date: "2025-06-20"
+    tickers: AMD
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
     time_to_expiration: 1
-    timesteps: 4
-    show_unique_combinations: false
+    timesteps: 5
+    show_unique_combinations: true
+get_put_call_parity:
+  question: Did Black-Scholes call and put prices on Johnson & Johnson satisfy put-call parity at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 10% of the share price in $5 steps?
+  tool: options
+  arguments:
+    tickers: JNJ
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.1
+    strike_step_size: 5
 get_garman_kohlhagen:
-  question: What is a call on Amazon worth under the Garman-Kohlhagen model with a 2% foreign interest rate, across strikes and expiries of up to a month?
+  question: What was a call on the dollar against the yen worth under the Garman-Kohlhagen model at the end of 2025, with a 0.75% yen and a 3.75% dollar interest rate, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 5% of the exchange rate in steps of 2 yen?
   tool: options
   arguments:
-    tickers: AMZN
-    foreign_risk_free_rate: 0.02
-    strike_price_range: 0.25
+    tickers: USDJPY
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.05
+    strike_step_size: 2
+    expiration_time_range: 91
+    risk_free_rate: 0.0075
+    foreign_risk_free_rate: 0.0375
+get_binary_option:
+  question: What was a cash-or-nothing call on Alphabet paying $1 worth at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 10% of the share price in $5 steps?
+  tool: options
+  arguments:
+    tickers: GOOGL
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    option_type: cash-or-nothing
+    cash_payout: 1.0
+    strike_price_range: 0.1
     strike_step_size: 5
-    expiration_time_range: 30
+    expiration_time_range: 91
 get_bjerksund_stensland:
-  question: What are American calls on Amazon worth under the Bjerksund-Stensland model, across strikes and expiries of up to a month?
+  question: What were American calls on Verizon worth under the Bjerksund-Stensland model at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $1 steps?
   tool: options
   arguments:
-    tickers: AMZN
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 30
+    tickers: VZ
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.15
+    strike_step_size: 1
+    expiration_time_range: 91
 get_monte_carlo_option_price:
-  question: What are calls on Amazon worth in a Monte Carlo simulation of 10,000 price paths, across strikes and expiries of up to a month?
+  question: What were calls on Costco worth at the end of 2025 in a Monte Carlo simulation of 10,000 price paths, for the expiries of 7, 14 and 30 January 2026 and strikes within 10% of the share price in $10 steps?
   tool: options
   arguments:
-    tickers: AMZN
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 30
+    tickers: COST
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.1
+    strike_step_size: 10
+    expiration_time_range: 31
     simulations: 10000
     time_steps: 100
     seed: 42
-get_binary_option:
-  question: What is a cash-or-nothing call on Amazon paying $1 worth, across strikes and expiries of up to a month?
-  tool: options
-  arguments:
-    tickers: AMZN
-    option_type: cash-or-nothing
-    cash_payout: 1.0
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 30
 get_barrier_option:
-  question: What is a down-and-out call on Amazon with its barrier at 90% of the share price worth, across strikes and expiries of up to a month?
+  question: What was a down-and-out call on Meta with its barrier at 90% of the share price worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 10% of the share price in $10 steps?
   tool: options
   arguments:
-    tickers: AMZN
+    tickers: META
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
     barrier_percentage: 0.9
     barrier_direction: down
     knock_type: out
     rebate: 0.0
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 30
+    strike_price_range: 0.1
+    strike_step_size: 10
+    expiration_time_range: 91
 get_asian_option:
-  question: What is a geometric-average Asian call on Amazon worth, across strikes and expiries of up to a month?
+  question: What was a geometric-average Asian call on ExxonMobil worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 10% of the share price in $2 steps?
   tool: options
   arguments:
-    tickers: AMZN
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 30
-get_put_call_parity:
-  question: Do Black-Scholes call and put prices on Amazon satisfy put-call parity across strikes and expiries of up to a month?
-  tool: options
-  arguments:
-    tickers: AMZN
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 30
-get_volatility_surface:
-  question: What does the implied volatility surface of Apple's call options look like across strikes for its next three expirations?
-  tool: options
-  arguments:
-    tickers: AAPL
-    number_of_expirations: 3
-get_risk_neutral_density:
-  question: What probability distribution for Apple's share price at its nearest option expiration do current call prices imply?
-  tool: options
-  arguments:
-    tickers: AAPL
-    strike_price_range: 0.5
-    number_of_strikes: 200
+    tickers: XOM
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.1
+    strike_step_size: 2
+    expiration_time_range: 91
 get_strategy_payoff:
-  question: What is the profit or loss at expiry of a long $150 straddle on Amazon, paying $8 for the call and $6 for the put?
+  question: What is the profit or loss at expiry of a long $450 straddle on Tesla, paying $30 for the call and $28 for the put, for share prices within 25% of the end-2025 price in $5 steps?
   tool: options
   arguments:
-    tickers: AMZN
+    tickers: TSLA
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
     legs:
-    - strike_price: 150
+    - strike_price: 450
       put_option: false
       position: long
-      premium: 8
-    - strike_price: 150
+      premium: 30
+    - strike_price: 450
       put_option: true
       position: long
-      premium: 6
-    stock_price_range: 0.5
-    stock_price_step_size: 1
+      premium: 28
+    stock_price_range: 0.25
+    stock_price_step_size: 5
 get_delta:
-  question: What was the delta of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the delta of Amazon's call options at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: AMZN
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.15
     strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    expiration_time_range: 91
 get_dual_delta:
-  question: What was the dual delta of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the dual delta of JPMorgan Chase's call options at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: JPM
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.15
     strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    expiration_time_range: 91
 get_vega:
-  question: What was the vega of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the vega of Netflix's call options at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $2 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: NFLX
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.15
+    strike_step_size: 2
+    expiration_time_range: 91
 get_theta:
-  question: What was the theta of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the theta of Broadcom's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 15% of the share price in $10 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: AVGO
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.15
+    strike_step_size: 10
 get_rho:
-  question: What was the rho of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the rho of Procter & Gamble's call options at the end of 2025 for the expiries of 30 January, 31 March and 29 June 2026, for strikes within 15% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: PG
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.15
     strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    expiration_time_range: 181
 get_epsilon:
-  question: What was the epsilon, the sensitivity to the dividend yield, of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the epsilon, the sensitivity to the dividend yield, of Coca-Cola's call options at the end of 2025 for the expiries of 30 January, 31 March and 29 June 2026, for strikes within 15% of the share price in $2 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: KO
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.15
+    strike_step_size: 2
+    expiration_time_range: 181
 get_lambda:
-  question: How much leverage, measured by lambda, did Apple's short-dated call options give across strikes at the end of 2025?
+  question: What was the lambda (the leverage) of Visa's call options at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 10% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: V
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.1
     strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    expiration_time_range: 91
 get_gamma:
-  question: What was the gamma of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the gamma of Pfizer's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 20% of the share price in $1 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: PFE
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.2
+    strike_step_size: 1
 get_dual_gamma:
-  question: What was the dual gamma of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the dual gamma of AT&T's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 20% of the share price in $1 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: T
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.2
+    strike_step_size: 1
 get_vanna:
-  question: What was the vanna of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the vanna of Disney's call options at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $2 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: DIS
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.15
+    strike_step_size: 2
+    expiration_time_range: 91
 get_charm:
-  question: What was the charm of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the charm of Home Depot's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 15% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: HD
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.15
     strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
 get_vomma:
-  question: What was the vomma of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the vomma of UnitedHealth's call options at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: UNH
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.15
     strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    expiration_time_range: 91
 get_vera:
-  question: What was the vera of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the vera of Eli Lilly's call options at the end of 2025 for the expiries of 30 January, 31 March and 29 June 2026, for strikes within 15% of the share price in $20 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: LLY
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.15
+    strike_step_size: 20
+    expiration_time_range: 181
 get_veta:
-  question: What was the veta of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the veta of AutoZone's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 10% of the share price in $50 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: AZO
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.1
+    strike_step_size: 50
 get_partial_derivative:
-  question: What was the second derivative of the price of Apple's short-dated call options with respect to the strike at the end of 2025?
+  question: What was the second derivative of the price of Bank of America's call options with respect to the strike at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 20% of the share price in $1 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: BAC
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.2
+    strike_step_size: 1
 get_speed:
-  question: What was the speed of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the speed of Ford's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 25% of the share price in $1 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: F
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
     strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_step_size: 1
 get_zomma:
-  question: What was the zomma of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the zomma of Cisco's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 15% of the share price in $2 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: CSCO
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    strike_price_range: 0.15
+    strike_step_size: 2
 get_color:
-  question: What was the color of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the color of PepsiCo's call options at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 15% of the share price in $5 steps?
   tool: options
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: PEP
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-    strike_price_range: 0.25
+    strike_price_range: 0.15
     strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
 get_ultima:
-  question: What was the ultima of Apple's short-dated call options across strikes at the end of 2025?
+  question: What was the ultima of Nike's call options at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $2 steps?
+  tool: options
+  arguments:
+    tickers: NKE
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.15
+    strike_step_size: 2
+    expiration_time_range: 91
+get_put_call_ratio:
+  question: What are the put-call ratios of volume and open interest of Apple and Tesla options for their next three expirations?
+  tool: options
+  arguments:
+    tickers: AAPL,TSLA
+    number_of_expirations: 3
+get_max_pain:
+  question: What is the max pain price of Apple options for the next four expirations, and how far is it from the share price?
   tool: options
   arguments:
     tickers: AAPL
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.25
-    strike_step_size: 5
-    expiration_time_range: 10
-    show_columns: 290,295,300,305,310,315,320,325,330,335
+    number_of_expirations: 4
+get_gamma_exposure:
+  question: What is the dealer gamma exposure of QQQ and Apple options, and where is the gamma flip point?
+  tool: options
+  arguments:
+    tickers: QQQ,AAPL
+get_implied_volatility_term_structure:
+  question: What does the at-the-money implied volatility term structure of Apple and Tesla look like over their next five expirations?
+  tool: options
+  arguments:
+    tickers: AAPL,TSLA
+    number_of_expirations: 5
+get_volatility_skew:
+  question: What is the 25-delta volatility skew, risk reversal and butterfly of QQQ and Apple options for their next three expirations?
+  tool: options
+  arguments:
+    tickers: QQQ,AAPL
+    number_of_expirations: 3
+get_model_free_implied_volatility:
+  question: What is the 30-day model-free implied volatility, as in the VIX method, of the S&P 500 and Apple?
+  tool: options
+  arguments:
+    tickers: ^SPX,AAPL
+get_volatility_risk_premium:
+  question: How much higher is the implied volatility of QQQ, Apple and Tesla than their realized volatility?
+  tool: options
+  arguments:
+    tickers: QQQ,AAPL,TSLA

@@ -50,6 +50,8 @@ module DocsMetricPages
     "performance"  => { :name => "Performance",  :url => "#{DOCS_ROOT}/performance",    :nav => "financetoolkit-docs-performance" },
     "econometrics" => { :name => "Econometrics", :url => "#{DOCS_ROOT}/econometrics",   :nav => "financetoolkit-docs-econometrics" },
     "economics"    => { :name => "Economics",    :url => "#{DOCS_ROOT}/economics",      :nav => "financetoolkit-docs-economics" },
+    "etf"          => { :name => "ETF",          :url => "#{DOCS_ROOT}/etf",            :nav => "financetoolkit-docs-etf" },
+    "portfolio-optimization" => { :name => "Portfolio Optimization", :url => "#{DOCS_ROOT}/portfolio-optimization", :nav => "financetoolkit-docs-portfolio-optimization" },
     "portfolio"    => { :name => "Portfolio",    :url => "#{DOCS_ROOT}/portfolio",      :nav => "financetoolkit-docs-portfolio" },
   }.freeze
 
@@ -256,7 +258,7 @@ module DocsMetricPages
     out = +"### Using Your Own Data\n\n"
     out << "`#{fn_name}` runs on any data, not only prices: ratios, economic indicators, yield curves or your own dataset. "
     out << "Pass a DataFrame, a Series or a dictionary of them to `Econometrics` as `data`, with the dates in the rows or the columns, "
-    out << "and set `changes` to how its changes are calculated: `\"percentage\"`, `\"log\"`, `\"difference\"` for rates and ratios, or `\"none\"`. "
+    out << "and set `changes` to how its changes are calculated: `\"percentage\"`, `\"log\"`, `\"difference\"` for rates and ratios, or `None` when the data are changes already. "
     out << "For example, for the monthly unemployment rates of the United States and Germany"
     out << (required.empty? ? ":\n\n" : ", where each country is a column:\n\n")
     out << <<~PYTHON
@@ -514,6 +516,8 @@ module DocsMetricPages
     pages = site.pages.each_with_object({}) { |page, map| map[page.url] = page if page.url.start_with?(DOCS_ROOT) }
     toolkit_page = pages[DOCS_ROOT]
     toolkit_sections = toolkit_page ? toolkit_page.content.scan(SECTION).to_h { |fn, body| [fn.downcase, body] } : {}
+    # toolkit.portfolio is the Portfolio Optimization module; the Portfolio class has a page of its own
+    toolkit_sections["portfolio-optimization"] = toolkit_sections.delete("portfolio") if toolkit_sections.key?("portfolio")
 
     CLASSES.each do |key, cls|
       class_page = pages[cls[:url]]
@@ -595,6 +599,7 @@ module DocsMetricPages
       forward = urls.dup
       if key == "toolkit"
         CLASSES.each { |k, c| forward[k] = c[:url] if toolkit_sections.key?(k) }
+        forward["portfolio"] = CLASSES["portfolio-optimization"][:url]
         # the External Datasets guide used to be a section of this page
         forward["using-external-datasets"] = "#{DOCS_ROOT}/external-datasets"
       end

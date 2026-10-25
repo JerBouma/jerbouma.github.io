@@ -1,34 +1,19 @@
-get_stock_screener:
-  question: Which stocks priced between $100 and $200 with a beta between 1 and 2 pay a dividend of $1 to $2 per share?
-  tool: discovery
-  arguments:
-    market_cap_higher: 1000000
-    market_cap_lower: 200000000000
-    price_higher: 100
-    price_lower: 200
-    beta_higher: 1
-    beta_lower: 2
-    volume_higher: 100000
-    volume_lower: 2000000
-    dividend_higher: 1
-    dividend_lower: 2
-    is_etf: false
 get_stock_list:
-  question: Show the ten companies from DS-PD to DSAQ-UN in the Finance Toolkit's list of stocks.
+  question: Show the ten entries from DRNYX to DROOF in the Finance Toolkit's list of stocks.
   tool: discovery
   arguments:
-    show_columns: DS-PD,DS.TO,DS2P.L,DSAC,DSACU,DSACW,DSAI.CN,DSAIF,DSAQ,DSAQ-UN
+    show_columns: DRNYX,DRNZ,DRO.AX,DROCX,DROME.AT,DRON.DE,DRON.L,DRONACHRYA.BO,DRONE.NS,DROOF
 get_stock_shares_float:
-  question: What is the free float of the ten companies from INDI to INDIAMART.NS in the Finance Toolkit's list of floating shares?
+  question: What is the free float of the ten companies from IMFP to IMHC in the Finance Toolkit's list of floating shares?
   tool: discovery
   arguments:
-    show_columns: INDI,INDI.L,INDIACEM.BO,INDIACEM.NS,INDIAGLYCO.BO,INDIAGLYCO.NS,INDIAHOME.BO,INDIAHOMES.BO,INDIAMART.BO,INDIAMART.NS
+    show_columns: IMFP,IMG,IMG.TO,IMGI,IMGN,IMGP.L,IMGX,IMH,IMH.BK,IMHC
 get_sectors_performance:
-  question: How did each sector of NASDAQ-listed stocks move on each trading day from 26 February to 1 March 2024?
+  question: How did each sector of NASDAQ-listed stocks move on each trading day from 19 to 23 October 2026?
   tool: discovery
   arguments:
-    start_date: "2024-02-26"
-    end_date: "2024-03-01"
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
 get_biggest_gainers:
   question: Which ten stocks are the biggest gainers of the day?
   tool: discovery
@@ -74,6 +59,13 @@ get_index_list:
   tool: discovery
   arguments:
     limit: 10
+get_index_constituents:
+  question: Which companies are in the Dow Jones Industrial Average? Show the first five with their sector and the date each was added.
+  tool: discovery
+  arguments:
+    index: Dow Jones
+    limit: 5
+    show_columns: Name,Sector,Date Added
 get_stock_news:
   question: What are the five latest stock market headlines, with the symbol and publisher of each?
   tool: discovery
@@ -132,8 +124,42 @@ get_stock_splits_calendar:
     start_date: "2024-01-01"
     end_date: "2024-06-01"
     limit: 5
+get_sector_performance:
+  question: How did NASDAQ-listed energy stocks perform on each trading day from 19 to 23 October 2026?
+  tool: discovery
+  arguments:
+    sector: Energy
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
+get_industry_performance:
+  question: How did NASDAQ-listed biotechnology stocks perform on each trading day from 19 to 23 October 2026?
+  tool: discovery
+  arguments:
+    industry: Biotechnology
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
+get_sector_pe:
+  question: What was the P/E ratio of NASDAQ-listed energy stocks on each trading day from 19 to 23 October 2026?
+  tool: discovery
+  arguments:
+    sector: Energy
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
+get_industry_pe:
+  question: How did the P/E ratio of NASDAQ-listed biotechnology stocks change on each trading day from 19 to 23 October 2026?
+  tool: discovery
+  arguments:
+    industry: Biotechnology
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
+get_mergers_acquisitions_latest:
+  question: Which five mergers and acquisitions were announced most recently, with the acquirer, the target and the transaction date?
+  tool: discovery
+  arguments:
+    limit: 5
+    show_columns: Company Name,Targeted Company Name,Transaction Date
 get_earnings_calendar:
-  question: Which companies reported earnings from 1 to 3 October 2026, and how did they compare with the estimates?
+  question: Which companies reported earnings from 1 to 3 October 2026, and how did they compare with the estimates? Show the first five.
   tool: discovery
   arguments:
     start_date: "2026-10-01"
@@ -153,37 +179,3 @@ get_insider_trading_latest:
   arguments:
     limit: 5
     show_columns: Reporting Name,Transaction Type,Securities Transacted,Price
-get_sector_performance:
-  question: How did NASDAQ-listed energy stocks perform on each trading day from 26 February to 1 March 2024?
-  tool: discovery
-  arguments:
-    sector: Energy
-    start_date: "2024-02-26"
-    end_date: "2024-03-01"
-get_industry_performance:
-  question: How did NASDAQ-listed biotechnology stocks perform on each trading day from 26 February to 1 March 2024?
-  tool: discovery
-  arguments:
-    industry: Biotechnology
-    start_date: "2024-02-26"
-    end_date: "2024-03-01"
-get_sector_pe:
-  question: What was the P/E ratio of NASDAQ-listed energy stocks on each trading day from 26 February to 1 March 2024?
-  tool: discovery
-  arguments:
-    sector: Energy
-    start_date: "2024-02-26"
-    end_date: "2024-03-01"
-get_industry_pe:
-  question: How did the P/E ratio of NASDAQ-listed biotechnology stocks change on each trading day from 26 February to 1 March 2024?
-  tool: discovery
-  arguments:
-    industry: Biotechnology
-    start_date: "2024-02-26"
-    end_date: "2024-03-01"
-get_mergers_acquisitions_latest:
-  question: Which five mergers and acquisitions were announced most recently, with the acquirer, the target and the transaction date?
-  tool: discovery
-  arguments:
-    limit: 5
-    show_columns: Company Name,Targeted Company Name,Transaction Date

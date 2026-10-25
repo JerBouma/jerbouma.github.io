@@ -1,0 +1,60 @@
+get_holdings:
+  question: What are the five largest holdings of the Invesco QQQ Trust, with their shares, weight and market value?
+  tool: etf
+  arguments:
+    tickers: QQQ
+    limit: 5
+get_information:
+  question: "What is published about the Invesco QQQ Trust and the Vanguard Total Stock Market ETF (VTI): identifiers, asset class, issuer, inception date, expense ratio, assets, NAV and holdings count?"
+  tool: etf
+  arguments:
+    tickers: QQQ,VTI
+    show_columns: Name,ISIN,CUSIP,Asset Class,Domicile,ETF Company,Inception Date,Expense Ratio,Assets Under Management,Average Volume,NAV,NAV Currency,Holdings Count,Actively Trading,Updated At
+get_country_weightings:
+  question: Which five countries carry the most weight in the Invesco QQQ Trust and the Vanguard Total Stock Market ETF (VTI)?
+  tool: etf
+  arguments:
+    tickers: QQQ,VTI
+    limit: 5
+get_sector_weightings:
+  question: How are the Invesco QQQ Trust and the Vanguard Total Stock Market ETF (VTI) spread over the sectors?
+  tool: etf
+  arguments:
+    tickers: QQQ,VTI
+get_profile:
+  question: "Give me the profile of VOO, QQQ and AGG: issuer, asset class, expense ratio, assets under management, NAV, premium or discount and average trading volume since October 2025."
+  tool: etf
+  arguments:
+    tickers: VOO,QQQ,AGG
+    start_date: "2025-10-01"
+get_tracking:
+  question: How closely did VOO, IVV and SPLG track SPY from 2021 to 2025, measured on monthly returns?
+  tool: etf
+  arguments:
+    tickers: VOO,IVV,SPLG
+    benchmark_ticker: SPY
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: monthly
+get_concentration:
+  question: "How concentrated are VOO, QQQ and the equal-weight S&P 500 ETF (RSP): number of holdings, largest holding, top 10 weight and effective number of holdings?"
+  tool: etf
+  arguments:
+    tickers: VOO,QQQ,RSP
+get_overlap:
+  question: How much do the holdings of VOO, QQQ, VTI and SCHD overlap with each other?
+  tool: etf
+  arguments:
+    tickers: VOO,QQQ,VTI,SCHD
+get_look_through_valuation:
+  question: What are the look-through P/E, P/B, P/S, P/FCF, dividend yield and net margin of VOO, QQQ and SCHD, based on their largest holdings?
+  tool: etf
+  arguments:
+    tickers: VOO,QQQ,SCHD
+get_liquidity:
+  question: "How liquid were VOO, QQQ and ARKK in 2025: average volume, dollar volume, dollar volume to assets and the price impact per $100 million traded?"
+  tool: etf
+  arguments:
+    tickers: VOO,QQQ,ARKK
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"

@@ -71,13 +71,13 @@ toolkit.performance.collect_all_metrics().xs("AAPL", level=1, axis=1)
 
 Which returns:
 
-|      |   Win Rate |   Upside Capture Ratio |   Downside Capture Ratio |   M2 Ratio |   Tracking Error |
-|:-----|-----------:|-----------------------:|-------------------------:|-----------:|-----------------:|
-| 2022 |     0.4781 |                 1.3094 |                   1.3191 |    -0.1669 |           0.0115 |
-| 2023 |     0.58   |                 1.1825 |                   0.9646 |     0.3292 |           0.009  |
-| 2024 |     0.5    |                 1.1178 |                   1.0487 |     0.1906 |           0.0121 |
-| 2025 |     0.472  |                 1.0324 |                   1.0986 |     0.0709 |           0.0139 |
-| 2021 |     0.4921 |                 1.3819 |                   1.422  |   nan      |           0.0118 |
+|      |    Alpha |   Beta |     CAPM |   Jensen's Alpha |   Treynor Ratio |   Sharpe Ratio |   Sortino Ratio |   Ulcer Performance Index |   Calmar Ratio |   Sterling Ratio |   Burke Ratio |   Omega Ratio |   Kappa Ratio |   Gain to Pain Ratio |   Win Rate |   Upside Capture Ratio |   Downside Capture Ratio |   M2 Ratio |   Tracking Error |   Information Ratio |   Appraisal Ratio |   STARR Ratio |   Rachev Ratio |   Returns |   Excess Return |
+|:-----|---------:|-------:|---------:|-----------------:|----------------:|---------------:|----------------:|--------------------------:|---------------:|-----------------:|--------------:|--------------:|--------------:|---------------------:|-----------:|-----------------------:|-------------------------:|-----------:|-----------------:|--------------------:|------------------:|--------------:|---------------:|----------:|----------------:|
+| 2022 |  -0.0822 | 1.3025 |  -0.2458 |          -0.0182 |         -0.2254 |        -0.0482 |         -0.0675 |                   -4.4186 |        -0.8706 |          -1.0669 |       -0.1137 |        0.8943 |       -0.052  |              -0.1057 |     0.4781 |                 1.3036 |                   1.3242 |    -0.1698 |           0.0115 |             -0.025  |           -0.1098 |       -0.4128 |         1.0788 |   -0.2638 |         -0.2934 |
+| 2023 |   0.2283 | 1.1148 |   0.2873 |           0.2028 |          0.4041 |         0.1189 |          0.1839 |                   13.8927 |         3.2719 |           3.3669 |        0.5152 |        1.4099 |        0.1284 |               0.4099 |     0.576  |                 1.1755 |                   0.9726 |     0.3296 |           0.009  |              0.0794 |            1.44   |        1.0736 |         1.0726 |    0.489  |          0.4494 |
+| 2024 |   0.0583 | 0.9686 |   0.2423 |           0.0648 |          0.2736 |         0.07   |          0.1071 |                    7.7225 |         1.9958 |           1.9699 |        0.2621 |        1.2509 |        0.0767 |               0.2509 |     0.5    |                 1.1049 |                   1.0583 |     0.189  |           0.0121 |              0.0207 |            0.3386 |        0.5644 |         1.1443 |    0.3069 |          0.2648 |
+| 2025 |  -0.0867 | 1.2551 |   0.2115 |          -0.121  |          0.0379 |         0.0188 |          0.0283 |                    0.9488 |         0.2913 |           0.445  |        0.0249 |        1.0903 |        0.0186 |               0.0903 |     0.472  |                 1.0147 |                   1.1139 |     0.0714 |           0.0139 |             -0.0127 |           -0.5668 |        0.0659 |         1.0729 |    0.0904 |          0.0475 |
+| 2021 | nan      | 1.3196 | nan      |         nan      |        nan      |         0.0859 |          0.129  |                  nan      |       nan      |         nan      |      nan      |        1.2632 |        0.0943 |               0.2632 |     0.4921 |                 1.3706 |                   1.432  |   nan      |           0.0118 |              0.0266 |          nan      |      nan      |         0.9957 |    0.3811 |          0.3667 |
 
 ---
 
@@ -98,6 +98,8 @@ $$
 \text{Beta} = \text{Monthly Covariance of Asset Returns and Benchmark Returns} / \text{Monthly Variance of Benchmark Returns}
 $$
 
+Beta is read against 1, the benchmark's own beta: above 1 the asset tends to amplify market moves, below 1 to dampen them. Each period's Beta comes from the daily returns within that period, so a yearly figure rests on about 250 observations and can swing with a single turbulent month; a rolling window (for example period='monthly' with rolling=36) gives a steadier estimate for cost of capital work. A Beta close to zero can come from a low correlation with the market rather than from low volatility, so it is worth checking both before calling a stock defensive.
+
 **See definition:** [https://en.wikipedia.org/wiki/Beta_(finance)](https://en.wikipedia.org/wiki/Beta_(finance)){:target="_blank"}
 
 **Also known as:** market sensitivity, systematic risk.
@@ -106,8 +108,8 @@ $$
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
-period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
+- <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
+period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Beta. Defaults to None.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -124,7 +126,6 @@ pd.DataFrame: Beta values.
 - Daily Beta is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the Beta for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -133,7 +134,7 @@ not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "AMZN"],
+    ["NVDA", "TSLA", "JPM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -144,13 +145,13 @@ toolkit.performance.get_beta()
 
 Which returns:
 
-| Date   |   AAPL |   AMZN |
-|:-------|-------:|-------:|
-| 2021   | 1.3203 | 1.0432 |
-| 2022   | 1.3026 | 1.6343 |
-| 2023   | 1.1148 | 1.5303 |
-| 2024   | 0.9688 | 1.5491 |
-| 2025   | 1.2546 | 1.3254 |
+| Date   |   NVDA |   TSLA |    JPM |
+|:-------|-------:|-------:|-------:|
+| 2021   | 2.0429 | 1.9542 | 0.8378 |
+| 2022   | 2.2015 | 1.7398 | 0.8813 |
+| 2023   | 2.0247 | 2.2485 | 0.8724 |
+| 2024   | 2.659  | 2.3803 | 0.8013 |
+| 2025   | 1.8732 | 2.2343 | 0.9478 |
 
 ---
 
@@ -168,6 +169,8 @@ The formula is as follows:
 $$
 \text{Capital Asset Pricing Model} = \text{Risk Free Rate} + \text{Beta} \cdot (\text{Benchmark Returns} - \text{Risk Free Rate})
 $$
+
+The CAPM here uses the benchmark's realised return of each period, so the result is the return the asset should have earned given what the market actually did. That makes it a yardstick for Jensen's Alpha rather than a forward-looking expected return. For a cost of equity, practitioners use an expected market risk premium instead of the realised one (see the Toolkit's `get_market_risk_premium`) together with a longer-run Beta. In periods in which the benchmark returns less than the risk-free rate, a high-Beta asset gets a lower required return than a low-Beta one.
 
 **See definition:** [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](https://en.wikipedia.org/wiki/Capital_asset_pricing_model){:target="_blank"}
 
@@ -196,7 +199,9 @@ pd.DataFrame: CAPM values.
 - Daily CAPM is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the CAPM for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -205,9 +210,9 @@ not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["JPM", "GS", "MS"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -216,12 +221,13 @@ toolkit.performance.get_capital_asset_pricing_model()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.2485 | -0.345  |
-| 2023   |  0.2874 |  0.5403 |
-| 2024   |  0.2425 |  0.5291 |
-| 2025   |  0.2117 |  0.3446 |
+| Date   |     JPM |      GS |      MS |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.2426 |  0.2808 |  0.3177 |
+| 2022   | -0.1567 | -0.173  | -0.1915 |
+| 2023   |  0.2334 |  0.276  |  0.3055 |
+| 2024   |  0.2077 |  0.28   |  0.2632 |
+| 2025   |  0.1702 |  0.221  |  0.2174 |
 
 ---
 
@@ -234,6 +240,16 @@ For assessing the exposure or influence of a stock to external factors, it's oft
 
 However, since the results are closely related and tend to point into the same direction it could be fine to use correlations as well depending on the level of accuracy required.
 
+The formula is as follows:
+
+$$
+\text{Excess Return} = \text{Daily Asset Return} - \text{Daily Risk Free Rate} (\text{RF})
+$$
+
+$$
+\text{Factor Asset Correlation} = \text{Pearson Correlation} (\text{Daily Excess Return},\; \text{Daily Factor Return}),\;\; \text{using the daily Fama and French 5 Factor returns within each period (e.g. each year)}
+$$
+
 **Also known as:** factor exposure, asset correlations.
 
 **Args:**
@@ -242,6 +258,13 @@ However, since the results are closely related and tend to point into the same d
 initialised with quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
+- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
+"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
+factors of Ken French's library for that region's stocks). Every region's factors are
+U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF),
+so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
+otherwise the exchange rate's moves end up in the factor loadings, mostly the market
+beta. Defaults to "United States".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
 Defaults to None, which returns every column.
@@ -257,24 +280,20 @@ as the columns and one row per period.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["CAT", "PFE", "ORCL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2025-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_factor_asset_correlations()["AAPL"]
+toolkit.performance.get_factor_asset_correlations()["CAT"]
 ```
 
 Which returns:
 
-|      |   Mkt-RF |     SMB |     HML |     RMW |     CMA |
-|:-----|---------:|--------:|--------:|--------:|--------:|
-| 2021 |   0.6661 | -0.0576 | -0.436  | -0.1188 | -0.0529 |
-| 2022 |   0.8797 |  0.0565 | -0.5481 | -0.2579 | -0.4763 |
-| 2023 |   0.6987 | -0.0083 | -0.2832 | -0.1014 | -0.4615 |
-| 2024 |   0.5185 |  0.0353 | -0.3175 | -0.056  | -0.0849 |
-| 2025 |   0.7407 |  0.0654 | -0.2097 | -0.1083 |  0.0753 |
+|      |   Mkt-RF |    SMB |     HML |     RMW |     CMA |
+|:-----|---------:|-------:|--------:|--------:|--------:|
+| 2025 |    0.698 | 0.2883 | -0.2279 | -0.2868 | -0.0246 |
 
 ---
 
@@ -289,6 +308,12 @@ Calculates factor correlations between each factor. This is useful to understand
 
 Optionally, it is also possible to see the correlation between the risk-free rate and each factor.
 
+The formula is as follows:
+
+$$
+\text{Factor Correlation} = \text{Pearson Correlation} (\text{Daily Factor}\; A \;\text{Return},\; \text{Daily Factor}\; B \;\text{Return}),\;\; \text{using the daily Fama and French 5 Factor returns within each period (e.g. each year)}
+$$
+
 **Also known as:** factor model correlations.
 
 **Args:**
@@ -298,6 +323,11 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>exclude_risk_free (bool, optional):</u> Whether to exclude the risk-free rate from the results. Defaults to True.
+- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
+"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
+factors of Ken French's library for that region's stocks). Every region's factors are
+U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF).
+Defaults to "United States".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 
 **Returns:**
@@ -312,10 +342,11 @@ restricted to the Toolkit's date range.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["SPY"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2023-01-01",
+    start_date="2025-01-01",
     end_date="2025-12-31",
+    benchmark_ticker=None,
 )
 
 toolkit.performance.get_factor_correlations()
@@ -323,23 +354,13 @@ toolkit.performance.get_factor_correlations()
 
 Which returns:
 
-|                                     |   Mkt-RF |     SMB |     HML |     RMW |     CMA |
-|:------------------------------------|---------:|--------:|--------:|--------:|--------:|
-| (Period('2023', 'Y-DEC'), 'Mkt-RF') |   1      |  0.297  | -0.0436 | -0.327  | -0.4582 |
-| (Period('2023', 'Y-DEC'), 'SMB')    |   0.297  |  1      |  0.4115 | -0.3984 |  0.0737 |
-| (Period('2023', 'Y-DEC'), 'HML')    |  -0.0436 |  0.4115 |  1      |  0.2133 |  0.6075 |
-| (Period('2023', 'Y-DEC'), 'RMW')    |  -0.327  | -0.3984 |  0.2133 |  1      |  0.3029 |
-| (Period('2023', 'Y-DEC'), 'CMA')    |  -0.4582 |  0.0737 |  0.6075 |  0.3029 |  1      |
-| (Period('2024', 'Y-DEC'), 'Mkt-RF') |   1      |  0.2546 | -0.2273 | -0.3827 | -0.1223 |
-| (Period('2024', 'Y-DEC'), 'SMB')    |   0.2546 |  1      |  0.418  | -0.4877 |  0.0798 |
-| (Period('2024', 'Y-DEC'), 'HML')    |  -0.2273 |  0.418  |  1      |  0.1307 |  0.0939 |
-| (Period('2024', 'Y-DEC'), 'RMW')    |  -0.3827 | -0.4877 |  0.1307 |  1      | -0.1003 |
-| (Period('2024', 'Y-DEC'), 'CMA')    |  -0.1223 |  0.0798 |  0.0939 | -0.1003 |  1      |
-| (Period('2025', 'Y-DEC'), 'Mkt-RF') |   1      |  0.1744 | -0.3814 | -0.4273 |  0.0586 |
-| (Period('2025', 'Y-DEC'), 'SMB')    |   0.1744 |  1      |  0.2143 | -0.2924 |  0.2143 |
-| (Period('2025', 'Y-DEC'), 'HML')    |  -0.3814 |  0.2143 |  1      |  0.3573 |  0.2218 |
-| (Period('2025', 'Y-DEC'), 'RMW')    |  -0.4273 | -0.2924 |  0.3573 |  1      |  0.0657 |
-| (Period('2025', 'Y-DEC'), 'CMA')    |   0.0586 |  0.2143 |  0.2218 |  0.0657 |  1      |
+|                    |   Mkt-RF |     SMB |     HML |     RMW |    CMA |
+|:-------------------|---------:|--------:|--------:|--------:|-------:|
+| ('2025', 'Mkt-RF') |   1      |  0.1744 | -0.3814 | -0.4273 | 0.0586 |
+| ('2025', 'SMB')    |   0.1744 |  1      |  0.2143 | -0.2924 | 0.2143 |
+| ('2025', 'HML')    |  -0.3814 |  0.2143 |  1      |  0.3573 | 0.2218 |
+| ('2025', 'RMW')    |  -0.4273 | -0.2924 |  0.3573 |  1      | 0.0657 |
+| ('2025', 'CMA')    |   0.0586 |  0.2143 |  0.2218 |  0.0657 | 1      |
 
 ---
 
@@ -366,13 +387,17 @@ $$
 
 And the following for the Simple Linear Regression:
 
-- Excess Return = Intercept + Slope * Factor Value + Residuals
+$$
+\text{Excess Return} = \text{Intercept} + \text{Slope} \cdot \text{Factor Value} + \text{Residuals}
+$$
 
 So for a given factor, it should hold that the Excess Return equals the entire regression. Note that in this calculation the Excess Return refers to the Asset Return minus the Risk Free Rate as reported in the Fama and French dataset and will not be the same as the defined Excess Return in the historical data given that this is based on the Risk Free Rate defined in the initialization.
 
 The regression is estimated on the daily observations falling inside each period, so its Intercept, Slope and Residuals are all on a daily scale. The `Factor Value` and `Residuals` columns reported by the Simple Linear Regression therefore describe the **last daily observation** within the period, which is the only reading for which the identity above holds - they are not period-aggregated quantities.
 
 What is relevant to look at is the influence these factors have on each stock and how much each factor explains the stock return. E.g. you will generally see a pretty high influence (Beta or Slope) for the Market Risk Premium (Mkt-RF) factor as this is the main factor that explains the stock return (as also prevalent in the CAPM). The other factors can fluctuate greatly between stocks depending on which stocks you look at.
+
+The slopes are read as tilts: a positive HML slope is a value tilt and a negative one a growth tilt, a negative SMB slope marks a large-cap profile, and RMW and CMA show exposure to profitable and conservatively investing firms. With about 250 daily observations per year the slopes of the smaller factors are noisy, so only loadings that are large and persist across periods say much about a stock or fund. The R Squared shows how much of the daily excess return the factors explain; a low value leaves most of the return to stock-specific news.
 
 **Also known as:** Fama-French model, three-factor model, five-factor model, FF3, FF5.
 
@@ -385,6 +410,13 @@ Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, other
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>include_daily_residuals (bool, optional):</u> Whether to also return the pointwise (daily)
 regression residuals as a second DataFrame. Defaults to False.
+- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
+"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
+factors of Ken French's library for that region's stocks). Every region's factors are
+U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF),
+so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
+otherwise the exchange rate's moves end up in the factor loadings, mostly the market
+beta. Defaults to "United States".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
 - <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -416,15 +448,25 @@ In this case, the Risk Free Rate from the Fama and French dataset is used.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["IWM", "VTV", "MTUM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
 # Calculate Fama and French 5 Factor model scores
-toolkit.performance.get_fama_and_french_model()["AAPL"]
+toolkit.performance.get_fama_and_french_model()["IWM"].drop(columns="Mean Squared Error (MSE)")
 ```
+
+Which returns:
+
+|      |   Intercept |   Mkt-RF Slope |   SMB Slope |   HML Slope |   RMW Slope |   CMA Slope |   R Squared |
+|:-----|------------:|---------------:|------------:|------------:|------------:|------------:|------------:|
+| 2021 |     -0.0003 |         1.0529 |      0.8267 |      0.0728 |     -0.1204 |     -0.0334 |      0.9868 |
+| 2022 |     -0.0001 |         1.0343 |      0.893  |      0.0645 |     -0.0553 |      0.0654 |      0.9917 |
+| 2023 |     -0.0001 |         1.0292 |      0.8647 |      0.141  |     -0.0731 |      0.0794 |      0.9871 |
+| 2024 |      0      |         1.0396 |      0.8723 |      0.1568 |     -0.0685 |      0.0143 |      0.9838 |
+| 2025 |      0      |         0.9702 |      0.8649 |      0.1317 |     -0.1871 |     -0.0235 |      0.9826 |
 
 ---
 
@@ -438,9 +480,17 @@ The Carhart Four Factor model extends the Fama and French Three Factor model wit
 - Value Premium (HML): The historical excess return of value stocks over growth stocks.
 - Momentum (MOM): The historical excess return of prior winner stocks over prior loser stocks.
 
-The model performs a Multi Linear Regression on all four factors and defines the regression parameters for each asset over time based on its exposure to these factors:
+The model performs a Multi Linear Regression (ordinary least squares) on all four factors and defines the regression parameters for each asset over time based on its exposure to these factors.
 
-- Excess Return = Intercept + Beta1 * Mkt-RF + Beta2 * SMB + Beta3 * HML + Beta4 * MOM + Residuals
+The formula is as follows:
+
+$$
+\text{Excess Return} = \text{Daily Asset Return} - \text{Daily Risk Free Rate} (\text{RF},\; \text{from the Fama and French dataset})
+$$
+
+$$
+\text{Excess Return} = \text{Intercept} + \text{Beta1} \cdot \text{Mkt-RF} + \text{Beta2} \cdot \text{SMB} + \text{Beta3} \cdot \text{HML} + \text{Beta4} \cdot \text{MOM} + \text{Residuals},\;\; \text{fitted on the daily returns within each period (e.g. each quarter)}
+$$
 
 For more information about the method, see the following paper:
 
@@ -452,6 +502,13 @@ For more information about the method, see the following paper:
 
 - <u>period (str, optional):</u> The period for the calculation (e.g., "weekly", "monthly", "quarterly", "yearly").
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
+"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
+factors of Ken French's library for that region's stocks). Every region's factors are
+U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF),
+so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
+otherwise the exchange rate's moves end up in the factor loadings, mostly the market
+beta. Defaults to "United States".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
 - <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -485,14 +542,82 @@ than the Toolkit's own risk-free rate, to stay consistent with the momentum fact
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["XOM", "HD", "ADBE"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2025-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_carhart_four_factor_model(period="quarterly")["AMZN"]
+toolkit.performance.get_carhart_four_factor_model(period="quarterly")["XOM"].drop(
+    columns="Mean Squared Error (MSE)"
+)
 ```
+
+Which returns:
+
+|        |   Intercept |   Mkt-RF Slope |   SMB Slope |   HML Slope |   MOM Slope |   R Squared |
+|:-------|------------:|---------------:|------------:|------------:|------------:|------------:|
+| 2025Q1 |      0.0021 |         0.7335 |      0.2739 |      0.4818 |     -0.7225 |      0.317  |
+| 2025Q2 |     -0.0002 |         0.8881 |     -0.7307 |      1.6062 |     -0.7248 |      0.6805 |
+| 2025Q3 |      0.0003 |         0.3232 |     -0.1805 |      0.6496 |     -0.2369 |      0.2179 |
+| 2025Q4 |      0.0005 |         0.4852 |     -0.2193 |      0.6778 |     -0.0933 |      0.1938 |
+
+---
+
+## get_style_analysis
+Calculate the returns-based style analysis (Sharpe, 1992) of every ticker: the mix of style indices, such as growth and value, large and small caps or bonds, whose returns track the ticker's returns most closely. The weights are found by minimizing the variance of the difference between the ticker's return and the weighted style returns, with every weight between 0 and 1 and the weights adding up to 1, so they read as the effective asset mix of a fund without knowing its holdings.
+
+The R Squared is the share of the ticker's variance the styles explain; what they do not explain is the Selection Return (the return of the manager's own choices, annualized) with its volatility, the Tracking Error. These three are in-sample: they are measured over the same returns the weights are fitted to, which flatters the fit, as the weights are chosen to explain exactly those returns.
+
+A window estimates the weights over a rolling number of periods instead, which shows how a fund's style drifts over time, and adds Sharpe's out-of-sample measure of selection: the Out-of-Sample Selection Return of a date is the ticker's return of that period minus the return of that period of the style mix estimated over the window that ends one period earlier (Sharpe uses the previous 60 months). It is a return per period, not annualized, and NaN for the first window, which has no earlier estimate. Its average shows whether the manager added value beyond a passive mix of the styles the fund was known to follow.
+
+The style indices are tickers of the Toolkit as well (an ETF per style works well, for example IWF, IWD, IWO and IWN for US large and small cap growth and value and AGG for bonds), and every other ticker is analyzed against them. "Benchmark" can be one of them.
+
+For more information, see the following paper:
+
+- Sharpe, W.F. (1992). "Asset Allocation: Management Style and Performance Measurement." The Journal of Portfolio Management, 18(2), 7-19.
+
+**Also known as:** returns-based style analysis, RBSA, style regression, effective asset mix, selection return.
+
+**Args:**
+
+- <u>style_tickers (str &#124; list[str]):</u> The tickers of the style indices, as a list or a
+comma-separated string.
+- <u>period (str, optional):</u> The return frequency (daily, weekly, monthly, quarterly or
+yearly). Defaults to "monthly".
+- <u>window (int &#124; None, optional):</u> The number of periods to estimate the weights over on a
+rolling basis, which adds the Out-of-Sample Selection Return. Defaults to None,
+which uses every period.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the weight of every style, the R Squared, the Selection Return
+and the Tracking Error, or with a window the same and the Out-of-Sample Selection
+Return per date (the last date of every window) and ticker. A ticker with no more
+returns than there are styles (in a window) is NaN.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["ARKK", "IWF", "IWD", "IWO", "IWN", "AGG"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2019-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_style_analysis(["IWF", "IWD", "IWO", "IWN", "AGG"])
+```
+
+Which returns:
+
+|      |    IWF |   IWD |    IWO |   IWN |   AGG |   R Squared |   Selection Return |   Tracking Error |
+|:-----|-------:|------:|-------:|------:|------:|------------:|-------------------:|-----------------:|
+| ARKK | 0.0091 |     0 | 0.9909 |     0 |     0 |      0.6123 |             0.0638 |           0.2632 |
 
 ---
 
@@ -540,9 +665,9 @@ pd.DataFrame: Alpha values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["COST", "WMT", "TGT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -551,12 +676,13 @@ toolkit.performance.get_alpha()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.0823 | -0.4685 |
-| 2023   |  0.2283 |  0.7554 |
-| 2024   |  0.0583 |  0.3764 |
-| 2025   | -0.0867 | -0.0636 |
+| Date   |    COST |     WMT |     TGT |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.2309 | -0.2676 |  0.0418 |
+| 2022   | -0.0087 |  0.1772 | -0.1606 |
+| 2023   |  0.2282 | -0.133  | -0.2753 |
+| 2024   |  0.1474 |  0.4911 | -0.2715 |
+| 2025   | -0.2311 |  0.0677 | -0.4221 |
 
 ---
 
@@ -598,7 +724,9 @@ pd.DataFrame: Jensen's Alpha values.
 - Daily Jensen's Alpha is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the CAPM for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -607,9 +735,9 @@ not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["UNH", "JNJ", "PFE"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -618,17 +746,18 @@ toolkit.performance.get_jensens_alpha()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.0156 | -0.3053 |
-| 2023   |  0.2027 |  0.4769 |
-| 2024   |  0.0646 |  0.0961 |
-| 2025   | -0.1212 | -0.231  |
+| Date   |     UNH |     JNJ |     PFE |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.2601 | -0.0093 |  0.6493 |
+| 2022   |  0.1608 |  0.0945 | -0.0261 |
+| 2023   | -0.0951 | -0.2013 | -0.5539 |
+| 2024   | -0.0911 | -0.0803 | -0.1158 |
+| 2025   | -0.4155 |  0.4249 | -0.0976 |
 
 ---
 
 ## get_treynor_ratio
-The Treynor Ratio, also known as Treynor's Measure or the Reward-to-Variability Ratio, is a financial metric used to assess the risk-adjusted performance of an investment portfolio or asset. It measures the excess return generated by the portfolio per unit of systematic or market risk, often represented by Beta. The Treynor Ratio is a valuable tool for evaluating the performance of investments in relation to their market risk exposure.
+The Treynor Ratio, also known as Treynor's Measure or the Reward-to-Volatility Ratio, is a financial metric used to assess the risk-adjusted performance of an investment portfolio or asset. It measures the excess return generated by the portfolio per unit of systematic or market risk, often represented by Beta. The Treynor Ratio is a valuable tool for evaluating the performance of investments in relation to their market risk exposure.
 
 The formula is as follows:
 
@@ -663,7 +792,9 @@ pd.DataFrame: Treynor Ratio values.
 - Daily Treynor Ratio is not an option as the standard deviation for 1 day is close to zero. Therefore,
 it does not give any useful insights.
 - The method retrieves historical data and calculates the TR for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -672,9 +803,9 @@ it does not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["UNP", "UPS", "FDX"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -683,12 +814,13 @@ toolkit.performance.get_treynor_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.2325 | -0.3961 |
-| 2023   |  0.4049 |  0.4352 |
-| 2024   |  0.2698 |  0.2435 |
-| 2025   |  0.039  |  0.0322 |
+| Date   |     UNP |     UPS |     FDX |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.2344 |  0.3677 | -0.0077 |
+| 2022   | -0.2789 | -0.2134 | -0.3426 |
+| 2023   |  0.2003 | -0.0898 |  0.4279 |
+| 2024   | -0.163  | -0.3386 |  0.1571 |
+| 2025   | -0.0065 | -0.2648 |  0.008  |
 
 ---
 
@@ -715,16 +847,24 @@ $$
 \text{Sharpe Ratio} = \text{Average Rolling Excess Return} / \text{Standard Deviation of Rolling Excess Returns}
 $$
 
-Note that this is explicitly already subtracts the Risk Free Rate.
+Note that the Risk Free Rate is already subtracted from these returns. The Toolkit's risk free rate is the 10-year US Treasury yield by default, while Sharpe (1994) and the Ken French factor files use a short-term Treasury bill. Initialise the Toolkit with risk_free_rate="13w" (the 13-week Treasury bill; "5y", "10y" and "30y" are the other options) to use a short rate instead.
 
 By default the result is **not annualized**: it is a per-observation Sharpe ratio, so a value computed from daily returns is roughly SQRT(252) smaller than the annualized figure usually quoted in the literature (SQRT(52), SQRT(12) and SQRT(4) for weekly, monthly and quarterly returns respectively). Set annualize=True to multiply by that factor, to compare against published annualized Sharpe ratios.
 
 The plain Sharpe ratio only looks at the mean and standard deviation of returns, implicitly assuming Gaussian, i.i.d. returns and ignoring how much uncertainty surrounds the estimate itself. The `method` parameter selects one of three corrections for that, each keeping the same excess returns and therefore the same underlying Sharpe ratio as its starting point:
 
 - `"adjusted"` - the Adjusted Sharpe Ratio (ASR, Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically:
-- ASR = SR * [1 + (S / 6) * SR − ((K − 3) / 24) * SR^2]
+
+$$
+\text{ASR} = \text{SR} \cdot \left[1 + (S / 6) \cdot \text{SR} - ((K - 3) / 24) \cdot \text{SR} ^{2}\right]
+$$
+
 - `"probabilistic"` - the Probabilistic Sharpe Ratio (PSR) is the probability that the true (population) Sharpe ratio exceeds `benchmark_sharpe_ratio`, folding the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio so that a short, lumpy sample no longer looks more convincing than it is:
-- PSR(SR*) = Φ( (SR̂ − SR*) · sqrt(n − 1) / sqrt(1 − γ₃·SR̂ + ((γ₄ − 1) / 4)·SR̂²) )
+
+$$
+\operatorname{PSR}(\text{SR} \cdot) = \Phi((\text{SR̂} - \text{SR} \cdot) \cdot \sqrt{n - 1} / \sqrt{1 - \text{γ₃} \cdot \text{SR̂} + ((\text{γ₄} - 1) / 4) \cdot \text{SR̂} ^{2}})
+$$
+
 - `"deflated"` - the Deflated Sharpe Ratio (DSR) is the Probabilistic Sharpe Ratio corrected for the fact that a reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting"). It estimates the Sharpe ratio one would expect to observe purely by chance as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and uses that expected maximum as the benchmark SR* in the Probabilistic Sharpe Ratio formula instead of a naive benchmark such as 0:
 
 $$
@@ -733,7 +873,7 @@ $$
 
 Where SR̂ is the observed Sharpe ratio, S (γ₃) is the skewness and K (γ₄) the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, γ ≈ 0.5772 is the Euler-Mascheroni constant and Φ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
 
-This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of valid (non-NaN) values in that same rolling series. This treats each rolling window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
+This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of valid (non-NaN) values in that same rolling series. That series is built from the same returns as the Sharpe ratio being deflated, so both are on the same scale: the daily excess returns (the observations within each period) for the Sharpe ratio per period, and the excess returns of `period` itself for a rolling Sharpe ratio. This treats each rolling window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
 
 **See definition:** [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedia.org/wiki/Sharpe_ratio){:target="_blank"}
 
@@ -750,11 +890,14 @@ period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe 
 - <u>benchmark_sharpe_ratio (float, optional):</u> The hypothesized or benchmark Sharpe ratio
 (SR*) to test the observed Sharpe ratio against. Only used when method="probabilistic".
 Defaults to 0.0, i.e. testing whether the strategy has any skill at all above doing nothing.
-- <u>trials_window (int, optional):</u> The window size (in units of `period`) used for the
-auxiliary rolling Sharpe ratio series that approximates `Var[SR_trials]` and the
-default `n_trials`, see above. Only used when method="deflated". Defaults to None, which
-uses half of the available return history so that enough overlapping windows exist
-regardless of `period` or date range.
+- <u>trials_window (int, optional):</u> The window size of the auxiliary rolling Sharpe ratio
+series that approximates `Var[SR_trials]` and the default `n_trials`, see above. Only
+used when method="deflated". It counts observations of the returns the Sharpe ratio is
+computed from: daily (or intraday) observations for the Sharpe ratio per period, and
+observations of `period` when `rolling` is set. Defaults to None, which uses the median
+number of observations per period (so each trial spans about one period) for the Sharpe
+ratio per period, and half of the available return history for a rolling Sharpe ratio
+so that enough overlapping windows exist regardless of `period` or date range.
 - <u>n_trials (int, optional):</u> The number of independent (or effectively independent)
 strategy variations, parameter combinations, or lookback windows tried before
 arriving at the reported Sharpe ratio. Only used when method="deflated". Defaults to
@@ -769,8 +912,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>annualize (bool, optional):</u> Whether to annualize the Sharpe ratio, multiplying it by
 the square root of the number of observations in a year: 252 for the daily
-returns within each period, or the periods in a year for a rolling Sharpe ratio
-(e.g. 12 for monthly). Only for method="standard" and "adjusted", since the other
+returns within each period, 252 times the median number of bars per day for the
+intraday returns within a day (period="daily" with an intraday_period), or the
+periods in a year for a rolling Sharpe ratio (e.g. 12 for monthly). Only for method="standard" and "adjusted", since the other
 methods return probabilities. Defaults to False.
 
 **Returns:**
@@ -780,14 +924,18 @@ these are probabilities between 0 and 1 rather than ratios.
 
 **Notes:**
 
-- Daily Sharpe Ratio is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
-not give any useful insights.
+- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+is then computed from the intraday bars within each day, with the daily risk free rate spread over the
+bars of a day. Without intraday data a single day holds one return, so the result is empty and logs why.
 - The method retrieves historical data and calculates the Sharpe ratio for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default; choose
+risk_free_rate="13w" when initialising the Toolkit for the short-term rate Sharpe (1994) uses.
 - The "adjusted", "probabilistic" and "deflated" variants use the **non-excess (raw)** kurtosis
 convention, i.e. a Normal distribution has a kurtosis of 3, not 0. Internally this calls
 `risk_model.get_kurtosis(..., fisher=False)`.
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- `get_sharpe_ratio(method="probabilistic")` returns the probability that each Sharpe ratio is genuine,
+i.e. above `benchmark_sharpe_ratio` once the sample length, skewness and kurtosis are accounted for.
 
 **As an example:**
 
@@ -795,40 +943,25 @@ convention, i.e. a Normal distribution has a kurtosis of 3, not 0. Internally th
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["SPY", "TLT", "GLD", "BTCUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
+    benchmark_ticker=None,
 )
 
-toolkit.performance.get_sharpe_ratio()
+toolkit.performance.get_sharpe_ratio(annualize=True)
 ```
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2021   |  0.0859 |  0.0581 |
-| 2022   | -0.0484 | -0.0812 |
-| 2023   |  0.1193 |  0.095  |
-| 2024   |  0.0702 |  0.0637 |
-| 2025   |  0.0188 |  0.0263 |
-
-And, asking for the probability that these Sharpe ratios are genuine instead:
-
-```python
-toolkit.performance.get_sharpe_ratio(method="probabilistic")
-```
-
-
-
-| Date   |   AAPL |   TSLA |
-|:-------|-------:|-------:|
-| 2021   | 0.9117 | 0.8251 |
-| 2022   | 0.2241 | 0.0999 |
-| 2023   | 0.9688 | 0.9323 |
-| 2024   | 0.8698 | 0.8496 |
-| 2025   | 0.6177 | 0.6618 |
+| Date   |     SPY |     TLT |     GLD |   BTCUSD |
+|:-------|--------:|--------:|--------:|---------:|
+| 2021   |  1.9355 | -0.2283 | -0.6241 |   0.6316 |
+| 2022   | -0.608  | -0.9215 |  0.4971 |  -1.1891 |
+| 2023   |  1.1567 |  0.7714 |  0.8362 |   1.6139 |
+| 2024   |  1.5203 | -0.6917 |  1.4238 |   1.3959 |
+| 2025   |  0.3606 |  0.2664 |  1.7105 |  -0.1906 |
 
 ---
 
@@ -857,7 +990,9 @@ $$
 \text{Sortino Ratio} = \text{Average Rolling Excess Return} / \text{Rolling Downside Deviation}
 $$
 
-Note that this is explicitly already subtracts the Risk Free Rate.
+Note that the Risk Free Rate is already subtracted from these returns. It is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default; initialise the Toolkit with risk_free_rate="13w" for a short-term Treasury bill rate instead.
+
+A period needs at least two observations for a Sortino ratio, with a single one the ratio would only show its sign, so such periods are left out.
 
 As with the Sharpe Ratio, the result is **not annualized**: it is a per-observation ratio, so multiply by SQRT(252), SQRT(52), SQRT(12) or SQRT(4) for daily, weekly, monthly or quarterly returns respectively before comparing against published annualized figures.
 
@@ -883,10 +1018,13 @@ pd.DataFrame: Sortino ratio values.
 
 **Notes:**
 
-- Daily Sortino Ratio is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
-not give any useful insights.
+- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+is then computed from the intraday bars within each day, with the daily risk free rate spread over the
+bars of a day. Without intraday data a single day holds one return, so the result is empty and logs why.
 - The method retrieves historical data and calculates the Sortino ratio for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -895,7 +1033,7 @@ not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["V", "MA", "AXP"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -906,20 +1044,30 @@ toolkit.performance.get_sortino_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2021   |  0.129  |  0.0906 |
-| 2022   | -0.0678 | -0.1069 |
-| 2023   |  0.1846 |  0.1462 |
-| 2024   |  0.1073 |  0.1044 |
-| 2025   |  0.0282 |  0.0391 |
+| Date   |       V |      MA |     AXP |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.0058 |  0.0163 |  0.1221 |
+| 2022   | -0.0049 | -0.001  | -0.0138 |
+| 2023   |  0.129  |  0.1007 |  0.0922 |
+| 2024   |  0.0911 |  0.1065 |  0.1909 |
+| 2025   |  0.038  |  0.0273 |  0.0726 |
 
 ---
 
 ## get_ulcer_performance_index
 Calculate the Ulcer Performance Index (UPI), alternatively called Martin ratio, a measure of risk-adjusted return that evaluates the excess return of an investment portfolio or asset per unit of risk taken.
 
-It can be used to compare volatilities in different stocks or show stocks go into Ulcer territory. Similar to the Sharpe Ratio, a higher UPI is better than a lower one (since investors prefer more return for less risk).
+The formula is as follows:
+
+$$
+\text{Ulcer Performance Index} = (\text{Period Return} - \text{Risk-Free Rate}) / \text{Ulcer Index}
+$$
+
+$$
+\text{Ulcer Index} = \sqrt{\operatorname{MEAN}(\text{Drawdown} ^{2})},\;\; \text{with each day's drawdown measured from the highest value of the trailing rolling days within the period}
+$$
+
+It measures the excess return earned per unit of drawdown pain: the depth and the duration of the declines both weigh in, where the Sharpe Ratio treats upward and downward swings alike. Similar to the Sharpe Ratio, a higher UPI is better than a lower one (since investors prefer more return for less risk).
 
 **Also known as:** UPI, Martin ratio.
 
@@ -942,7 +1090,9 @@ pd.DataFrame: Ulcer Performance Index values.
 **Notes:**
 
 - The method retrieves historical data and calculates the UPI for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -951,9 +1101,9 @@ pd.DataFrame: Ulcer Performance Index values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["VZ", "T", "TMUS"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -962,19 +1112,20 @@ toolkit.performance.get_ulcer_performance_index()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -4.5178 | -5.0182 |
-| 2023   | 13.666  | 11.6618 |
-| 2024   |  7.6992 |  6.3795 |
-| 2025   |  0.9945 |  0.7159 |
+| Date   |      VZ |       T |    TMUS |
+|:-------|--------:|--------:|--------:|
+| 2021   | -3.7069 | -2.0886 | -3.7462 |
+| 2022   | -4.3869 |  0.7109 |  4.3646 |
+| 2023   | -0.3236 | -1.4171 |  3.5546 |
+| 2024   |  2.6617 | 15.933  | 13.5977 |
+| 2025   |  1.4725 |  2.6824 | -2.3337 |
 
 ---
 
 ## get_calmar_ratio
 Calculate the Calmar Ratio of an investment portfolio or asset's returns.
 
-The Calmar Ratio is a risk-adjusted return metric that divides the (annualized) return of an investment portfolio or asset by its Maximum Drawdown, providing insight into the return achieved per unit of the worst historical loss of value.
+The Calmar Ratio is a risk-adjusted return metric that divides the return of an investment portfolio or asset over each period (a calendar-year return for period='yearly', a quarterly return for period='quarterly') by its Maximum Drawdown, providing insight into the return achieved per unit of the worst historical loss of value.
 
 The formula is as follows:
 
@@ -1018,9 +1169,9 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["VTI", "VEA", "VWO"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -1029,25 +1180,28 @@ toolkit.performance.get_calmar_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.8691 | -0.8942 |
-| 2023   |  3.2887 |  3.1074 |
-| 2024   |  2.0024 |  1.461  |
-| 2025   |  0.2995 |  0.2356 |
+| Date   |     VTI |     VEA |     VWO |
+|:-------|--------:|--------:|--------:|
+| 2021   |  4.9482 |  1.643  |  0.0948 |
+| 2022   | -0.7709 | -0.5338 | -0.6106 |
+| 2023   |  2.4416 |  1.483  |  0.7946 |
+| 2024   |  2.7771 |  0.3321 |  1.1734 |
+| 2025   |  0.8851 |  2.6195 |  1.7646 |
 
 ---
 
 ## get_sterling_ratio
 Calculate the Sterling Ratio of an investment portfolio or asset's returns.
 
-The Sterling Ratio is a risk-adjusted return metric that divides the (annualized) return of an investment portfolio or asset by its Average Drawdown plus a fixed adjustment (conventionally 10%), providing insight into the return achieved relative to the typical depth of its drawdowns rather than only the single worst one (as with the Calmar Ratio).
+The Sterling Ratio is a risk-adjusted return metric that divides the return of an investment portfolio or asset over each period (a calendar-year return for period='yearly', a quarterly return for period='quarterly') by its Average Drawdown plus a fixed adjustment (conventionally 10%), providing insight into the return achieved relative to the typical depth of its drawdowns rather than only the single worst one (as with the Calmar Ratio).
 
 The formula is as follows:
 
 $$
 \text{Sterling Ratio} = \text{Return} / (| \text{Average Drawdown} | + \text{Adjustment})
 $$
+
+Where the Average Drawdown is the mean drawdown from the running peak over all observations on which the asset is below that peak (by default every such day within the period), not the average of the largest drawdowns.
 
 **Also known as:** Sterling-Calmar ratio.
 
@@ -1085,9 +1239,9 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NEE", "DUK", "SO"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -1096,12 +1250,13 @@ toolkit.performance.get_sterling_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -1.0657 | -1.4667 |
-| 2023   |  3.3684 |  4.193  |
-| 2024   |  1.9821 |  2.1544 |
-| 2025   |  0.4622 |  0.3785 |
+| Date   |     NEE |     DUK |     SO |
+|:-------|--------:|--------:|-------:|
+| 2021   |  1.2842 |  1.4182 | 1.2009 |
+| 2022   | -0.3726 |  0.1186 | 0.4819 |
+| 2023   | -0.8979 | -0.0838 | 0.1342 |
+| 2024   |  1.307  |  1.1541 | 1.5685 |
+| 2025   |  0.9868 |  0.9407 | 0.6777 |
 
 ---
 
@@ -1113,8 +1268,10 @@ The Burke Ratio is a risk-adjusted return metric that divides the excess return 
 The formula is as follows:
 
 $$
-\text{Burke Ratio} = (\text{Return} - \text{Risk-Free Rate}) / \sqrt{\operatorname{SUM}(\text{Drawdowns} ^{2})}
+\text{Burke Ratio} = (\text{Return} - \text{Risk-Free Rate}) / \sqrt{\operatorname{SUM}(\text{Drawdown}_{d} ^{2})}
 $$
+
+Where Drawdown_d is the drawdown from the running peak at every observation d on which the asset is below that peak, which by default is every such day within the period. This weighs the time spent under water as well as the depth, so the ratio differs from the version that sums one drawdown per episode.
 
 **Args:**
 
@@ -1138,8 +1295,9 @@ pd.DataFrame: Burke Ratio values.
 
 - The method retrieves historical data and calculates the Burke Ratio for each asset in
 the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as
-a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using
 the specified `lag`.
 
@@ -1149,9 +1307,9 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BA", "LMT", "RTX"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -1160,12 +1318,13 @@ toolkit.performance.get_burke_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.117  | -0.1172 |
-| 2023   |  0.5201 |  0.4155 |
-| 2024   |  0.2617 |  0.1765 |
-| 2025   |  0.0275 |  0.0195 |
+| Date   |      BA |     LMT |     RTX |
+|:-------|--------:|--------:|--------:|
+| 2021   | -0.0305 |  0.014  |  0.3334 |
+| 2022   | -0.0181 |  0.3247 |  0.109  |
+| 2023   |  0.2136 | -0.0588 | -0.0744 |
+| 2024   | -0.0697 |  0.0508 |  0.6619 |
+| 2025   |  0.1203 | -0.0134 |  1.0527 |
 
 ---
 
@@ -1207,7 +1366,9 @@ pd.DataFrame: M2 ratio values.
 - Daily M2 is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the M2 for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -1216,9 +1377,9 @@ not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["HD", "LOW"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -1227,12 +1388,13 @@ toolkit.performance.get_m2_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
+| Date   |      HD |     LOW |
 |:-------|--------:|--------:|
-| 2022   | -0.1669 | -0.2118 |
-| 2023   |  0.3292 |  0.2753 |
-| 2024   |  0.1906 |  0.1604 |
-| 2025   |  0.0709 |  0.0637 |
+| 2021   |  0.39   |  0.3481 |
+| 2022   | -0.1634 | -0.1482 |
+| 2023   |  0.0932 |  0.0955 |
+| 2024   |  0.1083 |  0.0921 |
+| 2025   | -0.0718 |  0.0055 |
 
 ---
 
@@ -1244,6 +1406,8 @@ The formula is as follows:
 $$
 \text{Tracking Error} (\text{TE}) = \text{Standard Deviation of} (\text{Portfolio Returns} - \text{Benchmark Returns})
 $$
+
+By default one Tracking Error is reported per `period`, computed from the daily returns within that period, so it is a daily figure: multiply by SQRT(252) to compare it with the annualized tracking error funds report. With `rolling`, the returns of `period` itself are used instead.
 
 **See definition:** [https://en.wikipedia.org/wiki/Tracking_error](https://en.wikipedia.org/wiki/Tracking_error){:target="_blank"}
 
@@ -1272,7 +1436,6 @@ pd.DataFrame: Tracking error values.
 - Daily Tracking Error is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the TE for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -1281,7 +1444,7 @@ not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["VOO", "RSP", "QQQ"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1292,18 +1455,18 @@ toolkit.performance.get_tracking_error()
 
 Which returns:
 
-| Date   |   AAPL |   TSLA |
-|:-------|-------:|-------:|
-| 2021   | 0.0118 | 0.0316 |
-| 2022   | 0.0115 | 0.0344 |
-| 2023   | 0.009  | 0.0304 |
-| 2024   | 0.0121 | 0.0369 |
-| 2025   | 0.0139 | 0.0328 |
+| Date   |    VOO |    RSP |    QQQ |
+|:-------|-------:|-------:|-------:|
+| 2021   | 0.0002 | 0.0038 | 0.0059 |
+| 2022   | 0.0003 | 0.0034 | 0.0067 |
+| 2023   | 0.0002 | 0.0038 | 0.005  |
+| 2024   | 0.0003 | 0.0046 | 0.0047 |
+| 2025   | 0.001  | 0.0051 | 0.0041 |
 
 ---
 
 ## get_information_ratio
-The Information Ratio (IR), also known as the Information Coefficient, is a financial metric that assesses the risk-adjusted performance of a portfolio or investment strategy relative to a benchmark index. It quantifies how much excess return the portfolio generates for each unit of tracking error (volatility of tracking error). The Information Ratio is commonly used by portfolio managers, financial analysts, and investors to evaluate the skill of a portfolio manager in generating returns beyond what would be expected based on the risk taken.
+The Information Ratio (IR) is a financial metric that assesses the risk-adjusted performance of a portfolio or investment strategy relative to a benchmark index. It quantifies how much active return (the return above the benchmark) the portfolio generates per unit of tracking error, the volatility of that active return. The Information Ratio is commonly used by portfolio managers, financial analysts, and investors to evaluate the skill of a portfolio manager in generating returns beyond what would be expected based on the risk taken.
 
 - IR > 0: A positive Information Ratio indicates that the portfolio has generated excess returns compared to the benchmark, suggesting that the portfolio manager has added value.
 - IR = 0: An Information Ratio of zero implies that the portfolio's excess return is in line with the benchmark, meaning the portfolio manager has not added or lost value relative to the benchmark.
@@ -1312,8 +1475,10 @@ The Information Ratio (IR), also known as the Information Coefficient, is a fina
 The formula is as follows:
 
 $$
-\text{Information Ratio} (\text{IR}) = (\text{Portfolio's Excess Return} - \text{Benchmark's Excess Return}) / \text{Tracking Error}
+\text{Information Ratio} (\text{IR}) = \operatorname{Mean}(\text{Portfolio Return} - \text{Benchmark Return}) / \text{Tracking Error}
 $$
+
+By default it is computed from the daily returns within each period and is not annualized: multiply by SQRT(252) to compare it with the annualized figures in the literature, where an IR of 0.5 is considered good. With `rolling`, the returns of `period` itself are used instead.
 
 **See definition:** [https://en.wikipedia.org/wiki/Information_ratio](https://en.wikipedia.org/wiki/Information_ratio){:target="_blank"}
 
@@ -1342,7 +1507,6 @@ pd.DataFrame: Information ratio values.
 - Daily Information Ratio is not an option as the standard deviation for 1 day is close to zero.
 Therefore, it does not give any useful insights.
 - The method retrieves historical data and calculates the IR for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
@@ -1351,7 +1515,7 @@ Therefore, it does not give any useful insights.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["XLK", "XLE", "XLV"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1362,13 +1526,13 @@ toolkit.performance.get_information_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2021   |  0.0267 |  0.0306 |
-| 2022   | -0.0253 | -0.0758 |
-| 2023   |  0.08   |  0.0798 |
-| 2024   |  0.0208 |  0.0486 |
-| 2025   | -0.0128 |  0.015  |
+| Date   |     XLK |     XLE |     XLV |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.0377 |  0.047  | -0.0204 |
+| 2022   | -0.0557 |  0.1406 |  0.0776 |
+| 2023   |  0.147  | -0.0655 | -0.1316 |
+| 2024   | -0.0053 | -0.0549 | -0.1084 |
+| 2025   |  0.042  | -0.0246 | -0.0114 |
 
 ---
 
@@ -1380,8 +1544,16 @@ The Upside Capture Ratio measures how well an investment portfolio or asset perf
 The formula is as follows:
 
 $$
-\text{Upside Capture Ratio} = \text{Average Return in Up Periods} / \text{Average Benchmark Return in Up Periods}
+\text{Upside Capture Ratio} = \text{Geometric Average Return in Up Periods} / \text{Geometric Average Benchmark Return in Up Periods}
 $$
+
+$$
+\text{Geometric Average Return} = (\operatorname{PRODUCT}(1 + \text{Return})) ^{1 / n} - 1
+$$
+
+Where the up periods are the observations (days within each period) with a positive benchmark return and n is their number, following Morningstar's definition. Geometric rather than arithmetic averages make the ratio reflect the compounded return captured, so it does not depend on how volatile the returns within the up periods were.
+
+Upside and downside capture (see `get_downside_capture_ratio`) are read together: an upside capture above the downside capture means the asset kept more of the benchmark's gains than of its losses, which is what defensive and low-volatility strategies aim for even with both ratios below 1. Both are computed from the daily returns within each period, while fund factsheets usually use monthly returns over three to five years, so the figures are not directly comparable with published ones.
 
 **Args:**
 
@@ -1411,7 +1583,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["QQQ", "SCHD", "USMV"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1422,13 +1594,13 @@ toolkit.performance.get_upside_capture_ratio()
 
 Which returns:
 
-| Date   |   AAPL |   TSLA |
-|:-------|-------:|-------:|
-| 2021   | 1.3819 | 2.1068 |
-| 2022   | 1.3094 | 1.7316 |
-| 2023   | 1.1825 | 2.3099 |
-| 2024   | 1.1178 | 2.5882 |
-| 2025   | 1.0324 | 2.2452 |
+| Date   |    QQQ |   SCHD |   USMV |
+|:-------|-------:|-------:|-------:|
+| 2021   | 1.1827 | 0.832  | 0.6961 |
+| 2022   | 1.2845 | 0.7129 | 0.7051 |
+| 2023   | 1.3244 | 0.765  | 0.6077 |
+| 2024   | 1.3372 | 0.5237 | 0.5323 |
+| 2025   | 1.2056 | 0.5019 | 0.4674 |
 
 ---
 
@@ -1440,8 +1612,14 @@ The Downside Capture Ratio measures how well an investment portfolio or asset pe
 The formula is as follows:
 
 $$
-\text{Downside Capture Ratio} = \text{Average Return in Down Periods} / \text{Average Benchmark Return in Down Periods}
+\text{Downside Capture Ratio} = \text{Geometric Average Return in Down Periods} / \text{Geometric Average Benchmark Return in Down Periods}
 $$
+
+$$
+\text{Geometric Average Return} = (\operatorname{PRODUCT}(1 + \text{Return})) ^{1 / n} - 1
+$$
+
+Where the down periods are the observations (days within each period) with a negative benchmark return and n is their number, following Morningstar's definition. As with the Upside Capture Ratio, both ratios are computed from the daily returns within each period, while fund factsheets usually use monthly returns over three to five years.
 
 **Args:**
 
@@ -1471,7 +1649,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["XLU", "SPLV", "ARKK"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1482,20 +1660,28 @@ toolkit.performance.get_downside_capture_ratio()
 
 Which returns:
 
-| Date   |   AAPL |   TSLA |
-|:-------|-------:|-------:|
-| 2021   | 1.422  | 2.2024 |
-| 2022   | 1.3191 | 2.0483 |
-| 2023   | 0.9646 | 1.8781 |
-| 2024   | 1.0487 | 2.4773 |
-| 2025   | 1.0986 | 2.3391 |
+| Date   |    XLU |   SPLV |   ARKK |
+|:-------|-------:|-------:|-------:|
+| 2021   | 0.3911 | 0.5358 | 2.0537 |
+| 2022   | 0.4698 | 0.4991 | 2.5005 |
+| 2023   | 0.7024 | 0.6177 | 2.3265 |
+| 2024   | 0.2051 | 0.3127 | 2.5483 |
+| 2025   | 0.3459 | 0.3223 | 2.0919 |
 
 ---
 
 ## get_win_rate
 Calculate the Win Rate of an investment portfolio or asset's returns.
 
-The Win Rate is the percentage of periods in which the asset's return exceeds the benchmark's return.
+The Win Rate is the share of days within each period in which the asset's return exceeds the benchmark's return.
+
+The formula is as follows:
+
+$$
+\text{Win Rate} = \text{Number of Days with Asset Return} > \text{Benchmark Return} / \text{Number of Days with both an Asset and}\; a \;\text{Benchmark Return},\;\; \text{using the daily returns within each period (e.g. each year)},\;\; \text{as}\; a \;\text{decimal} (0.55 = 55\%)
+$$
+
+Days on which the asset or the benchmark has no return are left out of both counts rather than counted as losses.
 
 **Also known as:** batting average.
 
@@ -1527,7 +1713,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["AAPL", "MSFT", "GOOGL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1538,13 +1724,13 @@ toolkit.performance.get_win_rate()
 
 Which returns:
 
-| Date   |   AAPL |   TSLA |
-|:-------|-------:|-------:|
-| 2021   | 0.4921 | 0.496  |
-| 2022   | 0.4781 | 0.498  |
-| 2023   | 0.58   | 0.532  |
-| 2024   | 0.5    | 0.4683 |
-| 2025   | 0.472  | 0.468  |
+| Date   |   AAPL |   MSFT |   GOOGL |
+|:-------|-------:|-------:|--------:|
+| 2021   | 0.494  | 0.5139 |  0.5299 |
+| 2022   | 0.4781 | 0.4582 |  0.4502 |
+| 2023   | 0.576  | 0.512  |  0.524  |
+| 2024   | 0.5    | 0.4881 |  0.5317 |
+| 2025   | 0.472  | 0.484  |  0.564  |
 
 ---
 
@@ -1554,6 +1740,20 @@ Calculate the Kappa Ratio of an investment portfolio or asset's returns.
 The Kappa Ratio is a generalization of the Sortino Ratio that penalizes downside risk using a higher-order lower partial moment. The Sortino Ratio is the special case of the Kappa Ratio with order=2.
 
 Note that this already subtracts the Risk Free Rate.
+
+The formula is as follows:
+
+$$
+\text{Daily Excess Return} = \text{Daily Return} - \text{Daily Risk Free Rate},\;\; \text{with Daily Risk Free Rate} = (1 + \text{Annual Risk Free Rate}) ^{1 / 252} - 1
+$$
+
+$$
+\text{Lower Partial Moment} (\text{LPM}) = \operatorname{MEAN}(\max(- \text{Daily Excess Return},\; 0) ^{\text{Order}}),\;\; \text{averaged over all days in the period (days with a non-negative excess return count as 0)}
+$$
+
+$$
+\text{Kappa Ratio} = \operatorname{MEAN}(\text{Daily Excess Return}) / \text{LPM} ^{1 / \text{Order}},\;\; \text{per period and not annualized},\;\; \text{with Order defaulting to 3}
+$$
 
 **Args:**
 
@@ -1578,8 +1778,9 @@ pd.DataFrame: Kappa Ratio values.
 Therefore, it does not give any useful insights.
 - The method retrieves historical data and calculates the Kappa Ratio for each asset in
 the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as
-a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of the ratio values using
 the specified `lag`.
 
@@ -1589,7 +1790,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["LLY", "MRK", "ABBV"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1600,13 +1801,13 @@ toolkit.performance.get_kappa_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2021   |  0.0943 |  0.0653 |
-| 2022   | -0.0522 | -0.0815 |
-| 2023   |  0.1288 |  0.1026 |
-| 2024   |  0.0768 |  0.0749 |
-| 2025   |  0.0186 |  0.0275 |
+| Date   |    LLY |     MRK |    ABBV |
+|:-------|-------:|--------:|--------:|
+| 2021   | 0.1248 |  0.0091 |  0.0811 |
+| 2022   | 0.0844 |  0.1426 |  0.0552 |
+| 2023   | 0.1351 | -0.004  | -0.0059 |
+| 2024   | 0.0652 | -0.0191 |  0.0298 |
+| 2025   | 0.0513 |  0.0193 |  0.064  |
 
 ---
 
@@ -1659,7 +1860,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BLK", "SCHW", "BX"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1670,13 +1871,13 @@ toolkit.performance.get_omega_ratio()
 
 Which returns:
 
-|      |   AAPL |   TSLA |
-|:-----|-------:|-------:|
-| 2021 | 1.2633 | 1.1824 |
-| 2022 | 0.8939 | 0.8129 |
-| 2023 | 1.4113 | 1.3043 |
-| 2024 | 1.2514 | 1.2098 |
-| 2025 | 1.0901 | 1.0871 |
+|      |    BLK |   SCHW |     BX |
+|:-----|-------:|-------:|-------:|
+| 2021 | 1.2446 | 1.3257 | 1.5958 |
+| 2022 | 0.9272 | 1.0318 | 0.8945 |
+| 2023 | 1.1525 | 0.9625 | 1.3792 |
+| 2024 | 1.2732 | 1.094  | 1.2109 |
+| 2025 | 1.0728 | 1.2867 | 0.9944 |
 
 ---
 
@@ -1723,7 +1924,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["GCUSD", "SIUSD", "HGUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1734,13 +1935,13 @@ toolkit.performance.get_gain_to_pain_ratio()
 
 Which returns:
 
-|      |    AAPL |    TSLA |
-|:-----|--------:|--------:|
-| 2021 |  0.2633 |  0.1824 |
-| 2022 | -0.1061 | -0.1871 |
-| 2023 |  0.4113 |  0.3043 |
-| 2024 |  0.2514 |  0.2098 |
-| 2025 |  0.0901 |  0.0871 |
+|      |   GCUSD |   SIUSD |   HGUSD |
+|:-----|--------:|--------:|--------:|
+| 2021 | -0.0617 | -0.0653 |  0.1797 |
+| 2022 |  0.0115 |  0.0413 | -0.0663 |
+| 2023 |  0.1812 |  0.0233 |  0.0337 |
+| 2024 |  0.3038 |  0.1403 |  0.0446 |
+| 2025 |  0.5152 |  0.5701 |  0.2573 |
 
 ---
 
@@ -1752,8 +1953,18 @@ The CGR is a measure that provides the mean growth rate of an investment over a 
 The formula is as follows:
 
 $$
-\text{CGR} = (\text{Final Value} / \text{Initial Value}) ^{1 / \text{Number of Periods}} - 1
+\text{Years} = (\text{Last Date} - \text{First Date}) / 365.25 \;\text{days}
 $$
+
+$$
+\text{CAGR} = (\text{Final Value} / \text{Initial Value}) ^{1 / \text{Years}} - 1
+$$
+
+$$
+\text{Period Rate} = (1 + \text{CAGR}) ^{1 / \text{Periods per Year}} - 1
+$$
+
+The CAGR is measured on calendar time: each asset from its own first to its own last close between the start and end date, with the years in between counted in calendar days. The rate thereby does not depend on how often an asset trades, so a stock (which trades on weekdays) and a cryptocurrency (which trades every day) in the same Toolkit are measured over the same years, and an asset without a close on the first or last date of the range is measured over the dates it has. The quarterly, monthly, weekly and daily rates follow from the CAGR with 4 quarters, 12 months, 52 weeks and 252 trading days to a year, so the rates are consistent with each other: (1 + CDGR) ^ 252 equals 1 + CAGR.
 
 **Also known as:** CAGR, compound annual growth rate, annualized return.
 
@@ -1779,7 +1990,7 @@ rounding parameter accordingly to get a more precise figure.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BTCUSD", "ETHUSD", "^GSPC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1790,26 +2001,34 @@ toolkit.performance.get_compound_growth_rate()
 
 Which returns:
 
-|                                       |   AAPL |   TSLA |   Benchmark |
-|:--------------------------------------|-------:|-------:|------------:|
-| Compound Annual Growth Rate (CAGR)    | 0.1181 | 0.063  |      0.1099 |
-| Compound Quarterly Growth Rate (CQGR) | 0.0444 | 0.0377 |      0.0325 |
-| Compound Monthly Growth Rate (CMGR)   | 0.0128 | 0.009  |      0.0116 |
-| Compound Weekly Growth Rate (CWGR)    | 0.0029 | 0.0016 |      0.0025 |
-| Compound Daily Growth Rate (CDGR)     | 0.0006 | 0.0005 |      0.0005 |
+|                                       |   BTCUSD |   ETHUSD |   ^GSPC |   Benchmark |
+|:--------------------------------------|---------:|---------:|--------:|------------:|
+| Compound Annual Growth Rate (CAGR)    |   0.2438 |   0.3236 |  0.1312 |      0.1469 |
+| Compound Quarterly Growth Rate (CQGR) |   0.0561 |   0.0726 |  0.0313 |      0.0348 |
+| Compound Monthly Growth Rate (CMGR)   |   0.0183 |   0.0236 |  0.0103 |      0.0115 |
+| Compound Weekly Growth Rate (CWGR)    |   0.0042 |   0.0054 |  0.0024 |      0.0026 |
+| Compound Daily Growth Rate (CDGR)     |   0.0009 |   0.0011 |  0.0005 |      0.0005 |
 
 ---
 
 ## get_returns
 Calculate the Return of an investment portfolio or asset for a given period based on the daily historical returns.
 
-The period Return is obtained by compounding the daily returns within each period, following the formula:
+The period Return is obtained by compounding the daily returns within each period. If cumulative is set to True, the period returns within the selected date range are compounded further into a cumulative return (growth of 1) instead.
+
+The formula is as follows:
 
 $$
-\text{Period Return} = ((1 + \text{Return}\; 1) \cdot (1 + \text{Return}\; 2) \cdot ... \cdot (1 + \text{Return}\; N)) - 1
+\text{Period Return} = ((1 + \text{Daily Return}\; 1) \cdot (1 + \text{Daily Return}\; 2) \cdot ... \cdot (1 + \text{Daily Return}\; N)) - 1
 $$
 
-If cumulative is set to True, the period returns are compounded further into a cumulative return over time instead. The cumulative return is always rebased to start at 1 at the beginning of the selected date range.
+$$
+\text{Cumulative Return} = (1 + \text{Period Return}\; 1) \cdot (1 + \text{Period Return}\; 2) \cdot ... \cdot (1 + \text{Period Return}\; N)
+$$
+
+The compounding starts at 1 at the beginning of the date range, so the first value is 1 plus the return of the first period.
+
+A period without any daily return for a ticker (before it listed, or a gap in its history) is NaN rather than 0, and the cumulative return carries the previous value past such a period.
 
 **Also known as:** periodic return.
 
@@ -1842,33 +2061,53 @@ the specified `period` for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["ASML.AS", "SAP.DE", "MC.PA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_returns(period="yearly")
+toolkit.performance.get_returns()
 ```
 
 Which returns:
 
-| Date   |    AMZN |    TSLA |   Benchmark |
-|:-------|--------:|--------:|------------:|
-| 2021   |  0.0462 |  0.4488 |      0.3056 |
-| 2022   | -0.496  | -0.6503 |     -0.1816 |
-| 2023   |  0.8089 |  1.0174 |      0.2616 |
-| 2024   |  0.4449 |  0.6255 |      0.2492 |
-| 2025   |  0.0516 |  0.1129 |      0.1776 |
+| Date   |   ASML.AS |   SAP.DE |   MC.PA |   Benchmark |
+|:-------|----------:|---------:|--------:|------------:|
+| 2021   |    0.748  |   0.2018 |  0.4345 |      0.3058 |
+| 2022   |   -0.2789 |  -0.2049 | -0.0478 |     -0.1818 |
+| 2023   |    0.3664 |   0.4709 |  0.0958 |      0.2615 |
+| 2024   |    0.0035 |   0.7229 | -0.1179 |      0.2493 |
+| 2025   |    0.3709 |  -0.115  |  0.0393 |      0.1778 |
 
 ---
 
 ## get_excess_return
 Calculate the Excess Return of an investment portfolio or asset for a given period based on the daily historical returns.
 
-The Excess Return is defined as the period Return minus the risk free rate.
+The Excess Return is defined as the period Return minus the risk free rate earned over that period. If cumulative is set to True, the excess returns within the selected date range are compounded further into a cumulative excess return (growth of 1) instead.
 
-If cumulative is set to True, the excess returns are compounded further into a cumulative excess return over time instead. The cumulative excess return is always rebased to start at 1 at the beginning of the selected date range.
+The formula is as follows:
+
+$$
+\text{Period Return} = ((1 + \text{Daily Return}\; 1) \cdot (1 + \text{Daily Return}\; 2) \cdot ... \cdot (1 + \text{Daily Return}\; N)) - 1
+$$
+
+$$
+\text{Period Risk Free Rate} = (1 + \text{Average Annual Risk Free Rate}) ^{1 / \text{Periods per Year}} - 1,\;\; \text{with the average taken over the daily Treasury yields within the period}
+$$
+
+$$
+\text{Excess Return} = \text{Period Return} - \text{Period Risk Free Rate}
+$$
+
+$$
+\text{Cumulative Excess Return} = (1 + \text{Excess Return}\; 1) \cdot (1 + \text{Excess Return}\; 2) \cdot ... \cdot (1 + \text{Excess Return}\; N)
+$$
+
+The compounding starts at 1 at the beginning of the date range, so the first value is 1 plus the excess return of the first period.
+
+A period without any daily return for a ticker (before it listed, or a gap in its history) is NaN rather than 0, and the cumulative excess return carries the previous value past such a period.
 
 **Also known as:** return minus the risk-free rate.
 
@@ -1894,7 +2133,9 @@ pd.Series: Excess Return values with time as the index.
 
 - The method retrieves the daily historical return data and calculates the Excess Return for
 the specified `period` for each asset in the Toolkit instance.
-- The risk-free rate is often represented by the return of a risk-free investment, such as a Treasury bond.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
 - If `growth` is set to True, the method calculates the growth of Excess Return values using the
 specified `lag`.
 
@@ -1904,24 +2145,24 @@ specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["MCD", "SBUX", "CMG"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_excess_return(period="yearly")
+toolkit.performance.get_excess_return()
 ```
 
 Which returns:
 
-| Date   |    AMZN |    TSLA |   Benchmark |
-|:-------|--------:|--------:|------------:|
-| 2021   |  0.0311 |  0.4337 |      0.2905 |
-| 2022   | -0.5348 | -0.6891 |     -0.2204 |
-| 2023   |  0.7702 |  0.9787 |      0.2229 |
-| 2024   |  0.3992 |  0.5798 |      0.2035 |
-| 2025   |  0.01   |  0.0713 |      0.136  |
+| Date   |     MCD |    SBUX |     CMG |   Benchmark |
+|:-------|--------:|--------:|--------:|------------:|
+| 2021   |  0.2901 |  0.1399 |  0.3099 |      0.2912 |
+| 2022   | -0.0255 | -0.1604 | -0.2359 |     -0.2112 |
+| 2023   |  0.1112 | -0.0511 |  0.6093 |      0.222  |
+| 2024   | -0.0405 | -0.0669 |  0.2772 |      0.2071 |
+| 2025   |  0.0359 | -0.0956 | -0.4292 |      0.1347 |
 
 ---
 
@@ -1929,6 +2170,14 @@ Which returns:
 Calculate the full pairwise Correlation Matrix across all assets (and the benchmark) in the Toolkit instance, based on the returns at the frequency given by `period`.
 
 Unlike `get_beta`, which relates a single asset to the benchmark, this computes the correlation between every pair of assets at once. This is a prerequisite for portfolio variance calculations and any mean-variance optimization work.
+
+The `period` sets the return frequency, and with it the number of observations: yearly returns over five years give only a handful of points per pair, which makes the correlations close to meaningless, so monthly or weekly returns over the same span are the usual choice for diversification and portfolio work. Correlations between risky assets tend to rise in sell-offs, so a matrix estimated over a calm stretch understates how much assets fall together when it matters.
+
+The formula is as follows:
+
+$$
+\text{Correlation} (A,\; B) = \text{Covariance} (\text{Return}\; A,\; \text{Return}\; B) / (\text{Standard Deviation}\; A \cdot \text{Standard Deviation}\; B),\;\; \text{the Pearson correlation of the period returns (e.g. monthly) within the Toolkit's date range},\;\; \text{using the overlapping (pairwise complete) observations of each pair}
+$$
 
 **Args:**
 
@@ -1947,22 +2196,24 @@ the columns.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["TLT", "GLD", "EFA", "VNQ"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_correlation_matrix()
+toolkit.performance.get_correlation_matrix(period="monthly")
 ```
 
 Which returns:
 
-|           |   AMZN |   TSLA |   Benchmark |
-|:----------|-------:|-------:|------------:|
-| AMZN      | 1      | 0.9985 |      0.912  |
-| TSLA      | 0.9985 | 1      |      0.9315 |
-| Benchmark | 0.912  | 0.9315 |      1      |
+|           |    TLT |    GLD |    EFA |    VNQ |   Benchmark |
+|:----------|-------:|-------:|-------:|-------:|------------:|
+| TLT       | 1      | 0.3747 | 0.6185 | 0.6626 |      0.5646 |
+| GLD       | 0.3747 | 1      | 0.3918 | 0.2266 |      0.1283 |
+| EFA       | 0.6185 | 0.3918 | 1      | 0.781  |      0.7999 |
+| VNQ       | 0.6626 | 0.2266 | 0.781  | 1      |      0.8282 |
+| Benchmark | 0.5646 | 0.1283 | 0.7999 | 0.8282 |      1      |
 
 ---
 
@@ -1970,6 +2221,12 @@ Which returns:
 Calculate the full pairwise Covariance Matrix across all assets (and the benchmark) in the Toolkit instance, based on the returns at the frequency given by `period`.
 
 Unlike `get_covariance`, which relates a single asset to the benchmark, this computes the covariance between every pair of assets at once. This is a prerequisite for portfolio variance calculations and any mean-variance optimization work.
+
+The formula is as follows:
+
+$$
+\text{Covariance} (A,\; B) = \operatorname{SUM}((\text{Return}\; A - \text{Mean Return}\; A) \cdot (\text{Return}\; B - \text{Mean Return}\; B)) / (N - 1),\;\; \text{the sample covariance (ddof=1) of the period returns (e.g. monthly) within the Toolkit's date range},\;\; \text{per period and not annualized},\;\; \text{using the overlapping (pairwise complete) observations of each pair}
+$$
 
 **Args:**
 
@@ -1988,22 +2245,24 @@ the columns.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["^GSPC", "EURUSD", "GCUSD", "CLUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_covariance_matrix()
+toolkit.performance.get_covariance_matrix(period="monthly")
 ```
 
 Which returns:
 
-|           |   AMZN |   TSLA |   Benchmark |
-|:----------|-------:|-------:|------------:|
-| AMZN      | 0.3122 | 0.4018 |      0.1064 |
-| TSLA      | 0.4018 | 0.5186 |      0.1401 |
-| Benchmark | 0.1064 | 0.1401 |      0.0436 |
+|           |   ^GSPC |   EURUSD |   GCUSD |   CLUSD |   Benchmark |
+|:----------|--------:|---------:|--------:|--------:|------------:|
+| ^GSPC     |  0.0019 |   0.0003 |  0.0003 |  0.0003 |      0.0019 |
+| EURUSD    |  0.0003 |   0.0005 |  0.0005 | -0.0001 |      0.0003 |
+| GCUSD     |  0.0003 |   0.0005 |  0.0018 | -0.0007 |      0.0003 |
+| CLUSD     |  0.0003 |  -0.0001 | -0.0007 |  0.0067 |      0.0003 |
+| Benchmark |  0.0019 |   0.0003 |  0.0003 |  0.0003 |      0.0019 |
 
 ---
 
@@ -2057,9 +2316,9 @@ CAPM formula as `get_jensens_alpha`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["ADBE", "CRM", "ORCL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -2068,12 +2327,13 @@ toolkit.performance.get_appraisal_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.0937 | -0.5925 |
-| 2023   |  1.4388 |  1.0553 |
-| 2024   |  0.3379 |  0.1715 |
-| 2025   | -0.5682 | -0.5018 |
+| Date   |    ADBE |     CRM |    ORCL |
+|:-------|--------:|--------:|--------:|
+| 2021   | -1.1711 | -0.8087 |  0.5274 |
+| 2022   | -0.4641 | -0.6351 |  0.5198 |
+| 2023   |  1.5758 |  2.7157 |  0.1366 |
+| 2024   | -1.6901 | -0.1944 |  0.9946 |
+| 2025   | -1.4152 | -1.4877 | -0.1032 |
 
 ---
 
@@ -2130,23 +2390,24 @@ the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["QQQ", "IWM", "XLE"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_fama_decomposition().xs("AAPL", level=0, axis=1)
+toolkit.performance.get_fama_decomposition().xs("Selectivity", level=1, axis=1)
 ```
 
 Which returns:
 
-| Date   |   Selectivity |   Diversification |
-|:-------|--------------:|------------------:|
-| 2022   |        0.0219 |           -0.0374 |
-| 2023   |        0.1048 |            0.0979 |
-| 2024   |       -0.1051 |            0.1697 |
-| 2025   |       -0.1773 |            0.0561 |
+| Date   |     QQQ |     IWM |     XLE |
+|:-------|--------:|--------:|--------:|
+| 2021   | -0.123  | -0.3304 | -0.1035 |
+| 2022   | -0.0751 |  0.0106 |  0.9216 |
+| 2023   |  0.2052 | -0.2125 | -0.4352 |
+| 2024   | -0.0824 | -0.2697 | -0.28   |
+| 2025   |  0.0022 | -0.0738 | -0.1338 |
 
 ---
 
@@ -2203,9 +2464,9 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["CAT", "DE", "HON"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2020-01-01",
     end_date="2025-12-31",
 )
 
@@ -2214,12 +2475,13 @@ toolkit.performance.get_starr_ratio()
 
 Which returns:
 
-| Date   |    AAPL |    TSLA |
-|:-------|--------:|--------:|
-| 2022   | -0.4259 | -0.4759 |
-| 2023   |  1.0764 |  0.8716 |
-| 2024   |  0.5567 |  0.4707 |
-| 2025   |  0.0677 |  0.0554 |
+| Date   |    CAT |      DE |     HON |
+|:-------|-------:|--------:|--------:|
+| 2021   | 0.287  |  0.4693 | -0.0376 |
+| 2022   | 0.2125 |  0.2897 |  0.0386 |
+| 2023   | 0.3701 | -0.1499 | -0.0915 |
+| 2024   | 0.3598 |  0.063  |  0.1513 |
+| 2025   | 0.8327 |  0.1243 | -0.1867 |
 
 ---
 
@@ -2270,7 +2532,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["TSLA", "AMD", "PLTR"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -2281,12 +2543,13 @@ toolkit.performance.get_rachev_ratio()
 
 Which returns:
 
-|      |   AAPL |   TSLA |
-|:-----|-------:|-------:|
-| 2022 | 1.0786 | 0.9469 |
-| 2023 | 1.0743 | 1.1169 |
-| 2024 | 1.1441 | 1.3081 |
-| 2025 | 1.0735 | 1.0925 |
+|      |   TSLA |    AMD |   PLTR |
+|:-----|-------:|-------:|-------:|
+| 2021 | 1.2069 | 1.1556 | 1.2789 |
+| 2022 | 0.9469 | 0.9396 | 0.9301 |
+| 2023 | 1.1169 | 1.3483 | 1.6236 |
+| 2024 | 1.3081 | 0.8908 | 2.0305 |
+| 2025 | 1.0925 | 1.4024 | 1.0683 |
 
 ---
 
@@ -2335,24 +2598,24 @@ in the Toolkit instance, within each period.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["ARKK", "JEPI"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_treynor_mazuy_model().xs("AAPL", level=0, axis=1)
+toolkit.performance.get_treynor_mazuy_model().xs("ARKK", level=0, axis=1)
 ```
 
 Which returns:
 
-|      |   Alpha |   Beta |   Gamma |   R Squared |
-|:-----|--------:|-------:|--------:|------------:|
-| 2021 | -0.0007 | 1.3263 |  9.8102 |      0.4698 |
-| 2022 | -0.0007 | 1.3052 |  2.7524 |      0.7847 |
-| 2023 | -0.0003 | 1.0941 | 14.403  |      0.5256 |
-| 2024 |  0.0009 | 0.9439 | -9.4418 |      0.2941 |
-| 2025 | -0.0005 | 1.2229 |  1.6316 |      0.5689 |
+|      |   Alpha |   Beta |    Gamma |   R Squared |
+|:-----|--------:|-------:|---------:|------------:|
+| 2021 | -0.0034 | 1.6646 |  12.4821 |      0.2937 |
+| 2022 | -0.0035 | 2.1567 |   6.9512 |      0.5959 |
+| 2023 |  0.0015 | 2.2614 | -14.8854 |      0.529  |
+| 2024 | -0.001  | 2.1368 |  -3.1566 |      0.5658 |
+| 2025 |  0.0006 | 1.8994 |  -1.3437 |      0.6767 |
 
 ---
 
@@ -2401,24 +2664,24 @@ in the Toolkit instance, within each period.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BRK-B", "FBCG"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_henriksson_merton_model().xs("AAPL", level=0, axis=1)
+toolkit.performance.get_henriksson_merton_model().xs("FBCG", level=0, axis=1)
 ```
 
 Which returns:
 
 |      |   Alpha |   Beta |   Up Market Beta |   R Squared |
 |:-----|--------:|-------:|-----------------:|------------:|
-| 2021 | -0.0005 | 1.2449 |           0.1476 |      0.4661 |
-| 2022 | -0.0011 | 1.22   |           0.1684 |      0.784  |
-| 2023 | -0.0006 | 0.9024 |           0.3969 |      0.5214 |
-| 2024 |  0.0013 | 1.1395 |          -0.3574 |      0.2927 |
-| 2025 | -0.0009 | 1.1728 |           0.1513 |      0.5669 |
+| 2021 | -0.0004 | 1.4217 |          -0.064  |      0.7204 |
+| 2022 | -0.0009 | 1.4208 |           0.0312 |      0.885  |
+| 2023 |  0.0004 | 1.359  |           0.0602 |      0.8342 |
+| 2024 |  0      | 1.4674 |           0.0496 |      0.8536 |
+| 2025 |  0.0002 | 1.3907 |          -0.0759 |      0.8893 |
 
 ---
 

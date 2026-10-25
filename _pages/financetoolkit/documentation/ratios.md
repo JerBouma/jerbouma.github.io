@@ -33,19 +33,24 @@ Calculates and collects all ratios based on the provided data.
 
 **Args:**
 
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculations.
-Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income in the
+earnings-based ratios. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation.
 Defaults to True.
-- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
+None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
+`trailing` when set (e.g. 365 for quarterly data with trailing=4).
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -76,15 +81,15 @@ Which returns:
 
 |                             |         2021 |         2022 |         2023 |         2024 |         2025 |
 |:----------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
-| EV-to-Sales                 |  8.2741      |  5.5609      |  8.0923      | 10.0244      |  9.9589      |
-| EV-to-EBIT                  | 27.0608      | 17.969       | 26.3593      | 31.7437      | 31.2254      |
-| EV-to-EBITDA                | 25.1745      | 16.798       | 24.6516      | 29.1092      | 28.6326      |
-| EV-to-Operating-Cash-Flow   | 29.0932      | 17.9518      | 28.0585      | 33.1479      | 37.1766      |
+| EV-to-Sales                 |  8.3883      |  5.5928      |  8.1056      | 10.0052      |  9.9405      |
+| EV-to-EBIT                  | 28.1653      | 18.4649      | 27.1806      | 31.7522      | 31.0925      |
+| EV-to-EBITDA                | 25.522       | 16.8942      | 24.6921      | 29.0536      | 28.5797      |
+| EV-to-Operating-Cash-Flow   | 29.4949      | 18.0546      | 28.1046      | 33.0846      | 37.1078      |
 | Tangible Asset Value        |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |  5.695e+10   |  7.3733e+10  |
 | Net Current Asset Value     | -1.53076e+11 | -1.66678e+11 | -1.46871e+11 | -1.55043e+11 | -1.37551e+11 |
-| EV-to-Free-Cash-Flow        | 32.5627      | 19.6766      | 31.1463      | 36.026       | 41.9626      |
-| Buyback Yield               |  0.029       |  0.0429      |  0.0258      |  0.0248      |  0.0223      |
-| Shareholder Yield           |  0.034       |  0.05        |  0.0308      |  0.0288      |  0.0261      |
+| EV-to-Free-Cash-Flow        | 33.0122      | 19.7894      | 31.1974      | 35.9571      | 41.885       |
+| Buyback Yield               |  0.0283      |  0.0421      |  0.0255      |  0.0246      |  0.0222      |
+| Shareholder Yield           |  0.0332      |  0.0491      |  0.0304      |  0.0286      |  0.026       |
 | SBC-Adjusted Free Cash Flow |  8.5047e+10  |  1.02405e+11 |  8.8751e+10  |  9.7119e+10  |  8.5904e+10  |
 
 ---
@@ -148,14 +153,14 @@ custom_ratios.loc['AMZN']
 
 Which returns:
 
-|                        |          2022Q4 |         2023Q1 |         2023Q2 |        2023Q3 |
-|:-----------------------|----------------:|---------------:|---------------:|--------------:|
-| WC / Net Income as %   | -3094.24        | -357.787       | -114.904       | -22.4618      |
-| Large Revenues         |     1           |    1           |    1           |   1           |
-| Quick Assets           |     1.12386e+11 |    1.02051e+11 |    1.03895e+11 |   1.07589e+11 |
-| Cash Op Expenses       |     8.8646e+10  |    6.9883e+10  |    7.1731e+10  |   7.6003e+10  |
-| Daily Cash Op Expenses |     2.42866e+08 |    1.9146e+08  |    1.96523e+08 |   2.08227e+08 |
-| Defensive Interval     |   462.75        |  533.014       |  528.665       | 516.69        |
+|                        |          2022Q4 |         2023Q1 |         2023Q2 |        2023Q3 |        2023Q4 |        2024Q1 |        2024Q2 |        2024Q3 |        2024Q4 |        2025Q1 |        2025Q2 |        2025Q3 |        2025Q4 |
+|:-----------------------|----------------:|---------------:|---------------:|--------------:|--------------:|--------------:|--------------:|--------------:|--------------:|--------------:|--------------:|--------------:|--------------:|
+| WC / Net Income as %   | -3094.24        | -357.787       | -114.904       | -22.4618      |  69.9736      | 105.685       | 112.236       |  93.3912      |  57.1686      |  49.4774      |  24.7688      |   7.8822      |  52.2744      |
+| Large Revenues         |     1           |    1           |    1           |   1           |   1           |   1           |   1           |   1           |   1           |   1           |   1           |   1           |   1           |
+| Quick Assets           |     1.12386e+11 |    1.02051e+11 |    1.03895e+11 |   1.07589e+11 |   1.39033e+11 |   1.32842e+11 |   1.39198e+11 |   1.39689e+11 |   1.56653e+11 |   1.48781e+11 |   1.50595e+11 |   1.55372e+11 |   1.90758e+11 |
+| Cash Op Expenses       |     8.8646e+10  |    6.9883e+10  |    7.1731e+10  |   7.6003e+10  |   9.4645e+10  |   7.3353e+10  |   7.53e+10    |   8.0857e+10  |   9.9249e+10  |   7.5105e+10  |   7.9963e+10  |   8.6435e+10  |   1.07456e+11 |
+| Daily Cash Op Expenses |     2.42866e+08 |    1.9146e+08  |    1.96523e+08 |   2.08227e+08 |   2.59301e+08 |   2.00967e+08 |   2.06301e+08 |   2.21526e+08 |   2.71915e+08 |   2.05767e+08 |   2.19077e+08 |   2.36808e+08 |   2.944e+08   |
+| Defensive Interval     |   462.75        |  533.014       |  528.665       | 516.69        | 536.183       | 661.014       | 674.731       | 630.576       | 576.11        | 723.055       | 687.408       | 656.109       | 647.955       |
 
 ---
 
@@ -164,15 +169,20 @@ Calculates and collects all Efficiency Ratios based on the provided data.
 
 **Args:**
 
-- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
+None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
+`trailing` when set (e.g. 365 for quarterly data with trailing=4).
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -213,7 +223,7 @@ Which returns:
 | Inventory Turnover Ratio             |  40.0303 |  38.7899 |  37.9777 |  30.8955 |  33.9834 |
 | Accounts Payable Turnover Ratio      |   4.3887 |   3.7609 |   3.3795 |   3.1975 |   3.1834 |
 | SGA-to-Revenue Ratio                 |   0.0601 |   0.0636 |   0.065  |   0.0667 |   0.0663 |
-| Fixed Asset Turnover                 |   1.846  |   1.8192 |   1.7979 |   1.8576 |   1.9664 |
+| Fixed Asset Turnover                 |   7.7125 |   7.7273 |   7.1702 |   7.8163 |   8.7141 |
 | Asset Turnover Ratio                 |   1.0841 |   1.1206 |   1.0868 |   1.0899 |   1.1493 |
 | Operating Ratio                      |   0.7022 |   0.6971 |   0.7018 |   0.6849 |   0.6803 |
 | R&D Intensity Ratio                  |   0.0599 |   0.0666 |   0.078  |   0.0802 |   0.083  |
@@ -246,8 +256,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -266,21 +279,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["TGT", "BBY", "DG"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-asset_turnover_ratios = toolkit.ratios.get_asset_turnover_ratio()
+toolkit.ratios.get_asset_turnover_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 1.0841 | 1.1206 | 1.0868 | 1.0899 | 1.1493 |
-| TSLA | 0.942  | 1.1277 | 1.0243 | 0.8544 | 0.7298 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| BBY | 2.8307 | 2.7801 | 2.8243 | 2.7919 | 2.8311 |
+| DG  | 1.3114 | 1.366  | 1.2923 | 1.3116 | 1.3761 |
+| TGT | 2.018  | 2.0368 | 1.9765 | 1.884  | 1.7872 |
 
 ---
 
@@ -295,6 +309,8 @@ $$
 \text{Inventory Turnover Ratio} = \text{Cost of Goods Sold} / \text{Average Inventory}
 $$
 
+Inventory turnover is only comparable within an industry: a grocer turns its stock many times a year, a maker of aircraft or luxury goods a few times at most. Analysts watch the trend and the gap with peers, since a falling ratio often comes before markdowns or write-downs. Because the ratio divides cost of goods sold by inventory, the inventory valuation method (LIFO or FIFO) and year-end stock building for a peak season both move it; quarterly data with trailing=4 smooths the seasonal effect.
+
 **Also known as:** stock turnover ratio.
 
 **Args:**
@@ -305,8 +321,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -325,21 +344,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["HD", "LOW", "TSCO"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-inventory_turnover_ratios = toolkit.ratios.get_inventory_turnover_ratio()
+toolkit.ratios.get_inventory_turnover_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | 40.0303 | 38.7899 | 37.9777 | 30.8955 | 33.9834 |
-| TSLA |  8.1593 |  6.5185 |  5.9787 |  6.2582 |  6.3692 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| HD   | 5.1854 | 4.4565 | 4.4354 | 4.7811 | 4.458  |
+| LOW  | 3.7987 | 3.5865 | 3.2481 | 3.2532 | 3.3076 |
+| TSCO | 4.1535 | 3.7678 | 3.4834 | 3.4585 | 3.4987 |
 
 ---
 
@@ -358,15 +378,20 @@ $$
 
 **Args:**
 
-- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
+None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
+`trailing` when set (e.g. 365 for quarterly data with trailing=4).
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -385,7 +410,7 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NKE", "LULU", "DECK"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -396,37 +421,45 @@ toolkit.ratios.get_days_of_inventory_outstanding()
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL |  9.1181 |  9.4097 |  9.6109 | 11.814  | 10.7405 |
-| TSLA | 44.7344 | 55.9945 | 61.0502 | 58.3231 | 57.307  |
+|      |    2021 |    2022 |    2023 |     2024 |     2025 |
+|:-----|--------:|--------:|--------:|---------:|---------:|
+| DECK |  92.864 | 105.297 |  96.625 |  84.2594 |  77.4483 |
+| LULU | 111.215 | 121.754 | 126.114 | 116.91   | 119.035  |
+| NKE  | 110.479 | 106.465 | 102.373 | 103.283  | 103.284  |
 
 ---
 
 ## get_days_of_sales_outstanding
 Calculate the days of sales outstanding ratio, an efficiency ratio that measures the average number of days it takes a company to collect payment on its credit sales.
 
-The days of sales outstanding (DSO) ratio is calculated by dividing the accounts receivable by the total credit sales and then multiplying by the number of days in the period. It represents the average number of days it takes for a company to collect payment on its credit sales. A lower DSO indicates that the company is collecting payments more quickly.
+The days of sales outstanding (DSO) ratio is calculated by dividing the average accounts receivable by revenue and then multiplying by the number of days in the period. It represents the average number of days it takes for a company to collect payment on its sales. A lower DSO indicates that the company is collecting payments more quickly. Revenue stands in for credit sales, which companies rarely disclose, so for a business that also sells for cash the DSO understates how long its credit customers take to pay.
 
 The formula is as follows:
 
 $$
-\text{Days of Sales Outstanding Ratio} = (\text{Average Accounts Receivable} / \text{Total Credit Sales}) \cdot \text{Days}
+\text{Days of Sales Outstanding Ratio} = (\text{Average Accounts Receivable} / \text{Revenue}) \cdot \text{Days}
 $$
+
+DSO is read against the payment terms a company offers and against its own history: a rising DSO, with receivables growing faster than revenue, often points to looser credit terms, slower-paying customers or revenue booked ahead of collection. Compare it within an industry, since terms differ widely between retailers, who collect within days, and industrial or software suppliers.
 
 **Also known as:** DSO, days sales outstanding, receivable days.
 
 **Args:**
 
-- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
+None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
+`trailing` when set (e.g. 365 for quarterly data with trailing=4).
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -445,21 +478,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["HON", "EMR", "ETN"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-dso_ratios = toolkit.ratios.get_days_of_sales_outstanding()
+toolkit.ratios.get_days_of_sales_outstanding()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | 21.1517 | 25.2057 | 27.4699 | 29.3645 | 32.0949 |
-| TSLA | 12.8814 | 10.8991 | 12.1826 | 14.807  | 17.3095 |
+|     |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:----|--------:|--------:|--------:|--------:|--------:|
+| EMR | 81.4702 | 69.1713 | 57.5119 | 56.8095 | 61.0629 |
+| ETN | 57.6565 | 64.8406 | 67.277  | 66.7118 | 66.5293 |
+| HON | 72.4704 | 73.4302 | 82.7661 | 80.6865 | 75.2577 |
 
 ---
 
@@ -474,19 +508,24 @@ $$
 \text{Operating Cycle Ratio} = \text{Days of Sales in Inventory} + \text{Days of Sales Outstanding}
 $$
 
-**Also known as:** business cycle, cash-to-cash cycle.
+**Also known as:** inventory-to-cash cycle.
 
 **Args:**
 
-- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
+None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
+`trailing` when set (e.g. 365 for quarterly data with trailing=4).
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -505,28 +544,29 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["AMAT", "LRCX", "KLAC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-operating_cycle_ratios = toolkit.ratios.get_operating_cycle()
+toolkit.ratios.get_operating_cycle()
 ```
 
 Which returns:
 
 |      |    2021 |    2022 |    2023 |    2024 |    2025 |
 |:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | 30.2698 | 34.6154 | 37.0808 | 41.1785 | 42.8354 |
-| TSLA | 57.6159 | 66.8936 | 73.2328 | 73.1301 | 74.6164 |
+| AMAT | 187.185 | 213.516 | 227.837 | 212.291 | 209.118 |
+| KLAC | 253.665 | 250.855 | 279.334 | 341.358 | 301.427 |
+| LRCX | 171.022 | 207.597 | 240.81  | 275.374 | 222.92  |
 
 ---
 
 ## get_accounts_payables_turnover_ratio
 Calculate the accounts payable turnover ratio, an efficiency ratio that measures how quickly a company pays its suppliers.
 
-The accounts payable turnover ratio indicates how many times, on average, a company pays off its accounts payable during a specific period. A higher turnover ratio is generally favorable, as it suggests that the company is efficiently managing its payments to suppliers.
+The accounts payable turnover ratio indicates how many times, on average, a company pays off its accounts payable during a specific period. A higher turnover ratio means the company pays its suppliers more quickly, which can reflect short payment terms or ample cash but ties up working capital. A lower ratio means it takes longer to pay and finances part of its working capital with supplier credit; a ratio that keeps falling can also signal payment difficulties.
 
 The formula is as follows:
 
@@ -544,8 +584,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -564,21 +607,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["PG", "CL", "KMB"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ap_turnover_ratios = toolkit.ratios.get_accounts_payables_turnover_ratio()
+toolkit.ratios.get_accounts_payables_turnover_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 4.3887 | 3.7609 | 3.3795 | 3.1975 | 3.1834 |
-| TSLA | 5.0034 | 4.795  | 5.33   | 5.9647 | 6.0153 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| CL  | 4.9638 | 5.1597 | 5.0514 | 4.5647 | 4.1762 |
+| KMB | 3.7492 | 3.6472 | 3.5893 | 3.4957 | 3.1215 |
+| PG  | 2.8776 | 2.9478 | 2.9009 | 2.7267 | 2.6912 |
 
 ---
 
@@ -597,15 +641,20 @@ $$
 
 **Args:**
 
-- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
+None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
+`trailing` when set (e.g. 365 for quarterly data with trailing=4).
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -624,21 +673,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["GM", "F", "TSLA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-dpo_ratios = toolkit.ratios.get_days_of_accounts_payable_outstanding()
+toolkit.ratios.get_days_of_accounts_payable_outstanding()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |     2023 |     2024 |     2025 |
-|:-----|--------:|--------:|---------:|---------:|---------:|
-| AAPL | 83.1683 | 97.0504 | 108.003  | 114.15   | 114.657  |
-| TSLA | 72.951  | 76.1207 |  68.4805 |  61.1935 |  60.6784 |
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| F    | 72.7319 | 65.8213 | 61.9989 | 56.6067 | 55.4167 |
+| GM   | 72.691  | 69.371  | 71.0554 | 63.4048 | 54.8851 |
+| TSLA | 72.951  | 76.1207 | 68.4805 | 61.1935 | 60.6784 |
 
 ---
 
@@ -653,19 +703,26 @@ $$
 \text{Cash Conversion Cycle} = \text{Days of Sales in Inventory} + \text{Days of Sales Outstanding} - \text{Days of Accounts Payable Outstanding}
 $$
 
+A negative cash conversion cycle means suppliers are paid after customers have paid, so growth releases cash instead of absorbing it; large retailers and platforms with strong buying power are the usual examples. Read the cycle through its three parts (`get_days_of_inventory_outstanding`, `get_days_of_sales_outstanding` and `get_days_of_accounts_payable_outstanding`), because a shorter cycle bought by stretching suppliers is less durable than one from faster-moving inventory.
+
 **Also known as:** CCC.
 
 **Args:**
 
-- <u>days (int, optional):</u> The number of days to use for the calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
+None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
+`trailing` when set (e.g. 365 for quarterly data with trailing=4).
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -682,21 +739,22 @@ pd.DataFrame: Cash Conversion Cycle (CCC) values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["AMZN", "COST", "WMT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ccc_values = toolkit.ratios.get_cash_conversion_cycle()
+toolkit.ratios.get_cash_conversion_cycle()
 ```
 
 Which returns:
 
 |      |     2021 |     2022 |     2023 |     2024 |     2025 |
 |:-----|---------:|---------:|---------:|---------:|---------:|
-| AAPL | -52.8985 | -62.435  | -70.9225 | -72.9716 | -71.8218 |
-| TSLA | -15.3351 |  -9.2271 |   4.7523 |  11.9367 |  13.9381 |
+| AMZN | -41.1953 | -30.918  | -27.9651 | -31.7282 | -42.2411 |
+| COST |  -1.1462 |   1.4176 |   2.7455 |   2.2723 |   2.071  |
+| WMT  |   3.463  |   6.4477 |   5.0509 |   3.5502 |   3.216  |
 
 ---
 
@@ -721,8 +779,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -730,8 +791,9 @@ pd.DataFrame: Cash conversion efficiency ratio values.
 
 **Notes:**
 
-- The method retrieves historical data and calculates the operating ratio for each
-asset in the Toolkit instance.
+- The method retrieves historical data and calculates the cash conversion
+efficiency for each asset in the Toolkit instance. It is the same calculation as
+`get_operating_cash_flow_sales_ratio`.
 - If `growth` is set to True, the method calculates the growth of the ratio values
 using the specified `lag`.
 
@@ -741,7 +803,7 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["ADBE", "CRM", "NOW"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -754,20 +816,21 @@ Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.2844 | 0.3098 | 0.2884 | 0.3024 | 0.2679 |
-| TSLA | 0.2136 | 0.1807 | 0.137  | 0.1528 | 0.1555 |
+| ADBE | 0.458  | 0.4452 | 0.3762 | 0.3746 | 0.422  |
+| CRM  | 0.2265 | 0.2268 | 0.2936 | 0.3455 | 0.3611 |
+| NOW  | 0.3716 | 0.3758 | 0.3788 | 0.3885 | 0.41   |
 
 ---
 
 ## get_receivables_turnover
 Calculate the receivables turnover, a ratio that measures how efficiently a company uses its assets by comparing the amount of credit extended to customers to the amount of sales generated.
 
-The receivables turnover ratio is an important measure of how well a company manages its accounts receivable. It indicates how quickly a company collects payments from its customers. A higher turnover ratio is generally favorable as it suggests that the company is collecting payments more quickly, which improves its cash flow and working capital management.
+The receivables turnover ratio is an important measure of how well a company manages its accounts receivable. It indicates how quickly a company collects payments from its customers. A higher turnover ratio is generally favorable as it suggests that the company is collecting payments more quickly, which improves its cash flow and working capital management. Revenue is used in place of net credit sales, which companies rarely disclose.
 
 The formula is as follows:
 
 $$
-\text{Receivables Turnover Ratio} = \text{Net Credit Sales} / \text{Average Accounts Receivable}
+\text{Receivables Turnover Ratio} = \text{Revenue} / \text{Average Accounts Receivable}
 $$
 
 **Also known as:** receivables efficiency, accounts receivable turnover.
@@ -780,8 +843,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 **Returns:**
 
 pd.DataFrame: Receivables turnover ratio values.
@@ -798,28 +864,29 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["MDT", "ABT", "SYK"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-receivables_turnover = toolkit.ratios.get_receivables_turnover()
+toolkit.ratios.get_receivables_turnover()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | 17.2563 | 14.4808 | 13.2873 | 12.43   | 11.3725 |
-| TSLA | 28.3354 | 33.489  | 29.9607 | 24.6505 | 21.0867 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| ABT | 6.6778 | 6.8718 | 6.2754 | 6.2194 | 5.9685 |
+| MDT | 5.7543 | 5.4077 | 5.338  | 5.3052 | 5.5273 |
+| SYK | 5.9787 | 5.6016 | 5.5929 | 5.8295 | 6.2587 |
 
 ---
 
 ## get_sga_to_revenue_ratio
 Calculate the sales, general, and administrative (SG&A) expenses to revenue ratio, which measures the SG&A expenses relative to the revenue of the company.
 
-The SG&A to revenue ratio is calculated by dividing the total SG&A expenses by the company's revenue and then multiplying by 100 to express it as a percentage. It provides insight into the efficiency of a company's cost management and its ability to control its overhead costs.
+The SG&A to revenue ratio is calculated by dividing the total SG&A expenses by the company's revenue, as a fraction (0.06 is 6%). It provides insight into the efficiency of a company's cost management and its ability to control its overhead costs.
 
 The formula is as follows:
 
@@ -837,8 +904,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -857,36 +927,37 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["KO", "PEP", "MDLZ"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-sga_to_revenue_ratios = toolkit.ratios.get_sga_to_revenue_ratio()
+toolkit.ratios.get_sga_to_revenue_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0601 | 0.0636 | 0.065  | 0.0667 | 0.0663 |
-| TSLA | 0.0839 | 0.0484 | 0.0496 | 0.0527 | 0.0615 |
+| KO   | 0.3069 | 0.2945 | 0.3057 | 0.3069 | 0.3029 |
+| MDLZ | 0.2181 | 0.2344 | 0.2222 | 0.2041 | 0.1861 |
+| PEP  | 0.393  | 0.3989 | 0.401  | 0.4049 | 0.3978 |
 
 ---
 
 ## get_fixed_asset_turnover
 Calculate the Fixed Asset Turnover ratio, an efficiency ratio that measures how efficiently a company uses its fixed assets to generate sales.
 
-The Fixed Asset Turnover ratio is calculated by dividing the company's net sales by the average fixed assets. It indicates how well a company is utilizing its fixed assets to generate revenue. A higher ratio suggests more efficient utilization of fixed assets.
+The Fixed Asset Turnover ratio is calculated by dividing the company's revenue by its average net property, plant and equipment (PP&E after accumulated depreciation), as defined by the CFA Institute. It indicates how well a company is utilizing its physical capital to generate revenue. A higher ratio suggests more efficient utilization of these assets. Goodwill, intangible assets and long-term investments are left out, so acquisitions do not dilute the ratio. Because net PP&E shrinks as assets depreciate, a company with an old asset base shows a higher ratio than one that has just invested, and leased assets only count when they are capitalised.
 
 The formula is as follows:
 
 $$
-\text{Fixed Asset Turnover Ratio} = \text{Net Sales} / \text{Average Fixed Assets}
+\text{Fixed Asset Turnover Ratio} = \text{Revenue} / \text{Average Net Property},\;\; \text{Plant and Equipment}
 $$
 
-**Also known as:** fixed asset efficiency, PP&E turnover.
+**Also known as:** PP&E turnover, fixed asset utilization.
 
 **Args:**
 
@@ -896,8 +967,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -916,21 +990,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["DAL", "UAL", "LUV"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-fixed_asset_turnover_ratios = toolkit.ratios.get_fixed_asset_turnover()
+toolkit.ratios.get_fixed_asset_turnover()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 1.846  | 1.8192 | 1.7979 | 1.8576 | 1.9664 |
-| TSLA | 1.7804 | 2.1312 | 1.9665 | 1.6185 | 1.4273 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| DAL | 0.877  | 1.3299 | 1.4049 | 1.4215 | 1.4046 |
+| LUV | 0.9246 | 1.3543 | 1.3266 | 1.3399 | 1.344  |
+| UAL | 0.6775 | 1.1979 | 1.3091 | 1.2617 | 1.2002 |
 
 ---
 
@@ -945,6 +1020,8 @@ $$
 \text{Working Capital Turnover Ratio} = \text{Revenue} / \text{Average Working Capital}
 $$
 
+The ratio only reads well when working capital is clearly positive. When current assets and current liabilities are close, a small change in either swings the ratio to very large or negative values, which says little about efficiency, so check `get_working_capital` alongside it. Companies that run on negative working capital, such as retailers paid by their customers before they pay their suppliers, show a negative ratio that reflects their business model rather than weak efficiency.
+
 **Args:**
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -953,8 +1030,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -972,23 +1052,38 @@ values using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["FAST", "GWW", "MSM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-working_capital_turnover_ratios = toolkit.ratios.get_working_capital_turnover_ratio()
+toolkit.ratios.get_working_capital_turnover_ratio()
 ```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| FAST | 2.9601 | 3.096  | 3.1299 | 3.0898 | 3.1055 |
+| GWW  | 5.2497 | 5.5883 | 5.1413 | 4.9943 | 5.1439 |
+| MSM  | 4.1018 | 4.7031 | 5.397  | 6.1099 | 6.9814 |
 
 ---
 
 ## get_operating_ratio
 Calculate the operating ratio, a financial metric that measures the efficiency of a company's operations by comparing its operating expenses to its revenue.
 
-The operating ratio is calculated by dividing the company's operating expenses by its net sales and multiplying by 100 to express it as a percentage. It provides insight into how efficiently a company is managing its operations.
+The operating ratio is calculated by dividing the sum of the cost of goods sold and the operating expenses by revenue. It shows how much of each dollar of revenue is absorbed by the costs of running the business; one minus the operating ratio is roughly the operating margin. It provides insight into how efficiently a company is managing its operations.
 
 The formula is as follows:
 
 $$
 \text{Operating Ratio} = (\text{Operating Expenses} + \text{Cost of Goods Sold}) / \text{Revenue}
 $$
+
+Railroads and trucking companies report the operating ratio as their headline efficiency measure, and lower is better. Because cost of goods sold and operating expenses are added together, the ratio does not depend on how a company splits its costs between those two lines, which makes it easier to compare than the expense lines on their own. It leaves out interest and taxes, so it says nothing about leverage.
 
 **Also known as:** operating efficiency ratio, operating expense ratio.
 
@@ -1000,8 +1095,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1020,21 +1118,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["UNP", "CSX", "NSC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-operating_ratios = toolkit.ratios.get_operating_ratio()
+toolkit.ratios.get_operating_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.7022 | 0.6971 | 0.7018 | 0.6849 | 0.6803 |
-| TSLA | 0.8793 | 0.8324 | 0.9081 | 0.9276 | 0.9541 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| CSX | 0.588  | 0.5991 | 0.627  | 0.6309 | 0.6792 |
+| NSC | 0.6082 | 0.6286 | 0.769  | 0.6895 | 0.6709 |
+| UNP | 0.5717 | 0.6013 | 0.6235 | 0.5995 | 0.5986 |
 
 ---
 
@@ -1049,6 +1148,8 @@ $$
 \text{R\&D} \;\text{Intensity Ratio} = \text{Research and Development Expenses} / \text{Revenue}
 $$
 
+R&D intensity is compared within an industry and over time: a falling ratio can mean revenue is growing faster than the research budget, not that research is being cut. Accounting matters across borders, since IFRS requires development costs to be capitalized once a project meets certain criteria while US GAAP expenses nearly all of them, so a company reporting under IFRS can show a lower ratio for the same spending.
+
 **Also known as:** R&D intensity, R&D to sales ratio.
 
 **Args:**
@@ -1059,8 +1160,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1079,21 +1183,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NVDA", "AMD", "INTC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-rd_ratios = toolkit.ratios.get_research_and_development_ratio()
+toolkit.ratios.get_research_and_development_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0599 | 0.0666 |  0.078 | 0.0802 | 0.083  |
-| TSLA | 0.0482 | 0.0377 |  0.041 | 0.0465 | 0.0676 |
+| AMD  | 0.1731 | 0.2121 | 0.2589 | 0.2504 | 0.2336 |
+| INTC | 0.1922 | 0.278  | 0.2959 | 0.3116 | 0.2606 |
+| NVDA | 0.1957 | 0.2721 | 0.1424 | 0.099  | 0.0857 |
 
 ---
 
@@ -1118,8 +1223,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1131,8 +1239,10 @@ pd.DataFrame: S&M to revenue ratio values.
 each asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the ratio values
 using the specified `lag`.
-- Not every company reports Selling and Marketing Expenses separately from General
-and Administrative Expenses, in which case this ratio will be unavailable.
+- Not every company reports Selling and Marketing Expenses separately from
+General and Administrative Expenses. For those companies the ratio shows 0,
+which means the split is not reported, not that nothing was spent; use
+`get_sga_to_revenue_ratio` instead.
 
 **As an example:**
 
@@ -1140,21 +1250,22 @@ and Administrative Expenses, in which case this ratio will be unavailable.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["CRM", "HUBS", "DDOG"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-sm_ratios = toolkit.ratios.get_selling_and_marketing_ratio()
+toolkit.ratios.get_selling_and_marketing_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL |      0 |      0 |      0 | 0.0477 | 0.0469 |
-| TSLA |      0 |      0 |      0 | 0      | 0      |
+| CRM  | 0.4475 | 0.4314 | 0.3694 | 0.3498 | 0.3455 |
+| DDOG | 0.2911 | 0.2957 | 0.2863 | 0.2819 | 0.2791 |
+| HUBS | 0.4995 | 0.5119 | 0.4924 | 0.4639 | 0.4405 |
 
 ---
 
@@ -1179,8 +1290,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1192,8 +1306,11 @@ pd.DataFrame: G&A to revenue ratio values.
 each asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the ratio values
 using the specified `lag`.
-- Not every company reports General and Administrative Expenses separately from
-Selling and Marketing Expenses, in which case this ratio will be unavailable.
+- Not every company reports General and Administrative Expenses separately
+from Selling and Marketing Expenses. For those companies the ratio shows 0,
+or, when the whole SG&A line is reported as general and administrative, the
+full SG&A ratio; compare with `get_sga_to_revenue_ratio` before reading it as
+overhead alone.
 
 **As an example:**
 
@@ -1201,21 +1318,22 @@ Selling and Marketing Expenses, in which case this ratio will be unavailable.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["WDAY", "SNOW", "INTU"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ga_ratios = toolkit.ratios.get_general_and_administrative_ratio()
+toolkit.ratios.get_general_and_administrative_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0      | 0      | 0      | 0.0191 | 0.0194 |
-| TSLA | 0.0839 | 0.0484 | 0.0496 | 0.0527 | 0.0615 |
+| INTU | 0.1019 | 0.1147 | 0.0905 | 0.0871 | 0.085  |
+| SNOW | 0.2174 | 0.1432 | 0.1151 | 0.1137 | 0.1174 |
+| WDAY | 0.0946 | 0.0964 | 0.0967 | 0.0971 | 0.1401 |
 
 ---
 
@@ -1240,8 +1358,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1260,21 +1381,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["UBER", "LYFT", "DASH"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-sbc_ratios = toolkit.ratios.get_stock_based_compensation_ratio()
+toolkit.ratios.get_stock_based_compensation_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0216 | 0.0229 | 0.0283 | 0.0299 | 0.0309 |
-| TSLA | 0.0394 | 0.0192 | 0.0187 | 0.0205 | 0.0298 |
+| DASH | 0.0994 | 0.135  | 0.126  | 0.1025 | 0.0766 |
+| LYFT | 0.2258 | 0.1833 | 0.11   | 0.0572 | 0.051  |
+| UBER | 0.0669 | 0.0562 | 0.0519 | 0.0408 | 0.0351 |
 
 ---
 
@@ -1289,6 +1411,8 @@ $$
 \text{Deferred Revenue Ratio} = \text{Deferred Revenue} / \text{Revenue}
 $$
 
+Without trailing, the deferred revenue balance at the end of the period is used, so the ratio shows the backlog of prepaid revenue at that date. With trailing, the balance is averaged over the `trailing` period ends to match the summed revenue.
+
 **Also known as:** deferred revenue intensity, unearned revenue ratio.
 
 **Args:**
@@ -1299,8 +1423,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1321,21 +1448,22 @@ ratio will be unavailable.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["ORCL", "ADBE", "WDAY"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-deferred_revenue_ratios = toolkit.ratios.get_deferred_revenue_ratio()
+toolkit.ratios.get_deferred_revenue_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0208 | 0.0201 | 0.021  | 0.0211 | 0.0218 |
-| TSLA | 0.0441 | 0.0345 | 0.0386 | 0.0426 | 0.0361 |
+| ADBE | 0.2998 | 0.3009 | 0.3007 | 0.2851 | 0.2905 |
+| ORCL | 0.1969 | 0.1796 | 0.1758 | 0.1635 | 0.1472 |
+| WDAY | 0.6054 | 0.5726 | 0.5589 | 0.5289 | 0.5245 |
 
 ---
 
@@ -1350,8 +1478,11 @@ Calculates and collects all Liquidity Ratios based on the provided data.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1391,7 +1522,7 @@ Which returns:
 | Operating Cash Flow Ratio          |   0.8291    |   0.7933     |   0.7607    |   0.6704     |   0.6731     |
 | Operating Cash Flow to Sales Ratio |   0.2844    |   0.3098     |   0.2884    |   0.3024     |   0.2679     |
 | Short Term Coverage Ratio          |   6.6635    |   5.7864     |   6.9933    |   5.6638     |   5.4839     |
-| Defensive Interval Ratio           | 995.452     | 693.773      | 767.125     | 781.845      | 683.468      |
+| Defensive Interval Ratio           | 132.153     | 105.836      | 129.097     | 140.35       | 127.05       |
 
 ---
 
@@ -1406,6 +1537,8 @@ $$
 \text{Current Ratio} = \text{Current Assets} / \text{Current Liabilities}
 $$
 
+A current ratio above 1 is the textbook comfort level, but the right level depends on the business: companies that collect from customers before paying suppliers, such as large retailers and restaurant chains, run below 1 without strain, while manufacturers with long production cycles need more. Lenders read it together with the quick ratio (`get_quick_ratio`), since inventory can be hard to sell at book value, and with the trend, since the year-end balance sheet can be managed to look better than the average day.
+
 **Also known as:** short-term liquidity, working capital ratio.
 
 **Args:**
@@ -1416,8 +1549,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1436,21 +1572,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["PFE", "MRK", "BMY"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-current_ratios = toolkit.ratios.get_current_ratio()
+toolkit.ratios.get_current_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 1.0746 | 0.8794 | 0.988  | 0.8673 | 0.8933 |
-| TSLA | 1.3753 | 1.532  | 1.7259 | 2.0249 | 2.1644 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| BMY | 1.521  | 1.2459 | 1.4271 | 1.2526 | 1.2551 |
+| MRK | 1.2678 | 1.4737 | 1.252  | 1.3646 | 1.5362 |
+| PFE | 1.3989 | 1.2165 | 0.9067 | 1.1713 | 1.1599 |
 
 ---
 
@@ -1459,7 +1596,7 @@ Calculate the quick ratio (also known as the acid-test ratio), a more stringent 
 
 This ratio is also referred to as the Acid Test Ratio.
 
-The quick ratio is calculated by subtracting inventory from current assets and then dividing the result by current liabilities. It provides insight into a company's ability to cover its short-term liabilities using its most liquid assets without relying on inventory.
+The quick ratio is calculated by adding cash and cash equivalents, short-term investments and accounts receivable, and dividing the sum by current liabilities. It leaves out inventory, prepaid expenses and other current assets, which cannot quickly be turned into cash. It provides insight into a company's ability to cover its short-term liabilities using its most liquid assets without relying on inventory.
 
 The formula is as follows:
 
@@ -1477,8 +1614,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1495,29 +1635,31 @@ using the specified `lag`.
 
 ```python
 from financetoolkit import Toolkit
+
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BA", "LMT", "RTX"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-quick_ratios = toolkit.ratios.get_quick_ratio()
+toolkit.ratios.get_quick_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.7086 | 0.4967 | 0.6267 | 0.5589 | 0.5704 |
-| TSLA | 0.9957 | 0.9411 | 1.1341 | 1.4219 | 1.5335 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| BA  | 0.2303 | 0.2191 | 0.194  | 0.2978 | 0.2969 |
+| LMT | 0.3977 | 0.318  | 0.211  | 0.2489 | 0.3438 |
+| RTX | 0.4935 | 0.3919 | 0.3726 | 0.3214 | 0.3766 |
 
 ---
 
 ## get_cash_ratio
 Calculate the cash ratio, a liquidity ratio that measures a company's ability to pay off its short-term liabilities with its cash and cash equivalents.
 
-The cash ratio is calculated by dividing the sum of cash and cash equivalents by current liabilities. It provides insight into a company's immediate ability to cover its short-term obligations using its most liquid assets.
+The cash ratio is calculated by dividing the sum of cash and cash equivalents and short-term investments by current liabilities. It provides insight into a company's immediate ability to cover its short-term obligations using its most liquid assets.
 
 The formula is as follows:
 
@@ -1535,8 +1677,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1555,21 +1700,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["GOOGL", "META", "NFLX"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-cash_ratios = toolkit.ratios.get_cash_ratio()
+toolkit.ratios.get_cash_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.4992 | 0.3137 | 0.4236 | 0.3695 | 0.3302 |
-| TSLA | 0.8986 | 0.8306 | 1.012  | 1.2686 | 1.3893 |
+|       |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:------|-------:|-------:|-------:|-------:|-------:|
+| GOOGL | 2.1734 | 1.6416 | 1.3557 | 1.0733 | 1.2345 |
+| META  | 2.271  | 1.5074 | 2.0464 | 2.3162 | 1.9503 |
+| NFLX  | 0.7101 | 0.7639 | 0.8056 | 0.8911 | 0.8253 |
 
 ---
 
@@ -1594,8 +1740,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1614,21 +1763,22 @@ values using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["TXN", "QCOM", "ADI"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-working_capitals = toolkit.ratios.get_working_capital()
+toolkit.ratios.get_working_capital()
 ```
 
 Which returns:
 
-|      |      2021 |        2022 |        2023 |        2024 |        2025 |
-|:-----|----------:|------------:|------------:|------------:|------------:|
-| AAPL | 9.355e+09 | -1.8577e+10 | -1.742e+09  | -2.3405e+10 | -1.7674e+10 |
-| TSLA | 7.395e+09 |  1.4208e+10 |  2.0868e+10 |  2.9539e+10 |  3.6928e+10 |
+|      |       2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|-----------:|------------:|------------:|------------:|------------:|
+| ADI  | 2.608e+09  | 2.49534e+09 | 1.18305e+09 | 2.49637e+09 | 3.86226e+09 |
+| QCOM | 8.124e+09  | 8.858e+09   | 1.2836e+10  | 1.4727e+10  | 1.661e+10   |
+| TXN  | 1.1116e+10 | 1.1036e+10  | 1.1802e+10  | 1.1383e+10  | 1.0591e+10  |
 
 ---
 
@@ -1653,8 +1803,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1673,21 +1826,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["UNH", "CVS", "CI"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-operating_cash_flow_ratios = toolkit.ratios.get_operating_cash_flow_ratio()
+toolkit.ratios.get_operating_cash_flow_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.8291 | 0.7933 | 0.7607 | 0.6704 | 0.6731 |
-| TSLA | 0.5835 | 0.5513 | 0.4611 | 0.5178 | 0.465  |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| CI  | 0.165  | 0.21   | 0.2425 | 0.1787 | 0.1704 |
+| CVS | 0.2694 | 0.233  | 0.1695 | 0.1076 | 0.12   |
+| UNH | 0.2854 | 0.2937 | 0.2935 | 0.2332 | 0.1714 |
 
 ---
 
@@ -1712,8 +1866,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1732,21 +1889,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["V", "MA", "PYPL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-operating_cash_flow_sales_ratios = toolkit.ratios.get_operating_cash_flow_sales_ratio()
+toolkit.ratios.get_operating_cash_flow_sales_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.2844 | 0.3098 | 0.2884 | 0.3024 | 0.2679 |
-| TSLA | 0.2136 | 0.1807 | 0.137  | 0.1528 | 0.1555 |
+| MA   | 0.5011 | 0.5034 | 0.4773 | 0.5247 | 0.5382 |
+| PYPL | 0.2285 | 0.2112 | 0.1627 | 0.2343 | 0.1934 |
+| V    | 0.6317 | 0.6431 | 0.6356 | 0.5553 | 0.5765 |
 
 ---
 
@@ -1771,8 +1929,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **As an example:**
 
@@ -1780,7 +1941,7 @@ E.g. when selecting 4 with quarterly data, the TTM is calculated.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["EXC", "AEP", "D"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1791,10 +1952,11 @@ toolkit.ratios.get_short_term_coverage_ratio()
 
 Which returns:
 
-|      |    2021 |    2022 |   2023 |   2024 |   2025 |
-|:-----|--------:|--------:|-------:|-------:|-------:|
-| AAPL |  6.6635 |  5.7864 | 6.9933 | 5.6638 | 5.4839 |
-| TSLA | 10.5671 | 14.4921 | 6.7119 | 6.3692 | 8.9921 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| AEP | 0.8054 | 0.8014 | 0.942  | 1.1614 | 1.4332 |
+| D   | 1.2796 | 0.5473 | 0.5977 | 1.1877 | 1.1017 |
+| EXC | 0.8856 | 1.1098 | 1.1979 | 1.6815 | 2.2742 |
 
 ---
 
@@ -1809,22 +1971,26 @@ $$
 \text{Defensive Interval Ratio} = (\text{Cash and Cash Equivalents} + \text{Short Term Investments} + \text{Accounts Receivable}) / \text{Daily Operating Expenses}
 $$
 
-Where Daily Operating Expenses = (Operating Expenses - Depreciation and Amortization) / Days, i.e. the average cash operating expenses incurred per day, net of the largest non-cash charge (depreciation and amortization).
+Where Daily Operating Expenses = (Cost of Goods Sold + Operating Expenses - Depreciation and Amortization) / Days, the daily cash expenditures (AccountingTools, Wall Street Prep). The cost of goods sold is included because the depreciation and amortization from the cash flow statement also covers the part charged to it, and because paying suppliers and production staff is the largest cash cost for most companies. Days is the length of the window the expenses cover: 365 for annual data, 365 / 4 for quarterly data, times `trailing` when the expenses are summed over several periods, so the ratio is in calendar days for any frequency.
 
 **Also known as:** defensive interval period, basic defense interval.
 
 **Args:**
 
-- <u>days (int, optional):</u> The number of days to use for the daily operating
-expenses calculation. Defaults to 365.
+- <u>days (int &#124; float, optional):</u> The number of days in the window the expenses cover, used
+to turn them into daily expenditures. Defaults to None, which uses 365 for annual data
+and 365 / 4 for quarterly data, multiplied by `trailing` when set.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1842,10 +2008,23 @@ values using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AMGN", "GILD", "BIIB"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-defensive_interval_ratios = toolkit.ratios.get_defensive_interval_ratio()
+toolkit.ratios.get_defensive_interval_ratio()
 ```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AMGN | 315.9   | 406.808 | 410.687 | 332.729 | 326.593 |
+| BIIB | 273.146 | 379.204 | 158.724 | 237.852 | 289.966 |
+| GILD | 262.095 | 228.268 | 258.786 | 239.902 | 353.914 |
 
 ---
 
@@ -1860,8 +2039,11 @@ Calculates and collects all Profitability Ratios based on the provided data.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1899,15 +2081,15 @@ Which returns:
 | Net Profit Margin                           |  0.2588 |  0.2531 |  0.2531 |   0.2397 |   0.2692 |
 | EBITDA Margin                               |  0.3287 |  0.331  |  0.3283 |   0.3444 |   0.3478 |
 | Free Cash Flow Margin                       |  0.2541 |  0.2826 |  0.2598 |   0.2783 |   0.2373 |
-| Interest Coverage Ratio                     | 45.4567 | 44.538  | 31.9908 | inf      | inf      |
+| Interest Coverage Ratio                     | 41.1905 | 40.7496 | 29.062  | nan      | nan      |
 | Income Before Tax Profit Margin             |  0.2985 |  0.302  |  0.2967 |   0.3158 |   0.3189 |
 | Effective Tax Rate                          |  0.133  |  0.162  |  0.1472 |   0.2409 |   0.1561 |
 | Return on Assets                            |  0.2806 |  0.2836 |  0.275  |   0.2613 |   0.3093 |
 | Cash Return on Assets                       |  0.3083 |  0.3471 |  0.3134 |   0.3296 |   0.3079 |
 | Return on Equity                            |  1.4744 |  1.7546 |  1.7195 |   1.5741 |   1.7142 |
-| Return on Invested Capital                  |  0.4143 |  0.4439 |  0.444  |   0.4336 |   0.5335 |
-| Return on Capital Employed                  |  0.496  |  0.6139 |  0.5677 |   0.6548 |   0.6855 |
-| Return on Tangible Assets                   |  1.4744 |  1.7546 |  1.7195 |   1.5741 |   1.7142 |
+| Return on Invested Capital                  |  0.4879 |  0.5229 |  0.528  |   0.5166 |   0.6201 |
+| Return on Capital Employed                  |  0.4831 |  0.6009 |  0.5514 |   0.6534 |   0.6872 |
+| Return on Tangible Assets                   |  0.2806 |  0.2836 |  0.275  |   0.2613 |   0.3093 |
 | Income Quality Ratio                        |  1.0988 |  1.2239 |  1.1397 |   1.2616 |   0.9953 |
 | Net Income per EBT                          |  0.867  |  0.838  |  0.8528 |   0.7591 |   0.8439 |
 | Free Cash Flow to Operating Cash Flow Ratio |  0.8935 |  0.9123 |  0.9009 |   0.9201 |   0.8859 |
@@ -1929,6 +2111,8 @@ $$
 \text{Gross Margin Ratio} = (\text{Revenue} - \text{Cost of Goods Sold}) / \text{Revenue}
 $$
 
+Gross margin shows pricing power and production cost before overheads, and is best compared within an industry and over time. What sits in cost of goods sold differs between companies (some include depreciation, freight or warehousing, others report them lower down), so small gaps between peers can be accounting rather than economics. The trend matters most: a steady decline points to rising input costs that cannot be passed on, or to a shift in the sales mix.
+
 **Also known as:** gross profit margin, gross profit percentage.
 
 **Args:**
@@ -1939,8 +2123,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -1959,34 +2146,37 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["MC.PA", "RMS.PA", "CFR.SW"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-gross_margin_ratios = toolkit.ratios.get_gross_margin()
+toolkit.ratios.get_gross_margin()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.4178 | 0.4331 | 0.4413 | 0.4621 | 0.4691 |
-| TSLA | 0.2528 | 0.256  | 0.1825 | 0.1786 | 0.1803 |
+|        |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-------|-------:|-------:|-------:|-------:|-------:|
+| CFR.SW | 0.627  | 0.6874 | 0.6808 | 0.6691 | 0.644  |
+| MC.PA  | 0.6829 | 0.6844 | 0.688  | 0.6703 | 0.6624 |
+| RMS.PA | 0.6558 | 0.6603 | 0.7229 | 0.7026 | 0.7111 |
 
 ---
 
 ## get_operating_margin
 Calculate the operating margin, a profitability ratio that measures the percentage of revenue that remains after deducting operating expenses.
 
-The operating margin ratio is calculated by subtracting the operating expenses from the total revenue and then dividing the result by the total revenue. It indicates how efficiently a company is managing its operating expenses in relation to its revenue.
+The operating margin ratio is calculated by dividing operating income (revenue minus the cost of goods sold and the operating expenses) by revenue. It indicates how efficiently a company is managing its operating expenses in relation to its revenue.
 
 The formula is as follows:
 
 $$
 \text{Operating Margin Ratio} = \text{Operating Income} / \text{Revenue}
 $$
+
+Operating margin is the usual yardstick for the profitability of the core business, before financing and taxes. Companies with high fixed costs show operating leverage: their margin rises quickly when revenue grows and falls quickly when it shrinks. Restructuring charges and impairments are included, so a single weak year should be checked for one-off items before comparing with peers.
 
 **Also known as:** EBIT margin, operating income margin.
 
@@ -1998,8 +2188,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2018,21 +2211,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BKNG", "EXPE", "ABNB"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-operating_margin_ratios = toolkit.ratios.get_operating_margin()
+toolkit.ratios.get_operating_margin()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.2978 | 0.3029 | 0.2982 | 0.3151 | 0.3197 |
-| TSLA | 0.1212 | 0.1676 | 0.0919 | 0.0724 | 0.0459 |
+| ABNB | 0.0716 | 0.2145 | 0.1531 | 0.23   | 0.212  |
+| BKNG | 0.2278 | 0.2985 | 0.2731 | 0.3183 | 0.3448 |
+| EXPE | 0.0216 | 0.093  | 0.0805 | 0.0963 | 0.127  |
 
 ---
 
@@ -2057,8 +2251,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2077,21 +2274,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["LLY", "NVO", "AZN"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-net_profit_margin_ratios = toolkit.ratios.get_net_profit_margin()
+toolkit.ratios.get_net_profit_margin()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.2588 | 0.2531 | 0.2531 | 0.2397 | 0.2692 |
-| TSLA | 0.1028 | 0.1545 | 0.155  | 0.073  | 0.04   |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| AZN | 0.003  | 0.0741 | 0.13   | 0.1301 | 0.1746 |
+| LLY | 0.1971 | 0.2188 | 0.1536 | 0.2351 | 0.3167 |
+| NVO | 0.3392 | 0.3138 | 0.3603 | 0.3478 | 0.3314 |
 
 ---
 
@@ -2116,8 +2314,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2135,10 +2336,22 @@ values using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["LIN", "AI.PA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-ebitda_margins = toolkit.ratios.get_ebitda_margin()
+toolkit.ratios.get_ebitda_margin()
 ```
+
+Which returns:
+
+|       |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:------|-------:|-------:|-------:|-------:|-------:|
+| AI.PA | 0.2649 | 0.2257 | 0.2555 | 0.2754 | 0.3023 |
+| LIN   | 0.3221 | 0.3196 | 0.3628 | 0.3749 | 0.383  |
 
 ---
 
@@ -2147,7 +2360,7 @@ Compute the Interest Burden Ratio, the component of the extended (five-step) DuP
 
 The Interest Burden Ratio is calculated by dividing earnings before tax (EBT) by earnings before interest and taxes (EBIT, proxied here by Operating Income). It expresses the share of operating profit that survives interest expense, so it sits between 0 and 1 for a company with debt: a value close to 1 means interest barely dents operating profit, while a low value signals a heavy interest load. Values slightly above 1 occur when non-operating income (e.g. interest income) exceeds interest expense.
 
-Note that this is the reciprocal of, and should not be confused with, the Interest Coverage Ratio (`get_interest_coverage_ratio`), which divides operating profit by interest expense and is therefore unbounded above.
+Note that this is related to, but not the same as, the Interest Coverage Ratio (`get_interest_coverage_ratio`), which divides EBIT by interest expense and is unbounded above. When income before tax is roughly operating income minus interest expense, the interest burden is about 1 minus the reciprocal of the interest coverage ratio.
 
 The formula is as follows:
 
@@ -2165,8 +2378,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2185,20 +2401,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["TSLA"],
+    ["CHTR", "TMUS", "DIS"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-interest_burden_ratios = toolkit.ratios.get_interest_burden_ratio()
+toolkit.ratios.get_interest_burden_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| TSLA | 0.9724 | 1.0046 | 1.1217 | 1.2705 | 1.2119 |
+| CHTR | 0.5885 | 0.6095 | 0.5481 | 0.5664 | 0.5589 |
+| DIS  | 0.6999 | 0.7806 | 0.5304 | 0.6353 | 0.8678 |
+| TMUS | 0.4862 | 0.4808 | 0.771  | 0.8169 | 0.7619 |
 
 ---
 
@@ -2223,8 +2441,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2243,21 +2464,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["HSY", "GIS", "HRL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-pretax_profit_margin = toolkit.ratios.get_income_before_tax_profit_margin()
+toolkit.ratios.get_income_before_tax_profit_margin()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.2985 | 0.302  | 0.2967 | 0.3158 | 0.3189 |
-| TSLA | 0.1178 | 0.1684 | 0.1031 | 0.092  | 0.0557 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| GIS | 0.1749 | 0.1603 | 0.1568 | 0.1484 | 0.0179 |
+| HRL | 0.0989 | 0.1026 | 0.0837 | 0.0869 | 0.0548 |
+| HSY | 0.2003 | 0.184  | 0.1945 | 0.2208 | 0.1038 |
 
 ---
 
@@ -2272,7 +2494,9 @@ $$
 \text{Effective Tax Rate} = \text{Income Tax Expense} / \text{Income Before Tax}
 $$
 
-**Also known as:** tax burden, actual tax rate.
+Analysts compare the effective tax rate with the statutory rates of the countries a company earns its profits in; a rate well below them usually comes from profits booked in lower-tax countries, research credits or one-off benefits. Single years can be far from the trend because of settlements, law changes or the release of a valuation allowance, which can even make the rate negative, so forecasts usually start from a normalized rate. `get_cash_tax_rate` shows what was actually paid. A period with zero or negative income before tax has no meaningful tax rate and is NaN.
+
+**Also known as:** ETR, actual tax rate.
 
 **Args:**
 
@@ -2282,8 +2506,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2302,21 +2529,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["GOOGL", "META", "MSFT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-effective_tax_rate = toolkit.ratios.get_effective_tax_rate()
+toolkit.ratios.get_effective_tax_rate()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |    2023 |   2024 |   2025 |
-|:-----|-------:|-------:|--------:|-------:|-------:|
-| AAPL | 0.133  | 0.162  |  0.1472 | 0.2409 | 0.1561 |
-| TSLA | 0.1102 | 0.0825 | -0.5015 | 0.2043 | 0.2696 |
+|       |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:------|-------:|-------:|-------:|-------:|-------:|
+| GOOGL | 0.162  | 0.1592 | 0.1391 | 0.1644 | 0.1678 |
+| META  | 0.1674 | 0.195  | 0.1756 | 0.1175 | 0.2964 |
+| MSFT  | 0.1383 | 0.1311 | 0.1898 | 0.1823 | 0.1763 |
 
 ---
 
@@ -2331,6 +2559,8 @@ $$
 \text{Return on Assets} = \text{Net Income} / \text{Average Total Assets}
 $$
 
+Return on assets is the natural measure for banks and insurers, whose assets are mostly loans and investments, and where a return of about 1% is the usual benchmark for a bank. Outside finance it is best compared within an industry, since asset-light businesses such as software and services earn far higher returns on assets than utilities or manufacturers. Because net income is after interest, two companies with the same operations but different leverage show different returns on assets.
+
 **Also known as:** ROA, asset profitability.
 
 **Args:**
@@ -2341,8 +2571,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2361,21 +2594,23 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BAC", "WFC", "C", "USB"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-roa_ratios = toolkit.ratios.get_return_on_assets()
+toolkit.ratios.get_return_on_assets()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.2806 | 0.2836 | 0.275  | 0.2613 | 0.3093 |
-| TSLA | 0.0968 | 0.1742 | 0.1588 | 0.0624 | 0.0292 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| BAC | 0.0102 | 0.0084 | 0.008  | 0.0079 | 0.0087 |
+| C   | 0.0091 | 0.0058 | 0.0033 | 0.0048 | 0.0052 |
+| USB | 0.0135 | 0.0088 | 0.0075 | 0.0088 | 0.0105 |
+| WFC | 0.0107 | 0.0066 | 0.0094 | 0.0096 | 0.0101 |
 
 ---
 
@@ -2400,8 +2635,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2419,17 +2657,29 @@ values using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["UPS", "FDX"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-cash_roa_ratios = toolkit.ratios.get_cash_return_on_assets()
+toolkit.ratios.get_cash_return_on_assets()
 ```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| FDX | 0.1165 | 0.1018 | 0.0955 | 0.0806 | 0.0957 |
+| UPS | 0.2277 | 0.2007 | 0.1442 | 0.1436 | 0.118  |
 
 ---
 
 ## get_return_on_equity
 Calculate the return on equity (ROE), a profitability ratio that measures how efficiently a company generates profits using its shareholders' equity.
 
-The return on equity is calculated by dividing the net income by the average shareholders' equity. Shareholders' equity represents the residual interest in the assets of a company after deducting liabilities. Note that it is false to take the total assets at the end of the period given that income statements report over the period whereas a balance sheet reports on the period.
+The return on equity is calculated by dividing the net income by the average shareholders' equity. Shareholders' equity represents the residual interest in the assets of a company after deducting liabilities. Note that it is false to take the total equity at the end of the period, given that an income statement reports over the period whereas a balance sheet reports at a point in time; the average equity over the period is used instead.
 
 ROE provides insight into the company's ability to generate profits from the investments made by its shareholders. A higher ROE indicates that the company is using its equity effectively to generate higher returns for its shareholders.
 
@@ -2438,6 +2688,8 @@ The formula is as follows:
 $$
 \text{Return on Equity} = \text{Net Income} / \text{Average Shareholders' Equity} (\text{or Total Equity})
 $$
+
+ROE is usually read through the DuPont analysis (`Toolkit.models.get_dupont_analysis`), which splits it into net margin, asset turnover and the equity multiplier, because the same ROE can come from high margins or from a thin equity base. Large buybacks and accumulated losses shrink equity and can push ROE to extreme or negative values (well above 1 for heavy buyers of their own shares), in which case ROIC or ROA says more. For banks and insurers ROE is set against the cost of equity, and together with the price-to-book ratio it explains much of their valuation.
 
 **Also known as:** ROE, shareholders equity return, equity profitability.
 
@@ -2449,8 +2701,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2467,49 +2722,53 @@ pd.DataFrame: Return on equity (ROE) values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["JPM", "GS", "MS"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-roe_ratios = toolkit.ratios.get_return_on_equity()
+toolkit.ratios.get_return_on_equity()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 1.4744 | 1.7546 | 1.7195 | 1.5741 | 1.7142 |
-| TSLA | 0.2002 | 0.3248 | 0.2739 | 0.1039 | 0.0485 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| GS  | 0.2055 | 0.0948 | 0.0676 | 0.1132 | 0.132  |
+| JPM | 0.1622 | 0.1224 | 0.154  | 0.1691 | 0.1575 |
+| MS  | 0.1389 | 0.1014 | 0.0848 | 0.1246 | 0.149  |
 
 ---
 
 ## get_return_on_invested_capital
 Calculate the return on invested capital (ROIC), a financial ratio that measures the company's return on the capital invested in it, including both equity and debt.
 
-The return on invested capital is calculated by dividing the net operating profit after taxes (NOPAT) by the average invested capital. Invested capital includes both equity and debt, making this ratio a valuable measure of how efficiently a company generates returns for all of its investors.
+The return on invested capital is calculated by dividing the net operating profit after taxes (NOPAT) by the average invested capital: total equity plus total debt (Damodaran). NOPAT is operating income (EBIT) taxed at the effective tax rate (Income Tax Expense / Income Before Tax, bounded to [0, 1]; set to 0 for a period with a pre-tax loss). Because EBIT is before interest, the return does not depend on how the capital is financed, which makes the ratio a measure of how efficiently a company generates returns for all of its investors. Cash is not deducted from the invested capital: for companies that hold large cash balances, deducting it can shrink the base to near zero or below.
 
 The formula is as follows:
 
 $$
-\text{Return on Invested Capital} = (\text{Net Income} - \text{Paid Dividends}) / \text{Average Invested Capital}
+\text{Return on Invested Capital} = \text{Operating Income}\; x (1 - \text{Effective Tax Rate}) / (\text{Average Total Equity} + \text{Average Total Debt})
 $$
 
-**Also known as:** ROIC.
+ROIC is compared with the weighted average cost of capital (`Toolkit.models.get_weighted_average_cost_of_capital`): a company that earns more than its cost of capital creates value as it invests and grows, one that earns less destroys it. It is less distorted by buybacks and leverage than ROE.
+
+**Also known as:** ROIC, return on capital (ROC).
 
 **Args:**
 
-- <u>dividend_adjusted (bool, optional):</u> Whether to adjust the net operating profit after taxes
-with the dividends paid. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2526,21 +2785,22 @@ pd.DataFrame: Return on invested capital (ROIC) values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["CAT", "DE", "CMI"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-roic_ratios = toolkit.ratios.get_return_on_invested_capital()
+toolkit.ratios.get_return_on_invested_capital()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.4143 | 0.4439 | 0.444  | 0.4336 | 0.5335 |
-| TSLA | 0.1429 | 0.2733 | 0.2403 | 0.0889 | 0.0425 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| CAT | 0.1015 | 0.1127 | 0.1853 | 0.1823 | 0.1392 |
+| CMI | 0.1541 | 0.1392 | 0.051  | 0.1728 | 0.1486 |
+| DE  | 0.0949 | 0.1008 | 0.1439 | 0.1014 | 0.0754 |
 
 ---
 
@@ -2555,7 +2815,9 @@ $$
 \text{Income Quality Ratio} = \text{Cash Flow from Operations} / \text{Net Income}
 $$
 
-**Also known as:** earnings quality, accrual ratio.
+A ratio above 1 means reported earnings are backed by at least as much operating cash flow, which is typical for companies with large depreciation charges. A ratio that stays below 1 for several years, for example because receivables or capitalized costs keep growing, is a common warning sign in earnings-quality screens. The ratio loses meaning, and can flip sign, when net income is close to zero or negative.
+
+**Also known as:** earnings quality ratio, cash flow to net income ratio.
 
 **Args:**
 
@@ -2565,8 +2827,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2584,33 +2849,33 @@ in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NFLX", "DIS"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-income_quality_ratios = toolkit.ratios.get_income_quality_ratio()
+toolkit.ratios.get_income_quality_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 1.0988 | 1.2239 | 1.1397 | 1.2616 | 0.9953 |
-| TSLA | 2.0779 | 1.1701 | 0.8838 | 2.093  | 3.8869 |
+| DIS  | 2.7905 | 1.911  | 4.1912 | 2.8099 | 1.4593 |
+| NFLX | 0.0767 | 0.4511 | 1.3451 | 0.845  | 0.9242 |
 
 ---
 
 ## get_return_on_tangible_assets
 Calculate the return on tangible assets, a financial ratio that measures the amount of profit generated by a company's tangible assets.
 
-The return on tangible assets (ROTA) provides insights into the efficiency with which a company utilizes its tangible assets to generate profits. Tangible assets include physical assets such as buildings, machinery, and equipment. ROTA indicates how well a company can generate profits from its core operational assets. The tangible base is net of liabilities as well as intangible assets (tangible book value), so for a company with few intangibles and much debt, such as Apple, it is small and the ratio well above 1.
+The return on tangible assets (ROTA) provides insights into the efficiency with which a company utilizes its tangible assets to generate profits. It is calculated by dividing net income by the average tangible assets: total assets minus goodwill and other intangible assets. Liabilities are not deducted, so the ratio is the return on the whole tangible asset base however it is financed, like the return on assets but without the acquired goodwill and intangibles that inflate the asset base of acquisitive companies. A ROTA well above the ROA therefore points to a large share of goodwill and intangible assets on the balance sheet.
 
 The formula is as follows:
 
 $$
-\text{Return on Tangible Assets} = \text{Net Income} / (\text{Average Total Assets} - \text{Average Intangible Assets} - \text{Average Total Liabilities})
+\text{Return on Tangible Assets} = \text{Net Income} / (\text{Average Total Assets} - \text{Average Goodwill and Intangible Assets})
 $$
 
 **Also known as:** ROTA, tangible asset return.
@@ -2623,8 +2888,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2641,21 +2909,22 @@ pd.DataFrame: Return on tangible assets (ROTA) values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NUE", "STLD", "RS"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-rota_ratios = toolkit.ratios.get_return_on_tangible_assets()
+toolkit.ratios.get_return_on_tangible_assets()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 1.4744 | 1.7546 | 1.7195 | 1.5741 | 1.7142 |
-| TSLA | 0.2071 | 0.3331 | 0.2759 | 0.1051 | 0.0489 |
+| NUE  | 0.3474 | 0.3215 | 0.1685 | 0.074  | 0.0641 |
+| RS   | 0.2441 | 0.2715 | 0.1831 | 0.1229 | 0.1049 |
+| STLD | 0.3172 | 0.3069 | 0.1778 | 0.1082 | 0.0795 |
 
 ---
 
@@ -2670,6 +2939,10 @@ $$
 \text{Return on Capital Employed} = \text{EBIT} / (\text{Total Assets} - \text{Current Liabilities})
 $$
 
+EBIT is taken as operating income, so non-operating gains and losses such as interest income or investment results do not enter the return.
+
+ROCE is widely used for capital-intensive industries such as oil and gas, mining, utilities and telecoms, because it measures the operating return on all long-term funding, equity and debt, regardless of the capital structure. It is compared with the cost of capital and with peers over a full cycle, since commodity producers show very high ROCE at the top of a price cycle. The capital employed is taken at the end of the period (averaged over the window when trailing is set), so a large acquisition late in the year lowers the ratio before the acquired earnings come in.
+
 **Also known as:** ROCE.
 
 **Args:**
@@ -2680,8 +2953,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2698,21 +2974,23 @@ pd.DataFrame: Return on capital employed (ROCE) values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["XOM", "CVX", "SHEL", "BP"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-roce_ratios = toolkit.ratios.get_return_on_capital_employed()
+toolkit.ratios.get_return_on_capital_employed()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.496  | 0.6139 | 0.5677 | 0.6548 | 0.6855 |
-| TSLA | 0.1556 | 0.25   | 0.1304 | 0.0999 | 0.0524 |
+| BP   | 0.0516 | 0.2192 | 0.1599 | 0.0642 | 0.0781 |
+| CVX  | 0.0757 | 0.1787 | 0.1473 | 0.1332 | 0.0574 |
+| SHEL | 0.0722 | 0.1962 | 0.0989 | 0.1025 | 0.0958 |
+| XOM  | 0.0851 | 0.2134 | 0.143  | 0.1035 | 0.0901 |
 
 ---
 
@@ -2739,8 +3017,11 @@ Earnings before tax is reconstructed from the income statement as Net Income plu
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2759,21 +3040,22 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["SAP.DE", "SIE.DE", "ASML.AS"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-net_income_per_ebt_ratios = toolkit.ratios.get_net_income_per_ebt()
+toolkit.ratios.get_net_income_per_ebt()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.867  | 0.838  | 0.8528 | 0.7591 | 0.8439 |
-| TSLA | 0.8878 | 0.9175 | 1.5002 | 0.7951 | 0.7272 |
+|         |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:--------|-------:|-------:|-------:|-------:|-------:|
+| ASML.AS | 0.8521 | 0.8529 | 0.8452 | 0.8184 | 0.8268 |
+| SAP.DE  | 0.7576 | 0.6123 | 0.7791 | 0.6593 | 0.7087 |
+| SIE.DE  | 0.7387 | 0.576  | 0.7535 | 0.7816 | 0.7935 |
 
 ---
 
@@ -2798,8 +3080,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2816,21 +3101,23 @@ pd.DataFrame: Free cash flow to operating cash flow ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["AMZN", "META", "GOOGL", "MSFT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-fcf_to_ocf_ratios = toolkit.ratios.get_free_cash_flow_operating_cash_flow_ratio()
+toolkit.ratios.get_free_cash_flow_operating_cash_flow_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.8935 | 0.9123 | 0.9009 | 0.9201 | 0.8859 |
-| TSLA | 0.3029 | 0.5129 | 0.3287 | 0.24   | 0.4218 |
+|       |    2021 |    2022 |   2023 |   2024 |   2025 |
+|:------|--------:|--------:|-------:|-------:|-------:|
+| AMZN  | -0.3179 | -0.3613 | 0.3793 | 0.2837 | 0.0552 |
+| GOOGL |  0.7312 |  0.6559 | 0.683  | 0.5807 | 0.4448 |
+| META  |  0.6781 |  0.3773 | 0.6166 | 0.5921 | 0.3982 |
+| MSFT  |  0.7313 |  0.7317 | 0.6791 | 0.6248 | 0.5259 |
 
 ---
 
@@ -2853,8 +3140,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2872,17 +3162,30 @@ values using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["MCO", "SPGI", "MSCI"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-free_cash_flow_margins = toolkit.ratios.get_free_cash_flow_margin()
+toolkit.ratios.get_free_cash_flow_margin()
 ```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| MCO  | 0.3001 | 0.2178 | 0.3178 | 0.3557 | 0.3336 |
+| MSCI | 0.4322 | 0.4547 | 0.4528 | 0.5139 | 0.4942 |
+| SPGI | 0.4294 | 0.2248 | 0.2854 | 0.3917 | 0.3558 |
 
 ---
 
 ## get_tax_burden_ratio
 Calculate the tax burden ratio, which is the ratio of a company's net income to its income before tax, indicating how much of a company's income is retained after taxes.
 
-The tax burden ratio measures the portion of a company's earnings that is paid as taxes. A higher ratio indicates that a larger portion of the income is being retained by the company after taxes. This ratio provides insights into the tax efficiency of the company and its ability to manage its tax liabilities.
+The tax burden ratio measures the portion of a company's pretax earnings that it keeps after taxes; one minus the ratio is roughly the effective tax rate. A higher ratio means a lower tax charge. It is one of the components of the extended (five-step) DuPont analysis. This ratio provides insights into the tax efficiency of the company and its ability to manage its tax liabilities.
 
 The formula is as follows:
 
@@ -2900,8 +3203,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2918,28 +3224,29 @@ pd.DataFrame: Tax burden ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["ACN", "ORCL", "CSCO"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-tax_burden_ratios = toolkit.ratios.get_tax_burden_ratio()
+toolkit.ratios.get_tax_burden_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.867  | 0.838  | 0.8528 | 0.7591 | 0.8439 |
-| TSLA | 0.8723 | 0.9173 | 1.504  | 0.7931 | 0.7188 |
+| ACN  | 0.7619 | 0.7486 | 0.7527 | 0.7497 | 0.7483 |
+| CSCO | 0.7986 | 0.8159 | 0.8234 | 0.8436 | 0.9171 |
+| ORCL | 0.8782 | 0.9317 | 0.8915 | 0.8787 | 0.8662 |
 
 ---
 
 ## get_EBT_to_EBIT
-Calculate the EBT to EBIT, which is the ratio of a company's earnings before tax to its earnings before interest and taxes, indicating how much of a company's earnings are generated before paying interest on debt.
+Calculate the EBT to EBIT ratio, which shows how much of a company's earnings before interest and taxes (EBIT) is left after interest expense.
 
-The EBT to EBIT ratio measures the proportion of a company's earnings that is generated before paying interest and taxes. It provides insights into how a company's operating performance is impacted by interest expenses and tax obligations. A higher ratio indicates that a larger portion of the company's earnings is generated from its core operations before considering interest payments and taxes.
+A ratio close to 1 means interest takes little of the operating profit; a lower ratio means a heavier interest load. Taxes play no part in the ratio. Unlike `get_interest_burden_ratio`, which uses the reported income before tax and operating income, both figures here are rebuilt from net income, income tax expense and interest expense.
 
 The formula is as follows:
 
@@ -2957,8 +3264,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -2975,36 +3285,37 @@ pd.DataFrame: EBT to EBIT ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["HLT", "MAR", "CHH"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ebt_to_ebit_ratios = toolkit.ratios.get_EBT_to_EBIT()
+toolkit.ratios.get_EBT_to_EBIT()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.9764 | 0.976  | 0.9666 | 1      | 1      |
-| TSLA | 0.9438 | 0.9863 | 0.9846 | 0.9624 | 0.9392 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| CHH | 0.8894 | 0.9085 | 0.8403 | 0.819  | 0.8331 |
+| HLT | 0.5865 | 0.8067 | 0.7838 | 0.7577 | 0.7697 |
+| MAR | 0.7375 | 0.8854 | 0.8567 | 0.8193 | 0.8075 |
 
 ---
 
 ## get_EBIT_to_revenue
 Calculate the EBIT per Revenue, which is the ratio of a company's earnings before interest and taxes to its revenue, indicating how much profit a company generates from its operations before paying interest on debt and taxes on its earnings.
 
-The EBIT to Revenue ratio measures the company's ability to generate profit from its core operations relative to its revenue. It provides insights into the operational efficiency and profitability of the company, as it excludes the impact of interest expenses and taxes on its earnings. A higher ratio indicates that a larger portion of the company's revenue is converted into operating profit.
+The EBIT to Revenue ratio measures the company's ability to generate profit before financing costs and taxes relative to its revenue. EBIT is rebuilt from the bottom of the income statement (net income plus income tax expense plus interest expense), the same EBIT as in `get_EBT_to_EBIT`. It therefore includes non-operating income and expenses such as interest income, investment gains and other income, which is why it differs from the operating margin (`get_operating_margin`), which divides the reported operating income by revenue. A higher ratio indicates that a larger portion of the company's revenue is converted into profit before interest and taxes.
 
 The formula is as follows:
 
 $$
-\text{EBIT to Revenue} = \text{EBIT} / \text{Revenue}
+\text{EBIT to Revenue} = (\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense}) / \text{Revenue}
 $$
 
-**Also known as:** EBIT margin, operating income to revenue.
+**Also known as:** EBIT margin.
 
 **Args:**
 
@@ -3014,8 +3325,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3032,21 +3346,22 @@ pd.DataFrame: EBIT to Revenue ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["LMT", "GD", "NOC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ebit_to_revenue_ratios = toolkit.ratios.get_EBIT_to_revenue()
+toolkit.ratios.get_EBIT_to_revenue()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.3058 | 0.3095 | 0.307  | 0.3158 | 0.3189 |
-| TSLA | 0.1227 | 0.1707 | 0.1049 | 0.0954 | 0.0586 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| GD  | 0.1119 | 0.1123 | 0.1037 | 0.1034 | 0.1031 |
+| LMT | 0.1211 | 0.1107 | 0.1334 | 0.1021 | 0.0938 |
+| NOC | 0.2662 | 0.1733 | 0.0736 | 0.1374 | 0.1366 |
 
 ---
 
@@ -3059,6 +3374,8 @@ $$
 \text{Cash Tax Rate} = \text{Income Taxes Paid} / \text{Income Before Tax}
 $$
 
+The cash tax rate shows the taxes a company actually paid, which can differ for years from the tax expense in the income statement because of deferred taxes, prepayments and settlements of earlier years. Analysts compare it with the effective tax rate to see whether reported earnings rely on taxes that are deferred rather than saved. When the data has no income taxes paid for a year, the rate shows as 0, which should be read as missing, not as a company that paid no tax. A period with zero or negative income before tax has no meaningful tax rate and is NaN.
+
 **Also known as:** cash effective tax rate.
 
 **Args:**
@@ -3069,8 +3386,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3089,21 +3409,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["PG", "PEP", "COST"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-cash_tax_rates = toolkit.ratios.get_cash_tax_rate()
+toolkit.ratios.get_cash_tax_rate()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.2324 | 0.1643 | 0.1642 | 0.2114 | 0.3267 |
-| TSLA | 0.0884 | 0.0877 | 0.1122 | 0.1481 | 0      |
+| COST | 0.2286 | 0.2474 | 0.2632 | 0.2381 | 0.2696 |
+| PEP  | 0.1968 | 0.2584 | 0.2218 | 0.2565 | 0.3012 |
+| PG   | 0.217  | 0.2122 | 0.2331 | 0.2326 | 0.2258 |
 
 ---
 
@@ -3118,6 +3439,8 @@ $$
 \text{Tax Rate Divergence} = \text{Cash Tax Rate} - \text{Effective Tax Rate}
 $$
 
+Because the divergence is the cash tax rate minus the effective tax rate, a year without reported income taxes paid shows a divergence equal to minus the effective tax rate (-0.27 against an effective rate of 0.27), so check `get_cash_tax_rate` for zeros before reading a large negative value as aggressive tax deferral. The measure is unstable when income before tax is small and NaN when it is zero or negative.
+
 **Also known as:** cash-accrual tax gap.
 
 **Args:**
@@ -3128,8 +3451,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3148,21 +3474,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["AAPL", "HD", "V"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-tax_rate_divergences = toolkit.ratios.get_tax_rate_divergence()
+toolkit.ratios.get_tax_rate_divergence()
 ```
 
 Which returns:
 
-|      |    2021 |   2022 |   2023 |    2024 |    2025 |
-|:-----|--------:|-------:|-------:|--------:|--------:|
-| AAPL |  0.0994 | 0.0023 | 0.017  | -0.0295 |  0.1706 |
-| TSLA | -0.0218 | 0.0052 | 0.6137 | -0.0562 | -0.2696 |
+|      |    2021 |   2022 |    2023 |    2024 |   2025 |
+|:-----|--------:|-------:|--------:|--------:|-------:|
+| AAPL |  0.0994 | 0.0023 |  0.017  | -0.0295 | 0.1706 |
+| HD   |  0.0092 | 0.0028 |  0.0121 | -0.0488 | 0.0216 |
+| V    | -0.0461 | 0.031  | -0.0157 |  0.067  | 0.0167 |
 
 ---
 
@@ -3178,8 +3505,11 @@ Calculates and collects all Solvency Ratios based on the provided data.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3215,16 +3545,16 @@ Which returns:
 | Debt-to-Assets Ratio              |   0.3889 |   0.3756 |   0.3515 |   0.3262 |   0.3128 |
 | Asset Coverage Ratio              |   1.7663 |   1.6597 |   1.8001 |   1.7594 |   1.9038 |
 | Debt-to-Equity Ratio              |   2.1639 |   2.6145 |   1.9942 |   2.0906 |   1.5241 |
-| Debt Service Coverage Ratio       |   0.8683 |   0.7757 |   0.7866 |   0.6985 |   0.8033 |
+| Debt Service Coverage Ratio       |   6.5852 |   5.4299 |   6.3739 |   6.4496 |   7.1203 |
 | Equity Multiplier                 |   5.255  |   6.1862 |   6.252  |   6.0251 |   5.5418 |
-| Free Cash Flow Yield              |   0.0318 |   0.0535 |   0.0331 |   0.0284 |   0.0243 |
+| Free Cash Flow Yield              |   0.031  |   0.0525 |   0.0327 |   0.0282 |   0.0242 |
 | Net-Debt to EBITDA Ratio          |   0.8449 |   0.8337 |   0.7468 |   0.6618 |   0.5281 |
 | Gross Debt to EBITDA Ratio        |   1.1355 |   1.0149 |   0.985  |   0.8841 |   0.7764 |
 | Cash Flow Coverage Ratio          |   0.7621 |   0.922  |   0.892  |   0.9932 |   0.992  |
 | CAPEX Coverage Ratio              |   9.3855 |  11.4075 |  10.087  |  12.5176 |   8.7678 |
 | Dividend CAPEX Coverage Ratio     |   4.0716 |   4.781  |   4.2543 |   4.7913 |   3.9623 |
 | Debt-to-Capital Ratio             |   0.6839 |   0.7233 |   0.666  |   0.6764 |   0.6038 |
-| Preferred Dividend Coverage Ratio | inf      | inf      | inf      | inf      | inf      |
+| Preferred Dividend Coverage Ratio | nan      | nan      | nan      | nan      | nan      |
 | Interest Paid to Expense Ratio    |   1.0159 |   0.9775 |   0.9669 | nan      | nan      |
 
 ---
@@ -3250,8 +3580,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3268,21 +3601,22 @@ pd.DataFrame: Debt to assets ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NEE", "DUK", "SO"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-debt_to_assets_ratios = toolkit.ratios.get_debt_to_assets_ratio()
+toolkit.ratios.get_debt_to_assets_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.3889 | 0.3756 | 0.3515 | 0.3262 | 0.3128 |
-| TSLA | 0.1428 | 0.0698 | 0.0898 | 0.1116 | 0.0608 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| DUK | 0.4025 | 0.4206 | 0.4548 | 0.4574 | 0.4642 |
+| NEE | 0.3891 | 0.4088 | 0.4125 | 0.433  | 0.4495 |
+| SO  | 0.4349 | 0.4384 | 0.4557 | 0.4565 | 0.4757 |
 
 ---
 
@@ -3305,8 +3639,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3322,10 +3659,23 @@ pd.DataFrame: Asset coverage ratio values.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["KMI", "WMB", "OKE"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-asset_coverage_ratios = toolkit.ratios.get_asset_coverage_ratio()
+toolkit.ratios.get_asset_coverage_ratio()
 ```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| KMI | 1.9926 | 2.0029 | 2.0193 | 2.0582 | 2.1545 |
+| OKE | 1.5362 | 1.6077 | 1.8371 | 1.7765 | 1.8112 |
+| WMB | 1.5739 | 1.6223 | 1.6147 | 1.649  | 1.6245 |
 
 ---
 
@@ -3340,6 +3690,8 @@ $$
 \text{Debt to Equity Ratio} = \text{Total Debt} / \text{Total Equity}
 $$
 
+The debt to equity ratio is compared within an industry, since utilities, real estate and companies with a financing arm (car makers, machinery makers) carry far more debt than software companies. Equity is a book value, so large buybacks or accumulated losses can make it small or negative, and the ratio then becomes extreme or negative without saying anything about the debt load; the debt to capital ratio (`get_debt_to_capital_ratio`) and net debt to EBITDA (`get_net_debt_to_ebitda_ratio`) are more robust in those cases.
+
 **Also known as:** D/E ratio, leverage ratio, gearing ratio.
 
 **Args:**
@@ -3350,8 +3702,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3368,36 +3723,39 @@ pd.DataFrame: Debt to equity ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["CAT", "DE", "CNH"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-debt_to_equity_ratios = toolkit.ratios.get_debt_to_equity_ratio()
+toolkit.ratios.get_debt_to_equity_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 2.1639 | 2.6145 | 1.9942 | 2.0906 | 1.5241 |
-| TSLA | 0.2809 | 0.1252 | 0.1505 | 0.1849 | 0.1011 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| CAT | 2.288  | 2.3279 | 1.9422 | 1.9703 | 2.0326 |
+| CNH | 4.5462 | 3.3243 | 3.3897 | 3.4969 | 3.4548 |
+| DE  | 2.6435 | 2.5643 | 2.9102 | 2.8555 | 2.4584 |
 
 ---
 
 ## get_interest_coverage_ratio
 Calculate the interest coverage ratio, a solvency ratio that measures a company's ability to pay its interest expenses on outstanding debt.
 
-The interest coverage ratio evaluates a company's ability to meet its interest obligations from its operating income. A higher ratio indicates a company's stronger ability to cover its interest payments using its earnings, implying lower financial risk. Conversely, a lower ratio suggests a company may have difficulty meeting its interest obligations and could be at higher risk of default.
+The interest coverage ratio evaluates a company's ability to meet its interest obligations from its earnings before interest and taxes (EBIT), taken as operating income, following the CFA Institute definition. A higher ratio indicates a company's stronger ability to cover its interest payments using its earnings, implying lower financial risk. Conversely, a lower ratio suggests a company may have difficulty meeting its interest obligations and could be at higher risk of default.
 
 The formula is as follows:
 
 $$
-\text{Interest Coverage Ratio} = (\text{Operating Income} + \text{Depreciation and Amortization}) / \text{Interest Expense}
+\text{Interest Coverage Ratio} = \text{EBIT} / \text{Interest Expense}
 $$
 
-**Also known as:** TIE, times interest earned.
+Lenders and rating agencies use interest coverage to judge how much room a company has before its earnings no longer cover its interest bill, and loan covenants often set a minimum. Some covenants use EBITDA instead of EBIT, which gives a higher ratio, most of all for capital-intensive companies. The ratio is NaN when no interest expense is reported, which is often a gap in the reported data rather than an absence of debt.
+
+**Also known as:** times interest earned (TIE), EBIT interest coverage.
 
 **Args:**
 
@@ -3407,8 +3765,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3425,21 +3786,22 @@ pd.DataFrame: Interest coverage ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["MKC", "CPB", "HSY"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-interest_coverage_ratios = toolkit.ratios.get_interest_coverage_ratio()
+toolkit.ratios.get_interest_coverage_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |     2024 |    2025 |
-|:-----|--------:|--------:|--------:|---------:|--------:|
-| AAPL | 45.4567 | 44.538  | 31.9908 | inf      | inf     |
-| TSLA | 25.4286 | 90.0471 | 86.9103 |  35.5543 |  31.074 |
+|     |    2021 |    2022 |    2023 |    2024 |   2025 |
+|:----|--------:|--------:|--------:|--------:|-------:|
+| CPB |  6.2714 |  6.2381 |  6.9787 |  4.743  | 3.4116 |
+| HSY | 15.7396 | 16.1375 | 15.8557 | 16.6262 | 6.8308 |
+| MKC |  7.4312 |  5.7921 |  4.6254 |  5.0635 | 5.4577 |
 
 ---
 
@@ -3454,6 +3816,8 @@ $$
 \text{Equity Multiplier} = \text{Average Total Assets} / \text{Average Total Equity}
 $$
 
+The equity multiplier is the leverage component of the DuPont analysis: return on equity equals return on assets times the equity multiplier. Banks run multipliers of around 10 or more, which is why their small returns on assets translate into returns on equity in the teens. For other companies a rising multiplier can come from new debt but also from buybacks that shrink equity.
+
 **Also known as:** financial leverage multiplier.
 
 **Args:**
@@ -3464,8 +3828,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3482,34 +3849,37 @@ pd.DataFrame: Equity multiplier values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["HSBA.L", "BNP.PA", "SAN.MC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-equity_multipliers = toolkit.ratios.get_equity_multiplier()
+toolkit.ratios.get_equity_multiplier()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 5.255  | 6.1862 | 6.252  | 6.0251 | 5.5418 |
-| TSLA | 2.0679 | 1.8646 | 1.7255 | 1.6657 | 1.6601 |
+|        |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-------|--------:|--------:|--------:|--------:|--------:|
+| BNP.PA | 23.2121 | 23.2436 | 21.5821 | 20.1378 | 20.6444 |
+| HSBA.L | 14.43   | 15.1159 | 15.8512 | 15.7336 | 16.5358 |
+| SAN.MC | 16.4782 | 17.1112 | 17.4988 | 17.1772 | 16.8333 |
 
 ---
 
 ## get_debt_service_coverage_ratio
-Calculate the debt service coverage ratio, a solvency ratio that measures a company's ability to service its debt with its net operating income.
+Calculate the debt service coverage ratio, a solvency ratio that measures how well a company's operating earnings cover its debt service: the interest of the period and the principal due within a year.
 
-The debt service coverage ratio provides insights into a company's ability to meet its debt obligations from its operating income. It is especially important for companies with significant debt obligations, as a lower ratio indicates higher financial risk and potential difficulties in servicing debt payments.
+The debt service coverage ratio compares EBITDA (operating income plus depreciation and amortization) with the total debt service, the interest expense plus the short-term debt on the balance sheet, which includes the current portion of long-term debt. A ratio below 1 means the operating earnings do not cover the debt service, so the company depends on refinancing or cash reserves; lenders often require 1.25 or more. A company without short-term debt and interest has no debt service, which gives NaN.
 
 The formula is as follows:
 
 $$
-\text{Debt Service Coverage Ratio} = \text{Operating Income} / \text{Total Current Liabilities}
+\text{Debt Service Coverage Ratio} = (\text{Operating Income} + \text{Depreciation and Amortization}) / (\text{Interest Expense} + \text{Short Term Debt}\; x \;\text{Window Years})
 $$
+
+The short-term debt is the principal due over the next year, so it is scaled to the length of the window the earnings and interest cover: a quarter (0.25) with quarterly data, a year with yearly data and the trailing multiple of either with trailing (e.g. trailing=4 on quarterly data compares a year of earnings with a year of principal).
 
 **Also known as:** DSCR, debt service ratio.
 
@@ -3521,8 +3891,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3539,21 +3912,22 @@ pd.DataFrame: Debt service coverage ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["WM", "RSG", "WCN"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-debt_service_coverage_ratios = toolkit.ratios.get_debt_service_coverage_ratio()
+toolkit.ratios.get_debt_service_coverage_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.8683 | 0.7757 | 0.7866 | 0.6985 | 0.8033 |
-| TSLA | 0.331  | 0.5113 | 0.3093 | 0.2455 | 0.1373 |
+|     |    2021 |    2022 |   2023 |   2024 |   2025 |
+|:----|--------:|--------:|-------:|-------:|-------:|
+| RSG | 10.7809 |  4.5724 | 3.0393 | 3.5467 | 4.4872 |
+| WCN |  9.8794 | 10.422  | 7.8257 | 7.451  | 7.4022 |
+| WM  |  4.7698 |  7.0556 | 7.223  | 3.3464 | 3.2914 |
 
 ---
 
@@ -3568,11 +3942,15 @@ $$
 \text{Free Cash Flow Yield Ratio} = \text{Free Cash Flow} / \text{Market Capitalization}
 $$
 
+The free cash flow yield is the cash a company generates for its shareholders as a share of what the market pays for them, and is often set against bond yields or the dividend yield to judge how much room there is for dividends and buybacks. Free cash flow swings with capital expenditure and working capital, so a single year can mislead, and a high yield can also mean the market expects free cash flow to fall.
+
 **Also known as:** FCF yield.
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to use daily data for the calculation. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -3580,8 +3958,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -3598,21 +3980,22 @@ pd.DataFrame: Free cash flow yield ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["MO", "PM", "BTI"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-free_cash_flow_yield_ratios = toolkit.ratios.get_free_cash_flow_yield()
+toolkit.ratios.get_free_cash_flow_yield()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0318 | 0.0535 | 0.0331 | 0.0284 | 0.0243 |
-| TSLA | 0.0029 | 0.0176 | 0.005  | 0.0025 | 0.0039 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| BTI | 0.1492 | 0.1348 | 0.1953 | 0.1505 | 0.0614 |
+| MO  | 0.0942 | 0.0976 | 0.1268 | 0.0959 | 0.0938 |
+| PM  | 0.0758 | 0.0619 | 0.054  | 0.0575 | 0.0427 |
 
 ---
 
@@ -3627,6 +4010,8 @@ $$
 \text{Net Debt to EBITDA Ratio} = \text{Net Debt} / \text{EBITDA}
 $$
 
+Net debt to EBITDA is the leverage measure lenders, rating agencies and loan covenants use most: it reads as the number of years of EBITDA needed to repay the debt net of cash. What counts as high depends on how stable the earnings are, so utilities and telecoms carry more than cyclical companies. A negative value means the company holds more cash than debt, and the ratio becomes meaningless when EBITDA is close to zero or negative.
+
 **Args:**
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
@@ -3635,8 +4020,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3653,21 +4041,22 @@ pd.DataFrame: Net debt to EBITDA ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["VZ", "TMUS", "CHTR"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-net_debt_to_ebitda_ratios = toolkit.ratios.get_net_debt_to_ebitda_ratio()
+toolkit.ratios.get_net_debt_to_ebitda_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL |  0.8449 |  0.8337 |  0.7468 |  0.6618 |  0.5281 |
-| TSLA | -0.9225 | -0.6108 | -0.5034 | -0.2022 | -0.7747 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| CHTR | 4.5163 | 4.5991 | 4.5983 | 4.3482 | 4.3822 |
+| TMUS | 4.3904 | 5.3127 | 4.0131 | 3.524  | 3.6175 |
+| VZ   | 3.6331 | 3.6523 | 3.7214 | 3.3851 | 3.8134 |
 
 ---
 
@@ -3690,8 +4079,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3707,10 +4099,23 @@ pd.DataFrame: Gross debt to EBITDA ratio values.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["ORCL", "IBM", "AVGO"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-gross_debt_to_ebitda_ratios = toolkit.ratios.get_gross_debt_to_ebitda_ratio()
+toolkit.ratios.get_gross_debt_to_ebitda_ratio()
 ```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AVGO | 2.766  | 2.0812 | 1.9782 | 2.8785 | 1.9013 |
+| IBM  | 4.1515 | 4.1625 | 4.2157 | 3.9615 | 3.8345 |
+| ORCL | 5.4    | 4.7123 | 4.3955 | 4.3646 | 5.1938 |
 
 ---
 
@@ -3733,8 +4138,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3751,21 +4159,22 @@ pd.DataFrame: Cash flow coverage ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["MCD", "SBUX", "YUM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-cash_flow_coverage_ratios = toolkit.ratios.get_cash_flow_coverage_ratio()
+toolkit.ratios.get_cash_flow_coverage_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.7621 | 0.922  | 0.892  | 0.9932 | 0.992  |
-| TSLA | 1.2957 | 2.5616 | 1.3847 | 1.0954 | 1.7606 |
+| MCD  | 0.1852 | 0.1517 | 0.181  | 0.1819 | 0.1925 |
+| SBUX | 0.2537 | 0.1847 | 0.2443 | 0.2362 | 0.1784 |
+| YUM  | 0.1407 | 0.1127 | 0.1332 | 0.1375 | 0.1688 |
 
 ---
 
@@ -3790,8 +4199,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3808,21 +4220,22 @@ pd.DataFrame: Capital expenditure coverage ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["TSM", "INTC", "MU"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-capex_coverage_ratios = toolkit.ratios.get_capex_coverage_ratio()
+toolkit.ratios.get_capex_coverage_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |    2022 |    2023 |    2024 |   2025 |
-|:-----|-------:|--------:|--------:|--------:|-------:|
-| AAPL | 9.3855 | 11.4075 | 10.087  | 12.5176 | 8.7678 |
-| TSLA | 1.4346 |  2.053  |  1.4896 |  1.3157 | 1.7294 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| INTC | 1.449  | 0.6161 | 0.4455 | 0.3461 | 0.6621 |
+| MU   | 1.2431 | 1.2581 | 0.2031 | 1.0144 | 1.1052 |
+| TSM  | 1.3093 | 1.4781 | 1.2999 | 1.9102 | 1.7738 |
 
 ---
 
@@ -3847,8 +4260,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3865,21 +4281,22 @@ pd.DataFrame: Dividend paid and capex coverage ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["XOM", "CVX", "COP"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-capex_dividend_coverage_ratios = toolkit.ratios.get_capex_dividend_coverage_ratio()
+toolkit.ratios.get_capex_dividend_coverage_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 4.0716 |  4.781 | 4.2543 | 4.7913 | 3.9623 |
-| TSLA | 1.4346 |  2.053 | 1.4896 | 1.3157 | 1.7294 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| COP | 2.2122 | 1.7824 | 1.1862 | 1.2766 | 1.1963 |
+| CVX | 1.5968 | 2.1621 | 1.3108 | 1.1148 | 1.1276 |
+| XOM | 1.7826 | 2.303  | 1.5021 | 1.3417 | 1.14   |
 
 ---
 
@@ -3904,8 +4321,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3922,21 +4342,22 @@ pd.DataFrame: Debt to capital ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["BMY", "AMGN", "GILD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-debt_to_capital_ratios = toolkit.ratios.get_debt_to_capital_ratio()
+toolkit.ratios.get_debt_to_capital_ratio()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.6839 | 0.7233 | 0.666  | 0.6764 | 0.6038 |
-| TSLA | 0.2193 | 0.1113 | 0.1308 | 0.156  | 0.0918 |
+| AMGN | 0.8325 | 0.9141 | 0.912  | 0.9109 | 0.8631 |
+| BMY  | 0.5588 | 0.5668 | 0.5844 | 0.7575 | 0.7181 |
+| GILD | 0.559  | 0.5433 | 0.5234 | 0.5812 | 0.5244 |
 
 ---
 
@@ -3959,8 +4380,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -3970,8 +4394,9 @@ pd.DataFrame: Preferred dividend coverage ratio values.
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-- This ratio is only meaningful for companies that have preferred stock outstanding;
-it will be zero-division/NaN for companies without preferred dividends.
+- This ratio is only meaningful for companies that have preferred stock
+outstanding. It is NaN when no preferred dividends are reported separately in
+the cash flow statement, which also happens for some companies that do pay them.
 
 **As an example:**
 
@@ -3979,20 +4404,22 @@ it will be zero-division/NaN for companies without preferred dividends.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["WFC"],
+    ["PNC", "USB", "COF"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-preferred_dividend_coverage_ratios = toolkit.ratios.get_preferred_dividend_coverage_ratio()
+toolkit.ratios.get_preferred_dividend_coverage_ratio()
 ```
 
 Which returns:
 
 |     |    2021 |    2022 |    2023 |    2024 |    2025 |
 |:----|--------:|--------:|--------:|--------:|--------:|
-| WFC | 17.2763 | 11.2664 | 15.7599 | 16.9299 | 19.5543 |
+| COF | 43.6679 | 30.8947 | 20.0965 | 19.4956 |  8.6548 |
+| PNC | 23.2146 | 18.9635 | 12.2926 | 15.6136 | 21.3506 |
+| USB | 24.6916 | 18.398  | 14.8123 | 16.5983 | 21.5389 |
 
 ---
 
@@ -4007,6 +4434,8 @@ $$
 \text{Interest Paid to Expense Ratio} = \text{Interest Paid} / \text{Interest Expense}
 $$
 
+A common reason for interest paid to exceed the interest expense is capitalized interest: companies building plants, fabs or networks add part of their interest to the cost of the asset, so the income statement shows less interest than was paid. When the data has no interest paid for a year, the ratio shows as 0, which means the figure is missing, not that no interest was paid.
+
 **Also known as:** cash interest coverage, interest cash conversion.
 
 **Args:**
@@ -4017,8 +4446,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4035,21 +4467,22 @@ pd.DataFrame: Interest paid to interest expense ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["INTC", "MU", "HD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-interest_paid_to_expense_ratios = toolkit.ratios.get_interest_paid_to_expense_ratio()
+toolkit.ratios.get_interest_paid_to_expense_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |     2024 |   2025 |
-|:-----|-------:|-------:|-------:|---------:|-------:|
-| AAPL | 1.0159 | 0.9775 | 0.9669 | nan      |    nan |
-| TSLA | 0.717  | 0.7958 | 0.8077 |   0.7914 |      0 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| HD   | 0.9421 | 0.8961 | 0.931  | 0.9474 | 0.9971 |
+| INTC | 0.9129 | 0.9254 | 0.6982 | 1.1978 | 1.0137 |
+| MU   | 0.9344 | 0.8148 | 0.8325 | 0.895  | 0.8763 |
 
 ---
 
@@ -4058,7 +4491,8 @@ Calculates and collects all Valuation Ratios based on the provided data.
 
 **Args:**
 
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculations. Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income in the
+earnings-based ratios. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4066,8 +4500,11 @@ Calculates and collects all Valuation Ratios based on the provided data.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4100,15 +4537,15 @@ Which returns:
 
 |                             |         2021 |         2022 |         2023 |         2024 |         2025 |
 |:----------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
-| EV-to-Sales                 |  8.2741      |  5.5609      |  8.0923      | 10.0244      |  9.9589      |
-| EV-to-EBIT                  | 27.0608      | 17.969       | 26.3593      | 31.7437      | 31.2254      |
-| EV-to-EBITDA                | 25.1745      | 16.798       | 24.6516      | 29.1092      | 28.6326      |
-| EV-to-Operating-Cash-Flow   | 29.0932      | 17.9518      | 28.0585      | 33.1479      | 37.1766      |
+| EV-to-Sales                 |  8.3883      |  5.5928      |  8.1056      | 10.0052      |  9.9405      |
+| EV-to-EBIT                  | 28.1653      | 18.4649      | 27.1806      | 31.7522      | 31.0925      |
+| EV-to-EBITDA                | 25.522       | 16.8942      | 24.6921      | 29.0536      | 28.5797      |
+| EV-to-Operating-Cash-Flow   | 29.4949      | 18.0546      | 28.1046      | 33.0846      | 37.1078      |
 | Tangible Asset Value        |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |  5.695e+10   |  7.3733e+10  |
 | Net Current Asset Value     | -1.53076e+11 | -1.66678e+11 | -1.46871e+11 | -1.55043e+11 | -1.37551e+11 |
-| EV-to-Free-Cash-Flow        | 32.5627      | 19.6766      | 31.1463      | 36.026       | 41.9626      |
-| Buyback Yield               |  0.029       |  0.0429      |  0.0258      |  0.0248      |  0.0223      |
-| Shareholder Yield           |  0.034       |  0.05        |  0.0308      |  0.0288      |  0.0261      |
+| EV-to-Free-Cash-Flow        | 33.0122      | 19.7894      | 31.1974      | 35.9571      | 41.885       |
+| Buyback Yield               |  0.0283      |  0.0421      |  0.0255      |  0.0246      |  0.0222      |
+| Shareholder Yield           |  0.0332      |  0.0491      |  0.0304      |  0.0286      |  0.026       |
 | SBC-Adjusted Free Cash Flow |  8.5047e+10  |  1.02405e+11 |  8.8751e+10  |  9.7119e+10  |  8.5904e+10  |
 
 ---
@@ -4121,14 +4558,17 @@ The earnings per share (EPS) is a widely used financial metric that helps invest
 The formula is as follows:
 
 $$
-\text{Earnings per Share} (\text{EPS}) = (\text{Net Income} - | \text{Preferred Dividends Paid} |) / \text{Weighted Average Shares}
+\text{Earnings per Share} (\text{EPS}) = (\text{Net Income} - | \text{Preferred Dividends Paid} |) / \text{Weighted Average} (\text{Diluted}) \text{Shares}
 $$
+
+The preferred dividends are only deducted when include_dividends is True; with the default, EPS is net income divided by the weighted average (diluted) shares.
 
 **Also known as:** EPS, net income per share.
 
 **Args:**
 
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the EPS calculation. Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct the preferred dividends paid from net income.
+Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted earnings per share. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4136,8 +4576,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4154,21 +4597,22 @@ pd.DataFrame: Earnings per share (EPS) values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["V", "MA", "AXP"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-eps_ratios = toolkit.ratios.get_earnings_per_share()
+toolkit.ratios.get_earnings_per_share()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 5.614  | 6.1132 | 6.1341 | 6.0836 | 7.465  |
-| TSLA | 1.6341 | 3.6213 | 4.3067 | 2.0383 | 1.0754 |
+|     |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:----|--------:|--------:|--------:|--------:|--------:|
+| AXP | 10.0215 |  9.8404 | 11.212  | 14.0182 | 15.375  |
+| MA  |  8.7571 | 10.2266 | 11.834  | 13.8878 | 16.6682 |
+| V   |  5.6266 |  7.0023 |  8.2844 |  9.7304 | 10.0982 |
 
 ---
 
@@ -4194,8 +4638,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4214,21 +4661,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["MCK", "COR", "CAH"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-revenue_per_share = toolkit.ratios.get_revenue_per_share()
+toolkit.ratios.get_revenue_per_share()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | 21.691  | 24.1536 | 24.2393 | 25.3785 | 27.7354 |
-| TSLA | 15.8957 | 23.4423 | 27.7864 | 27.9274 | 26.8784 |
+|     |     2021 |     2022 |     2023 |     2024 |     2025 |
+|:----|---------:|---------:|---------:|---------:|---------:|
+| CAH |  552.609 |  649.914 |  782.363 |  918.328 |  919.744 |
+| COR | 1026.5   | 1129.62  | 1281.45  | 1467.71  | 1646.05  |
+| MCK | 1712.95  | 1945.93  | 2303.89  | 2802.9   | 3250.85  |
 
 ---
 
@@ -4243,12 +4691,17 @@ $$
 \text{Price to Earnings Ratio} (P / E) = \text{Share Price} / \text{Earnings per Share} (\text{EPS})
 $$
 
+The P/E is compared with the company's own history, its peers and the market, and is read together with growth: a high P/E is the market paying for expected growth. For cyclical companies it is misleading at the extremes, lowest at peak earnings and highest in a downturn, so analysts often use normalized or forward earnings (`get_forward_price_earnings_ratio`). A negative or tiny EPS gives a negative or extreme P/E that should be left out of averages.
+
 **Also known as:** PE ratio, P/E ratio, price-earnings ratio, earnings multiple.
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
+Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4256,8 +4709,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -4274,21 +4731,22 @@ pd.DataFrame: Price earnings ratio (P/E) values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["COST", "WMT", "TGT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-pe_ratio = toolkit.ratios.get_price_to_earnings_ratio()
+toolkit.ratios.get_price_to_earnings_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |     2024 |     2025 |
-|:-----|--------:|--------:|--------:|---------:|---------:|
-| AAPL |  30.896 | 20.881  | 31.0086 |  40.8672 |  36.3188 |
-| TSLA | 215.568 | 34.0154 | 57.6961 | 198.126  | 418.189  |
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| COST | 50.3807 | 34.7418 | 46.6264 | 55.317  | 47.3602 |
+| TGT  | 16.4167 | 24.9131 | 15.9285 | 15.2594 | 12.0203 |
+| WMT  | 29.6837 | 33.1905 | 27.4728 | 37.566  | 40.823  |
 
 ---
 
@@ -4300,8 +4758,12 @@ The price-to-earnings growth (PEG) ratio provides a more comprehensive valuation
 The formula is as follows:
 
 $$
-\text{Price Earnings to Growth Ratio} (\text{PEG}) = \text{Price Earnings Ratio} (P / E) / \text{Growth Rate}
+\text{Price Earnings to Growth Ratio} (\text{PEG}) = \text{Price Earnings Ratio} (P / E) / (\text{EPS Growth Rate} \cdot 100)
 $$
+
+The growth rate is the growth of the (diluted) earnings per share on the previous year, or of EBITDA when use_ebitda_growth_rate is True, multiplied by 100 so that it enters in percent. With quarterly data both the P/E and the growth use trailing twelve month figures, and the growth compares them with those of four quarters earlier.
+
+A PEG around 1 is the traditional rule of thumb for a growth stock priced in line with its growth. This historical PEG uses a single period of earnings growth, so it swings widely, explodes when earnings barely grow and turns negative when they fall, which is why practitioners prefer forward or multi-year growth (`get_forward_price_earnings_growth_ratio`) and leave negative values out of comparisons.
 
 **Also known as:** PEG ratio, price earnings growth.
 
@@ -4309,7 +4771,8 @@ $$
 
 - <u>use_ebitda_growth_rate (bool, optional):</u> Whether to use EBITDA growth rate for the calculation.
 Defaults to False.
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income, in both
+the P/E and the EPS growth (not in the EBITDA growth). Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4333,21 +4796,22 @@ pd.DataFrame: Price earnings to growth (PEG) ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["MA", "ADP", "COST"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-peg_ratio = toolkit.ratios.get_price_to_earnings_growth_ratio()
+toolkit.ratios.get_price_to_earnings_growth_ratio()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |    2023 |     2024 |    2025 |
-|:-----|-------:|-------:|--------:|---------:|--------:|
-| AAPL | 0.4327 | 2.3488 | 91.2018 | -49.838  |  1.5992 |
-| TSLA | 0.322  | 0.2797 |  3.0479 |  -3.7616 | -8.8524 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| ADP  | 6.2692 | 2.2192 | 1.6493 | 2.9504 | 2.6649 |
+| COST | 2.016  | 2.0916 | 6.0241 | 3.2539 | 4.7694 |
+| MA   | 1.0968 | 2.0264 | 2.2927 | 2.1854 | 1.7108 |
 
 ---
 
@@ -4356,7 +4820,13 @@ Calculate the forward price earnings ratio (forward P/E), a valuation ratio that
 
 The formula is as follows:
 
-Forward P/E = Stock Price / Estimated EPS Average
+$$
+\text{Forward}\; P / E = \text{Latest Stock Price} / \text{Estimated EPS Average}
+$$
+
+Where the latest stock price is the most recent traded close, used for every estimate period. On quarterly data the estimated EPS of a period is the sum of the estimates of that quarter and the next three, so the ratio compares the price with a year of estimated earnings, as it does with yearly data.
+
+The forward P/E is the standard valuation multiple in equity research because prices look ahead, but it rests on consensus estimates, which tend to be revised as results come in. Consensus EPS is usually on the adjusted basis companies guide on, while the trailing P/E (`get_price_to_earnings_ratio`) uses reported diluted EPS, so for companies with large amortization or restructuring charges the forward P/E looks much lower than the trailing one without any change in earnings power.
 
 Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
 
@@ -4373,7 +4843,10 @@ values. Defaults to False.
 
 **Returns:**
 
-pd.DataFrame: Forward P/E ratio for each period covered by the analyst estimates.
+pd.DataFrame: The current share price divided by the consensus EPS estimate of each
+period in the analyst estimates. Only the periods after the latest reported fiscal
+year are forward P/E ratios; earlier columns divide today's price by the estimates
+made for years that have already been reported.
 
 **As an example:**
 
@@ -4381,21 +4854,22 @@ pd.DataFrame: Forward P/E ratio for each period covered by the analyst estimates
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "MSFT"],
+    ["LLY", "JNJ", "ABBV"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.ratios.get_forward_price_earnings_ratio()
+toolkit.ratios.get_forward_price_earnings_ratio().loc[:, "2026":"2030"]
 ```
 
 Which returns:
 
-|      |     2021 |    2022 |    2023 |    2024 |    2025 |    2026 |    2027 |    2028 |    2029 |    2030 |     2031 |
-|:-----|---------:|--------:|--------:|--------:|--------:|--------:|--------:|--------:|--------:|--------:|---------:|
-| AAPL |  48.3461 | 44.4576 | 44.757  | 42.1721 | 36.7282 | 30.685  | 28.2179 | 25.3703 | 22.1507 | 21.0089 | nan      |
-| MSFT | nan      | 51.8302 | 49.9693 | 39.4599 | 35.8137 | 28.2617 | 24.3404 | 20.4472 | 16.6952 | 13.6994 |  10.7151 |
+|      |    2026 |    2027 |    2028 |    2029 |    2030 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| ABBV | 16.4205 | 13.9217 | 12.7775 | 11.5443 | 10.899  |
+| JNJ  | 18.6267 | 17.8462 | 14.8139 | 13.1689 | 11.6937 |
+| LLY  | 31.5628 | 22.7146 | 19.8242 | 17.462  | 15.9104 |
 
 ---
 
@@ -4405,12 +4879,16 @@ Calculate the forward price earnings to growth (forward PEG) ratio, a valuation 
 The formula is as follows:
 
 $$
-\text{Estimated EPS Growth Rate} = (\text{Estimated EPS} - \text{Trailing EPS}) / | \text{Trailing EPS} |
+\text{Estimated EPS Growth Rate} = (\text{Estimated EPS} / \text{Trailing EPS}) ^{1 / \text{Years}} - 1
 $$
 
 $$
 \text{Forward PEG} = \text{Forward}\; P / E / (\text{Estimated EPS Growth Rate} \cdot 100)
 $$
+
+The growth rate is the annualized growth from the most recently reported EPS to the estimate of each period, with Years the number of years between the two, so the PEG of every estimate period is based on a yearly growth rate. Periods up to the latest reported period, and periods where either EPS is zero or negative, have no compound growth rate and are NaN. The trailing EPS is the reported diluted EPS, while consensus estimates are usually on an adjusted basis, which inflates the implied growth for companies with large non-cash charges.
+
+On quarterly data both EPS figures cover a year: the estimate is the sum of the estimates of the period and the next three quarters, the trailing EPS the sum of the last four reported quarters, and Years runs from the end of the latest reported quarter to the end of the estimated window.
 
 Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
 
@@ -4435,21 +4913,22 @@ pd.DataFrame: Forward PEG ratio for each period covered by the analyst estimates
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "MSFT"],
+    ["MA", "AXP", "JPM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.ratios.get_forward_price_earnings_growth_ratio()
+toolkit.ratios.get_forward_price_earnings_growth_ratio().loc[:, "2026":"2030"]
 ```
 
 Which returns:
 
-|      |     2021 |    2022 |    2023 |    2024 |     2025 |   2026 |   2027 |   2028 |   2029 |   2030 |     2031 |
-|:-----|---------:|--------:|--------:|--------:|---------:|-------:|-------:|-------:|-------:|-------:|---------:|
-| AAPL |  -1.9473 | -2.4358 | -2.3808 | -3.0511 | -35.0374 | 1.6641 | 0.98   | 0.5866 | 0.3457 | 0.2878 | nan      |
-| MSFT | nan      | -1.6185 | -1.6943 | -3.6832 | -22.0641 | 1.1458 | 0.5439 | 0.2828 | 0.1504 | 0.0872 |   0.0468 |
+|     |   2026 |   2027 |   2028 |     2029 |     2030 |
+|:----|-------:|-------:|-------:|---------:|---------:|
+| AXP | 1.2602 | 1.2788 | 1.1079 |   0.8708 |   0.97   |
+| JPM | 0.5538 | 0.9696 | 1.0544 | nan      | nan      |
+| MA  | 1.3735 | 1.3529 | 1.2061 |   1.0848 |   1.0166 |
 
 ---
 
@@ -4475,8 +4954,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4495,21 +4977,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["CB", "TRV", "ALL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-book_value_per_share = toolkit.ratios.get_book_value_per_share()
+toolkit.ratios.get_book_value_per_share()
 ```
 
 Which returns:
 
-|      |   2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|-------:|--------:|--------:|--------:|--------:|
-| AAPL | 3.7409 |  3.1038 |  3.9302 |  3.6961 |  4.914  |
-| TSLA | 8.9158 | 12.8645 | 17.9841 | 20.8442 | 23.2815 |
+|     |     2021 |     2022 |     2023 |     2024 |    2025 |
+|:----|---------:|---------:|---------:|---------:|--------:|
+| ALL |  77.5961 |  57.2198 |  60.0724 |  72.5952 | 108.081 |
+| CB  | 134.734  | 119.282  | 143.666  | 155.426  | 186.02  |
+| TRV | 115.179  |  89.9458 | 107.326  | 120.571  | 144.525 |
 
 ---
 
@@ -4524,11 +5007,15 @@ $$
 \text{Price to Book Ratio} = \text{Share Price} / \text{Book Value per Share}
 $$
 
+The price to book ratio matters most for banks and insurers, whose balance sheets consist mostly of financial assets and liabilities, so that book value is a fair measure of what shareholders own. It is read together with return on equity: a bank that earns more than its cost of equity can justify trading above book value, one that earns less trades below it. For companies whose value lies in brands, software or people, book value says little, and buybacks can shrink it until the ratio becomes extreme.
+
 **Also known as:** P/B ratio.
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4536,8 +5023,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4556,28 +5046,30 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["JPM", "BAC", "C", "WFC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-price_to_book_ratio = toolkit.ratios.get_price_to_book_ratio()
+toolkit.ratios.get_price_to_book_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | 46.3658 | 41.127  | 48.397  | 67.2655 | 55.173  |
-| TSLA | 39.5096 |  9.5752 | 13.8166 | 19.3742 | 19.3166 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| BAC | 1.5519 | 1.105  | 1.0335 | 1.2655 | 1.4971 |
+| C   | 0.6764 | 0.4876 | 0.5356 | 0.7017 | 1.1306 |
+| JPM | 1.8484 | 1.5033 | 1.6661 | 2.1254 | 2.6176 |
+| WFC | 1.173  | 0.9854 | 1.1012 | 1.5174 | 1.8228 |
 
 ---
 
 ## get_interest_debt_per_share
-Calculate the interest debt per share, a valuation ratio that measures the amount of interest expense incurred per outstanding share of a company's stock.
+Calculate the interest debt per share, a valuation ratio that measures a company's total debt plus one year of interest expense per outstanding share.
 
-The interest debt per share ratio provides insight into how much interest a company pays on its debt relative to its shareholder base. It can help investors assess the financial burden of interest expenses on the company's profitability.
+The interest debt per share ratio shows how much debt, with its interest, ranks ahead of each share, and is often compared with the share price. Because the total debt is added to the interest expense, the value is mostly debt per share.
 
 The formula is as follows:
 
@@ -4594,8 +5086,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4614,21 +5109,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["T", "VZ", "CMCSA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-interest_debt_per_share = toolkit.ratios.get_interest_debt_per_share()
+toolkit.ratios.get_interest_debt_per_share()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 8.2519 | 8.2943 | 8.0862 | 7.727  | 7.4895 |
-| TSLA | 2.7301 | 1.7091 | 2.7935 | 3.9946 | 2.47   |
+|       |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:------|--------:|--------:|--------:|--------:|--------:|
+| CMCSA | 22.411  | 23.449  | 27.3869 | 26.4143 | 31.5875 |
+| T     | 26.9929 | 21.1965 | 22.2638 | 20.4981 | 25.1832 |
+| VZ    | 43.7176 | 42.7957 | 42.8154 | 41.4912 | 48.9927 |
 
 ---
 
@@ -4643,6 +5139,8 @@ $$
 \text{CAPEX per Share} = \text{Capital Expenditure} / \text{Weighted Average} (\text{Diluted}) \text{Shares}
 $$
 
+The values are negative because capital expenditure is reported as a cash outflow in the cash flow statement; take the magnitude when comparing with sources that quote capex per share as a positive amount. Capex per share is usually compared with operating cash flow or depreciation per share: capex well above depreciation for years points to expansion, capex below it to an ageing asset base.
+
 **Also known as:** capital expenditure per share.
 
 **Args:**
@@ -4654,8 +5152,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -4674,21 +5175,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["UNP", "CSX", "NSC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-capex_per_share = toolkit.ratios.get_capex_per_share()
+toolkit.ratios.get_capex_per_share()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | -0.6573 | -0.6559 | -0.6931 | -0.6131 | -0.8474 |
-| TSLA | -2.3668 | -2.0639 | -2.5552 | -3.2424 | -2.417  |
+|     |    2021 |    2022 |     2023 |     2024 |    2025 |
+|:----|--------:|--------:|---------:|---------:|--------:|
+| CSX | -0.7942 | -0.9963 |  -1.1212 |  -1.3016 | -1.5569 |
+| NSC | -5.925  | -8.2683 | -10.3298 | -10.5168 | -9.8043 |
+| UNP | -4.4797 | -5.8013 |  -5.9095 |  -5.672  | -6.3875 |
 
 ---
 
@@ -4703,19 +5205,28 @@ $$
 \text{Dividend Yield} = \text{Dividends per Share} / \text{Share Price}
 $$
 
+The dividends per share are those paid over a year: the trailing four quarters with quarterly data, each year with annual data and, with show_daily, the 365 calendar days up to each day. The share price is the close at the end of the period (or day).
+
 **Also known as:** annual dividend yield, income yield.
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the dividends paid in the 365 calendar days up to that day (or the
+`trailing` periods in days). Days less than one window after the first price are
+NaN. Defaults to False.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -4734,21 +5245,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["KO", "PEP", "JNJ"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-dividend_yield = toolkit.ratios.get_dividend_yield()
+toolkit.ratios.get_dividend_yield()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL |  0.005 | 0.0071 |  0.005 |  0.004 | 0.0038 |
-| TSLA |  0     | 0      |  0     |  0     | 0      |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| JNJ | 0.0245 | 0.0252 | 0.03   | 0.034  | 0.0248 |
+| KO  | 0.0284 | 0.0277 | 0.0312 | 0.0312 | 0.0292 |
+| PEP | 0.0245 | 0.025  | 0.0291 | 0.0351 | 0.0392 |
 
 ---
 
@@ -4767,7 +5279,9 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4775,8 +5289,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -4795,21 +5313,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["TXN", "QCOM", "ADI"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-weighted_dividend_yield = toolkit.ratios.get_weighted_dividend_yield()
+toolkit.ratios.get_weighted_dividend_yield()
 ```
 
 Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0049 | 0.0071 |  0.005 |  0.004 | 0.0038 |
-| TSLA | 0      | 0      |  0     |  0     | 0      |
+| ADI  | 0.0157 | 0.018  | 0.0167 | 0.0169 | 0.0143 |
+| QCOM | 0.0143 | 0.0257 | 0.0213 | 0.0212 | 0.0201 |
+| TXN  | 0.022  | 0.0281 | 0.0292 | 0.0278 | 0.0316 |
 
 ---
 
@@ -4828,7 +5347,9 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4836,8 +5357,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -4856,21 +5381,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["SHEL", "BP", "TTE"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-price_to_cash_flow_ratio = toolkit.ratios.get_price_to_cash_flow_ratio()
+toolkit.ratios.get_price_to_cash_flow_ratio()
 ```
 
 Which returns:
 
-|      |     2021 |    2022 |    2023 |    2024 |     2025 |
-|:-----|---------:|--------:|--------:|--------:|---------:|
-| AAPL |  28.1168 | 17.0608 | 27.2085 | 32.3943 |  36.4909 |
-| TSLA | 103.745  | 29.0716 | 65.2832 | 94.6614 | 107.589  |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| BP   | 3.8083 | 2.7006 | 3.2687 | 3.0351 | 3.7607 |
+| SHEL | 3.7559 | 3.0844 | 4.1282 | 3.6452 | 5.0988 |
+| TTE  | 4.3059 | 3.3711 | 4.0313 | 4.1606 | 5.0908 |
 
 ---
 
@@ -4889,7 +5415,9 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4897,8 +5425,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -4917,21 +5449,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["ADBE", "CRM", "INTU"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-price_to_free_cash_flow_ratio = toolkit.ratios.get_price_to_free_cash_flow_ratio()
+toolkit.ratios.get_price_to_free_cash_flow_ratio()
 ```
 
 Which returns:
 
-|      |     2021 |    2022 |     2023 |     2024 |     2025 |
-|:-----|---------:|--------:|---------:|---------:|---------:|
-| AAPL |  31.4699 | 18.7001 |  30.2027 |  35.2069 |  41.1886 |
-| TSLA | 342.45   | 56.6804 | 198.621  | 394.48   | 255.082  |
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| ADBE | 39.57   | 21.4313 | 39.4468 | 25.4167 | 15.1691 |
+| CRM  | 46.8527 | 20.9397 | 27.2615 | 26.1893 | 17.5846 |
+| INTU | 56.1917 | 30.2018 | 36.9585 | 38.5183 | 30.8178 |
 
 ---
 
@@ -4950,7 +5483,9 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4958,8 +5493,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -4977,17 +5516,30 @@ using the specified `lag`.
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["NVDA", "AMD", "INTC"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
 
-price_to_sales_ratio = toolkit.ratios.get_price_to_sales_ratio()
+toolkit.ratios.get_price_to_sales_ratio()
 ```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AMD  | 10.7614 |  4.3114 | 10.5618 |  7.6685 | 10.1148 |
+| INTC |  2.6655 |  1.7282 |  3.903  |  1.6161 |  3.3903 |
+| NVDA | 27.7019 | 13.5824 | 20.2731 | 25.5249 | 21.1721 |
 
 ---
 
 ## get_market_cap
 Calculates the market capitalization of the company.
 
-Market capitalization, often referred to as "market cap," is the total value of a company's outstanding shares of stock in the stock market. It is calculated by multiplying the current market price per share by the total number of outstanding shares.
+Market capitalization, often referred to as "market cap," is the total value of a company's outstanding shares of stock in the stock market. It is calculated by multiplying the share price at the end of each period by the weighted average (diluted) number of shares outstanding in that period. The share price is the close as traded, adjusted for splits but not for dividends, as are the prices of every price-based ratio (P/E, P/B, the enterprise value multiples and the dividend, earnings and free cash flow yields).
 
 The formula is as follows:
 
@@ -4995,11 +5547,15 @@ $$
 \text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average} (\text{Diluted}) \text{Shares}
 $$
 
+Market cap is a point-in-time value, so the price is the close on the last trading day of each calendar period (or of each day with show_daily) and never an average. The periods follow the calendar, so for a company whose fiscal year ends in, for example, September, the price of the year is the December close while the shares come from the fiscal year. With show_daily, each day uses the shares of the latest period that has ended.
+
 **Also known as:** market capitalization.
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5007,8 +5563,6 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
 
@@ -5020,21 +5574,22 @@ pd.DataFrame: Market capitalization values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NVDA", "AAPL", "MSFT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-market_cap = toolkit.ratios.get_market_cap()
+toolkit.ratios.get_market_cap()
 ```
 
 Which returns:
 
 |      |        2021 |        2022 |        2023 |        2024 |        2025 |
 |:-----|------------:|------------:|------------:|------------:|------------:|
-| AAPL | 2.92522e+12 | 2.08399e+12 | 3.0077e+12  | 3.83076e+12 | 4.06807e+12 |
-| TSLA | 1.19275e+12 | 4.2805e+11  | 8.65394e+11 | 1.41263e+12 | 1.58661e+12 |
+| AAPL | 2.9947e+12  | 2.12121e+12 | 3.04439e+12 | 3.8585e+12  | 4.07918e+12 |
+| MSFT | 2.55872e+12 | 1.80824e+12 | 2.80977e+12 | 3.14818e+12 | 3.61022e+12 |
+| NVDA | 7.45569e+11 | 3.66373e+11 | 1.23508e+12 | 3.33093e+12 | 4.57186e+12 |
 
 ---
 
@@ -5047,13 +5602,17 @@ $$
 \text{Enterprise Value} = \text{Market Capitalization} + \text{Total Debt} + \text{Minority Interest} + \text{Preferred Equity}
 $$
 
-- Cash and Cash Equivalents
+- (Cash and Cash Equivalents + Short Term Investments)
+
+Enterprise value is the price of the whole business, equity and debt together, which makes it the right numerator for multiples of operating results such as EV to EBITDA or EV to sales, and comparable across companies with different capital structures. Cash and marketable securities (short-term investments) are both deducted (Damodaran), since both are available to pay off the debt. Enterprise value is a point-in-time value: the market cap and the balance sheet items are taken at the end of each period, or on each day with show_daily, where each day uses the balance sheet of the latest period that has ended.
 
 **Also known as:** EV, total enterprise value.
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5061,8 +5620,6 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
 
 **Returns:**
 
@@ -5074,21 +5631,22 @@ pd.DataFrame: Enterprise Value values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NFLX", "DIS", "WBD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-enterprise_value = toolkit.ratios.get_enterprise_value()
+toolkit.ratios.get_enterprise_value()
 ```
 
 Which returns:
 
 |      |        2021 |        2022 |        2023 |        2024 |        2025 |
 |:-----|------------:|------------:|------------:|------------:|------------:|
-| AAPL | 3.0268e+12  | 2.19282e+12 | 3.10167e+12 | 3.91988e+12 | 4.14452e+12 |
-| TSLA | 1.18544e+12 | 4.1874e+11  | 8.59544e+11 | 1.41088e+12 | 1.5792e+12  |
+| DIS  | 3.39164e+11 | 2.12744e+11 | 2.15456e+11 | 2.52223e+11 | 2.50508e+11 |
+| NFLX | 2.86423e+11 | 1.41371e+11 | 2.28687e+11 | 3.99933e+11 | 4.10176e+11 |
+| WBD  | 2.83757e+10 | 6.52312e+10 | 6.88567e+10 | 6.09905e+10 | 1.02163e+11 |
 
 ---
 
@@ -5107,7 +5665,9 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5115,8 +5675,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5128,21 +5692,22 @@ pd.DataFrame: EV to Sales Ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NOW", "WDAY", "CRM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ev_to_sales_ratio = toolkit.ratios.get_ev_to_sales_ratio()
+toolkit.ratios.get_ev_to_sales_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |   2022 |   2023 |    2024 |    2025 |
-|:-----|--------:|-------:|-------:|--------:|--------:|
-| AAPL |  8.2741 | 5.5609 | 8.0923 | 10.0244 |  9.9589 |
-| TSLA | 22.0248 | 5.1403 | 8.8821 | 14.4425 | 16.6535 |
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| CRM  |  9.4734 |  4.2668 |  7.3823 |  8.5235 |  6.2821 |
+| NOW  | 22.1821 | 10.6245 | 15.902  | 19.7984 | 11.7871 |
+| WDAY | 13.2039 |  6.3974 |  9.4665 |  7.6732 |  5.7531 |
 
 ---
 
@@ -5157,11 +5722,15 @@ $$
 \text{Enterprise Value to EBITDA Ratio} = \text{Enterprise Value} / \text{EBITDA}
 $$
 
+EV to EBITDA is the most common multiple in sector comparisons and takeover pricing because it is not affected by capital structure, tax rates or depreciation policy. That is also its limit: it ignores the capital expenditure needed to sustain EBITDA, so capital-intensive companies look cheaper than they are, and EV to EBIT (`get_ev_to_ebit`) or EV to free cash flow (`get_ev_to_free_cash_flow_ratio`) is a useful cross-check.
+
 **Also known as:** EV/EBITDA.
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5169,8 +5738,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5182,21 +5755,22 @@ pd.DataFrame: EV to EBITDA Ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["TMO", "DHR", "A"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ev_to_ebitda_ratio = toolkit.ratios.get_ev_to_ebitda_ratio()
+toolkit.ratios.get_ev_to_ebitda_ratio()
 ```
 
 Which returns:
 
-|      |     2021 |    2022 |    2023 |     2024 |     2025 |
-|:-----|---------:|--------:|--------:|---------:|---------:|
-| AAPL |  25.1745 | 16.798  | 24.6516 |  29.1092 |  28.6326 |
-| TSLA | 125.656  | 24.3467 | 63.3975 | 113.379  | 150.357  |
+|     |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:----|--------:|--------:|--------:|--------:|--------:|
+| A   | 30.0759 | 24.0884 | 26.0937 | 23.6894 | 22.7554 |
+| DHR | 23.3741 | 19.6229 | 24.9274 | 24.4558 | 23.2822 |
+| TMO | 23.0008 | 20.5519 | 21.5992 | 21.0334 | 22.7626 |
 
 ---
 
@@ -5213,7 +5787,9 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5221,8 +5797,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5234,21 +5814,22 @@ pd.DataFrame: EV to Operating Cash Flow Ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["UNH", "ELV", "CI"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ev_to_operating_cashflow_ratio = toolkit.ratios.get_ev_to_operating_cashflow_ratio()
+toolkit.ratios.get_ev_to_operating_cashflow_ratio()
 ```
 
 Which returns:
 
-|      |     2021 |    2022 |    2023 |    2024 |     2025 |
-|:-----|---------:|--------:|--------:|--------:|---------:|
-| AAPL |  29.0932 | 17.9518 | 28.0585 | 33.1479 |  37.1766 |
-| TSLA | 103.109  | 28.4392 | 64.8419 | 94.5442 | 107.086  |
+|     |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:----|--------:|--------:|--------:|--------:|--------:|
+| CI  | 14.8285 | 14.8491 |  9.4144 |  9.8596 | 10.1182 |
+| ELV | 16.0786 | 17.0313 | 16.3969 | 19.0153 | 23.6923 |
+| UNH | 22.6854 | 20.6807 | 18.639  | 21.8009 | 18.1884 |
 
 ---
 
@@ -5267,8 +5848,11 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
-- <u>include_dividends (bool, optional):</u> Whether to include dividends in the calculation. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
+- <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
+Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5276,8 +5860,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5289,21 +5877,22 @@ pd.DataFrame: Earnings Yield Ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["F", "GM", "TM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-earnings_yield_ratio = toolkit.ratios.get_earnings_yield()
+toolkit.ratios.get_earnings_yield()
 ```
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0324 | 0.0479 | 0.0322 | 0.0245 | 0.0275 |
-| TSLA | 0.0046 | 0.0294 | 0.0173 | 0.005  | 0.0024 |
+|    |   2021 |    2022 |   2023 |   2024 |    2025 |
+|:---|-------:|--------:|-------:|-------:|--------:|
+| F  | 0.2141 | -0.0424 | 0.0882 | 0.1477 | -0.1567 |
+| GM | 0.1143 |  0.1823 | 0.2038 | 0.1195 |  0.0402 |
+| TM | 0.0986 |  0.0971 | 0.1382 | 0.1225 |  0.0961 |
 
 ---
 
@@ -5318,6 +5907,8 @@ $$
 \text{Dividend Payout Ratio} = \text{Dividends Paid} / \text{Net Income}
 $$
 
+The payout ratio shows how much room a company has to keep or raise its dividend. A ratio above 1 means the dividend is paid partly from reserves or borrowing, which cannot last unless profits were depressed by one-off charges. Because it uses net income, it is often checked against free cash flow, and for real estate investment trusts, whose net income is reduced by depreciation, it is not a useful measure.
+
 **Also known as:** payout ratio.
 
 **Args:**
@@ -5328,8 +5919,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -5341,7 +5935,7 @@ pd.DataFrame: Payout Ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["JNJ", "MCD", "TXN"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -5352,10 +5946,11 @@ toolkit.ratios.get_dividend_payout_ratio()
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.1528 | 0.1487 | 0.1549 | 0.1625 | 0.1377 |
-| TSLA | 0      | 0      | 0      | 0      | 0      |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| JNJ | 0.5284 | 0.6511 | 0.3348 | 0.8405 | 0.4619 |
+| MCD | 0.5194 | 0.6747 | 0.5352 | 0.5922 | 0.5973 |
+| TXN | 0.5023 | 0.4933 | 0.7036 | 1.0042 | 1.0052 |
 
 ---
 
@@ -5380,8 +5975,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -5393,7 +5991,7 @@ pd.DataFrame: Reinvestment Rate values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["COST", "V", "NKE"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -5404,23 +6002,24 @@ toolkit.ratios.get_reinvestment_rate()
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.8472 | 0.8513 | 0.8451 | 0.8375 | 0.8623 |
-| TSLA | 1      | 1      | 1      | 1      | 1      |
+|      |    2021 |   2022 |   2023 |    2024 |   2025 |
+|:-----|--------:|-------:|-------:|--------:|-------:|
+| COST | -0.148  | 0.7437 | 0.8012 | -0.2272 | 0.7305 |
+| NKE  |  0.6962 | 0.6032 | 0.6195 |  0.2855 | 0.2255 |
+| V    |  0.7727 | 0.7859 | 0.7828 |  0.7864 | 0.7666 |
 
 ---
 
 ## get_tangible_asset_value
-Calculate the tangible asset value, a financial metric that represents the total value of a company's assets that can be used to generate revenue. Tangible assets are those physical assets that have a finite monetary value and can be sold, used, or consumed.
+Calculate the tangible asset value, a financial metric that represents the book value of a company's equity after deducting goodwill and other intangible assets such as patents, brands and customer relationships: what remains of its tangible assets once all liabilities are paid.
 
 The formula is as follows:
 
 $$
-\text{Tangible Asset Value} = \text{Total Assets} - \text{Total Liabilities} - \text{Goodwill}
+\text{Tangible Asset Value} = \text{Total Assets} - \text{Total Liabilities} - \text{Goodwill and Intangible Assets}
 $$
 
-**Also known as:** tangible assets, net tangible assets.
+**Also known as:** net tangible assets.
 
 **Args:**
 
@@ -5430,8 +6029,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -5443,21 +6045,22 @@ pd.DataFrame: Tangible Asset Value values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["PFE", "ABBV", "MRK"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-tangible_asset_value = toolkit.ratios.get_tangible_asset_value()
+toolkit.ratios.get_tangible_asset_value()
 ```
 
 Which returns:
 
-|      |       2021 |       2022 |       2023 |       2024 |       2025 |
-|:-----|-----------:|-----------:|-----------:|-----------:|-----------:|
-| AAPL | 6.309e+10  | 5.0672e+10 | 6.2146e+10 | 5.695e+10  | 7.3733e+10 |
-| TSLA | 3.1383e+10 | 4.5704e+10 | 6.3356e+10 | 7.3436e+10 | 8.2608e+10 |
+|      |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:-----|------------:|------------:|------------:|------------:|------------:|
+| ABBV | -9.2894e+10 | -8.2308e+10 | -7.7506e+10 | -9.166e+10  | -9.1509e+10 |
+| MRK  | -5.94e+09   |  4.585e+09  | -1.573e+09  |  8.334e+09  |  4.402e+09  |
+| PFE  |  3.109e+09  |  1.172e+09  | -4.3395e+10 | -3.5442e+10 | -3.822e+10  |
 
 ---
 
@@ -5480,8 +6083,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -5493,21 +6099,22 @@ pd.DataFrame: Net Current Asset Value values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["NVDA", "GOOGL", "META"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-net_current_asset_value = toolkit.ratios.get_net_current_asset_value()
+toolkit.ratios.get_net_current_asset_value()
 ```
 
 Which returns:
 
-|      |         2021 |         2022 |         2023 |         2024 |         2025 |
-|:-----|-------------:|-------------:|-------------:|-------------:|-------------:|
-| AAPL | -1.53076e+11 | -1.66678e+11 | -1.46871e+11 | -1.55043e+11 | -1.37551e+11 |
-| TSLA | -3.448e+09   |  4.477e+09   |  6.607e+09   |  9.97e+09    |  1.3701e+10  |
+|       |       2021 |        2022 |       2023 |       2024 |        2025 |
+|:------|-----------:|------------:|-----------:|-----------:|------------:|
+| GOOGL | 8.051e+10  |  5.5675e+10 | 5.2517e+10 | 3.8539e+10 |  2.6022e+10 |
+| META  | 2.5558e+10 | -4.65e+08   | 8.91e+09   | 6.628e+09  | -4.0056e+10 |
+| NVDA  | 1.1254e+10 |  3.992e+09  | 2.1595e+10 | 4.7852e+10 |  7.6095e+10 |
 
 ---
 
@@ -5520,9 +6127,13 @@ $$
 \text{Enterprise Value to EBIT Ratio} = \text{Enterprise Value} / \text{EBIT}
 $$
 
+EBIT is the reported operating income, the same operating profit that EV to EBITDA (`get_ev_to_ebitda_ratio`) adds depreciation and amortization to (Damodaran), so the two multiples differ only by the depreciation and amortization. The enterprise value is taken at the end of each period (or on each day with show_daily), while EBIT is summed over the trailing periods.
+
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5530,8 +6141,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5543,21 +6158,22 @@ pd.DataFrame: Enterprise Value over EBIT values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["SHW", "PPG", "ECL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ev_to_ebit_ratio = toolkit.ratios.get_ev_to_ebit()
+toolkit.ratios.get_ev_to_ebit()
 ```
 
 Which returns:
 
-|      |     2021 |   2022 |    2023 |     2024 |     2025 |
-|:-----|---------:|-------:|--------:|---------:|---------:|
-| AAPL |  27.0608 | 17.969 | 26.3593 |  31.7437 |  31.2254 |
-| TSLA | 179.531  | 30.11  | 84.6508 | 151.431  | 284.285  |
+|     |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:----|--------:|--------:|--------:|--------:|--------:|
+| ECL | 45.5001 | 31.1699 | 29.9295 | 28.4083 | 28.7329 |
+| PPG | 28.3518 | 21.8704 | 19.9977 | 14.5487 | 13.4171 |
+| SHW | 39.551  | 24.8091 | 25.537  | 26.0717 | 24.5359 |
 
 ---
 
@@ -5576,7 +6192,9 @@ $$
 
 **Args:**
 
-- <u>show_daily (bool, optional):</u> Whether to show daily data. Defaults to False.
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the statement figures of the latest period that has ended on or before
+that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5584,8 +6202,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5597,21 +6219,21 @@ pd.DataFrame: EV to free cash flow ratio values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["V", "MA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-ev_to_fcf_ratio = toolkit.ratios.get_ev_to_free_cash_flow_ratio()
+toolkit.ratios.get_ev_to_free_cash_flow_ratio()
 ```
 
 Which returns:
 
-|      |     2021 |    2022 |     2023 |    2024 |     2025 |
-|:-----|---------:|--------:|---------:|--------:|---------:|
-| AAPL |  32.5627 | 19.6766 |  31.1463 |  36.026 |  41.9626 |
-| TSLA | 340.351  | 55.4475 | 197.279  | 393.991 | 253.891  |
+|    |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:---|--------:|--------:|--------:|--------:|--------:|
+| MA | 41.9184 | 32.0227 | 35.3215 | 34.7836 | 31.69   |
+| V  | 33.0331 | 25.1707 | 27.6636 | 34.662  | 32.1372 |
 
 ---
 
@@ -5626,6 +6248,8 @@ $$
 \text{Buyback Yield} = - (\text{Common Stock Purchased} + \text{Common Stock Issued}) / \text{Market Capitalization}
 $$
 
+The buyback yield is net of shares issued, which matters for companies that pay much of their staff in shares: their gross buybacks can be large while the net yield is small, because the buybacks mainly offset the dilution from stock-based compensation. Buybacks are more flexible than dividends and vary with the share price and the cash available, so the yield is best read over several years and added to the dividend yield (`get_shareholder_yield`).
+
 **Also known as:** net repurchase yield.
 
 **Args:**
@@ -5637,8 +6261,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5657,21 +6285,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["AZO", "ORLY", "AAPL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-buyback_yields = toolkit.ratios.get_buyback_yield()
+toolkit.ratios.get_buyback_yield()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL |  0.029  |  0.0429 |  0.0258 |  0.0248 |  0.0223 |
-| TSLA | -0.0006 | -0.0013 | -0.0008 | -0.0009 | -0.0001 |
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0283 | 0.0421 | 0.0255 | 0.0246 | 0.0222 |
+| AZO  | 0.0668 | 0.083  | 0.0712 | 0.052  | 0.024  |
+| ORLY | 0.0511 | 0.0613 | 0.0554 | 0.028  | 0.0258 |
 
 ---
 
@@ -5695,8 +6324,12 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
 
 **Returns:**
 
@@ -5715,21 +6348,21 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["HD", "LOW"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-shareholder_yields = toolkit.ratios.get_shareholder_yield()
+toolkit.ratios.get_shareholder_yield()
 ```
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL |  0.034  |  0.05   |  0.0308 |  0.0288 |  0.0261 |
-| TSLA | -0.0006 | -0.0013 | -0.0008 | -0.0009 | -0.0001 |
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| HD  | 0.0489 | 0.044  | 0.0461 | 0.0238 | 0.0258 |
+| LOW | 0.0828 | 0.1309 | 0.0665 | 0.0471 | 0.02   |
 
 ---
 
@@ -5754,8 +6387,11 @@ $$
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
 
 **Returns:**
 
@@ -5774,21 +6410,22 @@ using the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AAPL", "TSLA"],
+    ["CRM", "ADBE", "NOW"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-sbc_adjusted_fcf = toolkit.ratios.get_sbc_adjusted_free_cash_flow()
+toolkit.ratios.get_sbc_adjusted_free_cash_flow()
 ```
 
 Which returns:
 
-|      |       2021 |        2022 |       2023 |       2024 |       2025 |
-|:-----|-----------:|------------:|-----------:|-----------:|-----------:|
-| AAPL | 8.5047e+10 | 1.02405e+11 | 8.8751e+10 | 9.7119e+10 | 8.5904e+10 |
-| TSLA | 1.362e+09  | 5.992e+09   | 2.545e+09  | 1.582e+09  | 3.395e+09  |
+|      |      2021 |      2022 |      2023 |      2024 |       2025 |
+|:-----|----------:|----------:|----------:|----------:|-----------:|
+| ADBE | 5.824e+09 | 5.956e+09 | 5.224e+09 | 6.04e+09  | 7.91e+09   |
+| CRM  | 2.504e+09 | 3.034e+09 | 6.711e+09 | 9.251e+09 | 1.0893e+10 |
+| NOW  | 6.61e+08  | 7.72e+08  | 1.1e+09   | 1.669e+09 | 2.621e+09  |
 
 ---
 

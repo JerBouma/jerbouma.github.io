@@ -1,229 +1,217 @@
 get_profile:
-  question: What are the company profiles of Microsoft and Apple, from price, market cap and beta to ISIN, exchange, industry, CEO, employees and address?
+  question: What are the industry, exchange, currency, ISIN and beta of ASML, SAP and LVMH?
   tool: market_data
   arguments:
-    tickers: MSFT,AAPL
+    tickers: ASML.AS,SAP.DE,MC.PA
+    show_columns: Industry,Exchange,Currency,ISIN,Beta
 get_quote:
-  question: "What are the latest quotes of Tesla and Apple: price, change, volume, day and 52-week range, market cap and 50- and 200-day averages?"
+  question: What are the latest price and the 52-week high and low of Visa, Mastercard and American Express?
   tool: market_data
   arguments:
-    tickers: TSLA,AAPL
+    tickers: V,MA,AXP
+    show_columns: Price,Year High,Year Low
 get_rating:
-  question: How did Amazon's overall rating and its underlying scores develop in the first week of October 2026?
+  question: How did Visa score on DCF, return on equity, return on assets, debt to equity, P/E and P/B in its rating at the end of 2025?
   tool: market_data
   arguments:
-    tickers: AMZN
-    start_date: "2026-10-01"
-    end_date: "2026-10-07"
+    tickers: V
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: DCF Score,ROE Score,ROA Score,DE Score,PE Score,PB Score
+    limit: -1
 get_analyst_estimates:
-  question: What do analysts expect for Apple's revenue, earnings and EPS for fiscal 2024 to 2028?
+  question: What average revenue do analysts expect for Nvidia, AMD and Broadcom for fiscal 2026 to 2031?
   tool: market_data
   arguments:
-    tickers: AAPL
-    start_date: "2024-05-01"
-    end_date: "2025-12-31"
-    limit: 5
-get_stock_grades:
-  question: Which were the last five analysts to upgrade, downgrade or maintain their rating on Apple from 1 September to 1 October 2026, and with which grades?
-  tool: market_data
-  arguments:
-    tickers: AAPL
-    start_date: "2026-09-01"
-    end_date: "2026-10-01"
-    limit: -5
+    tickers: NVDA,AMD,AVGO
+    start_date: "2026-01-01"
+    end_date: "2028-12-31"
+    show_columns: Estimated Revenue Average
 get_earnings_calendar:
-  question: How did Amazon's reported earnings per share and revenue compare with analysts' estimates in each quarterly report from August 2022 to December 2025?
+  question: How did Costco's reported earnings per share compare with analysts' estimates in each quarterly report of 2024 and 2025?
   tool: market_data
   arguments:
-    tickers: AMZN
-    start_date: "2022-08-01"
+    tickers: COST
+    start_date: "2024-01-01"
     end_date: "2025-12-31"
-get_earnings_call_transcripts:
-  question: What did Apple's management say on the earnings call for the third quarter of fiscal 2026?
-  tool: market_data
-  arguments:
-    tickers: AAPL
-    fiscal_period: 2026Q3
-get_dividend_calendar:
-  question: What dividends per share did Apple pay each quarter from August 2022 to December 2025, with the yield and the record, payment and declaration dates?
-  tool: market_data
-  arguments:
-    tickers: AAPL
-    start_date: "2022-08-01"
-    end_date: "2025-12-31"
-get_stock_splits:
-  question: When did Apple and Nvidia split their shares from 2000 to 2025, and at what ratio?
-  tool: market_data
-  arguments:
-    tickers: AAPL,NVDA
-    start_date: "2000-01-01"
-    end_date: "2025-12-31"
-get_mergers_acquisitions:
-  question: Which mergers and acquisitions did Chevron take part in from 2020 to 2025, according to its merger filings with the SEC?
-  tool: market_data
-  arguments:
-    tickers: CVX
-    start_date: "2020-01-01"
-    end_date: "2025-12-31"
+    show_columns: EPS,Estimated EPS
 get_revenue_geographic_segmentation:
   question: How was Apple's revenue split across the Americas, Asia Pacific, China, Europe and Japan from fiscal 2021 to 2025?
   tool: market_data
   arguments:
     tickers: AAPL
-    start_date: "2021-05-01"
-    end_date: "2025-12-31"
-get_revenue_product_segmentation:
-  question: How was Microsoft's revenue split across its products and services from fiscal 2021 to 2025?
-  tool: market_data
-  arguments:
-    tickers: MSFT
-    start_date: "2021-05-01"
-    end_date: "2025-12-31"
-get_esg_scores:
-  question: How did Microsoft's environmental, social, governance and overall ESG scores develop from 2022 to 2025?
-  tool: environment
-  arguments:
-    tickers: MSFT
-    start_date: "2022-08-01"
-    end_date: "2025-12-31"
-get_employee_count:
-  question: How many employees did Apple and Microsoft have each year from 2018 to 2025?
-  tool: market_data
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2018-01-01"
-    end_date: "2025-12-31"
-get_company_notes:
-  question: Which notes has Apple listed on Nasdaq?
-  tool: market_data
-  arguments:
-    tickers: AAPL
-get_executives:
-  question: Who are Apple's five best-paid key executives, with their title, pay, gender and year of birth?
-  tool: market_data
-  arguments:
-    tickers: AAPL
-    limit: 5
-get_executive_compensation:
-  question: How was the 2025 pay of Apple's named executive officers split between salary, stock awards and other compensation?
-  tool: market_data
-  arguments:
-    tickers: AAPL
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    limit: 5
-get_insider_trade_statistics:
-  question: How much insider buying and selling of Apple shares was reported in each quarter of 2025?
-  tool: market_data
-  arguments:
-    tickers: AAPL
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_shares_float:
-  question: What are the current free float, float shares and outstanding shares of Apple and Microsoft?
-  tool: market_data
-  arguments:
-    tickers: AAPL,MSFT
-get_balance_sheet_statement:
-  question: What did Micron's balance sheet look like in each quarter from the second quarter of 2022 to the second quarter of 2023?
-  tool: market_data
-  arguments:
-    tickers: MU
-    quarterly: true
-    start_date: "2022-05-01"
-    end_date: "2025-12-31"
-    limit: 5
-get_income_statement:
-  question: What did Tesla's income statement look like in each quarter from the second quarter of 2022 to the second quarter of 2023?
-  tool: market_data
-  arguments:
-    tickers: TSLA
-    quarterly: true
-    start_date: "2022-05-01"
-    end_date: "2025-12-31"
-    limit: 5
-get_cash_flow_statement:
-  question: What did Amazon's cash flow statement look like in each quarter from the third quarter of 2022 to the second quarter of 2023?
-  tool: market_data
-  arguments:
-    tickers: AMZN
-    quarterly: true
-    start_date: "2022-09-01"
-    end_date: "2025-12-31"
-    limit: 4
-get_statistics_statement:
-  question: What are the filing details of Tesla's report for the second quarter of 2023, such as its reporting currency, CIK and the date the SEC accepted it?
-  tool: market_data
-  arguments:
-    tickers: TSLA
-    quarterly: true
-    start_date: "2023-04-01"
-    end_date: "2023-06-30"
-    limit: -1
-get_historical_data:
-  question: What were the yearly open, high and low prices of Apple and the SPDR S&P 500 ETF from 2021 to 2025?
-  tool: market_data
-  arguments:
-    tickers: AAPL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: yearly
-    show_columns: Open,High,Low
+get_revenue_product_segmentation:
+  question: How was Nvidia's revenue split across automotive, data center, gaming, OEM and professional visualization from fiscal 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_historical_data:
+  question: What were the daily closing prices of Caterpillar, Deere and United Rentals, and of SPY as the benchmark, on the last five trading days of 2025?
+  tool: market_data
+  arguments:
+    tickers: CAT,DE,URI
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Close
+    limit: -5
 get_intraday_data:
-  question: How did Microsoft and the SPDR S&P 500 ETF trade minute by minute in the last ten minutes of 2025?
+  question: What were the hourly closing prices of Nvidia and of SPY as the benchmark in the last five hours of trading on 31 December 2025?
   tool: market_data
   arguments:
-    tickers: MSFT
-    period: 1min
-    start_date: "2025-12-30"
+    tickers: NVDA
+    period: 1hour
+    start_date: "2025-12-29"
     end_date: "2025-12-31"
-    show_columns: Open,High,Low
-    limit: -10
-get_historical_statistics:
-  question: What are the currency, exchange and first trade date of Amazon, the Hang Seng Index, the iShares Core MSCI World ETF and the GAM Star Japan Leaders fund?
+    show_columns: Close
+    limit: -5
+get_dividend_calendar:
+  question: What dividend per share did Johnson & Johnson pay each quarter from 2021 to 2025?
   tool: market_data
   arguments:
-    tickers: AMZN,^HSI,IWDA.AS,0P0000Z8RO.T
-get_treasury_data:
-  question: What were the daily opening and high yields of the 13-week, 5-year, 10-year and 30-year US Treasuries from 24 to 31 December 2025?
-  tool: market_data
-  arguments:
-    start_date: "2025-12-24"
+    tickers: JNJ
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: Open,High
+    show_columns: Dividend
+get_esg_scores:
+  question: How did the ESG scores of ExxonMobil, Shell and BP develop from 2021 to 2025?
+  tool: environment
+  arguments:
+    tickers: XOM,SHEL,BP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: ESG Score
 get_market_risk_premium:
-  question: What are the current country risk premiums and total equity risk premiums of the United States, Germany and Brazil?
+  question: What are the country risk premium and the total equity risk premium of the United States, Germany, Japan, Brazil, India and South Africa?
   tool: market_data
   arguments:
-    show_columns: United States,Germany,Brazil
+    show_columns: United States,Germany,Japan,Brazil,India,South Africa
 get_commitment_of_traders:
-  question: How did open interest and trader positioning in natural gas futures change in the weekly reports from 30 January to 27 February 2024?
+  question: How many long and short gold futures positions did non-commercial traders hold in the last five weekly reports of 2025?
   tool: market_data
   arguments:
-    tickers: NG
-    start_date: "2024-01-24"
-    end_date: "2024-02-27"
-    show_columns: Open Interest,Non-Commercial Long,Non-Commercial Short,Commercial Long,Commercial Short
-get_etf_information:
-  question: What are the key facts of the Invesco QQQ Trust and the Vanguard Total Stock Market ETF, such as their expense ratio and assets under management?
+    tickers: GC
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Non-Commercial Long,Non-Commercial Short
+    limit: -5
+get_executives:
+  question: Who are JPMorgan Chase's key executives, with their title and year of birth?
   tool: market_data
   arguments:
-    tickers: QQQ,VTI
-    show_columns: Name,ISIN,CUSIP,Asset Class,Domicile,ETF Company,Inception Date,Expense Ratio,Assets Under Management,Average Volume,NAV,NAV Currency,Holdings Count,Actively Trading,Updated At
-get_etf_holdings:
-  question: What are the five largest holdings of the Invesco QQQ Trust, with their shares, weights and market values?
+    tickers: JPM
+    show_columns: Title,Year Born
+    limit: 10
+get_executive_compensation:
+  question: What salary and incentive plan compensation did JPMorgan Chase's named executive officers receive for 2025?
   tool: market_data
   arguments:
-    tickers: QQQ
-    limit: 5
-get_etf_country_weightings:
-  question: Which five countries weigh most in the Invesco QQQ Trust, and what are their weights in it and in the Vanguard Total Stock Market ETF?
+    tickers: JPM
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Salary,Incentive Plan Compensation
+get_company_notes:
+  question: Which notes has Coca-Cola listed, and on which exchange?
   tool: market_data
   arguments:
-    tickers: QQQ,VTI
-    limit: 5
-get_etf_sector_weightings:
-  question: How do the sector weights of the Invesco QQQ Trust and the Vanguard Total Stock Market ETF compare?
+    tickers: KO
+    show_columns: Exchange
+get_employee_count:
+  question: How many employees did Walmart and Amazon have each year from 2021 to 2025?
   tool: market_data
   arguments:
-    tickers: QQQ,VTI
+    tickers: WMT,AMZN
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_shares_float:
+  question: What is the current free float of Meta, Alphabet and Berkshire Hathaway?
+  tool: market_data
+  arguments:
+    tickers: META,GOOGL,BRK-B
+    show_columns: Free Float
+get_mergers_acquisitions:
+  question: Which mergers and acquisitions did Chevron take part in from 2021 to 2025, and in which role?
+  tool: market_data
+  arguments:
+    tickers: CVX
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Role,Acquirer Name,Target Name
+get_stock_splits:
+  question: When did Nvidia, Apple, Tesla, Alphabet and Amazon split their shares from 2020 to 2025, and at what ratio?
+  tool: market_data
+  arguments:
+    tickers: NVDA,AAPL,TSLA,GOOGL,AMZN
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    show_columns: Numerator,Denominator
+get_insider_trade_statistics:
+  question: How many insider transactions acquiring and disposing of Meta shares were reported in each quarter of 2024 and 2025?
+  tool: market_data
+  arguments:
+    tickers: META
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: Acquired Transactions,Disposed Transactions
+get_stock_grades:
+  question: Which analysts upgraded, downgraded or maintained their rating on Nike from October to December 2025, and with which grades?
+  tool: market_data
+  arguments:
+    tickers: NKE
+    start_date: "2025-10-01"
+    end_date: "2025-12-31"
+get_earnings_call_transcripts:
+  question: What did Nvidia's management say on the earnings call for the fourth quarter of fiscal 2025?
+  tool: market_data
+  arguments:
+    tickers: NVDA
+    fiscal_period: 2025Q4
+get_historical_statistics:
+  question: What are the currency, exchange, instrument type, first trade date and exchange time zone of ASML's listings in Amsterdam and New York?
+  tool: market_data
+  arguments:
+    tickers: ASML.AS,ASML
+    show_columns: Currency,Exchange Name,Instrument Type,First Trade Date,Exchange Timezone Name
+get_treasury_data:
+  question: What were the monthly closing yields of the 13-week, 5-year, 10-year and 30-year US Treasuries in each month of 2025?
+  tool: market_data
+  arguments:
+    period: monthly
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: Close
+get_balance_sheet_statement:
+  question: How much total debt did NextEra Energy, Duke Energy and Southern Company carry from 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: NEE,DUK,SO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Total Debt
+get_income_statement:
+  question: How did Nike's revenue and net income develop from fiscal 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: NKE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Revenue,Net Income
+get_cash_flow_statement:
+  question: How did Chevron's operating cash flow, capital expenditure, free cash flow and dividends paid develop from 2021 to 2025?
+  tool: market_data
+  arguments:
+    tickers: CVX
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Operating Cash Flow,Capital Expenditure,Free Cash Flow,Dividends Paid
+get_statistics_statement:
+  question: When did the SEC accept the annual reports of Coca-Cola and PepsiCo for 2020 to 2025?
+  tool: market_data
+  arguments:
+    tickers: KO,PEP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Accepted Date

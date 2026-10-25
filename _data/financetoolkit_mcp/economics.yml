@@ -7,7 +7,7 @@ get_gross_domestic_product:
     start_date: "2015-01-01"
     end_date: "2025-12-31"
 get_gross_domestic_product_growth:
-  question: How did quarterly real GDP growth develop in the euro area, Germany, the United Kingdom, the United States and Japan from early 2025 to mid-2026?
+  question: How did quarterly real GDP growth develop in the euro area, Germany, the United Kingdom, the United States and Japan from the first quarter of 2025 to the second quarter of 2026?
   tool: macroeconomics
   arguments:
     countries: Euro Area,Germany,United Kingdom,United States,Japan
@@ -20,6 +20,27 @@ get_gross_domestic_product_deflator:
     countries: United States,Canada,Russian Federation
     start_date: "2015-01-01"
     end_date: "2025-12-31"
+get_real_gross_domestic_product_usd:
+  question: How did the real GDP of the United States, Japan and Germany, in US dollars, develop from 2015 to 2025?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Japan,Germany
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_real_gross_domestic_product_per_capita:
+  question: How did real GDP per person, in national currency, develop in the Netherlands, Germany and China from 2015 to 2025?
+  tool: macroeconomics
+  arguments:
+    countries: Netherlands,Germany,China
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_output_gap:
+  question: How large was the output gap in the United States, Germany and Japan from 2018 to 2022?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Germany,Japan
+    start_date: "2018-01-01"
+    end_date: "2022-01-01"
 get_total_consumption:
   question: How large was total consumption in the Netherlands, France and Poland, in national currency, from 2018 to 2025?
   tool: macroeconomics
@@ -60,7 +81,7 @@ get_fixed_investment_to_gdp_ratio:
   tool: macroeconomics
   arguments:
     countries: Austria,Germany,Switzerland
-    start_date: "2000-01-01"
+    start_date: "2016-01-01"
     end_date: "2025-12-31"
 get_exports:
   question: How much did the Netherlands, Germany and China export each year, in national currency, from 1980 to 1990?
@@ -90,6 +111,13 @@ get_imports_to_gdp_ratio:
     countries: United States,Canada,Mexico
     start_date: "2010-01-01"
     end_date: "2025-12-31"
+get_trade_balance:
+  question: How large were the trade balances of the United States, Germany and China, in national currency, from 2020 to 2023?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Germany,China
+    start_date: "2020-01-01"
+    end_date: "2023-01-01"
 get_current_account_balance:
   question: How large were the current account balances of France, Germany and Italy, in national currency, from 2015 to 2025?
   tool: macroeconomics
@@ -181,34 +209,6 @@ get_trust_in_government:
     countries: United States,Greece,Japan
     start_date: "2006-01-01"
     end_date: "2025-12-31"
-get_real_gross_domestic_product_usd:
-  question: How did the real GDP of the United States, Japan and Germany, in US dollars, develop from 2015 to 2025?
-  tool: macroeconomics
-  arguments:
-    countries: United States,Japan,Germany
-    start_date: "2015-01-01"
-    end_date: "2025-12-31"
-get_real_gross_domestic_product_per_capita:
-  question: How did real GDP per person, in national currency, develop in the Netherlands, Germany and China from 2015 to 2025?
-  tool: macroeconomics
-  arguments:
-    countries: Netherlands,Germany,China
-    start_date: "2015-01-01"
-    end_date: "2025-12-31"
-get_output_gap:
-  question: How large was the output gap in the United States, Germany and Japan from 2018 to 2022?
-  tool: macroeconomics
-  arguments:
-    countries: United States,Germany,Japan
-    start_date: "2018-01-01"
-    end_date: "2022-01-01"
-get_trade_balance:
-  question: How large were the trade balances of the United States, Germany and China, in national currency, from 2020 to 2023?
-  tool: macroeconomics
-  arguments:
-    countries: United States,Germany,China
-    start_date: "2020-01-01"
-    end_date: "2023-01-01"
 get_consumer_price_index:
   question: How did the consumer price index of Germany, France and Portugal develop each year from 2008 to 2020?
   tool: macroeconomics
@@ -310,6 +310,86 @@ get_real_effective_exchange_rate:
     countries: United States,Japan,Netherlands
     start_date: "2018-01-01"
     end_date: "2025-12-31"
+get_money_supply:
+  question: How large was the M2 money supply of the Netherlands, Germany and the United States, in national currency, from 2010 to 2020?
+  tool: macroeconomics
+  arguments:
+    countries: Netherlands,Germany,United States
+    measure: M2
+    start_date: "2010-01-01"
+    end_date: "2020-12-31"
+get_central_bank_policy_rate:
+  question: What were the central bank policy rates for the Netherlands, Germany and the United States in each year from 2021 to 2025?
+  tool: rates
+  arguments:
+    countries: Netherlands,Germany,United States
+    period: yearly
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_short_term_interest_rate:
+  question: How did 3-month interbank rates in Japan, the United States and China move each quarter from the second quarter of 2023 to the fourth quarter of 2025?
+  tool: rates
+  arguments:
+    countries: Japan,United States,China
+    gmdb_source: false
+    period: quarterly
+    start_date: "2023-05-01"
+    end_date: "2025-12-31"
+get_long_term_interest_rate:
+  question: How did 10-year government bond yields in Japan, the United States and Germany move each month from May to December 2023, according to OECD data?
+  tool: rates
+  arguments:
+    countries: Japan,United States,Germany
+    gmdb_source: false
+    period: monthly
+    start_date: "2023-05-01"
+    end_date: "2023-12-31"
+get_overnight_rate:
+  question: How did €STR, TONA, SONIA and SOFR move each month from April to September 2026?
+  tool: rates
+  arguments:
+    countries: Euro Area,Japan,United Kingdom,United States
+    period: monthly
+    start_date: "2026-04-01"
+    end_date: "2026-09-30"
+get_real_interest_rate:
+  question: How did real long-term interest rates, the 10-year bond yield minus inflation, develop in the United States, Germany and Japan from 2018 to 2023?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Germany,Japan
+    start_date: "2018-01-01"
+    end_date: "2023-01-01"
+get_yield_curve_slope:
+  question: How did the gap between 10-year and 3-month interest rates in the United States, Germany and Japan develop each year from 2021 to 2023?
+  tool: rates
+  arguments:
+    countries: United States,Germany,Japan
+    period: yearly
+    start_date: "2021-01-01"
+    end_date: "2023-12-31"
+get_renewable_energy:
+  question: What share of primary energy supply came from renewables in Austria, Germany and the United States from 2010 to 2020?
+  tool: environment
+  arguments:
+    countries: Austria,Germany,United States
+    start_date: "2010-01-01"
+    end_date: "2020-01-01"
+get_carbon_footprint:
+  question: How did greenhouse gas emissions per person in Germany, the United States and Poland develop from 2010 to 2020?
+  tool: environment
+  arguments:
+    countries: Germany,United States,Poland
+    start_date: "2010-01-01"
+    end_date: "2020-01-01"
+get_unemployment_rate:
+  question: How did the unemployment rate in Germany, the United States and Japan develop each quarter from the first quarter of 2021 to the first quarter of 2023?
+  tool: jobs
+  arguments:
+    countries: Germany,United States,Japan
+    gmdb_source: false
+    period: quarterly
+    start_date: "2021-03-01"
+    end_date: "2023-01-01"
 get_misery_index:
   question: How did the misery index, unemployment plus inflation, of the United States, Germany and Japan develop from 2018 to 2023?
   tool: macroeconomics
@@ -317,6 +397,69 @@ get_misery_index:
     countries: United States,Germany,Japan
     start_date: "2018-01-01"
     end_date: "2023-01-01"
+get_labour_productivity:
+  question: How much GDP per hour worked did Bulgaria, Croatia and Spain produce from 2016 to 2025?
+  tool: jobs
+  arguments:
+    countries: Bulgaria,Croatia,Spain
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_income_inequality:
+  question: How did income inequality, measured by the Gini coefficient, compare in the United States, Germany and Japan from 2013 to 2021?
+  tool: jobs
+  arguments:
+    countries: United States,Germany,Japan
+    start_date: "2013-01-01"
+    end_date: "2021-12-31"
+get_population_statistics:
+  question: How did the population of Japan develop from 2010 to 2019?
+  tool: jobs
+  arguments:
+    countries: Japan
+    start_date: "2010-01-01"
+    end_date: "2019-01-01"
+get_poverty_rate:
+  question: What share of people lived in relative poverty in Portugal from 2012 to 2020?
+  tool: jobs
+  arguments:
+    countries: Portugal
+    start_date: "2012-01-01"
+    end_date: "2020-01-01"
+get_sovereign_debt_crisis:
+  question: In which years from 1999 to 2005 did Argentina, Ecuador and Greece go through a sovereign debt crisis?
+  tool: macroeconomics
+  arguments:
+    countries: Argentina,Ecuador,Greece
+    start_date: "1999-01-01"
+    end_date: "2005-12-31"
+get_currency_crisis:
+  question: Did Turkey go through a currency crisis in any year from 2015 to 2019?
+  tool: macroeconomics
+  arguments:
+    countries: Turkey
+    start_date: "2015-01-01"
+    end_date: "2019-12-31"
+get_banking_crisis:
+  question: In which years from 2005 to 2025 did the United States and the United Kingdom go through a systemic banking crisis?
+  tool: macroeconomics
+  arguments:
+    countries: United States,United Kingdom
+    start_date: "2005-01-01"
+    end_date: "2025-12-31"
+get_nonfarm_payrolls:
+  question: How did total US nonfarm payroll employment develop from August to December 2025?
+  tool: jobs
+  arguments:
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_initial_jobless_claims:
+  question: How many initial jobless claims were filed in the United States in each week from 29 November to 27 December 2025?
+  tool: jobs
+  arguments:
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    limit: -5
 get_retail_sales:
   question: How did monthly US retail and food services sales develop from August to December 2025?
   tool: macroeconomics
@@ -345,21 +488,12 @@ get_real_personal_income:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
     limit: -5
-get_commercial_real_estate_prices:
-  question: How did commercial property prices in the United States, the euro area, Japan and Germany change year on year in each quarter of 2025?
-  tool: macroeconomics
+get_mortgage_rate_30_year:
+  question: What was the average 30-year fixed US mortgage rate in each week of December 2025?
+  tool: rates
   arguments:
-    countries: United States,Euro Area,Japan,Germany
-    start_date: "2025-01-01"
+    start_date: "2020-01-01"
     end_date: "2025-12-31"
-get_commodity_forward_curve:
-  question: What did the next six crude oil futures contracts trade at from 27 to 31 July 2026?
-  tool: macroeconomics
-  arguments:
-    commodity: Crude Oil
-    contracts: 6
-    start_date: "2026-01-01"
-    end_date: "2026-08-01"
     limit: -5
 get_recession_indicator:
   question: Did the NBER date any month from August to December 2025 as a US recession?
@@ -368,75 +502,15 @@ get_recession_indicator:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
     limit: -5
-get_economic_calendar:
-  question: Which high-impact economic releases were due for the United States and the euro area in early September 2026?
+get_commercial_real_estate_prices:
+  question: How did commercial property prices in the United States, the euro area, Japan and Germany change year on year in each quarter of 2025?
   tool: macroeconomics
   arguments:
-    start_date: "2026-09-01"
-    end_date: "2026-09-30"
-    countries: United States,Euro Area
-    impact: High
-    show_columns: Country,Event,Previous,Estimate,Actual
-    limit: 5
-get_money_supply:
-  question: How large was the M2 money supply of the Netherlands, Germany and the United States, in national currency, from 2010 to 2020?
-  tool: macroeconomics
-  arguments:
-    countries: Netherlands,Germany,United States
-    measure: M2
-    start_date: "2010-01-01"
-    end_date: "2020-12-31"
-get_central_bank_policy_rate:
-  question: What were the central bank policy rates for the Netherlands, Germany and the United States in each year from 2021 to 2025?
-  tool: rates
-  arguments:
-    countries: Netherlands,Germany,United States
-    period: yearly
-    start_date: "2021-01-01"
+    countries: United States,Euro Area,Japan,Germany
+    start_date: "2025-01-01"
     end_date: "2025-12-31"
-get_overnight_rate:
-  question: How did €STR, TONA, SONIA and SOFR move each month from April to September 2026?
-  tool: rates
-  arguments:
-    countries: Euro Area,Japan,United Kingdom,United States
-    period: monthly
-    start_date: "2026-04-01"
-    end_date: "2026-09-30"
-get_short_term_interest_rate:
-  question: How did 3-month interbank rates in Japan, the United States and China move each quarter from mid-2023 to the end of 2025?
-  tool: rates
-  arguments:
-    countries: Japan,United States,China
-    gmdb_source: false
-    period: quarterly
-    start_date: "2023-05-01"
-    end_date: "2025-12-31"
-get_long_term_interest_rate:
-  question: How did 10-year government bond yields in Japan, the United States and Brazil move each month from May to December 2023, according to OECD data?
-  tool: rates
-  arguments:
-    countries: Japan,United States,Brazil
-    gmdb_source: false
-    period: monthly
-    start_date: "2023-05-01"
-    end_date: "2023-12-31"
-get_real_interest_rate:
-  question: How did real long-term interest rates, the 10-year bond yield minus inflation, develop in the United States, Germany and Japan from 2018 to 2023?
-  tool: macroeconomics
-  arguments:
-    countries: United States,Germany,Japan
-    start_date: "2018-01-01"
-    end_date: "2023-01-01"
-get_yield_curve_slope:
-  question: How did the gap between 10-year and 3-month interest rates in the United States, Germany and Japan develop each year from 2021 to 2023?
-  tool: rates
-  arguments:
-    countries: United States,Germany,Japan
-    period: yearly
-    start_date: "2021-01-01"
-    end_date: "2023-12-31"
 get_real_yield_curve:
-  question: How did 10-year real yields in the United States, the United Kingdom and Germany move from April to September 2026?
+  question: How did 10-year real yields in the United States, the United Kingdom and Germany move each month from April to September 2026?
   tool: rates
   arguments:
     countries: United States,United Kingdom,Germany
@@ -461,18 +535,6 @@ get_inflation_expectations:
     show_columns: 5Y
     start_date: "2026-04-01"
     end_date: "2026-09-30"
-get_mortgage_rate_30_year:
-  question: What was the average 30-year fixed US mortgage rate in each week of December 2025?
-  tool: rates
-  arguments:
-    start_date: "2020-01-01"
-    end_date: "2025-12-31"
-    limit: -5
-get_market_risk_premium:
-  question: What are the country risk premium and the total equity risk premium of the United States, Germany, Japan, Brazil and India?
-  tool: market_data
-  arguments:
-    show_columns: United States,Germany,Japan,Brazil,India
 get_implied_volatility:
   question: What implied volatility did S&P 500 options price at the end of each month from April to September 2026, from 9 days to one year to expiry?
   tool: macroeconomics
@@ -481,27 +543,16 @@ get_implied_volatility:
     period: monthly
     start_date: "2026-04-01"
     end_date: "2026-09-30"
-get_asset_class_proxies:
-  question: What monthly returns did the listed proxies for private equity, infrastructure, hedge funds and private credit earn from April to September 2026?
+get_stress_test_scenario:
+  question: What does the severely adverse scenario of the Federal Reserve's 2026 stress test assume for US growth, unemployment and yields in its first five quarters?
   tool: macroeconomics
   arguments:
-    show_columns: Private Equity,Infrastructure,Hedge Funds,Private Credit
-    start_date: "2026-04-01"
-    end_date: "2026-09-30"
-get_renewable_energy:
-  question: What share of primary energy supply came from renewables in Austria, Germany and the United States from 2010 to 2020?
-  tool: environment
-  arguments:
-    countries: Austria,Germany,United States
-    start_date: "2010-01-01"
-    end_date: "2020-01-01"
-get_carbon_footprint:
-  question: How did greenhouse gas emissions per person in Germany, the United States and Poland develop from 2010 to 2020?
-  tool: environment
-  arguments:
-    countries: Germany,United States,Poland
-    start_date: "2010-01-01"
-    end_date: "2020-01-01"
+    scenario: adverse
+    authority: federal_reserve
+    countries: United States
+    year: 2026
+    show_columns: Real GDP growth,Unemployment rate,10-year Treasury yield,BBB corporate yield
+    limit: 5
 get_carbon_price:
   question: How did the price of an EU emission allowance develop each month from April to September 2026?
   tool: environment
@@ -517,36 +568,48 @@ get_climate_scenario:
     scenario: Net Zero 2050
     countries: United States,Germany,United Kingdom,Japan
     show_columns: 2025,2030,2035,2040,2045,2050
-get_unemployment_rate:
-  question: How did the unemployment rate in Germany, the United States and Japan develop each quarter from 2021 to early 2023?
-  tool: jobs
+get_long_run_asset_returns:
+  question: What real equity returns did the United States, the United Kingdom, Germany and Japan earn each year from 2011 to 2020?
+  tool: macroeconomics
   arguments:
-    countries: Germany,United States,Japan
-    gmdb_source: false
-    period: quarterly
-    start_date: "2021-03-01"
-    end_date: "2023-01-01"
-get_labour_productivity:
-  question: How much GDP per hour worked did Bulgaria, Croatia and Spain produce from 2016 to 2025?
-  tool: jobs
+    asset_class: equity
+    countries: United States,United Kingdom,Germany,Japan
+    real: true
+    accept_licence: true
+    start_date: "2011-01-01"
+    end_date: "2020-12-31"
+get_millennium_of_macroeconomic_data:
+  question: What were the Bank Rate, the yield on consols, consumer price inflation and share prices in the United Kingdom in 1720, 1815, 1914, 1974 and 2008?
+  tool: macroeconomics
   arguments:
-    countries: Bulgaria,Croatia,Spain
-    start_date: "2016-01-01"
-    end_date: "2025-12-31"
-get_income_inequality:
-  question: How did income inequality, measured by the Gini coefficient, compare in the United States, Germany and Japan from 2013 to 2021?
-  tool: jobs
+    show_columns: Bank Rate,Consols / long-term government bond yields,Consumer price inflation,Share prices
+    start_date: "1700-01-01"
+    end_date: "2016-12-31"
+get_scenario_set:
+  question: Where does De Nederlandsche Bank's real-world scenario set see the 10-year nominal interest rate today and in 1, 5, 10, 30 and 100 years, at the 5th, 50th and 95th percentiles and on average?
+  tool: macroeconomics
   arguments:
-    countries: United States,Germany,Japan
-    start_date: "2013-01-01"
-    end_date: "2021-12-31"
-get_population_statistics:
-  question: How did the population of Japan develop from 2010 to 2019?
-  tool: jobs
+    authority: dnb
+    measure: real_world
+    variables: Nominal rate 10Y
+    quantiles: 0.05,0.5,0.95
+get_asset_class_proxies:
+  question: What monthly returns did the listed proxies for private equity, infrastructure, hedge funds and private credit earn from April to September 2026?
+  tool: macroeconomics
   arguments:
-    countries: Japan
-    start_date: "2010-01-01"
-    end_date: "2019-01-01"
+    asset_classes: Private Equity,Infrastructure,Hedge Funds,Private Credit
+    period: monthly
+    start_date: "2026-04-01"
+    end_date: "2026-09-30"
+get_commodity_forward_curve:
+  question: What did the next six crude oil futures contracts trade at from 27 to 31 July 2026?
+  tool: macroeconomics
+  arguments:
+    commodity: Crude Oil
+    contracts: 6
+    start_date: "2026-01-01"
+    end_date: "2026-08-01"
+    limit: -5
 get_life_table:
   question: What was the probability that a man in Germany dies within a year at ages 0, 30, 65, 80 and 95, from 2020 to 2024?
   tool: jobs
@@ -555,48 +618,6 @@ get_life_table:
     sex: male
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-get_poverty_rate:
-  question: What share of people lived in relative poverty in Portugal from 2012 to 2020?
-  tool: jobs
-  arguments:
-    countries: Portugal
-    start_date: "2012-01-01"
-    end_date: "2020-01-01"
-get_nonfarm_payrolls:
-  question: How did total US nonfarm payroll employment develop from August to December 2025?
-  tool: jobs
-  arguments:
-    start_date: "2020-01-01"
-    end_date: "2025-12-31"
-    limit: -5
-get_initial_jobless_claims:
-  question: How many initial jobless claims were filed in the United States in each week from 29 November to 27 December 2025?
-  tool: jobs
-  arguments:
-    start_date: "2020-01-01"
-    end_date: "2025-12-31"
-    limit: -5
-get_banking_crisis:
-  question: In which years from 2005 to 2025 did the United States and the United Kingdom go through a systemic banking crisis?
-  tool: macroeconomics
-  arguments:
-    countries: United States,United Kingdom
-    start_date: "2005-01-01"
-    end_date: "2025-12-31"
-get_currency_crisis:
-  question: Did Turkey go through a currency crisis in any year from 2015 to 2019?
-  tool: macroeconomics
-  arguments:
-    countries: Turkey
-    start_date: "2015-01-01"
-    end_date: "2019-12-31"
-get_sovereign_debt_crisis:
-  question: Did Argentina go through a sovereign debt crisis in any year from 2021 to 2025?
-  tool: macroeconomics
-  arguments:
-    countries: Argentina
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_shiller_stock_market_data:
   question: What were the price, dividend, earnings and CAPE of the S&P Composite in Shiller's data in each month from January to October 2026?
   tool: macroeconomics
@@ -604,27 +625,18 @@ get_shiller_stock_market_data:
     show_columns: Price,Dividend,Earnings,CAPE
     start_date: "2026-01-01"
     end_date: "2026-10-31"
-get_millennium_of_macroeconomic_data:
-  question: What were the Bank Rate, the yield on consols, consumer price inflation and share prices in the United Kingdom in 1720, 1815, 1914, 1974 and 2008?
+get_economic_calendar:
+  question: What were the first five high-impact economic releases for the United States and the euro area in September 2026, with their previous, expected and actual values?
   tool: macroeconomics
   arguments:
-    show_columns: Bank Rate,Consols / long-term government bond yields,Consumer price inflation,Share prices
-    start_date: "1700-01-01"
-    end_date: "2016-12-31"
-get_stress_test_scenario:
-  question: What does the severely adverse scenario of the Federal Reserve's 2026 stress test assume for US growth, unemployment and yields in its first five quarters?
-  tool: macroeconomics
-  arguments:
-    scenario: adverse
-    authority: federal_reserve
-    countries: United States
-    year: 2026
-    show_columns: Real GDP growth,Unemployment rate,10-year Treasury yield,BBB corporate yield
+    start_date: "2026-09-01"
+    end_date: "2026-09-30"
+    countries: United States,Euro Area
+    impact: High
+    show_columns: Country,Event,Previous,Estimate,Actual
     limit: 5
-get_scenario_set:
-  question: Where does De Nederlandsche Bank's real-world scenario set see the 10-year nominal interest rate in 1, 5, 10, 30 and 100 years?
-  tool: macroeconomics
+get_market_risk_premium:
+  question: What are the country risk premium and the total equity risk premium of the United States, Germany, Japan, Brazil and India?
+  tool: market_data
   arguments:
-    authority: dnb
-    measure: real_world
-    variables: Nominal rate 10Y
+    show_columns: United States,Germany,Japan,Brazil,India

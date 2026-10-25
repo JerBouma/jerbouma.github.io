@@ -1,410 +1,477 @@
 get_mcclellan_oscillator:
-  question: How did the McClellan Oscillator of Apple's and Microsoft's daily up and down closes move from 17 to 31 December 2025?
+  question: How did the McClellan Oscillator of the iShares MSCI Japan (EWJ), Germany (EWG), Brazil (EWZ), India (INDA) and China Large-Cap (FXI) ETFs, based on their daily up and down closes, move from 24 to 31 December 2025?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
+    tickers: EWJ,EWG,EWU,EWQ,EWZ,INDA,FXI,EWC,EWA,EWY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    show_columns: EWJ,EWG,EWZ,INDA,FXI,Benchmark
+    limit: -5
 get_advancers_decliners:
-  question: On which trading days from 17 to 31 December 2025 did Apple and Microsoft close higher or lower than the day before?
+  question: On which trading days from 24 to 31 December 2025 did the iShares MSCI Japan (EWJ), Germany (EWG), Brazil (EWZ), India (INDA) and China Large-Cap (FXI) ETFs close higher or lower than the day before?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
+    tickers: EWJ,EWG,EWU,EWQ,EWZ,INDA,FXI,EWC,EWA,EWY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    show_columns: EWJ,EWG,EWZ,INDA,FXI,Benchmark
+    limit: -5
 get_on_balance_volume:
-  question: How did the on-balance volume of Apple and Microsoft, counted from the start of 2021, build up from 17 to 31 December 2025?
+  question: How did the on-balance volume of Bitcoin, counted from the start of 2021, build up from 27 to 31 December 2025?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
+    tickers: BTCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_accumulation_distribution_line:
-  question: Were Apple and Microsoft under accumulation or distribution in the second half of December 2025?
+  question: How did the accumulation/distribution line of the SPDR Gold Shares ETF (GLD), counted from the start of 2021, move from 24 to 31 December 2025?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
+    tickers: GLD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_chaikin_oscillator:
-  question: How did the Chaikin Oscillator for Apple and Microsoft swing between buying and selling pressure from 17 to 31 December 2025?
+  question: How did the Chaikin Oscillator of the Invesco QQQ swing between buying and selling pressure from 24 to 31 December 2025?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
+    tickers: QQQ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
-get_trin:
-  question: Measured across Apple and Microsoft as one market, how did the Arms Index (TRIN) move day by day from 17 to 31 December 2025?
-  tool: breadth
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2025-12-17"
-    end_date: "2025-12-31"
-get_new_highs_new_lows:
-  question: Of Apple and Microsoft, how many closed at a 252-day high, net of those at a 252-day low, on each trading day from 17 to 31 December 2025?
-  tool: breadth
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_chaikin_money_flow:
-  question: How did the Chaikin Money Flow of Apple and Microsoft compare over the last five years?
+  question: How did the Chaikin Money Flow of Ether and Solana compare from 27 to 31 December 2025?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ETHUSD,SOLUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
 get_ease_of_movement:
-  question: How easily did the share prices of Apple and Microsoft move relative to their volume over the last five years?
+  question: How easily did the S&P 500 move relative to its volume from 24 to 31 December 2025, measured by the Ease of Movement?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
-get_positive_volume_index:
-  question: How did the Positive Volume Index of Apple and Microsoft develop over the last five years, starting from 1,000?
-  tool: breadth
-  arguments:
-    tickers: AAPL,MSFT
+    tickers: ^GSPC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
 get_negative_volume_index:
-  question: How did the Negative Volume Index of Apple and Microsoft, which only moves on days when volume falls, develop over the last five years?
+  question: How did the Negative Volume Index of SPY and IWM, counted from the start of 2021, develop from 24 to 31 December 2025?
   tool: breadth
   arguments:
-    tickers: AAPL,MSFT
+    tickers: SPY,IWM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: SPY,IWM
+    limit: -5
+    benchmark_ticker: None
+get_positive_volume_index:
+  question: How did the Positive Volume Index of SPY and IWM, counted from the start of 2021, develop from 24 to 31 December 2025?
+  tool: breadth
+  arguments:
+    tickers: SPY,IWM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: SPY,IWM
+    limit: -5
+    benchmark_ticker: None
 get_money_flow_index:
-  question: How did the Money Flow Index of Apple and Microsoft move in the second half of December 2025?
+  question: How did the Money Flow Index of the Nasdaq Composite move from 24 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^IXIC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_williams_percent_r:
-  question: How did the Williams %R of Apple and Microsoft move between overbought and oversold from 17 to 31 December 2025?
+  question: How did the Williams %R of the euro against the dollar move between overbought and oversold from 26 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: EURUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_aroon_indicator:
-  question: How did Apple's Aroon Up and Aroon Down lines evolve from 17 to 31 December 2025?
+  question: How did the Aroon Up and Aroon Down lines of gold evolve from 26 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL
+    tickers: GCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
+    show_columns: GCUSD
+    limit: -5
 get_commodity_channel_index:
-  question: How did the Commodity Channel Index of Apple and Microsoft move in the second half of December 2025?
+  question: How did the Commodity Channel Index of crude oil move from 26 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: CLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_relative_vigor_index:
-  question: How did the Relative Vigor Index of Apple and Microsoft move in the second half of December 2025?
+  question: How did the Relative Vigor Index of the Hang Seng and its signal line move from 24 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^HSI
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    show_columns: ^HSI
+    limit: -5
 get_force_index:
-  question: How did the Force Index of Apple and Microsoft, their price change times volume, move from 17 to 31 December 2025?
+  question: How did the Force Index of the iShares 20+ Year Treasury Bond ETF (TLT), its price change times volume, move from 24 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: TLT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_ultimate_oscillator:
-  question: What did the Ultimate Oscillator of Apple and Microsoft, which combines 7, 14 and 28-day buying pressure, show from 17 to 31 December 2025?
+  question: What did the Ultimate Oscillator of the DAX, which combines 7, 14 and 28-day buying pressure, show from 24 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^GDAXI
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_percentage_price_oscillator:
-  question: How did the Percentage Price Oscillator of Apple compare with Microsoft's from 17 to 31 December 2025?
+  question: How did the Percentage Price Oscillator of the Euro Stoxx 50 compare with that of the S&P 500 from 24 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^STOXX50E,^GSPC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_detrended_price_oscillator:
-  question: How did the share prices of Apple and Microsoft cycle around their trend from 17 to 31 December 2025, measured by the Detrended Price Oscillator?
+  question: How did the price of natural gas cycle around its trend from 26 to 31 December 2025, measured by the Detrended Price Oscillator?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: NGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_average_directional_index:
-  question: How strong were the price trends of Apple and Microsoft from 17 to 31 December 2025, measured by the Average Directional Index?
+  question: How strong was the trend of the dollar against the yen from 26 to 31 December 2025, measured by the Average Directional Index?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: USDJPY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_chande_momentum_oscillator:
-  question: How did the momentum of Apple and Microsoft swing from 17 to 31 December 2025, measured by the Chande Momentum Oscillator?
+  question: How did the momentum of silver swing from 26 to 31 December 2025, measured by the Chande Momentum Oscillator?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: SIUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_ichimoku_cloud:
-  question: What did Apple's Ichimoku cloud look like from 17 to 31 December 2025?
+  question: What did the Ichimoku cloud of the Nikkei 225 look like from 25 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL
+    tickers: ^N225
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
+    show_columns: ^N225
+    limit: -5
 get_stochastic_oscillator:
-  question: How did the stochastic oscillator %K and %D lines of Apple move from 17 to 31 December 2025?
+  question: How did the stochastic oscillator %K and %D lines of the pound against the dollar move from 26 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL
+    tickers: GBPUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
+    show_columns: GBPUSD
+    limit: -5
 get_moving_average_convergence_divergence:
-  question: How did Apple's MACD line move against its signal line from 17 to 31 December 2025?
+  question: How did Microsoft's MACD line move against its signal line from 24 to 31 December 2025, based on prices from October 2024?
   tool: momentum
   arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
+    tickers: MSFT
+    start_date: "2024-10-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
+    show_columns: MSFT
+    limit: -5
 get_relative_strength_index:
-  question: Were Apple and Microsoft overbought or oversold at any point from 17 to 31 December 2025, judging by their 14-day relative strength index?
+  question: Were Bitcoin and Ether overbought or oversold at any point from 27 to 31 December 2025, judging by their 14-day relative strength index?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: BTCUSD,ETHUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_balance_of_power:
-  question: Did buyers or sellers control the trading days of Apple and Microsoft from 17 to 31 December 2025, measured by the Balance of Power?
+  question: Did buyers or sellers control the trading days of the FTSE 100 from 24 to 31 December 2025, measured by the Balance of Power?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^FTSE
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_awesome_oscillator:
-  question: How did the momentum of Apple and Microsoft shift from 17 to 31 December 2025, measured by the Awesome Oscillator?
+  question: How did the momentum of Solana shift from 27 to 31 December 2025, measured by the Awesome Oscillator?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: SOLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
-get_rate_of_change:
-  question: How did the 12-day rate of change of Apple and Microsoft shares compare over the last five years?
-  tool: momentum
-  arguments:
-    tickers: AAPL,MSFT
-get_know_sure_thing:
-  question: How did Apple's Know Sure Thing indicator and its signal line move over the last five years?
-  tool: momentum
-  arguments:
-    tickers: AAPL
-    show_columns: AAPL
-get_elder_ray_index:
-  question: How did bull power and bear power develop for Apple from 17 to 31 December 2025, measured by the Elder Ray Index?
-  tool: momentum
-  arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
+    limit: -5
 get_vortex_indicator:
-  question: How did Apple's positive and negative Vortex Indicator lines move against each other from 17 to 31 December 2025?
+  question: How did the positive and negative Vortex Indicator lines of the Australian dollar against the US dollar move against each other from 26 to 31 December 2025?
   tool: momentum
   arguments:
-    tickers: AAPL
+    tickers: AUDUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
+    show_columns: AUDUSD
+    limit: -5
+get_elder_ray_index:
+  question: How did bull power and bear power develop for copper from 26 to 31 December 2025, measured by the Elder Ray Index?
+  tool: momentum
+  arguments:
+    tickers: HGUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: HGUSD
+    limit: -5
+get_rate_of_change:
+  question: How did the rate of change of gold and silver compare from 26 to 31 December 2025?
+  tool: momentum
+  arguments:
+    tickers: GCUSD,SIUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
 get_choppiness_index:
-  question: Were the share prices of Apple and Microsoft trending or moving sideways over the last five years, according to the Choppiness Index?
+  question: Was the euro against the dollar trending or moving sideways from 26 to 31 December 2025, according to the Choppiness Index?
   tool: momentum
   arguments:
-    tickers: AAPL,MSFT
+    tickers: EURUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_know_sure_thing:
+  question: How did the Know Sure Thing indicator of the S&P 500 and its signal line move from 24 to 31 December 2025?
+  tool: momentum
+  arguments:
+    tickers: ^GSPC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: ^GSPC
+    limit: -5
 get_moving_average:
-  question: How did the 14-day simple moving average of Apple and Microsoft move from 17 to 31 December 2025?
+  question: How did the 50-day simple moving average of the S&P 500 move from 24 to 31 December 2025?
   tool: overlap
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^GSPC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    window: 50
+    limit: -5
 get_exponential_moving_average:
-  question: How did the 14-day exponential moving average of Apple and Microsoft move from 17 to 31 December 2025?
+  question: How did the 20-day exponential moving average of Ether move from 27 to 31 December 2025?
   tool: overlap
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ETHUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    window: 20
+    limit: -5
 get_double_exponential_moving_average:
-  question: How did the 14-day double exponential moving average of Apple and Microsoft move from 17 to 31 December 2025?
+  question: How did the double exponential moving average of the Invesco QQQ move from 24 to 31 December 2025?
   tool: overlap
   arguments:
-    tickers: AAPL,MSFT
+    tickers: QQQ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
+    limit: -5
 get_trix:
-  question: How did the TRIX of Apple and Microsoft move in the second half of December 2025?
+  question: How did the TRIX of the Nasdaq Composite move from 24 to 31 December 2025?
   tool: overlap
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^IXIC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -10
-get_triangular_moving_average:
-  question: How did the 14-day triangular moving average of Apple and Microsoft move from 17 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
-get_weighted_moving_average:
-  question: How did the 14-day weighted moving average of Apple and Microsoft move from 17 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
-get_hull_moving_average:
-  question: How did the 14-day Hull moving average of Apple and Microsoft move from 17 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
-get_volume_weighted_average_price:
-  question: What was the rolling 14-day volume weighted average price of Apple and Microsoft from 17 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
-get_parabolic_sar:
-  question: Where did the Parabolic SAR place its trailing stop for Apple and Microsoft from 17 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
-get_pivot_points:
-  question: What were Apple's daily floor-trader pivot point, support and resistance levels from 17 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
-get_support_resistance_levels:
-  question: Which support and resistance levels did Apple's share price establish from 22 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -7
-get_kaufman_adaptive_moving_average:
-  question: How did the Kaufman adaptive moving average of Apple and Microsoft move over the last five years?
-  tool: overlap
-  arguments:
-    tickers: AAPL,MSFT
-get_fibonacci_retracement_levels:
-  question: What were Apple's Fibonacci retracement levels over its rolling 14-day range from 17 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
-get_true_range:
-  question: How wide was the true range of Apple and Microsoft on each trading day from 17 to 31 December 2025?
-  tool: volatility
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
-get_average_true_range:
-  question: How did the 14-day average true range of Apple and Microsoft compare from 17 to 31 December 2025?
-  tool: volatility
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -10
-get_keltner_channels:
-  question: Where were Apple's Keltner Channels from 17 to 31 December 2025?
-  tool: volatility
-  arguments:
-    tickers: AAPL
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
+    limit: -5
 get_bollinger_bands:
-  question: How did Apple's closing price move within its Bollinger Bands from 17 to 31 December 2025?
+  question: How did the dollar against the yen move within its Bollinger Bands from 26 to 31 December 2025?
   tool: volatility
   arguments:
-    tickers: AAPL
+    tickers: USDJPY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
-get_donchian_channels:
-  question: What were Apple's 20-day Donchian Channels from 17 to 31 December 2025?
+    show_columns: USDJPY
+    limit: -5
+get_triangular_moving_average:
+  question: How did the triangular moving average of the SPDR Gold Shares ETF (GLD) move from 24 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: GLD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_weighted_moving_average:
+  question: How did the weighted moving average of the iShares 20+ Year Treasury Bond ETF (TLT) move from 24 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: TLT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_hull_moving_average:
+  question: How did the Hull moving average of Bitcoin move from 27 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: BTCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_kaufman_adaptive_moving_average:
+  question: How did the Kaufman adaptive moving average of the Euro Stoxx 50 move from 24 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: ^STOXX50E
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_volume_weighted_average_price:
+  question: What was the volume weighted average price of SPY from 24 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: SPY
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: SPY
+    limit: -5
+    benchmark_ticker: None
+get_parabolic_sar:
+  question: Where did the Parabolic SAR place its trailing stop for crude oil from 26 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: CLUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_pivot_points:
+  question: What were the daily pivot point and the first two support and resistance levels of the euro against the dollar from 26 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: EURUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: EURUSD
+    limit: -5
+get_support_resistance_levels:
+  question: Which support and resistance levels did gold establish from 26 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: GCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: GCUSD
+    limit: -5
+get_fibonacci_retracement_levels:
+  question: What were the Fibonacci retracement levels of Bitcoin from 27 to 31 December 2025?
+  tool: overlap
+  arguments:
+    tickers: BTCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: BTCUSD
+    limit: -5
+get_true_range:
+  question: How wide was the true range of natural gas on each trading day from 26 to 31 December 2025?
   tool: volatility
   arguments:
-    tickers: AAPL
+    tickers: NGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
-    limit: -10
-get_volatility_cone:
-  question: How did Apple's realized volatility at the end of 2025 compare with its range from 2021 to 2025, across windows of 10 to 120 trading days?
+    limit: -5
+get_average_true_range:
+  question: How did the 14-day average true range of crude oil and natural gas compare from 26 to 31 December 2025?
   tool: volatility
   arguments:
-    tickers: AAPL
+    tickers: CLUSD,NGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    show_columns: AAPL
+    limit: -5
 get_supertrend:
-  question: How did Apple's Supertrend level move over the last five years?
+  question: Where was Shopify's Supertrend level and which way did its trend point from 24 to 31 December 2025, based on prices from the start of 2025?
   tool: volatility
   arguments:
+    tickers: SHOP
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: SHOP
+    limit: -5
+get_keltner_channels:
+  question: Where were the Keltner Channels of the DAX from 24 to 31 December 2025?
+  tool: volatility
+  arguments:
+    tickers: ^GDAXI
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: ^GDAXI
+    limit: -5
+get_donchian_channels:
+  question: What were the 20-day Donchian Channels of copper from 26 to 31 December 2025?
+  tool: volatility
+  arguments:
+    tickers: HGUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: HGUSD
+    limit: -5
+get_volatility_cone:
+  question: How did Bitcoin's realized volatility at the end of 2025 compare with its minimum, 10th percentile, median, 90th percentile and maximum from 2021 to 2025, across windows of 10 to 120 days?
+  tool: volatility
+  arguments:
+    tickers: BTCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: BTCUSD
+get_trin:
+  question: Measured across the 11 Select Sector SPDR ETFs (XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLU, XLRE and XLC) as one market, how did the Arms Index (TRIN) move from 24 to 31 December 2025?
+  tool: breadth
+  arguments:
+    tickers: XLK,XLF,XLE,XLV,XLY,XLP,XLI,XLB,XLU,XLRE,XLC
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: XLK
+    limit: -5
+get_new_highs_new_lows:
+  question: Of the 11 Select Sector SPDR ETFs (XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLU, XLRE and XLC), how many closed at a 20-day high, net of those at a 20-day low, on each trading day from 24 to 31 December 2025?
+  tool: breadth
+  arguments:
+    tickers: XLK,XLF,XLE,XLV,XLY,XLP,XLI,XLB,XLU,XLRE,XLC
+    start_date: "2024-10-01"
+    end_date: "2025-12-31"
+    window: 20
+    show_columns: XLK
+    limit: -5
+get_market_breadth:
+  question: How did the market breadth of the 30 members of the Dow Jones Industrial Average develop from 24 to 31 December 2025, based on prices from the start of 2024?
+  tool: breadth
+  arguments:
+    tickers: AAPL,AMGN,AMZN,AXP,BA,CAT,CRM,CSCO,CVX,DIS,GS,HD,HON,IBM,JNJ,JPM,KO,MCD,MMM,MRK,MSFT,NKE,NVDA,PG,SHW,TRV,UNH,V,VZ,WMT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_seasonality:
+  question: What were Apple's average and median return, hit rate and t-statistic for each calendar month from 2000 to 2025?
+  tool: momentum
+  arguments:
     tickers: AAPL
+    start_date: "2000-01-01"
+    end_date: "2025-12-31"
     show_columns: AAPL
+get_relative_strength:
+  question: How did Apple, Microsoft, Nvidia, Amazon and Alphabet score on the 1-99 relative strength rating from 24 to 31 December 2025, based on prices from 2022?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT,NVDA,AMZN,GOOGL
+    start_date: "2022-01-01"
+    end_date: "2025-12-31"
+    show_columns: Relative Strength Rating
+    limit: -5

@@ -63,18 +63,20 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.risk.collect_all_metrics().xs("AAPL", level=1, axis=1)
+metrics = toolkit.risk.collect_all_metrics().xs("AAPL", level=1, axis=1)
+
+metrics[["Value at Risk", "Maximum Drawdown", "Ulcer Index", "Skewness", "Kurtosis"]]
 ```
 
 Which returns:
 
-|      |   Ulcer Index |    GARCH |   Skewness |   Kurtosis |   Downside Deviation |   Variance |   Volatility |
-|:-----|--------------:|---------:|-----------:|-----------:|---------------------:|-----------:|-------------:|
-| 2021 |        0.0373 | nan      |    -0.0735 |     3.4146 |               0.0105 |     0.0626 |       0.2502 |
-| 2022 |        0.067  |   0.0697 |     0.3167 |     4.054  |               0.016  |     0.1274 |       0.357  |
-| 2023 |        0.033  |   0.1142 |    -0.0662 |     4.4804 |               0.0082 |     0.0412 |       0.2031 |
-| 2024 |        0.034  |   0.1142 |     0.4447 |     6.6121 |               0.0093 |     0.0514 |       0.2268 |
-| 2025 |        0.0492 |   0.1142 |     1.1299 |    17.0667 |               0.0136 |     0.1056 |       0.325  |
+|      |   Value at Risk |   Maximum Drawdown |   Ulcer Index |   Skewness |   Kurtosis |
+|:-----|----------------:|-------------------:|--------------:|-----------:|-----------:|
+| 2021 |         -0.0256 |            -0.1861 |        0.0366 |    -0.0748 |     3.4006 |
+| 2022 |         -0.0373 |            -0.3032 |        0.0664 |     0.3168 |     4.0553 |
+| 2023 |         -0.0175 |            -0.1498 |        0.0324 |    -0.0686 |     4.4756 |
+| 2024 |         -0.0217 |            -0.1539 |        0.0343 |     0.4447 |     6.6112 |
+| 2025 |         -0.0321 |            -0.3107 |        0.0502 |     1.1306 |    17.0892 |
 
 ---
 
@@ -83,7 +85,39 @@ Calculate the Value at Risk (VaR) of an investment portfolio or asset's returns.
 
 Value at Risk (VaR) is a risk management metric that quantifies the maximum potential loss an investment portfolio or asset may experience over a specified time horizon and confidence level. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
 
-The VaR is calculated as the quantile of the return distribution, representing the loss threshold that is not expected to be exceeded with a given confidence level (e.g., 5% for alpha=0.05).
+The VaR is calculated as the quantile of the return distribution, representing the loss threshold that is only exceeded with tail probability alpha (e.g., in 5% of the periods for alpha=0.05, the 95% confidence level).
+
+Value at Risk is a quantile: it says how bad a period gets at the chosen confidence level, not how bad the periods beyond it are, so two assets with the same VaR can have very different tails (see the Conditional Value at Risk for that). Historical VaR depends heavily on the window: one calm year gives a much smaller figure than a window that includes a crisis, so compare assets over the same period and confidence level. Scaling a daily VaR to a longer horizon with the square root of time assumes independent returns, which tends to understate risk when volatility clusters.
+
+The formula is as follows (with the default distribution="historic" and alpha=0.05):
+
+$$
+\text{VaR} = \operatorname{Quantile}(\text{Returns},\; \alpha)
+$$
+
+The quantile interpolates linearly between the two nearest returns and the VaR is reported as a return (negative for a loss). With `rolling`, the same quantile is taken over each trailing window of `rolling` returns. The other distributions replace the empirical quantile with:
+
+$$
+\text{Gaussian VaR} = \text{Mean} + z \cdot \text{Std}
+$$
+
+$$
+\text{Cornish-Fisher VaR} = \text{Mean} + z_{cf} \cdot \text{Std}
+$$
+
+$$
+z_{cf} = z + (z ^{2} - 1) \cdot S / 6 + (z ^{3} - 3 \cdot z) \cdot K / 24 - (2 \cdot z ^{3} - 5 \cdot z) \cdot S ^{2} / 36
+$$
+
+$$
+\text{Student-T VaR} = \text{Location} + \text{Scale} \cdot t_{v} ^{-1} (\alpha)
+$$
+
+$$
+\text{EVT VaR} = - (u + (\text{Scale\_GPD} / \xi) \cdot ((\alpha / p) ^{- \xi} - 1))
+$$
+
+Where z is the standard normal quantile at alpha, Std the sample standard deviation (ddof=1), S the sample skewness and K the sample excess kurtosis. The Student-T degrees of freedom v, Location and Scale are fitted by maximum likelihood. For "evt", u is the loss at `threshold_percentile`, xi and Scale_GPD the shape and scale of the Generalized Pareto Distribution fitted to the losses above it and p the fraction of losses above it.
 
 **Also known as:** VaR, maximum expected loss, portfolio loss risk.
 
@@ -91,8 +125,8 @@ The VaR is calculated as the quantile of the return distribution, representing t
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>alpha (float, optional):</u> The confidence level for VaR calculation (e.g., 0.05 for 95% confidence).
-Defaults to 0.05.
+- <u>alpha (float, optional):</u> The tail probability for the VaR calculation (e.g., 0.05 for the 95%
+confidence level). Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate VaR within the specified period or for the entire
 period. Thus whether to look at the VaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
@@ -108,13 +142,15 @@ under the parametric distributions. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>distribution (str):</u> The distribution to use for the VaR calculations (historic, gaussian, cf,
-cornish-fisher, studentt or evt). Defaults to "historic". Note that "cf" and "cornish-fisher"
-both adjust the gaussian quantile for skewness and kurtosis, but "cornish-fisher" uses the
-more standard Cornish-Fisher expansion (see `var_model.get_var_cornish_fisher`), while "cf"
-is kept for backwards compatibility.
+- <u>distribution (str):</u> The distribution to use for the VaR calculations (historic, gaussian,
+cornish-fisher, studentt or evt). Defaults to "historic". The parametric distributions use the
+sample standard deviation; "cornish-fisher" adjusts the gaussian quantile for the skewness and
+excess kurtosis of the returns (see `var_model.get_var_cornish_fisher`) and "studentt" uses the
+quantile of a Student-T distribution fitted by maximum likelihood.
 - <u>threshold_percentile (float, optional):</u> Only used when `distribution` is "evt". The percentile
-of losses above which the Generalized Pareto Distribution is fitted. Defaults to 0.95.
+of losses above which the Generalized Pareto Distribution is fitted; `alpha` can be at most
+1 - `threshold_percentile`, and a larger `alpha` gives an empty result (with a logged error).
+Defaults to 0.95.
 
 **Returns:**
 
@@ -132,7 +168,7 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["BTCUSD", "ETHUSD", "^GSPC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -143,13 +179,13 @@ toolkit.risk.get_value_at_risk(period="yearly", within_period=True)
 
 Which returns:
 
-|      |    AMZN |    TSLA |   Benchmark |
-|:-----|--------:|--------:|------------:|
-| 2021 | -0.0253 | -0.05   |     -0.0126 |
-| 2022 | -0.0518 | -0.0714 |     -0.0262 |
-| 2023 | -0.0273 | -0.0505 |     -0.0139 |
-| 2024 | -0.0248 | -0.0522 |     -0.0132 |
-| 2025 | -0.0305 | -0.0553 |     -0.0165 |
+|      |   BTCUSD |   ETHUSD |   ^GSPC |   Benchmark |
+|:-----|---------:|---------:|--------:|------------:|
+| 2021 |  -0.0626 |  -0.0838 | -0.0087 |     -0.0089 |
+| 2022 |  -0.0574 |  -0.0742 | -0.02   |     -0.0203 |
+| 2023 |  -0.0313 |  -0.0374 | -0.0116 |     -0.0117 |
+| 2024 |  -0.0407 |  -0.0533 | -0.0094 |     -0.0096 |
+| 2025 |  -0.0358 |  -0.0569 | -0.0113 |     -0.0113 |
 
 ---
 
@@ -160,14 +196,54 @@ Conditional Value at Risk (CVaR) is a risk management metric that quantifies the
 
 The CVaR is calculated as the expected loss given that the loss threshold (VaR) with a given confidence level (e.g., 5% for alpha=0.05) is exceeded.
 
+The Conditional Value at Risk (expected shortfall) is the measure banks report for market risk under the Basel framework, at 97.5% rather than 95% confidence, because unlike VaR it accounts for the size of the losses in the tail and never penalises diversification (it is subadditive). With daily data the estimate rests on few observations (one year at 95% leaves about 12 days in the tail), so a single extreme day can move it a lot; a longer window or a parametric distribution gives a steadier figure.
+
+The formula is as follows (with the default distribution="historic" and alpha=0.05):
+
+$$
+\text{CVaR} = \operatorname{Mean}(\text{Returns} | \text{Returns} \leq \text{VaR})
+$$
+
+$$
+\text{VaR} = \operatorname{Quantile}(\text{Returns},\; \alpha)
+$$
+
+The quantile interpolates linearly and the CVaR is reported as a return (negative for a loss). The other distributions use closed forms, with Std the sample standard deviation (ddof=1) and z_alpha the standard normal quantile at alpha:
+
+$$
+\text{Gaussian CVaR} = \text{Mean} - \text{Std} \cdot \operatorname{pdf}(z_{\alpha}) / \alpha
+$$
+
+$$
+\text{Student-T CVaR} = \text{Location} - \text{Scale} \cdot (v + t ^{2}) / (v - 1) \cdot \text{pdf}_{v}(t) / \alpha,\;\; \text{with}\; t = t_{v} ^{-1} (1 - \alpha)
+$$
+
+$$
+\text{Laplace CVaR} = \text{Mean} - b \cdot (1 - \ln(2 \cdot \alpha)),\;\; \text{with}\; b = \text{Std} / \sqrt{2}
+$$
+
+$$
+\text{Logistic CVaR} = \text{Mean} - s \cdot \ln((1 - \alpha) ^{1 - 1 / \alpha} / \alpha),\;\; \text{with}\; s = \text{Std} \cdot \sqrt{3} / \pi
+$$
+
+$$
+\text{Cornish-Fisher CVaR} = \text{Mean of} (\text{Mean} + z_{cf}(p) \cdot \text{Std}) \text{over}\; 1,\;\; \text{000 evenly spaced p in (0, alpha)}
+$$
+
+$$
+\text{EVT CVaR} = - (\text{VaR\_loss} + \text{Scale\_GPD} - \xi \cdot u) / (1 - \xi)
+$$
+
+Where the Student-T v, Location and Scale are fitted by maximum likelihood (NaN for v <= 1), z_cf is the Cornish-Fisher quantile of `get_value_at_risk`, and u, xi, Scale_GPD and VaR_loss are the loss threshold, the fitted Generalized Pareto shape and scale and the EVT VaR as a positive loss (NaN for xi >= 1).
+
 **Also known as:** CVaR, expected shortfall, ES, tail risk.
 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>alpha (float, optional):</u> The confidence level for CVaR calculation (e.g., 0.05 for 95% confidence).
-Defaults to 0.05.
+- <u>alpha (float, optional):</u> The tail probability for the CVaR calculation (e.g., 0.05 for the 95%
+confidence level). Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate CVaR within the specified period or for the entire
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
@@ -186,7 +262,9 @@ values. Defaults to False.
 - <u>distribution (str):</u> The distribution to use for the CVaR calculations (historic, gaussian, studentt, laplace,
 logistic, cornish-fisher or evt). Defaults to "historic".
 - <u>threshold_percentile (float, optional):</u> Only used when `distribution` is "evt". The percentile
-of losses above which the Generalized Pareto Distribution is fitted. Defaults to 0.95.
+of losses above which the Generalized Pareto Distribution is fitted; `alpha` can be at most
+1 - `threshold_percentile`, and a larger `alpha` gives an empty result (with a logged error).
+Defaults to 0.95.
 
 **Returns:**
 
@@ -204,24 +282,23 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["XOM", "CVX", "COP"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2025-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True)
+toolkit.risk.get_conditional_value_at_risk()
 ```
 
 Which returns:
 
-|      |    AMZN |    TSLA |   Benchmark |
-|:-----|--------:|--------:|------------:|
-| 2021 | -0.0327 | -0.0683 |     -0.0183 |
-| 2022 | -0.0685 | -0.0914 |     -0.0335 |
-| 2023 | -0.0413 | -0.071  |     -0.0157 |
-| 2024 | -0.0372 | -0.0776 |     -0.0189 |
-| 2025 | -0.047  | -0.0821 |     -0.0275 |
+|           |   Value |
+|:----------|--------:|
+| XOM       | -0.0359 |
+| CVX       | -0.0383 |
+| COP       | -0.0532 |
+| Benchmark | -0.0275 |
 
 ---
 
@@ -230,7 +307,19 @@ Calculate the Entropic Value at Risk (EVaR) of an investment portfolio or asset'
 
 Entropic Value at Risk (EVaR) is a risk management metric that quantifies upper bound for the value at risk (VaR) and the conditional value at risk (CVaR) over a specified time horizon and confidence level. EVaR is obtained from the Chernoff inequality. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
 
-The EVaR is calculated as the upper bound of VaR and CVaR with a given confidence level (e.g., 5% for alpha=0.05).
+The EVaR is calculated under the assumption that returns are normally distributed, for which the Chernoff bound has a closed form.
+
+The formula is as follows (with the default alpha=0.05):
+
+$$
+\text{EVaR} = \text{Mean} - \text{Std} \cdot \sqrt{- 2 \cdot \ln(\alpha)}
+$$
+
+Where alpha is the tail probability (0.05 for the 95% confidence level) and Std the sample standard deviation (ddof=1). It is an upper bound of the gaussian VaR and CVaR at the same confidence level. Since it only uses the mean and the standard deviation of the returns, it does not reflect their skewness or fat tails, and at high confidence levels it can be less severe than the historical CVaR of an asset with heavy tails.
+
+For more information about the method, see the following paper:
+
+- Ahmadi-Javid, A. (2012). "Entropic Value-at-Risk: A New Coherent Risk Measure." Journal of Optimization Theory and Applications, 155(3), 1105-1123.
 
 **Also known as:** EVaR.
 
@@ -238,8 +327,8 @@ The EVaR is calculated as the upper bound of VaR and CVaR with a given confidenc
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>alpha (float, optional):</u> The confidence level for EVaR calculation (e.g., 0.05 for 95% confidence).
-Defaults to 0.05.
+- <u>alpha (float, optional):</u> The tail probability for the EVaR calculation (e.g., 0.05 for the 95%
+confidence level). Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate EVaR within the specified period or for the entire
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
@@ -267,7 +356,7 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["CLUSD", "NGUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -278,13 +367,13 @@ toolkit.risk.get_entropic_value_at_risk(period="yearly", within_period=True)
 
 Which returns:
 
-|      |    AMZN |    TSLA |   Benchmark |
+|      |   CLUSD |   NGUSD |   Benchmark |
 |:-----|--------:|--------:|------------:|
-| 2021 | -0.0366 | -0.0821 |     -0.0188 |
-| 2022 | -0.0793 | -0.1059 |     -0.038  |
-| 2023 | -0.0482 | -0.0798 |     -0.0191 |
-| 2024 | -0.0416 | -0.095  |     -0.0184 |
-| 2025 | -0.0525 | -0.0965 |     -0.0293 |
+| 2021 | -0.0496 | -0.0837 |     -0.0185 |
+| 2022 | -0.0718 | -0.1505 |     -0.0373 |
+| 2023 | -0.0509 | -0.1079 |     -0.0187 |
+| 2024 | -0.0436 | -0.1183 |     -0.018  |
+| 2025 | -0.0474 | -0.1001 |     -0.0279 |
 
 ---
 
@@ -293,14 +382,34 @@ Calculate the Conditional Drawdown at Risk (CDaR) of an investment portfolio or 
 
 Conditional Drawdown at Risk (CDaR) extends the concept of Value at Risk and Conditional Value at Risk to the drawdown series instead of the return series. It is calculated as the average of the worst drawdowns that exceed the Drawdown at Risk (DaR), i.e. the alpha-quantile of the drawdown distribution, giving insight into the depth of the most severe drawdowns an investment portfolio or asset could experience.
 
+The formula is as follows (with the default alpha=0.05):
+
+$$
+\operatorname{Wealth}(t) = \text{Π} (1 + \operatorname{Return}(s)) \text{for}\; s \leq t
+$$
+
+$$
+\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t)) - 1
+$$
+
+$$
+\text{DaR} = \operatorname{Quantile}(\text{Drawdown},\; \alpha)
+$$
+
+$$
+\text{CDaR} = \operatorname{Mean}(\text{Drawdown} | \text{Drawdown} \leq \text{DaR})
+$$
+
+Every period counts towards the drawdown distribution, including those at a high (a drawdown of 0), the quantile interpolates linearly, and Wealth starts at 1, so a decline from the start of the window counts.
+
 **Also known as:** CDaR.
 
 **Args:**
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>alpha (float, optional):</u> The confidence level for CDaR calculation (e.g., 0.05 for 95% confidence).
-Defaults to 0.05.
+- <u>alpha (float, optional):</u> The tail probability for the CDaR calculation (e.g., 0.05 for the 95%
+confidence level). Defaults to 0.05.
 - <u>within_period (bool, optional):</u> Whether to calculate CDaR within the specified period or for the entire
 period. Thus whether to look at the CDaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
@@ -331,7 +440,7 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["^STOXX50E", "^N225", "^GSPC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -342,20 +451,28 @@ toolkit.risk.get_conditional_drawdown_at_risk(period="yearly", within_period=Tru
 
 Which returns:
 
-|      |    AMZN |    TSLA |   Benchmark |
-|:-----|--------:|--------:|------------:|
-| 2021 | -0.1325 | -0.3407 |     -0.0413 |
-| 2022 | -0.499  | -0.6603 |     -0.2343 |
-| 2023 | -0.1756 | -0.2867 |     -0.0806 |
-| 2024 | -0.1612 | -0.3662 |     -0.0576 |
-| 2025 | -0.2721 | -0.4558 |     -0.1434 |
+|      |   ^STOXX50E |   ^N225 |   ^GSPC |   Benchmark |
+|:-----|------------:|--------:|--------:|------------:|
+| 2021 |     -0.0628 | -0.1001 | -0.042  |     -0.0413 |
+| 2022 |     -0.24   | -0.1312 | -0.2422 |     -0.2344 |
+| 2023 |     -0.0912 | -0.0813 | -0.0834 |     -0.0807 |
+| 2024 |     -0.0818 | -0.1612 | -0.0574 |     -0.0565 |
+| 2025 |     -0.123  | -0.1603 | -0.1469 |     -0.1457 |
 
 ---
 
 ## get_tail_ratio
 Calculate the Tail Ratio of an investment portfolio or asset's returns.
 
-The Tail Ratio compares the size of the right (gain) tail to the left (loss) tail of the return distribution, calculated as the absolute value of the (1 - alpha)-th percentile of returns divided by the absolute value of the alpha-th percentile of returns. A Tail Ratio above 1 indicates that best-case gains outsize worst-case losses.
+The Tail Ratio compares the size of the right (gain) tail to the left (loss) tail of the return distribution. A Tail Ratio above 1 indicates that best-case gains outsize worst-case losses.
+
+The formula is as follows (with the default alpha=0.05):
+
+$$
+\text{Tail Ratio} = | \operatorname{Quantile}(\text{Returns},\; 1 - \alpha) | / | \operatorname{Quantile}(\text{Returns},\; \alpha) |
+$$
+
+The quantiles interpolate linearly, and a left-tail quantile of 0 gives NaN.
 
 **Also known as:** gain-to-pain tail ratio.
 
@@ -397,7 +514,7 @@ Ratio for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["QQQ", "TLT", "GLD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -408,13 +525,13 @@ toolkit.risk.get_tail_ratio(period="yearly", within_period=True)
 
 Which returns:
 
-|      |   AMZN |   TSLA |   Benchmark |
-|:-----|-------:|-------:|------------:|
-| 2021 | 0.8591 | 1.0173 |      1.1327 |
-| 2022 | 0.8406 | 1.0049 |      0.9524 |
-| 2023 | 1.2609 | 1.1958 |      1.0466 |
-| 2024 | 1.1246 | 1.1942 |      0.9091 |
-| 2025 | 0.9359 | 1.0702 |      0.93   |
+|      |    QQQ |    TLT |    GLD |   Benchmark |
+|:-----|-------:|-------:|-------:|------------:|
+| 2021 | 0.9646 | 1.0836 | 0.7734 |      1.1304 |
+| 2022 | 0.9109 | 0.8904 | 1.0385 |      0.9524 |
+| 2023 | 1.2227 | 1.1695 | 1.1281 |      1.0466 |
+| 2024 | 0.9029 | 0.8128 | 1.072  |      0.9091 |
+| 2025 | 0.8622 | 1.104  | 1.2495 |      0.93   |
 
 ---
 
@@ -422,6 +539,24 @@ Which returns:
 Calculate the Maximum Drawdown (MDD) of an investment portfolio or asset's returns.
 
 Maximum Drawdown (MDD) is a risk management metric that quantifies the largest historical loss of an investment portfolio or asset experienced over a specified time horizon. It provides insights into the downside risk associated with an investment and helps investors make informed decisions about risk tolerance.
+
+The Maximum Drawdown is a single-path statistic: it depends entirely on the window chosen, so a figure over a window that includes a market crash and one over a window that starts after it are not comparable. It says how deep the worst fall was, not how long it lasted, which is why it is usually read together with the drawdown duration and recovery time (see `get_maximum_drawdown_duration` and `get_maximum_drawdown_recovery_time`), and it underlies return-to-risk ratios such as the Calmar ratio.
+
+The formula is as follows:
+
+$$
+\operatorname{Wealth}(t) = \text{Π} (1 + \operatorname{Return}(s)) \text{for}\; s \leq t
+$$
+
+$$
+\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t)) - 1
+$$
+
+$$
+\text{Maximum Drawdown} = \min(\operatorname{Drawdown}(t))
+$$
+
+Wealth starts at 1, so a decline from the start of the window counts as well, and the result is a negative decimal (0 when the value never fell below a previous high).
 
 **Also known as:** max drawdown, peak-to-trough decline.
 
@@ -462,7 +597,7 @@ within_period=True for the deepest decline within each year.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["META", "NFLX", "AMZN"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -473,13 +608,13 @@ toolkit.risk.get_maximum_drawdown(period="yearly", within_period=True)
 
 Which returns:
 
-|      |    AMZN |    TSLA |   Benchmark |
-|:-----|--------:|--------:|------------:|
-| 2021 | -0.146  | -0.3625 |     -0.051  |
-| 2022 | -0.5197 | -0.7272 |     -0.245  |
-| 2023 | -0.1965 | -0.3273 |     -0.0999 |
-| 2024 | -0.1949 | -0.4279 |     -0.0841 |
-| 2025 | -0.3088 | -0.4821 |     -0.1877 |
+|      |    META |    NFLX |    AMZN |   Benchmark |
+|:-----|--------:|--------:|--------:|------------:|
+| 2021 | -0.1972 | -0.173  | -0.1456 |     -0.051  |
+| 2022 | -0.7372 | -0.7237 | -0.5197 |     -0.245  |
+| 2023 | -0.1298 | -0.2752 | -0.1965 |     -0.0999 |
+| 2024 | -0.1842 | -0.1345 | -0.1949 |     -0.0841 |
+| 2025 | -0.3416 | -0.3073 | -0.3088 |     -0.1877 |
 
 ---
 
@@ -487,6 +622,14 @@ Which returns:
 Calculate the Maximum Drawdown Duration of an investment portfolio or asset's returns.
 
 The Maximum Drawdown Duration is the number of periods between the peak and the lowest point of the largest drawdown, giving insight into how long the worst loss of value took to unfold.
+
+The formula is as follows:
+
+$$
+\text{Maximum Drawdown Duration} = t(\text{trough}) - t(\text{peak})
+$$
+
+Where t(trough) is the period of the lowest Drawdown (see `get_maximum_drawdown`) and t(peak) the last period at or before it in which Wealth stood at the high that drawdown is measured from. When that high is the starting value of 1, t(peak) is the period before the first return.
 
 **Also known as:** drawdown length.
 
@@ -522,7 +665,7 @@ Drawdown Duration for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["^GSPC", "^HSI", "^FTSE"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -533,20 +676,28 @@ toolkit.risk.get_maximum_drawdown_duration(period="yearly", within_period=True)
 
 Which returns:
 
-|      |   AMZN |   TSLA |   Benchmark |
-|:-----|-------:|-------:|------------:|
-| 2021 |     30 |     28 |          21 |
-| 2022 |    248 |    247 |         195 |
-| 2023 |     25 |     73 |          63 |
-| 2024 |     23 |     76 |          14 |
-| 2025 |     52 |     57 |          34 |
+|      |   ^GSPC |   ^HSI |   ^FTSE |   Benchmark |
+|:-----|--------:|-------:|--------:|------------:|
+| 2021 |      22 |    217 |      15 |          22 |
+| 2022 |     201 |    200 |     173 |         201 |
+| 2023 |      64 |    225 |      98 |          64 |
+| 2024 |      14 |     35 |      58 |          14 |
+| 2025 |      34 |     13 |      27 |          34 |
 
 ---
 
 ## get_maximum_drawdown_recovery_time
 Calculate the Maximum Drawdown Recovery Time of an investment portfolio or asset's returns.
 
-The Maximum Drawdown Recovery Time is the number of periods it takes for the cumulative return to reach a new high after the lowest point of the largest drawdown. If the drawdown has not yet been recovered from within the selected period, this returns NaN.
+The Maximum Drawdown Recovery Time is the number of periods it takes for the cumulative return to climb back to its previous peak after the lowest point of the largest drawdown. If the drawdown has not yet been recovered from within the selected period, this returns NaN.
+
+The formula is as follows:
+
+$$
+\text{Maximum Drawdown Recovery Time} = t(\text{recovery}) - t(\text{trough})
+$$
+
+Where t(trough) is the period of the lowest Drawdown (see `get_maximum_drawdown`) and t(recovery) the first period at or after it in which Wealth is back at or above the high that drawdown is measured from.
 
 **Also known as:** time to recovery, drawdown recovery.
 
@@ -584,7 +735,7 @@ specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["TLT", "IEF", "HYG"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -595,13 +746,13 @@ toolkit.risk.get_maximum_drawdown_recovery_time(period="yearly", within_period=T
 
 Which returns:
 
-|      |   AMZN |   TSLA |   Benchmark |
-|:-----|-------:|-------:|------------:|
-| 2021 |    nan |    159 |          12 |
-| 2022 |    nan |    nan |         nan |
-| 2023 |     46 |    nan |          23 |
-| 2024 |     66 |     51 |          32 |
-| 2025 |    135 |    114 |          54 |
+|      |   TLT |   IEF |   HYG |   Benchmark |
+|:-----|------:|------:|------:|------------:|
+| 2021 |   nan |   nan |    19 |          12 |
+| 2022 |   nan |   nan |   nan |         nan |
+| 2023 |   nan |   nan |    98 |          23 |
+| 2024 |   nan |   nan |    14 |          32 |
+| 2025 |   100 |    49 |    23 |          54 |
 
 ---
 
@@ -610,9 +761,17 @@ The Ulcer Index is a financial metric used to assess the risk and volatility of 
 
 The Ulcer Index differs from traditional volatility measures like standard deviation or variance because it focuses on the depth and duration of drawdowns rather than the dispersion of returns.
 
-The formula is as follows:
+The formula is as follows (with the default rolling=14):
 
-Ulcer Index = SQRT(SUM[((Pn - Highest High) / Highest High)^2] / n)
+$$
+\text{Ulcer Index} = \sqrt{\text{Σ} ((\operatorname{Wealth}(t) - \text{Highest High} (t)) / \text{Highest High} (t)) ^{2} / n}
+$$
+
+Where Wealth(t) compounds the daily returns within each period from a starting value of 1, Highest High(t) is the highest Wealth over the trailing 14 observations (the starting value of 1 included while fewer are available) and n is the number of daily returns in the period.
+
+Martin measures every drawdown from the highest value so far (`rolling=None`); the default trailing 14-period high is the variant StockCharts popularised. While fewer than `rolling` observations are available, the high is taken over the observations so far, so periods shorter than the window still have a value. The result is a decimal (0.05 is a root mean squared drawdown of 5%), where Martin quotes percentages.
+
+The Ulcer Index punishes both the depth and the length of drawdowns, so an asset that falls 10% and stays there for months scores worse than one that drops 10% and recovers within a week, which a volatility figure would not show. It is the risk measure behind the Martin ratio (excess return divided by the Ulcer Index) and is read best relative to peers over the same window, since the default 14-period lookback gives lower values than a since-inception high-water mark.
 
 **Also known as:** UI, drawdown risk.
 
@@ -622,14 +781,9 @@ Ulcer Index = SQRT(SUM[((Pn - Highest High) / Highest High)^2] / n)
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The trailing lookback window used as the high-water
 mark reference for each day's drawdown. Pass None for an expanding
-(since-inception) high-water mark instead -- this is what the "Highest High"
-in the formula above literally refers to; a fixed int window is a common,
-distinct variant (e.g. a 14-day trailing high) rather than a substitute for
-"the entire period". Note that passing `rolling=` the full length of your
-return series does NOT give you the since-inception result -- pandas only
-starts producing a rolling value once the full window is filled, so it would
-silently degenerate to just the final period's drawdown; use `rolling=None`
-instead. Defaults to 14.
+(since-inception) high-water mark instead -- Martin's "Highest High"; a fixed
+int window is the common trailing-high variant (e.g. a 14-day trailing high).
+Defaults to 14.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the UI values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -645,7 +799,7 @@ pd.Series: UI values with time as the index.
 
 - The method retrieves historical return data based on the specified `period` and calculates UI for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of VaR values using the specified `lag`.
+- If `growth` is set to True, the method calculates the growth of UI values using the specified `lag`.
 
 **As an example:**
 
@@ -653,7 +807,7 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["BA", "AIR.PA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -664,20 +818,32 @@ toolkit.risk.get_ulcer_index()
 
 Which returns:
 
-|      |   AMZN |   TSLA |   Benchmark |
-|:-----|-------:|-------:|------------:|
-| 2021 | 0.0427 | 0.0851 |      0.0133 |
-| 2022 | 0.1081 | 0.1373 |      0.0488 |
-| 2023 | 0.0483 | 0.0839 |      0.0202 |
-| 2024 | 0.0395 | 0.0908 |      0.0167 |
-| 2025 | 0.0567 | 0.1006 |      0.0276 |
+|      |     BA |   AIR.PA |   Benchmark |
+|:-----|-------:|---------:|------------:|
+| 2021 | 0.0555 |   0.0408 |      0.0129 |
+| 2022 | 0.0901 |   0.0606 |      0.0477 |
+| 2023 | 0.0433 |   0.0288 |      0.0194 |
+| 2024 | 0.0686 |   0.0423 |      0.0162 |
+| 2025 | 0.0635 |   0.0499 |      0.0267 |
 
 ---
 
 ## get_garch
-Calculates volatility forecasts based on the GARCH model.
+Calculates the conditional variance (sigma_t^2) of the returns with a GARCH(1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_garch_forecast` for the variance forecast beyond the last observation.
 
 GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
+
+The formula is as follows:
+
+$$
+\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+$$
+
+$$
+\sigma_{1} ^{2} = \text{Omega} + (\text{Alpha} + \text{Beta}) \cdot \text{Backcast}
+$$
+
+Where r_t are the returns (not demeaned) and the Backcast is an exponentially weighted average (decay 0.94) of the first 75 squared returns. Omega, Alpha and Beta maximize the Gaussian log-likelihood, i.e. minimize Σ (ln sigma_t^2 + r_t^2 / sigma_t^2), under Omega, Alpha, Beta > 0 and Alpha + Beta < 1 (see `get_garch_parameters`).
 
 **Also known as:** GARCH, volatility clustering, conditional heteroscedasticity.
 
@@ -705,6 +871,8 @@ pd.DataFrame &#124; pd.Series: GARCH values
 
 - The method retrieves historical return data based on the specified `period` and calculates GARCH for each
 asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others; dates without a return for an asset are NaN.
 - If `growth` is set to True, the method calculates the growth of GARCH values using the specified `lag`.
 
 **As an example:**
@@ -713,38 +881,24 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["BTCUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_garch(period="quarterly")
+toolkit.risk.get_garch().tail(5)
 ```
 
 Which returns:
 
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021Q2 | 0.0125 | 0.0003 |      0.007  |
-| 2021Q3 | 0.0186 | 0.0462 |      0.0068 |
-| 2021Q4 | 0.0222 | 0.0745 |      0.0065 |
-| 2022Q1 | 0.0244 | 0.092  |      0.0063 |
-| 2022Q2 | 0.0257 | 0.1029 |      0.0061 |
-| 2022Q3 | 0.0264 | 0.1096 |      0.006  |
-| 2022Q4 | 0.0269 | 0.1137 |      0.0058 |
-| 2023Q1 | 0.0271 | 0.1163 |      0.0056 |
-| 2023Q2 | 0.0273 | 0.1179 |      0.0055 |
-| 2023Q3 | 0.0274 | 0.1189 |      0.0054 |
-| 2023Q4 | 0.0274 | 0.1195 |      0.0053 |
-| 2024Q1 | 0.0275 | 0.1199 |      0.0051 |
-| 2024Q2 | 0.0275 | 0.1201 |      0.005  |
-| 2024Q3 | 0.0275 | 0.1202 |      0.0049 |
-| 2024Q4 | 0.0275 | 0.1203 |      0.0049 |
-| 2025Q1 | 0.0275 | 0.1204 |      0.0048 |
-| 2025Q2 | 0.0275 | 0.1204 |      0.0047 |
-| 2025Q3 | 0.0275 | 0.1204 |      0.0046 |
-| 2025Q4 | 0.0275 | 0.1204 |      0.0046 |
+| Date       |   BTCUSD |   Benchmark |
+|:-----------|---------:|------------:|
+| 2025-12-27 |   0.0004 |           0 |
+| 2025-12-28 |   0.0004 |           0 |
+| 2025-12-29 |   0.0004 |           0 |
+| 2025-12-30 |   0.0004 |           0 |
+| 2025-12-31 |   0.0004 |           0 |
 
 ---
 
@@ -753,11 +907,17 @@ Calculates sigma_2 forecasts.
 
 GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
 
-The forecasting with GARCH is done with the following formula:
+The formula is as follows:
 
 $$
-\sigma_{l} ^{2} + (\sigma_{t} ^{2} - \sigma_{l} ^{2}) \cdot (\alpha + \beta) ^{t - 1}
+\sigma_{n + h} ^{2} = \sigma_{L} ^{2} + (\sigma_{n + 1} ^{2} - \sigma_{L} ^{2}) \cdot (\text{Alpha} + \text{Beta}) ^{h - 1}
 $$
+
+$$
+\sigma_{L} ^{2} = \text{Omega} / (1 - \text{Alpha} - \text{Beta})
+$$
+
+Where n is the last observation, h = 1, ..., `time_steps` (10 by default) the forecast step, sigma_(n+1)^2 the one-step-ahead variance of the fitted GARCH(1, 1) recursion (see `get_garch`) and sigma_L^2 the long-run variance.
 
 For more information about the method, see the following book:
 
@@ -789,6 +949,8 @@ pd.DataFrame &#124; pd.Series: sigma_2 forecast values
 
 - The method retrieves historical return data based on the specified `period` and calculates the sigma_2
 forecast for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others.
 - If `growth` is set to True, the method calculates the growth of the forecasted sigma_2 values using
 the specified `lag`.
 
@@ -798,44 +960,54 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["^GSPC"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_garch_forecast(period="quarterly")
+toolkit.risk.get_garch_forecast()
 ```
 
 Which returns:
 
-|        |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2026Q1 | 0.0275 | 0.1205 |      0.0045 |
-| 2026Q2 | 0.0275 | 0.1205 |      0.0044 |
-| 2026Q3 | 0.0275 | 0.1205 |      0.0044 |
-| 2026Q4 | 0.0275 | 0.1205 |      0.0043 |
-| 2027Q1 | 0.0275 | 0.1205 |      0.0043 |
-| 2027Q2 | 0.0275 | 0.1205 |      0.0042 |
-| 2027Q3 | 0.0275 | 0.1205 |      0.0042 |
-| 2027Q4 | 0.0275 | 0.1205 |      0.0042 |
-| 2028Q1 | 0.0275 | 0.1205 |      0.0041 |
-| 2028Q2 | 0.0275 | 0.1205 |      0.0041 |
+|            |   ^GSPC |   Benchmark |
+|:-----------|--------:|------------:|
+| 2026-01-01 |  0.0001 |      0      |
+| 2026-01-02 |  0.0001 |      0.0001 |
+| 2026-01-05 |  0.0001 |      0.0001 |
+| 2026-01-06 |  0.0001 |      0.0001 |
+| 2026-01-07 |  0.0001 |      0.0001 |
+| 2026-01-08 |  0.0001 |      0.0001 |
+| 2026-01-09 |  0.0001 |      0.0001 |
+| 2026-01-12 |  0.0001 |      0.0001 |
+| 2026-01-13 |  0.0001 |      0.0001 |
+| 2026-01-14 |  0.0001 |      0.0001 |
 
 ---
 
 ## get_garch_parameters
 Fits a GARCH(1, 1) model to the historical returns and returns the estimated Omega, Alpha and Beta parameters for each asset.
 
-GARCH (Generalized autoregressive conditional heteroskedasticity) is a stochastic model for time series, used to model volatility clustering. A GARCH(1, 1) model expresses the conditional variance sigma_t^2 as:
+GARCH (Generalized autoregressive conditional heteroskedasticity) is a stochastic model for time series, used to model volatility clustering.
+
+The formula is as follows:
 
 $$
-\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot u_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
 $$
 
-With the constraints Omega, Alpha, Beta > 0 and Alpha + Beta < 1. The parameters are estimated via simulated annealing, maximizing the GARCH log-likelihood function.
+$$
+\text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
+$$
 
-Unlike `get_garch` and `get_garch_forecast`, which return a (forecasted) volatility path, this method returns the fitted parameters themselves. This is useful when the parameters are needed directly, for example to seed a separate volatility simulation.
+Where r_t are the returns (not demeaned), with the constraints Omega, Alpha, Beta > 0 and Alpha + Beta < 1. The parameters are estimated by maximizing the Gaussian log-likelihood with L-BFGS-B, started from a domain-informed initial guess and from 32 points of a Sobol sequence, and the best fit is finished with Nelder-Mead. The search runs on the parameters scaled to their bounds, as Omega (of the order of a daily variance) and Alpha and Beta differ by orders of magnitude.
+
+The variance recursion starts from a backcast, an exponentially weighted average (decay 0.94) of the first 75 squared returns, which stands in for both the squared return and the variance before the first observation, and every observation enters the likelihood. This is the start the arch package uses, so the estimates agree with it.
+
+Unlike `get_garch` and `get_garch_forecast`, which return a (forecasted) conditional variance path, this method returns the fitted parameters themselves. This is useful when the parameters are needed directly, for example to seed a separate volatility simulation.
+
+For daily equity returns, Alpha is typically between 0.05 and 0.15 and Alpha + Beta (the persistence) between 0.95 and 0.99, meaning a volatility shock fades over weeks rather than days. The long-run variance the model reverts to is Omega / (1 - Alpha - Beta). A fit far outside these ranges is a reason to check the data and the window before using the parameters.
 
 For more information about the method, see the following book:
 
@@ -859,6 +1031,8 @@ pd.DataFrame: Omega, Alpha and Beta values per asset.
 
 - The method retrieves historical return data based on the specified `period` and fits a
 GARCH(1, 1) model for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others.
 
 **As an example:**
 
@@ -866,33 +1040,45 @@ GARCH(1, 1) model for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["LOW", "SBUX", "TSLA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2025-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_garch_parameters(period="quarterly")
+toolkit.risk.get_garch_parameters(rounding=6)
 ```
 
 Which returns:
 
-|       |   AMZN |   TSLA |   Benchmark |
-|:------|-------:|-------:|------------:|
-| Omega | 0.0112 | 0.046  |      0.0003 |
-| Alpha | 0      | 0      |      0      |
-| Beta  | 0.5947 | 0.6184 |      0.9274 |
+|       |      LOW |     SBUX |     TSLA |   Benchmark |
+|:------|---------:|---------:|---------:|------------:|
+| Omega | 2.1e-05  | 0.000102 | 1.6e-05  |    5e-06    |
+| Alpha | 0.035763 | 0.057692 | 0.048602 |    0.154079 |
+| Beta  | 0.875036 | 0.715864 | 0.940197 |    0.811018 |
 
 ---
 
 ## get_gjr_garch
-Calculates volatility forecasts based on the GJR-GARCH model.
+Calculates the conditional variance (sigma_t^2) of the returns with a GJR-GARCH(1, 1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_gjr_garch_forecast` for the variance forecast.
 
 GJR-GARCH extends GARCH with a leverage term that lets negative shocks (bad news) raise volatility by more than positive shocks of the same size, a well documented asymmetry in equity returns that symmetric GARCH cannot capture.
 
 For more information about the method, see the following paper:
 
 - Glosten, L.R., Jagannathan, R., and Runkle, D.E. (1993). "On the Relation between the Expected Value and the Volatility of the Nominal Excess Return on Stocks." The Journal of Finance, 48(5), 1779-1801.
+
+The formula is as follows:
+
+$$
+\sigma_{t} ^{2} = \text{Omega} + (\text{Alpha} + \text{Gamma} \cdot I_{t-1}) \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+$$
+
+$$
+\sigma_{1} ^{2} = \text{Omega} + (\text{Alpha} + \text{Gamma} / 2 + \text{Beta}) \cdot \text{Backcast}
+$$
+
+Where r_t are the returns (not demeaned), I_(t-1) is 1 when r_(t-1) < 0 and 0 otherwise, and the Backcast is the same as in `get_garch`. The parameters maximize the Gaussian log-likelihood under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0 (see `get_gjr_garch_parameters`).
 
 **Also known as:** GJR-GARCH, threshold GARCH, TGARCH.
 
@@ -921,6 +1107,8 @@ pd.DataFrame &#124; pd.Series: GJR-GARCH values
 
 - The method retrieves historical return data based on the specified `period` and calculates
 GJR-GARCH for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others; dates without a return for an asset are NaN.
 - If `growth` is set to True, the method calculates the growth of GJR-GARCH values using the
 specified `lag`.
 
@@ -930,43 +1118,41 @@ specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["NVDA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2025-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_gjr_garch(period="quarterly")
+toolkit.risk.get_gjr_garch().tail(5)
 ```
 
 Which returns:
 
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021Q2 | 0.0125 | 0.0003 |      0.007  |
-| 2021Q3 | 0.0208 | 0.0523 |      0.0065 |
-| 2021Q4 | 0.0219 | 0.0735 |      0.0057 |
-| 2022Q1 | 0.0219 | 0.0821 |      0.0057 |
-| 2022Q2 | 0.0219 | 0.0856 |      0.0054 |
-| 2022Q3 | 0.0319 | 0.1403 |      0.0088 |
-| 2022Q4 | 0.0233 | 0.1093 |      0.0079 |
-| 2023Q1 | 0.0275 | 0.2052 |      0.0072 |
-| 2023Q2 | 0.0235 | 0.1357 |      0.0066 |
-| 2023Q3 | 0.0232 | 0.1074 |      0.0062 |
-| 2023Q4 | 0.0221 | 0.0966 |      0.0056 |
-| 2024Q1 | 0.0225 | 0.0915 |      0.0057 |
-| 2024Q2 | 0.0225 | 0.1218 |      0.0056 |
-| 2024Q3 | 0.022  | 0.1018 |      0.0052 |
-| 2024Q4 | 0.022  | 0.0936 |      0.0048 |
-| 2025Q1 | 0.0224 | 0.0903 |      0.0044 |
-| 2025Q2 | 0.0234 | 0.1375 |      0.0044 |
-| 2025Q3 | 0.0225 | 0.1081 |      0.0046 |
-| 2025Q4 | 0.0219 | 0.0962 |      0.0046 |
+| Date       |   NVDA |   Benchmark |
+|:-----------|-------:|------------:|
+| 2025-12-24 | 0.0005 |      0.0001 |
+| 2025-12-26 | 0.0005 |      0.0001 |
+| 2025-12-29 | 0.0005 |      0      |
+| 2025-12-30 | 0.0005 |      0      |
+| 2025-12-31 | 0.0005 |      0      |
 
 ---
 
 ## get_gjr_garch_forecast
 Calculates sigma_2 forecasts based on the GJR-GARCH model.
+
+The formula is as follows:
+
+$$
+\sigma_{n + h} ^{2} = \sigma_{L} ^{2} + (\sigma_{n + 1} ^{2} - \sigma_{L} ^{2}) \cdot (\text{Alpha} + \text{Gamma} / 2 + \text{Beta}) ^{h - 1}
+$$
+
+$$
+\sigma_{L} ^{2} = \text{Omega} / (1 - \text{Alpha} - \text{Gamma} / 2 - \text{Beta})
+$$
+
+Where n is the last observation, h = 1, ..., `time_steps` (10 by default) the forecast step and sigma_(n+1)^2 the one-step-ahead variance of the fitted GJR-GARCH(1, 1, 1) recursion (see `get_gjr_garch`). The leverage term enters at its expectation, Gamma / 2, as a negative shock is as likely as a positive one.
 
 For more information about the method, see the following paper:
 
@@ -998,6 +1184,8 @@ pd.DataFrame &#124; pd.Series: sigma_2 forecast values
 
 - The method retrieves historical return data based on the specified `period` and calculates the
 sigma_2 forecast for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others.
 - If `growth` is set to True, the method calculates the growth of the forecasted sigma_2 values using
 the specified `lag`.
 
@@ -1007,29 +1195,29 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["CLUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_gjr_garch_forecast(period="quarterly")
+toolkit.risk.get_gjr_garch_forecast()
 ```
 
 Which returns:
 
-|        |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2026Q1 | 0.0219 | 0.0913 |      0.0042 |
-| 2026Q2 | 0.023  | 0.1066 |      0.0043 |
-| 2026Q3 | 0.0232 | 0.1158 |      0.0044 |
-| 2026Q4 | 0.0232 | 0.1212 |      0.0045 |
-| 2027Q1 | 0.0232 | 0.1244 |      0.0046 |
-| 2027Q2 | 0.0232 | 0.1264 |      0.0047 |
-| 2027Q3 | 0.0232 | 0.1275 |      0.0048 |
-| 2027Q4 | 0.0232 | 0.1282 |      0.0048 |
-| 2028Q1 | 0.0232 | 0.1286 |      0.0049 |
-| 2028Q2 | 0.0232 | 0.1288 |      0.0049 |
+|            |   CLUSD |   Benchmark |
+|:-----------|--------:|------------:|
+| 2026-01-01 |  0.0003 |      0      |
+| 2026-01-02 |  0.0003 |      0      |
+| 2026-01-05 |  0.0003 |      0.0001 |
+| 2026-01-06 |  0.0003 |      0.0001 |
+| 2026-01-07 |  0.0003 |      0.0001 |
+| 2026-01-08 |  0.0003 |      0.0001 |
+| 2026-01-09 |  0.0003 |      0.0001 |
+| 2026-01-12 |  0.0003 |      0.0001 |
+| 2026-01-13 |  0.0003 |      0.0001 |
+| 2026-01-14 |  0.0004 |      0.0001 |
 
 ---
 
@@ -1037,6 +1225,20 @@ Which returns:
 Fits a GJR-GARCH(1, 1, 1) model to the historical returns and returns the estimated Omega, Alpha, Gamma and Beta parameters for each asset.
 
 A positive Gamma indicates the presence of a leverage effect (negative shocks raise volatility by more than positive ones of the same size), which symmetric GARCH cannot represent.
+
+The formula is as follows:
+
+$$
+\sigma_{t} ^{2} = \text{Omega} + (\text{Alpha} + \text{Gamma} \cdot I_{t-1}) \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+$$
+
+$$
+\text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
+$$
+
+Where r_t are the returns (not demeaned) and I_(t-1) is 1 when r_(t-1) < 0 and 0 otherwise. The log-likelihood is maximized under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0.
+
+The variance recursion starts from a backcast, an exponentially weighted average (decay 0.94) of the first 75 squared returns, with the leverage term at its expectation (Gamma / 2) for the period before the first observation, and every observation enters the likelihood. This is the start the arch package uses, so the estimates agree with it.
 
 For more information about the method, see the following paper:
 
@@ -1061,6 +1263,11 @@ pd.DataFrame: Omega, Alpha, Gamma and Beta values per asset.
 
 - The method retrieves historical return data based on the specified `period` and fits a
 GJR-GARCH(1, 1, 1) model for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others.
+- GJR-GARCH nests GARCH (gamma = 0), so the fit never ends at a lower log-likelihood than the
+GARCH(1, 1) fit of `get_garch_parameters`: if the search does, the GARCH weights with a Gamma of 0
+are returned.
 
 **As an example:**
 
@@ -1068,28 +1275,28 @@ GJR-GARCH(1, 1, 1) model for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["^GSPC", "^STOXX50E"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_gjr_garch_parameters(period="quarterly")
+toolkit.risk.get_gjr_garch_parameters(rounding=6)
 ```
 
 Which returns:
 
-|       |   AMZN |   TSLA |   Benchmark |
-|:------|-------:|-------:|------------:|
-| Omega | 0.0189 | 0.0522 |      0.0005 |
-| Alpha | 0.0169 | 0      |      0.05   |
-| Gamma | 0.0656 | 0.3783 |      0.1    |
-| Beta  | 0.1363 | 0.4067 |      0.8    |
+|       |    ^GSPC |   ^STOXX50E |   Benchmark |
+|:------|---------:|------------:|------------:|
+| Omega | 3e-06    |    1e-05    |    3e-06    |
+| Alpha | 0        |    0        |    0        |
+| Gamma | 0.210531 |    0.308907 |    0.221968 |
+| Beta  | 0.870765 |    0.764269 |    0.865708 |
 
 ---
 
 ## get_egarch
-Calculates volatility forecasts based on the EGARCH model.
+Calculates the conditional variance (sigma_t^2) of the returns with an EGARCH(1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_egarch_forecast` for the variance forecast.
 
 EGARCH models the log of the conditional variance, which avoids having to constrain the parameters to keep the variance positive and, like GJR-GARCH, lets negative and positive shocks of the same size have a different impact on volatility (the leverage effect).
 
@@ -1099,6 +1306,16 @@ For more information about the method, see the following paper:
 
 **Returns:** A New
 Approach." Econometrica, 59(2), 347-370.
+
+The formula is as follows:
+
+- ln sigma_t^2 = Omega + Alpha * (&#124;z_(t-1)&#124; - √(2 / π)) + Gamma * z_(t-1) + Beta * ln sigma_(t-1)^2
+- z_t = r_t / sigma_t
+- ln sigma_1^2 = Omega + Beta * ln(Backcast)
+
+Where r_t are the returns (not demeaned), √(2 / π) is the expected &#124;z&#124; of a standard normal shock, the
+log variance is kept within [-20, 20] and the Backcast is the same as in `get_garch`. The parameters
+maximize the Gaussian log-likelihood with &#124;Beta&#124; < 1 (see `get_egarch_parameters`).
 
 Also known as: exponential GARCH, log-GARCH.
 
@@ -1127,6 +1344,8 @@ pd.DataFrame &#124; pd.Series: EGARCH values
 
 - The method retrieves historical return data based on the specified `period` and calculates
 EGARCH for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others; dates without a return for an asset are NaN.
 - If `growth` is set to True, the method calculates the growth of EGARCH values using the
 specified `lag`.
 
@@ -1149,30 +1368,46 @@ Which returns:
 
 | Date   |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2021Q2 | 0.0125 | 0.0003 |      0.007  |
-| 2021Q3 | 0.0064 | 0.016  |      0.0041 |
-| 2021Q4 | 0.011  | 0.0375 |      0.0125 |
-| 2022Q1 | 0.0204 | 0.016  |      0.0054 |
-| 2022Q2 | 0.043  | 0.1453 |      0.0118 |
-| 2022Q3 | 0.0416 | 0.1801 |      0.0109 |
-| 2022Q4 | 0.0595 | 0.1849 |      0.0175 |
-| 2023Q1 | 0.0793 | 0.1644 |      0.0118 |
-| 2023Q2 | 0.0536 | 0.0304 |      0.0082 |
-| 2023Q3 | 0.0226 | 0.0257 |      0.0047 |
-| 2023Q4 | 0.0474 | 0.1743 |      0.012  |
-| 2024Q1 | 0.0284 | 0.3327 |      0.0047 |
-| 2024Q2 | 0.0123 | 0.2949 |      0.0016 |
-| 2024Q3 | 0.0108 | 0.2774 |      0.0018 |
-| 2024Q4 | 0.0207 | 0.1595 |      0.0013 |
-| 2025Q1 | 0.0075 | 0.0479 |      0.003  |
-| 2025Q2 | 0.0079 | 0.0922 |      0.0084 |
-| 2025Q3 | 0.0014 | 0.0997 |      0.0034 |
-| 2025Q4 | 0.0031 | 0.0485 |      0.0016 |
+| 2021Q2 | 0.0229 | 0.0923 |      0.0077 |
+| 2021Q3 | 0.0158 | 0.1671 |      0.0049 |
+| 2021Q4 | 0.0244 | 0.1704 |      0.0131 |
+| 2022Q1 | 0.0411 | 0.0597 |      0.0062 |
+| 2022Q2 | 0.0737 | 0.1035 |      0.0116 |
+| 2022Q3 | 0.0642 | 0.2104 |      0.009  |
+| 2022Q4 | 0.0868 | 0.1936 |      0.0145 |
+| 2023Q1 | 0.0975 | 0.3935 |      0.0105 |
+| 2023Q2 | 0.0675 | 0.0902 |      0.0078 |
+| 2023Q3 | 0.0321 | 0.0321 |      0.0048 |
+| 2023Q4 | 0.0565 | 0.0654 |      0.0108 |
+| 2024Q1 | 0.0348 | 0.133  |      0.0046 |
+| 2024Q2 | 0.0167 | 0.2705 |      0.0017 |
+| 2024Q3 | 0.0149 | 0.3389 |      0.002  |
+| 2024Q4 | 0.0239 | 0.2276 |      0.0015 |
+| 2025Q1 | 0.0094 | 0.0473 |      0.0033 |
+| 2025Q2 | 0.0077 | 0.0964 |      0.0076 |
+| 2025Q3 | 0.0013 | 0.0458 |      0.0033 |
+| 2025Q4 | 0.0025 | 0.0022 |      0.0017 |
 
 ---
 
 ## get_egarch_forecast
 Calculates sigma_2 forecasts based on the EGARCH model.
+
+The formula is as follows:
+
+$$
+\text{ln}\; \sigma_{} (n + h) ^{2} = L + \text{Beta} ^{h - 1} \cdot (\text{ln}\; \sigma_{} (n + 1) ^{2} - L)
+$$
+
+$$
+L = \text{Omega} / (1 - \text{Beta})
+$$
+
+$$
+\sigma_{n + h} ^{2} = \exp(\text{ln}\; \sigma_{} (n + h) ^{2})
+$$
+
+Where n is the last observation, h = 1, ..., `time_steps` (10 by default) the forecast step and sigma_(n+1)^2 the one-step-ahead variance of the fitted EGARCH(1, 1) recursion (see `get_egarch`). The shock terms drop out at their expectation of zero, so the forecast is the exponential of the expected log variance.
 
 For more information about the method, see the following paper:
 
@@ -1207,6 +1442,8 @@ pd.DataFrame &#124; pd.Series: sigma_2 forecast values
 
 - The method retrieves historical return data based on the specified `period` and calculates the
 sigma_2 forecast for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others.
 - If `growth` is set to True, the method calculates the growth of the forecasted sigma_2 values using
 the specified `lag`.
 
@@ -1229,16 +1466,16 @@ Which returns:
 
 |        |   AMZN |   TSLA |   Benchmark |
 |:-------|-------:|-------:|------------:|
-| 2026Q1 | 0.0018 | 0.2247 |      0.0035 |
-| 2026Q2 | 0.0018 | 0.1615 |      0.006  |
-| 2026Q3 | 0.0019 | 0.1483 |      0.0076 |
-| 2026Q4 | 0.0019 | 0.1451 |      0.0085 |
-| 2027Q1 | 0.002  | 0.1443 |      0.009  |
-| 2027Q2 | 0.0021 | 0.1441 |      0.0092 |
-| 2027Q3 | 0.0021 | 0.144  |      0.0093 |
-| 2027Q4 | 0.0022 | 0.144  |      0.0093 |
-| 2028Q1 | 0.0022 | 0.144  |      0.0093 |
-| 2028Q2 | 0.0023 | 0.144  |      0.0093 |
+| 2026Q1 | 0.0012 | 0.0028 |      0.0034 |
+| 2026Q2 | 0.001  | 0.0026 |      0.0055 |
+| 2026Q3 | 0.0009 | 0.0024 |      0.007  |
+| 2026Q4 | 0.0008 | 0.0022 |      0.0079 |
+| 2027Q1 | 0.0007 | 0.002  |      0.0084 |
+| 2027Q2 | 0.0006 | 0.0018 |      0.0086 |
+| 2027Q3 | 0.0005 | 0.0017 |      0.0087 |
+| 2027Q4 | 0.0004 | 0.0016 |      0.0088 |
+| 2028Q1 | 0.0004 | 0.0014 |      0.0089 |
+| 2028Q2 | 0.0003 | 0.0013 |      0.0089 |
 
 ---
 
@@ -1246,6 +1483,18 @@ Which returns:
 Fits an EGARCH(1, 1) model to the historical returns and returns the estimated Omega, Alpha, Gamma and Beta parameters for each asset.
 
 A negative Gamma indicates the presence of a leverage effect (negative shocks raise volatility by more than positive ones of the same size).
+
+The formula is as follows:
+
+$$
+\text{ln}\; \sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot (| z_{t-1} | - \sqrt{2 / \pi}) + \text{Gamma} \cdot z_{t-1} + \text{Beta} \cdot \text{ln}\; \sigma_{} (t-1) ^{2}
+$$
+
+$$
+\text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
+$$
+
+Where r_t are the returns (not demeaned) and z_t = r_t / sigma_t. The log-likelihood is maximized with Omega in [-15, 5], Alpha and Gamma in [-1, 1] and &#124;Beta&#124; < 1, starting the recursion from ln sigma_1^2 = Omega + Beta * ln(Backcast), with the Backcast of `get_garch_parameters`.
 
 For more information about the method, see the following paper:
 
@@ -1273,9 +1522,11 @@ pd.DataFrame: Omega, Alpha, Gamma and Beta values per asset.
 
 - The method retrieves historical return data based on the specified `period` and fits an
 EGARCH(1, 1) model for each asset in the Toolkit instance.
+- Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
+does not shorten the sample of the others.
 - EGARCH's log-variance parameterization is less constrained than plain GARCH, which makes it
-more prone to unstable, boundary-hugging fits on very short return histories (e.g. yearly data).
-Prefer `period="quarterly"` or a higher frequency where possible.
+prone to unstable, boundary-hugging fits on short return histories, which include quarterly
+data over a few years. Prefer daily or weekly returns.
 
 **As an example:**
 
@@ -1289,17 +1540,17 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_egarch_parameters(period="quarterly")
+toolkit.risk.get_egarch_parameters(period="daily", rounding=6)
 ```
 
 Which returns:
 
-|       |    AMZN |    TSLA |   Benchmark |
-|:------|--------:|--------:|------------:|
-| Omega |  0.0232 | -1.4376 |     -2.5535 |
-| Alpha | -1      | -1      |     -1      |
-| Gamma | -0.4903 | -0.414  |     -0.4958 |
-| Beta  |  0.999  |  0.2582 |      0.4535 |
+|       |      AMZN |      TSLA |   Benchmark |
+|:------|----------:|----------:|------------:|
+| Omega | -0.382664 | -0.225452 |   -0.309737 |
+| Alpha |  0.193573 |  0.081906 |    0.059855 |
+| Gamma | -0.080739 | -0.03535  |   -0.181222 |
+| Beta  |  0.949074 |  0.964858 |    0.96578  |
 
 ---
 
@@ -1308,10 +1559,24 @@ Calculate the Upper and Lower Tail Dependence Coefficients between `ticker_a` an
 
 Correlation only captures the *average* co-movement between two assets -- it says nothing about whether they are more likely to crash together than an equivalent gaussian relationship would imply. The Tail Dependence Coefficient answers that specific question directly: the probability that one asset is in extreme distress, given that the other one already is.
 
+The empirical estimate at q = 0.95 rests on the few days on which both assets are in their worst (or best) 5% at the same time, so it needs several years of daily data to be stable. A gaussian dependence of any correlation below 1 implies zero tail dependence, so a Lower Tail Dependence Coefficient well above zero means that diversification between the two assets is weakest exactly when it is needed.
+
 For more information about the method, see the following papers:
 
 - Embrechts, P., McNeil, A., & Straumann, D. (1999). "Correlation: Pitfalls and Alternatives." RISK Magazine, 12, 69-71.
 - Poon, S.H., Rockinger, M., & Tawn, J. (2004). "Extreme Value Dependence in Financial Markets: Diagnostics, Models, and Financial Implications." Review of Financial Studies, 17(2), 581-610.
+
+The formula is as follows (with the default method="empirical" and q=0.95):
+
+$$
+\text{Upper Tail Dependence} = \operatorname{\#}(A > Q_{A}(q) \text{and}\; B > Q_{B}(q)) / \operatorname{\#}(A > Q_{A}(q))
+$$
+
+$$
+\text{Lower Tail Dependence} = \operatorname{\#}(A \leq Q_{A}(1 - q) \text{and}\; B \leq Q_{B}(1 - q)) / \operatorname{\#}(A \leq Q_{A}(1 - q))
+$$
+
+Where A and B are the values of `ticker_a` and `ticker_b` on their common dates and Q_A and Q_B their empirical quantiles. With method="gaussian" both coefficients are 0 (1 only for a correlation of exactly 1), and with method="student-t" both are 2 * t_(v+1)(-√((v + 1) * (1 - rho) / (1 + rho))), with v = `dof`, rho the Pearson correlation and t_(v+1) the Student-T distribution function.
 
 **Also known as:** tail dependence, extremal dependence coefficient.
 
@@ -1350,24 +1615,28 @@ assets and estimates the tail dependence coefficient between them.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["^GSPC", "^STOXX50E"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_tail_dependence_coefficient("AAPL", "MSFT", period="weekly")
+toolkit.risk.get_tail_dependence_coefficient("^GSPC", "^STOXX50E")
 ```
 
 Which returns:
 
-| 0   |
-|-----|
+|                       |     Value |
+|:----------------------|----------:|
+| Lower Tail Dependence |    0.3231 |
+| Upper Tail Dependence |    0.3387 |
+| Correlation           |    0.4545 |
+| Observations          | 1289      |
 
 ---
 
 ## get_copula_parameters
-Calibrate a bivariate copula between `ticker_a` and `ticker_b`, via maximum likelihood.
+Calibrate a bivariate copula between `ticker_a` and `ticker_b` on the pseudo-observations (ranks) of their returns: the Clayton, Gumbel and Frank parameters by maximum likelihood, the gaussian correlation from the normal scores, and the Student-T correlation from Kendall's tau with the degrees of freedom by maximum likelihood (Demarta & McNeil, 2005).
 
 When `ticker_a`/`ticker_b` are not given, every unique pair among the Toolkit's tickers is calibrated instead.
 
@@ -1380,6 +1649,30 @@ A copula separates the dependence structure between two assets from their indivi
 - "frank": zero tail dependence in both tails, but (unlike gaussian) can represent negative dependence and is symmetric around independence.
 
 See `get_best_fitting_copula` to compare all five by AIC on the same pair of assets, and see `get_copula_simulation` to draw joint scenarios from the fitted copula.
+
+The formula is as follows:
+
+$$
+u_{i} = \operatorname{Rank}(A_{i}) / (n + 1),\;\; v_{i} = \operatorname{Rank}(B_{i}) / (n + 1)
+$$
+
+$$
+\text{Gaussian Rho} = \operatorname{Correlation}(\Phi ^{-1} (u),\; \Phi ^{-1} (v))
+$$
+
+$$
+\text{Student-T Rho} = \operatorname{sin}(\pi \cdot \text{Kendall's Tau} / 2)
+$$
+
+$$
+\Theta (\text{and the Student-T Degrees of Freedom}) = \text{argmax}\; \text{Σ} \;\text{ln}\; c (u_{i},\; v_{i})
+$$
+
+$$
+\text{AIC} = 2 \cdot k - 2 \cdot \text{Log-Likelihood}
+$$
+
+Where A and B are the values of the two assets on their n common dates, c is the copula density and k the number of fitted parameters (2 for the Student-T, 1 otherwise). The search bounds are [2.05, 60] for the Degrees of Freedom and, for Theta, [0.0001, 100] (Clayton), [1, 50] (Gumbel) and [-50, 50] (Frank). The implied tail dependence is 2^(-1 / Theta) in the lower tail for Clayton, 2 - 2^(1 / Theta) in the upper tail for Gumbel, 2 * t_(v+1)(-√((v + 1) * (1 - Rho) / (1 + Rho))) in both tails for the Student-T and 0 otherwise.
 
 For more information about the method, see:
 
@@ -1428,19 +1721,26 @@ requested copula between the given pair, or every pair, of tickers.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["GCUSD", "SIUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_copula_parameters("AAPL", "MSFT", copula="clayton", period="weekly")
+toolkit.risk.get_copula_parameters("GCUSD", "SIUSD", copula="student-t")
 ```
 
 Which returns:
 
-| 0   |
-|-----|
+|                       |      Value |
+|:----------------------|-----------:|
+| Rho                   |     0.7498 |
+| Degrees of Freedom    |     8.1362 |
+| Lower Tail Dependence |     0.2821 |
+| Upper Tail Dependence |     0.2821 |
+| Log-Likelihood        |   532.413  |
+| AIC                   | -1060.83   |
+| Observations          |  1300      |
 
 ---
 
@@ -1450,6 +1750,22 @@ Calibrate a bivariate copula (see `get_copula_parameters`) between `ticker_a` an
 When `ticker_a`/`ticker_b` are not given, every unique pair among the Toolkit's tickers is calibrated and simulated instead, as columns grouped under a top-level (Ticker A, Ticker B) column per pair.
 
 This is what a copula-based portfolio Monte Carlo simulation needs: draws that preserve the calibrated dependence structure -- including tail dependence, for the "student-t", "clayton" and "gumbel" families -- rather than the (typically understated) joint crash risk a plain multivariate gaussian simulation would produce.
+
+The formula is as follows (with the default copula="gaussian" and empirical_margins=True):
+
+$$
+(Z_{1},\; Z_{2}) \sim N(0,\; \left[\left[1,\; \text{Rho}\right],\; \left[\text{Rho},\; 1\right]\right])
+$$
+
+$$
+U = \Phi(Z_{1}),\;\; V = \Phi(Z_{2})
+$$
+
+$$
+\text{Simulated Return}\; A = \operatorname{Quantile}(A,\; U),\;\; \text{Simulated Return}\; B = \operatorname{Quantile}(B,\; V)
+$$
+
+Where Rho is fitted as in `get_copula_parameters` and Quantile is the empirical quantile (linear interpolation) of each asset's own history. The Student-T copula scales (Z1, Z2) by √(v / W), with W ~ χ²(v), and maps them with the Student-T distribution function; the Clayton, Gumbel and Frank copulas draw U and T uniformly and solve C(V &#124; U) = T for V.
 
 **Also known as:** copula Monte Carlo, dependence simulation, scenario generation.
 
@@ -1497,25 +1813,24 @@ requested copula, and simulates from it, for the given pair or every pair of tic
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["HD", "LOW"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_copula_simulation(
-    "AAPL", "MSFT", copula="clayton", period="weekly", n_simulations=5000
-).describe()
+toolkit.risk.get_copula_simulation("HD", "LOW", n_simulations=30).head(5)
 ```
 
 Which returns:
 
-|        |   0 |
-|:-------|----:|
-| count  |   0 |
-| unique |   0 |
-| top    | nan |
-| freq   | nan |
+|    |      HD |     LOW |
+|---:|--------:|--------:|
+|  0 |  0.0001 | -0.0073 |
+|  1 | -0.012  | -0.0059 |
+|  2 |  0.0332 |  0.0247 |
+|  3 |  0.0001 | -0.0019 |
+|  4 |  0.0038 | -0.0019 |
 
 ---
 
@@ -1523,6 +1838,14 @@ Which returns:
 Calibrate all five supported copula families (see `get_copula_parameters`) between `ticker_a` and `ticker_b`, and compare them by AIC (Akaike Information Criterion) -- the lower the AIC, the better the fit relative to its number of parameters, so the top row is the best-fitting family.
 
 When `ticker_a`/`ticker_b` are not given, every unique pair among the Toolkit's tickers is compared instead.
+
+The formula is as follows:
+
+$$
+\text{AIC} = 2 \cdot k - 2 \cdot \text{Log-Likelihood}
+$$
+
+Where the Log-Likelihood is that of each family fitted as in `get_copula_parameters` and k the number of fitted parameters (2 for the Student-T copula, 1 for the others).
 
 **Also known as:** copula selection, copula comparison.
 
@@ -1569,19 +1892,26 @@ supported copula family for the given pair, or every pair, of tickers.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["V", "MA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_best_fitting_copula("AAPL", "MSFT", period="weekly")
+copulas = toolkit.risk.get_best_fitting_copula("V", "MA")
+
+copulas[["Lower Tail Dependence", "Upper Tail Dependence", "Log-Likelihood", "AIC"]]
 ```
 
 Which returns:
 
-| 0   |
-|-----|
+| Copula    |   Lower Tail Dependence |   Upper Tail Dependence |   Log-Likelihood |      AIC |
+|:----------|------------------------:|------------------------:|-----------------:|---------:|
+| Student-T |                  0.5596 |                  0.5596 |          946.907 | -1889.81 |
+| Gaussian  |                  0      |                  0      |          912.208 | -1822.42 |
+| Gumbel    |                  0      |                  0.7388 |          892.134 | -1782.27 |
+| Frank     |                  0      |                  0      |          826.803 | -1651.61 |
+| Clayton   |                  0.7852 |                  0      |          757.472 | -1512.94 |
 
 ---
 
@@ -1589,6 +1919,24 @@ Which returns:
 Calculate the (Delta-)CoVaR of `ticker` conditional on `conditioning_ticker` being in its own distress state.
 
 Ordinary Value at Risk treats each asset in isolation, which misses systemic risk -- the fact that one asset's distress can spill over and worsen another's risk. CoVaR directly measures that spillover: it is the VaR of `ticker`, conditional on `conditioning_ticker` itself being at its own `alpha`-VaR, estimated via a linear Quantile Regression of `ticker`'s returns on `conditioning_ticker`'s returns at quantile `alpha`. The Delta-CoVaR isolates the marginal, distress-specific contribution by subtracting the same construction evaluated in the "normal" (median) state instead.
+
+CoVaR was introduced to measure systemic risk: in its original application `ticker` is a financial-system index (or a bank's peers) and `conditioning_ticker` a single institution, so the Delta-CoVaR reads as that institution's contribution to system-wide tail risk. Because the quantile regression is fitted at the `alpha` quantile, it needs several years of daily data, and the result is a statement about co-movement in the tails, not about causality.
+
+The formula is as follows (with the default alpha=0.05):
+
+$$
+\operatorname{Quantile\_alpha}(A | B) = \text{Intercept} + \text{Slope} \cdot B
+$$
+
+$$
+\text{CoVaR} = \text{Intercept} + \text{Slope} \cdot \text{VaR}_{B}
+$$
+
+$$
+\text{Delta-CoVaR} = \text{Slope} \cdot (\text{VaR}_{B} - \operatorname{Median}(B))
+$$
+
+Where A are the values of `ticker` and B those of `conditioning_ticker` on their common dates, the Intercept and Slope come from a linear quantile regression at quantile alpha (minimizing the check loss) and VaR_B is the empirical alpha-quantile of B.
 
 For more information about the method, see the following paper:
 
@@ -1606,8 +1954,8 @@ For more information about the method, see the following paper:
 lower frequency provides -- at "yearly" a decade of history is only ten
 observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>alpha (float, optional):</u> The confidence level for both the tail quantile regression and
-the VaR of `conditioning_ticker` (e.g., 0.05 for 95% confidence). Defaults to 0.05.
+- <u>alpha (float, optional):</u> The tail probability for both the tail quantile regression and
+the VaR of `conditioning_ticker` (e.g., 0.05 for the 95% confidence level). Defaults to 0.05.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
@@ -1627,30 +1975,48 @@ assets and estimates the CoVaR of `ticker` conditional on `conditioning_ticker`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["GS", "JPM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_covar("AAPL", "MSFT", period="weekly")
+toolkit.risk.get_covar("GS", "JPM").loc[["CoVaR", "Delta-CoVaR"]]
 ```
 
 Which returns:
 
-| 0   |
-|-----|
+|             |   Value |
+|:------------|--------:|
+| CoVaR       | -0.0353 |
+| Delta-CoVaR | -0.0206 |
 
 ---
 
 ## get_marginal_value_at_risk
 Calculate the Marginal Value at Risk (Marginal VaR) of each asset in a portfolio.
 
-Ordinary VaR (see `get_value_at_risk`) treats each asset in isolation. Marginal VaR instead measures how much the *portfolio's* VaR would change for an infinitesimal increase in a given asset's portfolio weight - i.e. the sensitivity of portfolio risk to each holding, not the risk of the holding on its own:
+Ordinary VaR (see `get_value_at_risk`) treats each asset in isolation. Marginal VaR instead measures how much the *portfolio's* VaR would change for an infinitesimal increase in a given asset's portfolio weight - i.e. the sensitivity of portfolio risk to each holding, not the risk of the holding on its own.
 
-- Portfolio Return = SUM(weight_i * Return_i)
-- Beta_i = Cov(Return_i, Portfolio Return) / Var(Portfolio Return)
-- Marginal VaR_i = Beta_i * Portfolio VaR
+The formula is as follows (with the default distribution="historic"):
+
+$$
+\text{Portfolio Return} = \operatorname{SUM}(\text{weight}_{i} \cdot \text{Return}_{i})
+$$
+
+$$
+\text{Beta}_{i} = \operatorname{Cov}(\text{Return}_{i},\; \text{Portfolio Return}) / \operatorname{Var}(\text{Portfolio Return})
+$$
+
+$$
+\text{Marginal VaR}_{i} = \text{Beta}_{i} \cdot \text{Portfolio VaR}
+$$
+
+Where the weights are normalized to sum to 1, the covariance and variance are sample estimates (ddof=1) on the dates all assets have a return, and Portfolio VaR is the VaR of the portfolio return under `distribution` (see `get_value_at_risk`). The beta-based sensitivity is exact for a zero-mean elliptical distribution and an approximation otherwise; distribution="gaussian" uses the exact derivative instead, with z_alpha the standard normal quantile at alpha:
+
+$$
+\text{Gaussian Marginal VaR}_{i} = \text{Mean}_{i} + z_{\alpha} \cdot \operatorname{Cov}(\text{Return}_{i},\; \text{Portfolio Return}) / \operatorname{Std}(\text{Portfolio Return})
+$$
 
 An asset with Beta_i > 1 contributes disproportionately to portfolio risk, while Beta_i < 1 (and especially Beta_i < 0) indicates a diversifying holding.
 
@@ -1672,7 +2038,7 @@ the "Portfolio" and "Benchmark" pseudo-tickers, if present).
 "daily", since a whole-series estimate needs far more observations than a single
 quarter or year holds.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>alpha (float, optional):</u> The confidence level (e.g., 0.05 for 95% confidence).
+- <u>alpha (float, optional):</u> The tail probability (e.g., 0.05 for the 95% confidence level).
 Defaults to 0.05.
 - <u>distribution (str, optional):</u> The distribution to use for the underlying portfolio
 VaR calculation (historic, gaussian, cornish-fisher or studentt). Defaults to
@@ -1696,39 +2062,45 @@ the weighted portfolio built from `weights`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA", "MSFT"],
+    ["VTI", "TLT", "GLD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_marginal_value_at_risk(weights={"AMZN": 0.5, "TSLA": 0.3, "MSFT": 0.2})
+toolkit.risk.get_marginal_value_at_risk(weights={"VTI": 0.6, "TLT": 0.3, "GLD": 0.1})
 ```
 
 Which returns:
 
-|      |   Marginal VaR |
-|:-----|---------------:|
-| AMZN |        -0.0298 |
-| TSLA |        -0.05   |
-| MSFT |        -0.0182 |
+|     |   Marginal VaR |
+|:----|---------------:|
+| VTI |        -0.0159 |
+| TLT |        -0.0078 |
+| GLD |        -0.0053 |
 
 ---
 
 ## get_component_value_at_risk
 Calculate the Component Value at Risk (Component VaR) of each asset in a portfolio.
 
-Component VaR allocates total portfolio VaR across its constituent assets, such that the allocations sum exactly back to the portfolio VaR - an "Euler" (or "fully consistent") risk decomposition:
+Component VaR allocates total portfolio VaR across its constituent assets, such that the allocations sum exactly back to the portfolio VaR - an "Euler" (or "fully consistent") risk decomposition.
+
+The formula is as follows (with the default distribution="historic"):
 
 $$
-\text{Component VaR}_{i} = \text{weight}_{i} \cdot \text{Marginal VaR}_{i} (\text{see}\; \text{get\_marginal\_value\_at\_risk})
+\text{Component VaR}_{i} = \text{weight}_{i} \cdot \text{Marginal VaR}_{i}
 $$
 
 $$
 \operatorname{SUM}(\text{Component VaR}_{i}) = \text{Portfolio VaR}
 $$
 
+Where the weights are normalized to sum to 1 and Marginal VaR_i is that of `get_marginal_value_at_risk`: Beta_i * Portfolio VaR by default, or the exact derivative with distribution="gaussian".
+
 Where Marginal VaR measures each asset's risk *sensitivity*, Component VaR measures its actual *contribution* in the same units as portfolio VaR, making it directly usable to identify which holdings account for the largest share of portfolio risk.
+
+Component VaR is the basis of risk budgeting: a holding with a 20% weight that accounts for 45% of the portfolio VaR stands out immediately, and a component with the opposite sign of the portfolio VaR marks a holding that hedges the rest. The components always add up to the portfolio VaR, but the beta-based allocation is exact only for normally (elliptically) distributed returns and an approximation for the historical distribution used by default.
 
 For more information about the method, see the following sources:
 
@@ -1748,7 +2120,7 @@ the "Portfolio" and "Benchmark" pseudo-tickers, if present).
 "daily", since a whole-series estimate needs far more observations than a single
 quarter or year holds.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>alpha (float, optional):</u> The confidence level (e.g., 0.05 for 95% confidence).
+- <u>alpha (float, optional):</u> The tail probability (e.g., 0.05 for the 95% confidence level).
 Defaults to 0.05.
 - <u>distribution (str, optional):</u> The distribution to use for the underlying portfolio
 VaR calculation (historic, gaussian, cornish-fisher or studentt). Defaults to
@@ -1773,23 +2145,26 @@ the weighted portfolio built from `weights`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA", "MSFT"],
+    ["VTI", "AGG", "GLD", "VNQ"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_component_value_at_risk(weights={"AMZN": 0.5, "TSLA": 0.3, "MSFT": 0.2})
+toolkit.risk.get_component_value_at_risk(
+    weights={"VTI": 0.5, "AGG": 0.3, "GLD": 0.1, "VNQ": 0.1}
+)
 ```
 
 Which returns:
 
 |           |   Component VaR |
 |:----------|----------------:|
-| AMZN      |         -0.0149 |
-| TSLA      |         -0.015  |
-| MSFT      |         -0.0036 |
-| Portfolio |         -0.0335 |
+| VTI       |         -0.0081 |
+| AGG       |         -0.0008 |
+| GLD       |         -0.0005 |
+| VNQ       |         -0.0015 |
+| Portfolio |         -0.0109 |
 
 ---
 
@@ -1797,6 +2172,28 @@ Which returns:
 Backtest a Value at Risk model against realized returns.
 
 A Value at Risk estimate is only useful if it is actually well-calibrated against reality. This method builds a rolling, out-of-sample VaR path (each VaR estimate uses only the `window_size` returns preceding it, never the return it is compared against) and tests it with Kupiec's Proportion of Failures test (is the overall breach rate consistent with `alpha`?) and/or Christoffersen's independence test (are breaches spread out over time, or do they cluster together?).
+
+Regulators backtest VaR on the number of exceptions over the last 250 trading days (the Basel traffic-light approach at 99% confidence), and Kupiec's test formalises the same question. With few exceptions the test has little power, so a model that passes is not necessarily well calibrated. Clustered exceptions, which Christoffersen's test detects, are the usual failure of historical VaR when volatility rises.
+
+The formula is as follows (with the default distribution="historic", alpha=0.05 and window_size=252):
+
+$$
+\text{VaR}_{t} = \operatorname{Quantile}(\text{Return}_{t-252},\; ...,\; \text{Return}_{t-1} \text{;} \alpha)
+$$
+
+$$
+\text{Breach}_{t} = 1 \;\text{if Return}_{t} < \text{VaR}_{t},\;\; \text{else 0}
+$$
+
+$$
+\text{Kupiec Statistic} = - 2 \cdot \text{ln} \left[(1 - \alpha) ^{n - x} \cdot \alpha ^{x} / ((1 - x / n) ^{n - x} \cdot (x / n) ^{x})\right]
+$$
+
+$$
+\text{Christoffersen Statistic} = - 2 \cdot \text{ln} \left[L(\pi) / L(\pi_{01},\; \pi_{11})\right]
+$$
+
+Where n is the number of out-of-sample VaR estimates and x the number of breaches. L(pi) is the likelihood of the breach sequence with a single breach probability pi, and L(pi_01, pi_11) that of a first-order Markov chain in which the breach probability depends on whether the previous period was a breach. Both statistics are compared with a χ² distribution with one degree of freedom for the p-value.
 
 For more information about the methods, see the following papers:
 
@@ -1807,13 +2204,15 @@ For more information about the methods, see the following papers:
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
+- <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly or yearly).
 Defaults to "daily", since `window_size` is expressed in return observations of this frequency
 (252 only means "about one year" when `period` is daily).
 - <u>distribution (str, optional):</u> The distribution to use for the rolling VaR estimates, one of
 "historic", "gaussian", "studentt" or "evt". Defaults to "historic".
-- <u>alpha (float, optional):</u> The confidence level for the VaR estimates (e.g., 0.05 for 95%
-confidence). Defaults to 0.05.
+- <u>alpha (float, optional):</u> The tail probability for the VaR estimates (e.g., 0.05 for the 95%
+confidence level). Defaults to 0.05. With "evt" it can be at most 0.05, since the Generalized
+Pareto Distribution is fitted above the 95th percentile of losses; a larger `alpha` gives an
+empty result (with a logged error).
 - <u>window_size (int, optional):</u> The rolling window size (in number of return observations) used to
 estimate each VaR value. Defaults to 252 (approximately one trading year of daily returns).
 - <u>test (str, optional):</u> Which test(s) to run, one of "kupiec", "christoffersen" or "both". Defaults
@@ -1828,7 +2227,8 @@ pd.DataFrame: The requested test statistic(s) and their p-value(s) per asset.
 
 - The rolling VaR path is calculated over the full return history, not the `within_period` slices
 used elsewhere in this module, since a meaningful rolling window generally needs more history than
-a single sub-period provides.
+a single sub-period provides. Each asset is rolled over its own available returns, so a shorter
+history of one asset does not shorten the others.
 
 **As an example:**
 
@@ -1836,23 +2236,21 @@ a single sub-period provides.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["EURUSD", "USDJPY", "GBPUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_var_backtest(window_size=252)
+toolkit.risk.get_var_backtest(test="kupiec")
 ```
 
 Which returns:
 
-|                          |   AMZN |   TSLA |   Benchmark |
-|:-------------------------|-------:|-------:|------------:|
-| Kupiec Statistic         | 2.3413 | 0.1736 |      0.312  |
-| P-Value                  | 0.126  | 0.677  |      0.5765 |
-| Christoffersen Statistic | 0.4588 | 5.9293 |      4.7906 |
-| P-Value                  | 0.4982 | 0.0149 |      0.0286 |
+|                  |   EURUSD |   USDJPY |   GBPUSD |   Benchmark |
+|:-----------------|---------:|---------:|---------:|------------:|
+| Kupiec Statistic |   8.3686 |   1.8323 |   2.2039 |      0.0836 |
+| P-Value          |   0.0038 |   0.1759 |   0.1377 |      0.7725 |
 
 ---
 
@@ -1860,6 +2258,18 @@ Which returns:
 Backtest a Conditional Value at Risk (Expected Shortfall) model against realized returns, via the Acerbi-Szekely (2014) Z2 statistic.
 
 `get_var_backtest` above only backtests the VaR estimate itself -- it checks how often (and how independently) the VaR threshold is breached, but says nothing about the *severity* of the losses on those breach days, which is exactly the extra information a CVaR (Expected Shortfall) estimate is supposed to add over VaR. This method builds a rolling, out-of-sample CVaR (and VaR) path and compares the actual loss on each breach day to the CVaR that was supposed to describe the average loss on such days.
+
+The formula is as follows (with the default distribution="historic", alpha=0.05 and window_size=252):
+
+$$
+Z_{2} = \text{Σ} (\text{Return}_{t} \cdot \text{Breach}_{t} / \text{CVaR}_{t}) / (n \cdot \alpha) - 1
+$$
+
+$$
+\text{P-Value} = 1 - \Phi(Z_{2} / \text{Standard Error})
+$$
+
+Where VaR_t and CVaR_t are estimated from the 252 returns before t (see `get_var_backtest`), Breach_t is 1 if Return_t < VaR_t and 0 otherwise, n is the number of estimates and the Standard Error is the sample standard deviation (ddof=1) of Z2 over `n_bootstrap` paired bootstrap resamples. Returns and CVaR are both negative, so Z2 is about 0 for a well-calibrated model and positive when the realized tail losses exceed the CVaR (the opposite sign of the paper, which counts losses as positive).
 
 For more information about the method, see the following paper:
 
@@ -1869,12 +2279,14 @@ For more information about the method, see the following paper:
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (daily, weekly, quarterly, or yearly).
+- <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly or yearly).
 Defaults to "daily", since `window_size` is expressed in return observations of this frequency.
 - <u>distribution (str, optional):</u> The distribution to use for the rolling VaR/CVaR estimates,
 one of "historic", "gaussian", "studentt" or "evt". Defaults to "historic".
-- <u>alpha (float, optional):</u> The confidence level for the VaR/CVaR estimates (e.g., 0.05 for 95%
-confidence). Defaults to 0.05.
+- <u>alpha (float, optional):</u> The tail probability for the VaR/CVaR estimates (e.g., 0.05 for the 95%
+confidence level). Defaults to 0.05. With "evt" it can be at most 0.05, since the Generalized
+Pareto Distribution is fitted above the 95th percentile of losses; a larger `alpha` gives an
+empty result (with a logged error).
 - <u>window_size (int, optional):</u> The rolling window size (in number of return observations) used
 to estimate each VaR/CVaR value. Defaults to 252 (approximately one trading year of daily
 returns).
@@ -1886,14 +2298,19 @@ Error of Z2. Defaults to 1000.
 
 **Returns:**
 
-pd.DataFrame: The Z2 statistic, its bootstrap Standard Error, its p-value, and the number of
-breaches observed, per asset.
+pd.DataFrame: The Z2 statistic, its bootstrap Standard Error, its one-sided p-value (a low
+value means the model underestimates the tail losses), and the number of breaches observed
+(returns strictly below the VaR), per asset.
 
 **Notes:**
 
 - The rolling VaR/CVaR path is calculated over the full return history, not the `within_period`
 slices used elsewhere in this module, since a meaningful rolling window generally needs more
-history than a single sub-period provides.
+history than a single sub-period provides. Each asset is rolled over its own available returns.
+- The paper simulates the null distribution of Z2 from the model's predictive distributions; a
+rolling path does not carry those, so the p-value is approximated with a paired bootstrap of the
+observed (return, VaR, CVaR) triples and a normal approximation (see
+`backtesting_model.get_acerbi_szekely_test`).
 
 **As an example:**
 
@@ -1901,23 +2318,21 @@ history than a single sub-period provides.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["BA", "DAL", "CCL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_acerbi_szekely_test(window_size=100)
+toolkit.risk.get_acerbi_szekely_test().loc[["Acerbi-Szekely Statistic", "P-Value"]]
 ```
 
 Which returns:
 
-|                          |    AMZN |    TSLA |   Benchmark |
-|:-------------------------|--------:|--------:|------------:|
-| Acerbi-Szekely Statistic |  0.2146 |  0.2444 |      0.3931 |
-| Standard Error           |  0.1615 |  0.1543 |      0.1554 |
-| P-Value                  |  0.1838 |  0.1133 |      0.0114 |
-| Breaches                 | 65      | 70      |     78      |
+|                          |     BA |    DAL |    CCL |   Benchmark |
+|:-------------------------|-------:|-------:|-------:|------------:|
+| Acerbi-Szekely Statistic | 0.1548 | 0.2473 | 0.1402 |      0.2394 |
+| P-Value                  | 0.176  | 0.0762 | 0.1963 |      0.0785 |
 
 ---
 
@@ -1925,6 +2340,14 @@ Which returns:
 Calculate the Skewness of an investment portfolio or asset's returns.
 
 Skewness is a statistical measure used in finance to assess the asymmetry in the distribution of returns for an investment portfolio or asset over a defined period. It offers valuable insights into the shape of the return distribution, indicating whether returns are skewed towards the positive or negative side of the mean. Skewness is a crucial tool for investors and analysts seeking to understand the potential risk and return characteristics of an investment, aiding in the assessment of the distribution's tails and potential outliers. It provides a means to gauge the level of skew in returns, enabling more informed investment decisions and risk management strategies.
+
+The formula is as follows:
+
+$$
+\text{Skewness} = n / ((n - 1) \cdot (n - 2)) \cdot \text{Σ} ((\text{Return} - \text{Mean}) / \text{Std}) ^{3}
+$$
+
+Where n is the number of returns and Std the sample standard deviation (ddof=1), which is the bias-adjusted sample skewness (G1) of pandas and Excel's SKEW.
 
 **Also known as:** return distribution asymmetry, tail skew.
 
@@ -1964,7 +2387,7 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["MSFT", "AAPL", "TSLA"],
+    ["NFLX", "DIS", "WBD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -1975,13 +2398,13 @@ toolkit.risk.get_skewness(period="yearly", within_period=True)
 
 Which returns:
 
-|      |    MSFT |    AAPL |    TSLA |   Benchmark |
+|      |    NFLX |     DIS |     WBD |   Benchmark |
 |:-----|--------:|--------:|--------:|------------:|
-| 2021 | -0.0175 | -0.0735 |  0.669  |     -0.3324 |
-| 2022 |  0.1474 |  0.3167 | -0.026  |      0.0454 |
-| 2023 |  0.3774 | -0.0662 |  0.0021 |     -0.0206 |
-| 2024 | -0.8882 |  0.4447 |  0.8937 |     -0.5242 |
-| 2025 |  1.3142 |  1.1299 |  0.4045 |      1.5069 |
+| 2021 |  1.8966 |  0.2848 | -2.1536 |     -0.3334 |
+| 2022 | -2.1029 | -0.5086 | -0.0126 |      0.0454 |
+| 2023 |  1.5636 | -0.2155 | -0.42   |     -0.0206 |
+| 2024 |  0.872  |  0.7012 |  0.6324 |     -0.5242 |
+| 2025 | -0.2855 |  0.6672 |  1.9711 |      1.5069 |
 
 ---
 
@@ -1989,6 +2412,24 @@ Which returns:
 Calculate the Kurtosis of an investment portfolio or asset's returns.
 
 Kurtosis is a statistical measure used in finance to evaluate the shape of the probability distribution of returns for an investment portfolio or asset over a defined time period. It assesses the "tailedness" of the return distribution, indicating whether returns have fatter or thinner tails compared to a normal distribution. Kurtosis plays a critical role in risk assessment by revealing the potential presence of extreme outliers or the likelihood of heavy tails in the return data. This information aids investors and analysts in understanding the degree of risk associated with an investment and assists in making more informed decisions regarding risk tolerance. In essence, kurtosis serves as a valuable tool for comprehending the distribution characteristics of returns, offering insights into the potential for rare but significant events in the financial markets.
+
+By default this is Pearson's kurtosis, which is 3 for a normal distribution; with `fisher=True` it is the excess kurtosis, which is 0. Daily stock returns typically show an excess kurtosis of several points, and within a single year one exceptional day (an earnings shock, a market-wide gap) can push it above 10, so a high value often reflects one event rather than a persistently fat-tailed distribution.
+
+The formula is as follows (with the default fisher=False):
+
+$$
+\text{Kurtosis} = \text{Excess Kurtosis} + 3
+$$
+
+$$
+\text{Excess Kurtosis} = n(n + 1) / ((n - 1) (n - 2) (n - 3)) \cdot \text{Σ} z ^{4} - \operatorname{3}(n - 1) ^{2} / ((n - 2) (n - 3))
+$$
+
+$$
+z = (\text{Return} - \text{Mean}) / \text{Std}
+$$
+
+Where n is the number of returns and Std the sample standard deviation (ddof=1), which is the bias-adjusted sample excess kurtosis (G2) of pandas and Excel's KURT. With fisher=True the Excess Kurtosis is returned.
 
 **Also known as:** tail heaviness, fat tails, leptokurtosis.
 
@@ -2030,24 +2471,24 @@ asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["MSFT", "AAPL", "TSLA"],
+    ["BTCUSD", "ETHUSD", "SOLUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_kurtosis(period="yearly", within_period=True)
+toolkit.risk.get_kurtosis(period="yearly", within_period=True, fisher=True)
 ```
 
 Which returns:
 
-|      |    MSFT |    AAPL |   TSLA |   Benchmark |
-|:-----|--------:|--------:|-------:|------------:|
-| 2021 |  3.3906 |  3.4146 | 7.488  |      3.7279 |
-| 2022 |  3.8936 |  4.054  | 3.386  |      3.3635 |
-| 2023 |  4.4619 |  4.4804 | 4.3336 |      2.843  |
-| 2024 |  5.1741 |  6.6121 | 7.5225 |      4.7961 |
-| 2025 | 13.1336 | 17.0667 | 7.7019 |     26.576  |
+|      |   BTCUSD |   ETHUSD |   SOLUSD |   Benchmark |
+|:-----|---------:|---------:|---------:|------------:|
+| 2021 |   1.6215 |   3.5555 |   2.46   |      2.5374 |
+| 2022 |   4.0666 |   2.545  |   6.8965 |      2.359  |
+| 2023 |   3.2756 |   2.4865 |   5.3817 |      1.416  |
+| 2024 |   1.9522 |   4.0366 |   0.2918 |      3.8134 |
+| 2025 |   2.3709 |   4.0428 |   4.1957 |     45.0722 |
 
 ---
 
@@ -2055,6 +2496,24 @@ Which returns:
 Calculate the Hill Estimator of the tail index of returns, per asset.
 
 Unlike the (finite-sample) Skewness and Kurtosis above, the Hill Estimator is a semi-parametric estimate of how heavy the tail of the return distribution actually is, under the assumption that the tail follows a Pareto-type power law. Smaller values of the tail index indicate a heavier tail (more extreme outliers are likely) -- as a rule of thumb, a tail index below 4 implies the Kurtosis is theoretically infinite, and below 2 implies the Variance itself is theoretically infinite.
+
+For daily stock returns the tail index typically lies between about 2 and 5, while a normal distribution has an infinite tail index. The estimate depends on `k`: practitioners plot it against a range of `k` (a Hill plot) and read it where it is stable, since a small `k` is noisy and a large `k` pulls in the center of the distribution.
+
+The formula is as follows (with the default tail="left" and k=0.1):
+
+$$
+\text{Hill Shape} (\xi) = (1 / k) \cdot \text{Σ} (\text{ln}\; X_{} (i) - \text{ln}\; X_{} (k + 1)) \text{for}\; i = 1,\;\; \text{...},\;\; \text{k}
+$$
+
+$$
+\text{Hill Tail Index} = 1 / \xi
+$$
+
+$$
+\text{Standard Error} = \text{Hill Tail Index} / \sqrt{k}
+$$
+
+Where X_(1) >= X_(2) >= ... are the strictly positive losses (the negated returns, or the returns themselves for tail="right") sorted from large to small, and k is the number of order statistics used: int(0.1 * the number of positive losses) by default, or `k` itself when it is an integer.
 
 For more information about the method, see the following paper:
 
@@ -2071,8 +2530,8 @@ or for the entire period. Defaults to False.
 Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>k (int &#124; float, optional):</u> The number of upper order statistics to use. If a float in (0, 1)
-it is interpreted as the fraction of the strictly positive observations to use. Defaults to
-0.1 (the top 10%).
+it is interpreted as the fraction of the strictly positive observations to use. A period
+without such observations reports NaN with 0 observations used. Defaults to 0.1 (the top 10%).
 - <u>tail (str, optional):</u> Which tail to estimate, one of "left" (the loss tail) or "right" (the
 gain tail). Defaults to "left".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -2094,23 +2553,23 @@ Hill Estimator for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["BTCUSD", "^GSPC", "GCUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_hill_estimator(period="weekly", within_period=False)
+toolkit.risk.get_hill_estimator(k=60)
 ```
 
 Which returns:
 
-|                       |    AMZN |    TSLA |   Benchmark |
-|:----------------------|--------:|--------:|------------:|
-| Hill Tail Index       |  3.2418 |  9.5123 |      2.7487 |
-| Hill Shape (xi)       |  0.3085 |  0.1051 |      0.3638 |
-| Standard Error        |  0.9358 |  2.746  |      0.8288 |
-| Observations Used (k) | 12      | 12      |     11      |
+|                       |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+|:----------------------|---------:|--------:|--------:|------------:|
+| Hill Tail Index       |   3.4392 |  2.9068 |  3.0565 |      2.7613 |
+| Hill Shape (xi)       |   0.2908 |  0.344  |  0.3272 |      0.3621 |
+| Standard Error        |   0.444  |  0.3753 |  0.3946 |      0.3565 |
+| Observations Used (k) |  60      | 60      | 60      |     60      |
 
 ---
 
@@ -2119,7 +2578,13 @@ Calculate the Variance of an investment portfolio or asset's returns for a given
 
 Variance measures the spread or dispersion of returns around the mean. A higher Variance indicates more variability in the returns, while a lower Variance suggests that the returns are closer to the mean.
 
-The daily Variance is scaled to the given period by multiplying it with the number of trading days within that period (e.g. 252 / 52 for weekly).
+The formula is as follows:
+
+$$
+\text{Variance} = \operatorname{Var}(\text{Daily Returns within the period}) \cdot \text{Trading Days per Period}
+$$
+
+Where Var is the sample variance (ddof=1) and the trading days per period are 252 / 52 (weekly), 252 / 12 (monthly), 252 / 4 (quarterly) or 252 (yearly). With `rolling`, the result is the sample variance of the last `rolling` returns of the chosen period itself, without scaling.
 
 **Also known as:** dispersion, spread.
 
@@ -2154,7 +2619,7 @@ the specified `period` for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["WMT", "TGT", "COST"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -2165,13 +2630,13 @@ toolkit.risk.get_variance(period="yearly")
 
 Which returns:
 
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.0578 | 0.3    |      0.0167 |
-| 2022   | 0.2508 | 0.4446 |      0.0588 |
-| 2023   | 0.109  | 0.2922 |      0.0171 |
-| 2024   | 0.0789 | 0.4032 |      0.0158 |
-| 2025   | 0.1184 | 0.4031 |      0.038  |
+| Date   |    WMT |    TGT |   COST |   Benchmark |
+|:-------|-------:|-------:|-------:|------------:|
+| 2021   | 0.0278 | 0.0559 | 0.0359 |      0.0167 |
+| 2022   | 0.0714 | 0.2131 | 0.0984 |      0.0588 |
+| 2023   | 0.0245 | 0.0965 | 0.0365 |      0.0171 |
+| 2024   | 0.0313 | 0.1377 | 0.0355 |      0.0158 |
+| 2025   | 0.063  | 0.1166 | 0.0467 |      0.038  |
 
 ---
 
@@ -2187,7 +2652,35 @@ By default this is the close-to-close Volatility, i.e. the standard deviation of
 - `"rogers_satchell"` - drift-independent, meaning it remains unbiased even when the underlying asset has a non-zero expected return over the period, at the cost of still assuming no overnight jumps.
 - `"yang_zhang"` - a weighted combination of the overnight (close-to-open) Variance, the open-to-close Variance and the Rogers-Satchell Variance. It is both drift-independent and accounts for overnight jumps, which makes it the most statistically efficient of the range-based estimators implemented here.
 
-In every case the daily Volatility is scaled to the given period by multiplying the underlying Variance with the number of trading days within that period (e.g. 252 / 52 for weekly).
+The formula is as follows (with the default method="close_to_close"):
+
+$$
+\text{Volatility} = \operatorname{Std}(\text{Daily Returns within the period}) \cdot \sqrt{\text{Trading Days per Period}}
+$$
+
+Where Std is the sample standard deviation (ddof=1) and the trading days per period are 252 / 52 (weekly), 252 / 12 (monthly), 252 / 4 (quarterly) or 252 (yearly). The range-based estimators take the square root of a daily variance and scale it the same way, with H, L, O and C the daily High, Low, Open and Close, C_(-1) the previous Close, Mean the average and Var the sample variance (ddof=1) over the days in the period:
+
+$$
+\text{Parkinson Variance} = \operatorname{Mean}(\ln(H / L) ^{2}) / (4 \cdot \text{ln}\; 2)
+$$
+
+$$
+\text{Garman-Klass Variance} = \operatorname{Mean}(0.5 \cdot \ln(H / L) ^{2} - (2 \cdot \text{ln}\; 2 - 1) \cdot \ln(C / O) ^{2})
+$$
+
+$$
+\text{Rogers-Satchell Variance} = \operatorname{Mean}(\ln(H / C) \cdot \ln(H / O) + \ln(L / C) \cdot \ln(L / O))
+$$
+
+$$
+\text{Yang-Zhang Variance} = \operatorname{Var}(\ln(O / C_{- 1})) + k \cdot \operatorname{Var}(\ln(C / O)) + (1 - k) \cdot \text{Rogers-Satchell Variance}
+$$
+
+$$
+k = 0.34 / (1.34 + (n + 1) / (n - 1)),\;\; \text{with n the number of days in the period}
+$$
+
+With `rolling`, the result is the sample standard deviation of the last `rolling` returns of the chosen period itself, without scaling.
 
 **Also known as:** standard deviation of returns. The range-based estimators are also known as Parkinson's range-based or high-low Volatility, Garman-Klass range-based Volatility, Rogers-Satchell drift-independent Volatility and Yang-Zhang drift-independent overnight-aware Volatility.
 
@@ -2229,13 +2722,16 @@ only needs the daily returns, Parkinson needs the High and Low, and the remainin
 estimators need the Open, High, Low and Close.
 - If `growth` is set to True, the method calculates the growth of Volatility values using the specified `lag`.
 
+Passing `method="parkinson"` (or another range-based estimator) uses the daily trading range instead of
+only the closes.
+
 **As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["EURUSD", "BTCUSD", "^GSPC", "GCUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -2246,29 +2742,13 @@ toolkit.risk.get_volatility(period="yearly")
 
 Which returns:
 
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.2404 | 0.5477 |      0.1293 |
-| 2022   | 0.5008 | 0.6668 |      0.2425 |
-| 2023   | 0.3302 | 0.5406 |      0.1307 |
-| 2024   | 0.2809 | 0.635  |      0.1257 |
-| 2025   | 0.3442 | 0.6349 |      0.1948 |
-
-And, using the daily trading range instead of only the closes:
-
-```python
-toolkit.risk.get_volatility(period="yearly", method="parkinson")
-```
-
-
-
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.2089 | 0.4563 |      0.1073 |
-| 2022   | 0.3717 | 0.5547 |      0.1916 |
-| 2023   | 0.2617 | 0.438  |      0.1101 |
-| 2024   | 0.219  | 0.4357 |      0.0989 |
-| 2025   | 0.267  | 0.5062 |      0.152  |
+| Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+|:-------|---------:|---------:|--------:|--------:|------------:|
+| 2021   |   0.0574 |   0.6758 |  0.1    |  0.1156 |      0.0993 |
+| 2022   |   0.091  |   0.531  |  0.189  |  0.1216 |      0.1897 |
+| 2023   |   0.0764 |   0.3662 |  0.1042 |  0.1088 |      0.104  |
+| 2024   |   0.0665 |   0.4441 |  0.098  |  0.1201 |      0.0975 |
+| 2025   |   0.0831 |   0.3485 |  0.1457 |  0.1554 |      0.152  |
 
 ---
 
@@ -2276,6 +2756,22 @@ toolkit.risk.get_volatility(period="yearly", method="parkinson")
 Calculate the Corsi (2009) Heterogeneous Autoregressive Realized Volatility (HAR-RV) forecast of future daily Realized Variance, per asset.
 
 Volatility clustering happens across multiple, overlapping time horizons at once. HAR-RV captures this cheaply -- without the numerical optimization a GARCH-family fit requires (see `get_garch`) -- by regressing future daily Realized Variance on trailing daily, weekly and monthly average Realized Variance components. The daily Realized Variance itself can be constructed in several ways via `estimator`: the simplest is the squared daily return, while the OHLC range-based estimators (see `get_volatility`, which exposes the same estimators via its own `method` parameter) use the daily (pre-period-aggregation) term behind each of those estimators instead, which is more statistically efficient since it uses the daily trading range rather than only the close-to-close move.
+
+The formula is as follows (with the default estimator="squared_return", weekly_window=5, monthly_window=22 and horizon=1):
+
+$$
+\text{RV}_{t} = \text{Return}_{t} ^{2}
+$$
+
+$$
+\text{RV} ^{w_{t}} = \operatorname{Mean}(\text{RV}_{t-4},\; ...,\; \text{RV}_{t}) \text{and RV} ^{m_{t}} = \operatorname{Mean}(\text{RV}_{t-21},\; ...,\; \text{RV}_{t})
+$$
+
+$$
+\text{Forecast of RV}_{} (t + 1) = b_{0} + b_{d} \cdot \text{RV}_{t} + b_{w} \cdot \text{RV} ^{w_{t}} + b_{m} \cdot \text{RV} ^{m_{t}}
+$$
+
+Where b_0, b_d, b_w and b_m are estimated once by ordinary least squares over each asset's full history, and the forecast of RV_(t+1) is shown at date t. The range-based estimators replace RV_t with the daily Parkinson, Garman-Klass or Rogers-Satchell variance term (see `get_volatility`).
 
 For more information about the method, see the following paper:
 
@@ -2312,32 +2808,34 @@ asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the HAR-RV forecast values
 using the specified `lag`.
 
+In the example below, the last row is the forecast for the first trading day after the end date,
+which has not been observed yet.
+
 **As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["SPY", "QQQ"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
+    benchmark_ticker=None,
 )
 
-toolkit.risk.get_har_rv_forecast(estimator="squared_return").tail()
+toolkit.risk.get_har_rv_forecast(estimator="squared_return").tail(5)
 ```
 
 Which returns:
 
-| Date       |     AMZN |     TSLA |   Benchmark |
-|:-----------|---------:|---------:|------------:|
-| 2025-12-24 |   0.0003 |   0.0011 |      0.0001 |
-| 2025-12-26 |   0.0003 |   0.0011 |      0.0001 |
-| 2025-12-29 |   0.0003 |   0.0011 |      0.0001 |
-| 2025-12-30 |   0.0003 |   0.0011 |      0.0001 |
-| 2025-12-31 | nan      | nan      |    nan      |
-
-The last row is NaN since there is no `2022-12-31` return yet to forecast against.
+| Date       |    SPY |    QQQ |
+|:-----------|-------:|-------:|
+| 2025-12-24 | 0.0001 | 0.0001 |
+| 2025-12-26 | 0.0001 | 0.0001 |
+| 2025-12-29 | 0.0001 | 0.0001 |
+| 2025-12-30 | 0.0001 | 0.0001 |
+| 2025-12-31 | 0.0001 | 0.0001 |
 
 ---
 
@@ -2346,12 +2844,21 @@ Calculate the Amihud (2002) Illiquidity ratio, per asset.
 
 The Amihud ratio measures the average price impact of trading -- how much the price moves per dollar of trading volume. A high value means that even a small amount of trading moves the price a lot (the asset is illiquid), while a low value means the asset can absorb a large amount of trading with little price impact (the asset is liquid).
 
+The Amihud ratio is mainly a cross-sectional measure: it ranks stocks by how much a given dollar volume moves the price and is used as a liquidity factor in asset pricing. Its level depends on the scale, the frequency and the price level of the market, so compare stocks within the same market and period, and expect the ratio of large caps to be several orders of magnitude below that of small caps.
+
 For more information about the method, see the following paper:
 
 - Amihud, Y. (2002). "Illiquidity and Stock
 
 **Returns:** Cross-Section and
 Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
+
+The formula is as - <u>follows (with the default scale of 1,000,000):</u>
+
+- Amihud Illiquidity = Mean(&#124;Return_t&#124; / (Close_t * Volume_t)) * 1,000,000
+
+Where the mean runs over the periods of the chosen frequency (within each period with `within_period`),
+and periods without dollar volume are skipped.
 
 Also known as: Amihud illiquidity ratio, ILLIQ, price impact ratio.
 
@@ -2383,33 +2890,33 @@ pd.Series: Amihud Illiquidity values with time as the index.
 - If `growth` is set to True, the method calculates the growth of the Amihud Illiquidity values
 using the specified `lag`.
 
+A `scale` of one billion is used in the example below: liquid stocks trade so much dollar volume
+relative to their typical daily price move that the default `scale` of 1,000,000 (as in Amihud's
+original paper) can round their values to 0.0 at the default precision.
+
 **As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["SNAP", "ETSY", "LYFT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_amihud_illiquidity(period="quarterly", scale=1e12)
+toolkit.risk.get_amihud_illiquidity(scale=1e9)
 ```
 
 Which returns:
 
-|           |      0 |
-|:----------|-------:|
-| AMZN      | 0.2447 |
-| TSLA      | 0.1704 |
-| Benchmark | 0.0306 |
-
-Note that a large `scale` is used here since these are liquid, large-cap
-stocks with very high dollar trading volume relative to their typical daily
-price move -- the default `scale` of 1,000,000 (as used in Amihud's original
-1980s/1990s-era paper) would round these to 0.0 at the default precision.
+|           |   Value |
+|:----------|--------:|
+| SNAP      |  0.0634 |
+| ETSY      |  0.0768 |
+| LYFT      |  0.1277 |
+| Benchmark |  0.0002 |
 
 ---
 
@@ -2418,9 +2925,23 @@ Calculate the Roll (1984) implied bid-ask spread, per asset.
 
 Roll's model shows that, under a stylized microstructure model in which the true (efficient) price follows a random walk and observed trade prices randomly bounce between the bid and the ask, the effective spread can be backed out purely from the serial covariance of consecutive price changes, without needing any actual quote data. If the estimated covariance is zero or positive, no valid estimate can be backed out and NaN is returned instead.
 
+The Roll measure is used when no quote data is available, typically for less liquid stocks or historical studies. On daily closes of liquid large caps it mostly picks up price noise rather than the bid-ask bounce, and in trending periods the autocovariance is positive and no estimate exists, so treat it as a rough, relative measure.
+
 For more information about the method, see the following paper:
 
 - Roll, R. (1984). "A Simple Implicit Measure of the Effective Bid-Ask Spread in an Efficient Market." The Journal of Finance, 39(4), 1127-1139.
+
+The formula is as follows:
+
+$$
+\text{Roll Spread} = 2 \cdot \sqrt{- \operatorname{Cov}(\Delta P_{t},\; \Delta P_{} (t-1))}
+$$
+
+$$
+\text{Relative Roll Spread} = \text{Roll Spread} / \operatorname{Mean}(P)
+$$
+
+Where P is the Close price, ΔP_t = P_t - P_(t-1) and Cov the sample autocovariance (ddof=1) of consecutive price changes; a covariance of zero or above gives NaN.
 
 **Also known as:** Roll's implied spread, Roll measure.
 
@@ -2436,9 +2957,9 @@ None.
 
 **Returns:**
 
-pd.DataFrame: The Roll Spread (in price units), the Roll Spread as a percentage of the mean
-price, the underlying lag-1 autocovariance, and whether that autocovariance was negative (i.e.
-whether a valid estimate could be backed out), per asset.
+pd.DataFrame: The Roll Spread (in price units), the Relative Roll Spread (the Roll Spread divided
+by the mean price, as a decimal), the underlying lag-1 autocovariance, and whether that
+autocovariance was negative (i.e. whether a valid estimate could be backed out), per asset.
 
 **Notes:**
 
@@ -2451,7 +2972,7 @@ the Roll Spread for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["KO", "PEP", "PG"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -2462,12 +2983,12 @@ toolkit.risk.get_roll_spread()
 
 Which returns:
 
-|                 |      AMZN |     TSLA |   Benchmark |
-|:----------------|----------:|---------:|------------:|
-| Roll Spread     |  0.917232 |  3.64757 |    1.97906  |
-| Roll Spread (%) |  0.561329 |  1.37352 |    0.408282 |
-| Autocovariance  | -0.210329 | -3.32619 |   -0.979167 |
-| Valid Estimate  |  1        |  1       |    1        |
+|                      |          KO |         PEP |         PG |   Benchmark |
+|:---------------------|------------:|------------:|-----------:|------------:|
+| Roll Spread          |  0.173128   |  0.72957    |  0.751753  |  1.97906    |
+| Relative Roll Spread |  0.0028038  |  0.00449337 |  0.0049553 |  0.00408282 |
+| Autocovariance       | -0.00749332 | -0.133068   | -0.141283  | -0.979167   |
+| Valid Estimate       |  1          |  1          |  1         |  1          |
 
 ---
 
@@ -2475,6 +2996,14 @@ Which returns:
 Calculate the Excess Volatility of an investment portfolio or asset's returns for a given period based on the daily historical returns.
 
 Excess Volatility is the Volatility of the Excess Return, i.e. the daily return minus the risk free rate, scaled to the given period in the same way as the Volatility.
+
+The formula is as follows:
+
+$$
+\text{Excess Volatility} = \operatorname{Std}(\text{Daily Return} - \text{Daily Risk Free Rate}) \cdot \sqrt{\text{Trading Days per Period}}
+$$
+
+Where Std is the sample standard deviation (ddof=1) over the days within the period, the annualized risk free rate is converted to a daily rate, and the trading days per period are 252 / 52 (weekly), 252 / 12 (monthly), 252 / 4 (quarterly) or 252 (yearly). With `rolling`, the result is the sample standard deviation of the last `rolling` excess returns of the chosen period itself, without scaling.
 
 **Also known as:** standard deviation of excess returns.
 
@@ -2512,7 +3041,7 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["ADBE", "CRM", "ORCL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -2523,20 +3052,28 @@ toolkit.risk.get_excess_volatility(period="yearly")
 
 Which returns:
 
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.2404 | 0.5477 |      0.1293 |
-| 2022   | 0.5008 | 0.6668 |      0.2425 |
-| 2023   | 0.3302 | 0.5406 |      0.1307 |
-| 2024   | 0.2809 | 0.635  |      0.1257 |
-| 2025   | 0.3442 | 0.6349 |      0.1948 |
+| Date   |   ADBE |    CRM |   ORCL |   Benchmark |
+|:-------|-------:|-------:|-------:|------------:|
+| 2021   | 0.2924 | 0.282  | 0.2927 |      0.1293 |
+| 2022   | 0.4506 | 0.4722 | 0.3053 |      0.2425 |
+| 2023   | 0.3178 | 0.2958 | 0.302  |      0.1307 |
+| 2024   | 0.3663 | 0.3594 | 0.3226 |      0.1257 |
+| 2025   | 0.3062 | 0.319  | 0.6169 |      0.1948 |
 
 ---
 
 ## get_downside_deviation
 Calculate the Downside Deviation of an investment portfolio or asset's returns.
 
-The Downside Deviation, also known as semi-deviation, is the standard deviation of only the returns that fall below a minimum acceptable return (MAR), isolating the volatility of negative outcomes from the volatility of the overall return distribution. It underlies risk-adjusted return measures such as the Sortino Ratio and the Omega Ratio.
+The Downside Deviation, also known as semi-deviation, measures the dispersion of the returns below a minimum acceptable return (MAR), isolating the volatility of negative outcomes from the volatility of the overall return distribution. It underlies risk-adjusted return measures such as the Sortino Ratio and the Omega Ratio.
+
+The formula is as follows (with the default minimum_acceptable_return of 0):
+
+$$
+\text{Downside Deviation} = \sqrt{\text{Σ} \;\text{min} (\text{Return}_{t} - \text{MAR},\; 0) ^{2} / n}
+$$
+
+Where n is the number of all returns, so returns above the MAR count as a shortfall of zero rather than being left out.
 
 **Also known as:** semi-deviation, downside risk, downside volatility.
 
@@ -2579,24 +3116,23 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["NEE", "DUK", "SO"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2025-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_downside_deviation(period="yearly", within_period=True)
+toolkit.risk.get_downside_deviation()
 ```
 
 Which returns:
 
-|      |   AMZN |   TSLA |   Benchmark |
-|:-----|-------:|-------:|------------:|
-| 2021 | 0.0108 | 0.0221 |      0.0054 |
-| 2022 | 0.0229 | 0.0318 |      0.011  |
-| 2023 | 0.013  | 0.022  |      0.0053 |
-| 2024 | 0.0117 | 0.0243 |      0.0055 |
-| 2025 | 0.0146 | 0.0268 |      0.0081 |
+|           |   Value |
+|:----------|--------:|
+| NEE       |  0.0124 |
+| DUK       |  0.0074 |
+| SO        |  0.0079 |
+| Benchmark |  0.0081 |
 
 ---
 
@@ -2604,6 +3140,14 @@ Which returns:
 Calculate the Mean Absolute Deviation (MAD) of an investment portfolio or asset's returns for a given period based on the daily historical returns.
 
 MAD measures the average absolute distance of each return from the mean return. Unlike Variance and Volatility, it does not square the deviations, making it less sensitive to outliers.
+
+The formula is as follows:
+
+$$
+\text{Mean Absolute Deviation} = \text{Σ} | \text{Return}_{t} - \text{Mean} | / n
+$$
+
+Where the returns are the n daily returns within each period, without scaling to the period length.
 
 **Args:**
 
@@ -2632,7 +3176,7 @@ the specified `period` for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["KO", "PEP", "MDLZ"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -2643,13 +3187,13 @@ toolkit.risk.get_mean_absolute_deviation(period="yearly")
 
 Which returns:
 
-| Date   |   AMZN |   TSLA |   Benchmark |
-|:-------|-------:|-------:|------------:|
-| 2021   | 0.0114 | 0.0246 |      0.0061 |
-| 2022   | 0.0235 | 0.032  |      0.0119 |
-| 2023   | 0.0156 | 0.0255 |      0.0064 |
-| 2024   | 0.0132 | 0.0286 |      0.0058 |
-| 2025   | 0.015  | 0.0292 |      0.0074 |
+| Date   |     KO |    PEP |   MDLZ |   Benchmark |
+|:-------|-------:|-------:|-------:|------------:|
+| 2021   | 0.007  | 0.0069 | 0.0073 |      0.0061 |
+| 2022   | 0.0091 | 0.009  | 0.0098 |      0.0119 |
+| 2023   | 0.0063 | 0.007  | 0.008  |      0.0064 |
+| 2024   | 0.0061 | 0.0076 | 0.0082 |      0.0058 |
+| 2025   | 0.0083 | 0.0104 | 0.0104 |      0.0074 |
 
 ---
 
@@ -2657,6 +3201,16 @@ Which returns:
 Calculate the Coefficient of Variation (CV) of an investment portfolio or asset's returns for a given period based on the daily historical returns.
 
 The Coefficient of Variation is the ratio of the standard deviation to the mean of returns, which normalizes dispersion relative to the average return. This makes it useful for comparing the relative volatility of assets with different average returns, which a raw standard deviation cannot do.
+
+The Coefficient of Variation is only meaningful when the mean return is clearly positive. In a period with an average daily return close to zero it explodes, and in a down period it turns negative, so for returns it is best read over periods with a positive mean, or replaced by a Sharpe ratio, which is its inverse with the risk-free rate subtracted.
+
+The formula is as follows:
+
+$$
+\text{Coefficient of Variation} = \operatorname{Std}(\text{Daily Returns}) / \operatorname{Mean}(\text{Daily Returns})
+$$
+
+Where both are taken over the daily returns within each period, with Std the sample standard deviation (ddof=1), without scaling to the period length.
 
 **Also known as:** relative standard deviation.
 
@@ -2687,9 +3241,9 @@ the specified `period` for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["MSFT", "ORCL", "IBM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2023-01-01",
     end_date="2025-12-31",
 )
 
@@ -2698,13 +3252,11 @@ toolkit.risk.get_coefficient_of_variation(period="yearly")
 
 Which returns:
 
-| Date   |     AMZN |     TSLA |   Benchmark |
-|:-------|---------:|---------:|------------:|
-| 2021   |  51.4326 |  16.7257 |      7.4324 |
-| 2022   | -14.1417 | -12.7544 |    -22.3928 |
-| 2023   |   8.0356 |  10.0506 |      8.5443 |
-| 2024   |  10.9398 |  14.7623 |      8.6564 |
-| 2025   |  49.9543 |  32.8037 |     16.8499 |
+| Date   |    MSFT |    ORCL |     IBM |   Benchmark |
+|:-------|--------:|--------:|--------:|------------:|
+| 2023   |  8.0237 | 16.2298 | 12.0942 |      8.3745 |
+| 2024   | 22.4294 |  9.8256 | 10.3503 |      8.6564 |
+| 2025   | 21.9925 | 28.2432 | 12.934  |     16.8499 |
 
 ---
 
@@ -2718,6 +3270,14 @@ The formula is as follows:
 $$
 \text{EWMA Variance} (t) = \lambda \cdot \text{EWMA Variance} (t-1) + (1 - \lambda) \cdot \operatorname{Return}(t-1) ^{2}
 $$
+
+$$
+\text{EWMA Volatility} (t) = \sqrt{\text{EWMA Variance} (t)}
+$$
+
+Where lambda is 0.94 by default and Return(t-1) the previous daily return, so the value on a day only uses the returns before it. The recursion starts from the first squared return.
+
+With the RiskMetrics decay factor of 0.94, about 70% of the weight sits on the last 20 trading days, so EWMA Volatility reacts within days to a market shock and falls back almost as quickly. The values are daily; multiply them by the square root of 252 for an annualized figure comparable with `get_volatility(period="yearly")`.
 
 **Also known as:** RiskMetrics volatility, exponentially weighted volatility.
 
@@ -2751,29 +3311,24 @@ the specified `lag`.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["USDJPY", "EURUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_ewma_volatility()
+toolkit.risk.get_ewma_volatility().tail(5)
 ```
 
 Which returns:
 
-| Date       |   AMZN |   TSLA |   Benchmark |
-|:-----------|-------:|-------:|------------:|
-| 2025-12-17 | 0.018  | 0.0276 |      0.007  |
-| 2025-12-18 | 0.0175 | 0.029  |      0.0073 |
-| 2025-12-19 | 0.018  | 0.0294 |      0.0073 |
-| 2025-12-22 | 0.0175 | 0.0285 |      0.0075 |
-| 2025-12-23 | 0.017  | 0.0279 |      0.0074 |
-| 2025-12-24 | 0.017  | 0.0271 |      0.0073 |
-| 2025-12-26 | 0.0164 | 0.0263 |      0.0071 |
-| 2025-12-29 | 0.0159 | 0.026  |      0.0069 |
-| 2025-12-30 | 0.0155 | 0.0264 |      0.0067 |
-| 2025-12-31 | 0.015  | 0.0258 |      0.0065 |
+| Date       |   USDJPY |   EURUSD |   Benchmark |
+|:-----------|---------:|---------:|------------:|
+| 2025-12-26 |   0.0046 |   0.0046 |      0.0057 |
+| 2025-12-28 |   0.0045 |   0.0044 |      0.0055 |
+| 2025-12-29 |   0.0043 |   0.0043 |      0.0054 |
+| 2025-12-30 |   0.0042 |   0.0042 |      0.0052 |
+| 2025-12-31 |   0.0041 |   0.0045 |      0.0051 |
 
 ---
 
@@ -2781,6 +3336,14 @@ Which returns:
 Calculate the Autocorrelation Function (ACF) of each asset's daily returns for a range of lags.
 
 The ACF measures the correlation between a return series and a lagged version of itself. A significant ACF at a given lag indicates that returns are not fully independent over time, which is relevant for assessing return predictability and volatility clustering (as opposed to a trading-signal use case, which is why this lives in the Risk module rather than Technicals).
+
+The formula is as follows:
+
+$$
+\operatorname{ACF}(k) = \text{Σ} (r_{t} - \text{Mean}) \cdot (r_{t + k} - \text{Mean}) / \text{Σ} (r_{t} - \text{Mean}) ^{2}
+$$
+
+Where r_t are the n daily returns (missing values dropped), the numerator runs over t = 1, ..., n - k, the denominator over all n returns, and k = 1, ..., `lags` (10 by default).
 
 **Args:**
 
@@ -2798,10 +3361,11 @@ pd.DataFrame: The ACF value for each lag (rows) and each asset (columns).
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["SPY", "QQQ", "IWM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
+    benchmark_ticker=None,
 )
 
 toolkit.risk.get_autocorrelation()
@@ -2809,23 +3373,23 @@ toolkit.risk.get_autocorrelation()
 
 Which returns:
 
-|    |    AMZN |    TSLA |   Benchmark |
-|---:|--------:|--------:|------------:|
-|  1 | -0.0125 | -0.026  |     -0.031  |
-|  2 | -0.0064 |  0.0128 |     -0.0069 |
-|  3 | -0.0114 | -0.0109 |     -0.0626 |
-|  4 |  0.0112 |  0.0189 |     -0.0344 |
-|  5 | -0.0143 | -0.0213 |     -0.0075 |
-|  6 |  0.0047 |  0.045  |     -0.0104 |
-|  7 | -0.0523 |  0.0309 |     -0.0109 |
-|  8 | -0.0307 |  0.0198 |     -0.0063 |
-|  9 | -0.0102 |  0.063  |      0.0399 |
-| 10 | -0.0084 | -0.0499 |     -0.0111 |
+|   Lag |     SPY |     QQQ |     IWM |
+|------:|--------:|--------:|--------:|
+|     1 | -0.031  | -0.0387 | -0.0092 |
+|     2 | -0.0069 | -0.001  | -0.0254 |
+|     3 | -0.0626 | -0.0629 | -0.0055 |
+|     4 | -0.0344 | -0.0216 | -0.0437 |
+|     5 | -0.0075 | -0.0071 | -0.016  |
+|     6 | -0.0104 |  0      | -0.0112 |
+|     7 | -0.0109 |  0.0031 | -0.013  |
+|     8 | -0.0063 | -0.0118 | -0.0168 |
+|     9 |  0.0399 |  0.0505 |  0.0285 |
+|    10 | -0.0111 | -0.0214 | -0.0059 |
 
 ---
 
 ## get_hurst_exponent
-Calculate the Hurst Exponent of each asset's daily returns, a measure of long-term memory that indicates whether a series is mean-reverting, trending, or a random walk.
+Calculate the Hurst Exponent of each asset's daily (adjusted close) log price series, a measure of long-term memory that indicates whether the price is mean-reverting, trending, or a random walk.
 
 The Hurst Exponent (H) is interpreted as follows:
 
@@ -2833,10 +3397,24 @@ The Hurst Exponent (H) is interpreted as follows:
 - H = 0.5: the series is a random walk (no memory).
 - H > 0.5: the series is trending (persistent).
 
+For liquid stocks the estimate is usually close to 0.5, and with lags of at most `max_lag` days it describes short-term behaviour only; a value of 0.45 or 0.55 over a few years is within estimation noise rather than evidence of a tradable pattern.
+
+The formula is as follows (with the default max_lag=20):
+
+$$
+\sigma(\tau) = \operatorname{Std}(\text{ln}\; P_{} (t + \tau) - \text{ln}\; P_{t})
+$$
+
+$$
+\text{ln}\; \sigma (\tau) = c + H \cdot \text{ln}\; \tau,\;\; \text{fitted by least squares over}\; \tau = 2,\;\; \text{...},\;\; \text{20}
+$$
+
+Where P is the daily adjusted close, Std the population standard deviation (ddof=0) of the lagged log price differences and H, the slope, the Hurst Exponent.
+
 **Args:**
 
-- <u>max_lag (int, optional):</u> The maximum lag to use when estimating the exponent.
-Defaults to 20.
+- <u>max_lag (int, optional):</u> The maximum lag, included, to use when estimating the exponent:
+the regression runs over the lags 2 up to and including `max_lag`. Defaults to 20.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to 4.
 
@@ -2844,13 +3422,20 @@ Defaults to 4.
 
 pd.Series: The estimated Hurst Exponent for each asset.
 
+**Notes:**
+
+- The exponent is estimated with the generalized Hurst (structure function) method of
+Di Matteo, Aste & Dacorogna (2005) on the logarithm of the adjusted close, as in that paper,
+see `risk_model.get_hurst_exponent`. The lagged differences of log prices are log returns,
+so the estimate does not depend on the price level.
+
 **As an example:**
 
 ```python
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["AMZN", "TSLA"],
+    ["EURUSD", "GCUSD", "BTCUSD"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
@@ -2861,11 +3446,12 @@ toolkit.risk.get_hurst_exponent()
 
 Which returns:
 
-|           |      0 |
-|:----------|-------:|
-| AMZN      | 0.4596 |
-| TSLA      | 0.52   |
-| Benchmark | 0.4362 |
+|           |   Value |
+|:----------|--------:|
+| EURUSD    |  0.4229 |
+| GCUSD     |  0.4886 |
+| BTCUSD    |  0.5057 |
+| Benchmark |  0.4621 |
 
 ---
 

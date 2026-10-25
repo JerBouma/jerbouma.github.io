@@ -1,387 +1,411 @@
-get_augmented_dickey_fuller:
-  question: Were the quarterly share prices of Amazon and Tesla stationary from 2019 to 2023, according to the augmented Dickey-Fuller test?
-  tool: econometrics
-  arguments:
-    tickers: AMZN,TSLA
-    start_date: "2019-01-01"
-    end_date: "2023-12-31"
-    period: quarterly
-get_kpss_test:
-  question: Were the quarterly share prices of Amazon and Tesla stationary from 2019 to 2023, according to the KPSS test?
-  tool: econometrics
-  arguments:
-    tickers: AMZN,TSLA
-    start_date: "2019-01-01"
-    end_date: "2023-12-31"
-    period: quarterly
-get_phillips_perron_test:
-  question: Did the quarterly share prices of Amazon and Tesla have a unit root from 2021 to 2025, according to the Phillips-Perron test?
-  tool: econometrics
-  arguments:
-    tickers: AMZN,TSLA
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-get_zivot_andrews_test:
-  question: Did the weekly share prices of Apple and Microsoft have a unit root from 2019 to 2023 once a single structural break is allowed for?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2019-01-01"
-    end_date: "2023-12-31"
-    period: weekly
-get_variance_ratio_test:
-  question: Did the share prices of Amazon and Tesla follow a random walk from 2021 to 2025, according to the variance ratio test on their quarterly returns?
-  tool: econometrics
-  arguments:
-    tickers: AMZN,TSLA
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-    within_period: false
-get_engle_granger_cointegration:
-  question: Were the quarterly share prices of Apple and Microsoft cointegrated from 2021 to 2025, according to the Engle-Granger test?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-get_johansen_cointegration:
-  question: Were the quarterly share prices of Apple and Microsoft cointegrated from 2021 to 2025, according to the Johansen trace test?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-get_granger_causality:
-  question: Did Apple's weekly returns help predict Microsoft's from 2021 to 2025, or Microsoft's help predict Apple's, testing up to three lags?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: weekly
-    max_lag: 3
-get_ols:
-  question: How sensitive were Amazon's quarterly returns to Tesla's from 2021 to 2025, according to an OLS regression?
-  tool: econometrics
-  arguments:
-    tickers: AMZN,TSLA
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-get_logistic_regression:
-  question: How did the weekly returns of Microsoft and the S&P 500 change the odds of Apple rising in a week from 2021 to 2025, according to a logit model?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: weekly
-    include_benchmark: true
-get_probit_regression:
-  question: How well did the weekly returns of Microsoft and the S&P 500 predict whether Apple rose in a week from 2021 to 2025, according to a probit model?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: weekly
-    include_benchmark: true
-get_quantile_regression:
-  question: How sensitive was the median of Apple's weekly returns to those of Microsoft and the S&P 500 from 2021 to 2025, according to a quantile regression?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    tau: 0.5
-    period: weekly
-    include_benchmark: true
-get_fama_macbeth_regression:
-  question: Was exposure to the S&P 500 rewarded across Apple and Microsoft from 2021 to 2025, according to a Fama-MacBeth regression?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: weekly
-    add_constant: false
-get_fixed_effects:
-  question: How sensitive were the weekly returns of Apple and Microsoft to the S&P 500 from 2021 to 2025, controlling for company fixed effects?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: weekly
-    independent_tickers: Benchmark
-get_random_effects:
-  question: How did trading volume relate to the weekly returns of Apple, Microsoft and Amazon from 2021 to 2025, in a random effects panel?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT,AMZN
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    independent_column: Volume
-    period: weekly
-get_hausman_test:
-  question: Should a weekly panel of Apple, Microsoft and Amazon returns on trading volume use fixed or random effects, according to the Hausman test?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT,AMZN
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    independent_column: Volume
-    period: weekly
-get_iv_2sls:
-  question: How strongly did Microsoft's weekly returns pass through to Apple's from 2021 to 2025, with the S&P 500's returns as the instrument for Microsoft's?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    dependent_ticker: AAPL
-    endogenous_ticker: MSFT
-    instrument_tickers: Benchmark
-    period: weekly
-get_hausman_wu_test:
-  question: Were Microsoft's weekly returns endogenous in a regression of Apple's returns from 2021 to 2025, with the S&P 500 as the instrument?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    dependent_ticker: AAPL
-    suspect_ticker: MSFT
-    instrument_tickers: Benchmark
-    period: weekly
-get_difference_in_differences:
-  question: Did Apple's weekly returns rise relative to those of Microsoft and the S&P 500 after 30 June 2021, measured from 2021 to 2025?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    treated_tickers: AAPL
-    treatment_date: "2021-06-30"
-    period: weekly
-get_regression_discontinuity:
-  question: Did Apple's weekly return jump at the point where Microsoft's weekly return turned positive, from 2021 to 2025?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    dependent_ticker: AAPL
-    running_variable_ticker: MSFT
-    cutoff: 0
-    period: weekly
-get_propensity_score_matching:
-  question: In weeks when Microsoft rose, how much more did Apple return than in comparable weeks with the same S&P 500 move, from 2021 to 2025?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    dependent_ticker: AAPL
-    treatment_ticker: MSFT
-    covariate_tickers: Benchmark
-    period: weekly
-get_synthetic_control:
-  question: Did Apple's weekly returns change from 1 July 2021, compared with a synthetic Apple built from Microsoft and the S&P 500 (2021 to 2025)?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    treated_ticker: AAPL
-    treatment_period: "2021-07-01"
-    period: weekly
-    include_benchmark: true
 get_arch_lm_test:
-  question: Did the quarterly returns of Amazon and Tesla show volatility clustering from 2021 to 2025, according to the ARCH-LM test?
+  question: Did the daily returns of Bitcoin, the S&P 500 and the euro against the dollar show volatility clustering from 2021 to 2025, according to the ARCH-LM test?
   tool: econometrics
   arguments:
-    tickers: AMZN,TSLA
+    tickers: BTCUSD,^GSPC,EURUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: quarterly
 get_jarque_bera_test:
-  question: Were the quarterly returns of Amazon and Tesla normally distributed from 2021 to 2025, according to the Jarque-Bera test?
+  question: Were the monthly returns of the S&P 500, Bitcoin and the iShares 20+ Year Treasury Bond ETF (TLT) normally distributed from 2021 to 2025, according to the Jarque-Bera test?
   tool: econometrics
   arguments:
-    tickers: AMZN,TSLA
+    tickers: ^GSPC,BTCUSD,TLT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: quarterly
+    period: monthly
 get_ljung_box_test:
-  question: Were the quarterly returns of Amazon and Tesla autocorrelated up to ten lags from 2021 to 2025, according to the Ljung-Box test?
+  question: Were the daily returns of Walmart, Costco and Target autocorrelated up to ten lags from 2021 to 2025, according to the Ljung-Box test?
   tool: econometrics
   arguments:
-    tickers: AMZN,TSLA
+    tickers: WMT,COST,TGT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: quarterly
-    within_period: false
+get_variance_ratio_test:
+  question: Did the energy, financials and technology sector ETFs (XLE, XLF and XLK) follow a random walk from 2021 to 2025, according to the variance ratio test on their daily returns?
+  tool: econometrics
+  arguments:
+    tickers: XLE,XLF,XLK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
 get_cusum_test:
-  question: Was the mean quarterly return of Apple and Microsoft stable from 2019 to 2023, according to the CUSUM test?
+  question: Was the mean daily return of Boeing and Airbus stable from 2021 to 2025, according to the CUSUM test?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
-    start_date: "2019-01-01"
-    end_date: "2023-12-31"
-    period: quarterly
-    within_period: false
-get_breusch_pagan_test:
-  question: Was a regression of Apple's weekly returns on Microsoft and the S&P 500 heteroskedastic from 2021 to 2025, according to the Breusch-Pagan test?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
+    tickers: BA,AIR.PA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: weekly
-    include_benchmark: true
-get_white_test:
-  question: Was a regression of Apple's weekly returns on Microsoft and the S&P 500 heteroskedastic from 2021 to 2025, according to White's test?
+get_augmented_dickey_fuller:
+  question: Were the euro against the dollar, the dollar against the yen and the pound against the dollar stationary from 2021 to 2025, according to the augmented Dickey-Fuller test?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: EURUSD,USDJPY,GBPUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: weekly
-    include_benchmark: true
-get_durbin_watson_test:
-  question: Did a regression of Apple's weekly returns on Microsoft and the S&P 500 have autocorrelated residuals from 2021 to 2025, according to Durbin-Watson?
+get_kpss_test:
+  question: Were the S&P 500 and the Nikkei 225 stationary from 2021 to 2025, according to the KPSS test?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: ^GSPC,^N225
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: weekly
-    include_benchmark: true
-get_vif:
-  question: How collinear were the weekly returns of Apple and Microsoft from 2021 to 2025, measured by the variance inflation factor?
+get_phillips_perron_test:
+  question: Did the prices of gold and silver have a unit root from 2021 to 2025, according to the Phillips-Perron test?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: GCUSD,SIUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: weekly
-get_ramsey_reset_test:
-  question: Was a regression of Apple's weekly returns on Microsoft and the S&P 500 well specified from 2021 to 2025, according to the Ramsey RESET test?
+get_zivot_andrews_test:
+  question: Did the price of WTI crude oil have a unit root from 2021 to 2025 once a single structural break is allowed for?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: CLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: weekly
-    include_benchmark: true
-get_chow_test:
-  question: Did the relationship between Apple's weekly returns and those of Microsoft and the S&P 500 break on 30 June 2021, measured from 2021 to 2025?
+get_engle_granger_cointegration:
+  question: Were the share prices of Coca-Cola and PepsiCo cointegrated from 2021 to 2025, according to the Engle-Granger test at the 5% level?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: KO,PEP
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    break_date: "2021-06-30"
-    period: weekly
-    include_benchmark: true
-get_two_sample_t_test:
-  question: Was Apple's mean weekly return from 2021 to 2025 different from Microsoft's?
+    show_columns: Engle-Granger Statistic,P-Value,Critical Value 5%,Cointegrated (5%)
+get_johansen_cointegration:
+  question: Were the share prices of Visa and Mastercard cointegrated from 2021 to 2025, according to the Johansen trace test?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: V,MA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: weekly
-get_arima_forecast:
-  question: What does an ARIMA(1,1,1) model fitted to the quarterly share prices of Apple and Microsoft from 2021 to 2025 forecast for the next five quarters?
+get_granger_causality:
+  question: Did the daily returns of WTI crude oil help predict those of the Energy Select Sector SPDR (XLE) from 2021 to 2025, or the other way around?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: CLUSD,XLE
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    period: quarterly
-get_var_forecast:
-  question: What does a VAR model fitted to the quarterly returns of Apple and Microsoft from 2021 to 2025 forecast for the next five quarters?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-get_vecm_forecast:
-  question: What does a VECM fitted to the quarterly share prices of Apple, Microsoft and the S&P 500 from 2021 to 2025 forecast for the next five quarters?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-    include_benchmark: true
-get_impulse_response_function:
-  question: How did Apple's and Microsoft's quarterly returns respond to a shock in either of them, estimated from 2021 to 2025?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-    periods: 5
-get_variance_decomposition:
-  question: How much of the forecast error variance of Apple's and Microsoft's quarterly returns came from shocks to each of them, estimated from 2021 to 2025?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-    periods: 5
-get_rmse:
-  question: How closely did the quarterly returns of Apple and Microsoft track each other from 2021 to 2025, measured by the root mean squared error?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-get_mae:
-  question: How closely did the quarterly returns of Apple and Microsoft track each other from 2021 to 2025, measured by the mean absolute error?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: quarterly
-get_out_of_sample_validation:
-  question: How accurate was an ARIMA forecast of the weekly share prices of Apple and Microsoft over the last part of 2021 to 2025?
-  tool: econometrics
-  arguments:
-    tickers: AAPL,MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    period: weekly
-    model: arima
-    p: 1
-    d: 1
-    q: 1
 get_diebold_mariano_test:
-  question: Did an EWMA volatility forecast beat a rolling-window forecast for Apple and Microsoft from 2021 to 2025, according to the Diebold-Mariano test?
+  question: Did an EWMA volatility forecast beat a rolling-window forecast for ExxonMobil, Chevron, Shell and BP from 2021 to 2025, according to the Diebold-Mariano test?
   tool: econometrics
   arguments:
-    tickers: AAPL,MSFT
+    tickers: XOM,CVX,SHEL,BP
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     method_a: ewma
     method_b: rolling
-get_event_study:
-  question: What was Apple's cumulative abnormal return around 4 May 2023?
+get_ols:
+  question: How sensitive were ExxonMobil's daily returns to those of the United States Oil Fund (USO) and the S&P 500 from 2021 to 2025, according to an OLS regression?
+  tool: econometrics
+  arguments:
+    tickers: XOM,USO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    include_benchmark: true
+get_logistic_regression:
+  question: How did the daily return of the S&P 500 change the odds of Apple rising on a day in 2025, according to a logit model?
+  tool: econometrics
+  arguments:
+    tickers: AAPL
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    include_benchmark: true
+get_probit_regression:
+  question: How well did the daily returns of the Invesco QQQ Trust predict whether Tesla rose on a day in 2025, according to a probit model?
+  tool: econometrics
+  arguments:
+    tickers: TSLA,QQQ
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_quantile_regression:
+  question: How did Bank of America's worst 5% of daily returns respond to those of the SPDR S&P Regional Banking ETF (KRE) and the S&P 500 from 2021 to 2025, according to a quantile regression?
+  tool: econometrics
+  arguments:
+    tickers: BAC,KRE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    include_benchmark: true
+    tau: 0.05
+get_fama_macbeth_regression:
+  question: Was exposure to the S&P 500 rewarded across Apple, Microsoft, JPMorgan Chase, ExxonMobil, Johnson & Johnson, Procter & Gamble, Coca-Cola, Walmart, Caterpillar and NextEra Energy from 2021 to 2025, according to a Fama-MacBeth regression on monthly returns?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT,JPM,XOM,JNJ,PG,KO,WMT,CAT,NEE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: monthly
+get_two_sample_t_test:
+  question: Were the mean daily returns of Microsoft, Oracle and SAP different from each other from 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: MSFT,ORCL,SAP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_f_test:
+  question: Did adding the S&P 500 to a regression of Apple's weekly returns on Microsoft's improve the fit from 2021 to 2025, according to an F-test?
   tool: econometrics
   arguments:
     tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    event_date: "2023-05-04"
+    dependent_ticker: AAPL
+    restricted_independent_tickers: MSFT
+    unrestricted_independent_tickers: MSFT,Benchmark
+    period: weekly
+get_likelihood_ratio_test:
+  question: Did adding the S&P 500 to a regression of Apple's weekly returns on Microsoft's improve the fit from 2021 to 2025, according to a likelihood ratio test?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    dependent_ticker: AAPL
+    restricted_independent_tickers: MSFT
+    unrestricted_independent_tickers: MSFT,Benchmark
+    period: weekly
+get_hausman_wu_test:
+  question: Were Nvidia's daily returns endogenous in a regression of Super Micro Computer's returns in 2025, with TSMC as the instrument?
+  tool: econometrics
+  arguments:
+    tickers: SMCI,NVDA,TSM
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    dependent_ticker: SMCI
+    suspect_ticker: NVDA
+    instrument_tickers: TSM
+get_breusch_pagan_test:
+  question: Was a regression of Caterpillar's daily returns on Deere's heteroskedastic in 2025, according to the Breusch-Pagan test?
+  tool: econometrics
+  arguments:
+    tickers: CAT,DE
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_white_test:
+  question: Was a regression of Goldman Sachs' daily returns on Morgan Stanley's heteroskedastic in 2025, according to White's test?
+  tool: econometrics
+  arguments:
+    tickers: GS,MS
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_durbin_watson_test:
+  question: Did a regression of Home Depot's daily returns on Lowe's have autocorrelated residuals in 2025, according to Durbin-Watson?
+  tool: econometrics
+  arguments:
+    tickers: HD,LOW
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_vif:
+  question: How collinear were the daily returns of Alphabet, Meta and Amazon in 2025, measured by the variance inflation factor?
+  tool: econometrics
+  arguments:
+    tickers: GOOGL,META,AMZN
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_ramsey_reset_test:
+  question: Was a regression of Nike's daily returns on Adidas' well specified in 2025, according to the Ramsey RESET test?
+  tool: econometrics
+  arguments:
+    tickers: NKE,ADS.DE
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_chow_test:
+  question: Did the relationship between Nvidia's daily returns and the S&P 500 break on 30 November 2022, the launch of ChatGPT, measured from 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    break_date: "2022-11-30"
+    include_benchmark: true
+get_iv_2sls:
+  question: How strongly did Nvidia's daily returns pass through to Super Micro Computer's in 2025, with TSMC's returns as the instrument for Nvidia's?
+  tool: econometrics
+  arguments:
+    tickers: SMCI,NVDA,TSM
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    dependent_ticker: SMCI
+    endogenous_ticker: NVDA
+    instrument_tickers: TSM
+get_difference_in_differences:
+  question: Did Nvidia's monthly returns rise relative to Intel's after 1 June 2023, measured from 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: NVDA,INTC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    treated_tickers: NVDA
+    control_tickers: INTC
+    treatment_date: "2023-06-01"
+    period: monthly
+get_regression_discontinuity:
+  question: Did Coinbase's daily return jump at the point where Bitcoin's daily return turned positive, from 2022 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: COIN,BTCUSD
+    start_date: "2022-01-01"
+    end_date: "2025-12-31"
+    dependent_ticker: COIN
+    running_variable_ticker: BTCUSD
+    cutoff: 0
+get_propensity_score_matching:
+  question: On days the United States Oil Fund (USO) rose more than 2%, how much more did ExxonMobil return than on comparable days with the same S&P 500 move, from 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: XOM,USO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    dependent_ticker: XOM
+    treatment_ticker: USO
+    covariate_tickers: Benchmark
+    treatment_threshold: 0.02
+get_synthetic_control:
+  question: Did Boeing's daily returns change from 8 January 2024, the 737 MAX 9 grounding, compared with a synthetic Boeing built from Airbus, Lockheed Martin, General Dynamics, RTX and Northrop Grumman (2023 to 2024)?
+  tool: econometrics
+  arguments:
+    tickers: BA,AIR.PA,LMT,GD,RTX,NOC
+    start_date: "2023-01-01"
+    end_date: "2024-12-31"
+    treated_ticker: BA
+    treatment_period: "2024-01-08"
+get_fixed_effects:
+  question: How sensitive were the daily returns of ExxonMobil, Chevron, Shell, BP and TotalEnergies to the S&P 500 from 2021 to 2025, controlling for company fixed effects?
+  tool: econometrics
+  arguments:
+    tickers: XOM,CVX,SHEL,BP,TTE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    independent_tickers: Benchmark
+get_random_effects:
+  question: How sensitive were the daily returns of JPMorgan Chase, Bank of America, Citigroup and Wells Fargo to the S&P 500 from 2021 to 2025, in a random effects panel?
+  tool: econometrics
+  arguments:
+    tickers: JPM,BAC,C,WFC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    independent_tickers: Benchmark
+get_hausman_test:
+  question: Should a weekly panel of Apple, Microsoft and Amazon returns on trading volume from 2021 to 2025 use fixed or random effects, according to the Hausman test?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT,AMZN
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    independent_column: Volume
+    period: weekly
+get_arima_forecast:
+  question: What does an ARIMA(1,1,1) model fitted to the daily gold price from 2021 to 2025 forecast for the next ten days?
+  tool: econometrics
+  arguments:
+    tickers: GCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    forecast_steps: 10
+get_var_forecast:
+  question: What does a VAR model fitted to the daily levels of the VIX and the three-month VIX from 2021 to 2025 forecast for the next 20 days?
+  tool: econometrics
+  arguments:
+    tickers: ^VIX,^VIX3M
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    column: Adj Close
+    forecast_steps: 20
+get_impulse_response_function:
+  question: How did the VIX and the oil volatility index (OVX) respond to a shock in either of them over 20 days, estimated on their daily levels from 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: ^VIX,^OVX
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    column: Adj Close
+    periods: 20
+get_variance_decomposition:
+  question: How much of the forecast error variance of the VIX and the gold volatility index (GVZ) over 20 days came from shocks to each of them, estimated on their daily levels from 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: ^VIX,^GVZ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    column: Adj Close
+    periods: 20
+get_vecm_forecast:
+  question: What does a VECM fitted to the daily share prices of Alphabet's class A and class C shares from 2021 to 2025 forecast for the next five days?
+  tool: econometrics
+  arguments:
+    tickers: GOOGL,GOOG
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_rmse:
+  question: How closely did the daily returns of IVV, VOO and SPY track each other in 2025, measured by the root mean squared error?
+  tool: econometrics
+  arguments:
+    tickers: IVV,VOO
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    include_benchmark: true
+get_mae:
+  question: How closely did the daily returns of the gold ETFs GLD, IAU and GLDM track each other in 2025, measured by the mean absolute error?
+  tool: econometrics
+  arguments:
+    tickers: GLD,IAU,GLDM
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_out_of_sample_validation:
+  question: How accurate was an ARIMA(1,1,1) forecast of the daily prices of Bitcoin and Ether over the last fifth of 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: BTCUSD,ETHUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    model: arima
+    p: 1
+    d: 1
+    q: 1
+get_event_study:
+  question: What was Nvidia's cumulative abnormal return around its earnings release on 25 May 2023?
+  tool: econometrics
+  arguments:
+    tickers: NVDA
+    start_date: "2022-01-01"
+    end_date: "2023-12-31"
+    event_date: "2023-05-25"
+get_markov_regime_switching:
+  question: Which calm and turbulent regimes did the weekly returns of Apple and Microsoft go through from 2015 to 2025, with their mean, volatility and expected duration?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+    period: weekly
+get_structural_breaks:
+  question: At which dates did the mean of yearly US inflation shift from 1960 to 2025, allowing for up to three breaks?
+  tool: econometrics
+  arguments:
+    series: macroeconomics:get_inflation_rate:United States
+    start_date: "1960-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    column: Adj Close
+    max_breaks: 3
+get_time_varying_beta:
+  question: How did the beta of Apple and Microsoft against the S&P 500 change over time, estimated on monthly returns from 2015 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+    period: monthly
+get_dcc_garch:
+  question: How did the DCC-GARCH correlation between Apple, Microsoft and ExxonMobil develop from 2018 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT,XOM
+    start_date: "2018-01-01"
+    end_date: "2025-12-31"
+get_pairs_trading:
+  question: What were the hedge ratio, half-life, cointegration p-value and current trading signal of a Coca-Cola and PepsiCo pairs trade from 2015 to 2025, with a 60-day rolling z-score?
+  tool: econometrics
+  arguments:
+    tickers: KO,PEP
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+    window: 60
