@@ -266,19 +266,19 @@ def panel(chart: dict, label: str, **extra) -> dict:
 
 
 def combine(charts: dict) -> None:
-    """One chart per section, as in the README: the charts of a section become panels of one frame."""
+    """One chart per section, as in the README: the charts of a section become tabs of one chart, all the same height."""
     cumulative, rsi = charts["historical"]["tabs"]
     rsi["series"] = [s for s in rsi["series"] if not s.get("reference")]
     for level in (70, 30):
         rsi["series"].append({"name": f"RSI {level}", "data": [level] * len(rsi["x"]), "reference": True})
     charts["historical"] = {"type": "panels", "title": "Cumulative Returns and Relative Strength Index", "panels": [
         panel(cumulative, "Cumulative return", log=True),
-        panel(rsi, "RSI (14 weeks)", height=260, format="amount"),
+        panel(rsi, "RSI (14 weeks)", format="amount"),
     ]}
     sharpe, drawdown = charts["risk"]["tabs"]
     charts["risk"] = {"type": "panels", "title": "Sharpe Ratio and Maximum Drawdown", "panels": [
-        panel(sharpe, "Sharpe ratio", height=340),
-        panel(drawdown, "Maximum drawdown", height=340),
+        panel(sharpe, "Sharpe ratio"),
+        panel(drawdown, "Maximum drawdown"),
     ]}
     # one panel per regressor, the companies as rows
     coef = charts["econometrics"]
@@ -293,12 +293,12 @@ def combine(charts: dict) -> None:
     overlap = charts.pop("etf-overlap")
     overlap["values"] = [[None if i == j else v for j, v in enumerate(row)] for i, row in enumerate(overlap["values"])]
     charts["etf"] = {"type": "panels", "title": "Country Weights and Overlap of the Funds", "panels": [
-        panel(charts.pop("etf-countries"), "Country weights", height=340),
-        panel(overlap, "Overlap"),
+        panel(charts.pop("etf-countries"), "Country weights", height=420),
+        panel(overlap, "Overlap", height=420),
     ]}
     charts["optimization"] = {"type": "panels", "title": "Efficient Frontier and Portfolio Weights", "panels": [
-        panel(charts.pop("optimization-frontier"), "Efficient frontier"),
-        panel(charts.pop("optimization-weights"), "Weights", height=320),
+        panel(charts.pop("optimization-frontier"), "Efficient frontier", height=420),
+        panel(charts.pop("optimization-weights"), "Weights", height=420),
     ]}
 
 

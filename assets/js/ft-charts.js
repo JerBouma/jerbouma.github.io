@@ -618,7 +618,7 @@
 
   // Labelled points, e.g. quality (ROIC) against price (EV/EBITDA)
   function renderScatter(box, chart) {
-    var inst = chrome(chart)(box, 380);
+    var inst = chrome(chart)(box, chart.height || 380);
     var fx = formatter(chart.xformat), fy = formatter(chart.yformat);
     var xs = chart.points.map(function (pt) { return pt.x; });
     var xMin = Math.min.apply(null, xs), xSpan = Math.max.apply(null, xs) - xMin;
@@ -674,7 +674,7 @@
   // A correlation matrix as a heatmap, blue for positive, pink for negative
   function renderHeatmap(box, chart) {
     var n = chart.x.length;
-    var inst = chrome(chart)(box, Math.max(260, chart.y.length * 46 + 110));
+    var inst = chrome(chart)(box, chart.height || Math.max(260, chart.y.length * 46 + 110));
     var data = [];
     chart.values.forEach(function (row, i) { row.forEach(function (v, j) { if (v !== null) data.push([j, i, v]); }); });
     // cell labels: in the chart's format (e.g. percent), else two decimals
