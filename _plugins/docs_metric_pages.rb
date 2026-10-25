@@ -248,6 +248,40 @@ module DocsMetricPages
     out << %(<div class="ca-q docs-mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
   end
 
+  # The econometrics functions run on any price series, not only the ones the
+  # Toolkit collects: daily adjusted close prices and their returns, passed as
+  # `historical`, with the column names as tickers.
+  def own_data(fn_name, parameters)
+    required = parameters.reject { |_, _, description| description.include?("Defaults to") }
+    out = +"### Using Your Own Data\n\n"
+    out << "To run `#{fn_name}` on your own prices instead, for example from a CSV file with a `Date` column and one column per series, "
+    out << "pass the daily adjusted close prices and their returns to the Toolkit as `historical`"
+    out << (required.empty? ? ", then call it:\n\n" : ":\n\n")
+    out << <<~PYTHON
+      ```python
+      import pandas as pd
+      from financetoolkit import Toolkit
+
+      prices = pd.read_csv("prices.csv", index_col="Date", parse_dates=True)
+      prices.index = prices.index.to_period("D")
+
+      own_data = Toolkit(
+          tickers=list(prices.columns),
+          historical=pd.concat({"Adj Close": prices, "Return": prices.pct_change()}, axis=1),
+      )
+    PYTHON
+    out << "\nown_data.econometrics.#{fn_name}()\n" if required.empty?
+    out << "```\n\n"
+    unless required.empty?
+      names = required.map { |name, _, _| "`#{name}`" }
+      # the panel estimators take either regressor tickers or a column of each ticker's own data
+      either = required.map(&:first).sort == %w[independent_column independent_tickers]
+      out << "Then call `own_data.econometrics.#{fn_name}` with #{names[0..-2].join(', ')}#{either ? ' or ' : ' and ' if names.size > 1}#{names.last}"
+      out << (required.any? { |name, _, _| name.include?("ticker") } ? ", using the column names of the file as tickers.\n\n" : ".\n\n")
+    end
+    out
+  end
+
   def content_for(site, name, key, fn_name, parts, related)
     cls = CLASSES[key]
     out = +""
@@ -266,6 +300,7 @@ module DocsMetricPages
       out << code.rstrip << "\n\n" unless code.strip.empty?
       out << mcp
       out << returns << rest << "\n\n" unless returns.empty?
+      out << own_data(fn_name, parameters) if key == "econometrics"
     end
     unless parameters.empty?
       out << "## Parameters\n\n"
