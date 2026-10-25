@@ -96,16 +96,26 @@ financetoolkit:
   - title: "Functionality"
     url: /projects/financetoolkit#functionality
     children:
-      - title: "Finding Companies"
-        url: /projects/financetoolkit#finding-companies
-      - title: "Loading Prices and Financial Statements"
-        url: /projects/financetoolkit#loading-prices-and-financial-statements
-      - title: "Analysing the Fundamentals"
-        url: /projects/financetoolkit#analysing-the-fundamentals
+      - title: "Discovering the Sector"
+        url: /projects/financetoolkit#discovering-the-sector
+      - title: "Following the Market"
+        url: /projects/financetoolkit#following-the-market
+      - title: "Zooming in on Competitors"
+        url: /projects/financetoolkit#zooming-in-on-competitors
       - title: "Weighing Risk and Return"
         url: /projects/financetoolkit#weighing-risk-and-return
-      - title: "Understanding the Economic Environment"
-        url: /projects/financetoolkit#understanding-the-economic-environment
+      - title: "What the Option Market Expects"
+        url: /projects/financetoolkit#what-the-option-market-expects
+      - title: "The Economic Environment"
+        url: /projects/financetoolkit#the-economic-environment
+      - title: "Economic Relations"
+        url: /projects/financetoolkit#economic-relations
+      - title: "Comparing the Sector's ETFs"
+        url: /projects/financetoolkit#comparing-the-sectors-etfs
+      - title: "Building a Diversified Portfolio"
+        url: /projects/financetoolkit#building-a-diversified-portfolio
+      - title: "Following the Portfolio"
+        url: /projects/financetoolkit#following-the-portfolio
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
 financetoolkit-mcp:

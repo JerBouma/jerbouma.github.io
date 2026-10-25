@@ -204,12 +204,13 @@
       b.setAttribute('role', 'tab');
       tabs.appendChild(b);
     });
-    head.appendChild(tabs);
+    // one company needs no tab to pick it
+    if (chart.tabs.length > 1) head.appendChild(tabs);
     var strip = document.createElement('div');
     strip.className = 'ft-dupont';
     box.appendChild(head);
     box.appendChild(strip);
-    compactTabs(tabs);
+    if (chart.tabs.length > 1) compactTabs(tabs);
 
     var minis = [];
     function panel(part, op, isResult) {
@@ -656,7 +657,11 @@
           // points close together: push their names apart instead of printing them over each other
           labelLayout: { moveOverlap: 'shiftY' },
           markLine: lines.length ? { silent: true, symbol: 'none', lineStyle: { type: 'dashed', width: 1.5, color: c.muted }, data: lines } : undefined
-        }]
+        }].concat(chart.curve ? [{
+          // curve: a line through [x, y] pairs under the points, e.g. an efficient frontier
+          type: 'line', data: chart.curve, showSymbol: false, silent: true, z: 1,
+          lineStyle: { width: 2, color: PALETTE[1] }, tooltip: { show: false }
+        }] : [])
       }, true);
     }
     draw();
