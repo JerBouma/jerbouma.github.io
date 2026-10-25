@@ -26,7 +26,7 @@ $$
 m\!\left(n - \tfrac{1}{2}\right) = \underbrace{n\,z(n) - (n-1)\,z(n-1)}_{\text{forward rate for year } n} - \underbrace{\big(n\,\text{TP}(n) - (n-1)\,\text{TP}(n-1)\big)}_{\text{its premium}}, \qquad m(0) = r_0
 $$
 
-with $$z(n)$$ the continuously compounded zero rate and $$\text{TP}(n)$$ the term premium of an $$n$$-year yield. If the premium were left in, the forward rates themselves would be read as expected short rates, and a long rate built on them would carry the premium twice. The curves are the New York Fed's own fit of the Treasury zero curve for the dollar (the yields its premium is estimated on), the Deutsche Bundesbank's zero curve of German Federal securities for the euro ([Deutsche Bundesbank, term structure of interest rates](https://www.bundesbank.de/en/statistics/money-and-capital-markets/interest-rates-and-yields/term-structure-of-interest-rates){:target="_blank"}) and the Bank of England's gilt spot curve for the pound ([Bank of England, yield curves](https://www.bankofengland.co.uk/statistics/yield-curves){:target="_blank"}), each on the calibration day. Past today, the dollar's path is quoted as the 13-week bill's bank discount rate, the basis ^IRX quotes on ([US Treasury, Daily Treasury Bill Rates](https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_bill_rates&field_tdr_date_value=202610){:target="_blank"}), so the path and the rate it starts from share one basis.
+with $$z(n)$$ the continuously compounded zero rate and $$\text{TP}(n)$$ the term premium of an $$n$$-year yield. If the premium were left in, the forward rates themselves would be read as expected short rates, and a long rate built on them would carry the premium twice. The curves are the New York Fed's own fit of the Treasury zero curve for the dollar (the yields its premium is estimated on), the Deutsche Bundesbank's zero curve of German Federal securities for the euro ([Deutsche Bundesbank, term structure of interest rates](https://www.bundesbank.de/en/statistics/money-and-capital-markets/interest-rates-and-yields/term-structure-of-interest-rates){:target="_blank"}) and the Bank of England's gilt spot curve for the pound ([Bank of England, yield curves](https://www.bankofengland.co.uk/statistics/yield-curves){:target="_blank"}), each on the calibration day. Past today, the dollar's path is quoted as the 13-week bill's bank discount rate, the basis ^IRX quotes on ([US Treasury, Daily Treasury Bill Rates](https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_bill_rates&field_tdr_date_value=202610){:target="_blank"}), so the path and the rate it starts from share one basis. A euro or pound path is quoted the same way as the rate it starts from: the OECD's three-month rate is a simple rate, so the years after today are quoted as simple three-month rates, $$(e^{0.25 f} - 1)/0.25$$ of each continuously compounded forward rate $$f$$.
 
 ## Each Currency's Own Term Premium
 
@@ -56,7 +56,7 @@ The premia rose with the inflation of the 1970s and 1980s and fell toward zero i
 
 ## When the OECD Print Is Stale
 
-The OECD's 3-month rate comes out with a lag, and for the pound it stopped at February 2026. Starting a run on 19 October 2026 from that print would start the pound at 3.62%, while the 6-month gilt zero rate had since gone from 3.45% to 4.18%. When a euro or pound print is more than a full month old, the run starts from that print carried forward by the change in a fresher rate of the same currency, so the OECD level is kept:
+The OECD's 3-month rate comes out with a lag, and for the pound it stopped at February 2026. Starting a run on 25 October 2026 from that print would start the pound at 3.62%, while the 6-month gilt zero rate had since gone from 3.45% to 4.18%. When a euro or pound print is more than a full month old, the run starts from that print carried forward by the change in a fresher rate of the same currency, so the OECD level is kept:
 
 $$
 r_0 = r^{\text{OECD}}_{\text{last}} + \big(x_{\text{latest}} - x_{\text{OECD's last month}}\big)
@@ -68,15 +68,15 @@ On the calibration day the pound starts at 3.99%: February's 3.62% carried to Se
 
 ## Past the Curve
 
-The curve is read for ten years, the longest maturity the premium is estimated for. After that the path closes its gap to the rule's steady state at the short rate's own speed of mean reversion $$a$$, the speed the [long rate](/projects/financescenarios/docs/interest-rates/long-rate#the-expected-path) reads it with, so the path and the long rate describe one expected path ([Vasicek, 1977, section 5, eq. 25](https://doi.org/10.1016/0304-405x(77)90016-2){:target="_blank"}; [Campbell and Shiller, 1991](https://doi.org/10.2307/2298008){:target="_blank"}):
+The curve is read for ten years, the longest maturity the premium is estimated for. After that the path closes its gap to the rule's steady state at the speed $$a$$ the [long rate](/projects/financescenarios/docs/interest-rates/long-rate#the-expected-path) reads it with: the short rate's own speed of mean reversion, or for the dollar the speed whose share of a short-rate move in the 10-year yield is the loading of the ACM risk-neutral yield on the short rate, so the path and the long rate describe one expected path ([Vasicek, 1977, section 5, eq. 25](https://doi.org/10.1016/0304-405x(77)90016-2){:target="_blank"}; [Campbell and Shiller, 1991](https://doi.org/10.2307/2298008){:target="_blank"}):
 
 $$
 m(H + s) = m_{ss} + \big(m(H) - m_{ss}\big)\,e^{-a s}, \qquad H = 10 \text{ years}, \quad m_{ss} = \max(r^* + \pi^*, \text{floor})
 $$
 
-The speed is the short rate's own rather than the convergence speed of EIOPA's risk-free curves ([EIOPA, RFR technical documentation, 2026](https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en){:target="_blank"}), which belongs to EIOPA's method for extrapolating a curve, not to how the short rate is expected to move. With $$a$$ at 0.057 (dollar), 0.133 (euro) and 0.043 (pound) a year, a gap at ten years halves in 12, 5 and 16 years.
+The speed is the one the long rate reads rather than the convergence speed of EIOPA's risk-free curves ([EIOPA, RFR technical documentation, 2026](https://www.eiopa.europa.eu/eiopa-publishes-rfr-technical-documentation-become-applicable-30-january-2027-2026-05-26_en){:target="_blank"}), which belongs to EIOPA's method for extrapolating a curve, not to how the short rate is expected to move. With $$a$$ at 0.116 (dollar, the speed its long rate reads off the ACM risk-neutral yield), 0.133 (euro) and 0.043 (pound) a year, a gap at ten years halves in 6, 5 and 16 years.
 
-On the calibration day the dollar path rises from today's 4.08% to a peak of 4.43% in the second year and is back at 4.07% in the tenth; the euro's peaks at 3.43% and the pound's, from its carried-forward 3.99%, at 5.17%. Past the curve each heads for its steady state, which the pound and the dollar, with the slowest speeds, are still well above after thirty years (the dollar at 3.48%). The chart shows the three paths, on the curve for ten years and past it after that:
+On the calibration day the dollar path rises from today's 4.03% to a peak of 4.38% in the second year and is back at 4.04% in the tenth; the euro's peaks at 3.40% and the pound's, from its carried-forward 3.99%, at 5.21%. Past the curve each heads for its steady state: after thirty years the dollar is at 3.28%, close to its 3.20%, while the pound, with the slowest speed, is still 0.28 points above its 3.00%. The chart shows the three paths, on the curve for ten years and past it after that:
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/interest-rates/market-path" alt="The expected short rate for the dollar, the euro and the pound: forward rates less the term premium for ten years, then converging to the rule's steady state" %}
 
@@ -113,7 +113,7 @@ Which data the path is read from, and why:
 
 ## Example
 
-The path of each currency is stored with the calibration. To read it from the calibration of 19 October 2026 that the [overview](/projects/financescenarios/docs#keeping-a-run) saved:
+The path of each currency is stored with the calibration. To read it from the calibration of 25 October 2026 that the [overview](/projects/financescenarios/docs#keeping-a-run) saved:
 
 ```python
 from financescenarios import CalibrationResult
@@ -125,7 +125,7 @@ for country in ["united_states", "eurozone", "united_kingdom"]:
     print(country, market_path.times, market_path.rates)
 ```
 
-Which gives, for the US, a short rate of 4.32%, 4.42%, 4.27% and 4.07% in one, two, five and ten years, from the New York Fed's fit of the Treasury curve of 15 October 2026, after which the path heads to the rule's steady state of 3.20%. The euro area's path comes from the Bundesbank's curve and the UK's from the Bank of England's. When plotted, the three paths over the next ten years:
+Which gives, for the US, a short rate of 4.27%, 4.37%, 4.23% and 4.04% in one, two, five and ten years, from the New York Fed's fit of the Treasury curve of 22 October 2026, after which the path heads to the rule's steady state of 3.20%. The euro area's path comes from the Bundesbank's curve and the UK's from the Bank of England's. When plotted, the three paths over the next ten years:
 
 {% include ft-chart.html id="interest-rates-market-path" src="/assets/data/financescenarios-guides/interest-rates.json" label="Expected short-rate path of the US, the euro area and the UK over ten years, from each central bank's government curve" %}
 

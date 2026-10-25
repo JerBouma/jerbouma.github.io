@@ -137,7 +137,7 @@ The fits use iterative optimisers. Their limits and starting points change how f
 
 ## Example {#scenarioset}
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. A run holds every factor's paths, and filtering keeps whole scenarios, so a "high inflation, weak stocks" subset still has consistent rates, unemployment and currencies. To keep the 20% of scenarios with the highest US inflation, then the 20% of those with the weakest US stocks, and compare the medians after five years:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. A run holds every factor's paths, and filtering keeps whole scenarios, so a "high inflation, weak stocks" subset still has consistent rates, unemployment and currencies. To keep the 20% of scenarios with the highest US inflation, then the 20% of those with the weakest US stocks, and compare the medians after five years:
 
 ```python
 from financescenarios import Scenarios, compare_runs
@@ -161,12 +161,12 @@ Which returns:
 | factor | baseline | stagflation |
 |:-------|---------:|------------:|
 | united_states_inflation | 0.0181 | 0.0411 |
-| us_broad | 0.0873 | -0.0408 |
-| united_states_short_rate | 0.0439 | 0.0630 |
-| united_states_unemployment | 0.0515 | 0.0692 |
-| gold | 0.0270 | 0.0339 |
+| us_broad | 0.0870 | -0.0420 |
+| united_states_short_rate | 0.0436 | 0.0626 |
+| united_states_unemployment | 0.0514 | 0.0700 |
+| gold | 0.0270 | 0.0328 |
 
-The 80 scenarios kept, 4% of the run, end with inflation of 4.11% and stocks losing 4.08% a year in the median, and the factors no filter named come along on the same paths: the policy rule set the short rate higher, at 6.30%, unemployment rose to 6.92%, and gold, which follows inflation, returned 3.39% a year against 2.70%. [Regimes](/projects/financescenarios/docs/regimes) builds such stories into named, reusable runs.
+The 80 scenarios kept, 4% of the run, end with inflation of 4.11% and stocks losing 4.20% a year in the median, and the factors no filter named come along on the same paths: the policy rule set the short rate higher, at 6.26%, unemployment rose to 7.00%, and gold, which follows inflation, returned 3.28% a year against 2.70%. [Regimes](/projects/financescenarios/docs/regimes) builds such stories into named, reusable runs.
 
 ## References
 

@@ -51,15 +51,15 @@ for $$\beta$$ the level, slope or curvature. The speed $$a$$, level $$\theta$$ a
 
 | Factor | Today | Long-run level $$\theta$$ | Speed $$a$$, per year | Volatility $$\sigma$$ |
 |:--|--:|--:|--:|--:|
-| Level $$L$$ | 5.52% | 4.03% | 0.20 | 0.88% |
-| Slope $$S$$ | -1.49% | -2.12% | 0.10 | 1.20% |
-| Curvature $$C$$ | -1.04% | -3.41% | 0.58 | 3.04% |
+| Level $$L$$ | 5.39% | 4.01% | 0.20 | 0.88% |
+| Slope $$S$$ | -1.39% | -2.10% | 0.09 | 1.20% |
+| Curvature $$C$$ | -1.01% | -3.41% | 0.58 | 3.04% |
 
 On these processes alone the scenarios show long swings in how high and how steep the curve is, with a hump that comes and goes within a year or two, and the curve drifts back toward its usual upward slope. The shocks are normally distributed, so yields can go negative and the curve can invert, as both have done in history. In the default factor set only the curvature runs this way; the level and the slope are read off the short and the long rate.
 
 ## Through the Short and the Long Rate
 
-On three processes of its own the curve is tied to the rest of the run only through the correlation matrix, and it reverts to its averages since 2000 rather than to where the rate models settle. On the 19 October 2026 calibration its 3-month yield had a median of 2.74% after five years against 4.39% for the [policy-rule short rate](/projects/financescenarios/docs/interest-rates), and the two correlated only 0.12 across scenarios. The macro-finance literature ties the factors to the economy instead. [Rudebusch and Wu (2008)](https://doi.org/10.1111/j.1468-0297.2008.02155.x){:target="_blank"} write the short rate as the level plus the slope, the level being the neutral rate plus the inflation target and the slope the cyclical part of the Taylor rule (section 3 of their [working paper](https://www.frbsf.org/papers/2003/wp03-17bk.pdf){:target="_blank"}, eqs. 3.1, 3.3 and 3.6), and [Diebold, Rudebusch and Aruoba (2006, section 3.1)](https://doi.org/10.1016/j.jeconom.2005.01.011){:target="_blank"} put the federal funds rate and the three factors in one system.
+On three processes of its own the curve is tied to the rest of the run only through the correlation matrix, and it reverts to its averages since 2000 rather than to where the rate models settle. On the 25 October 2026 calibration its 3-month yield had a median of 2.73% after five years against 4.36% for the [policy-rule short rate](/projects/financescenarios/docs/interest-rates), and the two correlated only 0.12 across scenarios. The macro-finance literature ties the factors to the economy instead. [Rudebusch and Wu (2008)](https://doi.org/10.1111/j.1468-0297.2008.02155.x){:target="_blank"} write the short rate as the level plus the slope, the level being the neutral rate plus the inflation target and the slope the cyclical part of the Taylor rule (section 3 of their [working paper](https://www.frbsf.org/papers/2003/wp03-17bk.pdf){:target="_blank"}, eqs. 3.1, 3.3 and 3.6), and [Diebold, Rudebusch and Aruoba (2006, section 3.1)](https://doi.org/10.1016/j.jeconom.2005.01.011){:target="_blank"} put the federal funds rate and the three factors in one system.
 
 With `link_to_rates`, which the default factor set switches on, the curve passes through the simulated short rate at its maturity, 3 months for the bill, and the simulated [long rate](/projects/financescenarios/docs/interest-rates/long-rate) at 10 years. The measurement equation of [Diebold, Rudebusch and Aruoba (2006, section 2.1, eq. 2)](https://doi.org/10.1016/j.jeconom.2005.01.011){:target="_blank"}, read at those two maturities $$\tau_s$$ and $$\tau_l$$, is two linear equations in the level and the slope. They are solved exactly in every scenario and month, for that month's curvature $$C$$:
 
@@ -71,13 +71,13 @@ with $$r_s$$ and $$r_l$$ the simulated short and long rate and $$c(\tau) = B(\ta
 
 | After five years | Three processes | Through the rates |
 |:--|--:|--:|
-| 3-month yield, short rate | 2.74%, 4.39% | 4.39%, 4.39% |
-| 10-year yield, long rate | 3.95%, 5.62% | 5.62%, 5.62% |
-| Correlation with its rate across scenarios, 3-month and 10-year | 0.12 and 0.34 | 1.00 and 1.00 |
-| Largest gap to its rate in any scenario, 3-month and 10-year | 18.2 and 13.9 points | 0 and 0 |
-| Share of scenarios with the 3-month above the 10-year | 25.5% | 14.5% |
+| 3-month yield, short rate | 2.73%, 4.36% | 4.36%, 4.36% |
+| 10-year yield, long rate | 3.89%, 5.67% | 5.67%, 5.67% |
+| Correlation with its rate across scenarios, 3-month and 10-year | 0.12 and 0.40 | 1.00 and 1.00 |
+| Largest gap to its rate in any scenario, 3-month and 10-year | 18.1 and 14.3 points | 0 and 0 |
+| Share of scenarios with the 3-month above the 10-year | 26.4% | 16.8% |
 
-On the [out-of-sample backtests](/projects/financescenarios/docs/validation/out-of-sample) from every year end from 2000 to 2022, four years ahead, the link raises the CRPS skill of the level from 0.20 to 0.24 and of the slope from 0.45 to 0.47 on the eighteen holdout origins, and moves the slope's PIT mean from 0.56 to 0.44, closer to the middle. The cost is narrower slope bands: 90% coverage falls from 0.90 to 0.76 (0.93 to 0.82 on the fourteen origins never used for any choice), because the spread between the two simulated rates swings less than the fitted slope did. On the three origins before 2003 the level also scores worse, a skill of -0.41 against -0.28. The curvature and every other variable are unchanged.
+On the [out-of-sample backtests](/projects/financescenarios/docs/validation/out-of-sample) from every year end from 2000 to 2022, four years ahead, the link raises the CRPS skill of the level from 0.20 to 0.24 and of the slope from 0.45 to 0.47 on the eighteen holdout origins, and moves the slope's PIT mean from 0.56 to 0.44, closer to the middle. The cost is narrower slope bands: 90% coverage falls from 0.90 to 0.76 (0.93 to 0.82 on the fourteen origins never used for any choice), because the spread between the two simulated rates swings less than the fitted slope did. Most of that gap closes with the dollar long rate's expected path read off the ACM risk-neutral yield ([Long Rate](/projects/financescenarios/docs/interest-rates/long-rate#the-expected-path)): the slope's 90% coverage is then 0.85 on the eighteen holdout origins (0.93 on the fourteen never used), with a CRPS skill of 0.46 (0.53). On the three origins before 2003 the level also scores worse, a skill of -0.41 against -0.28. The curvature and every other variable are unchanged.
 
 With `link_to_rates: false` the curve keeps its three processes, linked to the rest of the run only through the correlation matrix, and the curve and the rates can drift apart. A belief on the level or the slope, as in the [Yield Curve Inversion](/projects/financescenarios/docs/regimes) regime, needs that factor's own process, so such a run keeps the curve unlinked and logs a notice; a belief on the curvature keeps the link. Nothing guarantees the curve is free of arbitrage between maturities either way. It is a real-world description of how the curve moves; for prices that must be consistent across maturities, use the HJM curve below. To set the link in a factor set of your own:
 
@@ -125,7 +125,7 @@ The volatilities are fitted to how history's forward curves moved. Each date's T
 
 ## Example
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. The simulated level, slope and curvature give the yield at any maturity in every scenario and month. To read the curve from 3 months to 30 years:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. The simulated level, slope and curvature give the yield at any maturity in every scenario and month. To read the curve from 3 months to 30 years:
 
 ```python
 from financescenarios import Scenarios
@@ -146,11 +146,11 @@ curve = {
 }
 ```
 
-Which gives today's curve rising from 4.08% at 3 months to 5.11% at 10 years and 5.33% at 30 years: it starts on today's short and long rate, so its 10-year yield is the long rate's 5.11% rather than the 5.18% of the day's fit. The median scenario's curve rises and steepens with the two rates: after five years it runs from 4.39% at 3 months to 5.62% at 10 years and 6.08% at 30 years, the medians of the short and the long rate at its two ends. When plotted, the median curve today, after one year and after five years:
+Which gives today's curve rising from 4.03% at 3 months to 4.99% at 10 years and 5.20% at 30 years: it starts on today's short and long rate, so its 10-year yield is the long rate's 4.99% rather than the 5.06% of the day's fit. The median scenario's curve rises and steepens with the two rates: after five years it runs from 4.36% at 3 months to 5.67% at 10 years and 6.13% at 30 years, the medians of the short and the long rate at its two ends. When plotted, the median curve today, after one year and after five years:
 
 {% include ft-chart.html id="yield-curve-median" src="/assets/data/financescenarios-guides/yield-curve.json" label="Median simulated Treasury curve from 3 months to 30 years, today, after one year and after five years" %}
 
-The spread across scenarios is wide at every maturity: after five years nine scenarios in ten have a 10-year yield between 1.80% and 10.72%, the long rate's own range, and in one in seven (14.5%) it is below the 3-month yield, an inverted curve. When plotted, the curve after five years:
+The spread across scenarios is wide at every maturity: after five years nine scenarios in ten have a 10-year yield between 1.62% and 10.86%, the long rate's own range, and in one in six (16.8%) it is below the 3-month yield, an inverted curve. When plotted, the curve after five years:
 
 {% include ft-chart.html id="yield-curve-five-years" src="/assets/data/financescenarios-guides/yield-curve.json" label="Median, 25-75% and 5-95% band of the simulated Treasury curve from 3 months to 30 years after five years" %}
 

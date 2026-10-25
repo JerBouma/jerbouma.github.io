@@ -78,18 +78,18 @@ result = scenarios.simulate(n_simulations=2000, seed=42)
 result.describe()
 ```
 
-Which returns where each of the 27 variables starts and where it ends up after five years, of which six are shown below. Rates read as yearly rates and anything with a price as its annualized return from today, written as decimals (0.0459 is 4.59%):
+Which returns where each of the 27 variables starts and where it ends up after five years, of which six are shown below. Rates read as yearly rates and anything with a price as its annualized return from today, written as decimals (0.0455 is 4.55%):
 
 | factor | category | metric | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:-------|:---------|:-------|--------:|--------------:|-------------:|-------------:|
 | united_states_inflation | inflation | rate | 0.0374 | 0.0234 | -0.0064 | 0.0770 |
-| united_states_short_rate | interest_rates | rate | 0.0408 | 0.0459 | 0.0000 | 0.1099 |
-| united_states_unemployment | unemployment | rate | 0.0420 | 0.0553 | 0.0337 | 0.0894 |
-| us_broad | equities | annualized |  | 0.0849 | -0.0569 | 0.2082 |
-| europe | equities | annualized |  | 0.0933 | -0.0753 | 0.2487 |
-| gold | commodities | annualized |  | 0.0308 | -0.0999 | 0.1716 |
+| united_states_short_rate | interest_rates | rate | 0.0403 | 0.0455 | 0.0000 | 0.1091 |
+| united_states_unemployment | unemployment | rate | 0.0420 | 0.0554 | 0.0338 | 0.0895 |
+| us_broad | equities | annualized |  | 0.0844 | -0.0572 | 0.2076 |
+| europe | equities | annualized |  | 0.0928 | -0.0757 | 0.2482 |
+| gold | commodities | annualized |  | 0.0307 | -0.1002 | 0.1722 |
 
-US inflation starts at 3.74% and averages 2.34% after five years, the US short rate starts at 4.08% and averages 4.59%, and US stocks return 8.49% a year on average, with one scenario in twenty below -5.69% a year. When plotted, the median of three of them, with US stocks as what 100 invested today is worth, and the bands that hold the middle half and nine in ten of the scenarios, one variable per tab:
+US inflation starts at 3.74% and averages 2.34% after five years, the US short rate starts at 4.03% and averages 4.55%, and US stocks return 8.44% a year on average, with one scenario in twenty below -5.72% a year. When plotted, the median of three of them, with US stocks as what 100 invested today is worth, and the bands that hold the middle half and nine in ten of the scenarios, one variable per tab:
 
 {% include ft-chart.html id="scenarios-overview" src="/assets/data/financescenarios-guides/getting-started.json" label="Median, 25-75% and 5-95% bands of the US short rate, US inflation and what 100 in US stocks is worth over five years" %}
 
@@ -107,26 +107,26 @@ The first returns a row per month; its last three rows show that the short rate'
 
 | date | mean | std | se | q0.05 | q0.25 | q0.5 | q0.75 | q0.95 |
 |:-----|-----:|----:|---:|------:|------:|-----:|------:|------:|
-| 2030-11-01 | 0.0459 | 0.0341 | 0.0008 | 0.0000 | 0.0204 | 0.0437 | 0.0650 | 0.1095 |
-| 2030-12-02 | 0.0458 | 0.0343 | 0.0008 | 0.0000 | 0.0198 | 0.0435 | 0.0651 | 0.1089 |
-| 2031-01-01 | 0.0459 | 0.0345 | 0.0008 | 0.0000 | 0.0196 | 0.0439 | 0.0659 | 0.1099 |
+| 2030-11-01 | 0.0455 | 0.0339 | 0.0008 | 0.0000 | 0.0201 | 0.0433 | 0.0644 | 0.1090 |
+| 2030-12-02 | 0.0455 | 0.0342 | 0.0008 | 0.0000 | 0.0195 | 0.0433 | 0.0645 | 0.1082 |
+| 2031-01-01 | 0.0455 | 0.0344 | 0.0008 | 0.0000 | 0.0195 | 0.0436 | 0.0655 | 0.1091 |
 
 The second returns a row per variable and horizon:
 
 | factor | horizon | mean | std | q0.05 | q0.25 | q0.5 | q0.75 | q0.95 |
 |:-------|--------:|-----:|----:|------:|------:|-----:|------:|------:|
-| us_broad | 1 | 0.0917 | 0.1570 | -0.1785 | -0.0053 | 0.0968 | 0.1973 | 0.3361 |
-| us_broad | 3 | 0.0859 | 0.0985 | -0.0795 | 0.0241 | 0.0914 | 0.1555 | 0.2387 |
-| us_broad | 5 | 0.0849 | 0.0806 | -0.0569 | 0.0337 | 0.0873 | 0.1393 | 0.2082 |
+| us_broad | 1 | 0.0913 | 0.1570 | -0.1805 | -0.0054 | 0.0963 | 0.1970 | 0.3358 |
+| us_broad | 3 | 0.0854 | 0.0985 | -0.0809 | 0.0233 | 0.0914 | 0.1550 | 0.2380 |
+| us_broad | 5 | 0.0844 | 0.0806 | -0.0572 | 0.0331 | 0.0870 | 0.1387 | 0.2076 |
 | united_states_inflation | 1 | 0.0294 | 0.0170 | 0.0076 | 0.0193 | 0.0271 | 0.0364 | 0.0622 |
 | united_states_inflation | 3 | 0.0245 | 0.0234 | -0.0037 | 0.0102 | 0.0200 | 0.0322 | 0.0740 |
 | united_states_inflation | 5 | 0.0234 | 0.0254 | -0.0064 | 0.0077 | 0.0181 | 0.0312 | 0.0770 |
 
-The range of a return read as a yearly average narrows with the horizon: the 90% range of US stocks runs from -17.85% to 33.61% over one year and from -5.69% to 20.82% a year over five. Inflation's range widens instead, from between 0.76% and 6.22% after one year to between -0.64% and 7.70% after five, as it moves away from today's reading. When plotted, the stock market rows:
+The range of a return read as a yearly average narrows with the horizon: the 90% range of US stocks runs from -18.05% to 33.58% over one year and from -5.72% to 20.76% a year over five. Inflation's range widens instead, from between 0.76% and 6.22% after one year to between -0.64% and 7.70% after five, as it moves away from today's reading. When plotted, the stock market rows:
 
 {% include ft-chart.html id="scenarios-horizons" src="/assets/data/financescenarios-guides/getting-started.json" label="5th percentile, median and 95th percentile of the annualized US stock market return after one, three and five years" %}
 
-Across all 2,000 scenarios the five-year return of US stocks has a median of 8.73% a year, and 14% of the scenarios end with a loss. When plotted, the number of scenarios per percentage point of yearly return:
+Across all 2,000 scenarios the five-year return of US stocks has a median of 8.70% a year, and 14.5% of the scenarios end with a loss. When plotted, the number of scenarios per percentage point of yearly return:
 
 {% include ft-chart.html id="scenarios-equity-distribution" src="/assets/data/financescenarios-guides/getting-started.json" label="Distribution of the five-year annualized US stock market return across 2,000 scenarios, with the 5th percentile, median and 95th percentile" %}
 
@@ -144,11 +144,11 @@ Which returns the first five scenarios over the first four months:
 
 | scenario | 2026-01-01 | 2026-01-31 | 2026-03-03 | 2026-04-02 | 2026-05-03 |
 |---------:|-----------:|-----------:|-----------:|-----------:|-----------:|
-| 0 | 0.0408 | 0.0431 | 0.0490 | 0.0526 | 0.0491 |
-| 1 | 0.0408 | 0.0441 | 0.0426 | 0.0429 | 0.0424 |
-| 2 | 0.0408 | 0.0416 | 0.0446 | 0.0450 | 0.0473 |
-| 3 | 0.0408 | 0.0422 | 0.0435 | 0.0435 | 0.0436 |
-| 4 | 0.0408 | 0.0450 | 0.0433 | 0.0412 | 0.0437 |
+| 0 | 0.0403 | 0.0427 | 0.0486 | 0.0522 | 0.0487 |
+| 1 | 0.0403 | 0.0436 | 0.0422 | 0.0425 | 0.0419 |
+| 2 | 0.0403 | 0.0411 | 0.0442 | 0.0446 | 0.0469 |
+| 3 | 0.0403 | 0.0418 | 0.0431 | 0.0431 | 0.0431 |
+| 4 | 0.0403 | 0.0446 | 0.0429 | 0.0408 | 0.0433 |
 
 When plotted, the same five scenarios over all five years:
 
@@ -156,7 +156,7 @@ When plotted, the same five scenarios over all five years:
 
 ## Checking the Run
 
-Before relying on a run it is worth knowing how far to trust it. `validate` runs six checks on the calibration and the simulation, and `diagnose` sets each mean-reverting variable's simulated mean and spread against the ones its own model implies in the long run. To run both:
+Before relying on a run it is worth knowing how far to trust it. `validate` runs six checks on the calibration and the simulation, and `diagnose` sets the simulated mean and spread of each variable with one fixed long-run mean and spread against the ones its own model implies in the long run. To run both:
 
 ```python
 scenarios.validate(result)
@@ -170,12 +170,18 @@ Which returns, for the checks:
 |:------|:-------|:-------|
 | Every factor calibrated | pass | every factor calibrated |
 | Parameters in a plausible range | pass | every long-run level and half-life in range |
-| Valid correlation matrix | pass | 27 factors, smallest eigenvalue 1.14e-01, symmetric True, unit diagonal True; shrinkage 0.15; repair 0.00 |
-| Simulation reproduces the correlations | warn | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); rate_level and rate_slope read off the short and long rate, not graded |
-| Simulated volatility matches history | warn | 16 factors compared, median ratio 0.99; outside 0.67-1.50x: eurozone_short_rate 1.72x |
+| Valid correlation matrix | pass | 27 factors, smallest eigenvalue 1.15e-01, symmetric True, unit diagonal True; shrinkage 0.16; repair 0.00 |
+| Simulation reproduces the correlations | pass | largest gap 0.109 (eurozone_inflation/united_kingdom_inflation); 120,000 moves per factor, so gaps up to 0.01 more are sampling noise; pairs with a linked factor, not graded: largest gap 0.543 (united_states_short_rate/united_states_long_rate); rate_level and rate_slope read off the short and long rate, not graded |
+| Simulated volatility matches history | warn | 16 factors compared, median ratio 1.00; outside 0.67-1.50x: eurozone_short_rate 1.71x; fitted on a longer history, not graded: united_states_long_rate 1.08x; ... |
 | Every path is finite | pass | 27 factors, all finite |
 
-Four checks pass and two warn: the euro-area and UK inflation correlation comes out 0.103 away from the one it was given, and the euro-area short rate moves 1.72 times as much as in its history. `diagnose` returns a row for each of the seven variables whose model implies a long-run mean and spread; the yield curve's level and slope have none, as they are read off the short and the long rate. Two of them, US and UK unemployment, are flagged because they settle slowly, with half-lives (the time to close half the gap to the long-run level) of 2.9 and 5.1 years against a five-year run, so a gap is expected.
+Five checks pass and one warns: the euro-area short rate moves 1.71 times as much as in its history. The euro-area and UK inflation correlation comes out 0.109 away from the one it was given, within the 0.10 tolerance once the 0.01 of sampling noise in 120,000 simulated moves is allowed for. `diagnose` grades only the variables with one fixed long-run mean and spread. A variable driven by another factor or a regime, such as unemployment, and the short rate set by the policy rule are skipped, and so are the yield curve's level and slope, which are read off the short and the long rate. That leaves three rows, all within tolerance:
+
+| factor | simulated_mean | theoretical_mean | simulated_std | theoretical_std | within_tolerance | unit |
+|:-------|---------------:|-----------------:|--------------:|----------------:|:-----------------|:-----|
+| crude_oil | 4.4026 | 4.3503 | 0.4045 | 0.4058 | true | log |
+| rate_curvature | -0.0331 | -0.0341 | 0.0287 | 0.0283 | true | level |
+| leading_indicator | 99.7775 | 99.7704 | 1.3739 | 1.3584 | true | level |
 
 The [Validation](/projects/financescenarios/docs/validation) page goes much further: whether the factors move together the way the economy does, whether they stay within what history has seen, and whether a model fitted in the past would have held what happened next.
 
@@ -196,7 +202,7 @@ path = scenarios.save(result, "results/")
 result = read_run(path)
 ```
 
-The examples throughout this documentation run on the calibration of 19 October 2026, saved this way, and reading the saved run back gives the same 2,000 scenarios of 27 variables, value for value.
+The examples throughout this documentation run on the calibration of 25 October 2026, saved this way, and reading the saved run back gives the same 2,000 scenarios of 27 variables, value for value.
 
 ## What Is Modeled
 

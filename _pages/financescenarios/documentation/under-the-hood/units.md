@@ -50,7 +50,7 @@ $$
 R_t = \left(\frac{S_t}{S_0}\right)^{1/t} - 1
 $$
 
-An equity path from 763 to 1,209 over five years reads as 9.6% a year. This is the CAGR (compound annual growth rate), the way investment reports quote returns, and it puts a one-year and a thirty-year outcome on the same scale. Its spread narrows with the horizon as good and bad years average out, while the spread of the cumulative return keeps widening. Over the first months it is extremely wide, since a few weeks' move is scaled up to a year.
+An equity path from 760 to 1,202 over five years reads as 9.6% a year. This is the CAGR (compound annual growth rate), the way investment reports quote returns, and it puts a one-year and a thirty-year outcome on the same scale. Its spread narrows with the horizon as good and bad years average out, while the spread of the cumulative return keeps widening. Over the first months it is extremely wide, since a few weeks' move is scaled up to a year.
 
 <div class="fs-callout" markdown="1">
 <p class="fs-callout__title">Not the expected return</p>
@@ -87,7 +87,7 @@ A simulated inflation rate $$\pi_t$$, a year-over-year rate, compounds into a pr
 
 ## Example
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. `describe` reads every factor in its default reading, and `metric` picks another for all of them. To read US stocks, gold, US inflation and the US short rate three ways:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. `describe` reads every factor in its default reading, and `metric` picks another for all of them. To read US stocks, gold, US inflation and the US short rate three ways:
 
 ```python
 from financescenarios import Scenarios
@@ -106,12 +106,12 @@ Which gives, for the mean after five years:
 
 | factor | default | cumulative | level |
 |:-------|--------:|-----------:|------:|
-| us_broad | 0.0849 (annualized) | 0.5844 | 1,209.31 (from 763.25) |
-| gold | 0.0308 (annualized) | 0.2405 | 5,188.71 (from 4,182.60) |
+| us_broad | 0.0844 (annualized) | 0.5810 | 1,201.51 (from 759.97) |
+| gold | 0.0307 (annualized) | 0.2404 | 4,971.38 (from 4,007.90) |
 | united_states_inflation | 0.0234 (rate) | 0.1426 | 114.26 (from 100) |
-| united_states_short_rate | 0.0459 (rate) | 0.0051 | 0.0459 |
+| united_states_short_rate | 0.0455 (rate) | 0.0052 | 0.0455 |
 
-The cumulative and level readings agree (763.25 times 1.5844 is 1,209.31), while the annualized mean of 8.49% sits below the 9.6% a year that takes 763.25 to the mean price: compounding is convex, so the average of the yearly rates is below the rate of the average outcome. A rate's cumulative reading is its change since the start, 0.51 percentage points for the short rate, not a percentage of it.
+The cumulative and level readings agree (759.97 times 1.5810 is 1,201.5), while the annualized mean of 8.44% sits below the 9.6% a year that takes 759.97 to the mean price: compounding is convex, so the average of the yearly rates is below the rate of the average outcome. A rate's cumulative reading is its change since the start, 0.52 percentage points for the short rate, not a percentage of it.
 
 ## References
 

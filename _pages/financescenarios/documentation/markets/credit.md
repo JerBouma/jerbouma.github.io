@@ -69,7 +69,7 @@ where $$\Phi$$ is the standard normal distribution function. The same shift appl
 
 The data are ESMA's [CEREP](https://registers.esma.europa.eu/cerep-publication){:target="_blank"} rating agency statistics, which lag one to two years. The transition matrix pools the rating changes of every year in the history, so it reflects an average year across good and bad ones, as Basel asks of the estimation of probabilities of default (PD): the longest relevant observation period, with a representative mix of good and bad years ([Basel Framework, CRE36.79](https://www.bis.org/basel_framework/chapter/CRE/36.htm){:target="_blank"}). Each rating's long-run default probability is the average of its yearly default rates, floored at 0.05% so that a rating that never defaulted in the sample still carries some risk. That is the corporate PD input floor of CRR3 ([Regulation (EU) 2024/1623, Article 1, point (86)(a)](https://eur-lex.europa.eu/eli/reg/2024/1623/oj/eng){:target="_blank"}), which replaced the 0.03% of the original [CRR Article 160(1)](https://eur-lex.europa.eu/eli/reg/2013/575/oj){:target="_blank"}; the older floor remains available in Python (`pd_floor=0.0003`) for a Basel II comparison.
 
-The cycle is backed out of the default rates year by year: for a given $$\rho$$, each year's $$Z$$ is the value whose conditional default probabilities come closest to that year's default rates per rating, weighted by $$1/(p(1-p))$$, and $$\rho$$ is set so the backed-out cycle has a variance of one. The yearly $$Z$$ is then fitted as an Ornstein-Uhlenbeck process around zero, the through-the-cycle average, and simulated with the rest of the run.
+The cycle is backed out of the default rates year by year: for a given $$\rho$$, each year's $$Z$$ is the value whose conditional default probabilities come closest to that year's default rates per rating, weighted by $$1/(p(1-p))$$, and $$\rho$$ is set so the backed-out cycle has a variance of one. The yearly $$Z$$ is then fitted as an Ornstein-Uhlenbeck process around zero, the through-the-cycle average, and simulated with the rest of the run. Its speed $$a$$ comes from the fit, and its volatility is set to $$\sqrt{2a}$$ so the cycle keeps the variance of one the one-factor model assumes; the fit's own residual volatility gave it a variance of 1.25, which lifted the average default probability to 1.15 times the long-run one.
 
 A portfolio's holdings migrate a year at a time through the matrix of each simulated year's $$Z$$. The loss is the cumulative share in default times the exposure times one minus the recovery rate, which is 40% for every rating unless set otherwise.
 
@@ -92,7 +92,7 @@ from financetoolkit import Toolkit
 
 from financescenarios.factors.credit.credit_controller import Credit
 
-toolkit = Toolkit(["SPY"], api_key="FINANCIAL_MODELING_PREP_KEY", fred_api_key="FRED_KEY")
+toolkit = Toolkit(["SPY"], api_key="FINANCIAL_MODELING_PREP_KEY", benchmark_ticker=None)  # the FRED key comes from the FRED_API_KEY variable
 credit = Credit(toolkit)
 
 credit.calibrate("ig_7_10y", maturity_bucket="7-10 Years", period="monthly")
@@ -141,7 +141,7 @@ migration = rating_migration(result, {"A": 40, "BBB": 50, "BB": 10}, recovery_ra
 migration.summary()
 ```
 
-Which fits, on S&P's corporate ratings since 2000 (calibrated on 24 October 2026), an asset correlation of 0.10 and a cycle whose shocks halve in about a year. The summary gives the defaulted share and the loss per year; after ten years the portfolio has lost 1.99 of every 100 in the median scenario, 6.46 at the 95th percentile and 10.64 at the 99.5th, against a mean of 2.51: a bad credit cycle makes the tail far heavier than the average. When plotted, the loss per year:
+Which fits, on S&P's corporate ratings since 2000 (calibrated on 24 October 2026), an asset correlation of 0.10 and a cycle whose shocks halve in about a year. The summary gives the defaulted share and the loss per year; after ten years the portfolio has lost 1.87 of every 100 in the median scenario, 5.56 at the 95th percentile and 8.90 at the 99.5th, against a mean of 2.27: a bad credit cycle makes the tail far heavier than the average. When plotted, the loss per year:
 
 {% include ft-chart.html id="credit-defaults" src="/assets/data/financescenarios-guides/credit.json" label="Median, 95th and 99.5th percentile of the cumulative default loss of a portfolio of 40% A, 50% BBB and 10% BB bonds after 40% recovery, year by year over ten years" %}
 

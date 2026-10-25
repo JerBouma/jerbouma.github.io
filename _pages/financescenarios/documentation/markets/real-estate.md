@@ -87,7 +87,7 @@ The default keeps one constant volatility, read a year apart with the rate link 
 
 ## Example
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. To simulate it and read the fitted parameters of US house-price growth and its range after one, three and five years:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. To simulate it and read the fitted parameters of US house-price growth and its range after one, three and five years:
 
 ```python
 from financescenarios import Scenarios
@@ -103,7 +103,7 @@ calibration.calibrated_params["real_estate"]
 result.horizon_summary([1, 3, 5], factors=["real_estate"])
 ```
 
-Which gives a long-run growth of 4.29% a year, a speed of 0.37 a year and a sensitivity of -0.86 to the long rate's change a year earlier. Growth starts at 2.14%; its median rises to 2.83% after one year and 3.93% after five, when one scenario in twenty is below -4.93%. When plotted:
+Which gives a long-run growth of 4.29% a year, a speed of 0.37 a year and a sensitivity of -0.86 to the long rate's change a year earlier. Growth starts at 2.14%; its median rises to 2.83% after one year and 3.90% after five, when one scenario in twenty is below -5.11%. When plotted:
 
 {% include ft-chart.html id="markets-real-estate" src="/assets/data/financescenarios-guides/markets.json" label="Median, 25-75% and 5-95% band of US house-price growth over five years" %}
 

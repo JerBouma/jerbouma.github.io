@@ -37,6 +37,8 @@ with $$s_{t+\Delta t}$$ the regime the market is in over the step. A mix of a lo
 
 The regimes are estimated with the Baum-Welch algorithm, the expectation-maximization algorithm for hidden Markov models. Every market draws its switches from one shared stream of random numbers, each with its own switching chances and starting regime, so the markets tend to enter and leave crises together.
 
+Regimes fitted on a fund's own history have to earn their place. The likelihood has several local maxima, so the algorithm also starts from the history's calm and turbulent stretches and keeps whichever start fits best ([Harris, 1999, section 1, p. 48](https://doi.org/10.2143/AST.29.1.504606){:target="_blank"}). The two regimes must then beat a single one by the Schwarz Bayes criterion of [Hardy (2001, section 5.2.3)](https://doi.org/10.1080/10920277.2001.10595984){:target="_blank"}: half the log of the sample size for each extra parameter, which a parametric bootstrap puts at roughly a 2% test. A likelihood-ratio test has no chi-square reference here, since the switching chances mean nothing under one regime ([Hansen, 1992, section 1, p. S62](https://doi.org/10.1002/jae.3950070506){:target="_blank"}). A fund that falls short gets the one-regime mean and volatility in both regimes: gold (GLD), healthcare (XLV) and India (INDA) in the bundled sets.
+
 ## Timed on a Long Index, Fitted on the Fund
 
 Twenty-five years of an exchange-traded fund's history hold two or three bear markets, too few to say how often they come and how long they last. An index with sixty to eighty years of history holds a dozen. So the long index of each market sets how the market switches: its chances of staying calm or turbulent, and with them the share of time in each regime and the length of a spell, are fitted on the index and then held fixed.
@@ -59,11 +61,11 @@ The long index behind each fund, and the regimes it gives:
 
 | Fund | Long index that times the regimes | From | Turbulent share | Turbulent / calm spell (months) |
 |:--|:--|--:|--:|--:|
-| US Broad (SPY) | CRSP value-weighted US market, [Ken French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){:target="_blank"} | 1946 | 20% | 6.3 / 25.1 |
+| US Broad (SPY) | CRSP value-weighted US market, [Ken French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){:target="_blank"} | 1946 | 20% | 6.3 / 25.0 |
 | Small Cap (IWM) | The same market plus the size factor SMB ([Fama and French, 1993, section 2.1.2, p. 9](https://doi.org/10.1016/0304-405X(93)90023-5){:target="_blank"}) | 1946 | 27% | 8.8 / 24.2 |
 | Europe (VGK) | Ken French's European market, in US dollars with dividends | 1990 | 27% | 8.9 / 23.8 |
-| Japan (EWJ) | The Nikkei 225 (Yahoo Finance), a price index | 1965 | 45% | 11.4 / 14.0 |
-| Emerging Markets (EEM) | The fund's own history | 2003 | 10% | 6.6 / 57.4 |
+| Japan (EWJ) | The Nikkei 225 (Yahoo Finance), a price index | 1965 | 45% | 12.0 / 14.5 |
+| Emerging Markets (EEM) | The fund's own history | 2003 | 10% | 6.6 / 57.5 |
 
 The two US funds switch with inflation (next section), so their share and spells depend on it; the table gives them at the average inflation of each fund's own years. With the switching held fixed, the CRSP market since 1946 is turbulent 28% of months, in turbulent spells of 8.2 months against calm ones of 21.1 (the chart).
 
@@ -83,7 +85,7 @@ For US stocks:
 
 <div class="ca-nums fs-nums">
   <span><b>3.1%</b>chance a calm month turns turbulent at 2% inflation</span>
-  <span><b>31.7%</b>the same chance at 8% inflation</span>
+  <span><b>31.8%</b>the same chance at 8% inflation</span>
   <span><b>17%</b>of the time turbulent at a steady 2%</span>
   <span><b>59%</b>of the time turbulent at a steady 8%</span>
 </div>
@@ -220,7 +222,7 @@ The QE scheme's remaining error sits in the far out-of-the-money calls, whose pr
 
 ## Examples
 
-The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42.
+The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42.
 
 ### Five Stock Markets
 
@@ -241,13 +243,13 @@ Which gives, for the stock markets, the annualized return from today to the end 
 
 | factor | terminal_mean | terminal_q05 | terminal_q95 |
 |:-------|--------------:|-------------:|-------------:|
-| us_broad | 0.0849 | -0.0569 | 0.2082 |
-| small_cap | 0.0935 | -0.0767 | 0.2657 |
-| europe | 0.0933 | -0.0753 | 0.2487 |
-| japan | 0.0947 | -0.0511 | 0.2393 |
-| emerging_markets | 0.0934 | -0.0990 | 0.2725 |
+| us_broad | 0.0844 | -0.0572 | 0.2076 |
+| small_cap | 0.0930 | -0.0772 | 0.2644 |
+| europe | 0.0928 | -0.0757 | 0.2482 |
+| japan | 0.0944 | -0.0527 | 0.2376 |
+| emerging_markets | 0.0929 | -0.0995 | 0.2717 |
 
-Every market returns between 8.49% and 9.47% a year on average, and they differ mostly in their spread: one emerging-market scenario in twenty loses more than 9.90% a year, against 5.69% for US stocks. When plotted, the 5th percentile, median and 95th percentile per market:
+Every market returns between 8.44% and 9.44% a year on average, and they differ mostly in their spread: one emerging-market scenario in twenty loses more than 9.95% a year, against 5.72% for US stocks. When plotted, the 5th percentile, median and 95th percentile per market:
 
 {% include ft-chart.html id="markets-equity-returns" src="/assets/data/financescenarios-guides/markets.json" label="5th percentile, median and 95th percentile of the five-year annualized return of US stocks, US small caps, European, Japanese and emerging-market stocks" %}
 
@@ -259,7 +261,7 @@ calibration = scenarios.calibrate()
 calibration.calibrated_params["us_broad"]
 ```
 
-Which shows a calm regime with a yearly return of 9.31% and a volatility of 9.9%, and a turbulent regime with -17.24% and 21.6%. In the long run the market is turbulent 21% of the time, and a turbulent month is followed by another with a chance of 84%, so bad months cluster.
+Which shows a calm regime with a yearly return of 9.32% and a volatility of 9.9%, and a turbulent regime with -17.24% and 21.6%. In the long run the market is turbulent 21% of the time, and a turbulent month is followed by another with a chance of 84%, so bad months cluster.
 
 The simulated paths also give the value of an investment over time: with `levels=True`, `metric_paths` returns each fund's price paths as an array. To follow 100 invested in three of the markets:
 
@@ -290,14 +292,14 @@ for name, factor in markets.items():
     print(name, np.quantile(worst, [0.05, 0.5, 0.95]))
 ```
 
-The median US scenario falls 19.5% from a peak at some point within five years and one in twenty falls 47.2% or more, against 27.1% and 60.7% for emerging markets. When plotted:
+The median US scenario falls 19.6% from a peak at some point within five years and one in twenty falls 47.3% or more, against 27.2% and 60.8% for emerging markets. When plotted:
 
 {% include ft-chart.html id="markets-drawdown" src="/assets/data/financescenarios-guides/markets.json" label="Worst 5%, median and best 5% of the deepest fall from a peak within five years, per stock market" %}
 
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">16</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">18</span></summary>
 
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. [casact.org](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}
 - Andersen, L. (2008). [Simple and Efficient Simulation of the Heston Stochastic Volatility Model](https://doi.org/10.21314/jcf.2008.189){:target="_blank"}. Journal of Computational Finance, 11(3), 1-42.
@@ -307,7 +309,9 @@ The median US scenario falls 19.5% from a peak at some point within five years a
 - Fama, E.F., Schwert, G.W. (1977). "Asset Returns and Inflation." Journal of Financial Economics, 5(2), 115-146. [doi.org](https://doi.org/10.1016/0304-405X(77)90014-9){:target="_blank"}
 - Filardo, A.J. (1994). "Business-Cycle Phases and Their Transitional Dynamics." Journal of Business & Economic Statistics, 12(3), 299-308. [doi.org](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}
 - Hamilton, J.D. (1989). "A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle." Econometrica, 57(2), 357-384. [doi.org](https://doi.org/10.2307/1912559){:target="_blank"}
+- Hansen, B.E. (1992). "The Likelihood Ratio Test Under Nonstandard Conditions: Testing the Markov Switching Model of GNP." Journal of Applied Econometrics, 7(S1), S61-S82. [doi.org](https://doi.org/10.1002/jae.3950070506){:target="_blank"}
 - Hardy, M.R. (2001). "A Regime-Switching Model of Long-Term Stock Returns." North American Actuarial Journal, 5(2), 41-53. [doi.org](https://doi.org/10.1080/10920277.2001.10595984){:target="_blank"}
+- Harris, G.R. (1999). "Markov Chain Monte Carlo Estimation of Regime Switching Vector Autoregressions." ASTIN Bulletin, 29(1), 47-79. [doi.org](https://doi.org/10.2143/AST.29.1.504606){:target="_blank"}
 - Heston, S.L. (1993). [A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options](https://doi.org/10.1093/rfs/6.2.327){:target="_blank"}. The Review of Financial Studies, 6(2), 327-343.
 - Hibbert, J., Mowbray, P., Turnbull, C. (2001). "A Stochastic Asset Model & Calibration for Long-Term Financial Planning Purposes." Barrie & Hibbert Limited. [ressources-actuarielles.net](https://www.ressources-actuarielles.net/EXT/ISFA/1226.nsf/0/a1d9fb9416c79dfec12576020046e11b/$FILE/hibbert.pdf){:target="_blank"}
 - Jordà, Ò., Knoll, K., Kuvshinov, D., Schularick, M., Taylor, A.M. (2019). "The Rate of Return on Everything, 1870-2015." Quarterly Journal of Economics, 134(3), 1225-1298. [doi.org](https://doi.org/10.1093/qje/qjz012){:target="_blank"}

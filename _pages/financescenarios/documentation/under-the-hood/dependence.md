@@ -38,7 +38,7 @@ The correlation matrix comes from each factor's historical changes: changes in a
   <li markdown="span">**Mixed frequencies.** Changes are summed up to the coarser frequency and matched on calendar date, the way twelve monthly log returns add up to a yearly one.</li>
   <li markdown="span">**Pairwise windows.** Each pair uses the dates those two factors share, so a short series only weakens its own pairs. A pair with fewer than 5 shared observations is set to zero; fewer than 12, or a correlation above 0.98 (usually the same series configured twice), is flagged.</li>
   <li markdown="span">**Shrinkage.** Sample correlations are noisy, more so with many factors, so they are pulled toward a simpler target, trading a little bias for much less noise. By default the correlations themselves, not the covariances, are pulled toward zero by an amount estimated from the data, larger when correlations rest on few observations or fat-tailed data (see Shrinkage below). A fixed share instead pulls them toward their average correlation ([Ledoit and Wolf, 2004](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}), a target built for stocks that suits a mix of rates, inflation, equities and currencies less well.</li>
-  <li markdown="span">**Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. It is moved to the nearest valid correlation matrix, the nearest symmetric positive semidefinite matrix with unit diagonal ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}), and the size of the repair is reported.</li>
+  <li markdown="span">**Repair.** A matrix built from different windows can be internally inconsistent (not positive definite) and then has no Cholesky factor. When the shrunk matrix is one, the sample matrix is repaired first, moved to the nearest valid correlation matrix, the nearest symmetric positive semidefinite matrix with unit diagonal ([Higham, 2002](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}), and shrunk after. The other order leaves the matrix nearly singular, as the nearest correlation matrix has a zero eigenvalue for every nonpositive one of the matrix it repairs ([Higham (2002, Theorem 2.5)](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}). Shrunk after the repair, its smallest eigenvalue is at least the intensity times the target's, by Weyl's inequality ([Horn and Johnson (2013, Theorem 4.3.1)](https://doi.org/10.1017/CBO9781139020411){:target="_blank"}). A matrix that shrinking already makes valid, as in the default calibration, is left as it is. The size of the repair is reported.</li>
 </ol>
 
 <div class="fs-callout fs-callout--limits" markdown="1">
@@ -77,8 +77,8 @@ The settings behind the correlation matrix, and the reason for each:
 | Too few shared observations | Fewer than 5: the pair is set to 0; fewer than 12: flagged | Judgement | A correlation from a handful of points is noise |
 | Same series twice | A correlation above 0.98 is flagged | Judgement | Usually one driver configured twice |
 | Shrinkage | Toward zero, intensity from the data: 0.155 in the default calibration | Fitted | [Schäfer and Strimmer (2005, section 2.4, eq. 10; Appendix A)](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}: their target D, with the intensity the summed variance of the correlations over their summed squares. Each correlation's variance is estimated from the pair's own data over its own overlap, as in their Appendix A |
-| Repair | Nearest correlation matrix, at most 100 iterations, tolerance $$10^{-8}$$: a change of 9.6e-15 in the default calibration | Setting | [Higham (2002, Algorithm 3.3)](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"} with Dykstra's correction; the tolerance is that of his section 4 example, which converges in 19 iterations |
-| Cholesky safety net | Up to 20 tries of $$(1 - j)R + jI$$, with $$j$$ from $$10^{-8}$$ and ten times larger each try, at most 0.9 | Setting | Only for a matrix that is still not positive definite after the repair; it blends the whole matrix toward the identity |
+| Repair | Nearest correlation matrix, at most 100 iterations, tolerance $$10^{-8}$$, of the sample matrix and before shrinking, only when the shrunk matrix is not valid: a change of 1.1e-14 in the default calibration, which shrinking already makes valid | Setting | [Higham (2002, Algorithm 3.3)](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"} with Dykstra's correction; the tolerance is that of his section 4 example, which converges in 19 iterations. Repairing first and shrinking after keeps the smallest eigenvalue at least the intensity times the target's ([Horn and Johnson (2013, Theorem 4.3.1)](https://doi.org/10.1017/CBO9781139020411){:target="_blank"}), where repairing the shrunk matrix left it nearly singular ([Higham (2002, Theorem 2.5)](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}) |
+| Cholesky safety net | Up to 20 tries of $$(1 - j)R + jI$$, with $$j$$ from $$10^{-8}$$ and ten times larger each try, at most 0.9 | Setting | Only for a matrix that is still not positive definite after the repair and shrinkage; it blends the whole matrix toward the identity |
 
 ## Fat Tails {#fat-tails-and-tail-dependence}
 
@@ -109,7 +109,7 @@ Equity crises cluster a second way: with shared equity regimes (on in the shippe
 
 ## Example
 
-The example uses the calibration from the [overview](/projects/financescenarios/docs#keeping-a-run), made on 19 October 2026. `correlation_frame` returns the correlation matrix as a table, one row and one column per variable. To read it from the saved calibration:
+The example uses the calibration from the [overview](/projects/financescenarios/docs#keeping-a-run), made on 25 October 2026. `correlation_frame` returns the correlation matrix as a table, one row and one column per variable. To read it from the saved calibration:
 
 ```python
 from financescenarios import CalibrationResult
@@ -126,11 +126,12 @@ US and European stocks have a correlation of 0.72, oil moves with stocks (0.32 i
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">6</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">7</span></summary>
 
 - Breymann, W., Dias, A., Embrechts, P. (2003). "Dependence Structures for Multivariate High-Frequency Data in Finance." Quantitative Finance, 3(1), 1-14. [doi.org](https://doi.org/10.1080/713666155){:target="_blank"}
 - Demarta, S., McNeil, A.J. (2005). "The t Copula and Related Copulas." International Statistical Review, 73(1), 111-129. [doi.org](https://doi.org/10.1111/j.1751-5823.2005.tb00254.x){:target="_blank"}
 - Higham, N.J. (2002). "Computing the Nearest Correlation Matrix: A Problem from Finance." IMA Journal of Numerical Analysis, 22(3), 329-343. [doi.org](https://doi.org/10.1093/imanum/22.3.329){:target="_blank"}
+- Horn, R.A., Johnson, C.R. (2013). "Matrix Analysis." 2nd edition. Cambridge University Press. [doi.org](https://doi.org/10.1017/CBO9781139020411){:target="_blank"}
 - Kole, E., Koedijk, K., Verbeek, M. (2007). "Selecting Copulas for Risk Management." Journal of Banking & Finance, 31(8), 2405-2423. [doi.org](https://doi.org/10.1016/j.jbankfin.2006.09.010){:target="_blank"}
 - Ledoit, O., Wolf, M. (2004). "Honey, I Shrunk the Sample Covariance Matrix." The Journal of Portfolio Management, 30(4), 110-119. [ledoit.net](http://www.ledoit.net/Honey_2004.pdf){:target="_blank"}
 - Schafer, J., Strimmer, K. (2005). "A Shrinkage Approach to Large-Scale Covariance Matrix Estimation and Implications for Functional Genomics." Statistical Applications in Genetics and Molecular Biology, 4(1). [doi.org](https://doi.org/10.2202/1544-6115.1175){:target="_blank"}

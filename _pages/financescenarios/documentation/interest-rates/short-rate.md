@@ -106,7 +106,7 @@ Which data the short rate is fitted on, and why:
 
 ## Examples
 
-The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42.
+The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42.
 
 ### The Short Rates
 
@@ -127,11 +127,11 @@ Which gives, for the three short rates:
 
 | factor | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:-------|--------:|--------------:|-------------:|-------------:|
-| united_states_short_rate | 0.0408 | 0.0459 | 0.0000 | 0.1099 |
-| eurozone_short_rate | 0.0264 | 0.0359 | -0.0050 | 0.0901 |
-| united_kingdom_short_rate | 0.0399 | 0.0395 | 0.0010 | 0.0839 |
+| united_states_short_rate | 0.0403 | 0.0455 | 0.0000 | 0.1091 |
+| eurozone_short_rate | 0.0264 | 0.0354 | -0.0050 | 0.0878 |
+| united_kingdom_short_rate | 0.0399 | 0.0410 | 0.0010 | 0.0909 |
 
-The 5th percentile of each short rate sits on its floor after five years: 0% for the US, -0.5% for the euro area and 0.1% for the UK, the lowest policy rate each central bank has set. The 95th percentiles reach 11.0%, 9.0% and 8.4%, the scenarios in which inflation took off. When plotted, the short rates:
+The 5th percentile of each short rate sits on its floor after five years: 0% for the US, -0.5% for the euro area and 0.1% for the UK, the lowest policy rate each central bank has set. The 95th percentiles reach 10.9%, 8.8% and 9.1%, the scenarios in which inflation took off. When plotted, the short rates:
 
 {% include ft-chart.html id="interest-rates-short" src="/assets/data/financescenarios-guides/interest-rates.json" label="Median and 5-95% band of the short rate of the US, the euro area and the UK over five years" %}
 
@@ -179,10 +179,10 @@ Which returns:
 | factor | baseline | inflation_at_8 |
 |:-------|---------:|---------------:|
 | united_states_inflation | 0.0181 | 0.0181 |
-| united_states_short_rate | 0.0439 | 0.0612 |
-| united_states_long_rate | 0.0562 | 0.0793 |
+| united_states_short_rate | 0.0436 | 0.0608 |
+| united_states_long_rate | 0.0567 | 0.0800 |
 
-The median inflation is 7.64% after one year against 2.71% in the baseline and 4.66% after three, and is back on the baseline's 1.81% after five. The rule answers with a lag: the median short rate is 6.24% after one year against 4.33% in the baseline, 8.71% after three, and still 6.12% after five, when inflation has long come back. When plotted, the short rate and inflation in both runs:
+The median inflation is 7.64% after one year against 2.71% in the baseline and 4.66% after three, and is back on the baseline's 1.81% after five. The rule answers with a lag: the median short rate is 6.19% after one year against 4.29% in the baseline, 8.65% after three, and still 6.08% after five, when inflation has long come back. When plotted, the short rate and inflation in both runs:
 
 {% include ft-chart.html id="interest-rates-shock" src="/assets/data/financescenarios-guides/interest-rates.json" label="Median and 5-95% band of the US short rate and US inflation in the baseline and with inflation at 8% within a year" %}
 

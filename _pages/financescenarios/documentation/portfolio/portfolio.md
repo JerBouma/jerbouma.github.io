@@ -22,7 +22,7 @@ The scenarios say what markets could do; a portfolio says what that means for a 
 
 ## A 60/40 Portfolio
 
-The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. Thirteen ready-made mixes ship with the package, from the textbook 60/40 to Ray Dalio's All Weather, Harry Browne's Permanent Portfolio and a target-date glidepath. To list them:
+The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. Thirteen ready-made mixes ship with the package, from the textbook 60/40 to Ray Dalio's All Weather, Harry Browne's Permanent Portfolio and a target-date glidepath. To list them:
 
 ```python
 from financescenarios import list_presets
@@ -60,11 +60,11 @@ Which returns the portfolio's annualized return over the five years and what eac
 
 | factor | metric | terminal_mean | terminal_q05 | terminal_q95 |
 |:-------|:-------|--------------:|-------------:|-------------:|
-| portfolio | annualized | 0.0730 | -0.0093 | 0.1465 |
-| us_broad_value | annualized | 0.0849 | -0.0569 | 0.2082 |
-| united_states_long_rate_value | annualized | 0.0487 | 0.0122 | 0.0784 |
+| portfolio | annualized | 0.0721 | -0.0098 | 0.1461 |
+| us_broad_value | annualized | 0.0844 | -0.0572 | 0.2076 |
+| united_states_long_rate_value | annualized | 0.0470 | 0.0090 | 0.0784 |
 
-The 60/40 earns 7.30% a year on average, between the stocks' 8.49% and the Treasury fund's 4.87%, and its 90% range of -0.93% to 14.65% a year is far narrower than the stocks' -5.69% to 20.82%. In money, 100,000 grows to 144,923 on average and to 143,349 in the median scenario. When plotted, the value over the five years:
+The 60/40 earns 7.21% a year on average, between the stocks' 8.44% and the Treasury fund's 4.70%, and its 90% range of -0.98% to 14.61% a year is far narrower than the stocks' -5.72% to 20.76%. In money, 100,000 grows to 144,358 on average and to 142,899 in the median scenario. When plotted, the value over the five years:
 
 {% include ft-chart.html id="portfolio-value" src="/assets/data/financescenarios-guides/portfolio.json" label="Median, 25-75% and 5-95% band of the value of 100,000 in a 60/40 portfolio rebalanced once a year, over five years" %}
 
@@ -128,9 +128,9 @@ yearly = long_portfolio.compute(weights, initial_value=100.0, rebalance_every=12
 After 30 years the two end at:
 
 <div class="ca-nums fs-nums">
-  <span><b>213 / 199</b>5th percentile, rebalanced yearly / buy-and-hold</span>
-  <span><b>778 / 865</b>median</span>
-  <span><b>2,715 / 4,130</b>95th percentile</span>
+  <span><b>206 / 193</b>5th percentile, rebalanced yearly / buy-and-hold</span>
+  <span><b>752 / 833</b>median</span>
+  <span><b>2,617 / 3,971</b>95th percentile</span>
 </div>
 
 Rebalancing lifts the bad outcomes and caps the good ones. Buy-and-hold has the higher median and the far higher 95th percentile because it drifts into stocks: its median scenario holds 83% stocks after 30 years, against the rebalanced 60%. In growth per year, rebalancing is ahead up to the 25th percentile and behind from the median up. When plotted, the growth per year at each percentile of the value after 30 years:
@@ -156,12 +156,12 @@ Which gives:
 
 | factor | metric | terminal_mean | terminal_q05 | terminal_q95 |
 |:-------|:-------|--------------:|-------------:|-------------:|
-| portfolio | annualized | 0.0655 | -0.0072 | 0.1350 |
-| us_broad_value | annualized | 0.0827 | -0.0587 | 0.2058 |
-| united_states_long_rate_value | annualized | 0.0466 | 0.0102 | 0.0762 |
-| gold_value | annualized | 0.0287 | -0.1017 | 0.1692 |
+| portfolio | annualized | 0.0648 | -0.0084 | 0.1343 |
+| us_broad_value | annualized | 0.0822 | -0.0591 | 0.2052 |
+| united_states_long_rate_value | annualized | 0.0449 | 0.0070 | 0.0762 |
+| gold_value | annualized | 0.0287 | -0.1020 | 0.1698 |
 
-After fees the mix returns 6.55% a year on average against 7.30% for the 60/40, and gold has the widest range of its holdings, from -10.17% to 16.92% a year. `weight_drift_summary` confirms that the band holds: no weight drifts more than 5.0 points from its target in any scenario.
+After fees the mix returns 6.48% a year on average against 7.21% for the 60/40, and gold has the widest range of its holdings, from -10.20% to 16.98% a year. `weight_drift_summary` confirms that the band holds: no weight drifts more than 5.0 points from its target in any scenario.
 
 ## Costs
 
@@ -172,7 +172,7 @@ yearly_fee = long_portfolio.compute(weights, initial_value=100.0, rebalance_ever
 banded = long_portfolio.compute(weights, initial_value=100.0, rebalance_band=0.05, transaction_cost_rate=0.001)
 ```
 
-The fee of 0.2% takes the rebalanced median from 778 to 733.
+The fee of 0.2% takes the rebalanced median from 752 to 708.
 
 ## Bonds: Cash Roll or Duration
 
@@ -225,13 +225,13 @@ indexed = long_portfolio.compute(
 indexed_success = long_portfolio.withdrawal_success(indexed)
 ```
 
-The money lasts the 30 years in 73.1% of the scenarios with fixed withdrawals and in 44.4% when they rise with inflation; in the scenarios where it runs out, it does so after 25 and 24 years in the median. When plotted, the share of scenarios with money left in each year:
+The money lasts the 30 years in 72.3% of the scenarios with fixed withdrawals and in 43.2% when they rise with inflation; in the scenarios where it runs out, it does so after 25 and 24 years in the median. When plotted, the share of scenarios with money left in each year:
 
 {% include ft-chart.html id="portfolio-plan" src="/assets/data/financescenarios-guides/portfolio-theory.json" label="Share of scenarios in which a portfolio that saves 10,000 a year for 15 years and then withdraws 40,000 a year still holds money, year by year, with withdrawals fixed and indexed to US inflation" %}
 
 ## Glidepaths
 
-A target-date or lifecycle plan moves from growth to safety as the target date nears. Target weights are set at a few checkpoints, move in a straight line between them, and the portfolio is rebalanced to the moving target. The `target_date_glidepath` preset follows Vanguard's Target Retirement funds: 90% stocks until 25 years before the target date, 50% at it and 30% seven years after. On the 30-year run, gliding from 90% to 30% stocks ends at a median of 787 from 100, close to the 778 of 60% stocks and 40% cash rebalanced yearly, with more of the risk taken early, when the amount at stake is smallest.
+A target-date or lifecycle plan moves from growth to safety as the target date nears. Target weights are set at a few checkpoints, move in a straight line between them, and the portfolio is rebalanced to the moving target. The `target_date_glidepath` preset follows Vanguard's Target Retirement funds: 90% stocks until 25 years before the target date, 50% at it and 30% seven years after. On the 30-year run, gliding from 90% to 30% stocks ends at a median of 759 from 100, close to the 752 of 60% stocks and 40% cash rebalanced yearly, with more of the risk taken early, when the amount at stake is smallest.
 
 On the five-year run, to go from 90% stocks and 10% Treasuries today to 40% stocks in year five, rebalanced monthly:
 
@@ -248,7 +248,7 @@ glidepath = portfolio.compute_glidepath(
 glidepath.describe(levels=True)
 ```
 
-Which gives an average end value of 146,467, while the stocks shrink from 90,000 to 58,587 on average and the Treasuries grow from 10,000 to 87,880. When plotted, the median value of each holding year by year:
+Which gives an average end value of 146,225, while the stocks shrink from 90,000 to 58,490 on average and the Treasuries grow from 10,000 to 87,735. When plotted, the median value of each holding year by year:
 
 {% include ft-chart.html id="portfolio-glidepath" src="/assets/data/financescenarios-guides/portfolio.json" label="Median value of US stocks and US Treasuries in a glidepath from 90% to 40% stocks over five years" %}
 

@@ -48,7 +48,7 @@ Without swaption or inflation-option prices, the rate's volatility is fitted to 
 
 ### Example {#best-estimate-example}
 
-The examples on this page use the two runs of [Market Consistency](/projects/financescenarios/docs/solvency#martingale-test-example): the real-world run of the overview, calibrated on 19 October 2026, and its risk-neutral run, 2,000 scenarios each with seed 42. To value 10,000 a year for five years, level and indexed to each scenario's own US inflation:
+The examples on this page use the two runs of [Market Consistency](/projects/financescenarios/docs/solvency#martingale-test-example): the real-world run of the overview, calibrated on 25 October 2026, and its risk-neutral run, 2,000 scenarios each with seed 42. To value 10,000 a year for five years, level and indexed to each scenario's own US inflation:
 
 ```python
 import numpy as np
@@ -69,10 +69,10 @@ Which returns:
 
 | annuity | best estimate | standard error | 0.5th percentile | 99.5th percentile |
 |:--------|--------------:|---------------:|-----------------:|------------------:|
-| level | 43,514 | 25 | 40,844 | 46,530 |
-| inflation-indexed | 46,598 | 38 | 42,514 | 51,220 |
+| level | 43,514 | 25 | 40,841 | 46,544 |
+| inflation-indexed | 46,765 | 38 | 42,673 | 51,401 |
 
-The five level payments are worth 43,514, close to the 43,555 that EIOPA's dollar bond prices give for 10,000 a year; across scenarios their discounted value spreads from about 41,000 to 46,500 as the rate moves, but the average is the market's price. Indexed to inflation they are worth 46,598, 7.1% more, and the standard errors of 25 and 38 show that 2,000 scenarios are plenty.
+The five level payments are worth 43,514, close to the 43,556 that EIOPA's dollar bond prices give for 10,000 a year; across scenarios their discounted value spreads from about 41,000 to 46,500 as the rate moves, but the average is the market's price. Indexed to inflation they are worth 46,765, 7.5% more, and the standard errors of 25 and 38 show that 2,000 scenarios are plenty.
 
 ## Solvency Capital Requirement
 
@@ -87,7 +87,7 @@ where $$OF$$ is own funds, $$h$$ the one-year horizon, $$D(h)$$ the deflator bac
 <div class="fs-callout" markdown="1">
 <p class="fs-callout__title">Check several seeds</p>
 
-With 2,000 scenarios only 10 lie beyond the 99.5% quantile, so the SCR moves with the seed: in the example below it ranges from 12,141 to 13,619 across five seeds. Use several seeds, or more scenarios, before relying on it.
+With 2,000 scenarios only 10 lie beyond the 99.5% quantile, so the SCR moves with the seed: in the example below it ranges from 12,279 to 13,461 across five seeds. Use several seeds, or more scenarios, before relying on it.
 </div>
 
 ### Example {#scr-example}
@@ -107,13 +107,13 @@ Which returns:
 
 | item | value | meaning |
 |:-----|:------|:--------|
-| market consistent | passed (largest gap 1.0%) | discounted back, us_broad stays within 2% of today's price |
+| market consistent | passed (largest gap 1.2%) | discounted back, us_broad stays within 2% of today's price |
 | best estimate | 43,514 | what the payments are worth today |
-| own funds | 15,683 | assets minus what is owed, today |
-| SCR (1 in 200 year) | 13,619 | the capital that survives a 1-in-200 bad year |
-| solvency ratio | 1.15 | own funds / SCR; above 1 means enough capital |
+| own funds | 15,624 | assets minus what is owed, today |
+| SCR (1 in 200 year) | 13,066 | the capital that survives a 1-in-200 bad year |
+| solvency ratio | 1.20 | own funds / SCR; above 1 means enough capital |
 
-The best estimate is the risk-neutral value of the payments. Own funds are measured on the real-world run, the same way today and after a year: the payments still to come are discounted at each scenario's short rate held flat, 44,317 today at the 4.08% short rate, so the 60,000 leaves own funds of 15,683. In the worst one-year scenario in 200 they fall to 2,064, discounted to today, and the gap of 13,619 is the SCR, which the own funds cover 1.15 times. When plotted, where own funds could be after one year, with today's level and the 1-in-200 outcome marked:
+The best estimate is the risk-neutral value of the payments. Own funds are measured on the real-world run, the same way today and after a year: the payments still to come are discounted at each scenario's short rate held flat, 44,376 today at the 4.03% short rate, so the 60,000 leaves own funds of 15,624. In the worst one-year scenario in 200 they fall to 2,558, discounted to today, and the gap of 13,066 is the SCR, which the own funds cover 1.20 times. When plotted, where own funds could be after one year, with today's level and the 1-in-200 outcome marked:
 
 {% include ft-chart.html id="solvency-own-funds" src="/assets/data/financescenarios-guides/solvency.json" label="Distribution of own funds after one year across 2,000 real-world scenarios, discounted to today, with today's own funds and the 1-in-200 outcome" %}
 

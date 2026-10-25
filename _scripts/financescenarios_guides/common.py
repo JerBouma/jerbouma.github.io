@@ -1,6 +1,6 @@
 """Shared helpers for the charts of the Finance Scenarios documentation pages.
 
-Every page uses one run: the default settings and factor set, calibrated on 2026-10-19 (the README's saved calibration,
+Every page uses one run: the default settings and factor set, calibrated on 2026-10-25 (the README's saved calibration,
 docs/assets/readme/calibration.json in the finance-scenarios repository), simulated with seed 42 and 2,000 scenarios.
 Passing that calibration to simulate() reproduces the run exactly; leaving it out calibrates on the day you run it.
 
@@ -32,7 +32,7 @@ NUMBERS: dict = {}
 
 
 def default_run(n_simulations: int = 2000, seed: int = 42, **kwargs):
-    """The page's `scenarios` and `result`, from the saved calibration of 2026-10-19."""
+    """The page's `scenarios` and `result`, from the saved calibration of 2026-10-25."""
     calibration = CalibrationResult.load(CALIBRATION)
     scenarios = Scenarios.from_profiles(settings="default", factor_set="default")
     result = scenarios.simulate(n_simulations=n_simulations, seed=seed, calibration=calibration, **kwargs)

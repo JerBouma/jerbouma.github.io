@@ -177,24 +177,22 @@ result = scenarios.simulate(n_simulations=2000, seed=42)
 result.describe()
 ```
 
-For example, 6 of the 27 variables are shown below. Rates are yearly rates and anything with a price a yearly return, written as decimals (0.0459 is 4.59%).
+For example, 6 of the 27 variables are shown below. Rates are yearly rates and anything with a price a yearly return, written as decimals (0.0455 is 4.55%).
 
 | factor                     | category       | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:---------------------------|:---------------|--------:|--------------:|-------------:|-------------:|
 | united_states_inflation    | inflation      |  0.0374 |        0.0234 |      -0.0064 |       0.0770 |
-| united_states_short_rate   | interest_rates |  0.0408 |        0.0459 |       0.0000 |       0.1099 |
-| united_states_unemployment | unemployment   |  0.0420 |        0.0553 |       0.0337 |       0.0894 |
-| us_broad                   | equities       |         |        0.0849 |      -0.0569 |       0.2082 |
-| europe                     | equities       |         |        0.0933 |      -0.0753 |       0.2487 |
-| gold                       | commodities    |         |        0.0308 |      -0.0999 |       0.1716 |
+| united_states_short_rate   | interest_rates |  0.0403 |        0.0455 |       0.0000 |       0.1091 |
+| united_states_unemployment | unemployment   |  0.0420 |        0.0554 |       0.0338 |       0.0895 |
+| us_broad                   | equities       |         |        0.0844 |      -0.0572 |       0.2076 |
+| europe                     | equities       |         |        0.0928 |      -0.0757 |       0.2482 |
+| gold                       | commodities    |         |        0.0307 |      -0.1002 |       0.1722 |
 
 The chart below follows the US short rate, US inflation and US equities through all 2,000 scenarios. **Find [the Scenarios documentation](/projects/financescenarios/docs) and [the simulation engine](/projects/financescenarios/docs/simulation-engine).**
 
 ```python
 result.plot(["united_states_short_rate", "united_states_inflation", "us_broad"])
 ```
-
-Which draws the median of each variable with the bands that hold half and nine in ten of the scenarios:
 
 Which draws the median of each variable with the bands that hold half and nine in ten of the scenarios:
 
@@ -212,17 +210,15 @@ For example, the last three months of the US short rate are shown below.
 
 | date       |   mean |    std |  q0.05 |  q0.25 |   q0.5 |  q0.75 |  q0.95 |
 |:-----------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2030-11-01 | 0.0459 | 0.0341 | 0.0000 | 0.0204 | 0.0437 | 0.0650 | 0.1095 |
-| 2030-12-02 | 0.0458 | 0.0343 | 0.0000 | 0.0198 | 0.0435 | 0.0651 | 0.1089 |
-| 2031-01-01 | 0.0459 | 0.0345 | 0.0000 | 0.0196 | 0.0439 | 0.0659 | 0.1099 |
+| 2030-11-01 | 0.0455 | 0.0339 | 0.0000 | 0.0201 | 0.0433 | 0.0644 | 0.1090 |
+| 2030-12-02 | 0.0455 | 0.0342 | 0.0000 | 0.0195 | 0.0433 | 0.0645 | 0.1082 |
+| 2031-01-01 | 0.0455 | 0.0344 | 0.0000 | 0.0195 | 0.0436 | 0.0655 | 0.1091 |
 
 The chart below shows how widely the five-year US equity return spreads across the scenarios. **Find [the Scenarios documentation](/projects/financescenarios/docs#reading-the-distribution) and [how results read](/projects/financescenarios/docs/units).**
 
 ```python
 result.plot("us_broad", kind="distribution")
 ```
-
-Which shows where the five-year return lands across all 2,000 scenarios:
 
 Which shows where the five-year return lands across all 2,000 scenarios:
 
@@ -246,17 +242,15 @@ This returns the portfolio's yearly return over the five years, and what each ho
 
 | factor                        | category  | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:------------------------------|:----------|--------:|--------------:|-------------:|-------------:|
-| portfolio                     | portfolio |         |        0.0730 |      -0.0093 |       0.1465 |
-| us_broad_value                | holding   |         |        0.0849 |      -0.0569 |       0.2082 |
-| united_states_long_rate_value | holding   |         |        0.0487 |       0.0122 |       0.0784 |
+| portfolio                     | portfolio |         |        0.0721 |      -0.0098 |       0.1461 |
+| us_broad_value                | holding   |         |        0.0844 |      -0.0572 |       0.2076 |
+| united_states_long_rate_value | holding   |         |        0.0470 |       0.0090 |       0.0784 |
 
-The 60/40 earns 7.30% a year on average, between the stocks' 8.49% and the Treasury fund's 4.87%, so 100,000 grows to 144,923 on average. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio).**
+The 60/40 earns 7.21% a year on average, between the stocks' 8.44% and the Treasury fund's 4.70%, so 100,000 grows to 144,358 on average. The same portfolio also reports its drawdowns and Value at Risk, and covers saving and withdrawal plans, glidepaths and fees. The chart below shows the portfolio's value in money across the scenarios. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio).**
 
 ```python
 values.plot(levels=True)
 ```
-
-Which shows the portfolio's value in money, with the same bands:
 
 Which shows the portfolio's value in money, with the same bands:
 
@@ -274,14 +268,14 @@ shocked = scenarios.simulate(regime="oil_crisis", n_simulations=2000, seed=42)
 compare_runs({"baseline": result, "oil_crisis": shocked})
 ```
 
-Oil Crisis replays 1973-74 from today: the middle of US inflation climbs to 12% within a year and eases to 5.5% by year three, the short rate to the 3-month bill's 9% and back, unemployment to 9%, and US stocks fall 43% before recovering, with every scenario keeping its own distance from that path and the world's other stock markets following through their correlations. After five years the short rate averages 4.27% instead of 4.59% and US stocks earn 0.86% a year instead of 8.49%. For example, four of the variables are shown below.
+Oil Crisis replays 1973-74 from today: the middle of US inflation climbs to 12% within a year and eases to 5.5% by year three, the short rate to the 3-month bill's 9% and back, unemployment to 9%, and US stocks fall 43% before recovering, with every scenario keeping its own distance from that path and the world's other stock markets following through their correlations. After five years the short rate averages 4.24% instead of 4.55% and US stocks earn 0.86% a year instead of 8.44%. For example, four of the variables are shown below.
 
 | factor                   | baseline | oil_crisis |
 |:-------------------------|---------:|-----------:|
 | united_states_inflation  |   0.0234 |     0.0483 |
-| united_states_short_rate |   0.0459 |     0.0427 |
-| united_states_long_rate  |   0.0579 |     0.0630 |
-| us_broad                 |   0.0849 |     0.0086 |
+| united_states_short_rate |   0.0455 |     0.0424 |
+| united_states_long_rate  |   0.0584 |     0.0623 |
+| us_broad                 |   0.0844 |     0.0086 |
 
 The chart below sets US inflation in the baseline next to the Oil Shock, Oil Crisis and 2022 Inflation and Rate Hikes regimes, 2,000 scenarios each. **Find [the Regimes documentation](/projects/financescenarios/docs/regimes).**
 
@@ -318,13 +312,11 @@ Which gives each mix's loading on each factor and how much they explain:
 | All Weather         | 0.2039 | -0.0620 | -0.1435 | 0.2162 |  0.0335 | 0.0029 |    0.1318 |          312 | 2000-08-01 | 2026-10-01 |
 | Permanent Portfolio | 0.2173 | -0.0615 | -0.1418 | 0.2017 |  0.0473 | 0.0033 |    0.1240 |          312 | 2000-08-01 | 2026-10-01 |
 
-The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio/backtests#backtesting-against-history).**
+The chart below shows what each mix actually did since August 2000, rebalanced once a year: 100,000 grew to 545,686 in the 60/40, 542,849 in All Weather and 551,770 in the Permanent Portfolio by October 2026, with the 60/40 carrying more than twice the stock market risk of the other two. **Find [the Portfolio documentation](/projects/financescenarios/docs/portfolio/backtests#backtesting-against-history).**
 
 ```python
 portfolio.compute(initial_value=100_000, rebalance_every=12).plot(levels=True)
 ```
-
-Which follows each mix month by month:
 
 Which follows each mix month by month:
 
@@ -350,19 +342,17 @@ Which gives every number in one table:
 
 | item                | value                     | meaning                                                    |
 |:--------------------|:--------------------------|:-----------------------------------------------------------|
-| market consistent   | passed (largest gap 1.0%) | discounted back, us_broad stays within 2% of today's price |
+| market consistent   | passed (largest gap 1.2%) | discounted back, us_broad stays within 2% of today's price |
 | best estimate       | 43,514                    | what the payments are worth today                          |
-| own funds           | 15,683                    | assets minus what is owed, today                           |
-| SCR (1 in 200 year) | 13,619                    | the capital that survives a 1-in-200 bad year              |
-| solvency ratio      | 1.15                      | own funds / SCR; above 1 means enough capital              |
+| own funds           | 15,624                    | assets minus what is owed, today                           |
+| SCR (1 in 200 year) | 13,066                    | the capital that survives a 1-in-200 bad year              |
+| solvency ratio      | 1.20                      | own funds / SCR; above 1 means enough capital              |
 
 The chart below shows where own funds could be after one year, with today's level and the 1-in-200 outcome marked. **Find [the Solvency documentation](/projects/financescenarios/docs/solvency).**
 
 ```python
 solvency.plot(cashflows=[10_000] * 5, assets=assets)
 ```
-
-Which marks today's own funds and the 1-in-200 outcome:
 
 Which marks today's own funds and the 1-in-200 outcome:
 
@@ -376,13 +366,13 @@ Check a run against what its own models promise. Most variables can also be simu
 scenarios.validate(result)
 ```
 
-On this run four of the six checks pass and two warn, one on the correlations and one on the volatilities. For example, three of the checks are shown below.
+On this run five of the six checks pass and one warns, on the volatilities. For example, three of the checks are shown below.
 
-| check                                  | status | detail                                                                                                                                                                                                                                                |
-|:---------------------------------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Every factor calibrated                | pass   | every factor calibrated                                                                                                                                                                                                                               |
-| Simulation reproduces the correlations | warn   | largest gap 0.103 (eurozone_inflation/united_kingdom_inflation); pairs with a linked factor, not graded: largest gap 0.715 (united_states_short_rate/united_states_long_rate); rate_level and rate_slope read off the short and long rate, not graded |
-| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                                                                                                                                |
+| check                                  | status | detail                                                                                                                                                                                                                                                                                                                      |
+|:---------------------------------------|:-------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Every factor calibrated                | pass   | every factor calibrated                                                                                                                                                                                                                                                                                                     |
+| Simulation reproduces the correlations | pass   | largest gap 0.109 (eurozone_inflation/united_kingdom_inflation); 120,000 moves per factor, so gaps up to 0.01 more are sampling noise; pairs with a linked factor, not graded: largest gap 0.543 (united_states_short_rate/united_states_long_rate); rate_level and rate_slope read off the short and long rate, not graded |
+| Every path is finite                   | pass   | 27 factors, all finite                                                                                                                                                                                                                                                                                                      |
 
 Whether the variables also move together the way the economy does, measured the same way on decades of history and on every scenario, is a check of its own:
 
@@ -390,13 +380,13 @@ Whether the variables also move together the way the economy does, measured the 
 scenarios.check_relationships(result)
 ```
 
-On this five-year run 19 of the 26 relationships pass, 7 warn and none fails. For example, three of them are shown below.
+On this five-year run 18 of the 26 relationships pass, 8 warn and none fails. For example, three of them are shown below.
 
 | relationship                        | region        | status | history | simulated_median |
 |:------------------------------------|:--------------|:-------|--------:|-----------------:|
-| Policy rate reacts to inflation     | United States | warn   |  0.4522 |           0.1781 |
-| Phillips curve                      | United States | pass   | -0.5923 |          -0.4273 |
-| Long rate moves with the short rate | United States | pass   |  0.3303 |           0.5136 |
+| Policy rate reacts to inflation     | United States | warn   |  0.4522 |           0.1813 |
+| Phillips curve                      | United States | pass   | -0.5923 |          -0.3976 |
+| Long rate moves with the short rate | United States | pass   |  0.3303 |           0.5112 |
 
 **Find [the Validation documentation](/projects/financescenarios/docs/validation) and [every model and its status](/projects/financescenarios/docs/coverage).**
 

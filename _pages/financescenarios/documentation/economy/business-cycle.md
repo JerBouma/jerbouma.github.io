@@ -2,7 +2,7 @@
 title: Business Cycle
 seo_title: "Business Cycle | Finance Scenarios"
 seo_title_suffix: false
-excerpt: "How Finance Scenarios gives a run an explicit business cycle: the OECD Composite Leading Indicator as a mean-reverting level whose changes can move the drift of rates, inflation, spreads and the chance of an equity crisis."
+excerpt: "How Finance Scenarios gives a run an explicit business cycle: the OECD Composite Leading Indicator as a stochastic cycle around 100 whose changes can move the drift of rates, inflation, spreads and the chance of an equity crisis."
 description: "The business cycle in Finance Scenarios: the OECD leading indicator, conditioning a factor's drift on the cycle, unemployment's cycle links fitted in one regression, and the leading indicator in a run."
 author_profile: false
 permalink: /projects/financescenarios/docs/economy/business-cycle
@@ -23,24 +23,31 @@ Average correlations say that spreads widen when stocks fall, but not that both 
 <div class="fs-facts">
   <div><span>Series</span><b>OECD Composite Leading Indicator</b></div>
   <div><span>Coverage</span><b>About 22 countries and groups</b></div>
-  <div><span>Model</span><b>Mean reversion around 100</b></div>
+  <div><span>Model</span><b>A stochastic cycle around 100</b></div>
 </div>
 
 ## The Leading Indicator
 
-The indicator $$L_t$$ reverts to its long-run level as an Ornstein-Uhlenbeck process ([Vasicek, 1977, section 5](https://doi.org/10.1016/0304-405x(77)90016-2){:target="_blank"}):
+The OECD builds the indicator as a band-pass filtered cycle: its filter keeps swings of 12 to 120 months ([OECD, 2012, p. 7](https://www.oecd.org/content/dam/oecd/en/data/methods/OECD-System-of-Composite-Leading-Indicators.pdf){:target="_blank"}). So the indicator does not just drift back to 100, it overshoots: the US indicator since 1955 is correlated 0.98 with itself a month later, 0.06 a year later, -0.33 two years later and -0.18 three years later. A mean-reverting (Ornstein-Uhlenbeck) process only decays toward its level, so it keeps 0.82 a year later and 0.67 two years later. The indicator $$L_t$$ is therefore the first-order stochastic cycle of [Harvey, Trimbur and van Dijk (2005, section 2.1, eq. 3)](https://repub.eur.nl/pub/6913){:target="_blank"}, published in the Journal of Econometrics in 2007: a damped wave around its long-run level $$\theta$$ whose amplitude and timing are hit by shocks,
 
 $$
-dL_t = a(\theta - L_t)\,dt + \sigma\,dW_t
+\begin{pmatrix} \psi_t \\ \psi^*_t \end{pmatrix} = e^{-a\Delta t} \begin{pmatrix} \cos\lambda & \sin\lambda \\ -\sin\lambda & \cos\lambda \end{pmatrix} \begin{pmatrix} \psi_{t-\Delta t} \\ \psi^*_{t-\Delta t} \end{pmatrix} + \begin{pmatrix} \kappa_t \\ \kappa^*_t \end{pmatrix}, \qquad \psi_t = L_t - \theta, \quad \lambda = \frac{2\pi\Delta t}{P}
 $$
 
-It is fitted like every other mean-reverting factor. A regression of each month's change on the level before it, $$L_t - L_{t-1} = c + b\,L_{t-1} + e_t$$, gives the speed $$a = -\ln(1 + b)/\Delta t$$ less the small-sample bias of [Tang and Chen (2009, Theorem 3.1.1)](https://doi.org/10.1016/j.jeconom.2008.11.001){:target="_blank"}, the level $$\theta = c/(-b)$$, and the volatility from the residuals. The run steps it with the exact transition. A quarterly or yearly run averages the monthly readings; GARCH volatility and beliefs are options. Switching it on takes one entry in a factor set:
+with $$a$$ the speed at which the wave dies out, $$P$$ its period in years, $$\psi^*_t$$ a partner that carries the wave's phase and $$\kappa_t$$, $$\kappa^*_t$$ independent shocks of equal variance. Its autocorrelation $$\tau$$ years apart follows from that equation:
+
+$$
+\text{corr}(L_t, L_{t+\tau}) = e^{-a\tau}\cos(2\pi\tau/P)
+$$
+
+Readings less than a year apart share the OECD filter's 12-month window, so their month-to-month moves are mostly the filter's. The speed and the period therefore solve the autocorrelations one and two years apart, which gives the same cycle on monthly and quarterly readings: on the US history since 1955 a speed of 0.54 and 0.53 a year with a period of 4.3 years, reproducing the 0.06 and -0.33. The level $$\theta$$ is the history's mean, and the volatility $$\sigma$$ sets the long-run spread $$\sigma/\sqrt{2a}$$. The run steps the cycle with one shock a step through the innovations form of the Kalman filter ([Durbin and Koopman, 2012, section 4.3](https://doi.org/10.1093/acprof:oso/9780199641178.001.0001){:target="_blank"}): each reading is drawn given every earlier one, the partner follows from it, and every scenario starts where the filter puts the indicator in its cycle, rising or falling. Beliefs are an option; `method: ou` keeps the mean-reverting process, which can also take GARCH volatility. Switching it on takes one entry in a factor set:
 
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)
 leading_indicator:
   enabled: true
   country: United States
+  method: stochastic_cycle   # ou: the mean-reverting process
 ```
 
 ## Conditioning on the Cycle
@@ -67,7 +74,7 @@ The default factor set leaves these links off. It ties its rates, unemployment a
 
 ## Example
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. The default factor set simulates the OECD Composite Leading Indicator for the US as a mean-reverting level, with no factor conditioned on it. To read its fitted parameters and its range after five years:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. The default factor set simulates the OECD Composite Leading Indicator for the US as a stochastic cycle, with no factor conditioned on it. To read its fitted parameters and its range after five years:
 
 ```python
 from financescenarios import Scenarios
@@ -82,22 +89,23 @@ calibration.calibrated_params["leading_indicator"]
 result.horizon_summary([5], factors=["leading_indicator"])
 ```
 
-Which gives a long-run level of 99.74, a speed of 0.35 a year and a yearly volatility of 1.34 points, starting from 101.0, and a 90% range of 97.4 to 102.5 after five years. When plotted:
+Which gives a long-run level of 99.77, a speed of 0.67 a year, a period of 4.25 years and a volatility of 1.58 points a year (a long-run spread of 1.36 points), starting from 101.0, and a 90% range of 97.4 to 102.0 after five years. When plotted:
 
 {% include ft-chart.html id="economy-leading-indicator" src="/assets/data/financescenarios-guides/economy.json" label="Median, 25-75% and 5-95% band of the OECD composite leading indicator of the US over five years" %}
 
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">7</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">8</span></summary>
 
 - Ahlgrim, K.C., D'Arcy, S.P., Gorvett, R.W. (2005). "Modeling Financial Scenarios: A Framework for the Actuarial Profession." Proceedings of the Casualty Actuarial Society, 92. [casact.org](https://www.casact.org/sites/default/files/old/05pcas_ahlgrim-darcy-gorvett.pdf){:target="_blank"}
 - Diebold, F.X., Lee, J.-H., Weinbach, G.C. (1994). "Regime Switching with Time-Varying Transition Probabilities." In Hargreaves, C. (ed.), Nonstationary Time Series Analysis and Cointegration, 283-302. [doi.org](https://doi.org/10.1093/oso/9780198773917.003.0010){:target="_blank"}
+- Durbin, J., Koopman, S.J. (2012). Time Series Analysis by State Space Methods (2nd ed.). Oxford University Press. [doi.org](https://doi.org/10.1093/acprof:oso/9780199641178.001.0001){:target="_blank"}
 - Filardo, A.J. (1994). "Business-Cycle Phases and Their Transitional Dynamics." Journal of Business & Economic Statistics, 12(3), 299-308. [doi.org](https://doi.org/10.1080/07350015.1994.10524545){:target="_blank"}
 - Frisch, R., Waugh, F.V. (1933). "Partial Time Regressions as Compared with Individual Trends." Econometrica, 1(4), 387-401. [doi.org](https://doi.org/10.2307/1907330){:target="_blank"}
+- Harvey, A.C., Trimbur, T.M., van Dijk, H.K. (2005). "Trends and Cycles in Economic Time Series: A Bayesian Approach." Econometric Institute Report EI 2005-27; published in the Journal of Econometrics, 140(2), 618-649 (2007). [repub.eur.nl](https://repub.eur.nl/pub/6913){:target="_blank"}
 - Lovell, M.C. (1963). "Seasonal Adjustment of Economic Time Series and Multiple Regression Analysis." Journal of the American Statistical Association, 58(304), 993-1010. [doi.org](https://doi.org/10.1080/01621459.1963.10480682){:target="_blank"}
-- Tang, C.Y., Chen, S.X. (2009). "Parameter Estimation and Bias Correction for Diffusion Processes." Journal of Econometrics, 149(1), 65-81. [doi.org](https://doi.org/10.1016/j.jeconom.2008.11.001){:target="_blank"}
-- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188. [doi.org](https://doi.org/10.1016/0304-405x(77)90016-2){:target="_blank"}
+- OECD (2012). "OECD System of Composite Leading Indicators." [oecd.org](https://www.oecd.org/content/dam/oecd/en/data/methods/OECD-System-of-Composite-Leading-Indicators.pdf){:target="_blank"}
 
 </details>
 
