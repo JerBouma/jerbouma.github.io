@@ -168,7 +168,9 @@
         axisLabel: isBar && (spec.x.length > 10 || Math.max.apply(null, spec.x.map(function (v) { return String(v).length; })) > 8) ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
       },
       yAxis: [{
-        type: 'value',
+        // log: a log scale, for growth over a long stretch (cumulative returns)
+        type: spec.log ? 'log' : 'value',
+        logBase: 10,
         scale: !isBar && !spec.stack && !spec.series.some(function (s) { return s.area; }),
         splitLine: { lineStyle: { color: grid } },
         axisLabel: { color: muted, formatter: fmt, fontSize: 12.5 }
@@ -559,7 +561,7 @@
   function renderCoef(box, chart) {
     var stars = function (p) { return p < 0.001 ? '***' : p < 0.01 ? '**' : p < 0.05 ? '*' : ''; };
     var spec = Object.assign({ legend: '<span>* p &lt; 0.05</span><span>** p &lt; 0.01</span><span>*** p &lt; 0.001</span><span><i style="background:' + PALETTE[0] + '"></i>significant</span><span><i class="is-muted"></i>not significant</span>' }, chart);
-    var inst = chrome(spec)(box, Math.max(340, chart.x.length * 38 + 60));
+    var inst = chrome(spec)(box, chart.height || Math.max(340, chart.x.length * 38 + 60));
     var n = chart.x.length;
     var rev = function (a) { return a.slice().reverse(); };
     var x = rev(chart.x), coef = rev(chart.coef), low = rev(chart.low), high = rev(chart.high), p = rev(chart.p);
@@ -580,8 +582,9 @@
         // wide enough for every interval, with room for the stars on the right
         xAxis: {
           type: 'value', splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: function (v) { return v.toFixed(2); } },
-          min: Math.floor(Math.min.apply(null, low) * 10) / 10,
-          max: Math.ceil((Math.max.apply(null, high) + 0.04) * 10) / 10
+          // always with zero on the axis, so every bar starts from it
+          min: Math.floor(Math.min(0, Math.min.apply(null, low)) * 10) / 10,
+          max: Math.ceil((Math.max(0, Math.max.apply(null, high)) + 0.04) * 10) / 10
         },
         yAxis: { type: 'category', data: x, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 13 } },
         series: [
@@ -802,7 +805,29 @@
     else window.addEventListener('resize', fit);
   }
 
+  // Several charts in one frame, one below the other, each with its own title
+  // and legend (e.g. the returns with the RSI underneath, or a fund's countries
+  // next to the overlap of the funds)
+  function renderPanels(box, chart) {
+    box.innerHTML = '';
+    box.classList.add('ft-chart--panels');
+    var head = document.createElement('div');
+    head.className = 'ft-chart__head';
+    var title = document.createElement('p');
+    title.className = 'ft-chart__title';
+    title.textContent = chart.title;
+    head.appendChild(title);
+    box.appendChild(head);
+    chart.panels.forEach(function (panel) {
+      var sub = document.createElement('div');
+      sub.className = 'ft-chart ft-chart--panel';
+      box.appendChild(sub);
+      render(sub, panel);
+    });
+  }
+
   function render(box, chart) {
+    if (chart.type === 'panels') return renderPanels(box, chart);
     if (asCards(chart)) return renderCards(box, chart);
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
@@ -838,6 +863,7 @@
     }
     var canvas = document.createElement('div');
     canvas.className = 'ft-chart__canvas';
+    if (chart.height) canvas.style.height = chart.height + 'px';
     box.appendChild(head);
     box.appendChild(canvas);
     if (tabs) compactTabs(tabs);

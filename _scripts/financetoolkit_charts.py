@@ -247,6 +247,7 @@ def main() -> None:
         fmt="percent", kind="bar", title="Return of Each Position and the Benchmark",
     )
 
+    combine(charts)
     payload = {"generated": date.today().isoformat(), "charts": charts}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(payload, separators=(",", ":")))
@@ -256,6 +257,49 @@ def main() -> None:
         for name, frame in TABLES.items():
             print(f"\n## {name}\n")
             print(frame.round(4).to_markdown() if hasattr(frame, "to_markdown") else frame)
+
+
+def panel(chart: dict, title: str, **extra) -> dict:
+    """A chart as one panel of a combined chart, with its own title."""
+    chart = {k: v for k, v in chart.items() if k != "label"}
+    return {**chart, "title": title, **extra}
+
+
+def combine(charts: dict) -> None:
+    """One chart per section, as in the README: the charts of a section become panels of one frame."""
+    cumulative, rsi = charts["historical"]["tabs"]
+    rsi["series"] = [s for s in rsi["series"] if not s.get("reference")]
+    for level in (70, 30):
+        rsi["series"].append({"name": f"RSI {level}", "data": [level] * len(rsi["x"]), "reference": True})
+    charts["historical"] = {"type": "panels", "title": "Cumulative Returns and Relative Strength Index", "panels": [
+        panel(cumulative, "Cumulative return (1 = start, log scale)", log=True),
+        panel(rsi, "Relative Strength Index (14 weeks)", height=260, format="amount"),
+    ]}
+    sharpe, drawdown = charts["risk"]["tabs"]
+    charts["risk"] = {"type": "panels", "title": "Sharpe Ratio and Maximum Drawdown", "panels": [
+        panel(sharpe, "Sharpe Ratio", height=340),
+        panel(drawdown, "Maximum drawdown", height=340),
+    ]}
+    # one panel per regressor, the companies as rows
+    coef = charts["econometrics"]
+    panels = []
+    for regressor in ("Real Yield", "Inflation Expectations"):
+        rows = [i for i, name in enumerate(coef["x"]) if name.endswith(f"· {regressor}")]
+        panels.append({"type": "coef", "title": f"10-year {regressor.lower()}", "height": 240,
+                       "x": [coef["x"][i].split(" · ")[0] for i in rows],
+                       **{key: [coef[key][i] for i in rows] for key in ("coef", "low", "high", "p")}})
+    charts["econometrics"] = {"type": "panels", "title": "Coefficients with 95% Confidence Intervals", "panels": panels}
+    # the overlap of a fund with itself says nothing
+    overlap = charts.pop("etf-overlap")
+    overlap["values"] = [[None if i == j else v for j, v in enumerate(row)] for i, row in enumerate(overlap["values"])]
+    charts["etf"] = {"type": "panels", "title": "Country Weights and Overlap of the Funds", "panels": [
+        panel(charts.pop("etf-countries"), "Weight by country", height=340),
+        panel(overlap, "Overlap of the holdings"),
+    ]}
+    charts["optimization"] = {"type": "panels", "title": "Efficient Frontier and Portfolio Weights", "panels": [
+        panel(charts.pop("optimization-frontier"), "Efficient frontier (at most 40% per asset)"),
+        panel(charts.pop("optimization-weights"), "Weights", height=320),
+    ]}
 
 
 def country_chart(country_weightings: pd.DataFrame) -> dict:
