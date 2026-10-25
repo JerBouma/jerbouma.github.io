@@ -324,7 +324,7 @@ This gives access to the Portfolio Construction module, which builds and examine
 
 When the Toolkit comes from a Portfolio (`Portfolio.toolkit`), the methods that take weights use the Portfolio's latest weights by default.
 
-See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/portfolio](https://www.jeroenbouma.com/projects/financetoolkit/docs/portfolio){:target="_blank"}
+See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/portfolio-optimization](https://www.jeroenbouma.com/projects/financetoolkit/docs/portfolio-optimization){:target="_blank"}
 
 
 ```python
