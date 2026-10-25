@@ -248,6 +248,40 @@ module DocsMetricPages
     out << %(<div class="ca-q docs-mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
   end
 
+  # The econometrics functions run on any data, not only prices: Econometrics(data=...)
+  # takes a DataFrame, Series or dict of them, each column becoming an asset, with
+  # `changes` setting how its changes are calculated.
+  def own_data(fn_name, parameters)
+    required = parameters.reject { |_, _, description| description.include?("Defaults to") }
+    out = +"### Using Your Own Data\n\n"
+    out << "`#{fn_name}` runs on any data, not only prices: ratios, economic indicators, yield curves or your own dataset. "
+    out << "Pass a DataFrame, a Series or a dictionary of them to `Econometrics` as `data`, with the dates in the rows or the columns, "
+    out << "and set `changes` to how its changes are calculated: `\"percentage\"`, `\"log\"`, `\"difference\"` for rates and ratios, or `\"none\"`. "
+    out << "For example, for the monthly unemployment rates of the United States and Germany"
+    out << (required.empty? ? ":\n\n" : ", where each country is a column:\n\n")
+    out << <<~PYTHON
+      ```python
+      from financetoolkit import Economics, Econometrics
+
+      economics = Economics(start_date="2000-01-01")
+
+      unemployment = economics.get_unemployment_rate(
+          countries=["United States", "Germany"], period="monthly"
+      )
+    PYTHON
+    out << "\neconometrics = Econometrics(data=unemployment, changes=\"difference\")\n"
+    out << "\neconometrics.#{fn_name}()\n" if required.empty?
+    out << "```\n\n"
+    unless required.empty?
+      names = required.map { |name, _, _| "`#{name}`" }
+      # the panel estimators take either regressor tickers or a column of each ticker's own data
+      either = required.map(&:first).sort == %w[independent_column independent_tickers]
+      out << "Then call `econometrics.#{fn_name}` with #{names[0..-2].join(', ')}#{either ? ' or ' : ' and ' if names.size > 1}#{names.last}"
+      out << (required.any? { |name, _, _| name.include?("ticker") } ? ", using the column names of the data as tickers.\n\n" : ".\n\n")
+    end
+    out
+  end
+
   def content_for(site, name, key, fn_name, parts, related)
     cls = CLASSES[key]
     out = +""
@@ -266,6 +300,7 @@ module DocsMetricPages
       out << code.rstrip << "\n\n" unless code.strip.empty?
       out << mcp
       out << returns << rest << "\n\n" unless returns.empty?
+      out << own_data(fn_name, parameters) if key == "econometrics"
     end
     unless parameters.empty?
       out << "## Parameters\n\n"
