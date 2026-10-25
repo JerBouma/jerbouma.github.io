@@ -258,7 +258,7 @@ module DocsMetricPages
     out = +"### Using Your Own Data\n\n"
     out << "`#{fn_name}` runs on any data, not only prices: ratios, economic indicators, yield curves or your own dataset. "
     out << "Pass a DataFrame, a Series or a dictionary of them to `Econometrics` as `data`, with the dates in the rows or the columns, "
-    out << "and set `changes` to how its changes are calculated: `\"percentage\"`, `\"log\"`, `\"difference\"` for rates and ratios, or `\"none\"`. "
+    out << "and set `changes` to how its changes are calculated: `\"percentage\"`, `\"log\"`, `\"difference\"` for rates and ratios, or `None` when the data are changes already. "
     out << "For example, for the monthly unemployment rates of the United States and Germany"
     out << (required.empty? ? ":\n\n" : ", where each country is a column:\n\n")
     out << <<~PYTHON

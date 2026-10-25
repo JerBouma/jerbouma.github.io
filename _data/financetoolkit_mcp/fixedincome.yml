@@ -38,8 +38,25 @@ get_yield_to_maturity:
     - 5
     - 10
     - 15
+get_forward_rate:
+  question: Which forward rates from 1, 2 and 3 years to 5 and 10 years does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply?
+  tool: fixed_income
+  arguments:
+    spot_rates:
+      "1": 0.03
+      "2": 0.032
+      "3": 0.034
+      "5": 0.038
+      "10": 0.044
+    near_maturity:
+    - 1
+    - 2
+    - 3
+    far_maturity:
+    - 5
+    - 10
 get_par_yield:
-  question: What par yields does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply for maturities of 1 to 10 years?
+  question: What par yields does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply for annual-coupon bonds of 1, 2, 3, 5 and 10 years?
   tool: fixed_income
   arguments:
     spot_rates:
@@ -56,44 +73,8 @@ get_par_yield:
     - 5
     - 10
     frequency: 1
-get_forward_rate:
-  question: Which forward rates does a spot curve rising from 3% at 1 year to 4.4% at 10 years imply?
-  tool: fixed_income
-  arguments:
-    spot_rates:
-      "1": 0.03
-      "2": 0.032
-      "3": 0.034
-      "5": 0.038
-      "10": 0.044
-    near_maturity:
-    - 1
-    - 2
-    - 3
-    far_maturity:
-    - 5
-    - 10
-get_key_rate_duration:
-  question: On a spot curve rising from 3% at 1 year to 4.4% at 10 years, what are the key rate durations of 5 and 10-year bonds with a 5% coupon?
-  tool: fixed_income
-  arguments:
-    coupon_rate: 0.05
-    years_to_maturity:
-    - 5
-    - 10
-    key_rate_maturity:
-    - 2
-    - 5
-    - 10
-    spot_rates:
-      "1": 0.03
-      "2": 0.032
-      "3": 0.034
-      "5": 0.038
-      "7": 0.041
-      "10": 0.044
 get_yield_curve_spread:
-  question: On a yield curve rising from 3% at 1 year to 5% at 30 years, how wide are the spreads between its short and long end?
+  question: On a yield curve rising from 3% at 1 year to 5% at 30 years, how wide are the spreads of the 10 and 30-year rates over the 1 and 2-year rates?
   tool: fixed_income
   arguments:
     spot_rates:
@@ -107,6 +88,25 @@ get_yield_curve_spread:
     short_maturity:
     - 1
     - 2
+get_breakeven_inflation_rate:
+  question: What inflation rate do nominal spot rates of 3%, 3.8%, 4.4% and 5% and real spot rates of 0.8%, 1.2%, 1.6% and 2% at 1, 5, 10 and 30 years price in?
+  tool: fixed_income
+  arguments:
+    nominal_rates:
+      "1": 0.03
+      "5": 0.038
+      "10": 0.044
+      "30": 0.05
+    real_rates:
+      "1": 0.008
+      "5": 0.012
+      "10": 0.016
+      "30": 0.02
+    maturity:
+    - 1
+    - 5
+    - 10
+    - 30
 get_z_spread:
   question: On a spot curve rising from 3% to 4.8%, what Z-spread does a 5% coupon bond have at prices of 95, 100 and 105, for maturities of 5, 10 and 15 years?
   tool: fixed_income
@@ -128,25 +128,25 @@ get_z_spread:
       "7": 0.041
       "10": 0.044
       "20": 0.048
-get_breakeven_inflation_rate:
-  question: What inflation rate do nominal spot rates of 3%, 3.8%, 4.4% and 5% and real spot rates of 0.8%, 1.2%, 1.6% and 2% at 1, 5, 10 and 30 years price in?
+get_option_adjusted_spread:
+  question: What is the option-adjusted spread of a 10-year bond with a 5% coupon, callable at par after two years, at prices of 98, 100 and 102 on a spot curve from 3.6% at 1 year to 4.7% at 30 years?
   tool: fixed_income
   arguments:
-    nominal_rates:
-      "1": 0.03
-      "5": 0.038
-      "10": 0.044
-      "30": 0.05
-    real_rates:
-      "1": 0.008
-      "5": 0.012
-      "10": 0.016
-      "30": 0.02
-    maturity:
-    - 1
-    - 5
-    - 10
-    - 30
+    bond_price:
+    - 98
+    - 100
+    - 102
+    coupon_rate: 0.05
+    years_to_maturity: 10
+    years_to_first_call: 2
+    call_price: 100.0
+    spot_rates:
+      "1": 0.036
+      "2": 0.035
+      "5": 0.037
+      "10": 0.041
+      "20": 0.047
+      "30": 0.047
 get_bond_equivalent_yield:
   question: What bond-equivalent yield do Treasury bills of 90, 180 and 360 days offer at discount yields of 3%, 5% and 7%?
   tool: fixed_income
@@ -159,6 +159,25 @@ get_bond_equivalent_yield:
     - 90
     - 180
     - 360
+get_key_rate_duration:
+  question: On a spot curve rising from 3% at 1 year to 4.4% at 10 years, what are the 2, 5 and 10-year key rate durations of 5 and 10-year bonds with a 5% annual coupon?
+  tool: fixed_income
+  arguments:
+    coupon_rate: 0.05
+    years_to_maturity:
+    - 5
+    - 10
+    key_rate_maturity:
+    - 2
+    - 5
+    - 10
+    spot_rates:
+      "1": 0.03
+      "2": 0.032
+      "3": 0.034
+      "5": 0.038
+      "7": 0.041
+      "10": 0.044
 get_taylor_price_change:
   question: If yields rise by 100 basis points from 8%, how much would bonds with 3% to 7% coupons and maturities of 5 to 15 years lose?
   tool: fixed_income
@@ -174,7 +193,7 @@ get_taylor_price_change:
     yield_to_maturity: 0.08
     yield_change: 0.01
 get_derivative_price:
-  question: What is a receiver swaption on $10 million worth under the Black model, across strikes from 2.75% to 4.25% and expiries of 1 to 10 years?
+  question: What is a receiver swaption on $10 million worth under the Black model at a 3.25% forward rate and 1% volatility, across strikes from 2.75% to 4.25% and expiries of 1, 2, 5 and 10 years from the end of 2025?
   tool: fixed_income
   arguments:
     model: black
@@ -193,20 +212,14 @@ get_derivative_price:
     notional: 10000000
     end_date: "2025-12-31"
 get_government_bond_yield:
-  question: How did long-term government bond yields in Japan, the United States and Brazil move in each month from May to December 2023?
+  question: How did long-term government bond yields in Japan, the United States and Germany move in each month from May to December 2023?
   tool: rates
   arguments:
-    countries: Japan,United States,Brazil
+    countries: Japan,United States,Germany
     short_term: false
     period: monthly
     start_date: "2023-05-01"
     end_date: "2023-12-31"
-get_treasury_rates:
-  question: What were the US Treasury par yields from 1 month to 30 years on each trading day from 1 to 15 January 2024?
-  tool: rates
-  arguments:
-    start_date: "2024-01-01"
-    end_date: "2024-01-15"
 get_government_bond_yield_curve:
   question: What were Germany's government bond yields at 1, 2, 5, 10, 20 and 30 years on each day from 28 September to 1 October 2026?
   tool: rates
@@ -216,15 +229,67 @@ get_government_bond_yield_curve:
     start_date: "2026-09-28"
     end_date: "2026-10-01"
     show_columns: 1Y,2Y,5Y,10Y,20Y,30Y
-get_bank_of_england_yield_curve:
-  question: How did the Bank of England's nominal zero-coupon gilt yields at 1, 3, 5, 10, 20 and 30 years move in each month from April to September 2026?
+get_treasury_rates:
+  question: What were the US Treasury par yields from 1 month to 30 years on each trading day from 1 to 15 January 2024?
   tool: rates
   arguments:
-    curve: nominal
+    start_date: "2024-01-01"
+    end_date: "2024-01-15"
+get_zero_coupon_curve:
+  question: What were the US zero-coupon rates at 1, 2, 5, 10, 20 and 30 years on each day from 19 to 23 October 2026?
+  tool: rates
+  arguments:
+    countries: United States
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
+    show_columns: 1Y,2Y,5Y,10Y,20Y,30Y
+get_nelson_siegel_svensson:
+  question: What were the Nelson-Siegel-Svensson parameters of Germany's yield curve on each day from 19 to 23 October 2026?
+  tool: rates
+  arguments:
+    countries: Germany
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
+get_yield_curve_principal_components:
+  question: How much of the monthly moves in the US yield curve from 2016 to 2025 did the level, slope and curvature components explain, and how did each maturity load on them?
+  tool: rates
+  arguments:
+    countries: United States
+    country: United States
     period: monthly
-    start_date: "2026-04-01"
-    end_date: "2026-09-30"
-    show_columns: 1Y,3Y,5Y,10Y,20Y,30Y
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_short_rate_model:
+  question: What do Vasicek and CIR models calibrated to the US 6-month Treasury yield from 2000 to October 2026 say about mean reversion, the long-run rate and the zero-coupon curve?
+  tool: rates
+  arguments:
+    countries: United States
+    country: United States
+    short_rate: 6M
+    start_date: "2000-01-01"
+    end_date: "2026-10-23"
+get_short_rate_simulation:
+  question: Where could the US 6-month rate be in each of the next five years according to a Hull-White simulation fitted from 2000 to October 2026, with its mean and 5th to 95th percentiles?
+  tool: rates
+  arguments:
+    countries: United States
+    country: United States
+    model: hull_white
+    short_rate: 6M
+    years: 5
+    steps_per_year: 1
+    start_date: "2000-01-01"
+    end_date: "2026-10-23"
+get_treasury_auctions:
+  question: What were the yield, bid-to-cover ratio and indirect bidder share of the last five 10-year Treasury note auctions up to October 2026?
+  tool: rates
+  arguments:
+    security_type: Note
+    security_term: 10-Year
+    start_date: "2025-01-01"
+    end_date: "2026-10-23"
+    show_columns: Security Term,Reopening,Yield,Bid-to-Cover Ratio,Indirect Bidder Share
+    limit: -5
 get_ice_bofa_option_adjusted_spread:
   question: How did the option-adjusted spreads of US corporate bonds by maturity, from 1-3 years to 15+ years, move from 1 to 15 January 2024?
   tool: rates
@@ -253,25 +318,8 @@ get_ice_bofa_yield_to_worst:
     maturity: false
     start_date: "2024-01-01"
     end_date: "2024-01-15"
-get_corporate_bond_yields:
-  question: How did corporate bond spreads over government bonds in Germany and Australia move from March to August 2026?
-  tool: rates
-  arguments:
-    countries: Germany,Australia
-    spread: true
-    start_date: "2026-03-01"
-    end_date: "2026-08-31"
-    show_columns: All ratings,A 5Y,BBB 5Y,BBB 10Y
-get_moodys_corporate_bond_yields:
-  question: How did the spreads of Moody's Aaa and Baa US corporate bonds over the 10-year Treasury move from March to August 2026?
-  tool: rates
-  arguments:
-    period: monthly
-    spread: true
-    start_date: "2026-03-01"
-    end_date: "2026-08-31"
 get_hqm_corporate_bond_yield_curve:
-  question: How did the US Treasury's high quality market corporate bond yield curve move from March to August 2026?
+  question: How did the US Treasury's high quality market corporate bond spot rates at 1, 5, 10, 30 and 100 years move in each month from March to August 2026?
   tool: rates
   arguments:
     rate: spot
@@ -284,13 +332,15 @@ get_hqm_corporate_bond_spread:
   arguments:
     start_date: "2026-03-01"
     end_date: "2026-08-31"
-get_corporate_borrowing_cost:
-  question: How did the cost of bank borrowing for companies in the euro area, Germany, France, Italy and Spain compare in each month from March to August 2026?
+get_corporate_bond_yields:
+  question: How did corporate bond spreads over government bonds in Germany and Australia, for all ratings, A at 5 years and BBB at 5 and 10 years, move in each month from March to August 2026?
   tool: rates
   arguments:
-    countries: Euro Area,Germany,France,Italy,Spain
+    countries: Germany,Australia
+    spread: true
     start_date: "2026-03-01"
     end_date: "2026-08-31"
+    show_columns: All ratings,A 5Y,BBB 5Y,BBB 10Y
 get_rating_transition_matrix:
   question: How likely were S&P-rated corporates from AAA to CCC to keep, raise or lose their rating, or to default, during 2025?
   tool: rates
@@ -310,20 +360,26 @@ get_default_rates:
     start_date: "2018-01-01"
     end_date: "2025-12-31"
     show_columns: BBB,BB,B,CCC
+get_implied_default_probability:
+  question: What default probabilities over 1, 3, 5 and 10 years do credit spreads of 1.1% for BBB, 2.1% for BB, 3.1% for B and 8.7% for CCC imply, at a 40% recovery rate?
+  tool: fixed_income
+  arguments:
+    spreads: BBB:0.011, BB:0.021, B:0.031, CCC:0.087
+    recovery_rate: 0.4
+get_moodys_corporate_bond_yields:
+  question: How did the spreads of Moody's Aaa and Baa US corporate bonds over the 10-year Treasury move from March to August 2026?
+  tool: rates
+  arguments:
+    period: monthly
+    spread: true
+    start_date: "2026-03-01"
+    end_date: "2026-08-31"
 get_excess_bond_premium:
   question: How did the Gilchrist-Zakrajšek credit spread and the excess bond premium move from February to July 2026?
   tool: rates
   arguments:
     start_date: "2026-02-01"
     end_date: "2026-07-31"
-get_financial_stress_index:
-  question: How did financial stress in the euro area, the United States, the United Kingdom and China compare from April to September 2026?
-  tool: rates
-  arguments:
-    countries: Euro Area,United States,United Kingdom,China
-    period: monthly
-    start_date: "2026-04-01"
-    end_date: "2026-09-30"
 get_eiopa_risk_free_rate:
   question: How did EIOPA's euro and UK risk-free spot rates at 1, 10, 30, 60 and 150 years move in each month from July to September 2026?
   tool: rates
@@ -340,11 +396,41 @@ get_eiopa_symmetric_adjustment:
     period: monthly
     start_date: "2026-04-01"
     end_date: "2026-09-30"
+get_bank_of_england_yield_curve:
+  question: How did the Bank of England's nominal zero-coupon gilt yields at 1, 3, 5, 10, 20 and 30 years move in each month from April to September 2026?
+  tool: rates
+  arguments:
+    curve: nominal
+    period: monthly
+    start_date: "2026-04-01"
+    end_date: "2026-09-30"
+    show_columns: 1Y,3Y,5Y,10Y,20Y,30Y
+get_corporate_borrowing_cost:
+  question: How did the cost of bank borrowing for companies in the euro area, Germany, France, Italy and Spain compare in each month from March to August 2026?
+  tool: rates
+  arguments:
+    countries: Euro Area,Germany,France,Italy,Spain
+    start_date: "2026-03-01"
+    end_date: "2026-08-31"
+get_financial_stress_index:
+  question: How did financial stress in the euro area, the United States, the United Kingdom and China compare in each month from April to September 2026?
+  tool: rates
+  arguments:
+    countries: Euro Area,United States,United Kingdom,China
+    period: monthly
+    start_date: "2026-04-01"
+    end_date: "2026-09-30"
 get_euribor_rates:
   question: How did the 1, 3, 6 and 12-month Euribor rates move in each month from December 2023 to December 2025?
   tool: rates
   arguments:
     start_date: "2023-12-01"
+    end_date: "2025-12-31"
+get_european_central_bank_rates:
+  question: What were the ECB's main refinancing, marginal lending and deposit facility rates on each day from 22 to 31 December 2025?
+  tool: rates
+  arguments:
+    start_date: "2025-12-22"
     end_date: "2025-12-31"
 get_federal_reserve_rates:
   question: What were the effective federal funds rate and its 1st, 25th, 75th and 99th percentiles on each trading day from 17 to 31 December 2025?
@@ -354,9 +440,3 @@ get_federal_reserve_rates:
     start_date: "2025-12-17"
     end_date: "2025-12-31"
     show_columns: Rate,1st Percentile,25th Percentile,75th Percentile,99th Percentile
-get_european_central_bank_rates:
-  question: What were the ECB's main refinancing, marginal lending and deposit facility rates on each day from 22 to 31 December 2025?
-  tool: rates
-  arguments:
-    start_date: "2025-12-22"
-    end_date: "2025-12-31"
