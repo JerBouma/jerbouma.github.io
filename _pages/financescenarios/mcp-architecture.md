@@ -100,7 +100,7 @@ financescenarios-mcp-warm                      # every factor set served
 financescenarios-mcp-warm --factor-set default # only one
 ```
 
-Run it once a month, for example from cron on the first day, or start the server with `FINANCESCENARIOS_MCP_WARM=1`.
+Run it once a month, for example from cron on the first day, or start the server with `FINANCESCENARIOS_MCP_WARM=1`. The command writes its report to stdout as JSON and each problem as a line on stderr, followed by a summary. A problem is a snapshot that failed to build, an answer that failed to precompute, or a factor or regime the snapshot left out, and any of them makes it exit with code 1, so a cron job notices. A factor set whose build fails doesn't stop the others from warming.
 
 ## Regimes, Shocks and Anchors
 {: .heading-as-h3}

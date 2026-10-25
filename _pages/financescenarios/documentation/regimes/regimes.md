@@ -127,7 +127,7 @@ $$
 \mathbb{E}[r_p \mid r_c = s] = \Sigma_{pc}\,\Sigma_{cc}^{-1}\,s
 $$
 
-with $$s$$ the shocked ("core") equities' moves on a date and $$\Sigma$$ the run's covariance of the equities' returns. With one shocked market the move is its beta times the shock, $$\rho\,\sigma_p/\sigma_c$$ per unit, so a market that has moved closely with US stocks falls almost as far and a loosely tied one only part of the way. Only the mean moves: each scenario keeps the model's own randomness around it. Black Monday, Oil Crisis and the Fed, Bank of England and ESRB stress tests use it; the dot-com bust and Financial Crisis carry the recorded falls of the funds that traded then and use it for the rest, and COVID carries recorded moves for every market. Under Oil Crisis, where 100 in US stocks is worth 59.1 in the median scenario after a year, 100 in European stocks is worth 65.1, in Japanese stocks 78.5 and in emerging markets 64.1, against 109.4 to 112.3 in the baseline.
+with $$s$$ the shocked ("core") equities' moves on a date and $$\Sigma$$ the run's covariance of the equities' returns. With one shocked market the move is its beta times the shock, $$\rho\,\sigma_p/\sigma_c$$ per unit, so a market that has moved closely with US stocks falls almost as far and a loosely tied one only part of the way. Only the mean moves: each scenario keeps the model's own randomness around it. Black Monday, Oil Crisis and the Fed, Bank of England and ESRB stress tests use it; the dot-com bust and Financial Crisis carry the recorded falls of the funds that traded then and use it for the rest, and COVID carries recorded moves for every market. Under Oil Crisis, where 100 in US stocks is worth 59.1 in the median scenario after a year, 100 in European stocks is worth 65.0, in Japanese stocks 78.4 and in emerging markets 64.0, against 109.3 to 112.3 in the baseline.
 
 ## How Targets Rank Scenarios
 
@@ -154,7 +154,7 @@ oil_crisis = scenarios.simulate(regime="oil_crisis", n_simulations=2000)
 
 A one-variable question, such as "what if inflation hit 8% within a year?", does not need a regime file: `shock_regime` builds one from the variable, the level and the timing, as the [Short Rate](/projects/financescenarios/docs/interest-rates#an-inflation-shock) page shows. `load_regime` returns a shipped regime as an object to inspect or change, `RegimeLibrary` holds your own, and `stress_test_regime` builds a regime from a regulator's published scenario of another year.
 
-A targeted regime keeps only part of each draw, about 9% for AI and Tech Boom, so the run draws batches until 2,000 scenarios fit (24,000 draws in three batches on the 19 October 2026 calibration). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch, so the stressed quantiles are close to, not exactly, those of one large ranked run.
+A targeted regime keeps only part of each draw, about 9% for AI and Tech Boom, so the run draws batches until 2,000 scenarios fit (24,000 draws in three batches on the 25 October 2026 calibration). The stressed percentiles then rest on as many scenarios as the baseline's. Each batch ranks its own draws, so "the worst 30%" means the worst 30% of a batch, not of all draws pooled: each batch's cutoff carries its own sampling noise, most in the first batch, so the stressed quantiles are close to, not exactly, those of one large ranked run.
 
 ## Reading a Stressed Run
 
@@ -167,7 +167,7 @@ A stressed run is read against the baseline, factor by factor on the same scale,
 
 ## Examples
 
-Every run below uses the calibration of the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42.
+Every run below uses the calibration of the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42.
 
 ### Beliefs Only: A Soft Landing
 
@@ -195,11 +195,11 @@ Which returns:
 | factor | baseline | soft_landing |
 |:-------|---------:|-------------:|
 | united_states_inflation | 0.0243 | 0.0243 |
-| united_states_unemployment | 0.0508 | 0.0456 |
-| united_states_short_rate | 0.0453 | 0.0367 |
-| us_broad | 0.0874 | 0.0792 |
+| united_states_unemployment | 0.0508 | 0.0455 |
+| united_states_short_rate | 0.0448 | 0.0362 |
+| us_broad | 0.0869 | 0.0788 |
 
-Inflation is the baseline's, 2.43% on average after three years. Unemployment's median stays at 4.20% to year three, against the baseline's 4.72%, which averages in the recessions this story leaves out, and unemployment averages 4.56% instead of 5.08%. The short rate's median is 3.38% after one year and after three, against 4.31% at both in the baseline, and it averages 3.67% instead of 4.53%. US stocks return 7.92% a year instead of 8.74%: expected stock returns are the short rate plus a premium, so lower rates give a smaller gain, not a crash. Run for five years, as in the chart, the policy rule is back in charge after year three and sets the rate above the baseline's, a median of 4.73% against 4.39% after five years, while unemployment is still lower, 4.82% against 5.15%. When plotted over five years, one variable per tab:
+Inflation is the baseline's, 2.43% on average after three years. Unemployment's median stays at 4.20% to year three, against the baseline's 4.73%, which averages in the recessions this story leaves out, and unemployment averages 4.55% instead of 5.08%. The short rate's median is 3.33% after one year and after three, against 4.26% at both in the baseline, and it averages 3.62% instead of 4.48%. US stocks return 7.88% a year instead of 8.69%: expected stock returns are the short rate plus a premium, so lower rates give a smaller gain, not a crash. Run for five years, as in the chart, the policy rule is back in charge after year three and sets the rate above the baseline's, a median of 4.69% against 4.36% after five years, while unemployment is still lower, 4.82% against 5.14%. When plotted over five years, one variable per tab:
 
 {% include ft-chart.html id="regimes-soft-landing" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of the US short rate and US unemployment in the baseline and under Soft Landing over five years" %}
 
@@ -220,12 +220,12 @@ Which returns:
 
 | factor | baseline | financial_crisis |
 |:-------|---------:|-----------------:|
-| us_broad | 0.0849 | -0.1158 |
-| united_states_unemployment | 0.0553 | 0.0813 |
-| united_states_short_rate | 0.0459 | 0.0032 |
+| us_broad | 0.0844 | -0.1159 |
+| united_states_unemployment | 0.0554 | 0.0813 |
+| united_states_short_rate | 0.0455 | 0.0032 |
 | united_states_inflation | 0.0234 | 0.0234 |
 
-In the median scenario 100 in US stocks is worth 47.6 after seventeen months and 54.7 after five years, a loss of 11.58% a year on average instead of a gain of 8.49%, and 100 in European stocks 37.5 at the low. Unemployment reaches 10.0% after two years and averages 8.13% after five instead of 5.53%, and the short rate stays near zero, at 0.32%. Inflation, which the regime does not name, averages 2.34% as in the baseline. When plotted, one variable per tab, US stocks as the value of 100:
+In the median scenario 100 in US stocks is worth 47.6 after seventeen months and 54.7 after five years, a loss of 11.59% a year on average instead of a gain of 8.44%, and 100 in European stocks 37.5 at the low. Unemployment reaches 10.0% after two years and averages 8.13% after five instead of 5.54%, and the short rate stays near zero, at 0.32%. Inflation, which the regime does not name, averages 2.34% as in the baseline. When plotted, one variable per tab, US stocks as the value of 100:
 
 {% include ft-chart.html id="regimes-financial-crisis" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of the value of 100 in US stocks, US unemployment and the US short rate in the baseline and under Financial Crisis over five years" %}
 
@@ -246,10 +246,10 @@ Which returns:
 | factor | baseline | oil_shock | oil_crisis | inflation_shock_2022 |
 |:-------|---------:|----------:|-----------:|---------------------:|
 | united_states_inflation | 0.0234 | 0.0274 | 0.0483 | 0.0295 |
-| united_states_short_rate | 0.0459 | 0.0560 | 0.0427 | 0.0449 |
-| us_broad | 0.0849 | 0.0803 | 0.0086 | 0.0829 |
+| united_states_short_rate | 0.0455 | 0.0556 | 0.0424 | 0.0445 |
+| us_broad | 0.0844 | 0.0798 | 0.0086 | 0.0828 |
 
-Oil Crisis puts the median of US inflation at 12.00% after one year and 5.50% after three, and inflation averages 4.83% after five years. The short rate follows the bill rather than the rule, a negative real rate as in 1974: a median of 8.12% after a year, 5.61% after eighteen months and 4.25% after five years, an average of 4.27% against the baseline's 4.59%. Unemployment's median reaches 8.75% after eighteen months, and 100 in US stocks is worth 59.1 after a year and 102.7 after five, a return of 0.86% a year. When plotted, US inflation in the four runs:
+Oil Crisis puts the median of US inflation at 12.00% after one year and 5.50% after three, and inflation averages 4.83% after five years. The short rate follows the bill rather than the rule, a negative real rate as in 1974: a median of 8.12% after a year, 5.61% after eighteen months and 4.22% after five years, an average of 4.24% against the baseline's 4.55%. Unemployment's median reaches 8.75% after eighteen months, and 100 in US stocks is worth 59.1 after a year and 102.8 after five, a return of 0.86% a year. When plotted, US inflation in the four runs:
 
 {% include ft-chart.html id="regimes-inflation" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of US inflation in the baseline and under Oil Shock, Oil Crisis and 2022 Inflation and Rate Hikes over five years" %}
 

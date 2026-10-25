@@ -46,7 +46,7 @@ The NBER's recession dates are not an input, yet the regimes line up with them: 
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/economy/unemployment-regimes-us" alt="US unemployment since 1956 with NBER recessions, and the fit's filtered chance of the recession regime" %}
 
-The UK fit on the OECD's record since 1971 finds longer, slower recessions: 18% of months, in spells of 17.2 months. A single mean-reverting fit on that record, with history's volatility, reaches zero in a fifth of 30-year paths; the sharp rises and slow falls of the regimes keep it off the floor. The chart shades the months the fit puts in the recession regime:
+The UK fit on the OECD's record since 1971 finds longer, slower recessions: 18% of months, in spells of 17.3 months. A single mean-reverting fit on that record, with history's volatility, reaches zero in a fifth of 30-year paths; the sharp rises and slow falls of the regimes keep it off the floor. The chart shades the months the fit puts in the recession regime:
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/economy/unemployment-regimes-uk" alt="UK unemployment since 1971 with the months in the recession regime shaded, the fitted calm level and the average" %}
 
@@ -73,7 +73,7 @@ Every US recession since 1969 followed a bear market or an inverted curve, so a 
 
 Where does unemployment settle? The [plucking model of Dupraz, Nakamura and Steinsson (2019, sections 1 and 2.2)](https://doi.org/10.3386/w26351){:target="_blank"} reads the business cycle as rises of unemployment above a floor: recessions pluck it up from a resting point of low unemployment, and it does not swing symmetrically around a natural rate. The FOMC reads its longer-run projections the same way, as the values reached in the absence of further shocks ([Summary of Economic Projections, 16 September 2026, note to Table 1](https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260916.htm){:target="_blank"}). In this model that is the calm level, where unemployment settles in a long expansion. The default therefore shifts every unemployment process that a policy-rule short rate reads (all three in the default factor set) so that its calm level equals the official estimate, and keeps the fitted distance from the calm level to the average: recessions still push the average above it.
 
-The anchored averages, 6.01% for the US and 7.08% for the UK, sit above history's 5.81% since 1956 and 6.61% since 1971: the official longer-run rates are above the calm levels the fits found (3.78% and 3.67%), and the distance from calm level to average is kept as fitted, 1.8 points for the US and 2.9 for the UK. For the UK that distance is large because its recessions last 17.2 months on average and unemployment falls back slowly, at a speed of 0.13 a year.
+The anchored averages, 6.01% for the US and 7.11% for the UK, sit above history's 5.81% since 1956 and 6.61% since 1971: the official longer-run rates are above the calm levels the fits found (3.78% and 3.61%), and the distance from calm level to average is kept as fitted, 1.8 points for the US and 2.9 for the UK. For the UK that distance is large because its recessions last 17.3 months on average and unemployment falls back slowly, at a speed of 0.13 a year.
 
 The alternative reading takes the official rate as unemployment's average over the cycle, the zero-mean gap the European Commission builds its NAWRU (non-accelerating wage rate of unemployment) on ([Havik et al., 2014, section 2.4.2](https://ec.europa.eu/economy_finance/publications/economic_paper/2014/pdf/ecp535_en.pdf){:target="_blank"}). It is available as an option (`natural_rate_anchor: average`), but it puts the calm level the whole push below the official rate: 2.4% for the US and 1.3% for the UK on the default fits. US unemployment has not been below 3.4% since the OECD record starts in 1956; it touched 3.4% in 1968-69 and in April 2023. The chart compares both readings, with France for the euro area:
 
@@ -124,13 +124,13 @@ Every number in the US and UK unemployment models, and where it comes from:
 | Equity link, slope on the shortfall | -7.57 on the log-odds per unit of log-return shortfall | none | Fitted | Shiller's index is the only monthly equity history long enough that needs no API key |
 | Equity window lag | 3 months | | Judgement | The lag that fits US data 1969-2025 best: R² of 0.43 at three months, 0.42 at none and 0.35 at six, in the yearly regression of unemployment's change on the past year's equity return |
 | Prior scale on the slope | 1.25 | | Sourced | [Gelman et al. (2008, sections 2.1-2.2)](https://doi.org/10.1214/08-AOAS191){:target="_blank"} |
-| Calm level, fitted | 3.78% | 3.67% | Fitted | |
+| Calm level, fitted | 3.78% | 3.61% | Fitted | |
 | Calm level, anchored | 4.2% | 4.21% | Sourced | The official natural rate as the level reached without further shocks ([Dupraz, Nakamura and Steinsson, 2019](https://doi.org/10.3386/w26351){:target="_blank"}): FOMC longer-run median ([SEP, 16 September 2026, Table 1](https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260916.htm){:target="_blank"}); the European Commission's NAWRU for 2027 ([AMECO ZNAWRU, Spring 2026](https://ec.europa.eu/economy_finance/ameco/wq/series?fullVariable=1.0.0.0.ZNAWRU&countries=FRA,GBR,DEU&years=2027&lastYear=0&yearOrder=ASC){:target="_blank"}) |
-| Long-run average, anchored | 6.01% | 7.08% | Derived | The anchor plus the fitted distance from calm level to average |
+| Long-run average, anchored | 6.01% | 7.11% | Derived | The anchor plus the fitted distance from calm level to average |
 
 ## Examples
 
-The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42.
+The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42.
 
 ### Unemployment in Three Economies {#unemployment-rate}
 
@@ -153,17 +153,17 @@ Which gives:
 
 | factor | horizon | q0.05 | q0.5 | q0.95 |
 |:-------|--------:|------:|-----:|------:|
-| united_states_unemployment | 1 | 0.0350 | 0.0429 | 0.0566 |
-| united_states_unemployment | 3 | 0.0330 | 0.0472 | 0.0814 |
-| united_states_unemployment | 5 | 0.0337 | 0.0515 | 0.0894 |
-| eurozone_unemployment | 1 | 0.0701 | 0.0795 | 0.0888 |
-| eurozone_unemployment | 3 | 0.0644 | 0.0775 | 0.0905 |
-| eurozone_unemployment | 5 | 0.0614 | 0.0760 | 0.0909 |
-| united_kingdom_unemployment | 1 | 0.0442 | 0.0489 | 0.0601 |
-| united_kingdom_unemployment | 3 | 0.0412 | 0.0497 | 0.0822 |
-| united_kingdom_unemployment | 5 | 0.0402 | 0.0516 | 0.0961 |
+| united_states_unemployment | 1 | 0.0351 | 0.0429 | 0.0567 |
+| united_states_unemployment | 3 | 0.0330 | 0.0472 | 0.0812 |
+| united_states_unemployment | 5 | 0.0338 | 0.0514 | 0.0895 |
+| eurozone_unemployment | 1 | 0.0704 | 0.0796 | 0.0884 |
+| eurozone_unemployment | 3 | 0.0647 | 0.0776 | 0.0902 |
+| eurozone_unemployment | 5 | 0.0614 | 0.0759 | 0.0909 |
+| united_kingdom_unemployment | 1 | 0.0423 | 0.0471 | 0.0579 |
+| united_kingdom_unemployment | 3 | 0.0399 | 0.0484 | 0.0810 |
+| united_kingdom_unemployment | 5 | 0.0390 | 0.0506 | 0.0951 |
 
-US unemployment starts at 4.2% and its median drifts up to 5.15% over five years, while the 95th percentile reaches 8.94%: recessions push unemployment up fast and it comes down slowly. The euro area, fitted on France without regimes, stays in a narrow band around 7.6%. When plotted:
+US unemployment starts at 4.2% and its median drifts up to 5.14% over five years, while the 95th percentile reaches 8.95%: recessions push unemployment up fast and it comes down slowly. The euro area, fitted on France without regimes, stays in a narrow band around 7.6%. When plotted:
 
 {% include ft-chart.html id="economy-unemployment" src="/assets/data/financescenarios-guides/economy.json" label="Median and 5-95% band of unemployment in the US, the euro area and the UK over five years" %}
 
@@ -178,7 +178,7 @@ rise = {
 }
 ```
 
-That share grows from 10% after one year to 35% after three and 49% after five in the US, against 6%, 23% and 34% in the UK and at most 6% in the euro area. When plotted:
+That share grows from 10% after one year to 35% after three and 48% after five in the US, against 6%, 24% and 36% in the UK and at most 6% in the euro area. When plotted:
 
 {% include ft-chart.html id="economy-unemployment-rise" src="/assets/data/financescenarios-guides/economy.json" label="Share of the 2,000 scenarios in which unemployment is at least one percentage point above today's level, for the US, the euro area and the UK" %}
 

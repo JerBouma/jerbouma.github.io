@@ -129,17 +129,17 @@ Which gives, among other columns:
 
 | factor | horizon | mean | q0.05 | q0.5 | q0.95 |
 |:-------|--------:|-----:|------:|-----:|------:|
-| united_states_short_rate | 5 | 0.0462 | 0.0000 | 0.0438 | 0.1114 |
-| united_states_short_rate | 10 | 0.0465 | 0.0000 | 0.0437 | 0.1188 |
-| united_states_short_rate | 30 | 0.0418 | 0.0000 | 0.0360 | 0.1100 |
-| united_states_long_rate | 5 | 0.0586 | 0.0189 | 0.0559 | 0.1098 |
-| united_states_long_rate | 10 | 0.0592 | 0.0136 | 0.0558 | 0.1211 |
-| united_states_long_rate | 30 | 0.0553 | 0.0128 | 0.0515 | 0.1150 |
+| united_states_short_rate | 5 | 0.0458 | 0.0000 | 0.0434 | 0.1108 |
+| united_states_short_rate | 10 | 0.0462 | 0.0000 | 0.0431 | 0.1183 |
+| united_states_short_rate | 30 | 0.0403 | 0.0000 | 0.0340 | 0.1081 |
+| united_states_long_rate | 5 | 0.0592 | 0.0182 | 0.0563 | 0.1123 |
+| united_states_long_rate | 10 | 0.0586 | 0.0111 | 0.0547 | 0.1214 |
+| united_states_long_rate | 30 | 0.0538 | 0.0097 | 0.0500 | 0.1145 |
 | united_states_inflation | 5 | 0.0229 | -0.0086 | 0.0185 | 0.0733 |
 | united_states_inflation | 10 | 0.0232 | -0.0073 | 0.0173 | 0.0786 |
 | united_states_inflation | 30 | 0.0248 | -0.0056 | 0.0180 | 0.0812 |
 
-After ten years the ranges barely widen: each variable has reached the distribution its model settles in, with the median short rate at 3.60% and the 10-year rate at 5.15% after thirty years. When plotted:
+After ten years the ranges barely widen: each variable has reached the distribution its model settles in, with the median short rate at 3.40% and the 10-year rate at 5.00% after thirty years. When plotted:
 
 {% include ft-chart.html id="configuration-thirty-years" src="/assets/data/financescenarios-guides/configuration.json" label="Median and 5-95% band of the US short rate, the US 10-year rate and US inflation over thirty years, 1,000 scenarios" %}
 
@@ -162,7 +162,7 @@ for n_simulations in (500, 2000):
         print(n_simulations, seed, run.summary_statistics("us_broad").tail(1).select("mean", "se"))
 ```
 
-With 500 scenarios the mean ranges from 7.99% to 9.39% a year across the five seeds, with a standard error of about 0.35 points; with 2,000 it ranges from 8.29% to 8.92%, with a standard error of about 0.18 points. When plotted:
+With 500 scenarios the mean ranges from 7.95% to 9.35% a year across the five seeds, with a standard error of about 0.34 points; with 2,000 it ranges from 8.24% to 8.87%, with a standard error of about 0.18 points. When plotted:
 
 {% include ft-chart.html id="configuration-seeds" src="/assets/data/financescenarios-guides/configuration.json" label="Mean five-year annualized return of US stocks for seeds 1 to 5 at 500 and at 2,000 scenarios" %}
 
@@ -268,8 +268,8 @@ start_date: 2026-01-01
 
 engine:
   n_simulations: 5000
-  n_steps: 30
-  frequency: yearly
+  n_steps: 360          # 30 years of months: the default set's equity regimes are fitted month by month
+  frequency: monthly
   antithetic: true      # paired +/- shocks, less Monte Carlo noise
   seed: 42              # same inputs, same scenarios
 
@@ -312,16 +312,16 @@ small_result = Scenarios.from_config(small_config).simulate()
 small_result.describe()
 ```
 
-A configuration of your own calibrates on the day it runs, here 23 October 2026, so its numbers come from a different calibration than the other examples on this page. Every run also holds an unemployment entry, so `describe` returns four variables:
+A configuration of your own calibrates on the day it runs, here 25 October 2026, so its numbers come from a different calibration than the other examples on this page. Every run also holds an unemployment entry, so `describe` returns four variables:
 
 | factor | category | metric | initial | terminal_mean | terminal_q05 | terminal_q95 |
 |:-------|:---------|:-------|--------:|--------------:|-------------:|-------------:|
 | inflation | inflation | rate | 0.0374 | 0.0260 | 0.0001 | 0.0486 |
-| us_short_rate | interest_rates | rate | 0.0402 | 0.0284 | -0.0104 | 0.0694 |
-| unemployment | unemployment | rate | 0.0420 | 0.0541 | 0.0261 | 0.0812 |
-| us_broad | equities | annualized |  | 0.1132 | 0.0157 | 0.1930 |
+| us_short_rate | interest_rates | rate | 0.0403 | 0.0404 | 0.0043 | 0.0795 |
+| unemployment | unemployment | rate | 0.0420 | 0.0541 | 0.0264 | 0.0807 |
+| us_broad | equities | annualized |  | 0.1129 | 0.0146 | 0.1935 |
 
-Over ten years SPY returns 11.32% a year on average with these three variables alone, against 8.49% over five years in the default factor set: runs compare only when they share their setup.
+Over ten years SPY returns 11.29% a year on average with these three variables alone, against 8.44% over five years in the default factor set: runs compare only when they share their setup.
 
 ## API Keys {#secrets}
 

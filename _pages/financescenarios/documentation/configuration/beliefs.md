@@ -83,7 +83,7 @@ By default a factor's volatility is constant and its drift ignores the business 
   <div><i class="ca-icon fas fa-gauge" aria-hidden="true"></i><p class="ca-card-title">The business cycle</p><p>A factor's drift follows the leading indicator's step-to-step change, so inflation or rates move with the business cycle (<a href="/projects/financescenarios/docs/economy/business-cycle#conditioning-on-the-cycle">conditioning on the cycle</a>).</p></div>
 </div>
 
-To switch on the cycle, or GARCH instead:
+To switch on the cycle, or GARCH instead, on inflation that follows the plain mean-reverting model (`method: ou`, without a `history_source`); the default factor set's regime-switching inflation, fitted on its long history, takes neither and refuses the setting:
 
 ```yaml
 # my-project/factor-sets/my_factors.yaml (a factor set)
@@ -139,7 +139,7 @@ compare_runs(
 )
 ```
 
-Median US inflation is 5.50% after one year against 2.71% without the belief, 4.45% after two, 3.85% after three and 2.52% after five, against 1.81%. Every variable linked to inflation follows: the median short rate after five years is 6.06% against 4.39%, and US stocks return 7.94% a year against 8.73%. When plotted:
+Median US inflation is 5.50% after one year against 2.71% without the belief, 4.45% after two, 3.85% after three and 2.52% after five, against 1.81%. Every variable linked to inflation follows: the median short rate after five years is 6.02% against 4.36%, and US stocks return 7.90% a year against 8.70%. When plotted:
 
 {% include ft-chart.html id="configuration-belief" src="/assets/data/financescenarios-guides/configuration.json" label="Median and 5-95% band of US inflation as fitted and with a belief path and a shock, over five years" %}
 

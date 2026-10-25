@@ -68,7 +68,7 @@ Every number in the currency model, and where it comes from:
 | Number | Value | Kind | Why |
 |:--|:--|:--|:--|
 | Half-life of the real rate | 4 years | Sourced | [Rogoff (1996, sections 5.B and 5.C, pp. 656-657)](https://ideas.repec.org/a/aea/jeclit/v34y1996i2p647-668.html){:target="_blank"} |
-| Anchor $$\bar q$$ | The average real rate since 2000 | Judgement | The calibration window; the anchor less today's real rate is -0.105 (euro) and -0.095 (pound) in logs |
+| Anchor $$\bar q$$ | The average real rate since 2000 | Judgement | The calibration window; the anchor less today's real rate is -0.105 (euro) and -0.096 (pound) in logs |
 | Volatility | Euro 9.3%, pound 8.6%, yen 9.3% a year | Fitted | End-of-month rates since 2000 |
 | Yen | Random walk | Sourced | [Meese and Rogoff (1983, section 4, Table 1, p. 13)](https://doi.org/10.1016/0022-1996(83)90017-X){:target="_blank"} |
 
@@ -84,7 +84,7 @@ with both rates the simulated ones at the start of each step when both are simul
 
 ## Example
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. To simulate it and read the euro's fitted parameters:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. To simulate it and read the euro's fitted parameters:
 
 ```python
 from financescenarios import Scenarios
@@ -98,7 +98,7 @@ result = scenarios.simulate(calibration=calibration, n_simulations=2000, seed=42
 calibration.calibrated_params["eur"]
 ```
 
-Which gives a speed of 0.173 a year (ln 2 over four years), a volatility of 9.3% a year and a `long_run_deviation` of -0.105, the average real exchange rate since 2000 less today's in logs: in real terms the dollar buys about 11% more euros than usual. A dollar buys 0.8807 euros, 0.7526 pounds and 157.0 yen at the start. After five years the median scenario has it buying 0.8145 euros and 0.7040 pounds, as the dollar loses part of that edge, and still 156.8 yen. When plotted as exchange-rate levels, one currency per tab:
+Which gives a speed of 0.173 a year (ln 2 over four years), a volatility of 9.3% a year and a `long_run_deviation` of -0.105, the average real exchange rate since 2000 less today's in logs: in real terms the dollar buys about 11% more euros than usual. A dollar buys 0.8807 euros, 0.7526 pounds and 157.0 yen at the start. After five years the median scenario has it buying 0.8146 euros and 0.7133 pounds, as the dollar loses part of that edge, and still 156.8 yen. When plotted as exchange-rate levels, one currency per tab:
 
 {% include ft-chart.html id="markets-fx" src="/assets/data/financescenarios-guides/markets.json" label="Median, 25-75% and 5-95% band of the number of euros, pounds and yen one US dollar buys over five years" %}
 

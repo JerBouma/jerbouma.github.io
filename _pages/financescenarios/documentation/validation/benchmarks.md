@@ -66,27 +66,27 @@ Which gives, next to GOES's own figures:
 
 | Check | GOES | `goes` set |
 |:--|--:|--:|
-| 3-month yield, 50th / 95th / 99th percentile in year 30 | 2.80 / 10.88 / 15.42% | 2.76 / 11.03 / 16.55% |
-| 3-month yield, 50th / 95th / 99th percentile in year 10 | 3.21 / 10.61 / 14.13% | 3.29 / 9.56 / 13.21% |
-| 10-year yield, 50th / 99th percentile in year 30 | 4.50 / 14.83% | 4.44 / 14.33% |
-| T1: 1-year 99.5th percentile, highest (at most 18%) | 17.65% | 16.87%, pass |
-| T1: 20-year 99.5th percentile, highest (at most 17%) | 16.41% | 15.84%, pass |
-| T1: share ever above the cap, 1-year / 20-year (at most 0.5%) | 3.06 / 2.57% | 1.60 / 1.06%, fail |
-| T2: lowest 1-year (at least -1%) | pass | -0.04%, pass |
-| T2: lowest 20-year (at least 0%) | pass | 0.03%, pass |
-| T4: low for long over 10 / 30 years (at least 7.5 / 3.75%) | 3.44 / 2.87%, fail | 0.00 / 0.59%, fail |
-| T5: 99th percentile of the 20-year averages, 10 / 30 years | 10.01 / 10.61% | 8.88 / 10.38%, fail (bounds 9.00 / 10.54%) |
-| T6: 1-year median in year 30 (1.31 to 3.35%) | 3.09% | 3.05%, pass |
-| T6: 20-year median in year 30 (3.35 to 4.89%) | 4.83% | 4.66%, pass |
-| E1: median gross wealth factor in year 30 (9.23) | 9.26 | 9.49 |
+| 3-month yield, 50th / 95th / 99th percentile in year 30 | 2.80 / 10.88 / 15.42% | 2.77 / 10.85 / 15.95% |
+| 3-month yield, 50th / 95th / 99th percentile in year 10 | 3.21 / 10.61 / 14.13% | 3.39 / 9.59 / 13.21% |
+| 10-year yield, 50th / 99th percentile in year 30 | 4.50 / 14.83% | 4.43 / 14.45% |
+| T1: 1-year 99.5th percentile, highest (at most 18%) | 17.65% | 16.79%, pass |
+| T1: 20-year 99.5th percentile, highest (at most 17%) | 16.41% | 16.06%, pass |
+| T1: share ever above the cap, 1-year / 20-year (at most 0.5%) | 3.06 / 2.57% | 1.47 / 1.38%, fail |
+| T2: lowest 1-year (at least -1%) | pass | -0.02%, pass |
+| T2: lowest 20-year (at least 0%) | pass | 0.01%, pass |
+| T4: low for long over 10 / 30 years (at least 7.5 / 3.75%) | 3.44 / 2.87%, fail | 0.00 / 0.63%, fail |
+| T5: 99th percentile of the 20-year averages, 10 / 30 years | 10.01 / 10.61% | 8.97 / 10.79%, fail / pass (bounds 9.04 / 10.57%) |
+| T6: 1-year median in year 30 (1.31 to 3.35%) | 3.09% | 3.07%, pass |
+| T6: 20-year median in year 30 (3.35 to 4.89%) | 4.83% | 4.69%, pass |
+| E1: median gross wealth factor in year 30 (9.23) | 9.26 | 9.00 |
 | E1: percentiles within 10% of their targets | 40 of 40 | 40 of 40 |
 
 <div class="fs-callout fs-callout--limits" markdown="1">
 <p class="fs-callout__title">Where the <code>goes</code> set still misses GOES</p>
 
 - **T4, low for long.** GOES fails it too. A CIR 20-year rate almost never averages below 1.45% for ten years; GOES gets closer with its flooring mechanisms.
-- **T1's share of scenarios ever above the cap.** It is 1.6% against a limit of 0.5%, though GOES's own share is 3.06% and the dashboard does not judge it.
-- **T5's upper tail** is about 0.1 to 0.2 points short. The bounds are interpolated at the run's own starting 20-year yield, about 5.1%, not GOES's 5.68%.
+- **T1's share of scenarios ever above the cap.** It is 1.5% against a limit of 0.5%, though GOES's own share is 3.06% and the dashboard does not judge it.
+- **T5's upper tail** is about 0.1 point short for the 10-year averages; the 30-year averages now clear their bound. The bounds are interpolated at the run's own starting 20-year yield, about 5.1%, not GOES's 5.68%.
 - **The first ten years** are narrower than GOES's: the 3-month 99th percentile is 13.2% against 14.1% in year 10. One CIR factor per tenor cannot widen the early years without overshooting year 30, and NAIC publishes neither a two-factor specification nor its parameters.
 - **Corporate bond funds** (C1) are not modeled.
 </div>

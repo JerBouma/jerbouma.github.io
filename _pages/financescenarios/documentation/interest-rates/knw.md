@@ -209,7 +209,7 @@ for tenor in [0.25, 1, 5, 10, 30]:
     print(tenor, knw_sv_q.zero_coupon_yield("interest_rate", tenor))
 ```
 
-In one fit (calibrated on 14 October 2026), the model curve starts at the 3.75% short rate, rises to about 4.5% at five years and flattens near 4.8% beyond ten: below the latest Treasury yields, since the premiums are fitted across the whole history.
+In one fit (calibrated on 24 October 2026), the model curve starts at the 3.86% short rate, rises to about 4.4% at five years and flattens near 4.8% beyond ten: below the latest Treasury yields, since the premiums are fitted across the whole history.
 
 <div class="fs-callout fs-callout--limits" markdown="1">
 <p class="fs-callout__title">Limits</p>

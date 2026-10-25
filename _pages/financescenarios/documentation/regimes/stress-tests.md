@@ -90,7 +90,7 @@ Short rates follow the NGFS scenario's policy rate, long rates its long-term int
 
 ## Example
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. The Federal Reserve's 2026 severely adverse scenario takes US unemployment to 10%, US stocks down almost 60%, house prices down 30% and the short rate to 0.1%. To run it next to the baseline and compare the medians after five years:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. The Federal Reserve's 2026 severely adverse scenario takes US unemployment to 10%, US stocks down almost 60%, house prices down 30% and the short rate to 0.1%. To run it next to the baseline and compare the medians after five years:
 
 ```python
 from financescenarios import Scenarios, compare_runs
@@ -113,12 +113,12 @@ Which returns:
 
 | factor | baseline | fed_severely_adverse_2026 |
 |:-------|---------:|--------------------------:|
-| united_states_unemployment | 0.0515 | 0.0752 |
-| us_broad | 0.0873 | -0.0040 |
-| united_states_short_rate | 0.0439 | 0.0155 |
-| united_states_long_rate | 0.0562 | 0.0283 |
+| united_states_unemployment | 0.0514 | 0.0753 |
+| us_broad | 0.0870 | -0.0040 |
+| united_states_short_rate | 0.0436 | 0.0153 |
+| united_states_long_rate | 0.0567 | 0.0282 |
 
-On the published dates every scenario is on the regulator's path: unemployment at 7.2% after six months, 9.0% after one year and 9.8% after two, the short rate at 2.5% after the first quarter and at 0.1% from six months to three and a quarter years, and the 10-year rate at 3.1% after the first quarter and between 2.3% and 2.7% after that. Stocks fall 57% in the median scenario over the first three quarters, 100 becoming 43.4, and recover from there, to 98.0 after five years, a return of -0.40% a year; the run's other markets follow through their correlations, European stocks to 43.9. Between the published dates the median walks in a straight line, and after the last one the short rate converges onto its usual path over five years, so it is still low after five, at a median of 1.55%. When plotted, US stocks as the value of 100:
+On the published dates every scenario is on the regulator's path: unemployment at 7.2% after six months, 9.0% after one year and 9.8% after two, the short rate at 2.5% after the first quarter and at 0.1% from six months to three and a quarter years, and the 10-year rate at 3.1% after the first quarter and between 2.3% and 2.7% after that. Stocks fall 57% in the median scenario over the first three quarters, 100 becoming 43.4, and recover from there, to 98.0 after five years, a return of -0.40% a year; the run's other markets follow through their correlations, European stocks to 43.9. Between the published dates the median walks in a straight line, and after the last one the short rate converges onto its usual path over five years, so it is still low after five, at a median of 1.53%. When plotted, US stocks as the value of 100:
 
 {% include ft-chart.html id="regimes-fed" src="/assets/data/financescenarios-guides/regimes.json" label="Median and 5-95% band of US unemployment, the value of 100 in US stocks and the US short and 10-year rates in the baseline and under the Fed's 2026 severely adverse scenario over five years" %}
 

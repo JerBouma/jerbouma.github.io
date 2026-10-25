@@ -38,7 +38,7 @@ $$
 dx_t = a(\theta - x_t)\,dt + \sigma\,dW_t \quad\Rightarrow\quad \mathbb{E}[x_\infty] = \theta,\qquad \operatorname{Var}[x_\infty] = \frac{\sigma^2}{2a}
 $$
 
-Here $$a$$ is the mean-reversion speed, $$\theta$$ the long-run level and $$\sigma$$ the volatility. For a CIR (Cox-Ingersoll-Ross) rate the long-run variance is $$\sigma^2\theta/(2a)$$ instead. `diagnose` compares each mean-reverting factor's simulated mean and standard deviation at the horizon with these values: the mean must land within 20% of $$\theta$$ or within three Monte Carlo standard errors, whichever is wider, and the standard deviation within 20% of its long-run value. A gap is not always a fault: over a horizon shorter than about three time constants ($$1/a$$) the factor has not settled yet, and a factor whose long-run level follows a belief path is steered elsewhere on purpose. A gap that remains points to the discretization or the calibration.
+Here $$a$$ is the mean-reversion speed, $$\theta$$ the long-run level and $$\sigma$$ the volatility. For a CIR (Cox-Ingersoll-Ross) rate the long-run variance is $$\sigma^2\theta/(2a)$$ instead. `diagnose` compares the simulated mean and standard deviation at the horizon with these values for each factor that has one fixed long-run mean and spread: the mean must land within 20% of $$\theta$$ or within three Monte Carlo standard errors, whichever is wider, and the standard deviation within 20% of its long-run value. A gap is not always a fault: over a horizon shorter than about three time constants ($$1/a$$) the factor has not settled yet, and a factor whose long-run level follows a belief path is steered elsewhere on purpose. A gap that remains points to the discretization or the calibration. A factor that follows another factor or a regime, such as the policy-rule short rate, unemployment with regimes or a link to inflation, or house prices linked to the long rate, is left out, since the formula misses its driver's swings; on the default calibration that leaves crude oil, the yield curve's curvature and the leading indicator. The leading indicator is a stochastic cycle, and its variance comes from the cycle itself, $$\sigma_\kappa^2 / (1 - \rho^2)$$ ([Harvey, Trimbur and van Dijk, 2005, eq. 3](https://repub.eur.nl/pub/6913){:target="_blank"}), with $$\rho$$ its damping per step and $$\sigma_\kappa$$ the volatility of its shocks; given how its parameters are defined, that equals the Ornstein-Uhlenbeck spread, 1.358 on the default fit.
 
 **Boundary behavior.** Hull-White rates are Gaussian and can go negative, as the model intends. CIR rates can dip very slightly below zero: they are simulated with the full-truncation scheme, the least biased of the schemes compared by [Lord, Koekkoek and van Dijk (2010)](https://doi.org/10.1080/14697680802392496){:target="_blank"} (see [Simulation Engine](/projects/financescenarios/docs/simulation-engine#time-stepping)).
 
@@ -68,7 +68,7 @@ A "warn" is worth a look, not a reason to discard the run.
 
 The run itself also warns when a correlation was set to 0 because two factors shared fewer than 5 observations, when two factors correlate above 0.98 (usually the same driver configured twice), and when a filter leaves too few scenarios for percentiles to mean much ([Dependence](/projects/financescenarios/docs/dependence#how-the-correlations-are-estimated) explains how the correlations are estimated).
 
-`validate` runs these checks, and `diagnose` the long-run moments above. On the five-year run of the [overview](/projects/financescenarios/docs#checking-the-run), `validate` gives four passes and two warnings: the euro-area and UK inflation correlation comes out 0.103 away from the one it was given, and the euro-area short rate moves 1.72 times as much as in its history.
+`validate` runs these checks, and `diagnose` the long-run moments above. On the five-year run of the [overview](/projects/financescenarios/docs#checking-the-run), `validate` gives five passes and one warning: the euro-area short rate moves 1.71 times as much as in its history. The euro-area and UK inflation correlation comes out 0.109 away from the one it was given, within the 0.10 tolerance once the 0.01 of sampling noise in 120,000 simulated moves is allowed for.
 
 ## Macro Relationships
 
@@ -108,7 +108,7 @@ That is much closer to the 5% a test at two standard errors should give, but abo
 
 ### Example
 
-The checks against history need many year-end observations per scenario, so the examples on this page run the calibration of the [overview](/projects/financescenarios/docs#simulating-scenarios), made on 19 October 2026, 30 years ahead with 1,000 scenarios and seed 42. `check_relationships` measures every relationship in the table above on history and on each scenario, and grades the scenarios' median as described. To simulate the run and check it:
+The checks against history need many year-end observations per scenario, so the examples on this page run the calibration of the [overview](/projects/financescenarios/docs#simulating-scenarios), made on 25 October 2026, 30 years ahead with 1,000 scenarios and seed 42. `check_relationships` measures every relationship in the table above on history and on each scenario, and grades the scenarios' median as described. To simulate the run and check it:
 
 ```python
 from financescenarios import Scenarios
@@ -126,35 +126,35 @@ Which returns 26 rows, one per relationship and economy:
 | Relationship | Region | Status | History | Standard error | Simulated median |
 |:--|:--|:--|--:|--:|--:|
 | Policy rate reacts to inflation | United States | warn | 0.45 | 0.13 | 0.21 |
-| Policy rate reacts to unemployment | United States | pass | -0.58 | 0.17 | -0.38 |
+| Policy rate reacts to unemployment | United States | pass | -0.58 | 0.17 | -0.37 |
 | Rates near neutral at target, higher above it | United States | pass | 0.06 | 0.01 | 0.03 |
-| Phillips curve | United States | pass | -0.59 | 0.22 | -0.32 |
+| Phillips curve | United States | pass | -0.59 | 0.22 | -0.30 |
 | Bear markets come with rising unemployment | United States | warn | -0.41 | 0.11 | -0.12 |
 | Long rate moves with the short rate | United States | pass | 0.33 | 0.06 | 0.58 |
-| Inverted curve precedes higher unemployment | United States | warn | -0.67 | 0.07 | -0.26 |
+| Inverted curve precedes higher unemployment | United States | warn | -0.67 | 0.07 | -0.20 |
 | Real equity returns fall with high inflation | United States | pass | -0.15 | 0.04 | -0.08 |
-| Higher rates slow house prices | United States | pass | -0.96 | 0.39 | -0.90 |
+| Higher rates slow house prices | United States | pass | -0.96 | 0.39 | -0.91 |
 | Oil prices pass into inflation | United States | warn | 0.04 | 0.01 | 0.01 |
-| Policy rate reacts to inflation | Euro area | warn | 0.04 | 0.08 | 0.24 |
-| Policy rate reacts to unemployment | Euro area | pass | -0.96 | 0.25 | -0.57 |
+| Policy rate reacts to inflation | Euro area | warn | 0.04 | 0.08 | 0.29 |
+| Policy rate reacts to unemployment | Euro area | pass | -0.96 | 0.25 | -0.51 |
 | Rates near neutral at target, higher above it | Euro area | pass | 0.04 | 0.01 | 0.03 |
-| Phillips curve | Euro area | pass | -0.89 | 0.43 | -0.97 |
+| Phillips curve | Euro area | pass | -0.89 | 0.43 | -0.67 |
 | Long rate moves with the short rate | Euro area | pass | 0.27 | 0.05 | 0.44 |
-| Inverted curve precedes higher unemployment | Euro area | pass | -0.19 | 0.12 | -0.12 |
+| Inverted curve precedes higher unemployment | Euro area | pass | -0.19 | 0.12 | -0.13 |
 | Oil prices pass into inflation | Euro area | pass | 0.03 | 0.02 | 0.00 |
-| Rate differential and the currency | Euro area | pass | -0.72 | 0.84 | 0.21 |
-| Policy rate reacts to inflation | United Kingdom | pass | 0.23 | 0.14 | 0.17 |
-| Policy rate reacts to unemployment | United Kingdom | pass | -0.93 | 0.31 | -0.61 |
+| Rate differential and the currency | Euro area | pass | -0.72 | 0.84 | 0.22 |
+| Policy rate reacts to inflation | United Kingdom | pass | 0.23 | 0.14 | 0.19 |
+| Policy rate reacts to unemployment | United Kingdom | pass | -0.93 | 0.31 | -0.59 |
 | Rates near neutral at target, higher above it | United Kingdom | pass | 0.05 | 0.03 | 0.02 |
-| Phillips curve | United Kingdom | pass | -0.49 | 0.34 | -0.09 |
-| Long rate moves with the short rate | United Kingdom | pass | 0.30 | 0.09 | 0.38 |
+| Phillips curve | United Kingdom | pass | -0.49 | 0.34 | -0.08 |
+| Long rate moves with the short rate | United Kingdom | pass | 0.30 | 0.09 | 0.40 |
 | Inverted curve precedes higher unemployment | United Kingdom | warn | -0.45 | 0.14 | -0.11 |
 | Oil prices pass into inflation | United Kingdom | pass | 0.02 | 0.02 | 0.00 |
-| Rate differential and the currency | United Kingdom | pass | -0.53 | 0.90 | 0.17 |
+| Rate differential and the currency | United Kingdom | pass | -0.53 | 0.90 | 0.18 |
 
-Twenty pass and six warn; none fails. The policy rate answers unemployment in all three economies, at -0.38, -0.57 and -0.61 against history's -0.58, -0.96 and -0.93, because the default rule is the Federal Reserve's inertial balanced-approach rule, with twice the weight on the unemployment gap (see [Short Rate](/projects/financescenarios/docs/interest-rates)). The Phillips curve passes in all three, the long rate follows the short rate, higher rates slow house prices (-0.90 against -0.96), and real equity returns fall with high inflation (-0.08 against -0.15).
+Twenty pass and six warn; none fails. The policy rate answers unemployment in all three economies, at -0.37, -0.51 and -0.59 against history's -0.58, -0.96 and -0.93, because the default rule is the Federal Reserve's inertial balanced-approach rule, with twice the weight on the unemployment gap (see [Short Rate](/projects/financescenarios/docs/interest-rates)). The Phillips curve passes in all three, the long rate follows the short rate, higher rates slow house prices (-0.91 against -0.96), and real equity returns fall with high inflation (-0.08 against -0.15).
 
-Five of the warnings are links that are there but less than half as strong as in history: the US policy rate's answer to inflation (0.21 against 0.45), bear markets coming with rising unemployment (-0.12 against -0.41), an inverted curve foreshadowing higher unemployment in the US (-0.26 against -0.67) and the UK (-0.11 against -0.45), and oil passing into US inflation (0.01 against 0.04). The sixth is the euro area's policy rate, which answers inflation at 0.24 where history cannot tell the sign (0.04 with a standard error of 0.08). The two currency rows pass with the opposite sign to history only because history's own slope is too uncertain to tell. When plotted, the ten US relationships:
+Five of the warnings are links that are there but less than half as strong as in history: the US policy rate's answer to inflation (0.21 against 0.45), bear markets coming with rising unemployment (-0.12 against -0.41), an inverted curve foreshadowing higher unemployment in the US (-0.20 against -0.67) and the UK (-0.11 against -0.45), and oil passing into US inflation (0.01 against 0.04). The sixth is the euro area's policy rate, which answers inflation at 0.29 where history cannot tell the sign (0.04 with a standard error of 0.08). The two currency rows pass with the opposite sign to history only because history's own slope is too uncertain to tell. When plotted, the ten US relationships:
 
 {% include ft-chart.html id="validation-relationships" src="/assets/data/financescenarios-guides/validation.json" label="Ten US macro relationships measured on history and as the median across 1,000 scenarios over thirty years" %}
 
@@ -185,7 +185,7 @@ Which flags every factor somewhere. Of the 23 factors, and of the 120 statistics
 <div class="ca-nums fs-nums">
   <span><b>5</b>factors warn</span>
   <span><b>18</b>factors fail</span>
-  <span><b>66 / 26 / 28</b>statistics pass, warn, fail</span>
+  <span><b>64 / 28 / 28</b>statistics pass, warn, fail</span>
 </div>
 
 Most flags are tails that are too thin: over 30 years the scenarios reach history's record years less often than history's own windows did, for the rates and unemployment of all three economies, US house prices, US, Japanese and emerging-market stocks, and crude oil's largest one-year rise. The highest level of inflation is too thin in all three economies; for the UK that is the accepted cost of fitting its inflation from 1993, after the start of inflation targeting, which leaves the 1970s to the stress regimes (see [Inflation](/projects/financescenarios/docs/economy#the-uk-is-fitted-on-its-inflation-targeting-era)). The lowest level of US inflation goes the other way ("tail too fat"): anchoring the regimes on the long-run mean lowers the calm level. No factor reaches a state no economy can be in.
@@ -225,7 +225,7 @@ The lag-one autocorrelation is +0.271 in Shiller's averages, close to Working's 
 scenarios.check_parameters(result, flagged_only=True)
 ```
 
-Which returns six warnings and no failures; the other 76 guardrails pass. UK inflation, fitted on its inflation-targeting era from 1993, swings 0.51 times as much as in its longer history; euro-area unemployment settles at 7.16%, just below the 7.20% to 10.90% of the French history it was fitted on; the euro-area short rate swings 1.67 times its calibration history and the UK long rate 0.64 times; and Japan's stock market, the furthest from the long US record, is in its crisis regime 44.9% of the time against 16.5%, with calm spells of 1.16 years against 3.39.
+Which returns six warnings and no failures; the other 76 guardrails pass. UK inflation, fitted on its inflation-targeting era from 1993, swings 0.52 times as much as in its longer history; euro-area unemployment settles at 7.16%, just below the 7.20% to 10.90% of the French history it was fitted on; the euro-area short rate swings 1.66 times its calibration history and the UK long rate 0.64 times; and Japan's stock market, the furthest from the long US record, is in its crisis regime 45.5% of the time against 16.5%, with calm spells of 1.20 years against 3.39.
 
 ## Published Calibrations {#published-calibrations}
 
@@ -246,7 +246,7 @@ A published calibration is fixed under a version tag, passes the checks on every
 ## References
 
 <details class="ft-details" markdown="1">
-<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">18</span></summary>
+<summary><i class="fas fa-book"></i> <b>Papers and sources cited on this page</b> <span class="ft-details__meta">19</span></summary>
 
 - Board of Governors of the Federal Reserve System (2026). Monetary Policy Report, July 2026, Part 2, Box 4. [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/2026-07-mpr-part2.htm){:target="_blank"}
 - Campbell, J.Y., Shiller, R.J. (1991). "Yield Spreads and Interest Rate Movements: A Bird's Eye View." The Review of Economic Studies, 58(3), 495-514. [doi.org](https://doi.org/10.2307/2298008){:target="_blank"}
@@ -257,6 +257,7 @@ A published calibration is fixed under a version tag, passes the checks on every
 - Fama, E.F. (1984). "Forward and Spot Exchange Rates." Journal of Monetary Economics, 14(3), 319-338. [doi.org](https://doi.org/10.1016/0304-3932(84)90046-1){:target="_blank"}
 - Fama, E.F., Schwert, G.W. (1977). "Asset Returns and Inflation." Journal of Financial Economics, 5(2), 115-146. [doi.org](https://doi.org/10.1016/0304-405X(77)90014-9){:target="_blank"}
 - Gilchrist, S., Zakrajšek, E. (2012). "Credit Spreads and Business Cycle Fluctuations." American Economic Review, 102(4), 1692-1720. [doi.org](https://doi.org/10.1257/aer.102.4.1692){:target="_blank"}
+- Harvey, A.C., Trimbur, T.M., van Dijk, H.K. (2005). "Trends and Cycles in Economic Time Series: A Bayesian Approach." Econometric Institute Report EI 2005-27; published in the Journal of Econometrics, 140(2), 618-649 (2007). [repub.eur.nl](https://repub.eur.nl/pub/6913){:target="_blank"}
 - Hooker, M.A. (2002). "Are Oil Shocks Inflationary? Asymmetric and Nonlinear Specifications versus Changes in Regime." Journal of Money, Credit and Banking, 34(2), 540-561. [doi.org](https://doi.org/10.1353/mcb.2002.0041){:target="_blank"}
 - Iacoviello, M. (2005). "House Prices, Borrowing Constraints, and Monetary Policy in the Business Cycle." American Economic Review, 95(3), 739-764. [doi.org](https://doi.org/10.1257/0002828054201477){:target="_blank"}
 - Lord, R., Koekkoek, R., van Dijk, D. (2010). "A Comparison of Biased Simulation Schemes for Stochastic Volatility Models." Quantitative Finance, 10(2), 177-194. [doi.org](https://doi.org/10.1080/14697680802392496){:target="_blank"}

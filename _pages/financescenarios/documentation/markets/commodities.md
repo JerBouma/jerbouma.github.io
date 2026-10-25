@@ -48,7 +48,7 @@ $$
 dX_t = a(\theta - X_t)\,dt + \sigma\,dW_t, \qquad X_t = \ln S_t
 $$
 
-Fitted on daily Brent futures (BZ=F) since July 2007, the long-run median $$e^{\theta}$$ is $77 a barrel, a shock halves in 1.5 years, and the volatility is 38.3% a year. The model uses Brent rather than WTI because the WTI front-month future closed at -$37.63 on 20 April 2020, a price the log model cannot take. The chart shows Brent since 1990 with the fitted long-run median:
+Fitted on daily Brent futures (BZ=F) since July 2007, the long-run median $$e^{\theta}$$ is $78 a barrel, a shock halves in 1.6 years, and the volatility is 38.3% a year. The model uses Brent rather than WTI because the WTI front-month future closed at -$37.63 on 20 April 2020, a price the log model cannot take. The chart shows Brent since 1990 with the fitted long-run median:
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/markets/brent" alt="Brent crude since 1990 with the fitted long-run median" %}
 
@@ -60,11 +60,11 @@ $$
 E(\hat a) - a \approx \frac{B_1}{T}, \qquad B_1 = \frac{5}{2} + e^{a\Delta t} + \frac{1}{2}e^{2a\Delta t}
 $$
 
-As the step shrinks $$B_1$$ tends to 4, so the bias is about $$4/T$$ a year whatever the frequency: twenty years of daily data add about 0.2 to the speed. The fit subtracts $$B_1/T$$, evaluated at the estimate, from the speed, and re-estimates the volatility at the corrected speed so that one step's spread stays the one the data show. Brent's 19 years of daily prices give a plain speed of 0.67 and a corrected one of 0.46: the half-life of a shock rises from 1.0 to 1.5 years.
+As the step shrinks $$B_1$$ tends to 4, so the bias is about $$4/T$$ a year whatever the frequency: twenty years of daily data add about 0.2 to the speed. The fit subtracts $$B_1/T$$, evaluated at the estimate, from the speed, and re-estimates the volatility at the corrected speed so that one step's spread stays the one the data show. Brent's 19 years of daily prices give a plain speed of 0.65 and a corrected one of 0.45: the half-life of a shock rises from 1.1 to 1.6 years.
 
-The correction applies to every plain mean-reverting fit, among them the US Treasury curve's level, slope and curvature (from 0.35, 0.24 and 0.73 to 0.20, 0.10 and 0.58 a year). It does not apply to regressions with extra terms, to the fits read a year apart (house prices on [Real Estate](/projects/financescenarios/docs/markets/real-estate)) or to the Euler fits behind GARCH volatility, which the theorem does not cover. When the correction would remove all mean reversion, as it can on five years of data, the plain speed is kept with a warning: the sample cannot tell the series from a random walk.
+The correction applies to every plain mean-reverting fit, among them the US Treasury curve's level, slope and curvature (from 0.35, 0.24 and 0.73 to 0.20, 0.09 and 0.58 a year). It does not apply to regressions with extra terms, to the fits read a year apart (house prices on [Real Estate](/projects/financescenarios/docs/markets/real-estate)) or to the Euler fits behind GARCH volatility, which the theorem does not cover. When the correction would remove all mean reversion, as it can on five years of data, the plain speed is kept with a warning: the sample cannot tell the series from a random walk.
 
-The chart applies the plain and corrected estimators to simulated paths with Brent's corrected speed of 0.46, and shows the default's daily fits before and after the correction:
+The chart applies the plain and corrected estimators to simulated paths with a true speed of 0.46, about Brent's corrected 0.45, and shows the default's daily fits before and after the correction:
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/markets/ou-speed-bias" alt="The average plain and corrected mean-reversion speed of simulated paths against the years of data, and the default's Brent and Treasury curve speeds before and after the correction" %}
 
@@ -78,7 +78,7 @@ Every number in the commodity models, and where it comes from:
 |:--|:--|:--|:--|
 | Gold model | Random walk in real terms | Sourced | [Erb and Harvey (2013, pp. 11-15, 28-29)](https://doi.org/10.2469/faj.v69.n4.1){:target="_blank"} |
 | Gold volatility | 17.9% | Fitted | Daily GC=F since 2000 |
-| Brent level, speed, volatility | $77, 0.46 a year, 38.3% | Fitted | Daily BZ=F since July 2007, [Schwartz (1997)](https://doi.org/10.1111/j.1540-6261.1997.tb02721.x){:target="_blank"}, speed corrected for the sample's length ([Tang and Chen, 2009](https://doi.org/10.1016/j.jeconom.2008.11.001){:target="_blank"}) |
+| Brent level, speed, volatility | $78, 0.45 a year, 38.3% | Fitted | Daily BZ=F since July 2007, [Schwartz (1997)](https://doi.org/10.1111/j.1540-6261.1997.tb02721.x){:target="_blank"}, speed corrected for the sample's length ([Tang and Chen, 2009](https://doi.org/10.1016/j.jeconom.2008.11.001){:target="_blank"}) |
 
 ## The Two-Factor Alternative
 
@@ -98,7 +98,7 @@ In a risk-neutral run the drifts are fitted to today's futures prices instead, t
 
 ## Example
 
-The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. To simulate it and read the fitted parameters of gold and oil:
+The example uses the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. To simulate it and read the fitted parameters of gold and oil:
 
 ```python
 from financescenarios import Scenarios
@@ -114,7 +114,7 @@ calibration.calibrated_params["gold"]
 calibration.calibrated_params["crude_oil"]
 ```
 
-Which gives gold a drift of 1.6% a year and a volatility of 17.9%, starting from $4,182.60 an ounce, and oil a long-run level of $76.98 a barrel (a log level of 4.343), a speed of 0.46 a year and a volatility of 38.3%, starting from $108.44. After five years the median gold price is $4,778.65, with a 90% range of $2,470.89 to $9,231.47, and the median oil price is $79.31, between $42.30 and $156.28. When plotted:
+Which gives gold a drift of 1.6% a year and a volatility of 17.9%, starting from $4,007.90 an ounce, and oil a long-run level of $77.50 a barrel (a log level of 4.350), a speed of 0.45 a year and a volatility of 38.3%, starting from $116.72. After five years the median gold price is $4,578.19, with a 90% range of $2,363.91 to $8,869.17, and the median oil price is $80.39, between $42.68 and $161.88. When plotted:
 
 {% include ft-chart.html id="markets-commodities" src="/assets/data/financescenarios-guides/markets.json" label="Median, 25-75% and 5-95% band of the gold price in dollars an ounce and the crude oil price in dollars a barrel over five years" %}
 

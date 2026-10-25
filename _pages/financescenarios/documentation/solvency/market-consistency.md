@@ -42,7 +42,7 @@ where $$r(t_j)$$ is the simulated short rate at the start of each step and $$\De
 
 `simulate(measure="risk_neutral")` turns a factor set into a valuation run. The run's first short rate becomes a [Hull-White rate fitted to EIOPA's risk-free curve](/projects/financescenarios/docs/interest-rates/other-models#risk-neutral-hull-white) for its currency, the dollar's in the default factor set; every stock market earns that rate less its dividend yield; and inflation moves around the bond market's [breakeven curve](/projects/financescenarios/docs/economy#other-inflation-models), so the expected price index is the breakeven index. Unemployment keeps its own model, with its links to other factors cut, and the rest is left out: a valuation run keeps one short rate, and an exchange rate would need two. Rates and inflation get their volatility from history, so guarantees and capped indexation get a time value.
 
-The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios) as the real-world run: the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42. To simulate both:
+The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios) as the real-world run: the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42. To simulate both:
 
 ```python
 from financescenarios import Scenarios
@@ -56,7 +56,7 @@ risk_neutral = scenarios.simulate(n_simulations=2000, seed=42, measure="risk_neu
 risk_neutral.describe()
 ```
 
-Which returns 17 variables: the three economies' inflation and unemployment, the US short rate, and the five stock markets with a dividend yield for each. The US short rate starts at 4.44% and averages 4.89% after five years, with a 90% range of 1.97% to 7.87%, narrower than the real-world run's 0% to 10.99%. US stocks return 2.92% a year on average against 8.49% in the real-world run: risk-neutral, they earn the short rate less their dividend yield of 0.99% and less half their variance in log terms, with no equity premium. When plotted, the US short rate and the US stock price in both runs:
+Which returns 17 variables: the three economies' inflation and unemployment, the US short rate, and the five stock markets with a dividend yield for each. The US short rate starts at 4.44% and averages 4.92% after five years, with a 90% range of 2.00% to 7.91%, narrower than the real-world run's 0% to 10.91%. US stocks return 2.56% a year on average against 8.44% in the real-world run: risk-neutral, they earn the short rate less their dividend yield of 1.00% and less half their variance in log terms, with no equity premium. When plotted, the US short rate and the US stock price in both runs:
 
 {% include ft-chart.html id="solvency-risk-neutral" src="/assets/data/financescenarios-guides/solvency.json" label="Median and 5-95% band of the US short rate and the US stock price in the real-world and the risk-neutral run over five years" %}
 
@@ -92,7 +92,7 @@ The rates side has the same test: the bond prices the run implies, $$P(0, t) = \
 
 ## EIOPA's Curve and the Ultimate Forward Rate
 
-Solvency II prescribes the discount curve: EIOPA's risk-free term structure, published monthly per currency for maturities of 1 to 150 years ([RFR Technical Documentation, EIOPA-BoS-25-599, paragraph 9.1.6](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en#page=43){:target="_blank"}), with or without the volatility adjustment, plus the up and down shocked curves of the standard formula. The package reads it as published, from January 2023 onward.
+Solvency II prescribes the discount curve: EIOPA's risk-free term structure, published monthly per currency for maturities of 1 to 150 years ([RFR Technical Documentation, EIOPA-BoS-25-599, paragraph 9.1.6](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en#page=43){:target="_blank"}), with or without the volatility adjustment, plus the up and down shocked curves of the standard formula. The package reads it as published, from January 2023 onward, to the five decimals EIOPA publishes; rounded to a basis point, the forward rates between its longest maturities would swing by up to 75 basis points around the ultimate forward rate.
 
 Market rates are used up to the last liquid point, the longest maturity whose market is deep and liquid enough: 20 years for the euro, the only currency where a residual volume criterion sets it ([paragraph 9.2.1](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en#page=44){:target="_blank"}), and 30 for the US dollar ([Table 8](https://www.eiopa.europa.eu/document/download/f7fca58f-4d24-4441-ac60-de562bf26d77_en#page=44){:target="_blank"}).
 
@@ -128,7 +128,7 @@ Both examples check the risk-neutral run of [A Risk-Neutral Run](#martingale-tes
 
 ### Testing US Stocks
 
-`martingale_test` checks the risk-neutral run date by date. To test US stocks, with the dividend yield of 0.99% the run was fitted with:
+`martingale_test` checks the risk-neutral run date by date. To test US stocks, with a dividend yield of 0.99%, close to the 1.00% the run was fitted with:
 
 ```python
 from financescenarios import martingale_test
@@ -139,7 +139,7 @@ test = martingale_test(
 test.table
 ```
 
-Which passes: the discounted mean stays within 1.0% of today's price of $763.25 at every date, and 51 of the 60 monthly dates, 85%, fall within their own 95% band; corrected for testing 60 dates at once, no date is rejected (the smallest adjusted p-value is 0.87). When plotted, the discounted mean price as a ratio to today's, with the band:
+Which passes: the discounted mean stays within 1.2% of today's price of $759.97 at every date, and 51 of the 60 monthly dates, 85%, fall within their own 95% band; corrected for testing 60 dates at once, no date is rejected (the smallest adjusted p-value is 0.86). When plotted, the discounted mean price as a ratio to today's, with the band:
 
 {% include ft-chart.html id="solvency-martingale" src="/assets/data/financescenarios-guides/solvency.json" label="Discounted mean US stock price in the risk-neutral run as a ratio to today's price, with its 95% Monte Carlo band, over five years" %}
 
@@ -157,8 +157,8 @@ Which gives, against the prices of EIOPA's dollar curve, $$(1 + s_T)^{-T}$$:
 
 | Maturity (years) | 1 | 2 | 3 | 4 | 5 |
 |:--|--:|--:|--:|--:|--:|
-| Run, $$\mathbb{E}[D(T)]$$ | 0.9564 | 0.9109 | 0.8679 | 0.8275 | 0.7888 |
-| EIOPA | 0.9566 | 0.9114 | 0.8688 | 0.8287 | 0.7900 |
+| Run, $$\mathbb{E}[D(T)]$$ | 0.9564 | 0.9108 | 0.8679 | 0.8275 | 0.7888 |
+| EIOPA | 0.9565 | 0.9113 | 0.8688 | 0.8287 | 0.7903 |
 | Monte Carlo standard error | 0.0001 | 0.0003 | 0.0005 | 0.0007 | 0.0009 |
 
 Every maturity lands within two standard errors of EIOPA's price.

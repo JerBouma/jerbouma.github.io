@@ -61,9 +61,9 @@ Which returns every reported mean, standard deviation, percentile and correlatio
 
 | source | variable | statistic | horizon | published | simulated | tolerance | within |
 |:-------|:---------|:----------|--------:|----------:|----------:|----------:|:-------|
-| Table 3 | GQ | mean | 1.0 | 0.0537 | 0.0538 | 0.0076 | true |
-| Table 3 | GQ | mean | 5.0 | 0.0537 | 0.0531 | 0.0055 | true |
-| Table 3 | GQ | mean | 10.0 | 0.0514 | 0.0526 | 0.0043 | true |
+| Table 3 | GQ | mean | 1.0 | 0.0537 | 0.0522 | 0.0064 | true |
+| Table 3 | GQ | mean | 5.0 | 0.0537 | 0.0516 | 0.0057 | true |
+| Table 3 | GQ | mean | 10.0 | 0.0514 | 0.0516 | 0.0047 | true |
 
 A difference counts as Monte Carlo error when it is within four standard errors of the gap between the paper's estimate and the run's, plus half the paper's last printed digit. The standard error comes from batch means (the spread of the statistic across equal groups of scenarios), scaled to the paper's number of scenarios. Four standard errors keeps the chance of a false alarm across a table of a few dozen checks near 1%. With 10,000 scenarios:
 

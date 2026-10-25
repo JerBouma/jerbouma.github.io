@@ -47,30 +47,30 @@ The fitted parameters per country:
 
 | Fitted on OECD CPI | United States | Germany (euro) | United Kingdom |
 |:--|--:|--:|--:|
-| Data | Monthly since 1956, 849 readings | Quarterly since 1956, 283 readings | Monthly since 1993, 404 readings |
-| Calm level $$\mu_0$$, as fitted | 2.55% | 1.73% | 2.00% |
-| High level $$\mu_1$$, as fitted | 7.92% | 6.35% | 6.44% |
+| Data | Monthly since 1956, 849 readings | Quarterly since 1956, 283 readings | Monthly since 1993, 405 readings |
+| Calm level $$\mu_0$$, as fitted | 2.55% | 1.73% | 2.01% |
+| High level $$\mu_1$$, as fitted | 7.92% | 6.35% | 6.57% |
 | Persistence $$\phi$$ (a year) | 0.52 | 0.40 | 0.36 |
-| Shock size, calm / high | 1.09% / 2.96% | 0.89% / 1.11% | 0.73% / 2.53% |
-| Chance of staying a year, calm / high | 0.93 / 0.72 | 0.92 / 0.67 | 0.94 / 0.55 |
-| Average spell, calm / high (years) | 13.9 / 3.5 | 12.5 / 3.0 | 17.9 / 2.2 |
+| Shock size, calm / high | 1.09% / 2.96% | 0.89% / 1.11% | 0.74% / 2.52% |
+| Chance of staying a year, calm / high | 0.93 / 0.72 | 0.92 / 0.67 | 0.94 / 0.53 |
+| Average spell, calm / high (years) | 13.9 / 3.5 | 12.5 / 3.0 | 18.1 / 2.1 |
 | Long-run share of the high regime | 20% | 19% | 11% |
 | Long-run mean, as fitted | 3.64% | 2.62% | 2.49% |
-| Long-run median, as fitted | 3.12% | 2.26% | 2.20% |
+| Long-run median, as fitted | 3.12% | 2.26% | 2.21% |
 
-In the US and the UK the high regime's shocks are 2.7 and 3.5 times the calm regime's, in line with [Harris (1999, section 4, Table 2, p. 57)](https://doi.org/10.2143/AST.29.1.504606){:target="_blank"}, who finds a turbulent regime about three times as volatile in Australian data; Germany's high-inflation spells were steadier, 1.2 times.
+In the US and the UK the high regime's shocks are 2.7 and 3.4 times the calm regime's, in line with [Harris (1999, section 4, Table 2, p. 57)](https://doi.org/10.2143/AST.29.1.504606){:target="_blank"}, who finds a turbulent regime about three times as volatile in Australian data; Germany's high-inflation spells were steadier, 1.2 times.
 
 ## The UK Is Fitted on Its Inflation-Targeting Era
 
 Inflation's level and persistence depend on the monetary regime: [Benati (2008, section 2.1.1)](https://doi.org/10.1162/qjec.2008.123.3.1005){:target="_blank"} finds inflation persistence high under regimes without a clear nominal anchor and close to zero under inflation targeting, for the UK among others. UK inflation targeting began on 8 October 1992, so the default fits the UK from 1993, its first full year.
 
-The long record does not fit the UK of today. Fitted since 1956, its high regime sits at 11.7% and takes a quarter of the time: a long-run mean of 2% would then need a calm level of &minus;0.28%, normal times with falling prices that the record never shows. Fitted from 1993, the calm level is 2.00% and the high regime, 6.4%, is the 2022-2023 surge. On backtests from 2000 to 2022 that read only what was known at each year end, the 1993 fit scores best. Its CRPS skill (how much its scenarios improve on a forecast of no change) is +0.37 against +0.22 for the long record on the 18 year-end start dates (origins) no choice was made on, and +0.38 against +0.25 on the 14 origins never used for any choice.
+The long record does not fit the UK of today. Fitted since 1956, its high regime sits at 11.7% and takes a quarter of the time: a long-run mean of 2% would then need a calm level of &minus;0.28%, normal times with falling prices that the record never shows. Fitted from 1993, the calm level is 2.01% and the high regime, 6.6%, is the 2022-2023 surge. On backtests from 2000 to 2022 that read only what was known at each year end, the 1993 fit scores best. Its CRPS skill (how much its scenarios improve on a forecast of no change) is +0.37 against +0.22 for the long record on the 18 year-end start dates (origins) no choice was made on, and +0.38 against +0.25 on the 14 origins never used for any choice.
 
 That choice has a cost:
 
 <div class="ca-nums fs-nums">
   <span><b>0.63</b>share of outcomes inside the 90% band on those backtests: the bands are narrow</span>
-  <span><b>5.9%</b>highest year-end level in a 30-year scenario, at the median</span>
+  <span><b>6.2%</b>highest year-end level in a 30-year scenario, at the median</span>
   <span><b>24.9%</b>highest year-end level in UK history (1975)</span>
 </div>
 
@@ -102,12 +102,12 @@ The chart shows the long-run inflation expectations of professional forecasters 
 
 {% include theme-image.html src="/assets/images/projects/financescenarios/docs/economy/inflation-expectations" alt="Long-run inflation expectations of professional forecasters in the US and the euro area since 1991 and 1999" %}
 
-After anchoring, the calm and high levels are 1.21% and 6.59% for the US, 1.10% and 5.73% for Germany, and 1.51% and 5.95% for the UK. The long-run means meet their anchors, and the spikes keep the medians below them, as they did in history:
+After anchoring, the calm and high levels are 1.21% and 6.59% for the US, 1.10% and 5.73% for Germany, and 1.52% and 6.08% for the UK. The long-run means meet their anchors, and the spikes keep the medians below them, as they did in history:
 
 <div class="ca-nums fs-nums">
   <span><b>1.78%</b>US long-run median (mean 2.30%)</span>
   <span><b>1.63%</b>German long-run median (mean 2.00%)</span>
-  <span><b>1.71%</b>UK long-run median (mean 2.00%)</span>
+  <span><b>1.72%</b>UK long-run median (mean 2.00%)</span>
 </div>
 
 A 30-year run of 2,000 scenarios reproduces them: over years 10 to 30, US inflation averages 2.32% with a median of 1.80%. The lower calm level has one visible cost: the lowest year-end US inflation in a 30-year scenario is &minus;1.1% at the median, against 0.1% at the end of 2008, the lowest year end since 1956.
@@ -135,7 +135,7 @@ Every number in the inflation model, and where it comes from:
 | History | OECD CPI since 1956; the UK since 1993 | Judgement, sourced for the UK | The longest official series for all three countries at monthly or quarterly frequency; the UK's inflation-targeting era from 1993 ([Benati, 2008](https://doi.org/10.1162/qjec.2008.123.3.1005){:target="_blank"}) |
 | Minimum history | 10 years; a notice below 40 | Judgement | Under 40 years the high regime rests on one or two episodes; the UK's 33 years are below it by choice (above) |
 | Regime levels, shocks, persistence, switching | Table above | Fitted | Maximum likelihood, Hamilton's filter |
-| Levels after anchoring | Calm 1.21%, 1.10%, 1.51%; high 6.59%, 5.73%, 5.95% | Derived | Both levels moved by the same amount so the long-run mean equals the anchor, the calm level no lower than zero |
+| Levels after anchoring | Calm 1.21%, 1.10%, 1.52%; high 6.59%, 5.73%, 6.08% | Derived | Both levels moved by the same amount so the long-run mean equals the anchor, the calm level no lower than zero |
 | Anchors | 2.3%, 2.0%, 2% | Sourced | Table above |
 | Starting point | Today's inflation and the filter's regime probabilities | Data | OECD inflation since 2000, read through the anchored regimes |
 
@@ -177,7 +177,7 @@ The convexity term keeps the expected price index on the breakeven curve, so a p
 
 ## Examples
 
-The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 19 October 2026, with 2,000 scenarios and seed 42.
+The examples on this page use the run from the [overview](/projects/financescenarios/docs#simulating-scenarios): the default settings and factor set, calibrated on 25 October 2026, with 2,000 scenarios and seed 42.
 
 ### Inflation in Three Economies
 
@@ -206,11 +206,11 @@ Which gives, among other columns:
 | eurozone_inflation | 1 | 0.0057 | 0.0210 | 0.0484 |
 | eurozone_inflation | 3 | -0.0012 | 0.0166 | 0.0549 |
 | eurozone_inflation | 5 | -0.0027 | 0.0157 | 0.0541 |
-| united_kingdom_inflation | 1 | 0.0098 | 0.0232 | 0.0585 |
-| united_kingdom_inflation | 3 | 0.0041 | 0.0185 | 0.0565 |
-| united_kingdom_inflation | 5 | 0.0020 | 0.0169 | 0.0525 |
+| united_kingdom_inflation | 1 | 0.0114 | 0.0270 | 0.0705 |
+| united_kingdom_inflation | 3 | 0.0046 | 0.0202 | 0.0668 |
+| united_kingdom_inflation | 5 | 0.0023 | 0.0174 | 0.0552 |
 
-Inflation starts at 3.74% in the US, 2.97% in the euro area and 3.24% in the UK, and the median falls to between 1.57% and 1.81% after five years. The bands are lopsided: the US 95th percentile rises from 6.22% to 7.70% while the median falls, because a minority of scenarios enter a high-inflation spell. When plotted:
+Inflation starts at 3.74% in the US, 2.97% in the euro area and 3.67% in the UK, and the median falls to between 1.57% and 1.81% after five years. The bands are lopsided: the US 95th percentile rises from 6.22% to 7.70% while the median falls, because a minority of scenarios enter a high-inflation spell. When plotted:
 
 {% include ft-chart.html id="economy-inflation" src="/assets/data/financescenarios-guides/economy.json" label="Median and 5-95% band of inflation in the US, the euro area and the UK over five years" %}
 
@@ -234,7 +234,7 @@ countries = {"US": "united_states", "Euro area": "eurozone", "UK": "united_kingd
 above_5 = {name: (result.paths[f"{country}_inflation"] > 0.05).mean(axis=0) for name, country in countries.items()}
 ```
 
-After five years 12.1% of the US scenarios, 7.0% of the euro-area scenarios and 5.9% of the UK scenarios have inflation above 5%. When plotted:
+After five years 12.1% of the US scenarios, 7.0% of the euro-area scenarios and 6.3% of the UK scenarios have inflation above 5%. When plotted:
 
 {% include ft-chart.html id="economy-high-inflation" src="/assets/data/financescenarios-guides/economy.json" label="Share of the 2,000 scenarios with inflation above 5% in the US, the euro area and the UK" %}
 

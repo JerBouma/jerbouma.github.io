@@ -44,7 +44,7 @@ history = backtest.compute(initial_value=100_000, rebalance_every=12)
 backtest.risk_metrics(history)  # one row per mix
 ```
 
-From August 2000 to October 2026, 100,000 grew to 545,709 in the 60/40, 542,561 in All Weather and 555,564 in the Permanent Portfolio, about 6.7% a year each, but on different roads: the deepest falls were 27.8%, 21.1% and 15.0%. When plotted:
+From August 2000 to October 2026, 100,000 grew to 545,686 in the 60/40, 542,849 in All Weather and 551,770 in the Permanent Portfolio, about 6.7% a year each, but on different roads: the deepest falls were 27.8%, 21.1% and 15.0%. When plotted:
 
 {% include ft-chart.html id="portfolio-backtest" src="/assets/data/financescenarios-guides/portfolio.json" label="Value of 100,000 in the 60/40, All Weather and the Permanent Portfolio month by month since August 2000, rebalanced once a year" %}
 
@@ -117,9 +117,9 @@ Which returns:
 
 | portfolio | tracking_error | correlation | beta | relative_cagr | relative_sharpe_ratio | active_share |
 |:----------|---------------:|------------:|-----:|--------------:|----------------------:|-------------:|
-| 60/40 Balanced | 0.0688 | 0.9725 | 0.5628 | -0.0156 | 0.1854 | 0.4000 |
-| All Weather | 0.1365 | 0.4313 | 0.2267 | -0.0158 | 0.2538 | 0.7000 |
-| Permanent Portfolio | 0.1329 | 0.4688 | 0.2169 | -0.0149 | 0.3737 | 0.7500 |
+| 60/40 Balanced | 0.0688 | 0.9724 | 0.5628 | -0.0154 | 0.1865 | 0.4000 |
+| All Weather | 0.1365 | 0.4311 | 0.2266 | -0.0156 | 0.2552 | 0.7000 |
+| Permanent Portfolio | 0.1329 | 0.4690 | 0.2170 | -0.0150 | 0.3711 | 0.7500 |
 
 Each mix gave up about 1.5 percentage points a year of return against stocks alone and improved its Sharpe ratio, the Permanent Portfolio the most, by 0.37.
 
