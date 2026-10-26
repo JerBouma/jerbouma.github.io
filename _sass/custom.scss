@@ -6100,6 +6100,8 @@ body.ft-overview .page__content {
   gap: 12px;
   margin-top: 6px;
 
+  &--2x2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
   &__card {
     padding: 14px 12px 6px;
     border: 1px solid var(--card-border);

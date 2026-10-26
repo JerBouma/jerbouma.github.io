@@ -110,7 +110,8 @@
         symbolSize: 6,
         smooth: false,
         connectNulls: false,
-        barMaxWidth: 34,
+        // one series gets wide bars, several share the room of their category
+        barMaxWidth: spec.series.filter(function (x) { return !x.reference; }).length === 1 ? 72 : 34,
         itemStyle: { color: isClose ? css('--text-primary', '#f8fafc') : (s.color || PALETTE[i % PALETTE.length]), borderRadius: isBar && !spec.stack ? [4, 4, 0, 0] : 0 },
         lineStyle: { width: isClose ? 2.2 : 1.8, type: s.dashed ? 'dashed' : 'solid' },
         emphasis: { focus: 'series' },
@@ -303,7 +304,8 @@
     title.textContent = chart.title + (chart.period === false ? '' : ', ' + chart.series[0].name + '–' + chart.series[chart.series.length - 1].name);
     head.appendChild(title);
     var grid = document.createElement('div');
-    grid.className = 'ft-kpis';
+    // four cards as two rows of two rather than three and one
+    grid.className = 'ft-kpis' + (chart.x.length === 4 ? ' ft-kpis--2x2' : '');
     box.appendChild(head);
     box.appendChild(grid);
     var fmt = formatter(chart.format);
