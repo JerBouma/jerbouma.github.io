@@ -89,6 +89,14 @@ TITLES = {
     "portfolio-net-profit-margin": "Portfolio Net Profit Margin",
     "portfolio-beta-var": "Portfolio Beta and Value at Risk",
     "portfolio-rsi": "Relative Strength Index",
+    # Portfolio Optimization
+    "portfolio-optimization-weights": "Weights and Risk Contributions per Method",
+    "portfolio-optimization-frontier": "Efficient Frontier",
+    "portfolio-optimization-risk": "Weight and Share of the Risk",
+    "portfolio-optimization-black-litterman": "Black-Litterman Weights and Returns",
+    "portfolio-optimization-stress": "Return per Historical Crisis",
+    "portfolio-optimization-look-through": "Look-Through Exposure",
+    "portfolio-optimization-brinson": "Brinson-Fachler Attribution per Sector",
     # External Datasets
     "external-datasets-dupont": "Extended DuPont Analysis",
     "external-datasets-efficiency": "Efficiency Ratios",

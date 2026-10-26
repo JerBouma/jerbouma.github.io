@@ -22,6 +22,8 @@ pip install financetoolkit -U
 
 {% include algolia.html %}
 
+{% include financetoolkit-getting-started/portfolio-optimization.md %}
+
 ## get_minimum_variance_weights
 Calculate the weights of the minimum variance portfolio: the fully invested portfolio of the Toolkit's assets with the lowest volatility. It uses only the covariance matrix, not the expected returns, which makes it the most robust of the mean-variance portfolios to estimation error.
 

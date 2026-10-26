@@ -2011,33 +2011,42 @@ financetoolkit-docs-portfolio:
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
       url: /projects/financetoolkit/docs/external-datasets
-  - title: Toolkit Integration
-    url: /projects/financetoolkit/docs/portfolio#toolkit
-  - title: Read Portfolio Dataset
-    url: /projects/financetoolkit/docs/portfolio#read_portfolio_dataset
-  - title: Benchmark Historical Data
-    url: /projects/financetoolkit/docs/portfolio#collect_benchmark_historical_data
-  - title: Historical Data
-    url: /projects/financetoolkit/docs/portfolio#collect_historical_data
-  - title: Positions Overview
-    url: /projects/financetoolkit/docs/portfolio#get_positions_overview
-  - title: Portfolio Overview
-    url: /projects/financetoolkit/docs/portfolio#get_portfolio_overview
-  - title: Portfolio Performance
-    url: /projects/financetoolkit/docs/portfolio#get_portfolio_performance
-  - title: Transactions Overview
-    url: /projects/financetoolkit/docs/portfolio#get_transactions_overview
-  - title: Transactions Performance
-    url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
-
-  - title: Portfolio Performance
+  - title: Creating a Portfolio
     children:
-      - title: Money-Weighted Return
-        url: /projects/financetoolkit/docs/portfolio#get_money_weighted_return
-  - title: Presets
-    children:
+      - title: Read Portfolio Dataset
+        url: /projects/financetoolkit/docs/portfolio#read_portfolio_dataset
       - title: Classic Portfolios
         url: /projects/financetoolkit/docs/portfolio#get_presets
+      - title: From a Classic Portfolio
+        url: /projects/financetoolkit/docs/portfolio#from_preset
+  - title: Market Data
+    children:
+      - title: Historical Data
+        url: /projects/financetoolkit/docs/portfolio#collect_historical_data
+      - title: Benchmark Historical Data
+        url: /projects/financetoolkit/docs/portfolio#collect_benchmark_historical_data
+  - title: Positions
+    children:
+      - title: Positions Overview
+        url: /projects/financetoolkit/docs/portfolio#get_positions_overview
+      - title: Portfolio Overview
+        url: /projects/financetoolkit/docs/portfolio#get_portfolio_overview
+  - title: Performance
+    children:
+      - title: Portfolio Performance
+        url: /projects/financetoolkit/docs/portfolio#get_portfolio_performance
+      - title: Money-Weighted Return
+        url: /projects/financetoolkit/docs/portfolio#get_money_weighted_return
+  - title: Transactions
+    children:
+      - title: Transactions Overview
+        url: /projects/financetoolkit/docs/portfolio#get_transactions_overview
+      - title: Transactions Performance
+        url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
+  - title: Toolkit Integration
+    children:
+      - title: Load into the Toolkit
+        url: /projects/financetoolkit/docs/portfolio#toolkit
 financetoolkit-docs-external-datasets:
   - title: Modules
     children:
