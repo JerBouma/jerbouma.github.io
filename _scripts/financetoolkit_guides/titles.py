@@ -107,4 +107,10 @@ TITLES = {
     "getting-started-surprise": "Revenue Surprise",
     "getting-started-esg": "ESG Scores",
     "getting-started-segments": "Apple's Revenue per Product and Region",
+    # ETF
+    "etf-sectors": "Sector Weightings",
+    "etf-concentration": "Concentration and Overlap",
+    "etf-valuation": "Look-Through Valuation",
+    "etf-tracking": "Tracking Difference against SPY per Year",
+    "etf-liquidity": "Average Daily Dollar Volume",
 }

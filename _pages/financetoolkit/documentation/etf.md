@@ -22,6 +22,8 @@ pip install financetoolkit -U
 
 {% include algolia.html %}
 
+{% include financetoolkit-getting-started/etf.md %}
+
 ## get_holdings
 Get the holdings of every fund: each asset it holds with the number of shares, the market value and the weight in the fund (as a decimal). This shows what the fund is actually exposed to and how concentrated it is; get_concentration and get_overlap summarize the weights.
 

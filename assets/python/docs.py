@@ -964,7 +964,9 @@ sidebar:
 
 The ETF module analyzes exchange-traded funds: their holdings, sector and country weightings, tracking against what they follow, concentration, the overlap between funds, valuation and liquidity.
 
-{_INSTALL_SNIPPET}""",
+{_INSTALL_SNIPPET}{{% include financetoolkit-getting-started/etf.md %}}
+
+""",
     },
     {
         "url": f"{_BASE}/portfolio/construction_controller.py",
