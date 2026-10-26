@@ -8,18 +8,6 @@ from .common import API_KEY, frame_chart, label, line, values
 TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN"]
 NAMES = {"AAPL": "Apple", "MSFT": "Microsoft", "GOOGL": "Alphabet", "AMZN": "Amazon", "Benchmark": "S&P 500"}
 
-# the market shocks that shaped these series, on a quarterly axis and on a yearly one
-QUARTER_BANDS = [
-    {"from": "2007Q4", "to": "2009Q1", "label": "Financial crisis"},
-    {"from": "2020Q1", "to": "2020Q2", "label": "Covid"},
-    {"from": "2022Q1", "to": "2022Q4", "label": "Inflation shock"},
-]
-YEAR_BANDS = [
-    {"from": "2008", "to": "2009", "label": "Financial crisis"},
-    {"from": "2020", "to": "2021", "label": "Covid"},
-]
-
-
 def renamed(frame):
     """Company names instead of tickers as series names."""
     return frame.rename(columns=NAMES)
@@ -30,6 +18,24 @@ def since(frame, first, last=2025):
     return frame[[c for c in frame.columns if first <= int(str(c)[:4]) <= last]]
 
 
+def combine(charts: dict) -> None:
+    """The charts of one example become the tabs of one chart: the three parameters, and earnings and ESG."""
+    trailing = charts.pop("getting-started-trailing")
+    standardized = charts.pop("getting-started-standardized")
+    beta = charts.pop("getting-started-beta")
+    charts["getting-started-parameters"] = {"type": "panels", "title": "Trailing, Standardized and Rolling Metrics", "panels": [
+        {**trailing, "label": "Trailing net profit margin", "period": False},
+        {**standardized, "label": "Operating margin Z-Score"},
+        {**beta, "label": "Rolling 12-month beta"},
+    ]}
+    surprise = charts.pop("getting-started-surprise")
+    esg = charts.pop("getting-started-esg")
+    charts["getting-started-earnings"] = {"type": "panels", "title": "Revenue Surprise and ESG Scores", "panels": [
+        {**surprise, "label": "Revenue surprise"},
+        {**esg, "label": "ESG score"},
+    ]}
+
+
 def build() -> dict:
     companies = Toolkit(TICKERS, api_key=API_KEY, start_date="2005-01-01")
     charts = {}
@@ -37,7 +43,7 @@ def build() -> dict:
     # Historical data: quarterly cumulative returns, the S&P 500 (SPY) included
     cumulative = renamed(companies.get_historical_data(period="quarterly")["Cumulative Return"])
     cumulative = cumulative[[NAMES[t] for t in TICKERS] + ["S&P 500"]]
-    growth = frame_chart(cumulative, fmt="multiple", bands=QUARTER_BANDS)
+    growth = frame_chart(cumulative, fmt="multiple")
     for s in growth["series"]:
         if s["name"] == "S&P 500":
             s["dashed"] = True
@@ -52,14 +58,11 @@ def build() -> dict:
         ],
     }
 
-    # Financial statements: total shareholder equity, Apple's capital return programme marked
+    # Financial statements: total shareholder equity
     balance_sheet = companies.get_balance_sheet_statement()
     equity = renamed((balance_sheet.xs("Total Shareholder Equity", level=1).T / 1e9)[TICKERS])
     equity = equity[[int(str(p)[:4]) <= 2025 for p in equity.index]]  # fiscal 2026 is Microsoft's alone
-    charts["getting-started-equity"] = frame_chart(
-        equity, fmt="billions",
-        markers=[{"x": "2012", "label": "Apple starts buybacks"}, {"x": "2017", "label": "Apple's peak"}],
-    )
+    charts["getting-started-equity"] = frame_chart(equity, fmt="billions")
 
     # Revenue growth; Alphabet's 57-93% of 2005-2007 would flatten everything else, so it starts in 2008
     income_statement_growth = companies.get_income_statement(growth=True)
@@ -68,7 +71,7 @@ def build() -> dict:
     charts["getting-started-revenue-growth"] = {
         "type": "tabs",
         "tabs": [
-            {"label": name, **frame_chart(revenue_growth[[name]], fmt="percent", kind="bar", bands=YEAR_BANDS)}
+            {"label": name, **frame_chart(revenue_growth[[name]], fmt="percent", kind="bar")}
             for name in revenue_growth.columns
         ],
     }
@@ -130,6 +133,7 @@ def build() -> dict:
     regions = regions.loc[:, [2015 <= int(str(c)[:4]) <= 2025 for c in regions.columns]]
     regions = regions.loc[(regions > 0).any(axis=1)].T / 1e9
     regions = regions[regions.iloc[-1].sort_values(ascending=False).index]
+    combine(charts)
     charts["getting-started-segments"] = {
         "type": "tabs",
         "tabs": [

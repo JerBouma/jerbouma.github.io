@@ -123,17 +123,9 @@ companies.ratios.get_operating_margin(standardize=True)
 companies.performance.get_beta(period="monthly", rolling=12)
 ```
 
-The trailing net profit margin, with the latest value per company and its path since 2015:
+When plotted, one tab per parameter: the trailing net profit margin with its path since 2015, the operating margin as a Z-Score per company and year (blue above the company's own average, pink below), and the rolling beta of Apple and Alphabet with the market's beta of 1 dashed:
 
-{% include ft-chart.html id="getting-started-trailing" src="/assets/data/financetoolkit-guides/getting-started.json" label="Trailing four-year net profit margin of Apple, Microsoft, Alphabet and Amazon since 2015" %}
-
-The operating margin as a Z-Score per company and year, blue above the company's own average and pink below:
-
-{% include ft-chart.html id="getting-started-standardized" src="/assets/data/financetoolkit-guides/getting-started.json" label="Operating margin Z-Scores of Apple, Microsoft, Alphabet and Amazon since 2015" %}
-
-The rolling beta of Apple and Alphabet, with the market's beta of 1 dashed:
-
-{% include ft-chart.html id="getting-started-beta" src="/assets/data/financetoolkit-guides/getting-started.json" label="Rolling 12-month beta of Apple and Alphabet against the S&P 500 since 2015" %}
+{% include ft-chart.html id="getting-started-parameters" src="/assets/data/financetoolkit-guides/getting-started.json" label="Trailing net profit margin, operating margin Z-Scores and rolling 12-month beta of Apple, Microsoft, Alphabet and Amazon" %}
 
 ### Earnings and ESG Scores
 
@@ -147,13 +139,9 @@ earnings_calendar = companies.get_earnings_calendar()
 esg_scores = companies.get_esg_scores()
 ```
 
-When plotted, the revenue surprise over the last eight quarters, the reported revenue against the consensus estimate:
+When plotted, the revenue surprise over the last eight quarters (the reported revenue against the consensus estimate) and, in the second tab, the combined ESG score per company and year on a scale from 0 to 100:
 
-{% include ft-chart.html id="getting-started-surprise" src="/assets/data/financetoolkit-guides/getting-started.json" label="Reported revenue against the consensus estimate for Apple, Microsoft, Alphabet and Amazon over the last eight quarters" %}
-
-The combined ESG score per company and year, on a scale from 0 to 100:
-
-{% include ft-chart.html id="getting-started-esg" src="/assets/data/financetoolkit-guides/getting-started.json" label="ESG scores of Apple, Microsoft, Alphabet and Amazon since 2015" %}
+{% include ft-chart.html id="getting-started-earnings" src="/assets/data/financetoolkit-guides/getting-started.json" label="Revenue surprise over the last eight quarters and ESG scores of Apple, Microsoft, Alphabet and Amazon" %}
 
 ### Revenue Segmentation
 
