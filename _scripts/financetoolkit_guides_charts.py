@@ -29,6 +29,7 @@ from financetoolkit_guides.titles import TITLES  # noqa: E402
 GUIDES = [
     "getting-started", "discovery", "ratios", "models", "options", "technicals", "risk",
     "performance", "econometrics", "fixed-income", "economics", "portfolio", "external-datasets",
+    "portfolio-optimization",
 ]
 
 
