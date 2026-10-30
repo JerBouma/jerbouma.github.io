@@ -89,7 +89,7 @@ financetoolkit:
     url: /projects/financetoolkit#site-nav
   - title: "Installation"
     url: /projects/financetoolkit#installation
-  - title: "MCP Server"
+  - title: <font color="#8b5cf6">MCP Server</font>
     url: /projects/financetoolkit/mcp
   - title: <font color="#d67f05">Documentation</font>
     url: /projects/financetoolkit/docs
@@ -132,6 +132,8 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#remote-server
       - title: Local Clients
         url: /projects/financetoolkit/mcp#local-clients
+  - title: <font color="#d67f05">Documentation</font>
+    url: /projects/financetoolkit/docs
   - title: "Example Conversations"
     url: /projects/financetoolkit/mcp#example-conversations
     children:
@@ -143,8 +145,6 @@ financetoolkit-mcp:
         url: /projects/financetoolkit/mcp#ex-us-cycle
       - title: Diversification
         url: /projects/financetoolkit/mcp#ex-diversification
-  - title: "Documentation"
-    url: /projects/financetoolkit/docs
   - title: "FAQ"
     url: /projects/financetoolkit/mcp#faq
   - title: "Under the Hood"
