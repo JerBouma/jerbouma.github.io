@@ -17,7 +17,7 @@ sidebar:
 image: assets/images/projects/FinanceToolkit.jpg
 ---
 
-<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+<div class="page-header-action notebook-viewer-actions"><a href="/projects/financetoolkit/docs"><i class="fas fa-book"></i> Documentation</a><a href="https://github.com/JerBouma/FinanceToolkit" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
 {%- assign ft = site.data.projects.maintained | where: "name", "Finance Toolkit" | first %}
 {%- assign ft_stars = ft.stats | where: "icon", "fa-star" | first %}
