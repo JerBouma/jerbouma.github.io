@@ -409,3 +409,14 @@ get_pairs_trading:
     start_date: "2015-01-01"
     end_date: "2025-12-31"
     window: 60
+get_wald_test:
+  question: Are the coefficients on Microsoft and the S&P 500 jointly zero in a regression of Apple's weekly returns from 2021 to 2025, according to a Wald test?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    dependent_ticker: AAPL
+    independent_tickers: MSFT,Benchmark
+    restriction_matrix: [[0, 1, 0], [0, 0, 1]]
+    period: weekly

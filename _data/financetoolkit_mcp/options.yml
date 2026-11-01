@@ -374,3 +374,9 @@ get_volatility_risk_premium:
   tool: options
   arguments:
     tickers: QQQ,AAPL,TSLA
+get_implied_move:
+  question: How large a move do Apple and Nvidia options price in around each company's next earnings?
+  tool: options
+  arguments:
+    tickers: AAPL,NVDA
+    around_earnings: true

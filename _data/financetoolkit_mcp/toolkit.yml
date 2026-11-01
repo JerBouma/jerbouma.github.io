@@ -215,3 +215,13 @@ get_statistics_statement:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: Accepted Date
+get_exchange_rates:
+  question: What were the monthly euro to US dollar exchange rates over the last ten months of 2025, with the returns since 2021?
+  tool: market_data
+  arguments:
+    indicator: get_historical_data
+    tickers: EURUSD
+    period: monthly
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -10
