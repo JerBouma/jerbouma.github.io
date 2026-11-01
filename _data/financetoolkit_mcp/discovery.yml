@@ -179,3 +179,18 @@ get_insider_trading_latest:
   arguments:
     limit: 5
     show_columns: Reporting Name,Transaction Type,Securities Transacted,Price
+get_stock_screener:
+  question: Which stocks, leaving out ETFs, have a market cap between $1 million and $200 billion, a price between $100 and $200, a beta between 1 and 1.5, a daily volume between 100,000 and 2 million shares and a dividend between $1 and $2 per share?
+  tool: discovery
+  arguments:
+    market_cap_higher: 1000000
+    market_cap_lower: 200000000000
+    price_higher: 100
+    price_lower: 200
+    beta_higher: 1
+    beta_lower: 1.5
+    volume_higher: 100000
+    volume_lower: 2000000
+    dividend_higher: 1
+    dividend_lower: 2
+    is_etf: false
