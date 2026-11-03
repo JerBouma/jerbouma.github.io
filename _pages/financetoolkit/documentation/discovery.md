@@ -82,22 +82,32 @@ The result is capped at `limit` companies, 1000 by default. Getting back exactly
 **Args:**
 
 - <u>market_cap_higher (int):</u> The minimum market capitalization of the stock in US dollars
-(not in millions), e.g. 1_000_000_000 for $1 billion.
+(not in millions), e.g. 1_000_000_000 for $1 billion. Defaults to None, which applies no filter.
 - <u>market_cap_lower (int):</u> The maximum market capitalization of the stock in US dollars.
-- <u>price_higher (int):</u> The minimum price of the stock.
-- <u>price_lower (int):</u> The maximum price of the stock.
-- <u>beta_higher (int):</u> The minimum beta of the stock.
-- <u>beta_lower (int):</u> The maximum beta of the stock.
-- <u>volume_higher (int):</u> The minimum volume of the stock, in shares traded.
-- <u>volume_lower (int):</u> The maximum volume of the stock.
-- <u>dividend_higher (int):</u> The minimum dividend of the stock, as an amount per share
-over the last annual period rather than as a yield.
-- <u>dividend_lower (int):</u> The maximum dividend of the stock.
-- <u>sector (str &#124; None):</u> The sector to restrict the screen to, e.g. "Energy".
-- <u>industry (str &#124; None):</u> The industry to restrict the screen to, e.g. "Biotechnology".
-- <u>country (str &#124; None):</u> The two-letter country code to restrict the screen to, e.g. "US".
-- <u>exchange (str &#124; None):</u> The exchange code to restrict the screen to, e.g. "NASDAQ".
-- <u>is_etf (bool &#124; None):</u> Whether to restrict the screen to ETFs or to exclude them.
+The screener returns the largest companies first, so this bound is only sent to it
+when the currency of the listings is known: with an exchange, or with a country and
+primary_only. Otherwise it is applied to the companies returned. Defaults to None,
+which applies no filter.
+- <u>price_higher (float &#124; None):</u> The minimum price of the stock. Defaults to None, which applies no filter.
+- <u>price_lower (float &#124; None):</u> The maximum price of the stock. Defaults to None, which applies no filter.
+- <u>beta_higher (float &#124; None):</u> The minimum beta of the stock. Defaults to None, which applies no filter.
+- <u>beta_lower (float &#124; None):</u> The maximum beta of the stock. Defaults to None, which applies no filter.
+- <u>volume_higher (int):</u> The minimum volume of the stock, in shares traded. Defaults to None, which applies no
+filter.
+- <u>volume_lower (int):</u> The maximum volume of the stock. Defaults to None, which applies no filter.
+- <u>dividend_higher (float &#124; None):</u> The minimum dividend of the stock, as an amount per share
+over the last annual period rather than as a yield. Defaults to None, which applies no filter.
+- <u>dividend_lower (float &#124; None):</u> The maximum dividend of the stock. Defaults to None, which applies no filter.
+- <u>sector (str &#124; None):</u> The sector to restrict the screen to, e.g. "Energy". Defaults to None, which applies no
+filter.
+- <u>industry (str &#124; None):</u> The industry to restrict the screen to, e.g. "Biotechnology". Defaults to None, which
+applies no filter.
+- <u>country (str &#124; None):</u> The country to restrict the screen to, as a two-letter code ("US")
+or a name ("United States"). Defaults to None, which applies no filter.
+- <u>exchange (str &#124; None):</u> The exchange code to restrict the screen to, e.g. "NASDAQ". Defaults to None, which
+applies no filter.
+- <u>is_etf (bool &#124; None):</u> Whether to restrict the screen to ETFs or to exclude them. Defaults to None, which
+applies no filter.
 - <u>limit (int):</u> The maximum number of companies to return. Defaults to 1000.
 - <u>primary_only (bool):</u> Whether to keep only the home listing of each company (on an
 exchange in its own country, the most traded one among several) rather than
@@ -1176,8 +1186,8 @@ Returns sector performance - the average price change, as a decimal (0.0125 mean
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01".
-- <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy".
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
+- <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to a year
 ago.
 - <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to today.
@@ -1224,8 +1234,8 @@ Returns industry performance - the average price change, as a decimal (0.0125 me
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01".
-- <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology".
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
+- <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to a year
 ago.
 - <u>end_date (str, optional):</u> The end of the history of one industry. Defaults to today.
@@ -1272,8 +1282,8 @@ Returns sector price-to-earnings (P/E) ratios of the companies listed on an exch
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01".
-- <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy".
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
+- <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to a year
 ago.
 - <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to today.
@@ -1320,8 +1330,8 @@ Returns industry price-to-earnings (P/E) ratios of the companies listed on an ex
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01".
-- <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology".
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
+- <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to a year
 ago.
 - <u>end_date (str, optional):</u> The end of the history of one industry. Defaults to today.

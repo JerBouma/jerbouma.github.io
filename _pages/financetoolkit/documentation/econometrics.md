@@ -353,7 +353,7 @@ assets tested. Defaults to False.
 
 pd.DataFrame: The CUSUM statistic, its p-value, the number of observations used, the
 1%/5%/10% critical boundary values, and whether stability is rejected at the 5% level,
-per asset.
+per asset. An asset with fewer than 10 observations has NaN values.
 
 **Notes:**
 
@@ -434,6 +434,7 @@ None.
 
 pd.DataFrame: The ADF statistic, its p-value, lags used, observations used, 1%/5%/10%
 critical values, and whether the unit root is rejected at the 5% level, per asset.
+An asset with fewer than 10 observations has NaN values.
 
 **Notes:**
 
@@ -520,7 +521,7 @@ None.
 
 pd.DataFrame: The KPSS statistic, its p-value, truncation lag used, observations used,
 1%/2.5%/5%/10% critical values, and whether stationarity is rejected at the 5% level,
-per asset.
+per asset. An asset with fewer than 10 observations has NaN values.
 
 **Notes:**
 
@@ -785,7 +786,8 @@ None.
 pd.DataFrame: One row per ordered `(Dependent, Independent)` ticker pair, with the
 Engle-Granger statistic, its p-value, 1%/5%/10% critical values, and whether
 cointegration is found at the 5% level -- the test is not symmetric (normalizing on
-the dependent ticker matters), so both orderings of every pair are included.
+the dependent ticker matters), so both orderings of every pair are included. A pair
+with fewer than 10 common observations has NaN values.
 
 **Notes:**
 
@@ -871,7 +873,9 @@ None.
 pd.DataFrame: One row per candidate cointegration rank `r = 0, ..., N-1`, with the
 corresponding eigenvalue, trace statistic, max-eigenvalue statistic, their 90%/95%/99%
 critical values, and whether each is rejected at the 5% level. The estimated rank is the
-first row (in rank order) that is NOT rejected.
+first row (in rank order) that is NOT rejected. With fewer observations than the
+VECM needs (the tickers times k_ar_diff + 1, plus the tickers, plus 3) every row
+is NaN.
 
 **Notes:**
 
@@ -1198,14 +1202,20 @@ $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant, on the dates where the returns and `weights` all have data
 
-With equal weights WLS reduces to OLS. A typical use is down-weighting periods of high volatility, so that a few turbulent periods do not dominate the estimated relationship. Use `get_breusch_pagan_test` or `get_white_test` to establish whether heteroskedasticity is present before choosing WLS over OLS.
+With equal weights WLS reduces to OLS. A typical use is down-weighting periods of high volatility, so that a few turbulent periods do not dominate the estimated relationship. By default (weights="feasible") the weights are estimated from the regression itself with the feasible GLS procedure of Wooldridge (2016): the logarithm of the squared OLS residuals is regressed on the independent tickers, and each period's weight is 1 / exp(fitted value), the inverse of its estimated error variance. Use `get_breusch_pagan_test` or `get_white_test` to establish whether heteroskedasticity is present before choosing WLS over OLS.
 
-**Also known as:** weighted regression.
+For more information about the feasible weights, see the following book:
+
+- Wooldridge, J.M. (2016). "Introductory Econometrics: A Modern Approach", 6th edition, Section 8.4. Cengage Learning.
+
+**Also known as:** weighted regression, feasible WLS.
 
 **Args:**
 
-- <u>weights (pd.Series):</u> The (positive) weight of each observation, aligned to
-the same period index as the return data (e.g. `1 / rolling_variance`).
+- <u>weights (pd.Series &#124; str, optional):</u> The (positive) weight of each observation,
+aligned to the same period index as the return data (e.g. `1 / rolling_variance`),
+or "feasible" to estimate them from the regression's own residuals with the
+feasible GLS procedure of Wooldridge (2016). Defaults to "feasible".
 - <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
 - <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
@@ -1237,7 +1247,6 @@ indexed by regressor name.
 **As an example:**
 
 ```python
-import pandas as pd
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -1247,19 +1256,16 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-returns = toolkit.econometrics._get_series_column("weekly", "Return", ["AAPL", "MSFT"])
-weights = pd.Series(1.0, index=returns.index)
-
-# AAPL (the first ticker) is dependent, MSFT is independent
-toolkit.econometrics.get_wls(weights, period="weekly")
+# AAPL (the first ticker) is dependent, MSFT is independent; the weights are estimated
+toolkit.econometrics.get_wls(period="weekly")
 ```
 
 Which returns:
 
 |           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0012 |       0.0019 |        0.6328 |    0.5274 |
-| MSFT      |        0.6283 |       0.058  |       10.8323 |    0      |
+| Intercept |        0.0012 |       0.0019 |        0.6263 |    0.5317 |
+| MSFT      |        0.6356 |       0.0596 |       10.6643 |    0      |
 
 ---
 
@@ -1280,18 +1286,21 @@ $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant (add_constant=True)
 
-Under a correctly specified `Omega` this is the most efficient linear unbiased estimator. Note that `omega` must be supplied, for example from a fitted AR(1) error structure: this performs the GLS estimation step itself, not the separate problem of estimating `Omega` (Feasible GLS). `get_durbin_watson_test` helps establish whether the residuals are autocorrelated in the first place.
+Under a correctly specified `Omega` this is the most efficient linear unbiased estimator. By default (omega="ar1") `Omega` is estimated from the regression itself as an AR(1) error structure, eₜ = ρ·eₜ₋₁ + uₜ: ρ is the slope of the OLS residuals on their own lag and Ωᵢⱼ = ρ^&#124;i - j&#124;, which makes this the Prais-Winsten estimator. Any other structure can be supplied as `omega`. `get_durbin_watson_test` helps establish whether the residuals are autocorrelated in the first place.
 
 For more information about the method, see the following paper:
 
 - Aitken, A.C. (1935). "On Least Squares and Linear Combinations of Observations." Proceedings of the Royal Society of Edinburgh, 55, 42-48.
+- Prais, S.J. and Winsten, C.B. (1954). "Trend Estimators and Serial Correlation." Cowles Commission Discussion Paper No. 383.
 
-**Also known as:** GLS.
+**Also known as:** GLS, Prais-Winsten.
 
 **Args:**
 
-- <u>omega (pd.DataFrame):</u> The (symmetric, positive-definite) error covariance
-structure, up to a scalar, shape `(n, n)`.
+- <u>omega (pd.DataFrame &#124; str, optional):</u> The (symmetric, positive-definite) error
+covariance structure, up to a scalar, shape `(n, n)`, or "ar1" to estimate an
+AR(1) structure from the regression's own residuals (Prais-Winsten). Defaults
+to "ar1".
 - <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
 - <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
@@ -1315,8 +1324,6 @@ indexed by regressor name.
 **As an example:**
 
 ```python
-import numpy as np
-import pandas as pd
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
@@ -1326,20 +1333,16 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-returns = toolkit.econometrics._get_series_column("weekly", "Return", ["AAPL", "MSFT"])
-n = len(returns)
-omega = pd.DataFrame(np.eye(n))
-
-# AAPL (the first ticker) is dependent; MSFT is independent
-toolkit.econometrics.get_gls(omega, period="weekly")
+# AAPL (the first ticker) is dependent, MSFT is independent; Omega is estimated (AR(1))
+toolkit.econometrics.get_gls(period="weekly")
 ```
 
 Which returns:
 
 |           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0012 |       0.0019 |        0.6328 |    0.5274 |
-| MSFT      |        0.6283 |       0.058  |       10.8323 |    0      |
+| Intercept |        0.0012 |       0.0017 |        0.7282 |    0.4671 |
+| MSFT      |        0.6312 |       0.0576 |       10.9557 |    0      |
 
 ---
 
@@ -1939,9 +1942,10 @@ For more information about the method, see the following paper:
 
 **Args:**
 
-- <u>restriction_matrix (pd.DataFrame &#124; np.ndarray):</u> The `(q, k)` restriction matrix `R`, one
-row per restriction, one column per coefficient in the same order as `add_constant`
-(if True, "Intercept" first) followed by the independent ticker(s).
+- <u>restriction_matrix (pd.DataFrame &#124; np.ndarray &#124; list[list[float]]):</u> The `(q, k)`
+restriction matrix `R`, one row per restriction, one column per coefficient in the
+same order as `add_constant` (if True, "Intercept" first) followed by the
+independent ticker(s), e.g. [[0, 1, 0], [0, 0, 1]].
 - <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
 - <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
@@ -1952,8 +1956,9 @@ meaning every other ticker in the Toolkit instance besides
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
 default independent ticker(s) (has no effect when independent_tickers is given
 explicitly). Defaults to False.
-- <u>restriction_values (pd.Series &#124; np.ndarray &#124; None, optional):</u> The length-`q` vector of
-hypothesized values. Defaults to None, i.e. all restrictions equal zero.
+- <u>restriction_values (pd.Series &#124; np.ndarray &#124; list[float] &#124; None, optional):</u> The
+length-`q` vector of hypothesized values. Defaults to None, i.e. all restrictions
+equal zero.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
 - <u>column (str, optional):</u> The historical data column to regress on. Defaults to "Return".

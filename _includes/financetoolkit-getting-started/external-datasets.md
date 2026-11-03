@@ -77,7 +77,7 @@ The result is three DataFrames with a row for every combination of ticker and li
 
 ## Initialising the Toolkit with Your Own Data
 
-The statements go into the `balance`, `income` and `cash` parameters, and `format_location` points to the folder with the filled-in normalisation files. The dates must run from left to right, oldest first, because growth rates and any ratio that uses an average of two years (such as asset turnover) shift the columns to find the previous year. Yahoo Finance puts the latest year first, which `reverse_dates=True` corrects. To initialise the Toolkit and show the normalised balance sheet:
+The statements go into the `balance`, `income` and `cash` parameters, and `format_location` points to the folder with the filled-in normalisation files. Growth rates and any ratio that uses an average of two years (such as asset turnover) shift the columns to find the previous year, so the Toolkit puts the dates in order from oldest to newest itself. Statements with the latest year first, as Yahoo Finance gives them, can go in as they are. To initialise the Toolkit and show the normalised balance sheet:
 
 ```python
 companies = Toolkit(
@@ -86,7 +86,6 @@ companies = Toolkit(
     income=income_statements,
     cash=cash_flow_statements,
     format_location="external_datasets",
-    reverse_dates=True,  # Important when the dates are descending
 )
 
 companies.get_balance_sheet_statement()
@@ -190,7 +189,6 @@ companies = Toolkit(
     cash=cash_flow_statements,
     api_key="FINANCIAL_MODELING_PREP_KEY",
     format_location="external_datasets",
-    reverse_dates=True,  # Important when the dates are descending
 )
 
 companies.get_analyst_estimates()

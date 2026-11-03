@@ -324,6 +324,8 @@ This gives access to the Portfolio Construction module, which builds and examine
 
 When the Toolkit comes from a Portfolio (`Portfolio.toolkit`), the methods that take weights use the Portfolio's latest weights by default.
 
+To follow the value and returns of a portfolio you hold, from its transactions, holdings or weights over time, use the `Portfolio` class instead.
+
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/portfolio-optimization](https://www.jeroenbouma.com/projects/financetoolkit/docs/portfolio-optimization){:target="_blank"}
 
 
@@ -584,8 +586,9 @@ The surprise is the reported EPS against the estimate, usually as a percentage o
 
 **Args:**
 
-- <u>actual_dates (bool):</u> Defines whether to return the actual dates or the corresponding quarters.
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>actual_dates (bool):</u> Defines whether to return the actual dates or the corresponding quarters. Defaults to
+True.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 - <u>rounding (int &#124; None):</u> The number of decimals to round the results to. Defaults to None,
@@ -728,7 +731,7 @@ Note that this information requires a Premium FMP subscription.
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -772,7 +775,7 @@ Note that this information requires a Premium FMP subscription.
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -843,9 +846,10 @@ to True to prevent holes in the dataset. This is especially relevant for
 technical indicators.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. If this is not enabled, the function
 will return the earlier retrieved data. This is done to prevent too many API calls. Defaults to False.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
 - <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
-acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance.
+acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance. Defaults to True.
 - <u>show_columns (list[str], optional):</u> A list of columns to include in the output. Valid columns
 are Open, High, Low, Close, Adj Close, Volume, Dividends, Return and Cumulative Return.
 Invalid column names are logged as warnings. If all
@@ -965,8 +969,9 @@ If a company does not pay any dividend, the function will mention that it was no
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1029,8 +1034,9 @@ ESG scores provide investors with a holistic view of a company's sustainability 
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1074,7 +1080,7 @@ In a cost of equity the premium is applied in one of two common ways: beta times
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 
 **Returns:**
 
@@ -1127,7 +1133,7 @@ Positioning is usually read from the net position of the non-commercial traders 
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 
 **Returns:**
 
@@ -1167,7 +1173,7 @@ Obtain the key executives of each company: their title, pay, gender, year of bir
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1218,7 +1224,7 @@ Automatically filtered to the years of this Toolkit instance's start_date and en
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1260,7 +1266,7 @@ Obtain the securities other than common stock that each company has registered f
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1308,7 +1314,7 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 
 **Returns:**
 
@@ -1348,7 +1354,7 @@ Obtain the free float of each company: the number of shares available for public
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 
 **Returns:**
 
@@ -1388,7 +1394,7 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1431,7 +1437,7 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 
 **Returns:**
 
@@ -1477,8 +1483,9 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1525,7 +1532,7 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 
 **Args:**
 
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1596,7 +1603,7 @@ every transcript between the start_date and end_date is retrieved. Defaults to T
 "2025Q4" (or "2025-Q4", "Q4 2025"). It is the company's own fiscal year, which
 differs from the calendar year for e.g. Apple and Microsoft. Takes precedence
 over latest. Defaults to None.
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 
 **Returns:**
 
@@ -1683,7 +1690,8 @@ A week, month, quarter or year holds the first (Open), highest, lowest and last 
 
 **Args:**
 
-- <u>period (str):</u> The interval at which the treasury data should be returned - daily, weekly, monthly, quarterly, or yearly.
+- <u>period (str):</u> The interval at which the treasury data should be returned - daily, weekly, monthly, quarterly,
+or yearly. Defaults to "daily".
 - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
 to True to prevent holes in the dataset. This is especially relevant for
 technical indicators.
@@ -1758,12 +1766,12 @@ Defaults to "daily".
 - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
 to True to prevent holes in the dataset. This is especially relevant for
 technical indicators.
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the returned data to. Defaults
 to None, which uses the rounding of the Toolkit. The rates the financial statements are
 translated with are never rounded.
 - <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
-acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance.
+acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance. Defaults to True.
 
 **Raises:**
 
@@ -1826,11 +1834,12 @@ over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
-- <u>growth (bool):</u> Defines whether to return the growth of the data.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool):</u> Defines whether to return the growth of the data. Defaults to False.
 - <u>lag (int &#124; list[int]):</u> Defines the number of periods to lag the growth data by.
-E.g. 4 with quarterly data gives the growth against the same quarter a year earlier.
+E.g. 4 with quarterly data gives the growth against the same quarter a year earlier. Defaults to 1.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1880,12 +1889,14 @@ over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
-- <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int &#124; list[int]):</u> Defines the number of periods to lag the growth data by.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool):</u> Defines whether to return the growth of the data. Defaults to False.
+- <u>lag (int &#124; list[int]):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+E.g. when selecting 4 with quarterly data, the TTM is calculated. Defaults to None, which uses no trailing
+window.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1934,12 +1945,14 @@ over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
-- <u>growth (bool):</u> Defines whether to return the growth of the data.
-- <u>lag (int &#124; list[int]):</u> Defines the number of periods to lag the growth data by.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool):</u> Defines whether to return the growth of the data. Defaults to False.
+- <u>lag (int &#124; list[int]):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated.
+E.g. when selecting 4 with quarterly data, the TTM is calculated. Defaults to None, which uses no trailing
+window.
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -1990,8 +2003,9 @@ over the source set on the Toolkit itself, so one instance can pull historical
 data from the free Yahoo Finance source while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
-- <u>overwrite (bool):</u> Defines whether to overwrite the existing data.
-- <u>rounding (int):</u> Defines the number of decimal places to round the data to.
+- <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
+rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
 names are reported and ignored. Defaults to None, which keeps every column.
 
@@ -2018,7 +2032,6 @@ Which returns:
 
 | date   | KO                  | PEP                 |
 |:-------|:--------------------|:--------------------|
-| 2020   | 2021-02-25 13:47:17 | 2021-02-10 17:41:49 |
 | 2021   | 2022-02-22 15:45:48 | 2022-02-09 18:03:39 |
 | 2022   | 2023-02-21 16:03:20 | 2023-02-08 18:06:37 |
 | 2023   | 2024-02-20 13:21:24 | 2024-02-08 17:58:51 |

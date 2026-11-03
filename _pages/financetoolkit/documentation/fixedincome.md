@@ -205,7 +205,7 @@ The coupon schedule runs back from maturity, so a maturity that is not a whole n
 
 **Args:**
 
-- <u>par_value (float):</u> The par value (face value) of the bond.
+- <u>par_value (float):</u> The par value (face value) of the bond. Defaults to 100.
 - <u>coupon_rate (float, optional):</u> The coupon rate of the bond. If not provided, a range of coupon rates will be used.
 - <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in years. If not provided, a range of years to maturity will be used.
 - <u>yield_to_maturity (float, optional):</u> The yield to maturity of the bond. Defaults to 0.08.
@@ -678,7 +678,7 @@ The Z-spread depends on the benchmark curve: against the government curve it mea
 
 **Args:**
 
-- <u>par_value (float):</u> The par value (face value) of the bond.
+- <u>par_value (float):</u> The par value (face value) of the bond. Defaults to 100.
 - <u>coupon_rate (float, optional):</u> The coupon rate of the bond. Defaults to 0.05.
 - <u>years_to_maturity (float, optional):</u> The years to maturity of the bond in years. Defaults to None.
 - <u>bond_price (float, optional):</u> The clean (quoted) price of the bond. Defaults to None, a range of
@@ -1206,8 +1206,8 @@ Defaults to None, which retrieves every country.
 - <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
 Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1254,8 +1254,8 @@ These are par yields: the coupons at which a new Treasury of each maturity would
 **Args:**
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.

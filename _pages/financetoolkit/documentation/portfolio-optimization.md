@@ -738,7 +738,7 @@ Calculate the Brinson-Fachler attribution of the portfolio's return over the ben
 - Selection: the reward for holding better stocks than the benchmark within a sector.
 - Interaction: the combined effect of both decisions.
 
-The portfolio's sector returns come from its holdings (buy and hold from the start date). The benchmark's sector weights come from the benchmark fund and its sector returns from the Select Sector SPDR funds (XLK, XLF, XLV, ...), which track the sectors of the S&P 500.
+The portfolio's sector returns come from its holdings (buy and hold from the start date). A stock counts towards its own sector and a fund is looked through to its sector weightings, as in get_look_through_exposure, so that QQQ counts as mostly Technology rather than as the sector of its issuer. The benchmark's sector weights come from the benchmark fund and its sector returns from the Select Sector SPDR funds (XLK, XLF, XLV, ...), which track the sectors of the S&P 500.
 
 For more information, see the following papers:
 
@@ -766,6 +766,10 @@ and Total Effect. The Total row's effects add up to the excess return.
 - The benchmark fund's sector weights are its current weights, applied to the whole
 date range, and the sector funds stand in for the benchmark's sectors; for a
 benchmark other than the S&P 500 this is an approximation.
+- A fund's weight is spread over its current sector weightings and every part earns
+the fund's own return, as the return of a fund's sectors separately is not known.
+Assets without a sector are "Unclassified" and compared with the benchmark as a
+whole.
 
 **As an example:**
 

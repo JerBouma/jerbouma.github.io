@@ -42,7 +42,8 @@ use the first available expiration date.
 Defaults to False.
 - <u>show_expiration_dates (bool, optional):</u> Whether to return the available expiration dates instead of
 the option chains. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>strike_price_range (float &#124; None, optional):</u> Only the strikes within this fraction of the
 current stock price, e.g. 0.05 for strikes within 5% of it. Defaults to None, which
 keeps every strike.
@@ -156,7 +157,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -258,7 +260,8 @@ uses the dividend yield on the pricing date (the dividends of the 365 days up to
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_expiration_dates (bool, optional):</u> Whether to show the expiration dates. Defaults to False.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -671,7 +674,7 @@ node, instead of a European option. Defaults to False.
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, 90, 95, 100, 105, 110, 115 and 120 if the current stock price is 100.
-- <u>time_to_expiration (int):</u> The number of year to use for the time to expiration. Defaults to 1 which equals
+- <u>time_to_expiration (float):</u> The number of years to use for the time to expiration. Defaults to 1 which equals
 one year.
 - <u>timesteps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
 time steps. This will be evenly distributed over the time to expiration.
@@ -683,7 +686,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -755,7 +759,7 @@ The resulting output is a DataFrame containing the tickers and movements as the 
 
 - <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
 which means it will use the most recent date.
-- <u>time_to_expiration (int):</u> The number of year to use for the time to expiration. Defaults to 1 which equals
+- <u>time_to_expiration (float):</u> The number of years to use for the time to expiration. Defaults to 1 which equals
 one year.
 - <u>timesteps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
 time steps. This will be evenly distributed over the time to expiration.
@@ -767,7 +771,8 @@ as given, as a continuously compounded rate.
 - <u>show_unique_combinations (bool, optional):</u> Whether to show the unique combinations of the stock prices.
 Defaults to False.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -844,7 +849,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -935,7 +941,8 @@ compounded rate.
 - <u>foreign_risk_free_rate (float, optional):</u> The foreign risk free rate to use for the calculation, which
 plays the role of the dividend yield in the standard Black-Scholes model. Defaults to 0.0.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1042,7 +1049,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1154,7 +1162,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1263,7 +1272,8 @@ reproducible results. Defaults to None, which means the results will not be repr
 - <u>show_standard_error (bool, optional):</u> Whether to also return the standard error of each Monte Carlo
 estimate as a second DataFrame. Defaults to False.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1432,7 +1442,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1544,7 +1555,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1647,7 +1659,8 @@ which means it will use the most recent date.
 to 0.5 which equals 50% and thus results in stock prices from 50 to 150 if the current stock price is
 100.
 - <u>stock_price_step_size (int):</u> The step size to use for the stock prices at expiration. Defaults to 1.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -1784,7 +1797,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1877,7 +1891,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -1971,7 +1986,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2068,7 +2084,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option dual delta. Defaults to False which means
 it will calculate the call option dual delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2169,7 +2186,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2277,7 +2295,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option theta. Defaults to False which means
 it will calculate the call option theta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2376,7 +2395,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option rho. Defaults to False which means
 it will calculate the call option rho.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2469,7 +2489,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option epsilon. Defaults to False which means
 it will calculate the call option epsilon.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2573,7 +2594,8 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>put_option (bool, optional):</u> Whether to calculate the put option lambda. Defaults to False which means
 it will calculate the call option lambda.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2656,7 +2678,8 @@ means it will use the current dividend yield.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option delta. Defaults to False which means
 it will calculate the call option delta.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2743,7 +2766,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2829,7 +2853,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -2920,7 +2945,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3024,7 +3050,8 @@ means it will use the current dividend yield.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option charm. Defaults to False which means
 it will calculate the call option charm.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3124,7 +3151,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3227,7 +3255,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3326,7 +3355,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3406,7 +3436,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3491,7 +3522,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3594,7 +3626,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3682,7 +3715,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3777,7 +3811,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 
@@ -3867,7 +3902,8 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None which
 means it will use the current dividend yield.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
 

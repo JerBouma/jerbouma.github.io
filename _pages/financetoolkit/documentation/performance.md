@@ -34,7 +34,8 @@ Calculates and collects all performance metrics.
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the
 Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -110,7 +111,8 @@ Beta is read against 1, the benchmark's own beta: above 1 the asset tends to amp
 initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Beta. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -183,7 +185,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -265,7 +268,8 @@ U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate 
 so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
 otherwise the exchange rate's moves end up in the factor loadings, mostly the market
 beta. Defaults to "United States".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
 Defaults to None, which returns every column.
 
@@ -328,7 +332,8 @@ Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 factors of Ken French's library for that region's stocks). Every region's factors are
 U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF).
 Defaults to "United States".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -417,7 +422,8 @@ U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate 
 so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
 otherwise the exchange rate's moves end up in the factor loadings, mostly the market
 beta. Defaults to "United States".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
 - <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -509,7 +515,8 @@ U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate 
 so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
 otherwise the exchange rate's moves end up in the factor loadings, mostly the market
 beta. Defaults to "United States".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
 - <u>lag (int or list of int, optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -643,7 +650,8 @@ Alpha. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Alpha is calculated as the rolling mean excess return over this many periods across
 the full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -708,7 +716,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -776,7 +785,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -904,7 +914,8 @@ arriving at the reported Sharpe ratio. Only used when method="deflated". Default
 None, which falls back to the number of valid values in the auxiliary rolling Sharpe
 ratio series described above. Pass this explicitly whenever the actual number of trials
 is known.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1005,7 +1016,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Sortino ratio is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1076,7 +1088,8 @@ It measures the excess return earned per unit of drawdown pain: the depth and th
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int):</u> The rolling period to use to calculate the Ulcer Index. Defaults to 14.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1145,7 +1158,8 @@ initialised with quarterly=True, otherwise "yearly".
 specified period or for the entire period. Thus whether to look at the Maximum Drawdown
 within a specific year (if period = 'yearly') or look at the entirety of all years.
 Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1215,7 +1229,8 @@ within a specific year (if period = 'yearly') or look at the entirety of all yea
 Defaults to True.
 - <u>adjustment (float, optional):</u> The fixed adjustment added to the Average Drawdown,
 conventionally 0.1 (10%). Defaults to 0.1.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1280,7 +1295,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the drawdowns within the specified
 period or for the entire period. Thus whether to look at the drawdowns within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1350,7 +1366,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the M2 ratio is calculated over a rolling window of this many periods across the full
 return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1420,7 +1437,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Tracking Error is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1491,7 +1509,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Information Ratio is calculated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1559,7 +1578,8 @@ Upside and downside capture (see `get_downside_capture_ratio`) are read together
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1625,7 +1645,8 @@ Where the down periods are the observations (days within each period) with a neg
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1689,7 +1710,8 @@ Days on which the asset or the benchmark has no return are left out of both coun
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1761,7 +1783,8 @@ $$
 initialised with quarterly=True, otherwise "yearly".
 - <u>order (int, optional):</u> The order of the lower partial moment used in the denominator.
 Defaults to 3.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1836,7 +1859,8 @@ Omega Ratio is calculated over a rolling window of this many periods across the 
 return history instead of per `period`. Defaults to None.
 - <u>minimum_acceptable_return (float, optional):</u> The minimum acceptable return (MAR) used as
 the threshold between gains and losses. Defaults to 0.0.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1900,7 +1924,8 @@ initialised with quarterly=True, otherwise "yearly".
 specified period or for the entire period. Thus whether to look at the Gain-to-Pain Ratio
 within a specific year (if period = 'yearly') or look at the entirety of all years.
 Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2038,7 +2063,8 @@ A period without any daily return for a ticker (before it listed, or a gap in it
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative return over time
 instead of the discrete return per period. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Return values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2117,7 +2143,8 @@ A period without any daily return for a ticker (before it listed, or a gap in it
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative excess return over time
 instead of the discrete excess return per period. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Excess Return values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2183,7 +2210,8 @@ $$
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -2232,7 +2260,8 @@ $$
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -2290,7 +2319,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2363,7 +2393,8 @@ initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2435,7 +2466,8 @@ period or for the entire period. Thus whether to look at the CVaR within a speci
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
 - <u>alpha (float, optional):</u> The confidence level used for the CVaR calculation (e.g. 0.05
 for the worst 5% of outcomes). Defaults to 0.05.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2508,7 +2540,8 @@ distribution within a specific year (if period = 'yearly') or look at the entire
 all years. Defaults to True.
 - <u>alpha (float, optional):</u> The confidence level used for both tails (e.g. 0.05 for the
 best/worst 5% of outcomes). Defaults to 0.05.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2572,7 +2605,8 @@ Gamma > 0 indicates positive market-timing ability; Gamma <= 0 indicates no timi
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2638,7 +2672,8 @@ Beta is the "down-market" Beta (the portfolio's market exposure when the benchma
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When

@@ -34,7 +34,8 @@ Calculates and collects all risk metrics.
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -136,7 +137,8 @@ calculated over a rolling window of this many periods across the full return his
 of per `period` (e.g. a rolling 60-day VaR). Only available for
 `distribution="historic"`; see `get_var_backtest` for a rolling, out-of-sample VaR path
 under the parametric distributions. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the VaR values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -253,7 +255,8 @@ calculated over a rolling window of this many periods across the full return his
 of per `period` (e.g. a rolling 60-day CVaR). Only available for
 `distribution="historic"`; see `get_acerbi_szekely_test` for a rolling, out-of-sample CVaR
 path under the parametric distributions. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -333,7 +336,8 @@ confidence level). Defaults to 0.05.
 period. Thus whether to look at the CVaR within a specific year (if period = 'yearly') or look at the entirety
 of all years. Defaults to False. Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -417,7 +421,8 @@ single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CDaR is
 calculated over a rolling window of this many periods across the full return history instead
 of per `period`. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CDaR values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -490,7 +495,8 @@ single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Tail
 Ratio is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Tail Ratio values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -569,7 +575,8 @@ or for the entire period. Thus whether to look at the Maximum Drawdown within a 
 (if period = 'yearly') or look at the entirety of all years. Defaults to False.
 Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Maximum Drawdown values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -642,7 +649,8 @@ for the entire period. Thus whether to look at the duration within a specific ye
 'yearly') or look at the entirety of all years. Defaults to False.
 Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the duration values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -710,7 +718,8 @@ or for the entire period. Thus whether to look at the recovery time within a spe
 period = 'yearly') or look at the entirety of all years. Defaults to False.
 Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the recovery time values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -784,7 +793,8 @@ mark reference for each day's drawdown. Pass None for an expanding
 (since-inception) high-water mark instead -- Martin's "Highest High"; a fixed
 int window is the common trailing-high variant (e.g. a 14-day trailing high).
 Defaults to 14.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the UI values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -851,12 +861,15 @@ Where r_t are the returns (not demeaned) and the Backcast is an exponentially we
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>time_steps (int, optional):</u> Time steps to calculate GARCH for.
+- <u>time_steps (int, optional):</u> Time steps to calculate GARCH for. Defaults to None, which uses the length of the
+returns.
 - <u>optimization_t (int, optional):</u> Time steps to optimize GARCH for. It is only used if no weights are given.
+Defaults to None, which uses the length of the returns.
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within the specified period or for the entire
 period. Thus whether to look at the GARCH within a specific year (if period = 'yearly') or look at the
 entirety of all years. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GARCH values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -929,7 +942,7 @@ For more information about the method, see the following book:
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>time_steps (int, optional):</u> Time steps to calculate GARCH and to forecast sigma_2 values for.
+- <u>time_steps (int, optional):</u> Time steps to calculate GARCH and to forecast sigma_2 values for. Defaults to 10.
 - <u>within_period (bool, optional):</u> Whether to calculate GARCH within each specified period or all
 at once. Thus whether to look at the GARCH within each specific year (if period = 'yearly') or
 look at the entirety of all years. Defaults to False.
@@ -1086,12 +1099,14 @@ Where r_t are the returns (not demeaned), I_(t-1) is 1 when r_(t-1) < 0 and 0 ot
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH for.
+- <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH for. Defaults to None, which uses the length of
+the returns.
 - <u>optimization_t (int, optional):</u> Time steps to optimize GJR-GARCH for. It is only used if no
-weights are given.
+weights are given. Defaults to None, which uses the length of the returns.
 - <u>within_period (bool, optional):</u> Whether to calculate GJR-GARCH within the specified period or
 for the entire period. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the GJR-GARCH values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1164,7 +1179,8 @@ For more information about the method, see the following paper:
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH and to forecast sigma_2 values for.
+- <u>time_steps (int, optional):</u> Time steps to calculate GJR-GARCH and to forecast sigma_2 values for. Defaults to
+10.
 - <u>within_period (bool, optional):</u> Whether to calculate GJR-GARCH within each specified period or
 all at once. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -1323,12 +1339,14 @@ Also known as: exponential GARCH, log-GARCH.
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>time_steps (int, optional):</u> Time steps to calculate EGARCH for.
+- <u>time_steps (int, optional):</u> Time steps to calculate EGARCH for. Defaults to None, which uses the length of the
+returns.
 - <u>optimization_t (int, optional):</u> Time steps to optimize EGARCH for. It is only used if no
-weights are given.
+weights are given. Defaults to None, which uses the length of the returns.
 - <u>within_period (bool, optional):</u> Whether to calculate EGARCH within the specified period or
 for the entire period. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EGARCH values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -1422,7 +1440,7 @@ Also known as: volatility forecast, predicted volatility.
 
 - <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
 Defaults to "daily".
-- <u>time_steps (int, optional):</u> Time steps to calculate EGARCH and to forecast sigma_2 values for.
+- <u>time_steps (int, optional):</u> Time steps to calculate EGARCH and to forecast sigma_2 values for. Defaults to 10.
 - <u>within_period (bool, optional):</u> Whether to calculate EGARCH within each specified period or
 all at once. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
@@ -2209,6 +2227,8 @@ Defaults to "daily", since `window_size` is expressed in return observations of 
 (252 only means "about one year" when `period` is daily).
 - <u>distribution (str, optional):</u> The distribution to use for the rolling VaR estimates, one of
 "historic", "gaussian", "studentt" or "evt". Defaults to "historic".
+"studentt" and "evt" fit their distribution to every window, which takes minutes for
+years of daily data, where "historic" and "gaussian" take well under a second.
 - <u>alpha (float, optional):</u> The tail probability for the VaR estimates (e.g., 0.05 for the 95%
 confidence level). Defaults to 0.05. With "evt" it can be at most 0.05, since the Generalized
 Pareto Distribution is fitted above the 95th percentile of losses; a larger `alpha` gives an
@@ -2283,6 +2303,8 @@ For more information about the method, see the following paper:
 Defaults to "daily", since `window_size` is expressed in return observations of this frequency.
 - <u>distribution (str, optional):</u> The distribution to use for the rolling VaR/CVaR estimates,
 one of "historic", "gaussian", "studentt" or "evt". Defaults to "historic".
+"studentt" and "evt" fit their distribution to every window, which takes minutes for
+years of daily data, where "historic" and "gaussian" take well under a second.
 - <u>alpha (float, optional):</u> The tail probability for the VaR/CVaR estimates (e.g., 0.05 for the 95%
 confidence level). Defaults to 0.05. With "evt" it can be at most 0.05, since the Generalized
 Pareto Distribution is fitted above the 95th percentile of losses; a larger `alpha` gives an
@@ -2363,7 +2385,8 @@ single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Skewness is
 calculated over a rolling window of this many periods across the full return history instead of
 per `period`. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Skewness values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2447,7 +2470,8 @@ for a normal distribution). Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Kurtosis is
 calculated over a rolling window of this many periods across the full return history instead of
 per `period`. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Kurtosis values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2596,7 +2620,8 @@ to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yea
 Variance is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Variance) instead of one value per `period`.
 Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Variance values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2702,7 +2727,8 @@ Only available for method="close_to_close". Defaults to None.
 - <u>method (str, optional):</u> Which Volatility estimator to use, one of "close_to_close",
 "parkinson", "garman_klass", "rogers_satchell" or "yang_zhang", as described above.
 Defaults to "close_to_close".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Volatility values over time.
 Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2789,7 +2815,8 @@ component. Defaults to 5.
 - <u>monthly_window (int, optional):</u> The trailing window (in trading days) for the monthly RV
 component. Defaults to 22.
 - <u>horizon (int, optional):</u> The number of days ahead to forecast. Defaults to 1.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the HAR-RV forecast values over
 time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2871,7 +2898,8 @@ for the entire period. Defaults to False. Note that this requires intraday data 
 single day only nests observations when intraday data was fetched.
 - <u>scale (float, optional):</u> A multiplier applied to the resulting ratio purely for readability.
 Defaults to 1,000,000.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Amihud Illiquidity values over
 time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -3015,7 +3043,8 @@ to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yea
 Excess Volatility is calculated over a rolling window of this many periods (e.g.
 period='monthly' and rolling=6 gives the rolling 6-month Excess Volatility) instead of
 one value per `period`. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Excess Volatility values
 over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -3091,7 +3120,8 @@ single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Downside
 Deviation is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Downside Deviation values over
 time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -3153,7 +3183,8 @@ Where the returns are the n daily returns within each period, without scaling to
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MAD values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3218,7 +3249,8 @@ Where both are taken over the daily returns within each period, with Std the sam
 
 - <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CV values over time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3286,7 +3318,8 @@ With the RiskMetrics decay factor of 0.94, about 70% of the weight sits on the l
 - <u>lambda_ (float, optional):</u> The decay factor. Higher values weight the past
 more heavily (slower to react), lower values weight recent returns more
 heavily (faster to react). RiskMetrics uses 0.94 for daily data. Defaults to 0.94.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EWMA Volatility values over
 time. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -3348,8 +3381,8 @@ Where r_t are the n daily returns (missing values dropped), the numerator runs o
 **Args:**
 
 - <u>lags (int, optional):</u> The number of lags to calculate the ACF for. Defaults to 10.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -3415,8 +3448,8 @@ Where P is the daily adjusted close, Std the population standard deviation (ddof
 
 - <u>max_lag (int, optional):</u> The maximum lag, included, to use when estimating the exponent:
 the regression runs over the lags 2 up to and including `max_lag`. Defaults to 20.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 

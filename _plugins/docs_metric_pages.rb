@@ -341,7 +341,7 @@ module DocsMetricPages
     HTML
   end
 
-  # the Portfolio class (transactions in, positions out) is not in the MCP
+  # the Portfolio class runs on its own transactions, so only its presets have an MCP question
   def examples_phrase(key)
     key == "portfolio" ? "with an example and its parameters" : "showing how to use it with the MCP and in Python"
   end

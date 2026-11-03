@@ -101,6 +101,22 @@ get_ols:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     include_benchmark: true
+get_wls:
+  question: How sensitive were Apple's weekly returns to Microsoft's from 2021 to 2025, according to a weighted least squares regression?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: weekly
+get_gls:
+  question: How sensitive were Apple's weekly returns to Microsoft's from 2021 to 2025, according to a generalized least squares regression?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: weekly
 get_logistic_regression:
   question: How did the daily return of the S&P 500 change the odds of Apple rising on a day in 2025, according to a logit model?
   tool: econometrics
