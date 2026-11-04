@@ -639,7 +639,7 @@ functions:
     period: "quarterly"
     within_period: false
   get_statistics_statement:
-    show_columns: ["Reported Currency", "Calendar Year"]
+    show_columns: ["Filing Date", "Fiscal Year"]
   get_sterling_ratio:
     period: "quarterly"
     within_period: false

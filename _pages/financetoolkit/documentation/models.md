@@ -56,7 +56,8 @@ The value of the decomposition is in comparing the three factors with peers and 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -141,7 +142,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -233,7 +235,8 @@ This breakdown is displayed in a DataFrame for each company and includes the opt
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -415,7 +418,8 @@ The WACC is the discount rate for the free cash flow to the firm and the hurdle 
 - <u>show_full_results (bool, optional):</u> Whether to show the full results or just the WACC values.
 Defaults to True.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -423,8 +427,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>market_risk_premium (float &#124; None, optional):</u> The annual equity risk premium the Cost of Equity
-uses. Defaults to None, which takes the benchmark's average return above the risk-free rate
-over every period of the data.
+uses. Defaults to None, which takes the equity risk premium of each company's country
+(Damodaran's Total Equity Risk Premium, see get_market_risk_premium) and, where that is
+not available, the benchmark's average return above the risk-free rate over the data.
 - <u>show_columns (list[str] &#124; None, optional):</u> Restrict the result to these columns. Defaults to None,
 which shows all columns.
 
@@ -435,10 +440,13 @@ pd.DataFrame: DataFrame containing the WACC values.
 **Notes:**
 
 - The Cost of Equity follows from the Capital Asset Pricing - <u>Model (CAPM):</u> the risk-free rate of
-the period plus Beta times the market risk premium, which defaults to the benchmark's average
-return above the risk-free rate over every period of the data (set `market_risk_premium` to use
-another premium, e.g. an implied equity risk premium). Beta is estimated from the period's daily
-returns. With quarterly data the rates are per quarter, the risk-free yield divided by four.
+the period plus Beta times the market risk premium. That premium defaults to the equity risk
+premium of the company's country (Damodaran's Total Equity Risk Premium, about 4.5% for the
+United States), today's premium for every period, as the source keeps no history. Without it (no API key, or a country the
+table does not cover) it is the benchmark's average return above the risk-free rate over the
+data, which a short or strong sample makes large: about 15% a year for the S&P 500 over
+2022-2026. Set `market_risk_premium` to use one premium for every company. Beta is estimated
+from the period's daily returns. With quarterly data the rates are per quarter, the risk-free yield divided by four.
 - With `trailing` set, the Interest Expense is summed over the trailing periods, so the Cost of
 Debt covers that span, and the risk-free rate and premium of the Cost of Equity are the per-period
 rates times `trailing`. With quarterly data and trailing=4, every rate is an annual rate.
@@ -471,9 +479,9 @@ Which returns:
 
 |      |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|
-| T    | 0.0787 | 0.0754 | 0.0259 | 0.0496 |
-| TMUS | 0.1087 | 0.0776 | 0.072  | 0.0645 |
-| VZ   | 0.0562 | 0.0727 | 0.0346 | 0.0425 |
+| T    | 0.0453 | 0.0457 | 0.0358 | 0.0411 |
+| TMUS | 0.047  | 0.0437 | 0.0447 | 0.0425 |
+| VZ   | 0.0304 | 0.0406 | 0.036  | 0.0358 |
 
 ---
 
@@ -508,8 +516,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>market_risk_premium (float &#124; None, optional):</u> The annual equity risk premium the Cost of Equity
-uses. Defaults to None, which takes the benchmark's average return above the risk-free rate
-over every period of the data.
+uses. Defaults to None, which takes the equity risk premium of each company's country
+(Damodaran's Total Equity Risk Premium, see get_market_risk_premium) and, where that is
+not available, the benchmark's average return above the risk-free rate over the data.
 - <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
@@ -532,8 +541,8 @@ average of Total Debt, i.e. the capital employed over the course of the period r
 its closing balance, consistent with the Return on Invested Capital calculation in the
 Ratios module.
 - The Weighted Average Cost of Capital comes from `get_weighted_average_cost_of_capital`,
-with the market risk premium given by `market_risk_premium` (by default the benchmark's
-average return above the risk-free rate over the data) and the same `trailing`, so that it
+with the market risk premium given by `market_risk_premium` (by default the equity risk
+premium of the company's country) and the same `trailing`, so that it
 covers the span of the NOPAT (an annual rate for trailing=4 with quarterly data).
 
 **As an example:**
@@ -555,9 +564,9 @@ Which returns:
 
 |    |        2022 |        2023 |        2024 |        2025 |
 |:---|------------:|------------:|------------:|------------:|
-| HD | 9.57216e+09 | 5.61294e+09 | 6.25513e+09 | 5.96403e+09 |
-| MA | 6.03519e+09 | 7.72427e+09 | 1.00151e+10 | 1.06193e+10 |
-| V  | 3.68483e+09 | 6.85635e+09 | 1.04752e+10 | 8.9369e+09  |
+| HD | 1.51585e+10 | 1.2373e+10  | 1.21356e+10 | 1.12645e+10 |
+| MA | 9.17359e+09 | 1.03462e+10 | 1.21324e+10 | 1.32974e+10 |
+| V  | 1.14098e+10 | 1.30284e+10 | 1.5452e+10  | 1.53158e+10 |
 
 ---
 
@@ -693,7 +702,8 @@ them at the WACC and subtracting the debt counts the cost of debt twice.
 When set, uses the sum of the last N periods instead of only the most recent period. Defaults to
 None, which uses 4 (the trailing twelve months) with quarterly data and the most recent year with
 yearly data.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -902,7 +912,8 @@ The assumption of constant growth of dividends is often unrealistic. In reality,
 - <u>growth_rate (float):</u> The growth rate of the dividends.
 - <u>project_periods (int, optional):</u> The number of years to project the intrinsic value for, beyond the
 last complete period. Defaults to 5.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -992,7 +1003,8 @@ number to use for all tickers, or a list or dict that contains a stable growth
 rate for each ticker.
 - <u>high_growth_periods (int, optional):</u> The number of years in the explicit
 high-growth phase. Defaults to 5.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
@@ -1062,8 +1074,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>market_risk_premium (float &#124; None, optional):</u> The annual equity risk premium the Cost of Equity
-uses. Defaults to None, which takes the benchmark's average return above the risk-free rate
-over every period of the data.
+uses. Defaults to None, which takes the equity risk premium of each company's country
+(Damodaran's Total Equity Risk Premium, see get_market_risk_premium) and, where that is
+not available, the benchmark's average return above the risk-free rate over the data.
 - <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
 columns will be shown. Defaults to None.
 
@@ -1079,8 +1092,8 @@ Income indicates the company failed to earn its equity holders' required return,
 if it still reported a positive Net Income.
 - The Cost of Equity follows from the Capital Asset Pricing Model (CAPM), as in
 `get_weighted_average_cost_of_capital`: the risk-free rate of the period plus Beta times
-the market risk premium, by default the benchmark's average return above the risk-free
-rate over the data (see `market_risk_premium`). It covers the span of the Net Income: a
+the market risk premium, by default the equity risk premium of the company's country
+(see `market_risk_premium`). It covers the span of the Net Income: a
 quarter with quarterly data, and the per-period rate times `trailing` when the Net Income
 is a trailing sum (an annual rate for trailing twelve months, trailing=4 with quarterly data).
 - The Book Value of Equity is the Total Shareholder Equity minus Preferred Stock at the
@@ -1112,9 +1125,9 @@ Which returns:
 
 |     |        2022 |        2023 |        2024 |        2025 |
 |:----|------------:|------------:|------------:|------------:|
-| AXP | 2.05135e+09 | 1.68244e+09 | 3.53878e+09 | 1.9205e+09  |
-| MA  | 8.21049e+09 | 9.901e+09   | 1.17405e+10 | 1.37721e+10 |
-| V   | 7.63433e+09 | 1.11901e+10 | 1.3996e+10  | 1.28472e+10 |
+| AXP | 5.6287e+09  | 5.94485e+09 | 7.56011e+09 | 7.62486e+09 |
+| MA  | 9.35646e+09 | 1.06974e+10 | 1.23824e+10 | 1.44718e+10 |
+| V   | 1.24384e+10 | 1.48241e+10 | 1.71898e+10 | 1.69421e+10 |
 
 ---
 
@@ -1966,9 +1979,11 @@ Income when calculating the Earnings per Share, so that the earnings figure refl
 attributable to common shareholders only. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
 - <u>market_risk_premium (float &#124; None, optional):</u> The annual equity risk premium the Cost of Equity
-uses. Defaults to None, which takes the benchmark's average return above the risk-free rate
-over every period of the data.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+uses. Defaults to None, which takes the equity risk premium of each company's country
+(Damodaran's Total Equity Risk Premium, see get_market_risk_premium) and, where that is
+not available, the benchmark's average return above the risk-free rate over the data.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2007,12 +2022,12 @@ toolkit.models.get_present_value_of_growth_opportunities()
 
 Which returns:
 
-| Date   |     ADI |     NVDA |     TXN |
-|:-------|--------:|---------:|--------:|
-| 2022   | 144.669 |  14.2204 | 124.854 |
-| 2023   | 174.632 |  46.6789 | 144.668 |
-| 2024   | 203.027 | 128.862  | 169.902 |
-| 2025   | 257.776 | 174.087  | 154.735 |
+| Date   |     ADI |     NVDA |      TXN |
+|:-------|--------:|---------:|---------:|
+| 2022   | 103.665 |  13.2452 |  44.5133 |
+| 2023   | 129.768 |  40.3283 |  96.2961 |
+| 2024   | 183.871 | 116.01   | 136.603  |
+| 2025   | 230.98  | 147.764  | 119.941  |
 
 ---
 
@@ -2179,7 +2194,8 @@ The constant 22.5 is Graham's limit of a price-to-earnings ratio of 15 times a p
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None,
 which uses 4 (the trailing twelve months of earnings) with quarterly data and a single period
 with yearly data.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When

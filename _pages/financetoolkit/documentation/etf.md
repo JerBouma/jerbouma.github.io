@@ -42,6 +42,10 @@ fund, e.g. 10 for the top 10, or of the smallest for a negative number, e.g.
 -10. Defaults to None, which keeps every holding. The holdings carry no sector or
 country; get_sector_weightings and get_country_weightings break the fund down by
 those.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the shares, weights
+and market values to. Defaults to None, which uses the rounding of the Toolkit.
+The smallest holdings of a broad fund weigh less than 0.0001, so they need a
+higher rounding (e.g. 8) to keep a weight above zero.
 
 **Returns:**
 
@@ -65,13 +69,13 @@ toolkit.etf.get_holdings().loc["QQQ"].head()
 
 Which returns:
 
-| Asset   | Name                       | ISIN         | CUSIP     |      Shares |    Weight |   Market Value | Updated At          |
-|:--------|:---------------------------|:-------------|:----------|------------:|----------:|---------------:|:--------------------|
-| NVDA    | NVIDIA Corp                | US67066G1040 | 67066G104 | 1.80964e+08 | 0.0850518 |    4.32937e+10 | 2026-10-07 14:14:58 |
-| AAPL    | Apple Inc                  | US0378331005 | 037833100 | 1.09586e+08 | 0.0718253 |    3.65611e+10 | 2026-10-07 14:14:58 |
-| MSFT    | Microsoft Corp             | US5949181045 | 594918104 | 5.57574e+07 | 0.057978  |    2.95124e+10 | 2026-10-07 14:14:58 |
-| MU      | Micron Technology Inc      | US5951121038 | 595112103 | 2.34119e+07 | 0.0480888 |    2.44785e+10 | 2026-10-07 14:14:58 |
-| AMD     | Advanced Micro Devices Inc | US0079031078 | 007903107 | 3.38406e+07 | 0.043174  |    2.19767e+10 | 2026-10-07 14:14:58 |
+| Asset   | Name                  | ISIN         | CUSIP     |      Shares |   Weight |   Market Value | Updated At          |
+|:--------|:----------------------|:-------------|:----------|------------:|---------:|---------------:|:--------------------|
+| NVDA    | NVIDIA Corp           | US67066G1040 | 67066G104 | 1.81778e+08 |   0.0808 |    3.88388e+10 | 2026-10-31 15:30:02 |
+| AAPL    | Apple Inc             | US0378331005 | 037833100 | 1.10079e+08 |   0.0799 |    3.84077e+10 | 2026-10-31 15:30:02 |
+| MSFT    | Microsoft Corp        | US5949181045 | 594918104 | 5.60069e+07 |   0.0617 |    2.96915e+10 | 2026-10-31 15:30:02 |
+| MU      | Micron Technology Inc | US5951121038 | 595112103 | 2.35156e+07 |   0.0457 |    2.19699e+10 | 2026-10-31 15:30:02 |
+| AMZN    | Amazon.com Inc        | US0231351067 | 023135106 | 8.13519e+07 |   0.0412 |    1.98328e+10 | 2026-10-31 15:30:02 |
 
 ---
 
@@ -286,7 +290,7 @@ Measure how closely every fund tracks the Benchmark of the Toolkit, which for an
 
 - Correlation, Beta and R Squared of the fund's returns with the Benchmark's.
 
-With yearly=True the tracking difference is given per calendar year instead, the return of the fund minus that of the Benchmark. The daily closes of two funds can differ by the timing of their last trade, which adds noise to a daily tracking error; fund reports usually measure it from monthly returns.
+With yearly=True the tracking difference is given per calendar year instead, the return of the fund minus that of the Benchmark. Each fund is compared with the Benchmark on the dates both have a close, so a fund whose prices stop within a year (after a ticker change, for example) is measured up to its last close. The daily closes of two funds can differ by the timing of their last trade, which adds noise to a daily tracking error; fund reports usually measure it from monthly returns.
 
 **Also known as:** tracking difference, tracking error, index tracking.
 
@@ -310,7 +314,7 @@ difference per year (rows).
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["VOO", "IVV", "SPLG"],
+    ["VOO", "IVV", "SPYM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     benchmark_ticker="SPY",
     start_date="2021-01-01",
@@ -322,13 +326,13 @@ toolkit.etf.get_tracking(period="monthly")
 
 Which returns:
 
-|                     |    VOO |    IVV |    SPLG |
-|:--------------------|-------:|-------:|--------:|
-| Tracking Difference | 0.0008 | 0.0007 | -0      |
-| Tracking Error      | 0.0011 | 0.0018 |  0.0021 |
-| Correlation         | 1      | 0.9999 |  0.9999 |
-| Beta                | 0.9994 | 1.0014 |  0.9986 |
-| R Squared           | 0.9999 | 0.9999 |  0.9998 |
+|                     |    VOO |    IVV |   SPYM |
+|:--------------------|-------:|-------:|-------:|
+| Tracking Difference | 0.0008 | 0.0007 | 0.0006 |
+| Tracking Error      | 0.0011 | 0.0018 | 0.0017 |
+| Correlation         | 1      | 0.9999 | 0.9999 |
+| Beta                | 0.9994 | 1.0014 | 0.9996 |
+| R Squared           | 0.9999 | 0.9999 | 0.9999 |
 
 ---
 
@@ -461,8 +465,9 @@ Also known as: ETF liquidity, dollar volume, Amihud illiquidity, price impact.
 **Args:**
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which keeps the full precision (the price impact of the largest
-funds is a fraction of a basis point).
+Defaults to None, which uses the rounding of the Toolkit for every measure but
+the price impact: that of the largest funds is a fraction of a basis point, so it
+keeps its full precision unless rounding is given.
 
 **Returns:**
 
@@ -489,7 +494,7 @@ Which returns:
 |:------------------------------|------------------:|-------------------:|-----------------:|
 | Average Volume                |    7734399.056000 |    48666218.588000 |  10799597.760000 |
 | Average Dollar Volume         | 4400329488.944520 | 26740006060.354679 | 719035298.234000 |
-| Dollar Volume to Assets       |          0.002588 |           0.056270 |         0.090822 |
+| Dollar Volume to Assets       |          0.002588 |           0.057650 |         0.090822 |
 | Price Impact per $100 Million |          0.000179 |           0.000036 |         0.002990 |
 
 ---

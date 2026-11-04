@@ -40,7 +40,8 @@ Defaults to True.
 - <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
 None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
 `trailing` when set (e.g. 365 for quarterly data with trailing=4).
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -103,8 +104,9 @@ Note that any of the following characters are considered as operators: +, -, *, 
 
 - <u>custom_ratios_dict (dict &#124; None, optional):</u> A dictionary containing the custom ratios to
 calculate. Defaults to None.
-- <u>options (bool):</u> Whether to return the available names to use in the custom ratios.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>options (bool):</u> Whether to return the available names to use in the custom ratios. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -172,7 +174,8 @@ Calculates and collects all Efficiency Ratios based on the provided data.
 - <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
 None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
 `trailing` when set (e.g. 365 for quarterly data with trailing=4).
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -250,7 +253,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -315,7 +319,8 @@ Inventory turnover is only comparable within an industry: a grocer turns its sto
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -381,7 +386,8 @@ $$
 - <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
 None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
 `trailing` when set (e.g. 365 for quarterly data with trailing=4).
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -449,7 +455,8 @@ DSO is read against the payment terms a company offers and against its own histo
 - <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
 None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
 `trailing` when set (e.g. 365 for quarterly data with trailing=4).
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -515,7 +522,8 @@ $$
 - <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
 None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
 `trailing` when set (e.g. 365 for quarterly data with trailing=4).
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -578,7 +586,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -644,7 +653,8 @@ $$
 - <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
 None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
 `trailing` when set (e.g. 365 for quarterly data with trailing=4).
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -712,7 +722,8 @@ A negative cash conversion cycle means suppliers are paid after customers have p
 - <u>days (int &#124; float, optional):</u> The number of days in the window the flows cover. Defaults to
 None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied by
 `trailing` when set (e.g. 365 for quarterly data with trailing=4).
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -773,7 +784,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -837,7 +849,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -898,7 +911,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -961,7 +975,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1024,7 +1039,8 @@ The ratio only reads well when working capital is clearly positive. When current
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1089,7 +1105,8 @@ Railroads and trucking companies report the operating ratio as their headline ef
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1154,7 +1171,8 @@ R&D intensity is compared within an industry and over time: a falling ratio can 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1217,7 +1235,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1284,7 +1303,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1352,7 +1372,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1417,7 +1438,8 @@ Without trailing, the deferred revenue balance at the end of the period is used,
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1472,7 +1494,8 @@ Calculates and collects all Liquidity Ratios based on the provided data.
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1543,7 +1566,8 @@ A current ratio above 1 is the textbook comfort level, but the right level depen
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1608,7 +1632,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1671,7 +1696,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1734,7 +1760,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1797,7 +1824,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1860,7 +1888,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1923,7 +1952,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -1980,7 +2010,8 @@ Where Daily Operating Expenses = (Cost of Goods Sold + Operating Expenses - Depr
 - <u>days (int &#124; float, optional):</u> The number of days in the window the expenses cover, used
 to turn them into daily expenditures. Defaults to None, which uses 365 for annual data
 and 365 / 4 for quarterly data, multiplied by `trailing` when set.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2033,7 +2064,8 @@ Calculates and collects all Profitability Ratios based on the provided data.
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2117,7 +2149,8 @@ Gross margin shows pricing power and production cost before overheads, and is be
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2182,7 +2215,8 @@ Operating margin is the usual yardstick for the profitability of the core busine
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2245,7 +2279,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2308,7 +2343,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2372,7 +2408,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2435,7 +2472,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2500,7 +2538,8 @@ Analysts compare the effective tax rate with the statutory rates of the countrie
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2565,7 +2604,8 @@ Return on assets is the natural measure for banks and insurers, whose assets are
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2629,7 +2669,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2695,7 +2736,8 @@ ROE is usually read through the DuPont analysis (`Toolkit.models.get_dupont_anal
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2758,7 +2800,8 @@ ROIC is compared with the weighted average cost of capital (`Toolkit.models.get_
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2821,7 +2864,8 @@ A ratio above 1 means reported earnings are backed by at least as much operating
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2882,7 +2926,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -2947,7 +2992,8 @@ ROCE is widely used for capital-intensive industries such as oil and gas, mining
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3011,7 +3057,8 @@ Earnings before tax is reconstructed from the income statement as Net Income plu
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3074,7 +3121,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3134,7 +3182,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3197,7 +3246,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3258,7 +3308,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3319,7 +3370,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3380,7 +3432,8 @@ The cash tax rate shows the taxes a company actually paid, which can differ for 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3445,7 +3498,8 @@ Because the divergence is the cash tax rate minus the effective tax rate, a year
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3499,7 +3553,8 @@ Calculates and collects all Solvency Ratios based on the provided data.
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3574,7 +3629,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3633,7 +3689,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3696,7 +3753,8 @@ The debt to equity ratio is compared within an industry, since utilities, real e
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3759,7 +3817,8 @@ Lenders and rating agencies use interest coverage to judge how much room a compa
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3822,7 +3881,8 @@ The equity multiplier is the leverage component of the DuPont analysis: return o
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3885,7 +3945,8 @@ The short-term debt is the principal due over the next year, so it is scaled to 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -3952,7 +4013,8 @@ The free cash flow yield is the cash a company generates for its shareholders as
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4014,7 +4076,8 @@ Net debt to EBITDA is the leverage measure lenders, rating agencies and loan cov
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4073,7 +4136,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4132,7 +4196,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4193,7 +4258,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4254,7 +4320,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4315,7 +4382,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4374,7 +4442,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4440,7 +4509,8 @@ A common reason for interest paid to exceed the interest expense is capitalized 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4494,7 +4564,8 @@ Calculates and collects all Valuation Ratios based on the provided data.
 - <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income in the
 earnings-based ratios. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4570,7 +4641,8 @@ The preferred dividends are only deducted when include_dividends is True; with t
 - <u>include_dividends (bool, optional):</u> Whether to deduct the preferred dividends paid from net income.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted earnings per share. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4632,7 +4704,8 @@ $$
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4703,7 +4776,8 @@ that day, so no figures are used before their period closes. Defaults to False.
 - <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4774,7 +4848,8 @@ Defaults to False.
 - <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income, in both
 the P/E and the EPS growth (not in the EBITDA growth). Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4834,7 +4909,8 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4896,7 +4972,8 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -4948,7 +5025,8 @@ $$
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5017,7 +5095,8 @@ The price to book ratio matters most for banks and insurers, whose balance sheet
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5080,7 +5159,8 @@ $$
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5146,7 +5226,8 @@ The values are negative because capital expenditure is reported as a cash outflo
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5215,7 +5296,8 @@ The dividends per share are those paid over a year: the trailing four quarters w
 against the dividends paid in the 365 calendar days up to that day (or the
 `trailing` periods in days). Days less than one window after the first price are
 NaN. Defaults to False.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5283,7 +5365,8 @@ $$
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5351,7 +5434,8 @@ $$
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5419,7 +5503,8 @@ $$
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5487,7 +5572,8 @@ $$
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5557,7 +5643,8 @@ Market cap is a point-in-time value, so the price is the close on the last tradi
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5614,7 +5701,8 @@ Enterprise value is the price of the whole business, equity and debt together, w
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5669,7 +5757,8 @@ $$
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5732,7 +5821,8 @@ EV to EBITDA is the most common multiple in sector comparisons and takeover pric
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5791,7 +5881,8 @@ $$
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5854,7 +5945,8 @@ that day, so no figures are used before their period closes. Defaults to False.
 - <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5913,7 +6005,8 @@ The payout ratio shows how much room a company has to keep or raise its dividend
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -5969,7 +6062,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -6023,7 +6117,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -6077,7 +6172,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -6135,7 +6231,8 @@ EBIT is the reported operating income, the same operating profit that EV to EBIT
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -6196,7 +6293,8 @@ $$
 against the statement figures of the latest period that has ended on or before
 that day, so no figures are used before their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -6255,7 +6353,8 @@ The buyback yield is net of shares issued, which matters for companies that pay 
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -6318,7 +6417,8 @@ $$
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
@@ -6381,7 +6481,8 @@ $$
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to 4.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When

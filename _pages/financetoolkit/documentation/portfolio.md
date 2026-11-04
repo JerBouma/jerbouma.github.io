@@ -512,7 +512,8 @@ This method computes a detailed overview of the portfolio, calculating various k
 
 - <u>include_portfolio (bool):</u> A boolean flag indicating whether the portfolio itself should be included
 in the overview. Defaults to `True`.
-- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions from the overview.
+- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions from the overview. Defaults
+to True.
 - <u>rounding (int &#124; None):</u> An optional integer specifying the number of decimal places to round the data.
 If None, the default rounding precision is used.
 
@@ -572,7 +573,7 @@ This method calculates key performance metrics, such as returns, for the portfol
 It can be one of the following: 'yearly', 'quarterly', 'monthly', 'weekly', or 'daily'.
 If None, the default period is 'quarterly' (if the 'quarterly' attribute is set to True),
 otherwise, it defaults to 'yearly'.
-- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions.
+- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions. Defaults to True.
 - <u>rounding (int &#124; None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding precision specified in the configuration.
 
@@ -719,7 +720,10 @@ Sales are reported but left out of the return: the units sold in a period were u
 should be calculated. This can be one of the following: 'yearly', 'quarterly',
 'monthly', 'weekly', or 'daily'. If None, the default is 'quarterly' if
 the 'quarterly' attribute is set to True, otherwise 'yearly'.
-- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions
+- <u>exclude_sold_positions (bool):</u> Whether to leave out the periods without an invested
+amount: those in which only units bought earlier were sold, and those whose only
+purchases cost nothing (a price of 0), which have no return to measure. Defaults
+to True.
 - <u>rounding (int &#124; None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding specified in the configuration.
 

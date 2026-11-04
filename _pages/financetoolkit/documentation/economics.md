@@ -367,8 +367,8 @@ Potential output cannot be observed, so the gap is an estimate, and the estimate
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1849,8 +1849,8 @@ The sample is ex ante designed to be nationally representative of the population
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1921,8 +1921,8 @@ with `oecd_source=True` when the Economics class was initialized with quarterly=
 Global Macro Database (GMDB). Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1998,8 +1998,8 @@ Headline inflation is what most central banks target, usually at 2% a year, but 
 Defaults to None, which is the monthly data.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2056,8 +2056,8 @@ Defaults to None, which is quarterly when the Economics class was initialized wi
 quarterly=True and monthly otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2106,8 +2106,8 @@ An indicator above 100 signals a boost in the consumers’ confidence towards th
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2155,8 +2155,8 @@ Numbers above 100 suggest an increased confidence in near future business perfor
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2206,8 +2206,8 @@ The CLI is read for its direction and turning points rather than its level: a re
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2261,13 +2261,14 @@ Both are an index based on 2015 = 100.
 annual data (False). Defaults to None, which returns the quarterly data, the
 highest frequency the OECD publishes.
 - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data or the nominal data.
+Defaults to False.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB),
 which is annual. Defaults to None, which uses the OECD for quarterly data and the GMDB for
 annual data; asking for the GMDB together with quarterly data logs a warning.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2328,8 +2329,8 @@ annual data (False). Defaults to None, which returns the quarterly data, the
 highest frequency the OECD publishes.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2386,8 +2387,8 @@ annual data (False). Defaults to None, which returns the quarterly data, the
 highest frequency the OECD publishes.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2441,8 +2442,8 @@ annual data (False). Defaults to None, which returns the quarterly data, the
 highest frequency the OECD publishes.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2500,8 +2501,8 @@ Defaults to None, which is quarterly when the Economics class was initialized wi
 quarterly=True and monthly otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2565,8 +2566,8 @@ was initialized with quarterly=True and otherwise the highest frequency availabl
 quarter or year instead of its average. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2812,8 +2813,8 @@ quarterly=True and monthly otherwise.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2888,8 +2889,8 @@ other countries are requested.
 Not used for daily and weekly data.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2952,8 +2953,8 @@ None of these sources require an API key. The rates are returned as decimal frac
 - <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data. Defaults to "daily".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3138,8 +3139,8 @@ This indicator is the renewable share of total primary energy supply, returned a
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3193,8 +3194,8 @@ This series currently ends in 2020, so a date range that starts after that retur
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3262,8 +3263,8 @@ quarterly=True and monthly otherwise.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3394,8 +3395,8 @@ $$
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3448,8 +3449,8 @@ One Gini coefficient is returned per country, for the total population and on th
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3516,8 +3517,8 @@ By default the data comes from the Global Macro Database (GMDB), which returns a
 Defaults to None, which falls back to the gmdb_source set on the Economics class (True by default).
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3572,8 +3573,8 @@ However, two countries with the same poverty rates may differ in terms of the re
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3784,8 +3785,8 @@ Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3839,8 +3840,8 @@ Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3896,8 +3897,8 @@ Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3951,8 +3952,8 @@ No API key is needed: without a FRED API key the data comes from the Federal Res
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4002,8 +4003,8 @@ Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4057,8 +4058,8 @@ Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4115,8 +4116,8 @@ No API key is needed: without a FRED API key the data comes from Freddie Mac's P
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4166,8 +4167,8 @@ No API key is needed: without a FRED API key the data comes from the NBER's busi
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4218,8 +4219,8 @@ See definitions: [https://data.bis.org/topics/CPP](https://data.bis.org/topics/C
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4278,8 +4279,8 @@ Defaults to "daily".
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4343,8 +4344,8 @@ Defaults to "daily".
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4404,8 +4405,8 @@ data takes the last month of each quarter. Defaults to "monthly".
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4473,8 +4474,8 @@ Defaults to "daily".
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4588,8 +4589,8 @@ Defaults to "daily".
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
 trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4719,8 +4720,8 @@ non-commercial purposes, as its licence (CC BY-NC-SA 4.0) requires. Defaults
 to False, which returns nothing.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4780,8 +4781,8 @@ The dataset is not updated anymore. No API key is needed; the workbook is large 
 "share prices"]. Defaults to None, which includes all of them.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data.
-- <u>lag (int, optional):</u> The number of periods to lag the data by.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5078,7 +5079,7 @@ pd.DataFrame: One column per measure, indexed by month.
 ```python
 from financetoolkit import Economics
 
-economics = Economics(start_date='2026-01-01')
+economics = Economics(start_date='2026-01-01', end_date='2026-09-30')
 
 economics.get_shiller_stock_market_data()[['Price', 'Dividend', 'Earnings', 'CAPE']]
 ```
@@ -5096,7 +5097,6 @@ Which returns:
 | 2026-07 | 7481.34 |   nan      |    nan     | 40.0086 |
 | 2026-08 | 7711.32 |   nan      |    nan     | 40.9874 |
 | 2026-09 | 7669.41 |   nan      |    nan     | 40.5809 |
-| 2026-10 | 7722.72 |   nan      |    nan     | 40.7106 |
 
 ---
 

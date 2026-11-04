@@ -26,7 +26,7 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
     </video>
   </div>
   <div class="mcp-facts ft-hero__facts">
-    <div class="mcp-fact"><strong>500+</strong><span>metrics in 22 tools, plus 3 for search</span></div>
+    <div class="mcp-fact"><strong>500+</strong><span>metrics in 25 tools, plus 3 for search</span></div>
     <div class="mcp-fact"><strong>Calculated</strong><span>not recalled: the same number in any model</span></div>
     <div class="mcp-fact"><strong>Free</strong><span>hosted, or run locally; MIT-licensed</span></div>
     <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor and more</span></div>
@@ -54,7 +54,7 @@ There is a growing number of MCP servers for financial data, from the official F
 </table>
 </div>
 
-The Finance Toolkit behind the server has been downloaded over 600,000 times and every formula is in the [documentation](/projects/financetoolkit/docs), so a number from a chat can be traced back to its calculation. I designed the 22 categorical tools so that small and large models alike use them reliably.
+The Finance Toolkit behind the server has been downloaded over 600,000 times and every formula is in the [documentation](/projects/financetoolkit/docs), so a number from a chat can be traced back to its calculation. I designed the 25 categorical tools so that small and large models alike use them reliably.
 
 If you only need a quote or a headline number, a raw data server is fine. If you want to ask *"which of these banks is the most solvent, and why"* and get an answer you can defend, that is what I built this server for.
 
@@ -439,7 +439,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 
 Four questions of the kind an analyst or portfolio manager would ask, each answered by Claude through the server. None of them is a single lookup: Claude decides which calculations it needs, chains them across tools and builds its conclusion on the results. Every number and chart below comes from a Finance Toolkit calculation, with data up to October 2, 2026.
 
-The server returns the same calculated data to every model, and I designed its 22 categorical tools to be simple enough for smaller models as well: GPT-5 mini, Claude Haiku and similar models pick the right tools and report the same numbers. A larger model mostly adds depth, such as the follow-up calculations and caveats you see here.
+The server returns the same calculated data to every model, and I designed its 25 categorical tools to be simple enough for smaller models as well: GPT-5 mini, Claude Haiku and similar models pick the right tools and report the same numbers. A larger model mostly adds depth, such as the follow-up calculations and caveats you see here.
 
 A shorter, silent loop of the server at work:
 
@@ -612,7 +612,7 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" id="faq-tools" markdown="1">
   <summary><h3>Which tools does the server expose?</h3></summary>
 
-  The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus three search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns compact JSON, with rates and ratios as decimals (`0.05` is 5%).
+  The 500+ Finance Toolkit methods are grouped into 25 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus three search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns compact JSON, with rates and ratios as decimals (`0.05` is 5%).
 
 | Category | Tool | Description |
 |:---|:---|:---|
@@ -622,6 +622,9 @@ The questions that come up most often about the server, its data sources and how
 | Fundamentals | `performance` | Sharpe ratio, Sortino ratio, Alpha, Beta, CAPM, Fama-French, Carhart, market timing |
 | Fundamentals | `risk` | Value at Risk, CVaR, GARCH/GJR-GARCH, max drawdown, copulas, realized volatility |
 | Fundamentals | `options` | Black-Scholes pricing, binomial tree, Greeks, implied volatility, exotic options |
+| Portfolios and ETFs | `etf` | ETF holdings, sector and country weightings, overlap, concentration, tracking error, premium or discount to NAV |
+| Portfolios and ETFs | `portfolio` | Optimal weights (minimum variance, maximum Sharpe, risk parity, HRP, Black-Litterman), efficient frontier, stress tests, look-through exposure, Brinson attribution |
+| Portfolios and ETFs | `portfolio_performance` | Value, returns, positions and money-weighted return of a portfolio from its transactions, holdings, weights or a classic preset such as 60/40 |
 | Econometrics | `econometrics` | Regression (OLS/WLS/GLS, logit, probit, quantile, Fama-MacBeth), panel data, causal inference (IV-2SLS, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), unit root and cointegration tests, Granger causality, ARIMA/VAR/VECM forecasting and event studies |
 | Ratios and Models | `efficiency` | Asset/inventory turnover, days of sales outstanding, cash conversion cycle |
 | Ratios and Models | `liquidity` | Current ratio, quick ratio, cash ratio, working capital |
@@ -736,7 +739,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "Which tools does the server expose?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The 500+ Finance Toolkit methods are grouped into 22 categorical tools, each taking an indicator parameter that selects the exact metric, plus three search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_metric_categories, search_by_category and search_metrics. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns compact JSON, with rates and ratios as decimals (0.05 is 5%). Looking up a ticker by name or ISIN is left to the Finance Database MCP server."
+        "text": "The 500+ Finance Toolkit methods are grouped into 25 categorical tools, each taking an indicator parameter that selects the exact metric, plus three search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, etf, portfolio, portfolio_performance, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_metric_categories, search_by_category and search_metrics. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns compact JSON, with rates and ratios as decimals (0.05 is 5%). Looking up a ticker by name or ISIN is left to the Finance Database MCP server."
       }
     },
     {

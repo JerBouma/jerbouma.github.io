@@ -1,0 +1,5 @@
+get_presets:
+  question: Which classic portfolios, such as 60/40 or All Weather, can I build, and what do they hold and how often are they rebalanced?
+  tool: portfolio_performance
+  arguments:
+    show_columns: Name,Holdings,Rebalancing

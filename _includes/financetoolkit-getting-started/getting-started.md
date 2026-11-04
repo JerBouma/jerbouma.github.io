@@ -82,6 +82,34 @@ The last line selects total shareholder equity for all four companies, which plo
 
 {% include ft-chart.html id="getting-started-equity" src="/assets/data/financetoolkit-guides/getting-started.json" label="Total shareholder equity of Apple, Microsoft, Alphabet and Amazon per fiscal year" %}
 
+### Point in Time
+
+A company files its figures weeks after a period ends, so a backtest that uses them from the period end knows them before the market did. With `point_in_time=True`, each period only counts from the first day its figures were public: the day the SEC accepted the filing where there is one, otherwise the day after the filing date or the longest common reporting deadline. The `end_date` then works as the "as of" date, and every ratio and model calculated from the statements only sees what was public on it.
+
+To load the quarterly statements of Apple and Microsoft as they were public on 20 April 2022:
+
+```python
+companies_then = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key=API_KEY,
+    start_date="2021-01-01",
+    end_date="2022-04-20",
+    quarterly=True,
+    point_in_time=True,
+)
+
+income_statement = companies_then.get_income_statement()
+
+income_statement.xs("Revenue", level=1)
+```
+
+Which returns the revenue up to the fourth quarter of 2021, in billions of dollars for the last three quarters. Without `point_in_time`, the same call also includes the first quarter of 2022 (97.3 for Apple and 49.4 for Microsoft), which both companies only filed later in April.
+
+| | 2021Q2 | 2021Q3 | 2021Q4 |
+|:---|:---|:---|:---|
+| AAPL | 81.4 | 83.4 | 123.9 |
+| MSFT | 46.2 | 45.3 | 51.7 |
+
 ### Growth, Trailing, Rolling and Z-Scores
 
 A handful of parameters work across nearly every function in the Toolkit, from the statements to the ratios, risk and performance metrics.
