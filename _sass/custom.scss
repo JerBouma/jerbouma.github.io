@@ -2784,7 +2784,10 @@ body.wide-no-sidebar:not(.no-title) {
 .footer__built {
   font-size: 0.78rem;
   color: var(--text-muted);
+}
 
+.footer__copyright,
+.footer__built {
   a {
     color: var(--text-secondary) !important;
     // an underline, so the links don't rely on colour alone
