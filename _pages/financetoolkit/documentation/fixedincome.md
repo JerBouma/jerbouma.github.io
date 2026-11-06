@@ -2365,6 +2365,63 @@ Which returns:
 
 ---
 
+## get_term_premium
+Retrieves the Treasury term premia of Adrian, Crump and Moench (2013), as the Federal Reserve Bank of New York estimates them daily from 1961 for maturities of 1 to 10 years. A Treasury yield is split into the average short rate investors expect over the bond's life and the term premium: the extra yield they demand for holding a long bond instead of rolling over short ones. The split tells whether a move in long yields comes from expected monetary policy or from compensation for risk, such as inflation and fiscal uncertainty.
+
+Adrian, T., Crump, R. K., & Moench, E. (2013). Pricing the Term Structure with Linear Regressions. Journal of Financial Economics, 110(1), 110-138. [https://doi.org/10.1016/j.jfineco.2013.04.009](https://doi.org/10.1016/j.jfineco.2013.04.009){:target="_blank"}
+
+Three components are returned per maturity: the "Term Premium", the "Expected Short Rate" (the risk-neutral yield, the yield if investors were indifferent to risk) and the "Fitted Yield" of the model, which is their sum. The model is fitted to the zero-coupon Treasury curve of Gürkaynak, Sack and Wright (2007), so every value is a continuously compounded zero-coupon rate, as a decimal fraction (0.0067 for 0.67%). No API key is needed. Weekly and monthly periods take the last day of each period, matching the New York Fed's own month-end series.
+
+The term premium is a model estimate rather than an observed price: it rests on the model's five pricing factors (principal components of the yield curve), and other models, such as that of Kim and Wright (2005), give different levels with similar movements.
+
+**See definition:** [https://www.newyorkfed.org/research/data_indicators/term-premia-tabs](https://www.newyorkfed.org/research/data_indicators/term-premia-tabs){:target="_blank"}
+
+**Also known as:** ACM term premium, Treasury term premium, risk-neutral yield, expected short rate, bond risk premium.
+
+**Args:**
+
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>maturity_years (list[int] &#124; str &#124; None, optional):</u> The maturities in years to keep,
+from 1 to 10, e.g. [2, 5, 10] (or "2,5,10"). Defaults to None, which keeps every
+maturity.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: The rates, indexed by date with a column per component ("Term
+Premium", "Expected Short Rate" and "Fitted Yield") and maturity ("1Y" to "10Y").
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-05-01', end_date='2026-10-31')
+
+term_premium = fixedincome.get_term_premium(period='monthly', maturity_years=[2, 5, 10])
+
+term_premium['Term Premium']
+```
+
+Which returns:
+
+|         |     2Y |     5Y |    10Y |
+|:--------|-------:|-------:|-------:|
+| 2026-05 | 0.0011 | 0.003  | 0.0066 |
+| 2026-06 | 0.0004 | 0.0018 | 0.0051 |
+| 2026-07 | 0.0018 | 0.0043 | 0.0083 |
+| 2026-08 | 0.0015 | 0.0038 | 0.0076 |
+| 2026-09 | 0.0042 | 0.0057 | 0.0089 |
+| 2026-10 | 0.0024 | 0.0037 | 0.0068 |
+
+---
+
 ## get_eiopa_risk_free_rate
 Retrieves the risk-free interest rate term structures the European Insurance and Occupational Pensions Authority (EIOPA) publishes monthly: the curves European insurers must discount their liabilities with under Solvency II. They cover the euro and the currencies of every country of the European Economic Area, plus Switzerland, the United Kingdom, Australia, Canada, China, Colombia, Hong Kong, Japan, Taiwan and the United States, for maturities of 1 to 150 years. Beyond the last liquid maturity each curve converges to the ultimate forward rate (UFR), as Solvency II prescribes.
 

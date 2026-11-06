@@ -284,3 +284,38 @@ get_accruals_ratio:
     tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_h_model:
+  question: What are Coca-Cola and PepsiCo worth per share from 2021 to 2025 in an H-model with an 8% required return and dividend growth declining from 8% to 3%?
+  tool: models
+  arguments:
+    tickers: "KO,PEP"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rate_of_return: 0.08
+    high_growth_rate: 0.08
+    stable_growth_rate: 0.03
+get_justified_multiples:
+  question: Which P/E and P/B ratios did Coca-Cola's payout and return on equity justify from 2021 to 2025, at an 8% required return and 4% growth, and how do they compare with its actual multiples?
+  tool: models
+  arguments:
+    tickers: KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rate_of_return: 0.08
+    growth_rate: 0.04
+get_return_decomposition:
+  question: How much of the share price returns of AMD and Microsoft from 2022 to 2025 came from earnings growth and how much from a change in their P/E?
+  tool: models
+  arguments:
+    tickers: "AMD,MSFT"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_quality_score:
+  question: How did Apple, Microsoft, Alphabet, Meta, Nvidia, Intel, IBM and Oracle rank on a Quality Minus Junk quality score from 2020 to 2025?
+  tool: models
+  arguments:
+    tickers: "AAPL,MSFT,GOOGL,META,NVDA,INTC,IBM,ORCL"
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    show_columns: Quality Score
+    limit: -6

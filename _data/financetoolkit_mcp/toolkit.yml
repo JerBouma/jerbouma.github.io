@@ -225,3 +225,49 @@ get_exchange_rates:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     limit: -10
+get_earnings_surprise:
+  question: By how much did Nvidia beat or miss its earnings and revenue estimates at each announcement from mid-2024 to 2025, and how did the stock react?
+  tool: market_data
+  arguments:
+    tickers: NVDA
+    start_date: "2024-06-01"
+    end_date: "2025-12-31"
+    show_columns: "EPS Surprise,Revenue Surprise,SUE,Reaction,Abnormal Reaction"
+get_institutional_ownership:
+  question: How did institutional ownership of Apple change in each quarter of 2025?
+  tool: market_data
+  arguments:
+    tickers: AAPL
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: "Holders,Ownership,Ownership Change,New Positions,Closed Positions,Top 10 Ownership"
+get_short_volume:
+  question: What were GameStop's short volume, total volume and short volume ratio on the last five trading days of October 2026?
+  tool: market_data
+  arguments:
+    tickers: GME
+    start_date: "2026-09-01"
+    end_date: "2026-10-30"
+    show_columns: "Short Volume,Total Volume,Short Volume Ratio,Short Volume Ratio Z-Score"
+    limit: -5
+get_price_targets:
+  question: What price targets do analysts have for Apple, Nvidia and Microsoft, and how much upside do they imply?
+  tool: market_data
+  arguments:
+    tickers: "AAPL,NVDA,MSFT"
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_price_target_history:
+  question: Which price targets did analysts set for Nvidia in November 2025?
+  tool: market_data
+  arguments:
+    tickers: NVDA
+    start_date: "2025-11-01"
+    end_date: "2025-11-30"
+get_analyst_recommendations:
+  question: How did analysts' buy, hold and sell recommendations for Apple and Nvidia develop each month in the second half of 2025?
+  tool: market_data
+  arguments:
+    tickers: "AAPL,NVDA"
+    start_date: "2025-07-01"
+    end_date: "2025-12-31"

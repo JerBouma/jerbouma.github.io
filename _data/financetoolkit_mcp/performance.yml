@@ -262,3 +262,25 @@ get_henriksson_merton_model:
     tickers: FBCG
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_beta_implied_return:
+  question: How did the returns of Nvidia, Coca-Cola, AMD and Tesla up to 5 November 2026 compare with what their beta to the S&P 500 implied?
+  tool: performance
+  arguments:
+    tickers: "NVDA,KO,AMD,TSLA"
+    start_date: "2025-06-01"
+    end_date: "2026-11-05"
+    limit: -1
+get_kelly_criterion:
+  question: Which Kelly fraction did the returns of Apple, Microsoft and Coca-Cola support in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: "AAPL,MSFT,KO"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_return_statistics:
+  question: What were the win rate, payoff ratio, profit factor and other return statistics of Apple, Microsoft and Coca-Cola from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: "AAPL,MSFT,KO"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"

@@ -60,12 +60,12 @@ get_index_list:
   arguments:
     limit: 10
 get_index_constituents:
-  question: Which companies are in the Dow Jones Industrial Average? Show the first five with their sector and the date each was added.
+  question: Were Apple, Fannie Mae, Lehman Brothers, Merrill Lynch and Wachovia in the S&P 500 on 1 September 2008, and when was each added to and removed from the index?
   tool: discovery
   arguments:
-    index: Dow Jones
-    limit: 5
-    show_columns: Name,Sector,Date Added
+    index: "S&P 500"
+    date: "2008-09-01"
+    show_columns: "AAPL,FNMA,LEHMQ,MER,WB"
 get_stock_news:
   question: What are the five latest stock market headlines, with the symbol and publisher of each?
   tool: discovery
@@ -194,3 +194,18 @@ get_stock_screener:
     dividend_higher: 1
     dividend_lower: 2
     is_etf: false
+get_index_constituent_changes:
+  question: Which companies joined and left the Dow Jones Industrial Average from 2020 to October 2026?
+  tool: discovery
+  arguments:
+    index: Dow Jones
+    start_date: "2020-01-01"
+    end_date: "2026-10-31"
+    show_columns: "Added Ticker,Removed Ticker,Change Type"
+get_industry_statistics:
+  question: What were the beta, cost of equity, after-tax cost of debt, debt weight and cost of capital of European semiconductor, software and general utility companies, and of the European market as a whole?
+  tool: discovery
+  arguments:
+    dataset: cost_of_capital
+    region: Europe
+    show_columns: "Beta,Cost of Equity,After-tax Cost of Debt,D/(D+E),Cost of Capital"

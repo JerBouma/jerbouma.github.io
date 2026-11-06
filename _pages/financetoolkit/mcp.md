@@ -674,7 +674,7 @@ The questions that come up most often about the server, its data sources and how
 
   Each answer is compact JSON, with rates and ratios as decimals (`0.05` is 5%), kept small enough for an assistant to read:
 
-  - `limit` works like head and tail: `5` returns the first five periods, `-5` the last five.
+  - `limit` works like head and tail: `5` returns the first five periods, `-5` the last five. With several tickers in rows, it takes them per ticker.
   - `show_columns` keeps only the fields you name, in any casing.
   - An answer over 60,000 characters is cut to its most recent rows, with a note on how to narrow the request.
   - Earnings call transcripts come back in full, one company and one fiscal period per call.
@@ -765,7 +765,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "What does an answer from the server look like?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Each answer is compact JSON, with rates and ratios as decimals (0.05 is 5%), kept small enough for an assistant to read. limit works like head and tail (5 returns the first five periods, -5 the last five), show_columns keeps only the fields you name, an answer over 60,000 characters is cut to its most recent rows with a note on how to narrow the request, and earnings call transcripts come back in full, one company and one fiscal period per call. Notes say what was left out, ignored, assumed or converted. The server also sends instructions to the assistant when it connects."
+        "text": "Each answer is compact JSON, with rates and ratios as decimals (0.05 is 5%), kept small enough for an assistant to read. limit works like head and tail (5 returns the first five periods, -5 the last five, per ticker when tickers are rows), show_columns keeps only the fields you name, an answer over 60,000 characters is cut to its most recent rows with a note on how to narrow the request, and earnings call transcripts come back in full, one company and one fiscal period per call. Notes say what was left out, ignored, assumed or converted. The server also sends instructions to the assistant when it connects."
       }
     },
     {

@@ -44,6 +44,8 @@ None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -109,6 +111,8 @@ calculate. Defaults to None.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -178,6 +182,8 @@ None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -257,6 +263,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -323,6 +331,8 @@ Inventory turnover is only comparable within an industry: a grocer turns its sto
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -390,6 +400,8 @@ None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -459,6 +471,8 @@ None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -526,6 +540,8 @@ None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -590,6 +606,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -657,6 +675,8 @@ None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -726,6 +746,8 @@ None, which uses 365 for annual data and 365 / 4 for quarterly data, multiplied 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -788,6 +810,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -853,6 +877,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -915,6 +941,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -979,6 +1007,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1043,6 +1073,8 @@ The ratio only reads well when working capital is clearly positive. When current
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1109,6 +1141,8 @@ Railroads and trucking companies report the operating ratio as their headline ef
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1175,6 +1209,8 @@ R&D intensity is compared within an industry and over time: a falling ratio can 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1239,6 +1275,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1307,6 +1345,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1376,6 +1416,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1442,6 +1484,8 @@ Without trailing, the deferred revenue balance at the end of the period is used,
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1498,6 +1542,8 @@ Calculates and collects all Liquidity Ratios based on the provided data.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1570,6 +1616,8 @@ A current ratio above 1 is the textbook comfort level, but the right level depen
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1636,6 +1684,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1700,6 +1750,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1764,6 +1816,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1828,6 +1882,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1892,6 +1948,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -1956,6 +2014,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2014,6 +2074,8 @@ and 365 / 4 for quarterly data, multiplied by `trailing` when set.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2068,6 +2130,8 @@ Calculates and collects all Profitability Ratios based on the provided data.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2153,6 +2217,8 @@ Gross margin shows pricing power and production cost before overheads, and is be
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2219,6 +2285,8 @@ Operating margin is the usual yardstick for the profitability of the core busine
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2283,6 +2351,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2347,6 +2417,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2412,6 +2484,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2476,6 +2550,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2542,6 +2618,8 @@ Analysts compare the effective tax rate with the statutory rates of the countrie
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2608,6 +2686,8 @@ Return on assets is the natural measure for banks and insurers, whose assets are
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2673,6 +2753,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2740,6 +2822,8 @@ ROE is usually read through the DuPont analysis (`Toolkit.models.get_dupont_anal
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2804,6 +2888,8 @@ ROIC is compared with the weighted average cost of capital (`Toolkit.models.get_
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2868,6 +2954,8 @@ A ratio above 1 means reported earnings are backed by at least as much operating
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2930,6 +3018,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -2996,6 +3086,8 @@ ROCE is widely used for capital-intensive industries such as oil and gas, mining
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3061,6 +3153,8 @@ Earnings before tax is reconstructed from the income statement as Net Income plu
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3125,6 +3219,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3186,6 +3282,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3250,6 +3348,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3312,6 +3412,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3374,6 +3476,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3436,6 +3540,8 @@ The cash tax rate shows the taxes a company actually paid, which can differ for 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3502,6 +3608,8 @@ Because the divergence is the cash tax rate minus the effective tax rate, a year
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3557,6 +3665,8 @@ Calculates and collects all Solvency Ratios based on the provided data.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3633,6 +3743,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3693,6 +3805,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3757,6 +3871,8 @@ The debt to equity ratio is compared within an industry, since utilities, real e
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3821,6 +3937,8 @@ Lenders and rating agencies use interest coverage to judge how much room a compa
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3885,6 +4003,8 @@ The equity multiplier is the leverage component of the DuPont analysis: return o
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -3949,6 +4069,8 @@ The short-term debt is the principal due over the next year, so it is scaled to 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4011,12 +4133,15 @@ The free cash flow yield is the cash a company generates for its shareholders as
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares for market capitalization. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4080,6 +4205,8 @@ Net debt to EBITDA is the leverage measure lenders, rating agencies and loan cov
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4140,6 +4267,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4200,6 +4329,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4262,6 +4393,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4324,6 +4457,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4386,6 +4521,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4446,6 +4583,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4513,6 +4652,8 @@ A common reason for interest paid to exceed the interest expense is capitalized 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4568,6 +4709,8 @@ earnings-based ratios. Defaults to False.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4645,6 +4788,8 @@ Defaults to False.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4708,6 +4853,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4772,7 +4919,8 @@ The P/E is compared with the company's own history, its peers and the market, an
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -4780,6 +4928,8 @@ Defaults to False.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4816,11 +4966,11 @@ toolkit.ratios.get_price_to_earnings_ratio()
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| COST | 50.3807 | 34.7418 | 46.6264 | 55.317  | 47.3602 |
-| TGT  | 16.4167 | 24.9131 | 15.9285 | 15.2594 | 12.0203 |
-| WMT  | 29.6837 | 33.1905 | 27.4728 | 37.566  | 40.823  |
+|      |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:-----|--------:|--------:|--------:|--------:|---------:|
+| COST | 50.3805 | 34.7419 | 46.6265 | 55.3169 |  47.3603 |
+| TGT  | 16.4167 | 24.9133 | 15.9285 | 15.2594 | nan      |
+| WMT  | 29.683  | 33.1872 | 27.4726 | 37.5653 | nan      |
 
 ---
 
@@ -4852,6 +5002,8 @@ the P/E and the EPS growth (not in the EBITDA growth). Defaults to False.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4913,6 +5065,8 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -4976,6 +5130,8 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5029,6 +5185,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5093,12 +5251,15 @@ The price to book ratio matters most for banks and insurers, whose balance sheet
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5163,6 +5324,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5230,6 +5393,8 @@ The values are negative because capital expenditure is reported as a cash outflo
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5294,12 +5459,15 @@ The dividends per share are those paid over a year: the trailing four quarters w
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the dividends paid in the 365 calendar days up to that day (or the
-`trailing` periods in days). Days less than one window after the first price are
-NaN. Defaults to False.
+`trailing` periods in days). The prices start a year before the start date, so
+a window of up to a year is complete on the start date; days less than one window
+after a ticker's first price are NaN. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5363,12 +5531,15 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5432,12 +5603,15 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5501,12 +5675,15 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5570,12 +5747,15 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5641,12 +5821,15 @@ Market cap is a point-in-time value, so the price is the close on the last tradi
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5699,12 +5882,15 @@ Enterprise value is the price of the whole business, equity and debt together, w
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5755,12 +5941,15 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5819,12 +6008,15 @@ EV to EBITDA is the most common multiple in sector comparisons and takeover pric
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5879,12 +6071,15 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5941,7 +6136,8 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -5949,6 +6145,8 @@ Defaults to False.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -5980,11 +6178,11 @@ toolkit.ratios.get_earnings_yield()
 
 Which returns:
 
-|    |   2021 |    2022 |   2023 |   2024 |    2025 |
-|:---|-------:|--------:|-------:|-------:|--------:|
-| F  | 0.2141 | -0.0424 | 0.0882 | 0.1477 | -0.1567 |
-| GM | 0.1143 |  0.1823 | 0.2038 | 0.1195 |  0.0402 |
-| TM | 0.0986 |  0.0971 | 0.1382 | 0.1225 |  0.0961 |
+|    |   2021 |    2022 |   2023 |   2024 |     2025 |
+|:---|-------:|--------:|-------:|-------:|---------:|
+| F  | 0.2141 | -0.0424 | 0.0882 | 0.1477 |  -0.1567 |
+| GM | 0.1143 |  0.1823 | 0.2038 | 0.1195 |   0.0402 |
+| TM | 0.0986 |  0.0971 | 0.1382 | 0.1225 | nan      |
 
 ---
 
@@ -6009,6 +6207,8 @@ The payout ratio shows how much room a company has to keep or raise its dividend
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6066,6 +6266,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6121,6 +6323,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6176,6 +6380,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6229,12 +6435,15 @@ EBIT is the reported operating income, the same operating profit that EV to EBIT
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6291,12 +6500,15 @@ $$
 
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
 against the statement figures of the latest period that has ended on or before
-that day, so no figures are used before their period closes. Defaults to False.
+that day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6357,6 +6569,8 @@ The buyback yield is net of shares issued, which matters for companies that pay 
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6421,6 +6635,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6485,6 +6701,8 @@ $$
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
@@ -6527,6 +6745,94 @@ Which returns:
 | ADBE | 5.824e+09 | 5.956e+09 | 5.224e+09 | 6.04e+09  | 7.91e+09   |
 | CRM  | 2.504e+09 | 3.034e+09 | 6.711e+09 | 9.251e+09 | 1.0893e+10 |
 | NOW  | 6.61e+08  | 7.72e+08  | 1.1e+09   | 1.669e+09 | 2.621e+09  |
+
+---
+
+## get_factor_analysis
+Factor analysis (predictive power) of the ratios: whether the tickers that score high on a ratio go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the ratio of the tickers at the end of the period and their return over the following horizon: 1 means the ratio ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, IR ≈ IC × √breadth: a small but consistent IC across many tickers and periods gives a high information ratio.
+
+The summary has a row per ratio and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the ratio from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single ratio.
+
+The ratios are calculated daily from the closing price where they can be (show_daily) and otherwise per statement period. Statement figures apply from the end of each fiscal period, or with point_in_time from the day they were filed, never earlier, so no day uses figures that were not known yet. The returns use the dividend and split adjusted close and start at the close of the period the ratio belongs to. Each ticker keeps its own history: a ticker without a ratio or a return in a period is left out of that period only.
+
+**Args:**
+
+- <u>metrics (str &#124; list[str], optional):</u> A ratio method name, e.g.
+"get_price_to_earnings_ratio", a list of them, or a collection: "valuation",
+"profitability", "solvency", "liquidity", "efficiency" or "all". Defaults to
+"valuation", the price and enterprise value multiples, yields and the market
+cap. Per-share figures and currency amounts are not in the collections, as
+their level depends on the share count or company size.
+- <u>period (str, optional):</u> The frequency at which the ratios are evaluated: daily,
+weekly, monthly, quarterly or yearly. Defaults to "monthly".
+- <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
+returns cover. Defaults to None, which uses about a period, a quarter and a
+year ahead (1, 3 and 12 months for monthly).
+- <u>quantiles (int, optional):</u> The number of quantiles the tickers are sorted into per
+period. Defaults to 5.
+- <u>periods_apart (int, optional):</u> The number of periods between the dates the
+quantile turnover and the rank autocorrelation compare. Defaults to 1.
+- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single ratio
+instead of the summary: "information_coefficient" (per period and horizon),
+"quantile_returns" (the mean forward return per quantile and horizon),
+"quantile_turnover" (per period and quantile) or "rank_autocorrelation" (per
+period). Defaults to None.
+- <u>column (str &#124; None, optional):</u> Not used by the ratios, which have one value per
+ticker; it exists for the modules whose metrics have several outputs. Defaults
+to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+**kwargs: Parameters passed to the ratios that take them, e.g. trailing=4 or
+diluted=False.
+
+**Returns:**
+
+pd.DataFrame: The summary per ratio and horizon, or with detail that part of the
+analysis of the ratio.
+
+**Notes:**
+
+- The IC is reported as measured: a low P/E that goes on to outperform gives a
+negative IC for the P/E. Read the sign as the direction of the relationship.
+- The cross-section is the tickers of the Toolkit, so use at least ten and
+preferably twenty or more for a meaningful rank correlation and quantiles.
+- A horizon longer than one period makes consecutive returns overlap, which
+inflates the t-statistic; judge those horizons by their mean IC and IC
+information ratio.
+- A ratio that returns no data (e.g. one missing a statement line item), or that
+fewer than three tickers have in every period (e.g. the preferred dividend
+coverage ratio), is left out of a collection with a warning.
+- Based on alphalens (Quantopian) and on Grinold and Kahn (2000), Active Portfolio
+Management.
+
+Also known as: predictive power, information coefficient, factor testing, alpha signal
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "JPM", "JNJ",
+     "XOM", "PG", "KO", "WMT", "V", "UNH", "HD", "CVX"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2016-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_factor_analysis(
+    ["get_price_to_earnings_ratio", "get_price_to_book_ratio", "get_return_on_equity"],
+    horizons=12,
+)
+```
+
+Which returns:
+
+|                                              |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
+|:---------------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
+| ('get_price_to_earnings_ratio', '12 Months') |    0.0265 |                  0.3242 |                 0.0817 |        0.8174 |    0.4157 |             0.55 |            100 |             0.0757 |              0.0931 |                 0.9504 |
+| ('get_price_to_book_ratio', '12 Months')     |    0.1122 |                  0.2952 |                 0.38   |        3.8004 |    0.0002 |             0.68 |            100 |             0.1655 |              0.0506 |                 0.9776 |
+| ('get_return_on_equity', '12 Months')        |    0.0423 |                  0.3551 |                 0.1191 |        1.1915 |    0.2363 |             0.5  |            100 |             0.065  |              0.0517 |                 0.9671 |
 
 ---
 

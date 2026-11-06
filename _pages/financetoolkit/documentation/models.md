@@ -562,11 +562,11 @@ toolkit.models.get_economic_value_added().xs("Economic Value Added", level=1)
 
 Which returns:
 
-|    |        2022 |        2023 |        2024 |        2025 |
-|:---|------------:|------------:|------------:|------------:|
-| HD | 1.51585e+10 | 1.2373e+10  | 1.21356e+10 | 1.12645e+10 |
-| MA | 9.17359e+09 | 1.03462e+10 | 1.21324e+10 | 1.32974e+10 |
-| V  | 1.14098e+10 | 1.30284e+10 | 1.5452e+10  | 1.53158e+10 |
+|    |        2022 |        2023 |        2024 |          2025 |
+|:---|------------:|------------:|------------:|--------------:|
+| HD | 1.51584e+10 | 1.23683e+10 | 1.21347e+10 | nan           |
+| MA | 9.17363e+09 | 1.03441e+10 | 1.21321e+10 |   1.32974e+10 |
+| V  | 1.14101e+10 | 1.30222e+10 | 1.54505e+10 |   1.53159e+10 |
 
 ---
 
@@ -702,12 +702,16 @@ them at the WACC and subtracting the debt counts the cost of debt twice.
 When set, uses the sum of the last N periods instead of only the most recent period. Defaults to
 None, which uses 4 (the trailing twelve months) with quarterly data and the most recent year with
 yearly data.
+- <u>historical (bool, optional):</u> Whether to value every period instead of only the most recent one,
+which gives the intrinsic value per share over time. Each period is valued from the base cash
+flow ending in it and the cash, debt and shares reported at its end. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
-pd.DataFrame: DataFrame containing the intrinsic value for each ticker.
+pd.DataFrame: DataFrame containing the intrinsic value and its components for each ticker, or
+with `historical=True` the intrinsic value per share for each ticker (rows) and period (columns).
 
 **Notes:**
 
@@ -723,6 +727,9 @@ recent period. Short Term Investments are added back with the cash, the same cas
 securities `get_enterprise_value_breakdown` deducts, and count as 0 when the balance sheet has no
 such row.
 - The Equity Value is divided by the Weighted Average Shares Diluted of the most recent period.
+- With `historical=True` no period uses figures reported after it, so the series shows what this
+DCF gave at each period end with the same assumptions. A period whose cash flow, cash, debt or
+shares are missing is NaN, while the single valuation takes the most recent value of each.
 
 **As an example:**
 
@@ -748,8 +755,27 @@ Which returns:
 |      |   Periods = 5 |
 |:-----|--------------:|
 | ADBE |       389.526 |
-| CRM  |       190.408 |
+| CRM  |       142.64  |
 | INTU |       304.583 |
+
+And the same valuation for every period with `historical=True`:
+
+```python
+toolkit.models.get_intrinsic_valuation(
+    growth_rate=0.08,
+    perpetual_growth_rate=0.025,
+    weighted_average_cost_of_capital=0.09,
+    historical=True,
+)
+```
+
+
+
+|      |     2021 |     2022 |    2023 |    2024 |    2025 |
+|:-----|---------:|---------:|--------:|--------:|--------:|
+| ADBE | 236.528  | 239.021  | 245.452 | 279.695 | 389.526 |
+| CRM  |  25.9053 |  23.2663 |  93.958 | 142.64  | nan     |
+| INTU | 168.842  | 137.273  | 246.42  | 211.482 | 304.583 |
 
 ---
 
@@ -987,7 +1013,9 @@ $$
 \text{Intrinsic Value} = \text{High-Growth Phase Present Value} + (\text{Terminal Value} / (1 + \text{Rate of Return}) ^{\text{High}} \text{Growth Periods})
 $$
 
-**Also known as:** two-stage DDM, two-stage dividend discount model.
+With transition periods it becomes the Three-Stage Dividend Discount Model: between the high-growth and the stable phase, the growth rate declines in equal steps from the high to the stable rate, and those dividends are discounted explicitly as well. In transition period k (of n), dividends grow at High Growth Rate - (High Growth Rate - Stable Growth Rate) * k / (n + 1), and the Terminal Value is taken at the end of the transition phase.
+
+**Also known as:** two-stage DDM, two-stage dividend discount model, three-stage DDM, three-stage dividend discount model.
 
 **Args:**
 
@@ -1003,13 +1031,17 @@ number to use for all tickers, or a list or dict that contains a stable growth
 rate for each ticker.
 - <u>high_growth_periods (int, optional):</u> The number of years in the explicit
 high-growth phase. Defaults to 5.
+- <u>transition_periods (int, optional):</u> The number of years in which the growth rate
+declines linearly from the high to the stable growth rate (the Three-Stage Dividend
+Discount Model). Defaults to 0, no transition phase.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
 pd.DataFrame: DataFrame containing the intrinsic value and its components for
-each ticker.
+each ticker, including the present value of the transition phase when there is
+one.
 
 **Notes:**
 
@@ -1050,6 +1082,182 @@ Which returns:
 | JNJ |                  120.743  |
 | PEP |                  132.078  |
 | PG  |                   98.1193 |
+
+---
+
+## get_h_model
+The H-Model of Fuller and Hsia (1984) values a stock whose dividend growth starts at a high rate and declines linearly to a stable rate over a number of years, after which it grows at the stable rate forever. It is a closed-form approximation of the three-stage dividend discount model (see `get_two_stage_dividend_discount_model` with `transition_periods`): the Gordon Growth Model at the stable rate plus the value of the extra growth during the decline, which is about half the high-growth period (H) times the extra growth.
+
+The formula is as follows:
+
+$$
+H = \text{High Growth Periods} / 2
+$$
+
+$$
+\text{Intrinsic Value} = \text{Dividends Per Share} \cdot (1 + \text{Stable Growth Rate}) / (\text{Rate of Return} - \text{Stable Growth Rate}) + \text{Dividends Per Share} \cdot H \cdot (\text{High Growth Rate} - \text{Stable Growth Rate}) / (\text{Rate of Return} - \text{Stable Growth Rate})
+$$
+
+Like the Gordon Growth Model, each period is valued off that period's actual annual Dividends per Share, which gives the intrinsic value over time.
+
+**Also known as:** H-Model, Fuller-Hsia model, H model dividend discount model.
+
+**Args:**
+
+- <u>rate_of_return (float):</u> The required rate of return, which must be greater than
+the stable growth rate.
+- <u>high_growth_rate (float):</u> The growth rate of the dividends at the start of the
+decline.
+- <u>stable_growth_rate (float):</u> The growth rate the decline ends at, which holds
+forever after it.
+- <u>high_growth_periods (int, optional):</u> The number of years over which the growth
+rate declines from the high to the stable rate. Defaults to 10.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit (4 unless set
+otherwise).
+
+**Returns:**
+
+pd.DataFrame: The intrinsic value per share for each period (rows) and ticker
+(columns).
+
+**Notes:**
+
+- The results depend heavily on the inputs, in particular the high growth rate and
+how long it lasts.
+- The H-Model is close to the exact value of a linearly declining growth rate when
+the high-growth period is short or the gap between the growth rates is small, and
+overstates it as either grows.
+- The rates are annual, so the model values an annual dividend: the Dividends per
+Share of each year, or with quarterly data the sum of the trailing four complete
+quarters. The first year of the window often covers only part of the year's
+dividends, so start the window a year before the first period you intend to read.
+- Fuller, R. J. and C.-C. Hsia, "A Simplified Common Stock Valuation Model,"
+Financial Analysts Journal 40(5), 1984, pp. 49-56.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "PEP"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_h_model(
+    rate_of_return=0.08, high_growth_rate=0.08, stable_growth_rate=0.03
+)
+```
+
+Which returns:
+
+|      |     KO |     PEP |
+|:-----|-------:|--------:|
+| 2021 | 43.008 | 108.736 |
+| 2022 | 45.056 | 115.84  |
+| 2023 | 47.104 | 126.592 |
+| 2024 | 49.664 | 136.448 |
+| 2025 | 52.224 | 143.936 |
+
+---
+
+## get_justified_multiples
+The justified multiples are the Price-to-Earnings and Price-to-Book ratios the dividend discount and residual income models imply for a company with a constant payout ratio, Return on Equity and growth rate. Comparing them with the actual multiples shows whether the market prices a company above or below what its profitability, payout and growth justify at a given required rate of return.
+
+The formula is as follows:
+
+$$
+\text{Growth Rate} = \text{Return on Equity} \cdot (1 - \text{Payout Ratio}),\;\; \text{the sustainable growth rate},\;\; \text{unless a growth rate is given}
+$$
+
+$$
+\text{Justified Trailing}\; P / E = \text{Payout Ratio} \cdot (1 + \text{Growth Rate}) / (\text{Rate of Return} - \text{Growth Rate})
+$$
+
+$$
+\text{Justified Leading}\; P / E = \text{Payout Ratio} / (\text{Rate of Return} - \text{Growth Rate})
+$$
+
+$$
+\text{Justified}\; P / B = (\text{Return on Equity} - \text{Growth Rate}) / (\text{Rate of Return} - \text{Growth Rate})
+$$
+
+$$
+\text{Price-to-Earnings Ratio} = \text{Share Price} / (\text{Net Income} / \text{Weighted Average Shares})
+$$
+
+$$
+\text{Price-to-Book Ratio} = \text{Share Price} / (\text{Total Shareholder Equity} / \text{Weighted Average Shares})
+$$
+
+**Also known as:** justified P/E, justified P/B, fundamental P/E, warranted multiples.
+
+**Args:**
+
+- <u>rate_of_return (float):</u> The required rate of return on equity.
+- <u>growth_rate (float &#124; None, optional):</u> The constant growth rate of the earnings,
+dividends and book value. Defaults to None, which uses the sustainable growth
+rate of each period.
+- <u>diluted (bool, optional):</u> Whether to use the diluted share count for the actual
+multiples. Defaults to True.
+- <u>trailing (int &#124; None, optional):</u> Sum the flows over this many periods and measure
+the Return on Equity on the equity that many periods back. Defaults to None,
+which is 4 for quarterly data (a trailing twelve months) and 1 otherwise.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit (4 unless set
+otherwise).
+- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
+all periods.
+
+**Returns:**
+
+pd.DataFrame: Per ticker and period the Payout Ratio, Return on Equity, Growth
+Rate, Justified Trailing P/E, Justified Leading P/E, Justified P/B and the actual
+Price-to-Earnings and Price-to-Book Ratios.
+
+**Notes:**
+
+- The justified multiples are NaN where the growth rate is at or above the rate of
+return, since the models then have no finite value, and they mean little for a
+company that pays no dividend or makes a loss.
+- The Return on Equity is measured on the equity at the beginning of the period, as
+in the sustainable growth rate (Higgins), so the first period has none.
+- The actual multiples use the share price at the period end and the reported Net
+Income and equity per share, without the adjustment for preferred dividends that
+`toolkit.ratios.get_price_to_earnings_ratio` makes.
+- CFA Institute, "Equity Valuation: Applications and Processes" and "Market-Based
+Valuation: Price and Enterprise Value Multiples," CFA Program Curriculum Level II.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "PEP", "PG"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_justified_multiples(rate_of_return=0.08, growth_rate=0.04).loc["KO"]
+```
+
+Which returns:
+
+|                         |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:------------------------|--------:|--------:|--------:|--------:|--------:|
+| Payout Ratio            |  0.7422 |  0.7982 |  0.7422 |  0.7863 |  0.6698 |
+| Return on Equity        |  0.4591 |  0.3838 |  0.4149 |  0.3869 |  0.497  |
+| Growth Rate             |  0.04   |  0.04   |  0.04   |  0.04   |  0.04   |
+| Justified Trailing P/E  | 19.2971 | 20.752  | 19.2974 | 20.4434 | 17.4147 |
+| Justified Leading P/E   | 18.5549 | 19.9539 | 18.5552 | 19.6571 | 16.7449 |
+| Justified P/B           | 10.4769 |  8.5957 |  9.3713 |  8.6716 | 11.4251 |
+| Price-to-Earnings Ratio | 26.2994 | 28.9985 | 23.8657 | 25.2999 | 23.0046 |
+| Price-to-Book Ratio     | 11.1732 | 11.4791 |  9.8569 | 10.8209 |  9.3731 |
 
 ---
 
@@ -2024,10 +2232,109 @@ Which returns:
 
 | Date   |     ADI |     NVDA |      TXN |
 |:-------|--------:|---------:|---------:|
-| 2022   | 103.665 |  13.2452 |  44.5133 |
-| 2023   | 129.768 |  40.3283 |  96.2961 |
-| 2024   | 183.871 | 116.01   | 136.603  |
-| 2025   | 230.98  | 147.764  | 119.941  |
+| 2022   | 103.667 |  13.2452 |  44.5164 |
+| 2023   | 129.843 |  40.3354 |  96.3598 |
+| 2024   | 183.868 | 116.003  | 136.601  |
+| 2025   | 230.98  | nan      | 119.94   |
+
+---
+
+## get_return_decomposition
+The Return Decomposition splits the share price return over a window into the growth of the Earnings per Share and the change of the Price-to-Earnings ratio (the multiple), and adds the dividends paid over the window for the total return. It shows whether a share rose because the company earned more or because investors paid more for the same earnings, e.g. a share whose earnings beat expectations but whose price fell because its multiple contracted.
+
+Since the share price equals the Earnings per Share times the P/E ratio, the price relative over a window is the product of the earnings relative and the multiple relative, which is the earnings and valuation split of equity returns used in return attribution (e.g. Bogle, "Common Sense on Mutual Funds", and the building blocks of Grinold and Kroner, "The Equity Risk Premium", 2002).
+
+The formula is as follows:
+
+$$
+1 + \text{Price Return} = (1 + \text{EPS Growth}) \cdot (1 + P / E \;\text{Change})
+$$
+
+$$
+\text{EPS Growth} = \text{EPS}_{t} / \text{EPS\_t-lag} - 1
+$$
+
+$$
+P / E \;\text{Change} = (\text{Price}_{t} / \text{EPS}_{t}) / (\text{Price\_t-lag} / \text{EPS\_t-lag}) - 1
+$$
+
+$$
+\text{Dividend Return} = \text{Dividends per Share paid over the window} / \text{Price\_t-lag}
+$$
+
+$$
+\text{Total Return} = \text{Price Return} + \text{Dividend Return}
+$$
+
+With logarithmic=True the parts are log returns that add up: ln(1 + Total Return) = ln(1 + EPS Growth) + ln(1 + P/E Change) + ln(1 + Dividends / Price_t).
+
+**Also known as:** earnings and multiple decomposition, P/E expansion and contraction, multiple expansion, return attribution by earnings growth and re-rating.
+
+**Args:**
+
+- <u>lag (int &#124; None, optional):</u> The number of periods the window spans. Defaults to None,
+which compares each period with the same period a year earlier: 1 with annual
+data and 4 with quarterly data.
+- <u>diluted (bool, optional):</u> Whether to use the diluted Earnings per Share. Defaults to
+True.
+- <u>trailing (int &#124; None, optional):</u> The number of periods to sum the Net Income over
+(and average the shares over). Defaults to None, which uses the trailing twelve
+months (4 quarters) with quarterly data and single years with annual data, as
+the P/E ratio does.
+- <u>logarithmic (bool, optional):</u> Whether to return log returns, which add up, instead of
+simple returns, which multiply. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit (4 unless set otherwise).
+
+**Returns:**
+
+pd.DataFrame: The Price Return, EPS Growth, P/E Change, Dividend Return and Total
+Return per ticker (rows) and period (columns), as decimals.
+
+**Notes:**
+
+- The share price is the traded Close (adjusted for splits, not for dividends) at the end
+of each period, the same price the P/E ratio uses, and the Earnings per Share is the Net
+Income over the weighted average (diluted) shares, as in `ratios.get_earnings_per_share`.
+- The P/E ratio has no meaning when the earnings are zero or negative, so the EPS Growth
+and P/E Change are NaN when the Earnings per Share at either end of the window is not
+positive. The Price Return, Dividend Return and Total Return remain; the growth of the
+earnings themselves is `ratios.get_earnings_per_share(growth=True)`.
+- Dividends are added as paid, without reinvestment, so the Total Return differs slightly
+from a return on the dividend-adjusted price.
+- Each period is a calendar period that holds the fiscal period reported in it (see the
+Toolkit), so the price at the end of the calendar period is compared with the earnings
+reported for it, as in the P/E ratio.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AMD", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_return_decomposition()
+```
+
+Which returns:
+
+|                             |    2022 |    2023 |    2024 |    2025 |
+|:----------------------------|--------:|--------:|--------:|--------:|
+| ('AMD', 'Price Return')     | -0.5499 |  1.2759 | -0.1806 |  0.773  |
+| ('AMD', 'EPS Growth')       | -0.6734 | -0.3745 |  0.9075 |  1.6433 |
+| ('AMD', 'P/E Change')       |  0.3782 |  2.6387 | -0.5704 | -0.3292 |
+| ('AMD', 'Dividend Return')  |  0      |  0      |  0      |  0      |
+| ('AMD', 'Total Return')     | -0.5499 |  1.2759 | -0.1806 |  0.773  |
+| ('MSFT', 'Price Return')    | -0.2869 |  0.568  |  0.1209 |  0.1474 |
+| ('MSFT', 'EPS Growth')      |  0.1979 |  0.0039 |  0.2185 |  0.156  |
+| ('MSFT', 'P/E Change')      | -0.4047 |  0.562  | -0.0801 | -0.0075 |
+| ('MSFT', 'Dividend Return') |  0.0076 |  0.0116 |  0.0082 |  0.0081 |
+| ('MSFT', 'Total Return')    | -0.2794 |  0.5796 |  0.1291 |  0.1554 |
 
 ---
 
@@ -3010,6 +3317,90 @@ Which returns:
 
 ---
 
+## get_quality_score
+The Quality Score follows the Quality Minus Junk (QMJ) score of Asness, Frazzini and Pedersen (2019): a company is of high quality when it is profitable, growing, safe and pays out to its shareholders. Every measure is ranked across the tickers given in each period and turned into a z-score, each of the four components is the z-score of the average of its measures, and the Quality Score is the z-score of their sum. A positive score is a higher quality than the average of the tickers given.
+
+The measures are as follows (a higher value is a higher quality, so the measures marked "low" enter with a minus sign):
+
+$$
+\text{Profitability:}\;\; \text{Gross Profits to Assets} ((\text{Revenue} - \text{Cost of Goods Sold}) / \text{Total Assets},\; \text{Novy-Marx}\; 2013),\;\; \text{Return on Equity},\;\; \text{Return on Assets},\;\; \text{Cash Flow to Assets} ((\text{Operating Cash Flow} - \text{Capital Expenditure}) / \text{Total Assets}),\;\; \text{Gross Margin and low accruals} ((\text{Operating Cash Flow} - \text{Net Income}) / \text{Total Assets})
+$$
+
+- Growth: the change in Gross Profits to Assets, Return on Equity, Return on Assets, Cash Flow to Assets and Gross Margin over `growth_years`
+
+$$
+\text{Safety:}\;\; \text{low Beta (of the period's returns against the benchmark)},\;\; \text{low leverage} (\text{Total Debt} / \text{Total Assets}),\;\; \text{low Ohlson O-Score},\;\; \text{high Altman Z-Score and low earnings volatility (the standard deviation of the Return on Equity over growth\_years)}
+$$
+
+$$
+\text{Payout:}\;\; \text{low equity issuance (-ln of the change in the diluted shares over a year)},\;\; \text{low debt issuance} (- \text{ln of the change in Total Debt over}\; a \;\text{year}) \text{and the net payout ratio} ((\text{Dividends} + \text{Share Repurchases} - \text{Shares Issued}) / \text{Net Income})
+$$
+
+**Also known as:** QMJ, Quality Minus Junk, quality factor, quality composite.
+
+**Args:**
+
+- <u>growth_years (int, optional):</u> The number of years over which the growth and the
+earnings volatility are measured. Defaults to 5, as in the paper.
+- <u>trailing (int &#124; None, optional):</u> Sum the flows over this many periods. Defaults to
+None, which is 4 for quarterly data (a trailing twelve months) and 1 otherwise.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit (4 unless set
+otherwise).
+- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
+all periods.
+
+**Returns:**
+
+pd.DataFrame: Per ticker and period the z-scores of Profitability, Growth, Safety
+and Payout, and the Quality Score.
+
+**Notes:**
+
+- The scores are relative to the tickers given: AQR ranks every stock in the market,
+while this ranks the tickers passed to the Toolkit, so pass a broad or comparable set
+(at least three tickers, preferably many more). With fewer than three, it is empty.
+- The growth measures need `growth_years` of earlier statements, so the first Quality
+Score is `growth_years` after the first period (with quarterly data, plus the three
+quarters of the first trailing year). Set an earlier start_date to obtain it.
+- The paper measures growth as the change in profits per share scaled by the assets
+of five years earlier; this takes the change in the profitability ratios themselves,
+and it leaves out the idiosyncratic volatility of the safety component.
+- A ticker without one of the components has no Quality Score.
+- Asness, C. S., A. Frazzini and L. H. Pedersen, "Quality Minus Junk," Review of
+Accounting Studies 24, 2019, pp. 34-112. Novy-Marx, R., "The Other Side of Value: The
+Gross Profitability Premium," Journal of Financial Economics 108(1), 2013, pp. 1-28.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "GOOGL", "META", "NVDA", "INTC", "IBM", "ORCL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2016-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_quality_score().xs("Quality Score", level=1)
+```
+
+Which returns:
+
+|       |    2020 |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:------|--------:|--------:|--------:|--------:|--------:|---------:|
+| AAPL  |  0.6124 |  1.0206 |  1.4289 |  0.6124 |  0.6124 |   1.3363 |
+| GOOGL | -1.0206 |  0.2041 |  0.6124 |  1.0206 |  1.0206 |   0.8018 |
+| IBM   | -1.4289 | -0.6124 | -0.6124 | -0.6124 | -0.6124 |  -0.2673 |
+| INTC  | -0.6124 | -1.0206 | -1.4289 | -1.4289 | -1.4289 |  -1.3363 |
+| META  |  1.4289 |  1.4289 |  0.2041 | -0.2041 |  0.2041 |   0.2673 |
+| MSFT  |  1.0206 |  0.6124 |  1.0206 |  0.2041 | -0.2041 |  -0.8018 |
+| NVDA  |  0.2041 | -0.2041 | -0.2041 |  1.4289 |  1.4289 | nan      |
+| ORCL  | -0.2041 | -1.4289 | -1.0206 | -1.0206 | -1.0206 | nan      |
+
+---
+
 ## get_accruals_ratio
 Calculate the accruals ratios: the part of earnings that is not backed by cash, relative to the average of the total assets at the start and the end of the year. Richard Sloan showed that earnings driven by accruals are less persistent than cash earnings and that companies with high accruals earn lower future returns (the accrual anomaly).
 
@@ -3067,6 +3458,95 @@ Which returns:
 | ('AAPL', 'Cash Flow Accruals Ratio')     |  0.0154 |  0      | -0.0489 | -0.0765 | -0.0405 |
 | ('MSFT', 'Balance Sheet Accruals Ratio') | -0.0687 | -0.1109 | -0.0683 | -0.1017 | -0.0735 |
 | ('MSFT', 'Cash Flow Accruals Ratio')     |  0.0381 |  0.0401 |  0.0192 |  0.144  |  0.0677 |
+
+---
+
+## get_factor_analysis
+Factor analysis (predictive power) of the models: whether the tickers that score high on a model, such as the Piotroski F-Score or the Altman Z-Score, go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the model score of the tickers at the end of the period and their return over the following horizon: 1 means the score ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, IR ≈ IC × √breadth: a small but consistent IC across many tickers and periods gives a high information ratio.
+
+The summary has a row per model and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the score from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single model.
+
+The models are calculated per statement period and each period's score applies from the end of the fiscal period, or with point_in_time from the day it was filed, never earlier, so no day uses figures that were not known yet. The returns use the dividend and split adjusted close and start at the close of the period the score belongs to. Each ticker keeps its own history: a ticker without a score or a return in a period is left out of that period only.
+
+**Args:**
+
+- <u>metrics (str &#124; list[str], optional):</u> A model method name with one value per
+ticker and period, e.g. "get_piotroski_score", a list of them, or a
+collection: "scores" or "all". Defaults to "scores", the Piotroski, Altman Z,
+Beneish M, Ohlson O, Zmijewski, Springate, Grover, Fulmer H, Dechow F,
+Montier C and Mohanram G scores. "all" adds the accruals ratio, Tobin's Q, the
+sustainable and internal growth rates, the magic formula and the Merton
+distance to default. The valuation models and the analyses with several
+components and no score are not in the collections.
+- <u>period (str, optional):</u> The frequency at which the models are evaluated: daily,
+weekly, monthly, quarterly or yearly. Defaults to "monthly".
+- <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
+returns cover. Defaults to None, which uses about a period, a quarter and a
+year ahead (1, 3 and 12 months for monthly).
+- <u>quantiles (int, optional):</u> The number of quantiles the tickers are sorted into per
+period. Defaults to 5.
+- <u>periods_apart (int, optional):</u> The number of periods between the dates the
+quantile turnover and the rank autocorrelation compare. Defaults to 1.
+- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single model
+instead of the summary: "information_coefficient" (per period and horizon),
+"quantile_returns" (the mean forward return per quantile and horizon),
+"quantile_turnover" (per period and quantile) or "rank_autocorrelation" (per
+period). Defaults to None.
+- <u>column (str &#124; None, optional):</u> The component to use of a model, e.g.
+"Working Capital to Total Assets" of the Altman Z-Score. Defaults to None,
+which uses the model's score (its last row).
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+**kwargs: Parameters passed to the models that take them, e.g. trailing=4 or
+diluted=False.
+
+**Returns:**
+
+pd.DataFrame: The summary per model and horizon, or with detail that part of the
+analysis of the model.
+
+**Notes:**
+
+- The IC is reported as measured: for a distress score where a higher value means
+more risk (Ohlson O, Zmijewski, Beneish M), a negative IC means the riskier
+companies went on to return less. Read the sign as the direction of the
+relationship.
+- Scores that take few values (the Piotroski F-Score from 0 to 9) tie many
+tickers; ties are split over adjacent quantiles by the order of the tickers.
+- The cross-section is the tickers of the Toolkit, so use at least ten and
+preferably twenty or more for a meaningful rank correlation and quantiles.
+- A horizon longer than one period makes consecutive returns overlap, which
+inflates the t-statistic; judge those horizons by their mean IC and IC
+information ratio.
+- Based on alphalens (Quantopian) and on Grinold and Kahn (2000), Active Portfolio
+Management.
+
+Also known as: predictive power, information coefficient, factor testing, alpha signal
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "JPM", "JNJ",
+     "XOM", "PG", "KO", "WMT", "V", "UNH", "HD", "CVX"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2016-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_factor_analysis(
+    ["get_piotroski_score", "get_altman_z_score"], horizons=12
+)
+```
+
+Which returns:
+
+|                                      |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
+|:-------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
+| ('get_piotroski_score', '12 Months') |   -0.146  |                  0.3791 |                -0.3852 |       -3.6131 |    0.0005 |           0.2841 |             88 |            -0.1812 |              0.0794 |                 0.9301 |
+| ('get_altman_z_score', '12 Months')  |    0.1209 |                  0.3923 |                 0.3082 |        3.0824 |    0.0027 |           0.7    |            100 |             0.1264 |              0.0285 |                 0.9941 |
 
 ---
 
