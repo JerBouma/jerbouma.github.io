@@ -2747,6 +2747,19 @@ body.wide-no-sidebar:not(.no-title) {
       transition: color 0.2s ease;
     }
 
+    // a platform's own logo, shown as is (e.g. YouTube's), centred in the
+    // same 26px slot as the icons so the labels line up
+    .footer__brand-icon {
+      flex: 0 0 24px !important;
+      width: 24px !important;
+      height: 17px !important;
+      margin: 2px 1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
     &:hover {
       color: var(--accent-color) !important;
 

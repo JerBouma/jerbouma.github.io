@@ -22,7 +22,7 @@
           {% if link.label and link.url %}
             <li>
               <a href="{{ link.url }}" rel="nofollow noopener noreferrer" target="_blank">
-                <i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}
+                {% if link.image %}<img class="footer__brand-icon" src="{{ link.image | relative_url }}" alt="" width="24" height="17">{% else %}<i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i>{% endif %} {{ link.label }}
               </a>
             </li>
           {% endif %}
