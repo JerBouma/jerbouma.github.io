@@ -408,6 +408,63 @@ Which returns:
 
 ---
 
+## get_active_share
+Measure how much each fund's holdings differ from every other fund's: half the sum, over all holdings of either fund, of the absolute difference between their weights. Against an index fund it shows how far a fund departs from the index: an active share of 0.2 means 20% of the portfolio differs and 80% is the index. Cremers and Petajisto (2009) call funds below about 0.6 closet indexers.
+
+**Also known as:** active share, portfolio difference, deviation from the benchmark.
+
+The formula is as follows:
+
+$$
+\text{Active Share} = 1 / 2 \cdot \operatorname{SUM}(| \text{Weight Fund}\; i - \text{Weight Other Fund}\; i |)
+$$
+
+For more information, see the following paper:
+
+- Cremers, K.J.M., & Petajisto, A. (2009). "How Active Is Your Fund Manager? A New Measure That Predicts Performance." Review of Financial Studies, 22(9), 3329-3365.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit.
+
+**Returns:**
+
+pd.DataFrame: The active share of every fund (rows) against every other fund
+(columns), as decimals.
+
+**Notes:**
+
+- The holdings are today's holdings from Financial Modeling Prep. Each fund's weights
+are scaled to add up to one, so a fund whose list stops at its largest holdings is
+compared by the proportions of those holdings.
+- Holdings are matched by symbol, or by ISIN or name when they have none. A company
+that two funds hold through different share classes or listings counts as two
+holdings.
+- For two funds that each hold all of their weight, the active share equals one minus
+their overlap (see get_overlap).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(["VOO", "QQQ", "SCHD", "MGK"], api_key="FINANCIAL_MODELING_PREP_KEY")
+
+toolkit.etf.get_active_share()
+```
+
+Which returns:
+
+|      |    VOO |    QQQ |   SCHD |    MGK |
+|:-----|-------:|-------:|-------:|-------:|
+| VOO  | 0      | 0.4508 | 0.9238 | 0.4784 |
+| QQQ  | 0.4508 | 0      | 0.945  | 0.3822 |
+| SCHD | 0.9238 | 0.945  | 0      | 1      |
+| MGK  | 0.4784 | 0.3822 | 1      | 0      |
+
+---
+
 ## get_look_through_valuation
 Value every fund through its holdings: the price-to-earnings, price-to-book, price-to-sales and price-to-free-cash-flow ratio, the dividend yield and the net profit margin of its largest holdings, weighted by their weight in the fund. The multiples are weighted harmonic means, the multiple of the fund as a whole, so one holding with a very high multiple does not dominate. The coverage is the share of the fund's weight held in holdings with a usable, non-zero price-to-earnings ratio; more holdings raise it at the cost of more requests.
 
@@ -496,6 +553,128 @@ Which returns:
 | Average Dollar Volume         | 4400329488.944520 | 26740006060.354679 | 719035298.234000 |
 | Dollar Volume to Assets       |          0.002588 |           0.057650 |         0.090822 |
 | Price Impact per $100 Million |          0.000179 |           0.000036 |         0.002990 |
+
+---
+
+## get_contribution
+Calculate how much every holding (or sector) of a fund added to or took off its return over the period: the holding's weight at the start of the period times its return over the period, in decimals and in points of the fund's price (or of an index, e.g. the S&P 500 for SPY). It answers questions such as "how many points did technology take off the S&P 500 this month?" and shows when a few large holdings carry an index while most of its stocks fall, or the other way around.
+
+The period runs from the close before the Toolkit's start date to the close on its end date, so a start date of January 1 gives the return so far this year. Returns are price returns of the split-adjusted close, as an index level such as the S&P 500 is a price index; dividends are not included.
+
+A fund publishes only its current holdings, so the weights are those of the close the holdings were last published for (the last close 16 hours or more before the update, as for the NAV), rolled back to the start of the period with every holding's own price change relative to the fund's: w_start = w × (P_start / P_holdings_date) × (F_holdings_date / F_start), with F the fund's price. That is exact for a market capitalization weighted index between rebalancings and drifts with every rebalancing, share issuance, buyback and index change in between, so the longer (or the further back) the period, the less precise the split. The Remainder row holds what the priced holdings do not explain: cash, holdings without a symbol or price (bonds, futures) and that drift. The Total row is the fund's own price return, so the rows add up to it.
+
+**Also known as:** contribution to return, index contribution, attribution of an index move, points contribution, sector contribution.
+
+**Args:**
+
+- <u>group_by (str, optional):</u> "holding" for every holding or "sector" for every sector
+(from the holdings' company profiles). Defaults to "holding".
+- <u>holdings (int &#124; None, optional):</u> The number of largest holdings (by weight) to
+price, one request each; the rest counts towards the Remainder. Defaults to
+None, which prices every holding with a symbol.
+- <u>index (str &#124; None, optional):</u> The ticker of an index whose level at the start of
+the period converts the contributions into index points, e.g. "^GSPC" for SPY.
+Defaults to None, which gives points of the fund's own price.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit.
+
+**Returns:**
+
+pd.DataFrame: The Start Weight, Return, Contribution and Points of every holding
+or sector, largest contribution first, followed by the Remainder and the Total;
+indexed by fund and holding (only by holding for a single fund).
+
+**Notes:**
+
+- The sectors are those of the companies' profiles, which can differ a little from the
+index provider's classification (and from get_sector_weightings).
+- A broad fund holds hundreds of stocks, each a request for its prices; holdings=
+limits that to the largest.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["SPY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2026-10-01",
+    end_date="2026-10-31",
+    benchmark_ticker=None,
+)
+
+toolkit.etf.get_contribution(group_by="sector", index="^GSPC")
+```
+
+Which returns:
+
+|                        |   Start Weight |   Return |   Contribution |    Points |
+|:-----------------------|---------------:|---------:|---------------:|----------:|
+| Healthcare             |         0.0918 |   0.0974 |         0.0089 |   68.4349 |
+| Financial Services     |         0.1122 |   0.0574 |         0.0064 |   49.3077 |
+| Consumer Defensive     |         0.0432 |   0.1157 |         0.005  |   38.2649 |
+| Energy                 |         0.0342 |   0.1384 |         0.0047 |   36.2639 |
+| Consumer Cyclical      |         0.0859 |   0.0418 |         0.0036 |   27.4788 |
+| Utilities              |         0.0188 |   0.1011 |         0.0019 |   14.5331 |
+| Basic Materials        |         0.0167 |   0.0555 |         0.0009 |    7.0788 |
+| Real Estate            |         0.017  |   0.0498 |         0.0008 |    6.4553 |
+| Industrials            |         0.0738 |  -0.0021 |        -0.0002 |   -1.1988 |
+| Communication Services |         0.0975 |  -0.1502 |        -0.0147 | -112.129  |
+| Technology             |         0.4082 |  -0.0662 |        -0.027  | -206.655  |
+| Remainder              |         0.0006 | nan      |         0.0004 |    2.8372 |
+| Total                  |         1      |  -0.0091 |        -0.0091 |  -69.3287 |
+
+---
+
+## get_return_excluding
+Calculate the return a fund would have had without some of its holdings or sectors: the contribution of the other holdings over their weight, Σ contribution / Σ start weight over the holdings that remain, so the rest of the fund reweighted to a whole. It answers "what did the S&P 500 do without technology?" or "without Nvidia?", showing how much of an index move comes from a few stocks.
+
+The contributions come from get_contribution: weights rolled back from the fund's current holdings to the start of the period, price returns from the close before the start date to the close on the end date. The same caveats apply: the longer the period, the more the rolled back weights drift from the fund's actual weights. Only the priced holdings count: what get_contribution puts in the Remainder (cash, holdings without a price and that drift) would otherwise all fall on the holdings that remain and, once most of the fund is excluded, dominate their return. The Priced Holdings Return, the same calculation without excluding anything, is therefore the like-for-like comparison; for a stock index fund it is close to the fund's own Return.
+
+**Also known as:** index ex technology, equal footing return, return without the largest holdings, ex-sector return.
+
+**Args:**
+
+- <u>exclude (str &#124; list[str]):</u> The holdings (tickers, e.g. "NVDA") and sectors (e.g.
+"Technology", as the companies' profiles name them) to leave out.
+- <u>holdings (int &#124; None, optional):</u> The number of largest holdings (by weight) to
+price, one request each; the rest counts towards the rest of the fund.
+Defaults to None, which prices every holding with a symbol.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit.
+
+**Returns:**
+
+pd.DataFrame: The fund's Return, the Priced Holdings Return, the Excluded Weight
+(at the start of the period), the Excluded Contribution and the Return Excluding
+them (rows) per fund (columns).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["SPY", "QQQ"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2026-10-01",
+    end_date="2026-10-31",
+    benchmark_ticker=None,
+)
+
+toolkit.etf.get_return_excluding(["NVDA", "MSFT"])
+```
+
+Which returns:
+
+|                        |     SPY |     QQQ |
+|:-----------------------|--------:|--------:|
+| Return                 | -0.0091 | -0.0666 |
+| Priced Holdings Return | -0.0094 | -0.0665 |
+| Excluded Weight        |  0.1415 |  0.141  |
+| Excluded Contribution  | -0.0077 | -0.0077 |
+| Return Excluding       | -0.002  | -0.0685 |
 
 ---
 

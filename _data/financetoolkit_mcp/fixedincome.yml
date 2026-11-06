@@ -440,3 +440,12 @@ get_federal_reserve_rates:
     start_date: "2025-12-17"
     end_date: "2025-12-31"
     show_columns: Rate,1st Percentile,25th Percentile,75th Percentile,99th Percentile
+get_term_premium:
+  question: What was the term premium on 2-, 5- and 10-year US Treasuries each month from May to October 2026?
+  tool: rates
+  arguments:
+    start_date: "2026-05-01"
+    end_date: "2026-10-31"
+    period: monthly
+    maturity_years: "2,5,10"
+    show_columns: Term Premium

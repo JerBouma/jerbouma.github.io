@@ -40,6 +40,15 @@ For more information, see the following paper:
 - <u>period (str, optional):</u> The frequency of the returns the covariance matrix is
 estimated from (daily, weekly, monthly, quarterly or yearly). Defaults to
 "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>minimum_weight (float, optional):</u> The lowest weight an asset may have; a
 negative value allows short positions. Defaults to 0.
 - <u>maximum_weight (float, optional):</u> The highest weight an asset may have.
@@ -105,6 +114,15 @@ For more information, see the following papers:
 
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>minimum_weight (float, optional):</u> The lowest weight an asset may have; a
 negative value allows short positions. Defaults to 0.
 - <u>maximum_weight (float, optional):</u> The highest weight an asset may have.
@@ -172,6 +190,15 @@ expect, e.g. 0.12 for 12%. Defaults to None, which uses the risk aversion.
 give less risky portfolios. Defaults to 2.5.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>minimum_weight (float, optional):</u> The lowest weight an asset may have. Defaults
 to 0.
 - <u>maximum_weight (float, optional):</u> The highest weight an asset may have.
@@ -232,6 +259,15 @@ For more information, see the following paper:
 - <u>points (int, optional):</u> The number of portfolios on the frontier. Defaults to 20.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>minimum_weight (float, optional):</u> The lowest weight an asset may have. Defaults
 to 0.
 - <u>maximum_weight (float, optional):</u> The highest weight an asset may have.
@@ -292,6 +328,15 @@ asset, e.g. {"AAPL": 0.4, "MSFT": 0.2, ...}; it is scaled to sum to one.
 Defaults to None, an equal share for every asset.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -347,6 +392,15 @@ For more information, see the following paper:
 paper.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -393,6 +447,15 @@ Calculate inverse volatility weights: each asset's weight is proportional to one
 
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -519,6 +582,15 @@ Defaults to None, which uses the market capitalizations of the assets.
 covariance matrix. Defaults to 0.05.
 - <u>period (str, optional):</u> The frequency of the returns the covariance matrix is
 estimated from. Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>minimum_weight (float, optional):</u> The lowest weight an asset may have. Defaults
 to 0.
 - <u>maximum_weight (float, optional):</u> The highest weight an asset may have.
@@ -575,6 +647,15 @@ None, which uses the latest weights of the Portfolio the Toolkit came from,
 or equal weights.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (Ledoit and Wolf, 2004), "oas" (Chen et al., 2010),
+"semicovariance" (the co-movement below a zero return, Estrada, 2007) or
+"exponential" (recent periods weigh most, RiskMetrics). The shrinkage
+estimators stabilize the weights when there are many assets compared to
+the number of periods. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.

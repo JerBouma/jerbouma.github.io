@@ -58,3 +58,27 @@ get_liquidity:
     tickers: VOO,QQQ,ARKK
     start_date: "2025-01-01"
     end_date: "2025-12-31"
+get_active_share:
+  question: How much do the holdings of VOO, QQQ, SCHD and MGK differ from each other, measured by active share?
+  tool: etf
+  arguments:
+    tickers: "VOO,QQQ,SCHD,MGK"
+get_contribution:
+  question: Which sectors added the most to SPY's return in October 2026, and how many S&P 500 points did each contribute?
+  tool: etf
+  arguments:
+    tickers: SPY
+    start_date: "2026-10-01"
+    end_date: "2026-10-31"
+    benchmark_ticker: None
+    group_by: sector
+    index: "^GSPC"
+get_return_excluding:
+  question: What would SPY and QQQ have returned in October 2026 without Nvidia and Microsoft?
+  tool: etf
+  arguments:
+    tickers: "SPY,QQQ"
+    start_date: "2026-10-01"
+    end_date: "2026-10-31"
+    benchmark_ticker: None
+    exclude: "NVDA,MSFT"

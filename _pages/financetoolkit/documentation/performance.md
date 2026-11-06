@@ -111,6 +111,17 @@ Beta is read against 1, the benchmark's own beta: above 1 the asset tends to amp
 initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Beta. Defaults to None.
+- <u>method (str, optional):</u> The estimator of the Beta. Defaults to "ols". Choose from:
+- "ols": the covariance over the benchmark variance (the formula above).
+- "blume": the adjusted Beta of Bloomberg, 0.67 x OLS Beta + 0.33 (Blume, 1971, 1975).
+- "vasicek": the OLS Beta shrunk towards the mean Beta of the tickers by the precision of
+each estimate (Vasicek, 1973).
+- "dimson": the sum of the slopes on the lagged, same and leading benchmark returns
+(Dimson, 1979).
+- "scholes_williams": the lagged, same and leading slopes over the benchmark's
+autocorrelation (Scholes and Williams, 1977).
+- "upside" or "downside": the OLS Beta on the days the benchmark rose or fell.
+- <u>lags (int, optional):</u> The number of leads and lags of the Dimson Beta. Defaults to 1.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -129,6 +140,19 @@ pd.DataFrame: Beta values.
 not give any useful insights.
 - The method retrieves historical data and calculates the Beta for each asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- The OLS Beta of a stock that trades thinly or reacts to the market a day late understates its market
+risk, because part of the reaction falls on the next day. Dimson and Scholes-Williams add the slopes on
+the neighbouring benchmark returns to correct for that; their leads and lags come from the full history,
+so the first day of a period uses the benchmark return of the day before.
+- Blume found that Betas move towards 1 between estimation windows by about a third. Vasicek shrinks
+each Beta in proportion to its uncertainty: the prior is the mean and sample variance (ddof=1) of the
+OLS Betas of the tickers in the same period, so it depends on which tickers are passed. A single
+ticker gets a prior mean of 1 (the market's Beta) with a variance of 0.25.
+- The upside and downside Betas show asymmetric market exposure: a stock with a downside Beta above
+its upside Beta falls harder in down markets than it rises in up markets. They follow empyrical's
+up_alpha_beta and down_alpha_beta, which pick the observations by the benchmark's direction.
+- Every estimator needs at least three observations in a period (Dimson: more than the number of
+slopes plus one), otherwise the period is NaN.
 
 **As an example:**
 
@@ -149,11 +173,103 @@ Which returns:
 
 | Date   |   NVDA |   TSLA |    JPM |
 |:-------|-------:|-------:|-------:|
-| 2021   | 2.0429 | 1.9542 | 0.8378 |
-| 2022   | 2.2015 | 1.7398 | 0.8813 |
-| 2023   | 2.0247 | 2.2485 | 0.8724 |
-| 2024   | 2.659  | 2.3803 | 0.8013 |
-| 2025   | 1.8732 | 2.2343 | 0.9478 |
+| 2021   | 2.0446 | 1.9542 | 0.8378 |
+| 2022   | 2.2    | 1.7398 | 0.8813 |
+| 2023   | 2.0229 | 2.2485 | 0.8724 |
+| 2024   | 2.6586 | 2.3803 | 0.8013 |
+| 2025   | 1.8731 | 2.2343 | 0.9478 |
+
+The downside Beta shows how the same stocks moved on the days the S&P 500 fell:
+
+```python
+toolkit.performance.get_beta(method="downside")
+```
+
+
+
+| Date   |   NVDA |   TSLA |    JPM |
+|:-------|-------:|-------:|-------:|
+| 2021   | 2.0938 | 1.6149 | 0.7877 |
+| 2022   | 1.9875 | 1.5848 | 0.7921 |
+| 2023   | 2.1135 | 2.5952 | 1.048  |
+| 2024   | 2.0508 | 2.6545 | 0.9306 |
+| 2025   | 1.8311 | 1.9833 | 0.9638 |
+
+---
+
+## get_beta_implied_return
+Calculate the Beta-Implied Return, the part of an asset's return that its Beta to the benchmark explains, and the Residual, the part that is the asset's own.
+
+When the market falls 4% and a stock with a Beta of 1.8 falls 9%, the Beta accounts for about 7.2% of the fall (1.8 × 4%) and the remaining 1.8% is specific to the stock: news, earnings or sector moves that the market as a whole did not share. This is the market model of Sharpe (1963) without its intercept, the split behind event studies and return attribution, which reads a move against what the market alone would have produced.
+
+The formula is as follows:
+
+$$
+\text{Implied Return} = \text{Beta} \cdot \text{Benchmark Return}
+$$
+
+$$
+\text{Residual} = \text{Actual Return} - \text{Implied Return}
+$$
+
+The Beta of each period is estimated from the daily returns over the `beta_window` trading days that end on the day before the period starts, so the move being explained never helps estimate the Beta that explains it, and the figure is what an investor could have known at the start of the period. With the default daily period every row explains one day's move; a monthly or yearly period explains that month or year with the Beta known when it began.
+
+**See definition:** [https://en.wikipedia.org/wiki/Single-index_model](https://en.wikipedia.org/wiki/Single-index_model){:target="_blank"}
+
+**Also known as:** beta-adjusted return, market-implied move, idiosyncratic return, abnormal return.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period whose returns are explained: "daily", "weekly", "monthly",
+"quarterly" or "yearly". Defaults to "daily".
+- <u>beta_window (int, optional):</u> The number of daily returns the Beta is estimated on. Defaults
+to 252, about one year of trading days, a common length for a market model's
+estimation window that is long enough for a stable Beta and short enough to follow
+changes in the business.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+
+**Returns:**
+
+pd.DataFrame: The periods as rows and a MultiIndex of (measure, ticker) as columns, with the
+measures Beta, Benchmark Return, Implied Return, Actual Return and Residual. All returns are
+decimals.
+
+**Notes:**
+
+- Returns are total returns (Adj Close), the asset's and the benchmark's over the same period.
+- The Implied Return leaves out the risk free rate: the CAPM's expected return, Risk Free Rate +
+Beta × (Benchmark Return — Risk Free Rate), differs from it by (1 — Beta) × the risk free rate,
+a few basis points per day, and is available through `get_capital_asset_pricing_model`.
+- A period whose window has fewer than `beta_window` daily returns before it (the start of the
+data or a recent listing) has no Beta, so its Implied Return and Residual are empty. Start the
+Toolkit at least `beta_window` trading days before the first period of interest.
+- The Beta is the ordinary least squares Beta of `get_beta`, on the daily returns of the window.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["NVDA", "KO", "AMD", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2025-06-01",
+    end_date="2026-11-05",
+)
+
+toolkit.performance.get_beta_implied_return().loc["2026-11-05"].unstack()
+```
+
+Which returns:
+
+|                  |    NVDA |      KO |     AMD |    TSLA |
+|:-----------------|--------:|--------:|--------:|--------:|
+| Beta             |  1.8757 | -0.2777 |  3.2846 |  2.1039 |
+| Benchmark Return | -0.0441 | -0.0441 | -0.0441 | -0.0441 |
+| Implied Return   | -0.0827 |  0.0122 | -0.1448 | -0.0928 |
+| Actual Return    | -0.0926 | -0.0007 | -0.1726 | -0.1077 |
+| Residual         | -0.0099 | -0.0129 | -0.0278 | -0.0149 |
 
 ---
 
@@ -1905,6 +2021,170 @@ Which returns:
 
 ---
 
+## get_morningstar_risk_adjusted_return
+Calculate the Morningstar Risk-Adjusted Return (MRAR), the measure Morningstar ranks funds on within their category for its star rating.
+
+MRAR is the annualized certainty equivalent of the monthly geometric excess returns for an investor with risk aversion gamma: the return such an investor would accept with certainty instead of the uncertain returns. It equals the annualized geometric mean excess return when every month returns the same and falls further below it the more the returns vary, penalizing downside variation most. Morningstar uses a gamma of 2 and rates funds on 36, 60 and 120 months (three, five and ten years), which rolling=36, rolling=60 and rolling=120 give, weighting them 20%, 30% and 50% in the overall rating. For US dollar funds its risk-free rate is the three-month Treasury bill (auction average), which risk_free_rate="13w" follows. Morningstar also adjusts for tax-advantaged dividends where appropriate, which these total returns don't.
+
+The formula is as follows:
+
+$$
+\text{Geometric Excess Return} = (1 + \text{Monthly Total Return}) / (1 + \text{Monthly Risk Free Rate}) - 1
+$$
+
+$$
+\operatorname{MRAR}(\gamma) = \left[1 / T \cdot \operatorname{SUM}((1 + \text{Geometric Excess Return}\; t) ^{-\gamma})\right] ^{- 12 / \gamma} - 1
+$$
+
+with T the number of months. With a gamma of 0 it is the annualized geometric mean of the excess returns, Morningstar Return.
+
+For more information, see the following:
+
+- Morningstar (2023). "The Morningstar Rating for Funds." Morningstar Methodology, April 2023. [https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf](https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf){:target="_blank"}
+- Morningstar (2009). "MRAR Illustrated." [https://www.morningstar.com/content/dam/marketing/apac/au/pdfs/Legal/MRARIllustrated_Factsheet.pdf](https://www.morningstar.com/content/dam/marketing/apac/au/pdfs/Legal/MRARIllustrated_Factsheet.pdf){:target="_blank"}
+
+**Args:**
+
+- <u>gamma (float, optional):</u> The risk aversion, 0 or higher. Defaults to 2.0, which
+Morningstar uses for its ratings.
+- <u>period (str, optional):</u> The period to group the monthly returns by, "yearly" or
+"quarterly". Defaults to "yearly".
+- <u>within_period (bool, optional):</u> Whether to calculate the MRAR of the months within
+each period or of all months in the range. Defaults to True.
+- <u>rolling (int, optional):</u> The number of months in a rolling window, e.g. 36 for the
+three year MRAR at every month end. Overrides period and within_period.
+Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit (4 unless set
+otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to
+False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation.
+Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: The MRAR per period (rows) and ticker (columns) as decimals, or one
+value per ticker over the whole range with within_period=False.
+
+**Notes:**
+
+- The returns are monthly total returns from the adjusted close, so dividends count.
+Morningstar also deducts sales loads, which an exchange-traded fund does not have.
+- Morningstar uses a three-month Treasury bill as the risk-free rate for US funds,
+which `Toolkit(..., risk_free_rate="13w")` matches; the Toolkit's default is the
+10-year Treasury yield, each converted to a monthly return.
+- A month's risk-free return is the month's average yield, compounded to a month.
+- A period is annualized from the months it has: the first month of the range has no
+return (it has no earlier close), so the first year counts eleven months, which is
+why 2021 in the example is above the funds' calendar-year return.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["VOO", "QQQ", "SCHD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+    risk_free_rate="13w",
+)
+
+toolkit.performance.get_morningstar_risk_adjusted_return()
+```
+
+Which returns:
+
+| Date   |     VOO |     QQQ |    SCHD |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.3178 |  0.278  |  0.32   |
+| 2022   | -0.2349 | -0.3837 | -0.0851 |
+| 2023   |  0.1797 |  0.4298 | -0.0232 |
+| 2024   |  0.1795 |  0.1826 |  0.0484 |
+| 2025   |  0.1199 |  0.135  | -0.0101 |
+
+---
+
+## get_morningstar_risk
+Calculate Morningstar Risk, the return a risk-averse investor would give up to remove the variation of the returns: Morningstar Return (the annualized geometric mean excess return) minus the Morningstar Risk-Adjusted Return. It is zero for returns that never vary and grows with their variation, most with variation on the downside. Morningstar rates funds Low to High on it within their category, over 36, 60 and 120 months (rolling=36, 60 and 120).
+
+The formula is as follows:
+
+$$
+\text{Morningstar Risk} = \operatorname{MRAR}(0) - \operatorname{MRAR}(\gamma)
+$$
+
+with MRAR the Morningstar Risk-Adjusted Return (see get_morningstar_risk_adjusted_return) and MRAR(0) Morningstar Return.
+
+For more information, see the following:
+
+- Morningstar (2023). "The Morningstar Rating for Funds." Morningstar Methodology, April 2023. [https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf](https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf){:target="_blank"}
+
+**Args:**
+
+- <u>gamma (float, optional):</u> The risk aversion, 0 or higher. Defaults to 2.0, which
+Morningstar uses for its ratings.
+- <u>period (str, optional):</u> The period to group the monthly returns by, "yearly" or
+"quarterly". Defaults to "yearly".
+- <u>within_period (bool, optional):</u> Whether to calculate the risk of the months within
+each period or of all months in the range. Defaults to True.
+- <u>rolling (int, optional):</u> The number of months in a rolling window, e.g. 36 for the
+three year figure at every month end. Overrides period and within_period.
+Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Toolkit (4 unless set
+otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to
+False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation.
+Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Morningstar Risk per period (rows) and ticker (columns) as decimals,
+or one value per ticker over the whole range with within_period=False.
+
+**Notes:**
+
+- The returns and the risk-free rate are those of get_morningstar_risk_adjusted_return;
+`Toolkit(..., risk_free_rate="13w")` matches Morningstar's three-month Treasury bill.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["VOO", "QQQ", "SCHD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+    risk_free_rate="13w",
+)
+
+toolkit.performance.get_morningstar_risk()
+```
+
+Which returns:
+
+| Date   |    VOO |    QQQ |   SCHD |
+|:-------|-------:|-------:|-------:|
+| 2021   | 0.0148 | 0.0205 | 0.0214 |
+| 2022   | 0.0375 | 0.0449 | 0.0339 |
+| 2023   | 0.023  | 0.0445 | 0.0183 |
+| 2024   | 0.0121 | 0.0145 | 0.016  |
+| 2025   | 0.0125 | 0.0257 | 0.0126 |
+
+---
+
 ## get_gain_to_pain_ratio
 Calculate the Gain-to-Pain Ratio of an investment portfolio or asset's returns.
 
@@ -1967,6 +2247,207 @@ Which returns:
 | 2023 |  0.1812 |  0.0233 |  0.0337 |
 | 2024 |  0.3038 |  0.1403 |  0.0446 |
 | 2025 |  0.5152 |  0.5701 |  0.2573 |
+
+---
+
+## get_kelly_criterion
+Calculate the Kelly Criterion, the share of capital to put at risk that maximizes the expected logarithmic growth of wealth, from the returns of an investment portfolio or asset.
+
+The discrete form is Kelly's (1956) bet: a probability of winning and a ratio of the average win to the average loss, as the QuantStats package calculates it from returns. The continuous form is Thorp's (2006) for returns that are close to normally distributed: the average excess return over the risk free rate divided by the variance of the excess returns. Since investors rarely bet the full Kelly amount, whose wealth swings widely, `fraction` gives a fractional Kelly such as half Kelly.
+
+The formulas are as follows:
+
+$$
+\text{Discrete:}\;\; \text{Kelly} = \text{Win Rate} - (1 - \text{Win Rate}) / \text{Payoff Ratio}
+$$
+
+$$
+\text{Continuous:}\;\; \text{Kelly} = \text{Average Excess Return} / \text{Variance of the Excess Returns}
+$$
+
+$$
+\text{Win Rate} = \text{Number of Positive Returns} / \text{Number of Non-Zero Returns}
+$$
+
+$$
+\text{Payoff Ratio} = \text{Average Positive Return} / | \text{Average Negative Return} |
+$$
+
+A value of 0.25 means putting a quarter of the capital at risk, a value above 1 means borrowing to invest and a negative value means the history shows a negative edge.
+
+For more information, see the following sources:
+
+- Kelly, J.L. (1956). "A New Interpretation of Information Rate." Bell System Technical Journal, 35(4), 917-926.
+- Thorp, E.O. (2006). "The Kelly Criterion in Blackjack, Sports Betting, and the Stock Market." Handbook of Asset and Liability Management, Volume 1, 385-428.
+- MacLean, L.C., Thorp, E.O. & Ziemba, W.T. (2011). "The Kelly Capital Growth Investment Criterion." World Scientific.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>within_period (bool, optional):</u> Whether to calculate the Kelly Criterion from the daily
+returns within each period (e.g. each year if period = 'yearly') or from the returns
+of the periods themselves over the whole history. Defaults to True.
+- <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the
+Kelly Criterion is calculated over a rolling window of this many periods across the
+full return history instead of per `period`. Defaults to None.
+- <u>method (str, optional):</u> "discrete" (Kelly's bet from the win rate and payoff ratio) or
+"continuous" (average excess return over its variance). Defaults to "discrete".
+- <u>fraction (float, optional):</u> The share of the full Kelly bet, e.g. 0.5 for half Kelly.
+Defaults to 1.0.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Kelly Criterion values.
+
+**Notes:**
+
+- A zero return counts as neither a win nor a loss. The discrete form is NaN without wins
+or without losses, the continuous form without variance.
+- The continuous form does not depend on the return frequency, since the average and the
+variance of the excess returns scale alike.
+- There is no Portfolio row: a weighted average of each asset's Kelly Criterion is not the
+Kelly Criterion of the portfolio.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "KO"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_kelly_criterion()
+```
+
+Which returns:
+
+|      |    AAPL |    MSFT |      KO |
+|:-----|--------:|--------:|--------:|
+| 2021 |  0.1113 |  0.1649 |  0.0911 |
+| 2022 | -0.056  | -0.0611 |  0.0557 |
+| 2023 |  0.1639 |  0.1547 | -0.0248 |
+| 2024 |  0.1137 |  0.0601 |  0.061  |
+| 2025 |  0.0433 |  0.0694 |  0.0717 |
+
+---
+
+## get_return_statistics
+Calculate the statistics traders report about the returns of an investment portfolio or asset: how often it wins, how large its wins and losses are, how long its winning and losing streaks run and how its gains relate to its drawdown and tails.
+
+Unlike the Win Rate of `get_win_rate`, which counts the periods an asset beats its benchmark, these statistics are absolute: a win is a positive return.
+
+The formulas are as follows:
+
+$$
+\text{Win Rate} = \text{Number of Positive Returns} / \text{Number of Non-Zero Returns}
+$$
+
+$$
+\text{Average Win} = \text{Average of the Positive Returns}
+$$
+
+$$
+\text{Average Loss} = \text{Average of the Negative Returns}
+$$
+
+$$
+\text{Payoff Ratio} = \text{Average Win} / | \text{Average Loss} |
+$$
+
+$$
+\text{Profit Factor} = \text{Sum of the Positive Returns} / | \text{Sum of the Negative Returns} |
+$$
+
+$$
+\text{Expectancy} = \text{Win Rate}\; x \;\text{Average Win} + (1 - \text{Win Rate}) x \;\text{Average Loss}
+$$
+
+$$
+\text{Max Consecutive Wins} (\text{Losses}) = \text{The longest run of positive} (\text{negative}) \text{returns}
+$$
+
+$$
+\text{Recovery Factor} = \text{Cumulative Return} / | \text{Maximum Drawdown} |
+$$
+
+$$
+\text{Common Sense Ratio} = \text{Profit Factor}\; x \;\text{Tail Ratio} (\text{95th} / \text{5th} \;\text{percentile})
+$$
+
+The definitions follow the QuantStats package, except that the Recovery Factor compounds the returns into the cumulative return and keeps its sign (QuantStats takes the absolute value of the summed returns), so a history that lost money does not appear to recover.
+
+For more information, see the following sources:
+
+- Tharp, V.K. (2006). "Trade Your Way to Financial Freedom." 2nd ed., McGraw-Hill.
+- Aroussi, R. "QuantStats: Portfolio analytics for quants." [https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}
+
+**Args:**
+
+- <u>period (str, optional):</u> The period of the returns over the whole history, or with
+within_period=True the period the daily returns are grouped by. Defaults to "daily",
+or with within_period=True to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>within_period (bool, optional):</u> Whether to calculate the statistics from the daily returns
+within each period (e.g. each year if period = 'yearly') instead of from the returns of
+`period` over the whole history. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+
+**Returns:**
+
+pd.DataFrame: Over the whole history, the statistics as the index and the tickers as the
+columns. Within periods, the periods as the index and (statistic, ticker) as the columns.
+
+**Notes:**
+
+- A zero return is neither a win nor a loss: it is left out of the Win Rate and ends a
+streak. Each ticker is measured over its own returns.
+- A Profit Factor with gains but no losses is infinite (inf), as for the Omega Ratio; a
+statistic without the returns it needs, such as the Payoff Ratio without losses, is NaN.
+- There is no Portfolio column: a weighted average of streak lengths or payoff ratios is
+not the statistic of the portfolio.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "KO"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_return_statistics()
+```
+
+Which returns:
+
+|                        |    AAPL |    MSFT |      KO |
+|:-----------------------|--------:|--------:|--------:|
+| Win Rate               |  0.5316 |  0.524  |  0.5326 |
+| Average Win            |  0.0125 |  0.0121 |  0.0073 |
+| Average Loss           | -0.0126 | -0.0116 | -0.0075 |
+| Payoff Ratio           |  0.9963 |  1.0407 |  0.9769 |
+| Profit Factor          |  1.1306 |  1.1458 |  1.1131 |
+| Expectancy             |  0.0008 |  0.0008 |  0.0004 |
+| Max Consecutive Wins   | 11      |  9      |  9      |
+| Max Consecutive Losses |  8      |  8      |  7      |
+| Recovery Factor        |  3.4734 |  3.5343 |  3.1047 |
+| Common Sense Ratio     |  1.0549 |  1.0935 |  1.196  |
 
 ---
 
@@ -2052,6 +2533,8 @@ $$
 $$
 
 The compounding starts at 1 at the beginning of the date range, so the first value is 1 plus the return of the first period.
+
+The first daily return in the range is that of the second trading day: the prices start at the start_date, so the move from the previous close into the first day is not part of it. For a year-to-date or calendar-year return, set start_date to the last trading day of the previous year (e.g. start_date="2025-12-31" for the return of 2026 so far), so the first period starts from that close.
 
 A period without any daily return for a ticker (before it listed, or a gap in its history) is NaN rather than 0, and the cumulative return carries the previous value past such a period.
 
@@ -2717,6 +3200,93 @@ Which returns:
 | 2023 |  0.0004 | 1.359  |           0.0602 |      0.8342 |
 | 2024 |  0      | 1.4674 |           0.0496 |      0.8536 |
 | 2025 |  0.0002 | 1.3907 |          -0.0759 |      0.8893 |
+
+---
+
+## get_factor_analysis
+Factor analysis (predictive power) of the performance metrics, or of a factor of your own: whether the tickers that score high on a metric go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the metric of the tickers in the period and their return over the following horizon: 1 means the metric ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, IR ≈ IC × √breadth: a small but consistent IC across many tickers and periods gives a high information ratio.
+
+The summary has a row per metric and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the metric from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single metric.
+
+Each metric is measured within each period (e.g. the volatility of a month's daily returns) and compared with the returns from the close of the period's last trading day onwards, using the dividend and split adjusted close, so a metric never overlaps the returns it is compared with. Each ticker keeps its own history: a ticker without a value or a return in a period is left out of that period only.
+
+A factor of your own is a DataFrame with the dates as index and the tickers as columns, applied from each date on, or with the tickers as index and periods as columns, applied from the end of each period. Make sure each value was known on the date it is given for, or the analysis looks ahead.
+
+**Args:**
+
+- <u>metrics (str &#124; list[str] &#124; pd.DataFrame):</u> A performance method name with a value per ticker and
+period, e.g. "get_sharpe_ratio", a list of them, "all", or a factor of your own
+as a DataFrame. "all" holds the returns, excess return, beta, Sharpe, Sortino,
+Treynor and information ratios, tracking error, Jensen's alpha, Calmar and
+Omega ratios and the win rate.
+- <u>period (str, optional):</u> The frequency at which the metrics are measured and
+evaluated: weekly, monthly, quarterly or yearly. Each metric is calculated
+within each period from that period's daily returns, so use monthly or longer
+for enough returns per period. Defaults to "monthly".
+- <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
+returns cover. Defaults to None, which uses about a period, a quarter and a
+year ahead (1, 3 and 12 months for monthly).
+- <u>quantiles (int, optional):</u> The number of quantiles the tickers are sorted into per
+period. Defaults to 5.
+- <u>periods_apart (int, optional):</u> The number of periods between the dates the
+quantile turnover and the rank autocorrelation compare. Defaults to 1.
+- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single metric
+instead of the summary: "information_coefficient" (per period and horizon),
+"quantile_returns" (the mean forward return per quantile and horizon),
+"quantile_turnover" (per period and quantile) or "rank_autocorrelation" (per
+period). Defaults to None.
+- <u>column (str &#124; None, optional):</u> The output to use of a metric with several.
+Defaults to None, which uses the first.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+**kwargs: Parameters passed to the metrics that take them, e.g. alpha=0.05.
+
+**Returns:**
+
+pd.DataFrame: The summary per metric and horizon, or with detail that part of the
+analysis of the metric.
+
+**Notes:**
+
+- The IC is reported as measured: short-term reversal, where last month's
+winners go on to lag, shows as a negative IC for the monthly return. Read the
+sign as the direction of the relationship.
+- The cross-section is the tickers of the Toolkit, so use at least ten and
+preferably twenty or more for a meaningful rank correlation and quantiles.
+- A horizon longer than one period makes consecutive returns overlap, which
+inflates the t-statistic; judge those horizons by their mean IC and IC
+information ratio.
+- Based on alphalens (Quantopian) and on Grinold and Kahn (2000), Active Portfolio
+Management.
+
+Also known as: predictive power, information coefficient, factor testing, alpha signal
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "JPM", "JNJ",
+     "XOM", "PG", "KO", "WMT", "V", "UNH", "HD", "CVX"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2016-01-01",
+    end_date="2025-12-31",
+)
+
+# Momentum: the return over the previous twelve months, without the latest month.
+prices = toolkit.get_historical_data()["Adj Close"]
+momentum = (prices.shift(21) / prices.shift(252) - 1).drop(columns="Benchmark")
+
+toolkit.performance.get_factor_analysis(momentum, horizons=[1, 12])
+```
+
+Which returns:
+
+|                                |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
+|:-------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
+| ('Custom Factor', '1 Month')   |    0.0178 |                  0.3743 |                 0.0476 |        0.4923 |    0.6235 |           0.4953 |            107 |             0.004  |              0.2391 |                 0.8822 |
+| ('Custom Factor', '12 Months') |    0.1121 |                  0.419  |                 0.2675 |        2.6214 |    0.0102 |           0.5729 |             96 |             0.0195 |              0.2391 |                 0.8822 |
 
 ---
 

@@ -233,6 +233,14 @@ financetoolkit-docs:
         url: /projects/financetoolkit/docs#get_employee_count
       - title: "Listed Notes"
         url: /projects/financetoolkit/docs#get_company_notes
+      - title: Earnings Surprise
+        url: /projects/financetoolkit/docs#get_earnings_surprise
+      - title: Price Targets
+        url: /projects/financetoolkit/docs#get_price_targets
+      - title: Price Target History
+        url: /projects/financetoolkit/docs#get_price_target_history
+      - title: Analyst Recommendations
+        url: /projects/financetoolkit/docs#get_analyst_recommendations
   - title: Insiders & Ownership
     children:
       - title: "Key Executives"
@@ -243,6 +251,8 @@ financetoolkit-docs:
         url: /projects/financetoolkit/docs#get_insider_trade_statistics
       - title: "Free Float"
         url: /projects/financetoolkit/docs#get_shares_float
+      - title: Institutional Ownership
+        url: /projects/financetoolkit/docs#get_institutional_ownership
   - title: Statements
     children:
       - title: "Balance Sheet Statements"
@@ -271,6 +281,8 @@ financetoolkit-docs:
         url: /projects/financetoolkit/docs#get_market_risk_premium
       - title: "Commitment of Traders"
         url: /projects/financetoolkit/docs#get_commitment_of_traders
+      - title: Short Volume
+        url: /projects/financetoolkit/docs#get_short_volume
   - title: ETF Data
     children:
   - title: Cache
@@ -353,6 +365,8 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/discovery#get_index_list
     - title: Index Constituents
       url: /projects/financetoolkit/docs/discovery#get_index_constituents
+    - title: Index Constituent Changes
+      url: /projects/financetoolkit/docs/discovery#get_index_constituent_changes
   - title: News
     children:
     - title: Stock Market News
@@ -401,6 +415,8 @@ financetoolkit-docs-discovery:
       url: /projects/financetoolkit/docs/discovery#get_sector_pe
     - title: Industry P/E
       url: /projects/financetoolkit/docs/discovery#get_industry_pe
+    - title: Industry Statistics
+      url: /projects/financetoolkit/docs/discovery#get_industry_statistics
   - title: Mergers & Acquisitions
     url: /projects/financetoolkit/docs/discovery#get_mergers_acquisitions_latest
 financetoolkit-docs-ratios:
@@ -648,6 +664,10 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_sbc_adjusted_free_cash_flow
       - title: Price to Sales Ratio (PS)
         url: /projects/financetoolkit/docs/ratios#get_price_to_sales_ratio
+  - title: Factor Analysis
+    children:
+      - title: Factor Analysis
+        url: /projects/financetoolkit/docs/ratios#get_factor_analysis
 financetoolkit-docs-models:
   - title: Modules
     children:
@@ -755,6 +775,16 @@ financetoolkit-docs-models:
         url: /projects/financetoolkit/docs/models#get_montier_c_score
       - title: Accruals Ratio
         url: /projects/financetoolkit/docs/models#get_accruals_ratio
+      - title: H-Model
+        url: /projects/financetoolkit/docs/models#get_h_model
+      - title: Justified Multiples
+        url: /projects/financetoolkit/docs/models#get_justified_multiples
+      - title: Return Decomposition
+        url: /projects/financetoolkit/docs/models#get_return_decomposition
+      - title: Quality Score (QMJ)
+        url: /projects/financetoolkit/docs/models#get_quality_score
+      - title: Factor Analysis
+        url: /projects/financetoolkit/docs/models#get_factor_analysis
 financetoolkit-docs-options:
   - title: Modules
     children:
@@ -1052,6 +1082,16 @@ financetoolkit-docs-technicals:
     children:
       - title: Seasonality
         url: /projects/financetoolkit/docs/technicals#get_seasonality
+  - title: Signals & Patterns
+    children:
+      - title: Candlestick Patterns
+        url: /projects/financetoolkit/docs/technicals#get_candlestick_patterns
+      - title: Signals
+        url: /projects/financetoolkit/docs/technicals#get_signals
+      - title: Indicator Summary
+        url: /projects/financetoolkit/docs/technicals#get_indicator_summary
+      - title: Factor Analysis
+        url: /projects/financetoolkit/docs/technicals#get_factor_analysis
 financetoolkit-docs-risk:
   - title: Modules
     children:
@@ -1111,6 +1151,8 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_tail_ratio
       - title: "Hill Estimator"
         url: /projects/financetoolkit/docs/risk#get_hill_estimator
+      - title: Move Significance
+        url: /projects/financetoolkit/docs/risk#get_move_significance
   - title: Drawdowns
     children:
       - title: "Maximum Drawdown (MDD)"
@@ -1121,6 +1163,10 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_maximum_drawdown_recovery_time
       - title: "Ulcer Index (UI)"
         url: /projects/financetoolkit/docs/risk#get_ulcer_index
+      - title: Drawdown Series
+        url: /projects/financetoolkit/docs/risk#get_drawdown_series
+      - title: Drawdown Table
+        url: /projects/financetoolkit/docs/risk#get_drawdown_table
   - title: Volatility
     children:
       - title: "Variance"
@@ -1192,6 +1238,10 @@ financetoolkit-docs-risk:
       - title: "Roll Spread"
         url: /projects/financetoolkit/docs/risk#get_roll_spread
 
+  - title: Factor Analysis
+    children:
+      - title: Factor Analysis
+        url: /projects/financetoolkit/docs/risk#get_factor_analysis
 financetoolkit-docs-performance:
   - title: Modules
     children:
@@ -1253,6 +1303,8 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_fama_decomposition
       - title: Style Analysis
         url: /projects/financetoolkit/docs/performance#get_style_analysis
+      - title: Beta-Implied Return
+        url: /projects/financetoolkit/docs/performance#get_beta_implied_return
   - title: Risk-Adjusted
     children:
       - title: "Sharpe Ratio"
@@ -1279,6 +1331,10 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_rachev_ratio
       - title: "STARR Ratio"
         url: /projects/financetoolkit/docs/performance#get_starr_ratio
+      - title: Morningstar Risk-Adjusted Return (MRAR)
+        url: /projects/financetoolkit/docs/performance#get_morningstar_risk_adjusted_return
+      - title: Morningstar Risk
+        url: /projects/financetoolkit/docs/performance#get_morningstar_risk
   - title: Drawdown Ratios
     children:
       - title: "Calmar Ratio"
@@ -1315,7 +1371,15 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_correlation_matrix
       - title: "Covariance Matrix"
         url: /projects/financetoolkit/docs/performance#get_covariance_matrix
+      - title: Return Statistics
+        url: /projects/financetoolkit/docs/performance#get_return_statistics
+      - title: Kelly Criterion
+        url: /projects/financetoolkit/docs/performance#get_kelly_criterion
 
+  - title: Factor Analysis
+    children:
+      - title: Factor Analysis
+        url: /projects/financetoolkit/docs/performance#get_factor_analysis
 financetoolkit-docs-fixedincome:
   - title: Modules
     children:
@@ -1397,6 +1461,8 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_bank_of_england_yield_curve
     - title: Treasury Auctions
       url: /projects/financetoolkit/docs/fixedincome#get_treasury_auctions
+    - title: Term Premium
+      url: /projects/financetoolkit/docs/fixedincome#get_term_premium
   - title: Corporate Bonds
     children:
     - title: Option Adjusted Spread (OAS)
@@ -1773,6 +1839,8 @@ financetoolkit-docs-economics:
         url:  /projects/financetoolkit/docs/economics#get_recession_indicator
       - title: Economic Calendar
         url:  /projects/financetoolkit/docs/economics#get_economic_calendar
+      - title: Global Supply Chain Pressure Index
+        url: /projects/financetoolkit/docs/economics#get_supply_chain_pressure_index
   - title: Finance
     children:
     - title: Money Supply
@@ -1803,6 +1871,12 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_implied_volatility
     - title: Asset Class Proxies
       url:  /projects/financetoolkit/docs/economics#get_asset_class_proxies
+    - title: Credit-to-GDP Ratio
+      url: /projects/financetoolkit/docs/economics#get_credit_to_gdp_ratio
+    - title: Credit-to-GDP Gap
+      url: /projects/financetoolkit/docs/economics#get_credit_to_gdp_gap
+    - title: Debt Service Ratio
+      url: /projects/financetoolkit/docs/economics#get_debt_service_ratio
   - title: Environment
     children:
       - title: Renewable Energy
@@ -1913,6 +1987,12 @@ financetoolkit-docs-etf:
         url: /projects/financetoolkit/docs/etf#get_look_through_valuation
       - title: Liquidity
         url: /projects/financetoolkit/docs/etf#get_liquidity
+      - title: Active Share
+        url: /projects/financetoolkit/docs/etf#get_active_share
+      - title: Contribution
+        url: /projects/financetoolkit/docs/etf#get_contribution
+      - title: Return Excluding Holdings
+        url: /projects/financetoolkit/docs/etf#get_return_excluding
 financetoolkit-docs-portfolio-optimization:
   - title: Modules
     children:

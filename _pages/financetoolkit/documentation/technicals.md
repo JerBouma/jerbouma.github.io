@@ -4470,7 +4470,7 @@ Which returns:
 ---
 
 ## get_market_breadth
-Calculate the breadth of the market the Toolkit's tickers make up: how many of them take part in a move. An index can rise on the strength of a few large companies while most of its members fall; breadth shows that divergence, which often comes before the index itself turns. Breadth is most meaningful across many tickers, such as the constituents of an index, which `Discovery.get_index_constituents` lists (e.g. the 500 tickers of the S&P 500). Those are today's members: breadth of past dates computed from them leaves out the companies that were removed from the index since (often after falling behind), so it is biased towards the survivors, the further back the more.
+Calculate the breadth of the market the Toolkit's tickers make up: how many of them take part in a move. An index can rise on the strength of a few large companies while most of its members fall; breadth shows that divergence, which often comes before the index itself turns. Breadth is most meaningful across many tickers, such as the constituents of an index, which `Discovery.get_index_constituents` lists (e.g. the 500 tickers of the S&P 500). Today's members leave out the companies that were removed from the index since (often after falling behind), so breadth of past dates computed from them is biased towards the survivors, the further back the more; its `date=` gives the members on the first date of the window instead.
 
 Per date it returns:
 
@@ -4605,7 +4605,7 @@ Calculate the relative strength of every ticker against the Benchmark and agains
 
 - Relative Strength: the price divided by the Benchmark's, set to 1 on the first date. It rises while the ticker outperforms the Benchmark.
 - Mansfield Relative Strength: the relative strength against its own moving average (of `window` periods, a year by default) minus 1. Above zero the ticker is gaining on the Benchmark.
-- Relative Strength Rating: the ticker's performance over the last year, the last quarter weighing most (the 3, 6, 9 and 12-month returns weighted 0.4, 0.2, 0.2 and 0.2), ranked against the other tickers from 1 (weakest) to 99 (strongest), from daily prices. Investor's Business Daily publishes the original rating with a proprietary formula; this weighting is its common public approximation. Tickers with the same score share the highest rank among them, so the rating reads as the share of the other tickers outperformed or matched and tied leaders both rate 99. It needs many tickers to be meaningful, such as the constituents of an index (see `Discovery.get_index_constituents`, whose current members leave out the companies removed from the index since).
+- Relative Strength Rating: the ticker's performance over the last year, the last quarter weighing most (the 3, 6, 9 and 12-month returns weighted 0.4, 0.2, 0.2 and 0.2), ranked against the other tickers from 1 (weakest) to 99 (strongest), from daily prices. Investor's Business Daily publishes the original rating with a proprietary formula; this weighting is its common public approximation. Tickers with the same score share the highest rank among them, so the rating reads as the share of the other tickers outperformed or matched and tied leaders both rate 99. It needs many tickers to be meaningful, such as the constituents of an index (see `Discovery.get_index_constituents`, whose `date=` gives the members on a past date; today's members leave out the companies removed from the index since).
 
 For more information, see the following papers and books:
 
@@ -4659,6 +4659,377 @@ Which returns:
 | 2025-12-29 |     50 |      1 |     74 |     26 |      99 |
 | 2025-12-30 |     50 |      1 |     74 |     26 |      99 |
 | 2025-12-31 |     50 |      1 |     74 |     26 |      99 |
+
+---
+
+## get_factor_analysis
+Factor analysis (predictive power) of the technical indicators: whether the tickers that score high on an indicator go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the indicator of the tickers at the end of the period and their return over the following horizon: 1 means the indicator ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, IR ≈ IC × √breadth: a small but consistent IC across many tickers and periods gives a high information ratio.
+
+The summary has a row per indicator and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the indicator from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single indicator.
+
+The indicators are calculated daily and the value on the last trading day of each period is compared with the returns from that day's close onwards, using the dividend and split adjusted close. An indicator in price units does not compare across tickers with different share prices, so a price line (a moving average, band, channel, stop or cloud line) is used as the distance of the close from it, close / line - 1, and a price difference (the true range, ATR, MACD, awesome oscillator, elder ray and detrended price oscillator) as a share of the close. Each ticker keeps its own history: a ticker without a value or a return in a period is left out of that period only.
+
+**Args:**
+
+- <u>metrics (str &#124; list[str], optional):</u> An indicator method name, e.g.
+"get_relative_strength_index", a list of them, or a collection: "momentum",
+"overlap", "volatility", "breadth" or "all". Defaults to "momentum", the
+oscillators and momentum indicators. The collections leave out the market-wide
+breadth measures, the volume-scaled indicators and the pivot points and
+Fibonacci levels.
+- <u>period (str, optional):</u> The frequency at which the indicators are evaluated:
+daily, weekly, monthly, quarterly or yearly. Defaults to "monthly".
+- <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
+returns cover. Defaults to None, which uses about a period, a quarter and a
+year ahead (1, 3 and 12 months for monthly).
+- <u>quantiles (int, optional):</u> The number of quantiles the tickers are sorted into per
+period. Defaults to 5.
+- <u>periods_apart (int, optional):</u> The number of periods between the dates the
+quantile turnover and the rank autocorrelation compare. Defaults to 1.
+- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single
+indicator instead of the summary: "information_coefficient" (per period and
+horizon), "quantile_returns" (the mean forward return per quantile and
+horizon), "quantile_turnover" (per period and quantile) or
+"rank_autocorrelation" (per period). Defaults to None.
+- <u>column (str &#124; None, optional):</u> The output to use of an indicator with several,
+e.g. "Signal Line" of the MACD or "Upper Band" of the Bollinger Bands.
+Defaults to None, which uses the first output in alphabetical order other
+than a price, e.g. "MACD Line" or "Lower Band".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+**kwargs: Parameters passed to the indicators that take them, e.g. window=14 or
+close_column="Close".
+
+**Returns:**
+
+pd.DataFrame: The summary per indicator and horizon, or with detail that part of
+the analysis of the indicator.
+
+**Notes:**
+
+- The IC is reported as measured: an overbought RSI that goes on to underperform
+gives a negative IC. Read the sign as the direction of the relationship.
+- The cross-section is the tickers of the Toolkit, so use at least ten and
+preferably twenty or more for a meaningful rank correlation and quantiles.
+- A horizon longer than one period makes consecutive returns overlap, which
+inflates the t-statistic; judge those horizons by their mean IC and IC
+information ratio.
+- Based on alphalens (Quantopian) and on Grinold and Kahn (2000), Active Portfolio
+Management.
+
+Also known as: predictive power, information coefficient, factor testing, alpha signal
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "JPM", "JNJ",
+     "XOM", "PG", "KO", "WMT", "V", "UNH", "HD", "CVX"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2016-01-01",
+    end_date="2025-12-31",
+)
+
+# The 200-day rate of change and the distance of the close from its 200-day average.
+toolkit.technicals.get_factor_analysis(
+    ["get_rate_of_change", "get_moving_average"], horizons=[1, 12], window=200
+)
+```
+
+Which returns:
+
+|                                     |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
+|:------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
+| ('get_rate_of_change', '1 Month')   |    0.053  |                  0.3536 |                 0.1499 |        1.5718 |    0.1189 |           0.6    |            110 |             0.0097 |              0.2652 |                 0.8603 |
+| ('get_rate_of_change', '12 Months') |    0.1272 |                  0.4137 |                 0.3074 |        3.0587 |    0.0029 |           0.6364 |             99 |             0.0614 |              0.2652 |                 0.8603 |
+| ('get_moving_average', '1 Month')   |    0.0432 |                  0.3494 |                 0.1236 |        1.2968 |    0.1974 |           0.5818 |            110 |             0.0128 |              0.3068 |                 0.8064 |
+| ('get_moving_average', '12 Months') |    0.1073 |                  0.3924 |                 0.2735 |        2.7212 |    0.0077 |           0.596  |             99 |             0.0574 |              0.3068 |                 0.8064 |
+
+---
+
+## get_candlestick_patterns
+Recognise 15 classic candlestick patterns in every ticker's candles, with the definitions of TA-Lib's CDL functions. Candlestick charting reads the open, high, low and close of a period as one candle: the real body between the open and the close and the shadows up to the high and down to the low. Certain shapes and sequences are read as a sign that a move is ending or continuing.
+
+Each pattern is 1 on the candle that completes it as a bullish pattern, -1 as a bearish pattern and 0 otherwise (TA-Lib's +100 and -100 divided by 100). The weaker engulfing and harami, where one end of the two real bodies is equal, are 0.8 and -0.8 (TA-Lib's 80). The doji is indecision rather than a direction and is 1 when present; a marubozu and a spinning top take the colour of the candle (1 white, -1 black).
+
+The patterns:
+
+- Doji: an open and close nearly equal.
+- Hammer (bullish) and Hanging Man (bearish): a short real body at the top of a long lower shadow, near the previous low or the previous high respectively.
+- Inverted Hammer (bullish) and Shooting Star (bearish): a short real body at the bottom of a long upper shadow that gaps down or up from the previous real body.
+- Engulfing: a real body that engulfs the previous real body of the opposite colour.
+- Harami: a short real body inside the previous long real body, opposite to its colour.
+- Piercing Line (bullish) and Dark Cloud Cover (bearish): a long candle followed by one of the opposite colour that opens beyond the previous low (high) and closes past the middle of the previous real body.
+- Morning Star (bullish) and Evening Star (bearish): a long real body, a short real body that gaps away from it and a real body of the opposite colour that closes at least 30% into the first.
+- Three White Soldiers (bullish) and Three Black Crows (bearish): three long-enough candles of one colour with ever higher (lower) closes, each opening within the previous real body.
+- Marubozu: a long real body with (almost) no shadows.
+- Spinning Top: a short real body with both shadows longer than the body.
+
+Sizes are relative to the ticker's own recent candles, as in TA-Lib: a real body is long (short) when it is longer (shorter) than the average real body of the 10 previous candles, a doji's body is at most 10% and a very short shadow less than 10% of their average high-low range, a long shadow is longer than the candle's own real body, and "near" is within 20% and "far" at least 60% of the average high-low range of the 5 previous candles.
+
+For more information, see the following books:
+
+- Nison, S. (1991). "Japanese Candlestick Charting Techniques." New York Institute of Finance.
+- Bulkowski, T.N. (2008). "Encyclopedia of Candlestick Charts." Wiley.
+
+**Also known as:** candlestick patterns, candle patterns, CDL, Japanese candlesticks.
+
+**Args:**
+
+- <u>period (str, optional):</u> The time period to consider for historical data.
+Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
+Defaults to "Adj Close", in which case the open, high and low prices are adjusted
+for dividends in the same way, so an ex-dividend day doesn't read as a gap. "Close"
+uses the candles as traded (split-adjusted).
+- <u>patterns (str &#124; list[str] &#124; None, optional):</u> The patterns to return, e.g. ["Hammer",
+"Engulfing"]. Defaults to None, which returns all 15.
+
+**Returns:**
+
+pd.DataFrame: The patterns per date, with a column per pattern and ticker: 1 (bullish),
+-1 (bearish), 0.8 / -0.8 (the weaker engulfing and harami) or 0.
+
+**Notes:**
+
+- The patterns match TA-Lib (github.com/TA-Lib/ta-lib, src/ta_func/ta_CDL*.c) candle for
+candle, including its default candle settings and penetrations (30% for the stars, 50%
+for the dark cloud cover).
+- A pattern is empty until TA-Lib's lookback has passed: the 10 to 13 candles its
+averages and the pattern itself need, counted from the ticker's own first candle.
+- A pattern only describes the candles. The trend before it, which candlestick analysis
+requires for a reversal (a hammer after a decline, a hanging man after a rise), is not
+checked, as in TA-Lib; combine a pattern with a trend measure such as
+`get_moving_average` or `get_signals`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2025-01-01",
+    end_date="2025-12-31",
+)
+
+patterns = toolkit.technicals.get_candlestick_patterns()
+
+engulfing = patterns["Engulfing"]
+engulfing[engulfing.ne(0).any(axis=1)].tail()
+```
+
+Which returns:
+
+| Date       |   AAPL |   MSFT |   Benchmark |
+|:-----------|-------:|-------:|------------:|
+| 2025-12-10 |      0 |      0 |           1 |
+| 2025-12-15 |     -1 |      0 |           0 |
+| 2025-12-17 |     -1 |      0 |           0 |
+| 2025-12-19 |      1 |      0 |           0 |
+| 2025-12-31 |      0 |     -1 |           0 |
+
+---
+
+## get_signals
+Turn the moving averages, the MACD, the RSI, the Bollinger Bands and new highs and lows into the events traders act on: the period a line is crossed. The indicators themselves are available as `get_moving_average`, `get_moving_average_convergence_divergence`, `get_relative_strength_index` and `get_bollinger_bands`, and give the same values.
+
+Every signal is 1 on the period a line is crossed upwards, -1 on the period it is crossed downwards and 0 otherwise:
+
+- Moving Average Crossover: the short Simple Moving Average crossing the long one; with the default 50 and 200 periods a golden cross (1) or a death cross (-1).
+- MACD Crossover: the MACD line crossing its signal line, the classic trigger of the MACD.
+- RSI Overbought: the RSI entering (1) or leaving (-1) the overbought zone above `rsi_overbought`. Leaving it is the classic sell signal.
+- RSI Oversold: the RSI leaving (1) or entering (-1) the oversold zone below `rsi_oversold`. Leaving it is the classic buy signal.
+- Upper Bollinger Band: the price breaking out above (1) or falling back below (-1) the upper band.
+- Lower Bollinger Band: the price recovering above (1) or breaking down below (-1) the lower band.
+- New High/Low: a close above every close of the previous `high_low_window` periods (1), a 52-week high with daily prices by default, or below every one of them (-1).
+
+For more information, see the following books and papers:
+
+- Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
+- Appel, G. (1979). "The Moving Average Convergence-Divergence Trading Method." Signalert Corp.
+- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- Bollinger, J. (2001). "Bollinger on Bollinger Bands." McGraw-Hill.
+- Brock, W., Lakonishok, J., and LeBaron, B. (1992). "Simple Technical Trading Rules and the Stochastic Properties of Stock Returns." The Journal of Finance, 47(5), 1731-1764.
+
+**Also known as:** trading signals, golden cross, death cross, crossovers, breakouts, MACD crossover, RSI signal, 52-week high, new high.
+
+**Args:**
+
+- <u>period (str, optional):</u> The time period to consider for historical data.
+Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
+Defaults to "Adj Close".
+- <u>short_window (int, optional):</u> The window of the short moving average. Defaults to 50.
+- <u>long_window (int, optional):</u> The window of the long moving average. Defaults to 200.
+- <u>macd_short_window (int, optional):</u> The short window of the MACD. Defaults to 12.
+- <u>macd_long_window (int, optional):</u> The long window of the MACD. Defaults to 26.
+- <u>macd_signal_window (int, optional):</u> The window of the MACD's signal line. Defaults to 9.
+- <u>rsi_window (int, optional):</u> The window of the RSI. Defaults to 14.
+- <u>rsi_overbought (float, optional):</u> The RSI above which a price is overbought. Defaults to 70.
+- <u>rsi_oversold (float, optional):</u> The RSI below which a price is oversold. Defaults to 30.
+- <u>bollinger_window (int, optional):</u> The window of the Bollinger Bands. Defaults to 20.
+- <u>bollinger_std_dev (float, optional):</u> The number of standard deviations of the Bollinger
+Bands. Defaults to 2.
+- <u>high_low_window (int &#124; None, optional):</u> The number of previous periods a new high or
+low is measured against. Defaults to None, which uses a year of periods: 252 daily
+(and intraday), 52 weekly, 12 monthly, 4 quarterly and 1 yearly.
+
+**Returns:**
+
+pd.DataFrame: The signals per date, with a column per signal and ticker: 1 (crossed
+upwards), -1 (crossed downwards) or 0.
+
+**Notes:**
+
+- A signal is empty until its indicator has two values to compare, e.g. 200 periods
+for the default long moving average, counted from the ticker's own first price; start
+the Toolkit early enough for the signals of interest.
+- A crossover is the period the line reaches the other side than the side it was on
+last: touching a line and turning back is no signal, while moving through it over two
+periods counts on the period the other side is reached.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2020-01-01",
+    end_date="2025-12-31",
+)
+
+signals = toolkit.technicals.get_signals()
+
+crossovers = signals["Moving Average Crossover"]
+crossovers[crossovers.ne(0).any(axis=1)].tail()
+```
+
+Which returns:
+
+| Date       |   AAPL |   MSFT |   Benchmark |
+|:-----------|-------:|-------:|------------:|
+| 2025-04-07 |     -1 |      0 |           0 |
+| 2025-04-16 |      0 |      0 |          -1 |
+| 2025-06-09 |      0 |      1 |           0 |
+| 2025-06-27 |      0 |      0 |           1 |
+| 2025-09-15 |      1 |      0 |           0 |
+
+---
+
+## get_indicator_summary
+Summarise the history of a technical indicator per ticker in a single row instead of the series itself: where the latest value ranks in its own history, the lowest and highest value with their dates, how many periods the indicator spent below or above a threshold, when it last crossed into that zone and how the price did afterwards. This answers questions such as "how oversold is the RSI compared with the last five years, and what happened after the previous times it fell below 30?" without the thousands of daily values behind it.
+
+Each value is ranked against its own history up to that date, so the percentile of a crossing in the past only uses the values known at that time:
+
+$$
+\text{Percentile} = \text{share of the values up to and including the date that are at most the value on that date}
+$$
+
+$$
+\text{Rank} = \text{number of values up to and including the date that are at most the value on that}\; \text{date:} 1 \;\text{is the lowest value so far},\;\; \text{the number of observations the highest}
+$$
+
+$$
+\text{Forward Return} (n \;\text{periods}) = \operatorname{Price}(t + n) / \operatorname{Price}(t) - 1,\;\; \text{from the close of the crossing to the close n trading periods later},\;\; \text{on the dividend and split adjusted close}
+$$
+
+A crossing below `below` is the period the indicator falls below the line, entering the zone, and a crossing above `above` the period it rises above the line (the same crossings as `get_signals`). The average forward return after the crossings is shown next to the average forward return over every period, so the effect of the signal can be read against the drift of the share itself.
+
+For more information, see the following books:
+
+- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
+
+**Also known as:** indicator statistics, indicator percentile, oversold history, event study, forward returns after a signal, RSI below 30.
+
+**Args:**
+
+- <u>metric (str, optional):</u> The indicator method name, e.g. "get_stochastic_oscillator"
+or "get_rate_of_change". Defaults to "get_relative_strength_index".
+- <u>below (float &#124; None, optional):</u> The line the indicator falls below, e.g. 30 for an
+oversold RSI. Defaults to None.
+- <u>above (float &#124; None, optional):</u> The line the indicator rises above, e.g. 70 for an
+overbought RSI. Defaults to None.
+- <u>forward_periods (list[int] &#124; int &#124; None, optional):</u> The numbers of trading periods
+after each date to measure the return over, e.g. [5, 21, 63] for about a week,
+a month and a quarter of daily data. Defaults to None, which measures no
+returns.
+- <u>show_crossings (bool, optional):</u> Whether to return a row per crossing (ticker and
+date) with its zone, the indicator value, its percentile at the time and the
+forward returns instead of the summary. Defaults to False.
+- <u>column (str &#124; None, optional):</u> The output to use of an indicator with several,
+e.g. "Signal Line" of the MACD. Defaults to None, which uses the first output
+other than a price, e.g. "MACD Line".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+**kwargs: Parameters passed to the indicator, e.g. window=14 or period="weekly".
+
+**Returns:**
+
+pd.DataFrame: The summary per ticker: Latest, Latest Date, Percentile, Rank,
+Observations, Mean, Minimum, Minimum Date, Maximum and Maximum Date; with
+forward_periods the Average n-Period Return; with below (or above) the Periods
+Below, Crossings Below, Last Crossing Below and the Average n-Period Return After
+Crossing Below. With show_crossings a row per ticker and crossing date.
+
+**Notes:**
+
+- The history is the Toolkit's date range, after the warm-up the indicator needs
+(e.g. 14 periods for the RSI), so start early enough for the comparison you are
+after.
+- The forward returns of the last n periods are not known yet: those crossings are
+listed without a return and left out of the averages.
+- Crossings close together overlap in their forward returns, so a handful of
+crossings says little about the signal in general.
+- The returns are measured over the periods of the indicator: trading days by
+default, weeks with period="weekly".
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["NVDA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-11-01",
+    end_date="2026-11-05",
+)
+
+toolkit.technicals.get_indicator_summary(
+    "get_relative_strength_index", below=30, forward_periods=[5, 21, 63]
+).T
+```
+
+Which returns:
+
+|                                               | NVDA       |
+|:----------------------------------------------|:-----------|
+| Latest                                        | 25.3948    |
+| Latest Date                                   | 2026-11-05 |
+| Percentile                                    | 0.0008     |
+| Rank                                          | 1          |
+| Observations                                  | 1245       |
+| Mean                                          | 54.5091    |
+| Minimum                                       | 25.3948    |
+| Minimum Date                                  | 2026-11-05 |
+| Maximum                                       | 85.2808    |
+| Maximum Date                                  | 2024-02-05 |
+| Average 5-Period Return                       | 0.0098     |
+| Average 21-Period Return                      | 0.0442     |
+| Average 63-Period Return                      | 0.153      |
+| Periods Below                                 | 12         |
+| Crossings Below                               | 6          |
+| Last Crossing Below                           | 2026-11-05 |
+| Average 5-Period Return After Crossing Below  | 0.0625     |
+| Average 21-Period Return After Crossing Below | 0.0313     |
+| Average 63-Period Return After Crossing Below | 0.1968     |
 
 ---
 

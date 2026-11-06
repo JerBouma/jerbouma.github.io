@@ -330,3 +330,35 @@ get_hurst_exponent:
     tickers: EURUSD,GCUSD,BTCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_drawdown_series:
+  question: How far below their previous peaks were Meta, Netflix and Amazon at the end of each quarter from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: "META,NFLX,AMZN"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: quarterly
+get_drawdown_table:
+  question: What were the three deepest drawdowns of Meta and Netflix from 2021 to 2025, and how long did each take to recover?
+  tool: risk
+  arguments:
+    tickers: "META,NFLX"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    top: 3
+get_move_significance:
+  question: How unusual were the moves of Nvidia and Coca-Cola on 27 January 2025, compared with their history since 2015?
+  tool: risk
+  arguments:
+    tickers: "NVDA,KO"
+    start_date: "2015-01-01"
+    end_date: "2025-01-27"
+    limit: -1
+get_factor_analysis:
+  question: How well did volatility, maximum drawdown and the other risk metrics predict the 1- and 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
+  tool: risk
+  arguments:
+    tickers: "AAPL,MSFT,GOOGL,AMZN,META,NVDA,JPM,JNJ,XOM,PG,KO,WMT,V,UNH,HD,CVX"
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    horizons: [1, 12]
