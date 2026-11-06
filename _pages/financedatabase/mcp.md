@@ -88,26 +88,34 @@ Pick your client below for the exact steps; most clients accept the URL through 
 <details class="ft-details" id="remote-claude-desktop" markdown="1">
   <summary><i class="fas fa-robot"></i> <h3>Claude Desktop</h3></summary>
 
-  1. Open **Claude Desktop** and click on **Customize**.
-  2. Go to the **Connectors** tab, click on the "+" button and select **Add custom connector**.
-  3. Enter a name, e.g. *Finance Database*, and paste the URL:
+  1. Open **Claude Desktop** and go to **Customize → Connectors**.
+  2. Click **+ Add** and select **Add custom connector**.
+  3. Enter a name, e.g. *Finance Database*, paste the URL and click **Continue**:
      ```
      https://financedatabase.jeroenbouma.com/mcp
      ```
-  4. Click "Add" and the Finance Database tools are available in your conversations.
+  4. Review the detected authentication settings. The server needs no sign-in, so choose **No sign in** and click **Continue**.
+  5. Click **Add** and the Finance Database tools are available in your conversations.
+
+  On a Team or Enterprise plan, an owner adds the connector once under **Organization settings → Connectors** (**Add → Custom → Web**), after which members click **Connect** next to it under **Customize → Connectors**.
+
+  Connectors are tied to your Claude account, so one added in Claude.ai shows up in Claude Desktop as well.
 
 </details>
 
 <details class="ft-details" id="remote-claude-ai" markdown="1">
   <summary><i class="fas fa-globe"></i> <h3>Claude.ai</h3></summary>
 
-  1. Open [claude.ai](https://claude.ai){:target="_blank"} and click on **Customize** in the left sidebar.
-  2. Go to the **Connectors** tab, click on the "+" button and select **Add custom connector**.
-  3. Enter a name, e.g. *Finance Database*, and paste the URL:
+  1. Open [claude.ai](https://claude.ai){:target="_blank"} and go to **Customize → Connectors**.
+  2. Click **+ Add** and select **Add custom connector**.
+  3. Enter a name, e.g. *Finance Database*, paste the URL and click **Continue**:
      ```
      https://financedatabase.jeroenbouma.com/mcp
      ```
-  4. Click "Add" and the Finance Database tools are available in your conversations.
+  4. Review the detected authentication settings. The server needs no sign-in, so choose **No sign in** and click **Continue**.
+  5. Click **Add** and the Finance Database tools are available in your conversations.
+
+  On a Team or Enterprise plan, an owner adds the connector once under **Organization settings → Connectors** (**Add → Custom → Web**), after which members click **Connect** next to it under **Customize → Connectors**.
 
 </details>
 
@@ -116,24 +124,26 @@ Pick your client below for the exact steps; most clients accept the URL through 
 
   1. Run the following command once in your terminal:
      ```bash
-     claude mcp add --transport http finance-database https://financedatabase.jeroenbouma.com/mcp
+     claude mcp add --transport http --scope user finance-database https://financedatabase.jeroenbouma.com/mcp
      ```
-  2. Restart Claude Code and the Finance Database tools appear automatically.
+     `--scope user` makes the server available in every project; without it, it only applies to the current one.
+  2. Start Claude Code and run `/mcp` to confirm that *finance-database* is connected.
 
 </details>
 
 <details class="ft-details" id="remote-chatgpt" markdown="1">
   <summary><i class="fas fa-comment-dots"></i> <h3>ChatGPT</h3></summary>
 
-  ChatGPT connects to custom MCP servers through **Developer mode** (available on paid ChatGPT plans):
+  ChatGPT adds custom MCP servers as plugins. Whether you can add one depends on your plan, and in a Business or Enterprise workspace an admin may need to allow it.
 
-  1. Open **Settings → Apps & Connectors → Advanced settings** and enable **Developer mode**.
-  2. Back in **Apps & Connectors**, click **Create** and enter a name, e.g. *Finance Database*, and the MCP server URL:
+  1. Open [Plugins](https://chatgpt.com/plugins){:target="_blank"}, click the **+** button and select **Add custom MCP server**.
+  2. Enter a name, e.g. *Finance Database*, and under **Connection** paste the URL:
      ```
      https://financedatabase.jeroenbouma.com/mcp
      ```
-  3. Select **No authentication** and click **Create**.
-  4. In a new chat, open the **+** menu, enable the *Finance Database* connector under **Developer mode** and start asking questions.
+  3. Choose **No authentication**, review the warning and confirm.
+  4. Select **Create as a plugin** and install it.
+  5. In a chat, type `@` and select *Finance Database* to use its tools.
 
 </details>
 
@@ -153,31 +163,48 @@ Pick your client below for the exact steps; most clients accept the URL through 
 
   1. Open the **Command Palette** (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **MCP: Add Server**.
   2. Select **HTTP** as the server type.
-  3. Enter the URL `https://financedatabase.jeroenbouma.com/mcp` and name it *finance-database*.
-  4. VS Code writes the entry to `.vscode/mcp.json` (or your user profile) automatically and the tools show up in Copilot's **Agent** mode.
+  3. Enter the URL `https://financedatabase.jeroenbouma.com/mcp` and the server ID *finance-database*.
+  4. Choose where to save it: **Global** makes it available in every workspace, **Workspace** only in the current one.
+  5. The tools then show up in Copilot Chat; open **Configure Tools** in the chat input to check that they are enabled.
 
 </details>
 
 <details class="ft-details" id="remote-cursor" markdown="1">
   <summary><i class="fas fa-i-cursor"></i> <h3>Cursor</h3></summary>
 
-  1. Open **Cursor Settings** (`Cmd+,` / `Ctrl+,`) and navigate to **Features → MCP Servers**.
-  2. Click **+ Add new MCP server**.
-  3. Set the type to **http** and paste the URL:
-     ```
-     https://financedatabase.jeroenbouma.com/mcp
-     ```
-  4. Name it *finance-database* and click **Save**.
+  Add the server to `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` in your project, creating the file if needed:
+
+  ```json
+  {
+    "mcpServers": {
+      "finance-database": {
+        "url": "https://financedatabase.jeroenbouma.com/mcp"
+      }
+    }
+  }
+  ```
+
+  Cursor picks the file up by itself; the server and its tools appear under **Customize** in the sidebar.
 
 </details>
 
 <details class="ft-details" id="remote-windsurf" markdown="1">
-  <summary><i class="fas fa-wind"></i> <h3>Windsurf</h3></summary>
+  <summary><i class="fas fa-wind"></i> <h3>Devin Desktop (Windsurf)</h3></summary>
 
-  1. Open **Windsurf Settings** and navigate to **MCP Servers**.
-  2. Click **Add Server** and select **Remote / HTTP**.
-  3. Paste the URL `https://financedatabase.jeroenbouma.com/mcp` and name it *finance-database*.
-  4. Click **Save** and reload the window.
+  Devin Desktop is the new name of Windsurf.
+
+  1. Add the server to `~/.config/devin/mcp_config.json` (`%APPDATA%\devin\mcp_config.json` on Windows), creating the file if needed:
+     ```json
+     {
+       "mcpServers": {
+         "finance-database": {
+           "url": "https://financedatabase.jeroenbouma.com/mcp",
+           "transport": "http"
+         }
+       }
+     }
+     ```
+  2. In the Agents window, open **Customize → MCPs**, set **Install MCPs for** to **This computer** and switch the server on.
 
 </details>
 
@@ -221,11 +248,11 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 
   **Easiest installation is via the MCPB bundle**, which handles configuration automatically. Download the [Finance Database MCPB bundle](https://github.com/JerBouma/FinanceDatabase/releases/latest/download/financedatabase.mcpb), double-click it and click **Install** in Claude Desktop.
 
-  Alternatively, edit `claude_desktop_config.json` and add the entry inside `mcpServers`:
+  Alternatively, open **Settings → Developer → Edit Config** in Claude Desktop, add the entry inside `mcpServers` of `claude_desktop_config.json` and restart Claude Desktop. The file lives in:
 
   - macOS: `~/Library/Application Support/Claude/`
   - Windows: `%APPDATA%\Claude\`
-  - Linux: `~/.config/claude/`
+  - Linux: `~/.config/Claude/`
 
   ```json
   {
@@ -250,13 +277,13 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 <details class="ft-details" id="local-claude-code" markdown="1">
   <summary><i class="fas fa-terminal"></i> <h3>Claude Code</h3></summary>
 
-  Run the following command once in your terminal:
+  Run the following command once in your terminal; `--scope user` makes the server available in every project:
 
   ```bash
-  claude mcp add finance-database -- uvx --from "financedatabase[mcp]" financedatabase-mcp
+  claude mcp add --transport stdio --scope user finance-database -- uvx --from "financedatabase[mcp]" financedatabase-mcp
   ```
 
-  Or edit `~/.claude.json` (create it if needed) and merge the entry inside `mcpServers`:
+  Or edit `~/.claude.json` (create it if needed) and merge the entry inside the top-level `mcpServers`:
 
   ```json
   {
@@ -300,11 +327,25 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 <details class="ft-details" id="local-vs-code" markdown="1">
   <summary><i class="fab fa-microsoft"></i> <h3>VS Code and GitHub Copilot</h3></summary>
 
-  Create or edit `.vscode/mcp.json` in your workspace root. VS Code uses `servers` as the top-level key (not `mcpServers`):
+  **Workspace**: create or edit `.vscode/mcp.json` in your workspace root. This file uses `servers` as the top-level key (not `mcpServers`):
 
   ```json
   {
     "servers": {
+      "finance-database": {
+        "type": "stdio",
+        "command": "uvx",
+        "args": ["--from", "financedatabase[mcp]", "financedatabase-mcp"]
+      }
+    }
+  }
+  ```
+
+  **Global (all workspaces)**: create or edit `~/.copilot/mcp-config.json`, which uses `mcpServers`:
+
+  ```json
+  {
+    "mcpServers": {
       "finance-database": {
         "command": "uvx",
         "args": ["--from", "financedatabase[mcp]", "financedatabase-mcp"]
@@ -334,9 +375,9 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 </details>
 
 <details class="ft-details" id="local-windsurf" markdown="1">
-  <summary><i class="fas fa-wind"></i> <h3>Windsurf</h3></summary>
+  <summary><i class="fas fa-wind"></i> <h3>Devin Desktop (Windsurf)</h3></summary>
 
-  Edit `~/.codeium/windsurf/mcp_config.json` (create it if needed):
+  Edit `~/.config/devin/mcp_config.json` (`%APPDATA%\devin\mcp_config.json` on Windows; create it if needed), then switch the server on under **Customize → MCPs → This computer**:
 
   ```json
   {
@@ -501,7 +542,7 @@ The questions that come up most often about the server and the data behind it. A
 <details class="ft-details" markdown="1">
   <summary><h3>Which AI assistants and clients does it work with?</h3></summary>
 
-  Any client that speaks the Model Context Protocol. There are step-by-step cards for Claude Desktop, claude.ai, Claude Code, ChatGPT, Codex CLI, VS Code, Cursor, Windsurf and Gemini CLI under [Remote Server](#remote-server) and [Local Clients](#local-clients).
+  Any client that speaks the Model Context Protocol. There are step-by-step cards for Claude Desktop, claude.ai, Claude Code, ChatGPT, Codex CLI, VS Code, Cursor, Devin Desktop (Windsurf) and Gemini CLI under [Remote Server](#remote-server) and [Local Clients](#local-clients).
 
 </details>
 
@@ -592,7 +633,7 @@ The questions that come up most often about the server and the data behind it. A
       "name": "Which AI assistants and clients does it work with?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any client that speaks the Model Context Protocol. There are step-by-step cards for Claude Desktop, claude.ai, Claude Code, ChatGPT, Codex CLI, VS Code, Cursor, Windsurf and Gemini CLI under Remote Server and Local Clients."
+        "text": "Any client that speaks the Model Context Protocol. There are step-by-step cards for Claude Desktop, claude.ai, Claude Code, ChatGPT, Codex CLI, VS Code, Cursor, Devin Desktop (Windsurf) and Gemini CLI under Remote Server and Local Clients."
       }
     },
     {
