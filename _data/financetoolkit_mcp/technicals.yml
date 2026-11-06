@@ -475,23 +475,3 @@ get_relative_strength:
     end_date: "2025-12-31"
     show_columns: Relative Strength Rating
     limit: -5
-get_factor_analysis:
-  question: How well did the 200-day rate of change and the distance from the 200-day moving average predict the 1- and 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
-  tool: momentum
-  arguments:
-    tickers: "AAPL,MSFT,GOOGL,AMZN,META,NVDA,JPM,JNJ,XOM,PG,KO,WMT,V,UNH,HD,CVX"
-    start_date: "2016-01-01"
-    end_date: "2025-12-31"
-    metrics: "get_rate_of_change,get_moving_average"
-    horizons: [1, 12]
-    window: 200
-get_indicator_summary:
-  question: How low is Nvidia's RSI on 5 November 2026 compared with the five years before, and what did the stock return after earlier drops below 30?
-  tool: momentum
-  arguments:
-    tickers: NVDA
-    start_date: "2021-11-01"
-    end_date: "2026-11-05"
-    metric: get_relative_strength_index
-    below: 30
-    forward_periods: [5, 21, 63]
