@@ -1,0 +1,82 @@
+[
+  {
+    "id": "CLbkOF6-Vxw",
+    "title": "AMD rose 13% today. It's still below Wednesday #AMD #ChipStocks #Semiconductors #Nvidia #Shorts",
+    "published": "2026-11-06T18:36:03+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nChip stocks had their worst day since 2020 on Thursday 5 November: investors feared tighter AI rules and limits on US data-centre building after the midterms, and the semiconductor index fell about 12%. AMD fell 17.3% despite strong results two days earlier. At 09:51 New York on 6 November it is up 13.2% at $457.64, and still 6.4% below Wednesday's close of $488.78. A 17.3% fall needs a 20.9% gain to undo, because the climb back starts from a smaller price: gain needed = loss ÷ what's left. Nvidia fell less (−9.3%) and is only 2.7% below Wednesday. In the year before Thursday, AMD's daily 95% value at risk was −6.3%; Thursday was 2.7 times that.\n\nData: Finance Toolkit MCP (daily prices, value at risk, maximum drawdown); quotes at 09:51 New York, 6 Nov 2026. News: Yahoo Finance and 24/7 Wall St., 6 Nov 2026.\n\nMCP setup: https://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#AMD #ChipStocks #Shorts",
+    "views": 40,
+    "series": "news"
+  },
+  {
+    "id": "-1Yi5UAtLeo",
+    "title": "RSI, explained: Nvidia's lowest reading in almost 5 years #RSI #Nvidia #StockMarket #Shorts",
+    "published": "2026-11-06T10:14:20+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nThe relative strength index (RSI) compares a stock's average gains with its average losses over the last 14 trading days and scales them from 0 to 100: RSI = 100 − 100 ÷ (1 + average gain ÷ average loss). Below 30 is called oversold, above 70 overbought. At Thursday 5 November's close, after a 9.3% fall, Nvidia's RSI was 25.4, its lowest reading since at least November 2021 (12 closes below 30 in that time, the lowest before this 26.8 in January 2022). The S&P 500 stayed at 33.6 and Apple at 53.0; AMD was at 29.7 and TSMC at 26.5. The pitfall: oversold isn't cheap. On 25 January 2022 Nvidia's RSI was 26.8; by 14 October 2022 the price had fallen another 49.6%. RSI also shifts a little with how much history it's calculated on, so compare readings from the same source.\n\nRead RSI as the speed of a move, not as what a company is worth.\n\nData: Finance Toolkit MCP (14-day RSI from daily closes, 19 November 2021 to 5 November 2026; closing prices of 5 November 2026).\n\nMCP setup: https://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Shorts #RSI #StockMarket",
+    "views": 52,
+    "series": "finance"
+  },
+  {
+    "id": "ijjPo8y6AM8",
+    "title": "Beta, explained: why Nvidia fell twice the market #Beta #StockMarket #Investing #Nvidia #Shorts",
+    "published": "2026-11-06T06:00:06+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nBeta measures how far a stock tends to move when the market moves: the covariance of its daily returns with the market's, divided by the variance of the market's. The market itself has a beta of 1. On Thursday 5 November the S&P 500 closed 4.3% lower. Nvidia, with a 2026 beta of 1.82 against the S&P 500, fell 9.3%; beta alone pointed to about 7.9%. Coca-Cola, with a beta of −0.28, closed 0.1% lower. AMD (beta 3.34) fell 17.3% and Tesla (2.16) 10.8%. The pitfall: a low beta isn't low risk. Coca-Cola's price swung 19.7% a year in 2026, more than the S&P 500's 13.5%, just not in step with the market. Beta also shifts with the window: Nvidia's was 2.66 in 2024.\n\nMultiply a stock's beta by the market's move to see the part that is the market; what's left is the company's own story.\n\nData: Finance Toolkit MCP (beta and volatility from daily returns, 2 January to 5 November 2026, against SPY; closing prices of 5 November 2026).\n\nMCP setup: https://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Shorts #Beta #StockMarket",
+    "views": 45,
+    "series": "finance"
+  },
+  {
+    "id": "V0Dd2HdZ66g",
+    "title": "KLM's 5,000 job cuts aren't the big number #KLM #AirFranceKLM #Airlines #Investing #Stocks #Shorts",
+    "published": "2026-11-05T17:18:23+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nKLM said on 5 November that about 5,000 positions will be cut, outsourced or transferred, close to 15% of its workforce. Most move to other employers rather than disappear; outlets put the outright eliminations at about 1,000. The bigger number is the goal: a €1 billion yearly improvement by 2028, about half of Air France-KLM's 2025 operating profit of €2.0 billion. At 17:02 Amsterdam the shares were up 13% while Lufthansa was up 0.3%. The group keeps 6.2% of its revenue as operating profit; IAG, the owner of British Airways, keeps 14.7%. Even the full €1 billion, at 2025 revenue, would lift that to about 9%.\n\nJudge a cost cut against operating profit, not the job count.\n\nData: Finance Toolkit MCP (FY2025 income statement, operating margins, quotes at 17:02 Amsterdam, 5 Nov 2026). News: NL Times, Skift, The Aviation Hub, 5 Nov 2026.\n\nMCP setup: https://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Shorts #KLM #Airlines",
+    "views": 195,
+    "series": "news"
+  },
+  {
+    "id": "B5IlbO-dKow",
+    "title": "AMD beat and raised. Its stock is down a third #AMD #Stocks #Semiconductors #Investing #AI #Shorts",
+    "published": "2026-11-05T15:27:20+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nAMD beat expectations on 3 November and raised its outlook, yet at 09:53 New York on 5 November its stock was 33.8% below its 6 October close. A share price is profit per share times the price investors pay for each dollar of it. AMD's earnings per share over the last four quarters rose 18% with the report, but its P/E fell from 167 to 94. A broad chip ETF (SMH) fell 25% over the same weeks. Even at 94, AMD's P/E is above every quarter-end of 2025 (75–82).\n\nSplit a price move into profit and multiple before you read the news.\n\nData: Finance Toolkit MCP (prices, diluted EPS over the trailing four quarters, P/E; to 09:53 New York, 5 Nov 2026). News: CNBC, 3 Nov 2026.\n\nMCP setup: https://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Shorts #AMD #Stocks",
+    "views": 386,
+    "series": "news"
+  },
+  {
+    "id": "FQkzEbyAFLU",
+    "title": "S&P 500 rose 1.8% after the midterms but it's sectors depict a different story.  #investing",
+    "published": "2026-11-04T19:35:23+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nThe day after the 3 November US midterm elections, the S&P 500 was up 1.8% at 1:30 pm New York. Underneath, consumer discretionary rose 4.6% and energy fell 5.0%, a gap of almost ten percentage points in one session. Since 30 September the index is barely changed, though nine of the eleven sectors rose: technology, its largest part, fell 9.5%. In all 19 midterm years since 1950 the S&P 500 was higher twelve months later; a small sample, not a forecast.\n\nAn index is an average. Split it into its sectors to see what the market is pricing.\n\nData: Finance Toolkit MCP (Select Sector SPDR ETFs vs SPY, prices at 1:30 pm New York on 4 Nov 2026; S&P 500 monthly closes since 1950). News: AP via CNBC, 4 Nov 2026.\nMCP setup: https://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Shorts #StockMarket #Midterms",
+    "views": 90,
+    "series": "news"
+  },
+  {
+    "id": "HD073mFKKxE",
+    "title": "Gold fell 27% from its peak. Its worst fall since 1980 was 70% #trading #investing #financetoolkit",
+    "published": "2026-11-04T13:44:28+00:00",
+    "description": "Sarch \"Finance Toolkit MCP\" to give your AI these numbers.\n\nGold settled at its lowest price in a year on 30 October ($3,898.90 on Comex, MarketWatch). That was 27% below its 2026 peak close.\n\nSince 1980, three of its falls were deeper than this one: 70% from January 1980 to July 1999, 30% in 2008, and 45% from 2011 to 2015. It took until November 2007, almost 28 years, to get back above the 1980 peak. The S&P 500's deepest fall since 1980 was 57% (October 2007 to March 2009), not as deep as gold's.\n\nFor gold, or anything seen as safe, the deepest fall in its own history (its maximum drawdown) says more about its risk than its reputation does. The same check works for any fund, stock or currency. Long-term US Treasuries, another asset seen as safe, fell 49% from August 2020 to October 2023 (TLT, interest included).\n\nData: maximum drawdowns on daily closes from the Finance Toolkit MCP server, for gold (Comex futures) and the S&P 500 index (without dividends) since 1980, and long-term US Treasuries (TLT, interest included) since 2002.\n\nNot investment advice.\n\nSet up the Finance Toolkit MCP: https://www.jeroenbouma.com/projects/financetoolkit/mcp\nPython docs: https://www.jeroenbouma.com/projects/financetoolkit/docs\npip install financetoolkit\n\n#Shorts #Gold #Investing",
+    "views": 60,
+    "series": "news"
+  },
+  {
+    "id": "kLR29VPaqus",
+    "title": "Palantir doubled its revenue. The price expects far more!",
+    "published": "2026-11-03T18:43:16+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nPalantir reported its third quarter on 2 November 2026: revenue of $2.31 billion, up 96% on a year ago. On 3 November the shares fell almost 5%, to $169.85 around 10:15 New York. The price was already high: about 60 times sales, against about 17 for Nvidia and 11 for Microsoft. A reverse discounted cash flow shows what today's price assumes: free cash flow growing about 105% a year for five years, from $2.8 billion to about $103 billion a year by 2031, roughly three times Microsoft's free cash flow over the past year. For Palantir, fast growth is already in the price.\n\nPrices, ratios and the reverse DCF calculated with the Finance Toolkit MCP server; quarterly results from Palantir's press release.\n\nNot investment advice.\n\nSet up the Finance Toolkit MCP: https://www.jeroenbouma.com/projects/financetoolkit/mcp\nPython docs: https://www.jeroenbouma.com/projects/financetoolkit/docs\npip install financetoolkit\n\n#Shorts #Palantir #Valuation",
+    "views": 25,
+    "series": "news"
+  },
+  {
+    "id": "-0cbWL2T1Bs",
+    "title": "Marvell's $115B deal: worth about $92B at Friday's close",
+    "published": "2026-11-02T14:45:37+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers, or pip install financetoolkit for Python.\n\nMarvell agreed on 2 November 2026 to buy Lumentum in a deal reported at $115 billion. It pays in its own shares: 4.5 Marvell shares per Lumentum share, worth $1,132 at Marvell's close on 28 October, just before the talks were reported that evening. Marvell's shares then fell 22% to $196.40 by Friday 30 October, so the offer was worth $883.80 per share at that close, and the whole deal about $92 billion. In an all-stock deal, the price is a number of shares, not a number of dollars.\n\nPrices are daily closes pulled with the Finance Toolkit MCP server; deal terms from Reuters.\n\nNot investment advice.\n\nSet up the Finance Toolkit MCP: https://www.jeroenbouma.com/projects/financetoolkit/mcp\nPython docs: https://www.jeroenbouma.com/projects/financetoolkit/docs\npip install financetoolkit\n\n#Shorts #Mergers #Semiconductors",
+    "views": 326,
+    "series": "news"
+  },
+  {
+    "id": "x5cw4JotW-Q",
+    "title": "Big Tech spent $26B more on AI than its businesses brought in",
+    "published": "2026-11-01T17:27:24+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers, or pip install financetoolkit for Python.\n\nAmazon, Alphabet, Microsoft and Meta spent $202B on capex in Q3 2026, more than double the $97B of a year ago, while their businesses brought in $175.5B of operating cash. That's $26.4B short. Amazon spent 182% of its operating cash flow, Alphabet 121% and Meta 104%; Microsoft stayed below at 68%. Alphabet fell 12.6% on 29 October.\n\nNumbers from the companies' cash-flow statements, pulled with the Finance Toolkit MCP server. Your AI assistant (Claude, ChatGPT) can calculate them for you.\n\nNot investment advice.\n\nSet up the Finance Toolkit MCP: https://www.jeroenbouma.com/projects/financetoolkit/mcp\nPython docs: https://www.jeroenbouma.com/projects/financetoolkit/docs\npip install financetoolkit\n\n#Shorts #BigTech #FreeCashFlow",
+    "views": 285,
+    "series": "news"
+  }
+]

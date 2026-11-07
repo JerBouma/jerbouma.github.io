@@ -10,7 +10,7 @@
 # those become the sum over all of @JerBouma's own repositories and over
 # the packages refreshed above.
 #
-# The deploy workflow rebuilds the site every week, so the numbers stay
+# The deploy workflow rebuilds the site every day, so the numbers stay
 # current even when nothing is merged.
 
 require "json"
