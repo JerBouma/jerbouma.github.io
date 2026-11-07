@@ -2,7 +2,7 @@
 {%- assign v = include.short -%}
 {%- assign yt = site.data.youtube -%}
 {%- assign pl = yt.playlists | where: "key", v.series | first -%}
-<article class="yt-card yt-card--{{ v.series }}" id="short-{{ v.id }}" data-series="{{ v.series }}" data-concepts="{{ v.concepts | join: ' ' }}">
+<article class="yt-card yt-card--{{ v.series }}" id="short-{{ v.id }}" data-series="{{ v.series }}">
   <div class="yt-card__media" data-video-id="{{ v.id }}" role="button" tabindex="0" aria-label="Play {{ v.title | escape }}">
     <img src="https://i.ytimg.com/vi/{{ v.id }}/hq720.jpg" alt="" loading="lazy" width="1280" height="720">
     <span class="yt-card__play" aria-hidden="true"></span>
