@@ -6,9 +6,13 @@
 # with _data/youtube_shorts.json, the snapshot of every short seen so far:
 # older shorts stay on the page, and when YouTube can't be reached (offline
 # builds, LIVE_STATS=off) the snapshot alone is used, so a build never fails
-# because of this. Refresh the snapshot locally with
+# because of this.
 #
-#   YOUTUBE_SNAPSHOT=1 jekyll build
+# The deploy workflow keeps the snapshot up to date by itself: it restores the
+# latest one from the `youtube-data` branch before the build, builds with
+# YOUTUBE_SNAPSHOT=1 (which writes the merged list back to the file) and
+# commits the result to that branch. The copy in _data on main is only the
+# starting point for local builds.
 #
 # Each short gets the Finance Toolkit MCP concepts it uses, matched from its
 # title and description with the patterns in _data/youtube.yml (`overrides`
@@ -46,13 +50,11 @@ module YouTubeShorts
     doc = REXML::Document.new(xml)
     REXML::XPath.match(doc, "//a:entry", NS).map do |e|
       text = ->(path) { REXML::XPath.first(e, path, NS)&.text.to_s }
-      stats = REXML::XPath.first(e, "media:group/media:community/media:statistics", NS)
       {
         "id" => text.call("yt:videoId"),
         "title" => text.call("a:title"),
         "published" => text.call("a:published"),
-        "description" => text.call("media:group/media:description"),
-        "views" => stats ? stats.attributes["views"].to_i : nil
+        "description" => text.call("media:group/media:description")
       }
     end
   rescue StandardError
@@ -117,6 +119,12 @@ Jekyll::Hooks.register :site, :post_read do |site|
     if entries.nil?
       Jekyll.logger.info "YouTube:", "#{playlist['name']} from the snapshot" unless offline
       next
+    end
+    # a feed with fewer than 15 videos is the whole playlist, so a short that
+    # was taken out of it leaves the page too
+    if entries.size < 15
+      ids = entries.map { |v| v["id"] }
+      known.reject! { |id, v| v["series"] == playlist["key"] && !ids.include?(id) }
     end
     entries.each do |v|
       # keep the raw description so the snapshot can be enriched again later
