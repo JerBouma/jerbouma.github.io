@@ -1,4 +1,4 @@
-# Fills /insights/youtube with the shorts of my YouTube channel, grouped by
+# Fills /insights/explained with the shorts of my YouTube channel, grouped by
 # the playlists in _data/youtube.yml (News Explained, Finance Explained).
 #
 # Each playlist is read from YouTube's public RSS feed at build time (no API

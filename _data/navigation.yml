@@ -37,8 +37,8 @@ main:
     sublinks:
       - title: Insights
         url: /insights
-      - title: YouTube Shorts
-        url: /insights/youtube
+      - title: Explained
+        url: /insights/explained
       - title: Appearances
         url: /appearances
       - title: Literature

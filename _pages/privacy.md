@@ -21,7 +21,7 @@ This page explains what data this website (jeroenbouma.com) and my own tools col
 
 **Google Analytics.** The site also uses Google Analytics, which sets cookies (such as `_ga`) to tell repeat visits apart and sends your IP address and browser details to Google. I only look at the aggregate statistics. Google's handling of this data is covered by the [Google Privacy Policy](https://policies.google.com/privacy), and you can opt out with the [Google Analytics opt-out add-on](https://tools.google.com/dlpage/gaoptout) or by blocking cookies in your browser.
 
-**Content from other services.** Pages load fonts from Google Fonts and scripts from jsDelivr, and the search box sends what you type to Algolia to find results. On the Appearances and YouTube Shorts pages and on the Insights page, video thumbnails load from YouTube, and a video only loads from YouTube when you press play, after which YouTube's own policies apply. Each of these services receives your IP address when your browser fetches from it.
+**Content from other services.** Pages load fonts from Google Fonts and scripts from jsDelivr, and the search box sends what you type to Algolia to find results. On the Appearances, Insights and Explained pages, video thumbnails load from YouTube, and a video only loads from YouTube when you press play, after which YouTube's own policies apply. Each of these services receives your IP address when your browser fetches from it.
 
 **Your browser.** The site remembers whether you chose the light or dark theme in your browser's local storage. That setting never leaves your device.
 

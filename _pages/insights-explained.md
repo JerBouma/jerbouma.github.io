@@ -1,9 +1,10 @@
 ---
-title: YouTube Shorts
-seo_title: "YouTube Shorts | Insights"
+title: Explained
+seo_title: "Explained | Insights"
 description: "Short videos that explain the financial news and financial concepts with real data from the Finance Toolkit MCP: prices, financial statements, valuation, risk and more."
-permalink: /insights/youtube
+permalink: /insights/explained
 redirect_from:
+  - /explained
   - /youtube
   - /shorts
 layout: single

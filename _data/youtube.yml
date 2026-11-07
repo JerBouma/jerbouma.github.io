@@ -1,4 +1,4 @@
-# /insights/youtube: the playlists whose shorts the page shows and the
+# /insights/explained: the playlists whose shorts the page shows and the
 # Finance Toolkit MCP concepts each short is tagged with. The shorts
 # themselves are read at build time by _plugins/youtube_shorts.rb.
 channel: "https://www.youtube.com/channel/UCgcSx8WAvm9uLF3xu2b6crA"
