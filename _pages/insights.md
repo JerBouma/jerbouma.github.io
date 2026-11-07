@@ -34,6 +34,28 @@ I write about the economy, financial markets and how financial theory is applied
   </a>
 </section>
 
+{%- assign yt = site.data.youtube %}
+{%- assign shorts = site.data.youtube_shorts %}
+{%- if shorts.size > 0 %}
+<section class="hp-section pj-section">
+  <p class="hp-kicker">On YouTube</p>
+  <h2 class="hp-h2">The news and finance, explained in under a minute</h2>
+  <p class="yt-lead">Two series of shorts, News Explained and Finance Explained, with every number calculated by the Finance Toolkit MCP.</p>
+  <div class="yt-teaser">
+  {%- for s in shorts limit: 4 %}{% assign pl = yt.playlists | where: "key", s.series | first %}
+    <a class="yt-teaser__item yt-teaser__item--{{ s.series }}" href="/insights/explained#short-{{ s.id }}">
+      <div class="yt-teaser__img"><img src="https://i.ytimg.com/vi/{{ s.id }}/hq720.jpg" alt="" loading="lazy" width="1280" height="720"></div>
+      <div class="yt-teaser__body">
+        <p class="yt-teaser__series">{{ pl.name }}</p>
+        <p class="yt-teaser__title">{{ s.title }}</p>
+      </div>
+    </a>
+  {%- endfor %}
+  </div>
+  <a class="hp-link" href="/insights/explained">All {{ shorts | size }} shorts and what they calculate <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</section>
+{%- endif %}
+
 <section class="hp-section pj-section">
   <p class="hp-kicker">All insights</p>
   <h2 class="hp-h2">Browse by topic</h2>

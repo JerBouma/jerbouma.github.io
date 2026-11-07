@@ -1,0 +1,82 @@
+# /insights/explained: the playlists whose shorts the page shows and the
+# Finance Toolkit MCP concepts each short is tagged with. The shorts
+# themselves are read at build time by _plugins/youtube_shorts.rb.
+channel: "https://www.youtube.com/channel/UCgcSx8WAvm9uLF3xu2b6crA"
+
+playlists:
+  - key: news
+    name: News Explained
+    icon: bolt
+    id: PLMJLXHdDdypE
+    tagline: "A headline, checked against the numbers"
+    text: >-
+      One story from that day's news, such as an earnings report, a takeover or a market sell-off,
+      and the question the headline leaves open. Is a beat-and-raise cheap after a fall? What is
+      an all-stock deal worth after the buyer's shares drop? The answer comes from prices,
+      financial statements and valuation models.
+  - key: finance
+    name: Finance Explained
+    icon: graduation-cap
+    id: PLEwTZgucZ97c
+    tagline: "One concept, with today's example"
+    text: >-
+      One measure from finance, such as beta or the relative strength index: its formula, what a
+      current reading says about a well-known company, and the pitfall that comes with it.
+
+# Matched (case-insensitive regular expression) against each short's title and
+# description. `tool` is the Finance Toolkit MCP tool that answers it.
+concepts:
+  - key: prices
+    icon: chart-line
+    label: Prices
+    tool: market_data
+    match: '\b(prices?|quotes?|closes?|closed)\b'
+  - key: statements
+    icon: file-alt
+    label: Financial statements
+    tool: market_data
+    match: 'income statement|cash[- ]flow|balance sheet|capex|revenue|\bEPS\b|earnings per share'
+  - key: valuation
+    icon: scale-balanced
+    label: Valuation ratios
+    tool: valuation
+    match: '\bP/E\b|times sales|price[- ]to[- ]|multiple'
+  - key: profitability
+    icon: percentage
+    label: Profitability
+    tool: profitability
+    match: 'margin|operating profit|return on'
+  - key: models
+    icon: calculator
+    label: Valuation models
+    tool: models
+    match: '\bDCF\b|discounted cash flow|\bWACC\b|intrinsic value'
+  - key: risk
+    icon: triangle-exclamation
+    label: Risk
+    tool: risk
+    match: 'value at risk|drawdown|volatility|swung'
+  - key: momentum
+    icon: gauge-high
+    label: Momentum
+    tool: momentum
+    match: '\bRSI\b|relative strength|moving average|\bMACD\b'
+  - key: performance
+    icon: chart-area
+    label: Performance
+    tool: performance
+    match: '\bbeta\b|sharpe|\balpha\b|capm'
+  - key: sectors
+    icon: chart-pie
+    label: Sectors and ETFs
+    tool: market_data
+    match: '\bsectors?\b|\bETFs?\b|\bSPDR\b'
+  - key: macro
+    icon: globe
+    label: Macro
+    tool: macroeconomics
+    match: '\bGDP\b|inflation|unemployment|central bank|interest rates?'
+
+# Set a short's concepts by hand when the patterns get it wrong:
+#   <video id>: { concepts: [prices, risk] }
+overrides: {}

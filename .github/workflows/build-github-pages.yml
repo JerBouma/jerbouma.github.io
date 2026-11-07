@@ -14,14 +14,15 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-  # Rebuilds every Monday morning so the project stats (stars, forks,
-  # downloads; see _plugins/live_stats.rb) stay current without a commit
+  # Rebuilds every morning so new YouTube shorts (_plugins/youtube_shorts.rb)
+  # and the project stats (stars, forks, downloads; _plugins/live_stats.rb)
+  # appear without a commit
   schedule:
-    - cron: "0 6 * * 1"
+    - cron: "0 6 * * *"
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write # commits the YouTube shorts snapshot to the youtube-data branch
   pages: write
   id-token: write
 
@@ -40,6 +41,16 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0 # full history: _plugins/last_modified.rb dates pages from git log
+      - name: Restore the YouTube shorts snapshot
+        # Every short seen so far (_plugins/youtube_shorts.rb), kept on the
+        # youtube-data branch because YouTube's feeds only list the 15 newest.
+        # Without that branch, the copy in _data is used.
+        run: |
+          if git fetch -q origin youtube-data && git show FETCH_HEAD:youtube_shorts.json > /tmp/youtube_shorts.json; then
+            mv /tmp/youtube_shorts.json _data/youtube_shorts.json
+          else
+            echo "No youtube-data branch yet: starting from the copy in _data"
+          fi
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -54,7 +65,26 @@ jobs:
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+          YOUTUBE_SNAPSHOT: 1 # writes the merged list of shorts back to _data/youtube_shorts.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # higher GitHub API limit for the live stats
+      - name: Save the YouTube shorts snapshot
+        # Commits the updated list to the youtube-data branch (only that one
+        # file, never main), so shorts that dropped out of the feeds stay on
+        # the page. Never blocks a deploy.
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SNAPSHOT="$PWD/_data/youtube_shorts.json"
+          cd "$(mktemp -d)"
+          git init -q
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git fetch -q --depth 1 origin youtube-data; then git checkout -q FETCH_HEAD; else git checkout -q --orphan youtube-data; fi
+          cp "$SNAPSHOT" youtube_shorts.json
+          git add youtube_shorts.json
+          if git diff --cached --quiet; then echo "No new shorts"; exit 0; fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Update the YouTube shorts snapshot"
+          git push -q origin HEAD:refs/heads/youtube-data
       - name: Zip the agent kit
         # agent-kit/ is excluded from Jekyll; it is offered as one download
         run: bash _scripts/build-agent-kit.sh

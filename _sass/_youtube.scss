@@ -1,0 +1,495 @@
+// YouTube shorts (/insights/explained, _pages/insights-explained.md): the two
+// series, the map of shorts against Finance Toolkit MCP concepts and the
+// portrait cards that play in place. Also the teaser on /insights.
+
+$yt-img: 'img:not([data-hp-a]):not([data-hp-b])';
+
+.yt, .ar {
+  --yt-news: #f97316;
+  --yt-finance: #38bdf8;
+
+  :root[data-theme="light"] & {
+    --yt-news: #ea580c;
+    --yt-finance: #0284c7;
+  }
+}
+
+.yt > .pj-section:first-child { padding-top: 24px; }
+
+.yt-lead {
+  max-width: 760px;
+  margin: -6px 0 24px !important;
+  color: var(--text-secondary) !important;
+}
+
+.yt-dot {
+  display: inline-block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+
+  &--news { background: var(--yt-news); }
+  &--finance { background: var(--yt-finance); }
+}
+
+// ── the two series ────────────────────────────────────────────────────────
+.yt-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+
+  > div {
+    padding: 16px 18px;
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    background: var(--card-bg);
+  }
+
+  strong {
+    display: block;
+    color: var(--text-primary);
+    font-size: 1.9rem;
+    line-height: 1.1;
+  }
+
+  span { color: var(--text-secondary); font-size: 0.88rem; }
+
+  &--news strong { color: var(--yt-news); }
+  &--finance strong { color: var(--yt-finance); }
+}
+
+.yt-series {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    padding: 26px;
+    border: 1px solid var(--card-border);
+    border-top: 3px solid var(--yt-c);
+    border-radius: var(--hp-radius);
+    background: var(--card-bg);
+
+    &--news { --yt-c: var(--yt-news); }
+    &--finance { --yt-c: var(--yt-finance); }
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 0 14px !important;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--yt-c) 16%, transparent);
+    color: var(--yt-c);
+  }
+
+  .pj &__card h3 { font-size: 1.35rem !important; }
+
+  &__tagline {
+    margin: 4px 0 12px !important;
+    color: var(--yt-c) !important;
+    font-weight: 600;
+  }
+
+  &__text {
+    flex: 1;
+    margin: 0 0 18px !important;
+    color: var(--text-secondary) !important;
+    line-height: 1.65 !important;
+  }
+
+  &__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+  }
+
+  button.hp-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+  }
+}
+
+// ── the map: shorts (rows) against concepts (columns) ─────────────────────
+.yt-map-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--card-border);
+  border-radius: var(--hp-radius);
+  background: var(--card-bg);
+}
+
+.yt-map {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) repeat(var(--yt-cols), 76px);
+  min-width: 900px;
+  padding: 8px 12px 12px;
+
+  &__corner {
+    align-self: end;
+    padding: 0 8px 12px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.9;
+  }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 2px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--text-secondary);
+    font: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover:not([disabled]), &.active {
+      background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+      color: var(--text-primary);
+    }
+
+    &[disabled] { opacity: 0.4; cursor: default; }
+
+    i { color: var(--accent-color); }
+
+    code {
+      padding: 0 !important;
+      background: none !important;
+      color: var(--text-muted, var(--text-secondary)) !important;
+      font-size: 0.6rem !important;
+      white-space: nowrap;
+    }
+  }
+
+  &__bar {
+    display: flex;
+    align-items: flex-end;
+    width: 14px;
+    height: 56px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--text-secondary) 12%, transparent);
+
+    > span {
+      display: block;
+      width: 100%;
+      min-height: 3px;
+      border-radius: 4px;
+      background: var(--accent-color);
+    }
+  }
+
+  &__n { color: var(--text-primary); font-size: 0.85rem; font-weight: 700; }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    height: 2.4em;
+    font-size: 0.66rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  &__row, &__cell {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    border-top: 1px solid var(--card-border);
+  }
+
+  &__row {
+    gap: 10px;
+    padding: 0 8px;
+    color: var(--text-primary) !important;
+    font-size: 0.88rem;
+
+    &:hover .yt-map__title { color: var(--accent-color); }
+  }
+
+  &__title {
+    overflow: hidden;
+    flex: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__date { flex: none; color: var(--text-secondary); font-size: 0.78rem; }
+
+  &__cell {
+    justify-content: center;
+
+    .yt-dot { width: 14px; height: 14px; }
+    &.active { background: color-mix(in srgb, var(--accent-color) 10%, transparent); }
+  }
+
+  // with a concept chosen, the other columns fade
+  &.has-concept &__cell:not(.active) .yt-dot { opacity: 0.25; }
+
+  &__row--more { display: none; }
+  &.show-all &__row--more { display: flex; }
+
+  &__more {
+    margin-top: 14px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+  }
+}
+
+// ── the cards ─────────────────────────────────────────────────────────────
+.yt-filters__concept[hidden] { display: none !important; }
+
+.yt-filters__concept {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+.yt-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.yt-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  border-radius: var(--hp-radius);
+  background: var(--card-bg);
+  scroll-margin-top: 90px;
+
+  &[hidden] { display: none; }
+  &--news { --yt-c: var(--yt-news); }
+  &--finance { --yt-c: var(--yt-finance); }
+
+  &.is-picked { animation: yt-pick 1.6s ease; }
+
+  &__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 9 / 16;
+    background: #000;
+    cursor: pointer;
+
+    > #{$yt-img} {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      border-radius: 0;
+      object-fit: cover;
+      opacity: 0.9;
+      transition: opacity 0.2s ease, transform 0.3s ease;
+    }
+
+    &:hover > #{$yt-img}, &:focus-visible > #{$yt-img} { opacity: 1; transform: scale(1.03); }
+
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+
+  &__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(225, 29, 72, 0.92);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transform: translate(-50%, -50%);
+
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 54%;
+      border-width: 10px 0 10px 17px;
+      border-style: solid;
+      border-color: transparent transparent transparent #fff;
+      content: "";
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--yt-c);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 16px 16px 18px;
+  }
+
+  &__meta {
+    margin: 0 0 6px !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.78rem !important;
+  }
+
+  .pj & h3 {
+    margin: 0 0 8px !important;
+    font-size: 1rem !important;
+    line-height: 1.35 !important;
+  }
+
+  &__teaser {
+    margin: 0 0 10px !important;
+    padding-left: 10px;
+    border-left: 2px solid var(--yt-c);
+    color: var(--text-primary) !important;
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+    // the theme sets paragraphs to flow-root, which would cancel the clamp
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+  }
+
+  &__data {
+    margin: 0 0 12px !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.78rem !important;
+    line-height: 1.5 !important;
+
+    span {
+      color: var(--accent-color);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  }
+
+  &__concepts {
+    // the theme sets paragraphs to flow-root
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: auto 0 0 !important;
+    padding: 0 !important;
+    line-height: 1.4 !important;
+
+    span {
+      margin: 0 !important;
+      padding: 3px 8px;
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+
+      i { color: var(--accent-color); }
+    }
+  }
+}
+
+@keyframes yt-pick {
+  0%, 60% { box-shadow: 0 0 0 3px var(--accent-color); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+// ── teaser on /insights ───────────────────────────────────────────────────
+.yt-teaser {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    border-radius: var(--hp-radius);
+    background: var(--card-bg);
+    color: inherit !important;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+
+    &:hover { border-color: var(--accent-color); transform: translateY(-2px); }
+
+    &--news { --yt-c: var(--yt-news); }
+    &--finance { --yt-c: var(--yt-finance); }
+  }
+
+  &__img {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    background: #000;
+
+    > #{$yt-img} {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      border-radius: 0;
+      object-fit: cover;
+    }
+  }
+
+  &__body { padding: 12px 14px 14px; }
+
+  &__series {
+    margin: 0 0 4px !important;
+    color: var(--yt-c) !important;
+    font-size: 0.72rem !important;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 !important;
+    color: var(--text-primary) !important;
+    font-size: 0.92rem !important;
+    font-weight: 600;
+    line-height: 1.35 !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .yt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+  .yt-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .yt-series { grid-template-columns: 1fr; }
+  .yt-series__card { padding: 20px; }
+  .yt-grid, .yt-teaser { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .yt-card__body { padding: 12px 12px 14px; }
+  .yt-card__data { display: none; }
+  .yt-map { grid-template-columns: minmax(150px, 1fr) repeat(var(--yt-cols), 64px); min-width: 0; width: max-content; }
+  .yt-map__title { max-width: 150px; }
+  .yt-map__date { display: none; }
+}
