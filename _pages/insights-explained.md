@@ -47,45 +47,6 @@ On my [YouTube channel](https://www.youtube.com/channel/UCgcSx8WAvm9uLF3xu2b6crA
   </div>
 </section>
 
-<section class="hp-section pj-section">
-  <p class="hp-kicker">What the MCP calculated</p>
-  <h2 class="hp-h2">Every short, mapped to the Finance Toolkit MCP</h2>
-  <p class="yt-lead">Each row is a short and each column a concept from the Finance Toolkit MCP, with the tool an AI assistant calls for it. The bars show how often a concept is used. Choose a column to see only the shorts that use it.</p>
-  <div class="yt-map-wrap">
-  <div class="yt-map" id="yt-map" style="--yt-cols: {{ yt.concepts | size }}">
-    <div class="yt-map__corner">
-      <span class="yt-dot yt-dot--news"></span> News Explained<br>
-      <span class="yt-dot yt-dot--finance"></span> Finance Explained
-    </div>
-    {%- assign most = 1 %}
-    {%- for c in yt.concepts %}{% assign n = 0 %}{% for s in shorts %}{% if s.concepts contains c.key %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}{% if n > most %}{% assign most = n %}{% endif %}{% endfor %}
-    {%- for c in yt.concepts %}
-    {%- assign n = 0 %}{% for s in shorts %}{% if s.concepts contains c.key %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}
-    <button class="yt-map__col" type="button" data-concept="{{ c.key }}" title="{{ c.label }}: {{ n }} shorts, the {{ c.tool }} tool"{% if n == 0 %} disabled{% endif %}>
-      <span class="yt-map__bar"><span style="height: {{ n | times: 100 | divided_by: most }}%"></span></span>
-      <span class="yt-map__n">{{ n }}</span>
-      <i class="fas fa-{{ c.icon }}" aria-hidden="true"></i>
-      <span class="yt-map__label">{{ c.label }}</span>
-      <code>{{ c.tool }}</code>
-    </button>
-    {%- endfor %}
-    {%- for s in shorts %}
-    <a class="yt-map__row{% if forloop.index > 12 %} yt-map__row--more{% endif %}" href="#short-{{ s.id }}" data-short="{{ s.id }}">
-      <span class="yt-dot yt-dot--{{ s.series }}"></span>
-      <span class="yt-map__title">{{ s.title }}</span>
-      <span class="yt-map__date">{{ s.published | date: "%b %-d" }}</span>
-    </a>
-    {%- for c in yt.concepts %}
-    <span class="yt-map__cell{% if forloop.parentloop.index > 12 %} yt-map__row--more{% endif %}" data-concept="{{ c.key }}">{% if s.concepts contains c.key %}<span class="yt-dot yt-dot--{{ s.series }}" title="{{ c.label }}"></span>{% endif %}</span>
-    {%- endfor %}
-    {%- endfor %}
-  </div>
-  </div>
-  {%- if shorts.size > 12 %}
-  <button class="hp-link yt-map__more" type="button" id="yt-map-more">Show all {{ shorts | size }} shorts <i class="fas fa-chevron-down" aria-hidden="true"></i></button>
-  {%- endif %}
-</section>
-
 <section class="hp-section pj-section" id="shorts">
   <p class="hp-kicker">Watch</p>
   <h2 class="hp-h2">The shorts</h2>
@@ -94,7 +55,6 @@ On my [YouTube channel](https://www.youtube.com/channel/UCgcSx8WAvm9uLF3xu2b6crA
     {%- for pl in yt.playlists %}
     <button class="ar-filter" data-series="{{ pl.key }}">{{ pl.name }} <span class="lit-count">{{ shorts | where: "series", pl.key | size }}</span></button>
     {%- endfor %}
-    <button class="ar-filter yt-filters__concept" id="yt-concept" type="button" hidden></button>
   </div>
   <div class="yt-grid" id="yt-grid">
     {%- for s in shorts %}{% include short-card.html short=s %}{% endfor %}
@@ -126,63 +86,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var cards = document.querySelectorAll('#yt-grid .yt-card');
   var seriesBtns = document.querySelectorAll('#yt-filters [data-series]');
-  var conceptBtn = document.getElementById('yt-concept');
-  var cols = document.querySelectorAll('#yt-map .yt-map__col');
-  var state = { series: 'all', concept: null };
 
-  function apply() {
+  function show(series) {
     var shown = 0;
     cards.forEach(function (card) {
-      var ok = (state.series === 'all' || card.dataset.series === state.series) &&
-               (!state.concept || (' ' + card.dataset.concepts + ' ').indexOf(' ' + state.concept + ' ') !== -1);
+      var ok = series === 'all' || card.dataset.series === series;
       card.hidden = !ok;
       if (ok) shown++;
     });
     document.getElementById('yt-empty').hidden = shown > 0;
-    seriesBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.series === state.series); });
-    cols.forEach(function (c) { c.classList.toggle('active', c.dataset.concept === state.concept); });
-    document.getElementById('yt-map').classList.toggle('has-concept', !!state.concept);
-    document.querySelectorAll('#yt-map .yt-map__cell').forEach(function (c) { c.classList.toggle('active', c.dataset.concept === state.concept); });
-    if (state.concept) {
-      var col = document.querySelector('#yt-map .yt-map__col[data-concept="' + state.concept + '"]');
-      conceptBtn.innerHTML = col.querySelector('.yt-map__label').textContent + ' <span aria-hidden="true">×</span>';
-      conceptBtn.setAttribute('aria-label', 'Show all concepts again');
-      conceptBtn.hidden = false;
-    } else {
-      conceptBtn.hidden = true;
-    }
+    seriesBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.series === series); });
   }
 
-  function showShorts() { document.getElementById('shorts').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }
-
-  seriesBtns.forEach(function (b) { b.addEventListener('click', function () { state.series = b.dataset.series; apply(); }); });
-  conceptBtn.addEventListener('click', function () { state.concept = null; apply(); });
-  cols.forEach(function (c) {
-    c.addEventListener('click', function () {
-      state.concept = state.concept === c.dataset.concept ? null : c.dataset.concept;
-      apply();
-      if (state.concept) showShorts();
-    });
-  });
+  seriesBtns.forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.series); }); });
   document.querySelectorAll('.yt-series__show').forEach(function (b) {
-    b.addEventListener('click', function () { state.series = b.dataset.series; state.concept = null; apply(); showShorts(); });
-  });
-
-  var more = document.getElementById('yt-map-more');
-  if (more) more.addEventListener('click', function () {
-    document.getElementById('yt-map').classList.add('show-all');
-    more.remove();
-  });
-
-  // a row in the map opens its short: show it (whatever the filter) and highlight it
-  document.querySelectorAll('#yt-map .yt-map__row').forEach(function (row) {
-    row.addEventListener('click', function (e) {
-      var card = document.getElementById('short-' + row.dataset.short);
-      if (!card) return;
-      e.preventDefault();
-      if (card.hidden) { state = { series: 'all', concept: null }; apply(); }
-      card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-      card.classList.remove('is-picked'); void card.offsetWidth; card.classList.add('is-picked');
+    b.addEventListener('click', function () {
+      show(b.dataset.series);
+      document.getElementById('shorts').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
     });
   });
 
