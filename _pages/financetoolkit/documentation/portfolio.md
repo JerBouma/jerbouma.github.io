@@ -248,7 +248,7 @@ Volatility, Excess Return and Excess Volatility are not included here. These are
 available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance
 module (e.g. toolkit.performance.get_excess_return) instead.
 
-This method retrieves historical benchmark data (daily, weekly, monthly, quarterly, and yearly)
+This method retrieves historical benchmark data (daily and weekly)
 for the portfolio, based on a specified benchmark ticker or a mapping of portfolio tickers to
 their corresponding benchmark tickers. The retrieved benchmark data is then aligned with the
 portfolio's historical data, ensuring that the dates of the benchmark data match the dates of
@@ -269,7 +269,7 @@ or an empty DataFrame (with an error logged) when the benchmark has no historica
 
 **Notes:**
 
-- The benchmark data is retrieved in daily, weekly, monthly, quarterly, and yearly periods.
+- The benchmark data is retrieved in daily and weekly periods.
 - The daily data is aligned to the dates of the portfolio's historical data. A date without a
 benchmark quote, such as a holiday of the benchmark's exchange, carries the previous quote
 forward with a return of zero, and the Return and Cumulative Return are calculated again from
@@ -280,13 +280,10 @@ closing price of the first following trading day, the same day its position star
 - When the transactions are in another currency than the benchmark, the benchmark's prices and
 dividends are converted to the currency of the transactions with the daily exchange rate, so
 the benchmark buys the same amount of money as the transaction. The returned data and the
-weekly to yearly data are in the currency most of the portfolio's tickers are traded in.
+weekly data are in the currency most of the portfolio's tickers are traded in.
 - The method updates several internal attributes:
 - `self._daily_benchmark_data`: Daily benchmark data.
 - `self._weekly_benchmark_data`: Weekly benchmark data.
-- `self._monthly_benchmark_data`: Monthly benchmark data.
-- `self._quarterly_benchmark_data`: Quarterly benchmark data.
-- `self._yearly_benchmark_data`: Yearly benchmark data.
 - `self._benchmark_prices_per_ticker`: The daily benchmark closing price in the currency of
 each ticker.
 - `self._benchmark_dividends_per_ticker`: The cumulative benchmark dividends per unit in the
@@ -343,10 +340,10 @@ Volatility, Excess Return and Excess Volatility are not included here. These are
 available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance
 module (e.g. toolkit.performance.get_excess_return) instead.
 
-This method retrieves historical price data (daily, weekly, monthly, quarterly, and yearly)
+This method retrieves historical price data (daily and weekly)
 for the portfolio's tickers and adjusts for any currency mismatches if necessary. It fetches
 data from a specified data source, applies currency conversion where applicable, and stores the
-adjusted data in separate DataFrames for different time periods (daily, weekly, monthly, quarterly, yearly).
+adjusted data in separate DataFrames for the daily and weekly periods.
 
 The method uses the Toolkit class to fetch historical price data and the Currency Toolkit to
 handle currency conversions if the portfolio’s transaction currency does not match the historical
@@ -366,8 +363,7 @@ pd.DataFrame: A DataFrame containing the adjusted daily historical price data fo
 - This method utilizes the `Toolkit` class to fetch historical price data for different periods.
 - Currency adjustments are made if there's a mismatch between the transaction and historical data currencies.
 - The method handles ISIN-to-ticker mapping when ISIN codes are provided in the portfolio data.
-- The adjusted historical data is returned in separate DataFrames for daily, weekly, monthly, quarterly,
-and yearly price data.
+- The adjusted historical data is stored in separate DataFrames for daily and weekly price data.
 - If any currency mismatch is found between the portfolio's transaction and historical data,
 a warning message is displayed.
 - The method rounds the data according to the specified or default rounding precision.
@@ -720,8 +716,8 @@ Sales are reported but left out of the return: the units sold in a period were u
 should be calculated. This can be one of the following: 'yearly', 'quarterly',
 'monthly', 'weekly', or 'daily'. If None, the default is 'quarterly' if
 the 'quarterly' attribute is set to True, otherwise 'yearly'.
-- <u>exclude_sold_positions (bool):</u> Whether to leave out the periods without an invested
-amount: those in which only units bought earlier were sold, and those whose only
+- <u>exclude_sold_positions (bool):</u> Whether to leave out the periods without an
+invested amount, those in which only units bought earlier were sold, and those whose only
 purchases cost nothing (a price of 0), which have no return to measure. Defaults
 to True.
 - <u>rounding (int &#124; None):</u> The number of decimal places to round the output to.

@@ -98,7 +98,7 @@ def build() -> dict:
 
     # Donchian Channels and the Hull Moving Average
     donchian_channels = companies.technicals.get_donchian_channels()
-    hull = companies.technicals.get_hull_moving_average()
+    hull = companies.technicals.get_moving_average(method="hull")
     donchian = donchian_channels.xs("MSFT", level=1, axis=1)
     msft_close = close["MSFT"]
     donchian_chart = style(line(donchian.index, {"Close": msft_close.reindex(donchian.index),

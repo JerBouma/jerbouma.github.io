@@ -3085,7 +3085,7 @@ $$
 - <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
 ticker(s), whose `column` values are broadcast identically to every
 entity at each date. Mutually exclusive with `independent_column`.
-Note: since this `Toolkit` instance's historical data is aligned onto a
+Since this `Toolkit` instance's historical data is aligned onto a
 common calendar across tickers, a broadcast factor's entity mean is
 identical for every entity, leaving no between-entity variation to
 identify Random Effects' between-regression step -- prefer

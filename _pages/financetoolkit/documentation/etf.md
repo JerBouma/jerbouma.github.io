@@ -636,8 +636,10 @@ The contributions come from get_contribution: weights rolled back from the fund'
 
 **Args:**
 
-- <u>exclude (str &#124; list[str]):</u> The holdings (tickers, e.g. "NVDA") and sectors (e.g.
-"Technology", as the companies' profiles name them) to leave out.
+- <u>exclude (str &#124; list[str] &#124; None, optional):</u> The holdings (tickers, e.g. "NVDA") and
+sectors (e.g. "Technology", as the companies' profiles name them) to leave out.
+Defaults to None, which leaves out the largest holding of each fund (by its
+weight at the start of the period), the single stock that moves the fund most.
 - <u>holdings (int &#124; None, optional):</u> The number of largest holdings (by weight) to
 price, one request each; the rest counts towards the rest of the fund.
 Defaults to None, which prices every holding with a symbol.

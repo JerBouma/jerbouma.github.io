@@ -20,13 +20,6 @@ get_gross_domestic_product_deflator:
     countries: United States,Canada,Russian Federation
     start_date: "2015-01-01"
     end_date: "2025-12-31"
-get_real_gross_domestic_product_usd:
-  question: How did the real GDP of the United States, Japan and Germany, in US dollars, develop from 2015 to 2025?
-  tool: macroeconomics
-  arguments:
-    countries: United States,Japan,Germany
-    start_date: "2015-01-01"
-    end_date: "2025-12-31"
 get_real_gross_domestic_product_per_capita:
   question: How did real GDP per person, in national currency, develop in the Netherlands, Germany and China from 2015 to 2025?
   tool: macroeconomics
@@ -602,14 +595,14 @@ get_asset_class_proxies:
     start_date: "2026-04-01"
     end_date: "2026-09-30"
 get_commodity_forward_curve:
-  question: What did the next six crude oil futures contracts trade at from 27 to 31 July 2026?
+  question: What did the front four crude oil futures contracts trade at from 13 to 23 October 2026, rolling to the next contract at each expiry?
   tool: macroeconomics
   arguments:
     commodity: Crude Oil
-    contracts: 6
-    start_date: "2026-01-01"
-    end_date: "2026-08-01"
-    limit: -5
+    contracts: 4
+    generic: true
+    start_date: "2026-10-13"
+    end_date: "2026-10-23"
 get_life_table:
   question: What was the probability that a man in Germany dies within a year at ages 0, 30, 65, 80 and 95, from 2020 to 2024?
   tool: jobs
@@ -667,3 +660,10 @@ get_supply_chain_pressure_index:
   arguments:
     start_date: "2026-05-01"
     end_date: "2026-10-31"
+get_commodity_term_structure:
+  question: Was the crude oil futures curve in backwardation or contango from 26 October to 6 November 2026, and what roll yield did that give?
+  tool: macroeconomics
+  arguments:
+    commodity: Crude Oil
+    start_date: "2026-10-26"
+    end_date: "2026-11-06"

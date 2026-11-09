@@ -1,5 +1,7 @@
 """Charts for the Fixed Income guide (/projects/financetoolkit/docs/fixedincome#getting-started)."""
 
+import os
+
 import pandas as pd
 from financetoolkit import FixedIncome
 
@@ -33,50 +35,39 @@ def zero(chart: dict) -> dict:
 
 
 def build() -> dict:
-    fixedincome = FixedIncome(start_date="2012-01-01")
+    fixedincome = FixedIncome(start_date="2012-01-01", api_key=os.environ.get("FINANCIAL_MODELING_PREP_KEY", ""))
     charts = {}
 
-    LAST["statistics"] = fixedincome.collect_bond_statistics(
-        par_value=1000, coupon_rate=0.05, years_to_maturity=5, yield_to_maturity=0.08, frequency=2
-    )
+    LAST["statistics"] = fixedincome.collect_bond_statistics(date="2026-11-05")
 
-    # Duration over the grid of coupon rates and maturities
-    duration = fixedincome.get_duration()
-    LAST["duration"] = duration
-    coupons = [rate for rate in [0.01, 0.03, 0.05, 0.07, 0.09] if rate in duration.index]
-    charts["fixed-income-duration"] = line(
-        [str(i + 1) for i in range(len(duration.columns))],
-        {f"{rate:.0%} coupon": duration.loc[rate] for rate in coupons},
-        fmt="ratio",
-        xname="Years to maturity",
-        smooth=True,
-    )
+    # Every Treasury security on one day: nominal and real yields by years to maturity
+    treasuries = fixedincome.get_treasury_securities(date="2026-11-05")
+    LAST["treasuries"] = treasuries
+    bonds = treasuries[treasuries["Security Type"] != "FRN"].copy()
+    years = (pd.to_datetime(bonds["Maturity"]) - pd.Timestamp("2026-11-05")).dt.days / 365.25
+    bonds["Years"] = years.clip(lower=0).astype(int) + 1
+    bonds["Kind"] = bonds["Security Type"].where(bonds["Security Type"] == "TIPS", "Nominal")
+    curve = bonds.groupby(["Years", "Kind"])["Yield to Maturity"].mean().unstack()
+    LAST["treasury_curve"] = curve
+    print("Treasury securities:", len(treasuries), treasuries["Security Type"].value_counts().to_dict())
+    print(curve.loc[[1, 2, 5, 10, 20, 30]].round(4).to_string())
+    curve_chart = line([str(y) for y in curve.index],
+                       {"Bills, notes and bonds": curve["Nominal"], "TIPS (real yield)": curve["TIPS"]},
+                       fmt="percent", xname="Years to maturity")
+    curve_chart["series"][1]["color"] = ORANGE
+    charts["fixed-income-treasuries"] = curve_chart
 
-    # Swaptions: the two models side by side, and each across maturities
-    prices = {}
-    for model, extra in [("black", {}), ("bachelier", {"volatility_type": "lognormal"})]:
-        prices[model] = fixedincome.get_derivative_price(
-            model=model, forward_rate=0.0325, volatility=0.20, risk_free_rate=0.02, notional=10_000_000, **extra
-        )
-        LAST[model] = prices[model]
-    strikes = [f"{rate:.2%}" for rate in prices["black"].index]
-    columns = list(prices["black"].columns)
-    five = columns[4]
-    atm = [{"x": "3.25%", "label": "At the money"}]
-    # up to just past the money, where the two models differ; above it they are almost identical
-    low = [i for i, rate in enumerate(prices["black"].index) if rate <= 0.0426]
-    head = line([strikes[i] for i in low],
-                {"Black": prices["black"][five].iloc[low], "Bachelier": prices["bachelier"][five].iloc[low]},
-                fmt="amount", kind="bar", xname="Strike rate (5 years to maturity)")
-    head["series"][1]["color"] = ORANGE
-    tabs = [{"label": "Black against Bachelier", **head}]
-    for model, name in [("black", "Black"), ("bachelier", "Bachelier")]:
-        pick = {f"{i} year{'s' if i > 1 else ''}": columns[i - 1] for i in (1, 3, 5, 10) if i <= len(columns)}
-        tabs.append({"label": f"{name} by maturity",
-                     **line(strikes, {k: prices[model][c] for k, c in pick.items()}, fmt="amount", xname="Strike rate", markers=atm)})
-    charts["fixed-income-swaption"] = {
+    # Corporate bonds from the bond ETF holdings: Apple's yields and G-spreads by maturity
+    apple = fixedincome.get_bond_universe(issuer="APPLE INC").sort_values("Maturity")
+    LAST["apple"] = apple
+    print("Apple bonds:", len(apple), apple["Maturity"].min(), apple["Maturity"].max())
+    maturities = [str(m)[:10] for m in apple["Maturity"]]
+    ytm = line(maturities, {"Yield to maturity": apple["Yield to Maturity"]}, fmt="percent", xname="Maturity")
+    spread = line(maturities, {"G-spread": apple["G-Spread"]}, fmt="percent", kind="bar", xname="Maturity")
+    spread["series"][0]["color"] = ORANGE
+    charts["fixed-income-corporate"] = {
         "type": "tabs",
-        "tabs": tabs,
+        "tabs": [{"label": "Yield to maturity", **ytm}, {"label": "G-spread", **spread}],
     }
 
     # Euribor

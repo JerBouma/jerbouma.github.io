@@ -2619,17 +2619,39 @@ Which returns:
 ---
 
 ## get_moving_average
-Calculate the Moving Average (MA) for a given price series.
+Calculate a Moving Average (MA) of a given price series: the simple, exponential, double exponential, triangular, weighted or Hull moving average.
 
-The Moving Average (MA) is a commonly used technical indicator that smooths out price data by calculating the average price over a specified number of periods.
+A Moving Average smooths out price data by averaging the price over a specified number of periods. The variants differ in how they weight the prices within the window: equally (simple), with exponentially decaying weights (exponential and double exponential), with weights that peak in the middle of the window (triangular), with linearly increasing weights (weighted) or with a combination of weighted averages that reduces the lag (Hull).
 
-The formula is as follows:
+The formula is as follows, per method:
 
 $$
-\text{MA} = (\text{Sum of Prices}) / (\text{Number of Prices})
+\text{"simple":}\;\; \text{SMA} = (\text{Sum of Prices}) / (\text{Number of Prices})
 $$
 
-**Also known as:** SMA, simple moving average, MA.
+$$
+\text{"exponential":}\;\; \text{the first EMA is SMA(Close, Window)},\;\; \text{on the Window-th period},\;\; \text{and EMA} = (\text{Close} - \text{Previous EMA}) \cdot (2 / (1 + \text{Window})) + \text{Previous EMA}
+$$
+
+$$
+\text{"double\_exponential":}\;\; \text{DEMA} = 2 \cdot \operatorname{EMA}(\text{Close},\; \text{Window}) - \operatorname{EMA}(\operatorname{EMA}(\text{Close},\; \text{Window}),\; \text{Window})
+$$
+
+$$
+\text{"triangular":}\;\; \text{TMA} = \operatorname{SMA}(\operatorname{SMA}(\text{Close},\; \text{Sub-window Length}\; 1),\; \text{Sub-window Length}\; 2),\;\; \text{with both sub-windows} (\text{Window} + 1) / 2 \;\text{for an odd window and Window} / 2 \;\text{and Window} / 2 + 1 \;\text{for an even window} (\text{TA-Lib's TRIMA convention})
+$$
+
+$$
+\text{"weighted":}\;\; \text{WMA} = (\text{Sum of} (\text{Price} \cdot \text{Weight})) / (\text{Sum of Weights}),\;\; \text{with weights 1 to Window from the oldest to the latest price}
+$$
+
+$$
+\text{"hull":}\;\; \text{HMA} = \operatorname{WMA}(2 \cdot \operatorname{WMA}(\text{Close},\; \text{Window} / 2) - \operatorname{WMA}(\text{Close},\; \text{Window}),\; \sqrt{\text{Window}})
+$$
+
+Seeding the EMA with a simple average, as TA-Lib and StockCharts do, leaves the first Window - 1 periods of the price history empty. The DEMA, TRIX, MACD, Percentage Price Oscillator, Force Index, Elder Ray Index, Keltner Channels and Chaikin and McClellan Oscillators use the same EMA and start once their own EMAs are seeded. The Kaufman Adaptive Moving Average, which adapts its smoothing to the efficiency of the price move, is `get_kaufman_adaptive_moving_average`.
+
+**Also known as:** MA, SMA, simple moving average, EMA, exponential moving average, DEMA, double exponential moving average, TMA, TRIMA, triangular moving average, WMA, linearly weighted moving average, HMA, Hull moving average.
 
 **Args:**
 
@@ -2648,6 +2670,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>method (str, optional):</u> The moving average: "simple", "exponential",
+"double_exponential", "triangular", "weighted" or "hull". Defaults to "simple".
 
 **Returns:**
 
@@ -2685,160 +2709,6 @@ Which returns:
 | 2025-12-29 | 6795.7  |     670.828 |
 | 2025-12-30 | 6800.34 |     671.316 |
 | 2025-12-31 | 6802.55 |     671.566 |
-
----
-
-## get_exponential_moving_average
-Calculate the Exponential Moving Average (EMA) for a given price series.
-
-EMA is a technical indicator that gives more weight to recent price data, providing a smoothed moving average that reacts faster to price changes.
-
-The formula is as follows:
-
-$$
-\text{First EMA} = \operatorname{SMA}(\text{Close},\; \text{Window}),\;\; \text{on the Window-th period}
-$$
-
-$$
-\text{EMA} = (\text{Close} - \text{Previous EMA}) \cdot (2 / (1 + \text{Window})) + \text{Previous EMA}
-$$
-
-Seeding with a simple average, as TA-Lib and StockCharts do, leaves the first Window - 1 periods of the price history empty. The DEMA, TRIX, MACD, Percentage Price Oscillator, Force Index, Elder Ray Index, Keltner Channels and Chaikin and McClellan Oscillators use the same EMA and start once their own EMAs are seeded.
-
-**Also known as:** EMA.
-
-**Args:**
-
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
-- <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
-Defaults to "Adj Close".
-- <u>window (int, optional):</u> Number of periods for EMA calculation.
-The number of periods (time intervals) over which to calculate the EMA. Defaults to 14.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the EMA.
-Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation.
-Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.DataFrame or pd.Series:
-Exponential Moving Average (EMA) values.
-
-**Notes:**
-
-- The method retrieves historical data based on the specified `period` and calculates the
-EMA for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the EMA
-using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    tickers=["ETHUSD"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.technicals.get_exponential_moving_average(window=20).tail(5)
-```
-
-Which returns:
-
-| Date       |   ETHUSD |   Benchmark |
-|:-----------|---------:|------------:|
-| 2025-12-27 |  2990.19 |     678.205 |
-| 2025-12-28 |  2986.26 |     678.692 |
-| 2025-12-29 |  2981.3  |     679.056 |
-| 2025-12-30 |  2980.26 |     679.306 |
-| 2025-12-31 |  2978.98 |     679.051 |
-
----
-
-## get_double_exponential_moving_average
-Calculate the Double Exponential Moving Average (DEMA) for a given price series.
-
-DEMA is a technical indicator that attempts to reduce the lag from traditional moving averages by using a combination of two exponential moving averages.
-
-The formula is as follows:
-
-$$
-\text{EMA1} = \operatorname{EMA}(\text{Close},\; \text{Window})
-$$
-
-$$
-\text{EMA2} = \operatorname{EMA}(\text{EMA1},\; \text{Window})
-$$
-
-$$
-\text{DEMA} = 2 \cdot \text{EMA1} - \text{EMA2}
-$$
-
-**Also known as:** DEMA, double EMA.
-
-**Args:**
-
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
-- <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
-Defaults to "Adj Close".
-- <u>window (int, optional):</u> Number of periods for moving average calculation.
-The number of periods (time intervals) over which to calculate the moving average. Defaults to 14.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the DEMA.
-Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation.
-Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.DataFrame or pd.Series:
-Double Exponential Moving Average (DEMA) values.
-
-**Notes:**
-
-- The method retrieves historical data based on the specified `period` and calculates the
-DEMA for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the DEMA
-using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    tickers=["QQQ"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.technicals.get_double_exponential_moving_average().tail(5)
-```
-
-Which returns:
-
-| Date       |     QQQ |   Benchmark |
-|:-----------|--------:|------------:|
-| 2025-12-24 | 616.194 |     679.471 |
-| 2025-12-26 | 617.773 |     681.229 |
-| 2025-12-29 | 618.281 |     682.008 |
-| 2025-12-30 | 618.315 |     682.395 |
-| 2025-12-31 | 617.052 |     681.416 |
 
 ---
 
@@ -3009,227 +2879,6 @@ Which returns:
 | 2025-12-29 |  156.03 |      154.588 |       156.146 |      157.704 |
 | 2025-12-30 |  156.33 |      154.627 |       156.179 |      157.732 |
 | 2025-12-31 |  156.85 |      154.808 |       156.296 |      157.785 |
-
----
-
-## get_triangular_moving_average
-Calculate the Triangular Moving Average (TMA) for a given price series.
-
-The Triangular Moving Average (TMA) is a smoothed version of the Simple Moving Average (SMA) that uses multiple SMAs to reduce noise and provide a smoother trendline.
-
-The formula is as follows:
-
-$$
-\text{For an odd window:}\;\; \text{Sub-window Length} = (\text{Window} + 1) / 2,\;\; \text{applied for both passes}
-$$
-
-$$
-\text{For an even window:}\;\; \text{the two passes use different sub-window lengths},\;\; \text{Window} / 2 \;\text{and Window} / 2 + 1 (\text{matching TA-Lib's TRIMA convention})
-$$
-
-$$
-\text{TMA} = \operatorname{SMA}(\operatorname{SMA}(\text{Close},\; \text{Sub-window Length}\; 1),\; \text{Sub-window Length}\; 2)
-$$
-
-**Also known as:** TMA, triangular MA.
-
-**Args:**
-
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
-- <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
-Defaults to "Adj Close".
-- <u>window (int, optional):</u> Number of periods for TMA calculation.
-The number of periods (time intervals) over which to calculate the TMA. Defaults to 14.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the TMA.
-Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation.
-Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.Series or pd.DataFrame: Triangular Moving Average values.
-
-**Notes:**
-
-- The method retrieves historical data based on the specified `period` and calculates the
-Triangular Moving Average for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the Triangular Moving Average
-using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    tickers=["GLD"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.technicals.get_triangular_moving_average().tail(5)
-```
-
-Which returns:
-
-| Date       |     GLD |   Benchmark |
-|:-----------|--------:|------------:|
-| 2025-12-24 | 396.516 |     674.499 |
-| 2025-12-26 | 398.563 |     674.508 |
-| 2025-12-29 | 400.429 |     674.964 |
-| 2025-12-30 | 402.053 |     675.859 |
-| 2025-12-31 | 403.429 |     676.893 |
-
----
-
-## get_weighted_moving_average
-Calculate the Weighted Moving Average (WMA) for a given price series.
-
-The Weighted Moving Average (WMA) is a moving average that assigns a linearly increasing weight to more recent prices, making it more responsive to recent price changes than a Simple Moving Average.
-
-The formula is as follows:
-
-$$
-\text{WMA} = (\text{Sum of} (\text{Price} \cdot \text{Weight})) / (\text{Sum of Weights})
-$$
-
-**Also known as:** WMA, linearly weighted moving average.
-
-**Args:**
-
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
-- <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
-Defaults to "Adj Close".
-- <u>window (int, optional):</u> Number of periods to consider for the WMA.
-The number of periods (time intervals) over which to calculate the WMA. Defaults to 14.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the WMA.
-Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation.
-Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.DataFrame or pd.Series:
-Weighted Moving Average (WMA) values.
-
-**Notes:**
-
-- The method retrieves historical data based on the specified `period` and calculates the
-WMA for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the WMA
-using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    tickers=["TLT"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.technicals.get_weighted_moving_average().tail(5)
-```
-
-Which returns:
-
-| Date       |     TLT |   Benchmark |
-|:-----------|--------:|------------:|
-| 2025-12-24 | 84.95   |     676.565 |
-| 2025-12-26 | 84.9693 |     677.721 |
-| 2025-12-29 | 85.0322 |     678.489 |
-| 2025-12-30 | 85.0635 |     679.088 |
-| 2025-12-31 | 85.0021 |     678.956 |
-
----
-
-## get_hull_moving_average
-Calculate the Hull Moving Average (HMA) for a given price series.
-
-The Hull Moving Average (HMA) reduces the lag typically associated with moving averages while improving smoothing, by combining a Weighted Moving Average (WMA) of half the window length, a WMA of the full window length, and a further WMA over the square root of the window length.
-
-The formula is as follows:
-
-$$
-\text{Raw HMA} = (2 \cdot \operatorname{WMA}(\text{Close},\; \text{Window} / 2)) - \operatorname{WMA}(\text{Close},\; \text{Window})
-$$
-
-$$
-\text{HMA} = \operatorname{WMA}(\text{Raw HMA},\; \sqrt{\text{Window}})
-$$
-
-**Also known as:** HMA, Hull MA.
-
-**Args:**
-
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
-- <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
-Defaults to "Adj Close".
-- <u>window (int, optional):</u> Number of periods to consider for the HMA.
-The number of periods (time intervals) over which to calculate the HMA. Defaults to 14.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the HMA.
-Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation.
-Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-
-**Returns:**
-
-pd.DataFrame or pd.Series:
-Hull Moving Average (HMA) values.
-
-**Notes:**
-
-- The method retrieves historical data based on the specified `period` and calculates the
-HMA for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the HMA
-using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    tickers=["BTCUSD"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.technicals.get_hull_moving_average().tail(5)
-```
-
-Which returns:
-
-| Date       |   BTCUSD |   Benchmark |
-|:-----------|---------:|------------:|
-| 2025-12-27 |  87664.2 |     687.165 |
-| 2025-12-28 |  87603.8 |     687.17  |
-| 2025-12-29 |  87477.7 |     686.493 |
-| 2025-12-30 |  87572.5 |     685.285 |
-| 2025-12-31 |  87626   |     682.993 |
 
 ---
 
@@ -4742,10 +4391,10 @@ Which returns:
 
 |                                     |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
 |:------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('get_rate_of_change', '1 Month')   |    0.053  |                  0.3536 |                 0.1499 |        1.5718 |    0.1189 |           0.6    |            110 |             0.0097 |              0.2652 |                 0.8603 |
-| ('get_rate_of_change', '12 Months') |    0.1272 |                  0.4137 |                 0.3074 |        3.0587 |    0.0029 |           0.6364 |             99 |             0.0614 |              0.2652 |                 0.8603 |
-| ('get_moving_average', '1 Month')   |    0.0432 |                  0.3494 |                 0.1236 |        1.2968 |    0.1974 |           0.5818 |            110 |             0.0128 |              0.3068 |                 0.8064 |
-| ('get_moving_average', '12 Months') |    0.1073 |                  0.3924 |                 0.2735 |        2.7212 |    0.0077 |           0.596  |             99 |             0.0574 |              0.3068 |                 0.8064 |
+| ('get_rate_of_change', '1 Month')   |    0.0475 |                  0.3466 |                 0.1369 |        1.4936 |    0.1379 |           0.5798 |            119 |             0.0093 |              0.2626 |                 0.8581 |
+| ('get_rate_of_change', '12 Months') |    0.1187 |                  0.3985 |                 0.2979 |        3.0956 |    0.0025 |           0.6389 |            108 |             0.0799 |              0.2626 |                 0.8581 |
+| ('get_moving_average', '1 Month')   |    0.0383 |                  0.3464 |                 0.1107 |        1.2073 |    0.2297 |           0.563  |            119 |             0.0125 |              0.3074 |                 0.8028 |
+| ('get_moving_average', '12 Months') |    0.1019 |                  0.3843 |                 0.2652 |        2.7561 |    0.0069 |           0.5833 |            108 |             0.0843 |              0.3074 |                 0.8028 |
 
 ---
 
@@ -4786,6 +4435,8 @@ for dividends in the same way, so an ex-dividend day doesn't read as a gap. "Clo
 uses the candles as traded (split-adjusted).
 - <u>patterns (str &#124; list[str] &#124; None, optional):</u> The patterns to return, e.g. ["Hammer",
 "Engulfing"]. Defaults to None, which returns all 15.
+- <u>signals_only (bool, optional):</u> Whether to return only the periods in which at least one
+of the returned patterns occurs for at least one ticker. Defaults to False.
 
 **Returns:**
 
@@ -4816,10 +4467,11 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-patterns = toolkit.technicals.get_candlestick_patterns()
+patterns = toolkit.technicals.get_candlestick_patterns(
+    patterns="Engulfing", signals_only=True
+)
 
-engulfing = patterns["Engulfing"]
-engulfing[engulfing.ne(0).any(axis=1)].tail()
+patterns["Engulfing"].tail()
 ```
 
 Which returns:
@@ -4877,6 +4529,8 @@ Bands. Defaults to 2.
 - <u>high_low_window (int &#124; None, optional):</u> The number of previous periods a new high or
 low is measured against. Defaults to None, which uses a year of periods: 252 daily
 (and intraday), 52 weekly, 12 monthly, 4 quarterly and 1 yearly.
+- <u>signals_only (bool, optional):</u> Whether to return only the periods in which at least one
+signal occurs for at least one ticker. Defaults to False.
 
 **Returns:**
 
@@ -5015,15 +4669,15 @@ Which returns:
 | Latest Date                                   | 2026-11-05 |
 | Percentile                                    | 0.0008     |
 | Rank                                          | 1          |
-| Observations                                  | 1245       |
-| Mean                                          | 54.5091    |
+| Observations                                  | 1259       |
+| Mean                                          | 54.7452    |
 | Minimum                                       | 25.3948    |
 | Minimum Date                                  | 2026-11-05 |
-| Maximum                                       | 85.2808    |
-| Maximum Date                                  | 2024-02-05 |
-| Average 5-Period Return                       | 0.0098     |
-| Average 21-Period Return                      | 0.0442     |
-| Average 63-Period Return                      | 0.153      |
+| Maximum                                       | 89.1421    |
+| Maximum Date                                  | 2021-11-08 |
+| Average 5-Period Return                       | 0.0103     |
+| Average 21-Period Return                      | 0.044      |
+| Average 63-Period Return                      | 0.1495     |
 | Periods Below                                 | 12         |
 | Crossings Below                               | 6          |
 | Last Crossing Below                           | 2026-11-05 |

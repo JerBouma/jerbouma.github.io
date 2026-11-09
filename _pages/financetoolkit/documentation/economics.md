@@ -38,14 +38,14 @@ The data is returned as levels. To obtain period-on-period changes (e.g. year on
 
 The inflation adjusted and US dollar figures are only available from the Global Macro Database (GMDB), so they always come from it. For more information see: [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
-**Also known as:** GDP, national income, economic growth.
+**Also known as:** GDP, national income, economic growth, real GDP, real GDP in USD, cross-country comparable GDP.
 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to retrieve the data from the GMDB. Defaults to None, which falls back to the gmdb_source set on the Economics class (True by default).
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. With inflation_adjusted=True, real GDP in US dollars. Always from the GMDB. Defaults to False.
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. With inflation_adjusted=True, real GDP in millions of US dollars at constant 2015 prices, converted at the 2015 market exchange rate (not at purchasing power parities), so its growth equals the growth of real GDP in the national currency. Always from the GMDB. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -215,63 +215,6 @@ Which returns:
 | 2023 |         125.766 |  127.261 |              185.098 |
 | 2024 |         128.887 |  130.738 |              204.816 |
 | 2025 |         132.537 |  134.076 |              214.754 |
-
----
-
-## get_real_gross_domestic_product_usd
-Get the Real Gross Domestic Product expressed in cross-country comparable US Dollars for a variety of countries over time from the Global Macro Database (GMDB). This is the inflation-adjusted GDP of a country converted into US Dollars, which makes it possible to directly compare the economic output of countries that use different currencies without having to perform the currency conversion or inflation adjustment yourself.
-
-The values are in millions of US dollars at constant 2015 prices, so the 18295020 for the United States in 2015 is a real GDP of 18.3 trillion dollars. The real GDP in the national currency is converted at the 2015 market exchange rate against the dollar, not at purchasing power parities, so a country's level reflects its 2015 exchange rate and its growth equals the growth of its real GDP in its own currency.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** real GDP in USD, cross-country comparable GDP.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Real Gross Domestic Product in US Dollars
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_real_gross_domestic_product_usd(countries=['United States', 'Japan', 'Germany'])
-```
-
-Which returns:
-
-|      |   United States |       Japan |     Germany |
-|:-----|----------------:|------------:|------------:|
-| 2015 |     1.8295e+07  | 4.53311e+06 | 3.41986e+06 |
-| 2016 |     1.86279e+07 | 4.56506e+06 | 3.49293e+06 |
-| 2017 |     1.90857e+07 | 4.63917e+06 | 3.60121e+06 |
-| 2018 |     1.96519e+07 | 4.67787e+06 | 3.64259e+06 |
-| 2019 |     2.01596e+07 | 4.66344e+06 | 3.67938e+06 |
-| 2020 |     1.974e+07   | 4.46369e+06 | 3.51432e+06 |
-| 2021 |     2.09545e+07 | 4.62279e+06 | 3.65016e+06 |
-| 2022 |     2.14834e+07 | 4.68435e+06 | 3.719e+06   |
-| 2023 |     2.21138e+07 | 4.71811e+06 | 3.69391e+06 |
-| 2024 |     2.27315e+07 | 4.71016e+06 | 3.67648e+06 |
-| 2025 |     2.32103e+07 | 4.75982e+06 | 3.68916e+06 |
 
 ---
 
@@ -3767,13 +3710,13 @@ Which returns:
 ---
 
 ## get_nonfarm_payrolls
-Get Total Nonfarm Payroll Employment for the United States from the Bureau of Labor Statistics (via FRED).
+Get Total Nonfarm Payroll Employment for the United States from the Bureau of Labor Statistics.
 
 Nonfarm Payrolls is the headline monthly employment report and one of the most closely watched real-activity indicators in macroeconomics: it counts the number of paid US workers excluding farm employees, general government employees, private household employees and nonprofit organization employees. Sharp month-over-month changes are a core input to business-cycle dating (used directly by the NBER's Business Cycle Dating Committee) and, through Okun's Law, are closely tied to changes in the Unemployment Rate (see `get_unemployment_rate`).
 
 The series is the monthly level of employment in thousands of persons, seasonally adjusted, so 156857 means 156.857 million jobs -- not the monthly change that the headline "jobs added" number refers to. Use growth=True for that change.
 
-Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
+Without a FRED API key the data comes from the Bureau of Labor Statistics' keyless API, which gives the same figures but only for about the last three years. The full history, from 1939, comes from FRED when a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class).
 
 **See definition:** [https://fred.stlouisfed.org/series/PAYEMS](https://fred.stlouisfed.org/series/PAYEMS){:target="_blank"}
 
@@ -3824,11 +3767,11 @@ Which returns:
 ---
 
 ## get_initial_jobless_claims
-Get weekly Initial Claims for Unemployment Insurance for the United States from the Department of Labor (via FRED).
+Get weekly Initial Claims for Unemployment Insurance for the United States from the Department of Labor.
 
 Initial Jobless Claims counts the number of individuals filing for unemployment insurance for the first time in a given week. Because it is reported weekly (versus Nonfarm Payrolls' monthly cadence, see `get_nonfarm_payrolls`) and captures layoffs essentially in real time, it is one of the most timely leading indicators of labor-market deterioration and a core component of the Conference Board's Leading Economic Index.
 
-Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
+No API key is needed: without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/ICSA](https://fred.stlouisfed.org/series/ICSA){:target="_blank"}
 
@@ -3859,7 +3802,6 @@ from financetoolkit import Economics
 
 economics = Economics(
     start_date='2020-01-01',
-    fred_api_key='FRED_API_KEY',
     end_date="2025-12-31",
 )
 
@@ -3879,13 +3821,13 @@ Which returns:
 ---
 
 ## get_retail_sales
-Get Advance Retail Sales (Retail and Food Services) for the United States from the Census Bureau (via FRED).
+Get Advance Retail Sales (Retail and Food Services) for the United States from the Census Bureau.
 
 Retail Sales measures nominal spending at retail and food-service establishments. Since Personal Consumption Expenditures make up roughly two-thirds to three-quarters of US GDP, this monthly, high-frequency series is a core input to real-time (nowcast) GDP estimates such as the Federal Reserve Bank of Atlanta's GDPNow.
 
 The series is monthly, in millions of US dollars, seasonally adjusted, and covers retail trade and food services. It is nominal, so growth=True mixes volume and price changes together; compare against the Consumer Price Index to separate the two.
 
-Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
+No API key is needed: without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/RSAFS](https://fred.stlouisfed.org/series/RSAFS){:target="_blank"}
 
@@ -3916,7 +3858,6 @@ from financetoolkit import Economics
 
 economics = Economics(
     start_date='2020-01-01',
-    fred_api_key='FRED_API_KEY',
     end_date="2025-12-31",
 )
 
@@ -3927,8 +3868,8 @@ Which returns:
 
 | Date       |   United States |
 |:-----------|----------------:|
-| 2025-08-01 |          700218 |
-| 2025-09-01 |          701453 |
+| 2025-08-01 |          700407 |
+| 2025-09-01 |          700948 |
 | 2025-10-01 |          700790 |
 | 2025-11-01 |          705453 |
 | 2025-12-01 |          706264 |
@@ -3987,11 +3928,11 @@ Which returns:
 ---
 
 ## get_housing_starts
-Get Housing Starts (Total New Privately-Owned Housing Units Started) for the United States from the Census Bureau (via FRED).
+Get Housing Starts (Total New Privately-Owned Housing Units Started) for the United States from the Census Bureau.
 
 Housing Starts counts the number of new residential construction projects that have begun in a given month. Residential investment is one of the most interest-rate-sensitive components of GDP, and construction activity leads the broader business cycle (it typically turns down before a recession and turns up before a recovery), making Housing Starts one of the ten components of the Conference Board's Leading Economic Index.
 
-Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
+No API key is needed: without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/HOUST](https://fred.stlouisfed.org/series/HOUST){:target="_blank"}
 
@@ -4022,7 +3963,6 @@ from financetoolkit import Economics
 
 economics = Economics(
     start_date='2020-01-01',
-    fred_api_key='FRED_API_KEY',
     end_date="2025-12-31",
 )
 
@@ -4042,11 +3982,11 @@ Which returns:
 ---
 
 ## get_real_personal_income
-Get Real Personal Income Excluding Current Transfer Receipts for the United States from the Bureau of Economic Analysis (via FRED).
+Get Real Personal Income Excluding Current Transfer Receipts for the United States from the Bureau of Economic Analysis.
 
 This is the exact series (not a proxy) the NBER's Business Cycle Dating Committee uses as one of its four primary coincident indicators for dating US recessions - alongside Nonfarm Payrolls (see `get_nonfarm_payrolls`), the Industrial Production Index (see `get_industrial_production_index`) and Real Personal Consumption Expenditures. It measures aggregate household income from wages, investments and proprietors' income, deliberately excluding government transfer payments (e.g. unemployment insurance, Social Security) so that the series reflects income generated by ongoing economic activity rather than the fiscal cushioning that automatically increases during a downturn.
 
-Requires a free FRED API key, see the `fred_api_key` parameter of the `Economics` class.
+No API key is needed: without a FRED API key the data comes from the Bureau of Economic Analysis directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/W875RX1](https://fred.stlouisfed.org/series/W875RX1){:target="_blank"}
 
@@ -4078,7 +4018,6 @@ from financetoolkit import Economics
 
 economics = Economics(
     start_date='2020-01-01',
-    fred_api_key='FRED_API_KEY',
     end_date="2025-12-31",
 )
 
@@ -5153,22 +5092,37 @@ Which returns:
 ---
 
 ## get_commodity_forward_curve
-Get the forward/futures curve for a commodity from Yahoo Finance -- the historical daily closing price of each of the nearest `contracts` dated futures contracts from the current month on (e.g. Crude Oil's December 2026, January 2027, ... contracts), rather than a single flat continuous/spot price.
+Get the forward/futures curve for a commodity from Yahoo Finance -- the historical daily closing (settlement) price of each of the nearest `contracts` dated futures contracts from the current month on (e.g. Crude Oil's December 2026, January 2027, ... contracts), rather than a single flat continuous/spot price.
 
 This is what a Schwartz-Smith (2000) two-factor commodity price model needs to back out the convenience-yield term structure under the risk-neutral (Q) measure -- the curve's shape (contango or backwardation) at each point in time is exactly what a single spot price series cannot reveal.
 
 Not every commodity has a listed contract for every calendar month (grains in particular only trade specific delivery months), and the contracts of the first months may already have expired (for crude oil the current month's contract and, late in the month, the next month's). Those months are skipped and later months are tried instead, until `contracts` contracts are found.
 
-**Also known as:** futures term structure, forward curve.
+By default the columns are the contracts listed today, so a past date shows how those contracts traded then, not the curve as it stood that day. With generic=True the columns are the positions on each day's curve instead: the front (the nearest contract that has not expired on that day), +1, +2 and so on, rolling to the next contract the day after the front's last trading day (the generic or nearby series, CL1, CL2, ... in Bloomberg notation). A position is a rank on the curve, not a constant maturity: the front's time to expiry shortens each day and jumps at the roll, as no price is interpolated. The last trading days follow the CME Group contract specifications on the US exchange calendar.
+
+Yahoo Finance only publishes the contracts that still trade: a contract's history disappears once it expires, and no free source publishes it (FinancialModelingPrep has the continuous front contract only). On a past date the positions of the contracts that have expired since are therefore NaN rather than filled with another contract: for crude oil on 2026-09-15 the front (October 2026) and +1 (November 2026) are NaN and +2 is the December 2026 contract. The further back the date, the more positions are NaN, until none is left about `contracts` months back.
+
+With growth=True the change is that of each column over `lag` trading days: of a contract, or with generic of a position, which compares two contracts across a roll.
+
+**Also known as:** futures term structure, forward curve, generic futures, nearby futures.
 
 **Args:**
 
-- <u>commodity (str):</u> The commodity to retrieve the curve for. One of "Crude
-Oil", "Natural Gas", "Gold", "Silver", "Copper", "Corn", "Wheat" or
-"Soybeans".
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
+them, to retrieve the curve for: "Crude Oil", "Natural Gas", "Gold",
+"Silver", "Copper", "Corn", "Wheat" or "Soybeans". Defaults to None, which
+retrieves every one of them.
 - <u>contracts (int, optional):</u> The number of contracts to return, the nearest
-listed ones from the current month on. Defaults to 12.
+listed ones from the current month on, or with generic the
+number of positions (the front included). Defaults to 12.
+- <u>generic (bool, optional):</u> Whether the columns are the positions on
+each day's curve (Front, +1, +2, ...) instead of the contracts listed
+today. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the change of each column instead
+of the price. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The number of trading days to calculate the
+change over. Defaults to 1.
 
 **Raises:**
 
@@ -5178,28 +5132,99 @@ ValueError: If `commodity` is not one of the supported names.
 
 pd.DataFrame: A DataFrame indexed by date, with one column per contract
 labeled by its delivery month (e.g. "2026-12"), containing that
-contract's daily closing price over its trading life. Columns are NaN
-outside the date range the contract actually traded in.
+contract's daily closing price over its trading life, or with
+generic one column per position ("Front", "+1", ...). Columns are NaN
+outside the date range the contract actually traded in. With a list of
+commodities (or none given), the columns are the commodity and the contract.
 
 **As an example:**
 
 ```python
 from financetoolkit import Economics
 
-economics = Economics(start_date='2026-01-01', end_date='2026-08-01')
+economics = Economics(start_date='2026-10-13', end_date='2026-10-23')
 
-economics.get_commodity_forward_curve("Crude Oil", contracts=6)
+economics.get_commodity_forward_curve(
+    "Crude Oil", contracts=4, generic=True
+)
 ```
 
 Which returns:
 
-| Date       |   2026-11 |   2026-12 |   2027-01 |   2027-02 |   2027-03 |
-|:-----------|----------:|----------:|----------:|----------:|----------:|
-| 2026-07-27 |     78.17 |     76.53 |     75.31 |     74.34 |     73.56 |
-| 2026-07-28 |     75.33 |     73.85 |     72.74 |     71.86 |     71.16 |
-| 2026-07-29 |     79.68 |     77.74 |     76.28 |     75.13 |     74.22 |
-| 2026-07-30 |     78.19 |     76.12 |     74.65 |     73.56 |     72.72 |
-| 2026-07-31 |     78.65 |     76.44 |     74.88 |     73.74 |     72.88 |
+| Date       |   Front |     +1 |    +2 |    +3 |
+|:-----------|--------:|-------:|------:|------:|
+| 2026-10-13 |  nan    |  93.17 | 92.23 | 91.15 |
+| 2026-10-14 |  nan    |  93.9  | 92.83 | 91.53 |
+| 2026-10-15 |  nan    |  96.5  | 94.89 | 93.02 |
+| 2026-10-16 |  nan    |  99.02 | 97.44 | 95.48 |
+| 2026-10-19 |  nan    |  98.54 | 96.67 | 94.69 |
+| 2026-10-20 |  nan    |  97.82 | 96.02 | 94.05 |
+| 2026-10-21 |   97.15 |  95.46 | 93.71 | 91.99 |
+| 2026-10-22 |   99.47 |  97.52 | 95.35 | 93.08 |
+| 2026-10-23 |  103.27 | 100.94 | 98.36 | 95.68 |
+
+---
+
+## get_commodity_term_structure
+Get the term structure of a commodity futures curve per day: the front contract, the 12-month calendar spread between the front and the last contract of the 12-month strip that starts with it (in price and in percent), the annualised roll yield and whether the curve is in backwardation, contango or flat.
+
+The far contract is the furthest one delivering less than 12 months after the front: for a December 2026 front of a monthly listed commodity (crude oil, natural gas, the metals) the November 2027 contract, 11 months later, and for corn's December 2026 front the September 2027 contract, 9 months later.
+
+The formulas are as follows:
+
+Spread = Front - Far Slope = Far / Front - 1 Roll Yield = ln(Front / Far) x 12 / Months
+
+The spread follows the exchange quote of a calendar spread, nearby minus deferred, so it is positive in backwardation, and its widest backwardation is its maximum. The slope is the percentage the far contract lies above the front (negative in backwardation). The roll yield is the annualised log basis of Fama and French (1987) and Szymanowska, De Roon, Nijman and Van den Goorbergh (2014): the continuously compounded yearly return a long position earns from the shape of the curve alone, positive in backwardation and negative in contango, with Months the months between both delivery months.
+
+By default the front of each day is the nearest contract that had not expired on that day (see get_commodity_forward_curve with generic=True), so the spread is a time series of the curve as it stood each day. Yahoo Finance drops a contract once it expires, so on the days whose front has expired since, Front, the Spread, Slope and Roll Yield are NaN while Front Contract names the contract. generic=False instead takes today's front and far contract on every day (e.g. December 2026 against November 2027 for crude oil): a fixed calendar spread with its full history.
+
+**Also known as:** calendar spread, roll yield, carry, basis, backwardation, contango.
+
+**Args:**
+
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
+them: "Crude Oil", "Natural Gas", "Gold", "Silver", "Copper", "Corn",
+"Wheat" or "Soybeans". Defaults to None, which retrieves every one of them.
+- <u>generic (bool, optional):</u> Whether the front and far contract are
+those of each day's curve, instead of today's. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+
+**Raises:**
+
+ValueError: If `commodity` is not one of the supported names.
+
+**Returns:**
+
+pd.DataFrame: Per date the Front Contract and Far Contract (delivery months),
+their prices Front and Far, the Months between them, the Spread, Slope and Roll
+Yield (decimals) and the Structure ("Backwardation", "Contango" or "Flat" when
+the front and far contract trade at the same price). With a list
+of commodities (or none given), the columns are the commodity and the field.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-10-26', end_date='2026-11-06')
+
+economics.get_commodity_term_structure("Crude Oil")
+```
+
+Which returns:
+
+| Date       | Front Contract   |   Front | Far Contract   |   Far |   Months |   Spread |   Slope |   Roll Yield | Structure     |
+|:-----------|:-----------------|--------:|:---------------|------:|---------:|---------:|--------:|-------------:|:--------------|
+| 2026-10-26 | 2026-12          |  101.76 | 2027-11        | 81.98 |       11 |    19.78 | -0.1944 |       0.2358 | Backwardation |
+| 2026-10-27 | 2026-12          |   99.9  | 2027-11        | 82.07 |       11 |    17.83 | -0.1785 |       0.2145 | Backwardation |
+| 2026-10-28 | 2026-12          |  102.78 | 2027-11        | 83.15 |       11 |    19.63 | -0.191  |       0.2312 | Backwardation |
+| 2026-10-29 | 2026-12          |  102    | 2027-11        | 82.54 |       11 |    19.46 | -0.1908 |       0.2309 | Backwardation |
+| 2026-10-30 | 2026-12          |  104.12 | 2027-11        | 83.01 |       11 |    21.11 | -0.2027 |       0.2472 | Backwardation |
+| 2026-11-02 | 2026-12          |   96.46 | 2027-11        | 80.05 |       11 |    16.41 | -0.1701 |       0.2034 | Backwardation |
+| 2026-11-03 | 2026-12          |   96.09 | 2027-11        | 80.31 |       11 |    15.78 | -0.1642 |       0.1957 | Backwardation |
+| 2026-11-04 | 2026-12          |   88.12 | 2027-11        | 75.32 |       11 |    12.8  | -0.1453 |       0.1712 | Backwardation |
+| 2026-11-05 | 2026-12          |   90.52 | 2027-11        | 75.11 |       11 |    15.41 | -0.1702 |       0.2036 | Backwardation |
+| 2026-11-06 | 2026-12          |   90.83 | 2027-11        | 76.42 |       11 |    14.41 | -0.1586 |       0.1884 | Backwardation |
 
 ---
 

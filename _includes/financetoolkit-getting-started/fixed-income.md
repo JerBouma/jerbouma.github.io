@@ -1,8 +1,8 @@
 ## Getting Started
 
-The Fixed Income module covers two sides of the bond market. The first is valuation: present value, yields, duration and convexity for any bond you describe, and the Black and Bachelier models for interest rate derivatives such as swaptions. The second is market data: Euribor, the policy rates of the European Central Bank and the Federal Reserve, government bond yields for 40+ countries and the ICE BofA corporate bond indices by rating and maturity.
+The Fixed Income module covers two sides of the bond market. The first is individual bonds: prices, yields, duration and convexity for every US Treasury and for thousands of corporate bonds, calculated from their market prices. The second is market data: Euribor, the policy rates of the European Central Bank and the Federal Reserve, government bond yields for 40+ countries and the ICE BofA corporate bond indices by rating and maturity.
 
-The valuation functions work on the numbers you pass in, so they need no data at all. The market data comes from public sources and needs no API key either.
+The Treasury prices come from the Treasury's own daily FedInvest prices and the market data from public sources, so neither needs an API key. The corporate bonds come from the published holdings of bond ETFs, and their spread over Treasuries uses the Treasury par yield curve, which takes a FinancialModelingPrep API key.
 
 ### Loading the Module
 
@@ -11,92 +11,64 @@ The Fixed Income module can be imported on its own, or reached through `companie
 ```python
 from financetoolkit import FixedIncome
 
-fixedincome = FixedIncome(start_date="2012-01-01")
+fixedincome = FixedIncome(start_date="2012-01-01", api_key="FINANCIAL_MODELING_PREP_KEY")
 ```
 
-The `start_date` only affects the market data functions; the valuation functions below ignore it.
+The `start_date` only affects the market data functions; the bond functions price on a single day, the latest by default or the one you pass as `date`.
 
-### Bond Statistics
+### Bond Statistics of the Benchmark Treasuries
 
-`collect_bond_statistics` returns the key figures of a single bond in one call. Take a bond with a par value of 1,000, a 5% coupon paid twice a year, five years to maturity and a yield to maturity of 8%. Because the yield is above the coupon rate, the bond has to trade below par to give the buyer that yield. To calculate its statistics:
+`collect_bond_statistics` returns the key figures of individual bonds in one call. Without bonds or an issuer it takes the benchmark Treasuries: the note or bond maturing closest to 2, 3, 5, 7, 10, 20 and 30 years after the price date. To calculate their statistics on 5 November 2026 and keep the main columns:
 
 ```python
-fixedincome.collect_bond_statistics(
-    par_value=1000,
-    coupon_rate=0.05,
-    years_to_maturity=5,
-    yield_to_maturity=0.08,
-    frequency=2,
-)
+statistics = fixedincome.collect_bond_statistics(date="2026-11-05")
+
+statistics[["Coupon", "Maturity", "Price", "Yield to Maturity", "Modified Duration", "DV01", "Convexity"]]
 ```
 
-Which gives a present value of 878.34, a discount of about 12% to par:
+Which returns:
 
-| Statistic           |    Value |
-|:--------------------|---------:|
-| Present Value       |   878.34 |
-| Current Yield       |    5.69% |
-| Effective Yield     |    5.06% |
-| Macaulay's Duration |     4.44 |
-| Modified Duration   |     4.27 |
-| Effective Duration  |     4.27 |
-| Dollar Duration     |    37.53 |
-| DV01                |     0.38 |
-| Convexity           |    21.70 |
+| CUSIP     |   Coupon | Maturity   |    Price |   Yield to Maturity |   Modified Duration |   DV01 |   Convexity |
+|:----------|---------:|:-----------|---------:|--------------------:|--------------------:|-------:|------------:|
+| 91282CRU7 |   0.0462 | 2028-10-31 | 100.3125 |              0.0446 |              1.8777 | 0.0188 |      4.5145 |
+| 91282CLR0 |   0.0412 | 2029-10-31 |  98.875  |              0.0453 |              2.7748 | 0.0275 |      9.2977 |
+| 91282CRT0 |   0.0475 | 2031-10-31 | 100.6875 |              0.0459 |              4.3963 | 0.0443 |     22.7527 |
+| 91282CRV5 |   0.0488 | 2033-10-31 | 101.0625 |              0.0469 |              5.8687 | 0.0593 |     40.7069 |
+| 91282CRF0 |   0.0462 | 2036-08-15 |  98.4375 |              0.0483 |              7.6914 | 0.0765 |     71.6857 |
+| 912810RU4 |   0.0288 | 2046-11-15 |  70.0312 |              0.0533 |             13.6289 | 0.0973 |    241.4593 |
+| 912810UW6 |   0.0512 | 2056-08-15 |  98.125  |              0.0525 |             14.8801 | 0.1477 |    333.2043 |
 
-The current yield is the annual coupon of 50 divided by the price, and the effective yield is the coupon rate compounded over the two payments in a year. The modified duration of 4.27 says the price falls by roughly 4.27% when the yield rises by one percentage point, and the DV01 puts that in currency: about 0.38 per bond for a one basis point move. Convexity measures how much that sensitivity itself changes as yields move, the correction you add for larger rate shocks.
+The yield rises from 4.46% at two years to 5.33% at twenty, and the 30-year bond yields a little less than the 20-year one. The modified duration says how much the price moves for a one percentage point change in the yield: 1.9% for the two-year note against 14.9% for the 30-year bond. The DV01 puts that in money, 0.15 per 100 of par for a one basis point move in the 30-year yield. The 20-year bond trades at 70 because its 2.88% coupon is far below today's yields.
 
-### Duration across Coupons and Maturities
+The same statistics are available for any bond by CUSIP or ISIN with `bonds=`, for an issuer's bonds with `issuer=`, or for every bill, note and bond in a maturity range.
 
-Without a coupon rate or maturity, `get_duration` calculates the duration for a grid of both: coupon rates from 0.5% to 15% against maturities of one to ten years, at a yield to maturity of 8% and annual coupons by default. That shows at a glance how the two drive interest rate risk. To calculate the modified duration for the whole grid:
+### Every Treasury Security on One Day
+
+`get_treasury_securities` lists every marketable US Treasury, about 460 bills, notes, bonds, TIPS and floating rate notes, with its price, yield to maturity and modified duration. To get them for the same day:
 
 ```python
-duration = fixedincome.get_duration()
+treasuries = fixedincome.get_treasury_securities(date="2026-11-05")
 ```
 
-Which gives a duration for every combination, shown here for five coupon rates:
+Which gives one row per security. Averaged per year to maturity, the nominal bills, notes and bonds set against the TIPS, whose yield is a real yield:
 
-{% include ft-chart.html id="fixed-income-duration" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Modified duration by coupon rate and years to maturity" %}
+{% include ft-chart.html id="fixed-income-treasuries" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Average yield to maturity of US Treasuries and TIPS by years to maturity" %}
 
-Duration rises with maturity and falls with the coupon rate, since a higher coupon returns more of the cash earlier. At one year every bond has a duration of 0.93, but at ten years a 1% coupon bond has a duration of 8.7 against 6.6 for a 9% coupon: the same move in yields hits the low-coupon bond about a third harder.
+The nominal yields climb from 4.16% within a year to about 5.3% from twenty years out. TIPS yield 2.35% to 3.1% over the same maturities, so the gap between the two, the inflation the market prices in, is about 2.2 percentage points at ten years and at thirty.
 
-Set `duration_type` to `"macaulay"`, `"effective"` or `"dollar"` for the other measures, or pass `coupon_rate` and `years_to_maturity` to calculate a single bond.
+### Corporate Bonds from ETF Holdings
 
-### Pricing Swaptions with Black and Bachelier
-
-A swaption gives the holder the right, but not the obligation, to enter an interest rate swap at a fixed strike rate. A receiver swaption, the default, pays off when rates fall below the strike, which makes it a hedge against falling rates. `get_derivative_price` values it with either the Black model, which assumes the swap rate is lognormally distributed, or the Bachelier model, which assumes normally distributed rates and therefore also works when rates are negative.
-
-The two models quote volatility differently: Black reads `volatility=0.20` as 20% of the forward rate, Bachelier as an absolute 20 percentage points. To price both on the same market, a forward swap rate of 3.25% with 20% lognormal volatility, pass `volatility_type="lognormal"` to the Bachelier model so it converts the quote. To price a range of strike rates and maturities on a notional of 10 million:
+Prices of individual corporate bonds are not published for free, but bond ETFs publish their holdings every day. `get_bond_universe` reads them, about 8,000 investment grade and high yield bonds by default, and calculates each bond's yield, duration and G-spread, its yield over the Treasury curve at the same maturity. To get the bonds of Apple:
 
 ```python
-black = fixedincome.get_derivative_price(
-    model="black",
-    forward_rate=0.0325,
-    volatility=0.20,
-    risk_free_rate=0.02,
-    notional=10_000_000,
-)
-
-bachelier = fixedincome.get_derivative_price(
-    model="bachelier",
-    forward_rate=0.0325,
-    volatility=0.20,
-    volatility_type="lognormal",
-    risk_free_rate=0.02,
-    notional=10_000_000,
-)
+apple_bonds = fixedincome.get_bond_universe(issuer="APPLE INC")
 ```
 
-Which returns a price for each strike rate and maturity, with the swap's tenor equal to the maturity by default. The first tab puts the two models side by side for five years to maturity and the strikes up to just above the money, where they differ most; the other tabs show each model across maturities:
+Which gives Apple's bonds from 2028 to 2062, here with the yield to maturity and the G-spread in a tab each:
 
-{% include ft-chart.html id="fixed-income-swaption" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Receiver swaption prices by strike rate for the Black and Bachelier models" %}
+{% include ft-chart.html id="fixed-income-corporate" src="/assets/data/financetoolkit-guides/fixed-income.json" label="Yield to maturity and G-spread of Apple's bonds by maturity" %}
 
-At the money (strike 3.25%) the five-year swaption is worth 246,000 under Black and 248,000 under Bachelier. Deep out of the money the models part ways: at a strike of 1.75% Bachelier gives 48,800 against 17,000 for Black, and at 0.75% about 10,800 against almost nothing, because the normal distribution gives low and even negative rates far more probability than the lognormal one. Above the money the two converge again, as the value becomes mostly intrinsic. Longer maturities are worth more at every strike, since the option covers more years of swap payments.
-
-<div class="fs-callout" markdown="1"><p class="fs-callout__title">Volatility quotes</p>
-
-Passing a lognormal quote such as 0.20 to the Bachelier model without `volatility_type` treats it as 2,000 basis points of normal volatility and overprices the swaption many times over. A normal volatility quote of, say, 65 basis points is passed as `volatility=0.0065`.
-</div>
+Apple's 43 bonds yield from 4.6% for 2028 to 6.0% for the 2050s and 2060s, at 0.17 to 0.32 percentage points over Treasuries up to 2032 and about 0.7 points for the bonds maturing after 2040. The bonds maturing from 2049, most issued with coupons of 2.4% to 3% when rates were low, trade at 50 to 62.
 
 ### Euribor and Central Bank Rates
 

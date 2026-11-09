@@ -232,7 +232,7 @@ Which returns:
 | Inventory Turnover Ratio             |  40.0303 |  38.7899 |  37.9777 |  30.8955 |  33.9834 |
 | Accounts Payable Turnover Ratio      |   4.3887 |   3.7609 |   3.3795 |   3.1975 |   3.1834 |
 | SGA-to-Revenue Ratio                 |   0.0601 |   0.0636 |   0.065  |   0.0667 |   0.0663 |
-| Fixed Asset Turnover                 |   7.7125 |   7.7273 |   7.1702 |   7.8163 |   8.7141 |
+| Fixed Asset Turnover                 |   7.7125 |   7.7273 |   7.1702 |   7.091  |   7.1167 |
 | Asset Turnover Ratio                 |   1.0841 |   1.1206 |   1.0868 |   1.0899 |   1.1493 |
 | Operating Ratio                      |   0.7022 |   0.6971 |   0.7018 |   0.6849 |   0.6803 |
 | R&D Intensity Ratio                  |   0.0599 |   0.0666 |   0.078  |   0.0802 |   0.083  |
@@ -241,6 +241,8 @@ Which returns:
 | SBC to Revenue Ratio                 |   0.0216 |   0.0229 |   0.0283 |   0.0299 |   0.0309 |
 | Deferred Revenue Ratio               |   0.0208 |   0.0201 |   0.021  |   0.0211 |   0.0218 |
 | Working Capital Turnover Ratio       |  15.346  | -85.519  | -37.7268 | -31.0999 | -20.2615 |
+| Capex Intensity                      |   0.0303 |   0.0272 |   0.0286 |   0.0242 |   0.0306 |
+| Capex to Depreciation                |   0.9824 |   0.9643 |   0.9514 |   0.8254 |   1.0869 |
 
 ---
 
@@ -1533,6 +1535,291 @@ Which returns:
 
 ---
 
+## get_capex_intensity
+Calculate the capital expenditure intensity, the share of revenue a company reinvests in property, plant and equipment.
+
+Capex intensity shows how capital-heavy a business is: utilities, telecoms, semiconductor manufacturers and energy producers spend a large part of their revenue on capital expenditure, software and services companies very little. Over time a rising intensity points to an investment cycle (capacity being built ahead of revenue), a falling one to a business that is harvesting its existing assets. Damodaran uses it, together with the capex to depreciation ratio, to judge how much a company has to reinvest to grow.
+
+The formula is as follows:
+
+$$
+\text{Capex Intensity} = | \text{Capital Expenditure} | / \text{Revenue}
+$$
+
+Capital expenditure is reported as a negative cash outflow, so its magnitude is used. A revenue of zero or less gives NaN.
+
+**Also known as:** capex to revenue, capex to sales, capex ratio, capital spending intensity.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over. E.g. 4 with quarterly data gives the trailing twelve
+months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Capex intensity values.
+
+**Notes:**
+
+- Damodaran, A., "Investment Valuation," 3rd edition, Wiley, 2012 (reinvestment and
+net capital expenditure).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["TSM", "INTC", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_capex_intensity()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| INTC | 0.2573 | 0.3973 | 0.4748 | 0.4509 | 0.2771 |
+| MSFT | 0.1227 | 0.1205 | 0.1326 | 0.1814 | 0.2291 |
+| TSM  | 0.5351 | 0.4813 | 0.442  | 0.3303 | 0.3367 |
+
+---
+
+## get_capex_to_depreciation_ratio
+Calculate the capital expenditure to depreciation ratio, which compares what a company invests in its assets with what wears off them.
+
+Depreciation and amortization approximate the investment needed to keep the asset base as it is, so a ratio above 1 means the company is growing its assets, a ratio around 1 that it is maintaining them, and a ratio persistently below 1 that it is underinvesting, which flatters the free cash flow for a while but erodes the business. Damodaran's net capital expenditure (capital expenditure minus depreciation) is the same comparison as a difference. Acquisitions are not capital expenditure, so a company that grows by buying others can show a low ratio while its assets grow.
+
+The formula is as follows:
+
+$$
+\text{Capex to Depreciation} = | \text{Capital Expenditure} | / \text{Depreciation and Amortization}
+$$
+
+Capital expenditure is reported as a negative cash outflow, so its magnitude is used. Depreciation and amortization of zero or less gives NaN.
+
+**Also known as:** capex to D&A, capex to depreciation, reinvestment ratio, maintenance capex ratio.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (cash flow statement
+items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
+and 3 with annual data a three-year cumulative figure. Defaults to None, which
+uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Capex to depreciation values.
+
+**Notes:**
+
+- Damodaran, A., "Investment Valuation," 3rd edition, Wiley, 2012 (net capital
+expenditure and reinvestment).
+- Depreciation and amortization include the amortization of acquired intangibles,
+which is no wear of the assets that capital expenditure replaces, so the ratio is low
+for companies with large acquired intangibles.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["TSM", "INTC", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_capex_to_depreciation_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| INTC | 1.724  | 1.9217 | 2.6817 | 2.1042 | 1.2512 |
+| MSFT | 1.7647 | 1.6519 | 2.0278 | 1.9956 | 1.8901 |
+| TSM  | 2.011  | 2.492  | 1.7952 | 1.4424 | 1.8639 |
+
+---
+
+## get_asset_growth
+Calculate the asset growth of Cooper, Gulen and Schill (2008): the change in total assets over a year relative to the total assets at the start of it.
+
+Cooper, Gulen and Schill find that the growth of a company's total assets predicts its returns strongly and negatively: the companies that grow their assets the most earn far lower returns over the following years than those that grow them the least, more so than the book-to-market ratio, size or past returns predict. Asset growth captures every form of investment (capital expenditure, acquisitions, working capital) and of the financing behind it, and is the investment measure of the CMA (conservative minus aggressive) factor of the Fama-French five-factor model.
+
+The formula is as follows:
+
+$$
+\text{Asset Growth} = (\text{Total Assets} - \text{Beginning Total Assets}) / \text{Beginning Total Assets}
+$$
+
+The total assets are those at the end of the period and the beginning total assets those a year earlier: the end of the year before with annual data and four quarters back with quarterly data, so quarterly values are year over year. Beginning total assets of zero or less give NaN.
+
+**Also known as:** total asset growth, investment, CMA investment, ASSETG.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods the total assets are compared
+over. E.g. 3 with annual data gives the growth over three years. Defaults to
+None, which uses a year: 4 quarters with quarterly data and 1 year with annual
+data.
+
+**Returns:**
+
+pd.DataFrame: Asset growth values.
+
+**Notes:**
+
+- Cooper, M. J., H. Gulen and M. J. Schill, "Asset Growth and the Cross-Section of
+Stock Returns," Journal of Finance 63(4), 2008, pp. 1609-1651. Fama, E. F. and K. R.
+French, "A Five-Factor Asset Pricing Model," Journal of Financial Economics 116(1),
+2015, pp. 1-22.
+- The first period has no total assets a year earlier and is NaN, so set an earlier
+start_date to obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "NVDA", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_asset_growth()
+```
+
+Which returns:
+
+|      |   2021 |    2022 |    2023 |   2024 |     2025 |
+|:-----|-------:|--------:|--------:|-------:|---------:|
+| AAPL | 0.0837 |  0.005  | -0.0005 | 0.0352 |  -0.0157 |
+| MSFT | 0.1078 |  0.0931 |  0.1292 | 0.2432 |   0.2086 |
+| NVDA | 0.5348 | -0.068  |  0.596  | 0.6979 | nan      |
+| XOM  | 0.0186 |  0.0889 |  0.0196 | 0.205  |  -0.0099 |
+
+---
+
+## get_net_operating_assets
+Calculate the net operating assets of Hirshleifer, Hou, Teoh and Zhang (2004): the operating assets minus the operating liabilities, scaled by the total assets at the start of the period.
+
+Net operating assets are the cumulative difference between the operating income and the free cash flow a company has reported over the years, so a high value means its earnings have run ahead of its cash for a long time (a bloated balance sheet). Hirshleifer et al. show that investors overlook this, so that companies with high net operating assets earn lower earnings growth and lower returns over the following years than those with low net operating assets.
+
+The formula is as follows:
+
+$$
+\text{Operating Assets} = \text{Total Assets} - \text{Cash and Short Term Investments}
+$$
+
+$$
+\text{Operating Liabilities} = \text{Total Assets} - \text{Short Term Debt} - \text{Long Term Debt} - \text{Total Equity}
+$$
+
+$$
+\text{Net Operating Assets} = (\text{Operating Assets} - \text{Operating Liabilities}) / \text{Beginning Total Assets}
+$$
+
+The paper deducts the debt in current liabilities, the long term debt, the minority interest, the preferred stock and the common equity from the total assets for the operating liabilities; the total equity here holds the last three. The debt is the short and long term debt rows of the statements, without separately reported lease liabilities. The cash is the cash and cash equivalents plus the short term investments. The balances are those at the end of the period and the beginning total assets those at the end of the period before (the year before with annual data, the quarter before with quarterly data, as in the quarterly version of Hou, Xue and Zhang). Beginning total assets of zero or less give NaN.
+
+**Also known as:** NOA, scaled net operating assets, balance sheet bloat.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: Net operating assets values.
+
+**Notes:**
+
+- Hirshleifer, D., K. Hou, S. H. Teoh and Y. Zhang, "Do Investors Overvalue Firms with
+Bloated Balance Sheets?," Journal of Accounting and Economics 38, 2004, pp. 297-331.
+Hou, K., C. Xue and L. Zhang, "Replicating Anomalies," Review of Financial Studies
+33(5), 2020, pp. 2019-2133.
+- The first period has no total assets of the period before and is NaN, so set an
+earlier start_date to obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "KO", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_net_operating_assets()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.3865 | 0.3488 | 0.3166 | 0.2791 | 0.3225 |
+| KO   | 0.6335 | 0.5654 | 0.6024 | 0.5765 | 0.6554 |
+| MSFT | 0.2319 | 0.3343 | 0.3898 | 0.5937 | 0.5703 |
+| XOM  | 0.6453 | 0.6218 | 0.5927 | 0.7582 | 0.6604 |
+
+---
+
 ## collect_liquidity_ratios
 Calculates and collects all Liquidity Ratios based on the provided data.
 
@@ -2193,6 +2480,12 @@ Which returns:
 | EBIT to Revenue                             |  0.3058 |  0.3095 |  0.307  |   0.3158 |   0.3189 |
 | Cash Tax Rate                               |  0.2324 |  0.1643 |  0.1642 |   0.2114 |   0.3267 |
 | Tax Rate Divergence                         |  0.0994 |  0.0023 |  0.017  |  -0.0295 |   0.1706 |
+| Gross Profitability                         |  0.4354 |  0.4841 |  0.4797 |   0.495  |   0.5434 |
+| Operating Profitability                     |  1.685  |  2.2992 |  1.7759 |   2.1636 |   1.8045 |
+| Cash-Based Operating Profitability          |  0.3943 |  0.4204 |  0.4009 |   0.4394 |   0.4742 |
+| Cash Return on Invested Capital             |  0.4801 |  0.5823 |  0.5394 |   0.601  |   0.5455 |
+| Free Cash Flow Conversion                   |  0.9818 |  1.1166 |  1.0267 |   1.1608 |   0.8818 |
+| Free Cash Flow to EBITDA                    |  0.7731 |  0.8537 |  0.7915 |   0.808  |   0.6823 |
 
 ---
 
@@ -3655,6 +3948,501 @@ Which returns:
 
 ---
 
+## get_gross_profitability
+Calculate the gross profitability of Novy-Marx (2013), the gross profit a company earns on its assets.
+
+Novy-Marx shows that gross profit is the cleanest accounting measure of economic profitability: the further down the income statement, the more the profit is polluted by expenses that are really investments (selling, research and administrative expenses) or by financing and taxes. Gross profitability predicts stock returns about as well as book-to-market does, and profitable companies outperform unprofitable ones even though they trade at higher valuations, which makes it the profitability factor that complements value.
+
+The formula is as follows:
+
+$$
+\text{Gross Profitability} = (\text{Revenue} - \text{Cost of Goods Sold}) / \text{Total Assets}
+$$
+
+The total assets are those at the end of the fiscal year, the same date as the gross profit, as in the paper (a point in time, not averaged). Gross profitability is an annual measure, so with quarterly data the gross profit is that of the trailing twelve months by default.
+
+**Also known as:** GP/A, gross profits to assets, gross profitability premium, Novy-Marx profitability.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the revenue and cost of goods
+sold over; the total assets stay those at the end of the last period. Defaults to
+None, which uses the trailing twelve months (4 quarters) with quarterly data and
+single years with annual data.
+
+**Returns:**
+
+pd.DataFrame: Gross profitability values.
+
+**Notes:**
+
+- Novy-Marx, R., "The Other Side of Value: The Gross Profitability Premium," Journal
+of Financial Economics 108(1), 2013, pp. 1-28.
+- The Quality Score (`Toolkit.models.get_quality_score`) uses the same measure as one
+of its profitability components.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "KO", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_gross_profitability()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.4354 | 0.4841 | 0.4797 | 0.495  | 0.5434 |
+| KO   | 0.2469 | 0.2695 | 0.2787 | 0.2858 | 0.2819 |
+| MSFT | 0.3471 | 0.3717 | 0.3545 | 0.3339 | 0.3132 |
+| XOM  | 0.1914 | 0.2793 | 0.2236 | 0.1692 | 0.1564 |
+
+---
+
+## get_operating_profitability
+Calculate the operating profitability of Fama and French (2015), the measure behind the profitability factor RMW (robust minus weak) of their five-factor model: the operating profit after interest that a company earns on its book equity.
+
+Fama and French find that companies with a robust operating profitability earn higher returns than those with a weak one, also after controlling for value, size and investment. Book equity follows their definition: the stockholders' equity (without minority interest) plus the balance sheet deferred taxes, minus the preferred stock.
+
+The formula is as follows:
+
+$$
+\text{Operating Profitability} = (\text{Revenue} - \text{Cost of Goods Sold} - \text{Selling},\; \text{General and Administrative Expenses} - \text{Research and Development Expenses} - \text{Interest Expense}) / \text{Book Equity}
+$$
+
+$$
+\text{Book Equity} = \text{Total Shareholder Equity} + \text{Deferred Tax Liabilities} - \text{Preferred Stock}
+$$
+
+The selling, general and administrative expenses of Compustat (XSGA), which Fama and French use, include research and development, while the statements here report it separately, so both are deducted. The book equity is that at the end of the fiscal year, the same date as the profit (a point in time, not averaged), and a book equity of zero or less has no value (NaN), as Fama and French leave those companies out. Operating profitability is an annual measure, so with quarterly data the profit is that of the trailing twelve months by default.
+
+**Also known as:** OP, RMW, robust minus weak, Fama-French profitability.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the income statement items
+over; the book equity stays that at the end of the last period. Defaults to None,
+which uses the trailing twelve months (4 quarters) with quarterly data and single
+years with annual data.
+
+**Returns:**
+
+pd.DataFrame: Operating profitability values.
+
+**Notes:**
+
+- Fama, E. F. and K. R. French, "A Five-Factor Asset Pricing Model," Journal of
+Financial Economics 116(1), 2015, pp. 1-22.
+- Large buybacks shrink the book equity, which can make the ratio very large; the
+gross profitability and cash-based operating profitability scale by total assets
+instead.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["JNJ", "PFE", "MRK", "ABBV"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_operating_profitability()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| ABBV | 0.6533 | 0.6413 | 0.5861 | 0.8289 | 3.614  |
+| JNJ  | 0.2547 | 0.2567 | 0.3145 | 0.2894 | 0.2788 |
+| MRK  | 0.3033 | 0.3703 | 0.0631 | 0.4123 | 0.4095 |
+| PFE  | 0.292  | 0.4188 | 0.0774 | 0.1897 | 0.2206 |
+
+---
+
+## get_cash_based_operating_profitability
+Calculate the cash-based operating profitability of Ball, Gerakos, Linnainmaa and Nikolaev (2016): operating profit with the working capital accruals taken out, so that it measures the operating profit received in cash, scaled by the total assets at the start of the year.
+
+Ball et al. show that cash-based operating profitability predicts stock returns better than the profitability measures that include accruals, and that it subsumes the accrual anomaly: once the cash-based profitability is known, accruals no longer predict returns. The operating profit is that of Ball et al. (2015), with research and development added back as an investment rather than an expense of the period.
+
+The formula is as follows:
+
+$$
+\text{Cash-Based Operating Profitability} = (\text{Revenue} - \text{Cost of Goods Sold} - \text{Selling},\; \text{General and Administrative Expenses} - \Delta \;\text{Receivables} - \Delta \;\text{Inventory} - \Delta \;\text{Prepaids} + \Delta \;\text{Deferred Revenue} + \Delta \;\text{Accounts Payable} + \Delta \;\text{Accrued Expenses}) / \text{Beginning Total Assets}
+$$
+
+The selling, general and administrative expenses are without research and development (Compustat XSGA - XRD in the paper), the receivables are the total (trade and other) receivables and the deferred revenue the current and non-current deferred revenue. Each change is that of the balance over the window of the flows (a year with annual data, the year before the quarter with quarterly data), and the total assets are those at the start of the window: the end of the year before with annual data, the quarter four quarters back with quarterly data. Ball et al. (2016) scale by these lagged total assets, unlike the end-of-year assets of Ball et al. (2015) and Novy-Marx (2013); Chen and Zimmermann note this in their replication and Wang (2020) defines the measure on lagged total assets as well. It is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default.
+
+**Also known as:** CbOP, cash operating profitability, cash-based profitability, accrual-free profitability.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the income statement items
+over, which is also the number of periods the balance changes span and the
+number of periods the total assets are taken before. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
+
+**Returns:**
+
+pd.DataFrame: Cash-based operating profitability values.
+
+**Notes:**
+
+- Ball, R., J. Gerakos, J. T. Linnainmaa and V. Nikolaev, "Accruals, Cash Flows, and
+Operating Profitability in the Cross Section of Stock Returns," Journal of Financial
+Economics 121(1), 2016, pp. 28-45. Ball, R., J. Gerakos, J. T. Linnainmaa and V.
+Nikolaev, "Deflating Profitability," Journal of Financial Economics 117(2), 2015,
+pp. 225-248.
+- Chen, A. Y. and T. Zimmermann, "Open Source Cross-Sectional Asset Pricing,"
+Critical Finance Review 11(2), 2022, pp. 207-264 (the CBOperProf signal and its
+lagged-assets variant). Wang (2020), SSRN working paper 3507251, Table A1.
+- The first period has no earlier balances to take the changes and the total assets
+from and is NaN, so set an earlier start_date to obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "KO", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_cash_based_operating_profitability()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.3943 | 0.4204 | 0.4009 | 0.4394 | 0.4742 |
+| KO   | 0.1425 | 0.2178 | 0.1388 | 0.2021 | 0.0879 |
+| MSFT | 0.3035 | 0.3256 | 0.3208 | 0.3452 | 0.3146 |
+| XOM  | 0.1542 | 0.2493 | 0.2015 | 0.1796 | 0.1769 |
+
+---
+
+## get_cash_return_on_invested_capital
+Calculate the cash return on invested capital (CROIC), the free cash flow a company generates on the capital that shareholders and lenders have invested in it.
+
+Where the return on invested capital measures the after-tax operating profit, CROIC measures the cash left after the investments needed to keep and grow the business, so it shows how much of the return can actually be paid out, used for buybacks or reinvested. The invested capital is the same as in `get_return_on_invested_capital` (total equity plus total debt, averaged over the period), so the two compare directly: a CROIC persistently below the ROIC means profits are tied up in working capital or capital expenditure.
+
+The formula is as follows:
+
+$$
+\text{Cash Return on Invested Capital} = \text{Free Cash Flow} / (\text{Average Total Equity} + \text{Average Total Debt})
+$$
+
+**Also known as:** CROIC, cash ROIC, FCF ROIC, free cash flow return on invested capital.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data) against
+the average of the opening and closing invested capital, as for the return on
+invested capital.
+
+**Returns:**
+
+pd.DataFrame: Cash return on invested capital values.
+
+**Notes:**
+
+- CROIC is a practitioner measure (used by, among others, Morningstar); definitions
+of the invested capital differ, and this one matches the return on invested capital
+of the Finance Toolkit.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["CAT", "DE", "CMI"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_cash_return_on_invested_capital()
+```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| CAT | 0.0885 | 0.0964 | 0.1776 | 0.153  | 0.1216 |
+| CMI | 0.1064 | 0.0642 | 0.1543 | 0.0155 | 0.118  |
+| DE  | 0.0814 | 0.013  | 0.0521 | 0.0509 | 0.0362 |
+
+---
+
+## get_free_cash_flow_conversion
+Calculate the free cash flow conversion, the share of net income that a company turns into free cash flow.
+
+A conversion around or above 1 means the reported earnings are backed by cash, as depreciation and other non-cash charges outweigh the capital expenditure and the working capital tied up. A conversion persistently well below 1 is an earnings quality warning: profits are reported but do not arrive as cash, because of heavy investment, growing receivables or inventory, or aggressive accruals. Credit analysts and equity analysts use it alongside the income quality ratio (`get_income_quality_ratio`, operating cash flow over net income), which is the same comparison before capital expenditure.
+
+The formula is as follows:
+
+$$
+\text{Free Cash Flow Conversion} = \text{Free Cash Flow} / \text{Net Income}
+$$
+
+With a loss the ratio flips sign and has no meaning, so a net income of zero or less gives NaN.
+
+**Also known as:** FCF conversion, cash conversion ratio, FCF to net income, free cash flow to earnings.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over. E.g. 4 with quarterly data gives the trailing twelve
+months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Free cash flow conversion values.
+
+**Notes:**
+
+- The ratio is used in the cash flow analysis of the CFA curriculum (Financial
+Reporting and Analysis) and by the rating agencies (S&P, Moody's).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "AMZN", "NFLX"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_free_cash_flow_conversion()
+```
+
+Which returns:
+
+|      |    2021 |     2022 |   2023 |   2024 |   2025 |
+|:-----|--------:|---------:|-------:|-------:|-------:|
+| AAPL |  0.9818 |   1.1166 | 1.0267 | 1.1608 | 0.8818 |
+| AMZN | -0.4414 | nan      | 1.0589 | 0.5549 | 0.0991 |
+| NFLX | -0.0258 |   0.3603 | 1.2807 | 0.7945 | 0.8616 |
+
+---
+
+## get_free_cash_flow_to_ebitda_ratio
+Calculate the free cash flow to EBITDA ratio, the share of EBITDA that remains as free cash flow after interest, taxes, working capital and capital expenditure.
+
+EBITDA is often used as a proxy for cash flow (in leverage ratios such as net debt to EBITDA), and this ratio shows how good a proxy it is for a company. Credit analysts use it to see how much of the EBITDA is available to repay debt: capital-heavy businesses (utilities, telecoms, manufacturers) convert little of their EBITDA, asset-light businesses (software, services) most of it. EBITDA is operating income plus depreciation and amortization, as in the EBITDA margin.
+
+The formula is as follows:
+
+$$
+\text{Free Cash Flow to EBITDA} = \text{Free Cash Flow} / (\text{Operating Income} + \text{Depreciation and Amortization})
+$$
+
+An EBITDA of zero or less gives NaN, as the ratio flips sign.
+
+**Also known as:** FCF/EBITDA, EBITDA cash conversion, EBITDA to FCF conversion, cash conversion of EBITDA.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over. E.g. 4 with quarterly data gives the trailing twelve
+months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Free cash flow to EBITDA values.
+
+**Notes:**
+
+- The ratio is part of the cash flow analysis of the rating agencies (S&P Global
+Ratings' corporate methodology, Moody's) and of the CFA curriculum.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["T", "VZ", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_free_cash_flow_to_ebitda_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| MSFT | 0.6877 | 0.6659 | 0.5809 | 0.5623 | 0.4402 |
+| T    | 0.5813 | 0.9228 | 0.4699 | 0.4127 | 0.4237 |
+| VZ   | 0.3997 | 0.2187 | 0.4027 | 0.3902 | 0.4133 |
+
+---
+
+## get_percent_accruals
+Calculate the percent accruals of Hafzalla, Lundholm and Van Winkle (2011): the accruals, the part of the net income that is not received in cash, as a share of the net income itself.
+
+Sloan (1996) scaled the accruals by total assets, which mostly sorts companies by the size of their earnings changes. Hafzalla, Lundholm and Van Winkle scale them by the absolute net income instead, which measures how much of the earnings consists of accruals: the companies whose earnings are mostly accruals earn markedly lower returns afterwards, and the companies with the most negative percent accruals (cash flows well above earnings) higher returns, a larger spread than that of the accruals scaled by total assets. With a loss, a positive value still means the accruals make the loss smaller than the cash flow would.
+
+The formula is as follows:
+
+$$
+\text{Percent Accruals} = (\text{Net Income} - \text{Cash Flow from Operations}) / | \text{Net Income} |
+$$
+
+The paper takes the income before extraordinary items, which is the net income here. A net income of zero gives NaN. It is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default.
+
+**Also known as:** percent operating accruals, PctAcc, accruals to earnings.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the net income and cash
+flow from operations over. Defaults to None, which uses the trailing twelve
+months (4 quarters) with quarterly data and single years with annual data.
+
+**Returns:**
+
+pd.DataFrame: Percent accruals values.
+
+**Notes:**
+
+- Hafzalla, N., R. Lundholm and E. M. Van Winkle, "Percent Accruals," The Accounting
+Review 86(1), 2011, pp. 209-236. Sloan, R. G., "Do Stock Prices Fully Reflect
+Information in Accruals and Cash Flows about Future Earnings?," The Accounting Review
+71(3), 1996, pp. 289-315 (the accruals scaled by total assets, see
+`toolkit.models.get_accruals_ratio`).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "KO", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_percent_accruals()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | -0.0988 | -0.2239 | -0.1397 | -0.2616 |  0.0047 |
+| KO   | -0.2921 | -0.1547 | -0.0826 |  0.3599 |  0.4348 |
+| MSFT | -0.2525 | -0.2241 | -0.2103 | -0.3451 | -0.3371 |
+| XOM  | -1.0889 | -0.3778 | -0.5376 | -0.6337 | -0.8018 |
+
+---
+
 ## collect_solvency_ratios
 Calculates and collects all Solvency Ratios based on the provided data.
 
@@ -3705,22 +4493,30 @@ solvency_ratios.loc['AAPL']
 
 Which returns:
 
-|                                   |     2021 |     2022 |     2023 |     2024 |     2025 |
-|:----------------------------------|---------:|---------:|---------:|---------:|---------:|
-| Debt-to-Assets Ratio              |   0.3889 |   0.3756 |   0.3515 |   0.3262 |   0.3128 |
-| Asset Coverage Ratio              |   1.7663 |   1.6597 |   1.8001 |   1.7594 |   1.9038 |
-| Debt-to-Equity Ratio              |   2.1639 |   2.6145 |   1.9942 |   2.0906 |   1.5241 |
-| Debt Service Coverage Ratio       |   6.5852 |   5.4299 |   6.3739 |   6.4496 |   7.1203 |
-| Equity Multiplier                 |   5.255  |   6.1862 |   6.252  |   6.0251 |   5.5418 |
-| Free Cash Flow Yield              |   0.031  |   0.0525 |   0.0327 |   0.0282 |   0.0242 |
-| Net-Debt to EBITDA Ratio          |   0.8449 |   0.8337 |   0.7468 |   0.6618 |   0.5281 |
-| Gross Debt to EBITDA Ratio        |   1.1355 |   1.0149 |   0.985  |   0.8841 |   0.7764 |
-| Cash Flow Coverage Ratio          |   0.7621 |   0.922  |   0.892  |   0.9932 |   0.992  |
-| CAPEX Coverage Ratio              |   9.3855 |  11.4075 |  10.087  |  12.5176 |   8.7678 |
-| Dividend CAPEX Coverage Ratio     |   4.0716 |   4.781  |   4.2543 |   4.7913 |   3.9623 |
-| Debt-to-Capital Ratio             |   0.6839 |   0.7233 |   0.666  |   0.6764 |   0.6038 |
-| Preferred Dividend Coverage Ratio | nan      | nan      | nan      | nan      | nan      |
-| Interest Paid to Expense Ratio    |   1.0159 |   0.9775 |   0.9669 | nan      | nan      |
+|                                    |     2021 |     2022 |     2023 |     2024 |     2025 |
+|:-----------------------------------|---------:|---------:|---------:|---------:|---------:|
+| Debt-to-Assets Ratio               |   0.3889 |   0.3756 |   0.3515 |   0.3262 |   0.3128 |
+| Asset Coverage Ratio               |   1.7663 |   1.6597 |   1.8001 |   1.7594 |   1.9038 |
+| Debt-to-Equity Ratio               |   2.1639 |   2.6145 |   1.9942 |   2.0906 |   1.5241 |
+| Debt Service Coverage Ratio        |   6.5852 |   5.4299 |   6.3739 |   6.4496 |   7.1203 |
+| Equity Multiplier                  |   5.255  |   6.1862 |   6.252  |   6.0251 |   5.5418 |
+| Free Cash Flow Yield               |   0.031  |   0.0525 |   0.0327 |   0.0282 |   0.0242 |
+| Net-Debt to EBITDA Ratio           |   0.8449 |   0.8337 |   0.7468 |   0.6618 |   0.5281 |
+| Gross Debt to EBITDA Ratio         |   1.1355 |   1.0149 |   0.985  |   0.8841 |   0.7764 |
+| Cash Flow Coverage Ratio           |   0.7621 |   0.922  |   0.892  |   0.9932 |   0.992  |
+| CAPEX Coverage Ratio               |   9.3855 |  11.4075 |  10.087  |  12.5176 |   8.7678 |
+| Dividend CAPEX Coverage Ratio      |   4.0716 |   4.781  |   4.2543 |   4.7913 |   3.9623 |
+| Debt-to-Capital Ratio              |   0.6839 |   0.7233 |   0.666  |   0.6764 |   0.6038 |
+| Preferred Dividend Coverage Ratio  | nan      | nan      | nan      | nan      | nan      |
+| Interest Paid to Expense Ratio     |   1.0159 |   0.9775 |   0.9669 | nan      | nan      |
+| EBITDA Interest Coverage           |  45.4567 |  44.538  |  31.9908 | nan      | nan      |
+| (EBITDA - CapEx) Interest Coverage |  41.2658 |  40.8847 |  29.2044 | nan      | nan      |
+| Cash Interest Coverage             |  49.1664 |  50.4674 |  34.979  | nan      | nan      |
+| FFO to Debt                        |   0.733  |   0.8842 |   0.9213 | nan      | nan      |
+| DCF to Debt                        |  -0.0548 |   0.0543 |   0.0566 |  -0.0116 |  -0.0655 |
+| Degree of Operating Leverage       |   1.935  |   1.2352 |   1.5355 |   3.8574 |   1.2421 |
+| Degree of Financial Leverage       |   1.0087 |   0.5621 |   0.6543 |  -0.4308 |   2.4427 |
+| Degree of Total Leverage           |   1.9518 |   0.6943 |   1.0047 |  -1.6617 |   3.034  |
 
 ---
 
@@ -4697,6 +5493,551 @@ Which returns:
 
 ---
 
+## get_ebitda_interest_coverage_ratio
+Calculate the EBITDA interest coverage ratio, the number of times the earnings before interest, taxes, depreciation and amortization cover the interest expense.
+
+EBITDA to interest is one of the supplementary ratios of S&P Global Ratings and a coverage measure in many of Moody's rating methodologies. It is higher than the EBIT interest coverage (`get_interest_coverage_ratio`) by the depreciation and amortization, which makes it the usual measure in loan covenants, but it ignores that the assets have to be replaced, so for capital-intensive companies the (EBITDA - CapEx) coverage (`get_ebitda_minus_capex_interest_coverage_ratio`) is the stricter test.
+
+The formula is as follows:
+
+$$
+\text{EBITDA Interest Coverage} = (\text{Operating Income} + \text{Depreciation and Amortization}) / \text{Interest Expense}
+$$
+
+The interest expense is the gross expense, as S&P Global Ratings does not net the interest income. A zero interest expense gives NaN, which is often a gap in the reported data rather than an absence of debt.
+
+**Also known as:** EBITDA to interest, EBITDA coverage, EBITDA/interest, EBITDA interest cover.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over. E.g. 4 with quarterly data gives the trailing twelve
+months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: EBITDA interest coverage values.
+
+**Notes:**
+
+- S&P Global Ratings, "Corporate Methodology: Ratios And Adjustments," April 1, 2019
+(key ratios: EBITDA to interest).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["T", "UNP", "HSY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_ebitda_interest_coverage_ratio()
+```
+
+Which returns:
+
+|     |    2021 |    2022 |    2023 |    2024 |   2025 |
+|:----|--------:|--------:|--------:|--------:|-------:|
+| HSY | 18.1655 | 18.8425 | 18.455  | 19.2379 | 9.2591 |
+| T   |  6.5336 |  2.1883 |  6.507  |  6.648  | 6.744  |
+| UNP |  9.9793 |  9.5696 |  8.5075 |  9.5437 | 9.3995 |
+
+---
+
+## get_ebitda_minus_capex_interest_coverage_ratio
+Calculate the EBITDA minus capital expenditure interest coverage ratio, the number of times the EBITDA that is left after capital expenditure covers the interest expense.
+
+Moody's uses this coverage in its rating methodologies for capital-intensive sectors (such as automobile manufacturers), because EBITDA alone counts the cash needed to replace the assets as available for the lenders. A company whose (EBITDA - CapEx) coverage is far below its EBITDA coverage depends on its capital spending staying low, or on new borrowing, to keep paying its interest.
+
+The formula is as follows:
+
+$$
+(\text{EBITDA} - \text{CapEx}) \text{Interest Coverage} = (\text{Operating Income} + \text{Depreciation and Amortization} - | \text{Capital Expenditure} |) / \text{Interest Expense}
+$$
+
+Capital expenditure is reported as a negative cash outflow, so its magnitude is deducted. A zero interest expense gives NaN.
+
+**Also known as:** (EBITDA - CapEx) / interest expense, EBITDA less capex coverage, EBITDA minus capex to interest.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over. E.g. 4 with quarterly data gives the trailing twelve
+months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: (EBITDA - CapEx) interest coverage values.
+
+**Notes:**
+
+- Moody's Investors Service, "Automobile Manufacturer Industry," rating methodology,
+June 2017 ((EBITDA - CapEx) / Interest Expense).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["T", "UNP", "HSY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_ebitda_minus_capex_interest_coverage_ratio()
+```
+
+Which returns:
+
+|     |    2021 |    2022 |    2023 |    2024 |   2025 |
+|:----|--------:|--------:|--------:|--------:|-------:|
+| HSY | 14.3466 | 15.1345 | 13.6806 | 15.7618 | 6.7126 |
+| T   |  4.0654 | -1.0086 |  3.8392 |  3.6439 | 3.6808 |
+| UNP |  7.4417 |  6.7215 |  5.8164 |  6.8235 | 6.5034 |
+
+---
+
+## get_cash_interest_coverage_ratio
+Calculate the cash interest coverage ratio, the number of times the operating cash flow before interest and taxes covers the interest paid in cash.
+
+Where the interest coverage compares accrual figures (earnings with the interest expense), this ratio compares cash with cash, so it is not flattered by earnings that are not received in cash or by interest that is accrued (payment-in-kind debt) rather than paid.
+
+The formula is as follows:
+
+$$
+\text{Cash Interest Coverage} = (\text{Cash Flow from Operations} + \text{Interest Paid} + \text{Income Taxes Paid}) / \text{Interest Paid}
+$$
+
+Under US GAAP the interest and taxes paid are part of the cash flow from operations, so they are added back. IFRS lets companies report the interest paid under financing activities instead, in which case adding it back overstates the coverage by one. A zero or unreported interest paid gives NaN.
+
+**Also known as:** cash flow interest coverage, CFO interest coverage, cash coverage ratio.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over. E.g. 4 with quarterly data gives the trailing twelve
+months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Cash interest coverage values.
+
+**Notes:**
+
+- CFA Institute, "Financial Reporting and Analysis," CFA Program Curriculum
+(cash flow statement analysis: interest coverage).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["T", "UNP", "HSY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_cash_interest_coverage_ratio()
+```
+
+Which returns:
+
+|     |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:----|--------:|--------:|--------:|--------:|---------:|
+| HSY | 19.4618 | 20.3474 | 17.3451 | 16.2044 |  13.3412 |
+| T   |  6.6391 |  5.1965 |  6.4156 |  6.7806 | nan      |
+| UNP | 10.8344 | 10.8806 |  8.78   |  9.481  |   8.5004 |
+
+---
+
+## get_funds_from_operations_to_debt_ratio
+Calculate the funds from operations (FFO) to debt ratio, one of the two core ratios with which S&P Global Ratings assesses a company's financial risk.
+
+FFO is the cash a company generates from its operations before working capital and investment: EBITDA minus the interest and taxes paid in cash. As a share of the debt it shows how quickly the company could repay its debt from its recurring cash flow. S&P maps the ratio to its financial risk profiles: above 60% is minimal risk, 45% to 60% modest, 30% to 45% intermediate, 20% to 30% significant, 12% to 20% aggressive and below 12% highly leveraged (standard volatility table; companies with more volatile cash flows are held to stricter thresholds).
+
+The formula is as follows:
+
+$$
+\text{FFO} = \text{Operating Income} + \text{Depreciation and Amortization} + \text{Stock-Based Compensation} - \text{Interest Paid} - \text{Income Taxes Paid}
+$$
+
+$$
+\text{FFO to Debt} = \text{FFO} / \text{Total Debt}
+$$
+
+S&P's EBITDA excludes share-based compensation payable in shares, so it is added back, and impairments, which the operating income here includes. The debt is the reported total debt at the end of the period; S&P's adjusted debt also adds leases, pension deficits and other debt-like items and deducts surplus cash, which the statements do not allow to repeat. FFO to debt is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default. A total debt of zero or less gives NaN. So does an interest paid of zero: a company with debt pays interest, so zero means the interest paid is not reported, and counting it as zero would overstate the FFO by the whole interest bill.
+
+**Also known as:** FFO/debt, FFO to total debt, funds from operations to debt.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over; the total debt
+stays that at the end of the last period. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
+
+**Returns:**
+
+pd.DataFrame: FFO to debt values.
+
+**Notes:**
+
+- S&P Global Ratings, "Corporate Methodology: Ratios And Adjustments," April 1, 2019
+(core ratios: FFO to debt; FFO is EBITDA minus cash interest paid minus cash tax paid).
+- S&P Global Ratings, "Corporate Methodology," 2013 (financial risk profile table).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["T", "UNP", "HSY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_funds_from_operations_to_debt_ratio()
+```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |     2025 |
+|:----|-------:|-------:|-------:|-------:|---------:|
+| HSY | 0.3762 | 0.4597 | 0.5067 | 0.5537 |   0.3053 |
+| T   | 0.1839 | 0.0361 | 0.2232 | 0.2502 | nan      |
+| UNP | 0.2823 | 0.2588 | 0.253  | 0.293  |   0.3285 |
+
+---
+
+## get_discretionary_cash_flow_to_debt_ratio
+Calculate the discretionary cash flow (DCF) to debt ratio, a supplementary ratio of S&P Global Ratings: the cash flow left after capital expenditure, dividends and share buybacks as a share of the debt.
+
+Where FFO to debt (`get_funds_from_operations_to_debt_ratio`) measures the cash flow before the company's spending choices, DCF to debt measures what is left after them, and so what could actually go to repaying debt. A negative value means the company spends more on investment and shareholders than its operations bring in, and funds the difference with cash or new debt.
+
+The formula is as follows:
+
+$$
+\text{DCF} = \text{Cash Flow from Operations} - | \text{Capital Expenditure} | - | \text{Dividends Paid} | - | \text{Common Stock Purchased} |
+$$
+
+$$
+\text{DCF to Debt} = \text{DCF} / \text{Total Debt}
+$$
+
+Capital expenditure, dividends and buybacks are reported as negative cash outflows, so their magnitudes are deducted. The dividends are those on common and preferred stock; S&P also deducts dividends to minority shareholders, which the statements do not separate. The debt is the reported total debt at the end of the period. DCF to debt is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default. A total debt of zero or less gives NaN.
+
+**Also known as:** DCF/debt, discretionary cash flow to debt.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over; the total debt
+stays that at the end of the last period. Defaults to None, which uses the
+trailing twelve months (4 quarters) with quarterly data and single years with
+annual data.
+
+**Returns:**
+
+pd.DataFrame: DCF to debt values.
+
+**Notes:**
+
+- S&P Global Ratings, "Corporate Methodology: Ratios And Adjustments," April 1, 2019
+(supplementary ratios: DCF to debt; DCF is free operating cash flow minus dividends
+minus share buybacks).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["T", "UNP", "HSY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_discretionary_cash_flow_to_debt_ratio()
+```
+
+Which returns:
+
+|     |    2021 |    2022 |   2023 |   2024 |    2025 |
+|:----|--------:|--------:|-------:|-------:|--------:|
+| HSY |  0.0824 |  0.1259 | 0.0777 | 0.0636 |  0.1229 |
+| T   |  0.0519 |  0.0107 | 0.0783 | 0.0716 |  0.0269 |
+| UNP | -0.1269 | -0.1058 | 0.0262 | 0.0362 | -0.0131 |
+
+---
+
+## get_degree_of_operating_leverage
+Calculate the degree of operating leverage (DOL), the percentage change in operating income for each percentage change in revenue.
+
+Operating leverage comes from fixed operating costs: when revenue rises, the fixed costs stay the same, so operating income rises faster, and the reverse when revenue falls. A DOL of 3 means that a 1% change in revenue went with a 3% change in operating income. Companies with high fixed costs (airlines, manufacturers, software with high development costs) have a high DOL, which makes their earnings more sensitive to the business cycle (business risk).
+
+The formula is as follows:
+
+$$
+\text{DOL} = \%\Delta \;\text{Operating Income} / \%\Delta \;\text{Revenue}
+$$
+
+The changes are period over period with annual data and year over year with quarterly data (a quarter against the same quarter a year earlier), so seasonality does not enter. Each change is (Value - Previous Value) / &#124;Previous Value&#124;, so a change from a negative base keeps its sign. The ratio is unstable when the denominator barely changes: a small change in it gives a very large degree, and no change gives NaN.
+
+**Also known as:** DOL, operating leverage, operating gearing.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
+changes are compared, e.g. 4 with quarterly data compares trailing twelve months
+with those a year earlier. Defaults to None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Degree of operating leverage values.
+
+**Notes:**
+
+- CFA Institute, "Corporate Issuers," CFA Program Curriculum (measures of leverage:
+degree of operating, financial and total leverage).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "F", "DAL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_degree_of_operating_leverage()
+```
+
+Which returns:
+
+|      |    2021 |   2022 |    2023 |    2024 |     2025 |
+|:-----|--------:|-------:|--------:|--------:|---------:|
+| AAPL |  1.935  | 1.2352 |  1.5355 |  3.8574 |   1.2421 |
+| DAL  |  1.5371 | 1.3605 |  3.4421 |  1.3863 |  -1.0336 |
+| F    | 29.0263 | 1.7165 | -1.4021 | -1.0535 | -40.905  |
+
+---
+
+## get_degree_of_financial_leverage
+Calculate the degree of financial leverage (DFL), the percentage change in net income for each percentage change in operating income.
+
+Financial leverage comes from fixed financing costs, mostly interest: when operating income rises, the interest stays the same, so net income rises faster, and the reverse when it falls. A company without debt has a DFL of about 1; the more of its operating income goes to interest, the higher the DFL and the financial risk.
+
+The formula is as follows:
+
+$$
+\text{DFL} = \%\Delta \;\text{Net Income} / \%\Delta \;\text{Operating Income}
+$$
+
+The changes are period over period with annual data and year over year with quarterly data (a quarter against the same quarter a year earlier), so seasonality does not enter. Each change is (Value - Previous Value) / &#124;Previous Value&#124;, so a change from a negative base keeps its sign. The ratio is unstable when the denominator barely changes: a small change in it gives a very large degree, and no change gives NaN.
+
+Net income also moves with one-off items (non-operating gains, tax changes, discontinued operations), which enter the DFL as well.
+
+**Also known as:** DFL, financial leverage, financial gearing.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
+changes are compared, e.g. 4 with quarterly data compares trailing twelve months
+with those a year earlier. Defaults to None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Degree of financial leverage values.
+
+**Notes:**
+
+- CFA Institute, "Corporate Issuers," CFA Program Curriculum (measures of leverage:
+degree of operating, financial and total leverage).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "F", "DAL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_degree_of_financial_leverage()
+```
+
+Which returns:
+
+|      |   2021 |    2022 |     2023 |    2024 |     2025 |
+|:-----|-------:|--------:|---------:|--------:|---------:|
+| AAPL | 1.0087 |  0.5621 |   0.6543 | -0.4308 |   2.4427 |
+| DAL  | 0.8883 |  3.939  |   4.9147 | -2.9113 | -15.5172 |
+| F    | 7.1557 | -4.0617 | -19.857  | -6.6974 |   4.7545 |
+
+---
+
+## get_degree_of_total_leverage
+Calculate the degree of total leverage (DTL), the percentage change in net income for each percentage change in revenue: the operating and financial leverage combined.
+
+The DTL is the product of the degree of operating leverage (`get_degree_of_operating_leverage`) and the degree of financial leverage (`get_degree_of_financial_leverage`) over the same periods, and measures how strongly a change in revenue carries through to the earnings of the shareholders.
+
+The formula is as follows:
+
+$$
+\text{DTL} = \%\Delta \;\text{Net Income} / \%\Delta \;\text{Revenue} = \text{DOL}\; x \;\text{DFL}
+$$
+
+The changes are period over period with annual data and year over year with quarterly data (a quarter against the same quarter a year earlier), so seasonality does not enter. Each change is (Value - Previous Value) / &#124;Previous Value&#124;, so a change from a negative base keeps its sign. The ratio is unstable when the denominator barely changes: a small change in it gives a very large degree, and no change gives NaN.
+
+**Also known as:** DTL, degree of combined leverage, DCL, combined leverage, total leverage.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
+changes are compared, e.g. 4 with quarterly data compares trailing twelve months
+with those a year earlier. Defaults to None, which uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Degree of total leverage values.
+
+**Notes:**
+
+- CFA Institute, "Corporate Issuers," CFA Program Curriculum (measures of leverage:
+degree of operating, financial and total leverage).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "F", "DAL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_degree_of_total_leverage()
+```
+
+Which returns:
+
+|      |     2021 |    2022 |    2023 |    2024 |      2025 |
+|:-----|---------:|--------:|--------:|--------:|----------:|
+| AAPL |   1.9518 |  0.6943 |  1.0047 | -1.6617 |    3.034  |
+| DAL  |   1.3653 |  5.359  | 16.9169 | -4.0358 |   16.0389 |
+| F    | 207.703  | -6.9718 | 27.8421 |  7.0554 | -194.484  |
+
+---
+
 ## collect_valuation_ratios
 Calculates and collects all Valuation Ratios based on the provided data.
 
@@ -4749,18 +6090,38 @@ valuation_ratios.loc['AAPL']
 
 Which returns:
 
-|                             |         2021 |         2022 |         2023 |         2024 |         2025 |
-|:----------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
-| EV-to-Sales                 |  8.3883      |  5.5928      |  8.1056      | 10.0052      |  9.9405      |
-| EV-to-EBIT                  | 28.1653      | 18.4649      | 27.1806      | 31.7522      | 31.0925      |
-| EV-to-EBITDA                | 25.522       | 16.8942      | 24.6921      | 29.0536      | 28.5797      |
-| EV-to-Operating-Cash-Flow   | 29.4949      | 18.0546      | 28.1046      | 33.0846      | 37.1078      |
-| Tangible Asset Value        |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |  5.695e+10   |  7.3733e+10  |
-| Net Current Asset Value     | -1.53076e+11 | -1.66678e+11 | -1.46871e+11 | -1.55043e+11 | -1.37551e+11 |
-| EV-to-Free-Cash-Flow        | 33.0122      | 19.7894      | 31.1974      | 35.9571      | 41.885       |
-| Buyback Yield               |  0.0283      |  0.0421      |  0.0255      |  0.0246      |  0.0222      |
-| Shareholder Yield           |  0.0332      |  0.0491      |  0.0304      |  0.0286      |  0.026       |
-| SBC-Adjusted Free Cash Flow |  8.5047e+10  |  1.02405e+11 |  8.8751e+10  |  9.7119e+10  |  8.5904e+10  |
+|                             |         2021 |         2022 |         2023 |          2024 |         2025 |
+|:----------------------------|-------------:|-------------:|-------------:|--------------:|-------------:|
+| Earnings per Share          |  5.614       |  6.1132      |  6.1341      |   6.0836      |  7.465       |
+| Revenue per Share           | 21.691       | 24.1536      | 24.2393      |  25.3785      | 27.7354      |
+| Price-to-Earnings           | 31.6297      | 21.254       | 31.3871      |  41.1634      | 36.418       |
+| Price-to-Earnings-Growth    |  0.443       |  2.3908      | 92.315       | -50.1993      |  1.6036      |
+| Book Value per Share        |  3.7409      |  3.1038      |  3.9302      |   3.6961      |  4.914       |
+| Price-to-Book               | 47.4672      | 41.8617      | 48.9877      |  67.7523      | 55.3236      |
+| Interest Debt per Share     |  8.2519      |  8.2943      |  8.0862      |   7.727       |  7.4895      |
+| CAPEX per Share             | -0.6573      | -0.6559      | -0.6931      |  -0.6131      | -0.8474      |
+| Earnings Yield              |  0.0316      |  0.047       |  0.0319      |   0.0243      |  0.0275      |
+| Dividend Payout Ratio       |  0.1528      |  0.1487      |  0.1549      |   0.1625      |  0.1377      |
+| Dividend Yield              |  0.0049      |  0.007       |  0.0049      |   0.004       |  0.0038      |
+| Weighted Dividend Yield     |  0.0048      |  0.007       |  0.0049      |   0.0039      |  0.0038      |
+| Price-to-Cash-Flow          | 28.7847      | 17.3655      | 27.5403      |  32.6289      | 36.5905      |
+| Price-to-Free-Cash-Flow     | 32.2174      | 19.0341      | 30.5711      |  35.4618      | 41.301       |
+| Price-to-Sales              |  8.1863      |  5.3793      |  7.9429      |   9.8674      |  9.8019      |
+| Market Cap                  |  2.9947e+12  |  2.12121e+12 |  3.04439e+12 |   3.8585e+12  |  4.07918e+12 |
+| Enterprise Value            |  3.06859e+12 |  2.20539e+12 |  3.10676e+12 |   3.91238e+12 |  4.13686e+12 |
+| EV-to-Sales                 |  8.3883      |  5.5928      |  8.1056      |  10.0052      |  9.9405      |
+| EV-to-EBIT                  | 28.1653      | 18.4649      | 27.1806      |  31.7522      | 31.0925      |
+| EV-to-EBITDA                | 25.522       | 16.8942      | 24.6921      |  29.0536      | 28.5797      |
+| EV-to-Operating-Cash-Flow   | 29.4949      | 18.0546      | 28.1046      |  33.0846      | 37.1078      |
+| Tangible Asset Value        |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |   5.695e+10   |  7.3733e+10  |
+| Net Current Asset Value     | -1.53076e+11 | -1.66678e+11 | -1.46871e+11 |  -1.55043e+11 | -1.37551e+11 |
+| EV-to-Free-Cash-Flow        | 33.0122      | 19.7894      | 31.1974      |  35.9571      | 41.885       |
+| Buyback Yield               |  0.0283      |  0.0421      |  0.0255      |   0.0246      |  0.0222      |
+| Shareholder Yield           |  0.0332      |  0.0491      |  0.0304      |   0.0286      |  0.026       |
+| SBC-Adjusted Free Cash Flow |  8.5047e+10  |  1.02405e+11 |  8.8751e+10  |   9.7119e+10  |  8.5904e+10  |
+| Free Cash Flow Payout Ratio |  0.1556      |  0.1332      |  0.1509      |   0.14        |  0.1561      |
+| EV-to-Invested-Capital      | 22.4029      | 16.3546      | 24.9497      |  35.2982      | 31.4798      |
+| Price-to-Tangible-Book      | 47.4672      | 41.8617      | 48.9877      |  67.7523      | 55.3236      |
 
 ---
 
@@ -5061,6 +6422,10 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 
 **Args:**
 
+- <u>min_analysts (int &#124; None, optional):</u> The minimum number of analysts behind the EPS
+consensus of a period; periods covered by fewer are NaN. The number per period is
+the "Number of Analysts EPS" of `Toolkit.get_analyst_estimates`. Defaults to None,
+which keeps every period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5084,22 +6449,22 @@ made for years that have already been reported.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["LLY", "JNJ", "ABBV"],
+    ["NVDA", "AMD", "AVGO"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.ratios.get_forward_price_earnings_ratio().loc[:, "2026":"2030"]
+toolkit.ratios.get_forward_price_earnings_ratio(min_analysts=5).loc[:, "2026":"2030"]
 ```
 
 Which returns:
 
-|      |    2026 |    2027 |    2028 |    2029 |    2030 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| ABBV | 16.4205 | 13.9217 | 12.7775 | 11.5443 | 10.899  |
-| JNJ  | 18.6267 | 17.8462 | 14.8139 | 13.1689 | 11.6937 |
-| LLY  | 31.5628 | 22.7146 | 19.8242 | 17.462  | 15.9104 |
+|      |    2026 |    2027 |    2028 |     2029 |     2030 |
+|:-----|--------:|--------:|--------:|---------:|---------:|
+| AMD  | 26.8499 | 12.2758 |  8.3568 |   6.2147 |   4.824  |
+| AVGO | 29.6209 | 17.9157 | 11.2984 | nan      | nan      |
+| NVDA | 20.0741 | 11.798  |  8.7249 |   7.2852 |   5.6192 |
 
 ---
 
@@ -5126,6 +6491,10 @@ Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP 
 
 **Args:**
 
+- <u>min_analysts (int &#124; None, optional):</u> The minimum number of analysts behind the EPS
+consensus of a period; periods covered by fewer are NaN. The number per period is
+the "Number of Analysts EPS" of `Toolkit.get_analyst_estimates`. Defaults to None,
+which keeps every period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -6626,7 +7995,9 @@ $$
 \text{Shareholder Yield} = \text{Dividend Yield} + \text{Buyback Yield}
 $$
 
-**Also known as:** total shareholder yield, total return of capital.
+The buyback yield is net of the shares issued, so the shareholder yield is the net payout yield of Boudoukh, Michaely, Richardson and Roberts (2007): dividends plus repurchases minus issuance, relative to the market capitalization, which predicts returns better than the dividend yield alone.
+
+**Also known as:** total shareholder yield, total return of capital, net payout yield.
 
 **Args:**
 
@@ -6653,6 +8024,9 @@ pd.DataFrame: Shareholder yield values.
 
 **Notes:**
 
+- Boudoukh, J., Michaely, R., Richardson, M. and Roberts, M. R., "On the Importance
+of Measuring Payout Yield: Implications for Empirical Asset Pricing," Journal of
+Finance 62(2), 2007, pp. 877-915.
 - The method retrieves historical data and calculates the shareholder yield for each
 asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of the ratio values
@@ -6675,10 +8049,10 @@ toolkit.ratios.get_shareholder_yield()
 
 Which returns:
 
-|     |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:----|-------:|-------:|-------:|-------:|-------:|
-| HD  | 0.0489 | 0.044  | 0.0461 | 0.0238 | 0.0258 |
-| LOW | 0.0828 | 0.1309 | 0.0665 | 0.0471 | 0.02   |
+|     |   2021 |   2022 |   2023 |   2024 |
+|:----|-------:|-------:|-------:|-------:|
+| HD  | 0.0489 | 0.0439 | 0.0461 | 0.0238 |
+| LOW | 0.0829 | 0.1309 | 0.0665 | 0.0472 |
 
 ---
 
@@ -6745,6 +8119,449 @@ Which returns:
 | ADBE | 5.824e+09 | 5.956e+09 | 5.224e+09 | 6.04e+09  | 7.91e+09   |
 | CRM  | 2.504e+09 | 3.034e+09 | 6.711e+09 | 9.251e+09 | 1.0893e+10 |
 | NOW  | 6.61e+08  | 7.72e+08  | 1.1e+09   | 1.669e+09 | 2.621e+09  |
+
+---
+
+## get_free_cash_flow_payout_ratio
+Calculate the free cash flow payout ratio, the share of free cash flow paid out as dividends.
+
+The dividend payout ratio (`get_dividend_payout_ratio`) compares the dividends with the net income, but dividends are paid from cash. A free cash flow payout ratio well below 1 leaves room for buybacks, debt repayment or a higher dividend; a ratio persistently above 1 means the dividend is funded with cash reserves or new debt and is at risk of a cut.
+
+The formula is as follows:
+
+$$
+\text{Free Cash Flow Payout Ratio} = | \text{Dividends Paid} | / \text{Free Cash Flow}
+$$
+
+Dividends are reported as a negative cash outflow, so their magnitude is used. A free cash flow of zero or less gives NaN.
+
+**Also known as:** FCF payout ratio, dividends to free cash flow, cash dividend payout ratio, FCF dividend payout.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (cash flow statement
+items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
+and 3 with annual data a three-year cumulative figure. Defaults to None, which
+uses single-period flows.
+
+**Returns:**
+
+pd.DataFrame: Free cash flow payout ratio values.
+
+**Notes:**
+
+- Damodaran, A., "Investment Valuation," 3rd edition, Wiley, 2012 (dividends and
+free cash flow to equity).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "PFE", "VZ"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_free_cash_flow_payout_ratio()
+```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| KO  | 0.6442 | 0.7988 | 0.8158 | 1.7631 | 1.6577 |
+| PFE | 0.2922 | 0.3451 | 1.9293 | 0.9672 | 1.0766 |
+| VZ  | 0.5425 | 1.0388 | 0.5893 | 0.5945 | 0.5835 |
+
+---
+
+## get_ev_to_invested_capital_ratio
+Calculate the enterprise value to invested capital ratio, the market value of a company's operations against the capital invested in them.
+
+Koller, Goedhart and Wessels show that a company creates value when its return on invested capital exceeds its cost of capital, and EV to invested capital is how the market prices that: a ratio above 1 means the market expects the company to earn more than its cost of capital on the capital invested, a ratio below 1 that it expects less. Read together with the return on invested capital (`get_return_on_invested_capital`), a high ROIC with a low EV/IC points to value.
+
+The formula is as follows:
+
+$$
+\text{Invested Capital} = \text{Total Equity} + \text{Total Debt} - \text{Cash and Short Term Investments}
+$$
+
+$$
+\text{EV to Invested Capital} = \text{Enterprise Value} / \text{Invested Capital}
+$$
+
+The invested capital is measured from the financing side, with the same items as the enterprise value (`get_enterprise_value`): the equity includes minority interest and preferred stock, and the cash and short-term investments are deducted from both. It is a point in time at the end of each period, as the enterprise value is. An invested capital of zero or less gives NaN.
+
+**Also known as:** EV/IC, enterprise value to invested capital, firm market-to-book.
+
+**Args:**
+
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the balance sheet of the latest period that has ended on or before that
+day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of period ends to average the balance sheet
+items over, as for the price to book ratio. Defaults to None, which uses the
+balance sheet at the end of each period.
+
+**Returns:**
+
+pd.DataFrame: EV to invested capital values.
+
+**Notes:**
+
+- Koller, T., Goedhart, M. and Wessels, D., "Valuation: Measuring and Managing the
+Value of Companies," 7th edition, Wiley, 2020 (invested capital and the
+EV-to-invested-capital multiple).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "KO", "F"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_ev_to_invested_capital_ratio()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 22.4029 | 16.3546 | 24.9497 | 35.2982 | 31.4798 |
+| F    |  1.2546 |  1.0247 |  1.0422 |  0.97   |  1.0985 |
+| KO   |  5.1209 |  5.6096 |  5.0137 |  5.2427 |  4.9835 |
+
+---
+
+## get_price_to_tangible_book_ratio
+Calculate the price to tangible book ratio, the market value of the common equity against its book value without goodwill and other intangible assets.
+
+Goodwill and acquired intangibles cannot be sold separately and are written off first when a company gets into trouble, so the tangible book value is the more conservative measure of what the shareholders own. The ratio is the usual valuation measure for banks and insurers, whose assets are mostly financial, and shows for acquisitive companies how much of the price is paid for past acquisitions.
+
+The formula is as follows:
+
+$$
+\text{Tangible Book Value} = \text{Total Shareholder Equity} - \text{Preferred Stock} - \text{Goodwill and Intangible Assets}
+$$
+
+$$
+\text{Price to Tangible Book} = \text{Market Capitalization} / \text{Tangible Book Value}
+$$
+
+The market capitalization uses the same close and shares as the price to book ratio (`get_price_to_book_ratio`), so both differ only by the goodwill and intangibles. A tangible book value of zero or less (common after large acquisitions or buybacks) gives NaN.
+
+**Also known as:** P/TBV, price to tangible book value, price to tangible equity, P/TB.
+
+**Args:**
+
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the balance sheet of the latest period that has ended on or before that
+day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of period ends to average the balance sheet
+items over, as for the price to book ratio. Defaults to None, which uses the
+balance sheet at the end of each period.
+
+**Returns:**
+
+pd.DataFrame: Price to tangible book values.
+
+**Notes:**
+
+- CFA Institute, "Equity Valuation: Applications and Processes," CFA Program
+Curriculum (price to book value: adjusting book value for intangible assets).
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["JPM", "C", "WFC"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_price_to_tangible_book_ratio()
+```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| C   | 0.7874 | 0.562  | 0.616  | 0.8017 | 1.2871 |
+| JPM | 2.3656 | 1.9517 | 2.1204 | 2.6528 | 3.2247 |
+| WFC | 1.467  | 1.2662 | 1.3809 | 1.9093 | 2.251  |
+
+---
+
+## get_net_share_issuance
+Calculate the net share issuance of Pontiff and Woodgate (2008): the log change in the split-adjusted number of shares over a year.
+
+Pontiff and Woodgate show that companies that issue shares earn lower returns over the following year and companies that buy back shares higher returns, and that the share issuance predicts returns more strongly than size, book-to-market or momentum in the years after 1970. The measure is positive for a net issuer of shares and negative for a company that buys back more shares than it issues.
+
+The formula is as follows:
+
+$$
+\text{Net Share Issuance} = \ln(\text{Shares} / \text{Shares}\; a \;\text{Year Earlier})
+$$
+
+The shares are the weighted average shares of the period, which the statements report adjusted for later stock splits, so only issuance and repurchases change them. The paper takes the shares outstanding at a date; the weighted average moves with them but spreads a change over the period it occurs in. The shares a year earlier are those of the year before with annual data and four quarters back with quarterly data. Shares of zero or less give NaN.
+
+**Also known as:** share issuance, ISSUE, net stock issues, change in shares outstanding.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use the diluted weighted average shares instead of
+the basic ones. Defaults to False, as the dilution from options and convertibles
+moves with the share price rather than with issuance.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods the shares are compared over.
+E.g. 5 with annual data gives the five-year issuance. Defaults to None, which
+uses a year: 4 quarters with quarterly data and 1 year with annual data.
+
+**Returns:**
+
+pd.DataFrame: Net share issuance values.
+
+**Notes:**
+
+- Pontiff, J. and A. Woodgate, "Share Issuance and Cross-Sectional Returns," Journal
+of Finance 63(2), 2008, pp. 921-945.
+- The first period has no shares a year earlier and is NaN, so set an earlier
+start_date to obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "TSLA", "META", "AMZN"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_net_share_issuance()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | -0.0382 | -0.0295 | -0.0295 | -0.0258 | -0.0261 |
+| AMZN |  0.0119 |  0.0068 |  0.0112 |  0.0163 |  0.0173 |
+| META | -0.0127 | -0.0465 | -0.043  | -0.0157 | -0.0051 |
+| TSLA |  0.0556 |  0.0562 |  0.0138 |  0.0074 |  0.0087 |
+
+---
+
+## get_composite_equity_issuance
+Calculate the composite equity issuance of Daniel and Titman (2006): the growth in market capitalization over five years that the stock return does not explain.
+
+A company's market capitalization grows with its stock return and with the equity it issues, so what remains after the return is the net equity issued: seasoned offerings, shares issued to employees and in stock-financed acquisitions, minus buybacks and dividends. Daniel and Titman show that this composite issuance predicts returns negatively and, unlike past returns, independently of the book-to-market ratio: companies that issue equity tend to do so when their shares are expensive, and those that return cash when they are cheap.
+
+The formula is as follows:
+
+$$
+\text{Composite Equity Issuance} = \ln(\text{Market Cap} / \text{Market Cap Five Years Earlier})
+$$
+
+- ln(Total Return over the Five Years)
+
+The total return is the log change in the price adjusted for dividends and splits, so a company that pays dividends without issuing shares has a negative value. The market cap is the close (adjusted for splits only) at the end of each period times the weighted average shares, as in `get_market_cap`, and the periods follow the calendar. The window is five years, as in the paper: 5 years with annual data and 20 quarters with quarterly data.
+
+**Also known as:** CEI, iota, composite issuance, composite share issuance.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use the diluted weighted average shares instead of
+the basic ones. Defaults to False, as the dilution from options and convertibles
+moves with the share price rather than with issuance.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods of the window. E.g. 1 with annual
+data gives the issuance over a year. Defaults to None, which uses five years:
+20 quarters with quarterly data and 5 years with annual data.
+
+**Returns:**
+
+pd.DataFrame: Composite equity issuance values.
+
+**Notes:**
+
+- Daniel, K. and S. Titman, "Market Reactions to Tangible and Intangible
+Information," Journal of Finance 61(4), 2006, pp. 1605-1643.
+- The prices and statements reach about a year before the start date, so with the
+five-year window the first years are NaN; set an earlier start_date to obtain them.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "TSLA", "META", "AMZN"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2016-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_composite_equity_issuance()
+```
+
+Which returns:
+
+|      |   2016 |   2017 |   2018 |    2019 |    2020 |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|-------:|-------:|-------:|--------:|--------:|--------:|--------:|--------:|--------:|--------:|
+| AAPL |    nan |    nan |    nan | -0.361  | -0.3589 | -0.331  | -0.3028 | -0.2715 | -0.2165 | -0.176  |
+| AMZN |    nan |    nan |    nan |  0.067  |  0.0683 |  0.0653 |  0.0595 |  0.0563 |  0.0583 |  0.0635 |
+| META |    nan |    nan |    nan |  0.074  |  0.0045 | -0.0355 | -0.0945 | -0.1158 | -0.1227 | -0.13   |
+| TSLA |    nan |    nan |    nan |  0.3515 |  0.3754 |  0.3133 |  0.2302 |  0.2152 |  0.1858 |  0.1417 |
+
+---
+
+## get_net_external_financing
+Calculate the net external financing of Bradshaw, Richardson and Sloan (2006): the cash a company raises from shareholders and lenders, net of what it returns to them, scaled by its average total assets.
+
+Bradshaw, Richardson and Sloan show that the net external financing predicts returns negatively: companies that raise the most cash from equity and debt investors earn the lowest returns afterwards, and the relation holds for equity and for debt financing separately. Analysts are also most optimistic about the companies that raise the most financing, which fits the view that companies raise capital when investors overvalue them.
+
+The formula is as follows:
+
+$$
+\text{Net External Financing} = (\text{Net Equity Financing} + \text{Net Debt Financing}) / \text{Average Total Assets}
+$$
+
+$$
+\text{Net Equity Financing} = \text{Common and Preferred Stock Issued} - \text{Stock Repurchased} - \text{Dividends Paid}
+$$
+
+$$
+\text{Net Debt Financing} = \text{Long Term Debt Issued} - \text{Long Term Debt Repaid} + \text{Change in Short Term Debt}
+$$
+
+The flows are those of the cash flow statement and the average total assets the average of the total assets at the start and the end of the window. It is an annual measure, so with quarterly data the flows are those of the trailing twelve months and the total assets are averaged over the start and end of that year by default. Average total assets of zero or less give NaN.
+
+**Also known as:** XFIN, ΔXFIN, net financing, external financing.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum the cash flow statement
+items over, with the total assets averaged over the start and the end of that
+window. Defaults to None, which uses the trailing twelve months (4 quarters)
+with quarterly data and single years with annual data.
+
+**Returns:**
+
+pd.DataFrame: Net external financing values.
+
+**Notes:**
+
+- Bradshaw, M. T., S. A. Richardson and R. G. Sloan, "The Relation Between Corporate
+Financing Activities, Analysts' Forecasts and Stock Returns," Journal of Accounting
+and Economics 42(1-2), 2006, pp. 53-85.
+- The first period has no total assets at the start of the window and is NaN, so set
+an earlier start_date to obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "KO", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_net_external_financing()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | -0.2568 | -0.2966 | -0.2906 | -0.3238 | -0.3165 |
+| KO   | -0.0708 | -0.0979 | -0.0824 | -0.0694 | -0.0896 |
+| MSFT | -0.1447 | -0.1661 | -0.1105 | -0.0789 | -0.0874 |
+| XOM  | -0.1034 | -0.1054 | -0.0884 | -0.0997 | -0.083  |
 
 ---
 
@@ -6830,9 +8647,9 @@ Which returns:
 
 |                                              |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
 |:---------------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('get_price_to_earnings_ratio', '12 Months') |    0.0265 |                  0.3242 |                 0.0817 |        0.8174 |    0.4157 |             0.55 |            100 |             0.0757 |              0.0931 |                 0.9504 |
-| ('get_price_to_book_ratio', '12 Months')     |    0.1122 |                  0.2952 |                 0.38   |        3.8004 |    0.0002 |             0.68 |            100 |             0.1655 |              0.0506 |                 0.9776 |
-| ('get_return_on_equity', '12 Months')        |    0.0423 |                  0.3551 |                 0.1191 |        1.1915 |    0.2363 |             0.5  |            100 |             0.065  |              0.0517 |                 0.9671 |
+| ('get_price_to_earnings_ratio', '12 Months') |    0.0495 |                  0.2919 |                 0.1697 |        1.7636 |    0.0807 |           0.5648 |            108 |             0.0842 |              0.0896 |                 0.95   |
+| ('get_price_to_book_ratio', '12 Months')     |    0.1156 |                  0.2966 |                 0.3898 |        4.0507 |    0.0001 |           0.6759 |            108 |             0.1691 |              0.0501 |                 0.978  |
+| ('get_return_on_equity', '12 Months')        |    0.0425 |                  0.355  |                 0.1198 |        1.1976 |    0.2339 |           0.5    |            100 |             0.065  |              0.0517 |                 0.9671 |
 
 ---
 

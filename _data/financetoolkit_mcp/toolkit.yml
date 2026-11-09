@@ -20,13 +20,13 @@ get_rating:
     show_columns: DCF Score,ROE Score,ROA Score,DE Score,PE Score,PB Score
     limit: -1
 get_analyst_estimates:
-  question: What average revenue do analysts expect for Nvidia, AMD and Broadcom for fiscal 2026 to 2031?
+  question: What earnings per share do analysts expect on average for Nvidia, AMD and Broadcom in each fiscal year from 2026 to 2030, and how many analysts make up each estimate?
   tool: market_data
   arguments:
-    tickers: NVDA,AMD,AVGO
+    tickers: "NVDA,AMD,AVGO"
     start_date: "2026-01-01"
     end_date: "2028-12-31"
-    show_columns: Estimated Revenue Average
+    show_columns: "Estimated EPS Average,Number of Analysts EPS"
 get_earnings_calendar:
   question: How did Costco's reported earnings per share compare with analysts' estimates in each quarterly report of 2024 and 2025?
   tool: market_data

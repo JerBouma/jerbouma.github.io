@@ -173,11 +173,11 @@ Which returns:
 
 | Date   |   NVDA |   TSLA |    JPM |
 |:-------|-------:|-------:|-------:|
-| 2021   | 2.0446 | 1.9542 | 0.8378 |
-| 2022   | 2.2    | 1.7398 | 0.8813 |
-| 2023   | 2.0229 | 2.2485 | 0.8724 |
-| 2024   | 2.6586 | 2.3803 | 0.8013 |
-| 2025   | 1.8731 | 2.2343 | 0.9478 |
+| 2021   | 2.0431 | 1.9542 | 0.8376 |
+| 2022   | 2.2001 | 1.7404 | 0.8815 |
+| 2023   | 2.0217 | 2.247  | 0.8723 |
+| 2024   | 2.6583 | 2.38   | 0.8006 |
+| 2025   | 1.8727 | 2.2342 | 0.9481 |
 
 The downside Beta shows how the same stocks moved on the days the S&P 500 fell:
 
@@ -694,7 +694,7 @@ The R Squared is the share of the ticker's variance the styles explain; what the
 
 A window estimates the weights over a rolling number of periods instead, which shows how a fund's style drifts over time, and adds Sharpe's out-of-sample measure of selection: the Out-of-Sample Selection Return of a date is the ticker's return of that period minus the return of that period of the style mix estimated over the window that ends one period earlier (Sharpe uses the previous 60 months). It is a return per period, not annualized, and NaN for the first window, which has no earlier estimate. Its average shows whether the manager added value beyond a passive mix of the styles the fund was known to follow.
 
-The style indices are tickers of the Toolkit as well (an ETF per style works well, for example IWF, IWD, IWO and IWN for US large and small cap growth and value and AGG for bonds), and every other ticker is analyzed against them. "Benchmark" can be one of them.
+By default the styles are Sharpe's asset classes as ETFs: IWD and IWF for US large cap value and growth, IWN and IWO for small cap value and growth, AGG for bonds and BIL for cash. Style tickers that are not in the Toolkit are retrieved for the same dates, and every Toolkit ticker that is not a style is analyzed against them. "Benchmark" can be one of them.
 
 For more information, see the following paper:
 
@@ -704,8 +704,9 @@ For more information, see the following paper:
 
 **Args:**
 
-- <u>style_tickers (str &#124; list[str]):</u> The tickers of the style indices, as a list or a
-comma-separated string.
+- <u>style_tickers (str &#124; list[str] &#124; None, optional):</u> The tickers of the style indices, as a
+list or a comma-separated string. Defaults to None, which uses IWD, IWF, IWN, IWO,
+AGG and BIL.
 - <u>period (str, optional):</u> The return frequency (daily, weekly, monthly, quarterly or
 yearly). Defaults to "monthly".
 - <u>window (int &#124; None, optional):</u> The number of periods to estimate the weights over on a
@@ -727,20 +728,21 @@ returns than there are styles (in a window) is NaN.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["ARKK", "IWF", "IWD", "IWO", "IWN", "AGG"],
+    ["ARKK", "BRK-B"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2019-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_style_analysis(["IWF", "IWD", "IWO", "IWN", "AGG"])
+toolkit.performance.get_style_analysis()
 ```
 
 Which returns:
 
-|      |    IWF |   IWD |    IWO |   IWN |   AGG |   R Squared |   Selection Return |   Tracking Error |
-|:-----|-------:|------:|-------:|------:|------:|------------:|-------------------:|-----------------:|
-| ARKK | 0.0091 |     0 | 0.9909 |     0 |     0 |      0.6123 |             0.0638 |           0.2632 |
+|       |    IWD |    IWF |   IWN |    IWO |   AGG |    BIL |   R Squared |   Selection Return |   Tracking Error |
+|:------|-------:|-------:|------:|-------:|------:|-------:|------------:|-------------------:|-----------------:|
+| ARKK  | 0      | 0.0091 |     0 | 0.9909 |     0 | 0      |      0.6123 |             0.0638 |           0.2632 |
+| BRK-B | 0.8793 | 0      |     0 | 0      |     0 | 0.1207 |      0.5662 |             0.0425 |           0.1304 |
 
 ---
 
@@ -977,7 +979,15 @@ Note that the Risk Free Rate is already subtracted from these returns. The Toolk
 
 By default the result is **not annualized**: it is a per-observation Sharpe ratio, so a value computed from daily returns is roughly SQRT(252) smaller than the annualized figure usually quoted in the literature (SQRT(52), SQRT(12) and SQRT(4) for weekly, monthly and quarterly returns respectively). Set annualize=True to multiply by that factor, to compare against published annualized Sharpe ratios.
 
-The plain Sharpe ratio only looks at the mean and standard deviation of returns, implicitly assuming Gaussian, i.i.d. returns and ignoring how much uncertainty surrounds the estimate itself. The `method` parameter selects one of three corrections for that, each keeping the same excess returns and therefore the same underlying Sharpe ratio as its starting point:
+The plain Sharpe ratio only looks at the mean and standard deviation of returns, implicitly assuming Gaussian, i.i.d. returns and ignoring how much uncertainty surrounds the estimate itself. The `method` parameter selects one of four corrections for that, each keeping the same excess returns and therefore the same underlying Sharpe ratio as its starting point:
+
+- `"lo"` - the annualized Sharpe ratio of Lo (2002), which corrects the annualization for serially correlated returns. SQRT(q) * SR assumes independent returns; with autocorrelated returns (smoothed prices of illiquid assets, hedge funds, momentum or mean reversion) the variance of a yearly return is no longer q times the variance of one return, and the yearly Sharpe ratio becomes:
+
+$$
+\operatorname{SR}(q) = \operatorname{η}(q) \cdot \text{SR},\;\; \operatorname{η}(q) = q / \sqrt{q + 2 \cdot \text{Σ\_\{k} = \text{1\}} ^{\text{\{q-1\}}} (q - k) \cdot \rho_{k}}
+$$
+
+where q is the number of observations in a year and ρ_k the sample autocorrelation of the excess returns at lag k. Positive autocorrelation lowers the annualized ratio below SQRT(q) * SR, negative autocorrelation raises it. Sample autocorrelations at lags close to the sample size rest on a handful of pairs, so the sum runs over `lags` lags and takes the autocorrelations beyond them as 0. Each ρ_k is corrected for its small-sample bias −(n − k) / (n · (n − 1)) (Moran, 1948), which the (q − k) weights would otherwise turn into an overstated ratio on short samples, and fewer than 30 observations give NaN: a week or a month of daily returns, or a rolling window below 30, so use quarterly or yearly periods or a longer window. The result is always annualized.
 
 - `"adjusted"` - the Adjusted Sharpe Ratio (ASR, Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically:
 
@@ -1011,8 +1021,8 @@ This codebase does not track "N literal strategy trials" - there is no record of
 initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
-- <u>method (str, optional):</u> Which Sharpe ratio to calculate, one of "standard", "adjusted",
-"probabilistic" or "deflated", as described above. Defaults to "standard".
+- <u>method (str, optional):</u> Which Sharpe ratio to calculate, one of "standard", "lo",
+"adjusted", "probabilistic" or "deflated", as described above. Defaults to "standard".
 - <u>benchmark_sharpe_ratio (float, optional):</u> The hypothesized or benchmark Sharpe ratio
 (SR*) to test the observed Sharpe ratio against. Only used when method="probabilistic".
 Defaults to 0.0, i.e. testing whether the strategy has any skill at all above doing nothing.
@@ -1030,6 +1040,10 @@ arriving at the reported Sharpe ratio. Only used when method="deflated". Default
 None, which falls back to the number of valid values in the auxiliary rolling Sharpe
 ratio series described above. Pass this explicitly whenever the actual number of trials
 is known.
+- <u>lags (int, optional):</u> The number of autocorrelation lags in Lo's η(q). Only used when
+method="lo". Defaults to None, which uses the Newey and West (1994) rule
+floor(4 * (n / 100)^(2/9)) on the n observations (4 for a year of daily returns),
+capped at q − 1.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -1041,8 +1055,9 @@ values. Defaults to False.
 the square root of the number of observations in a year: 252 for the daily
 returns within each period, 252 times the median number of bars per day for the
 intraday returns within a day (period="daily" with an intraday_period), or the
-periods in a year for a rolling Sharpe ratio (e.g. 12 for monthly). Only for method="standard" and "adjusted", since the other
-methods return probabilities. Defaults to False.
+periods in a year for a rolling Sharpe ratio (e.g. 12 for monthly). Only for method="standard" and "adjusted", since the
+probabilistic and deflated methods return probabilities; method="lo" is annualized
+either way. Defaults to False.
 
 **Returns:**
 
@@ -2102,11 +2117,11 @@ Which returns:
 
 | Date   |     VOO |     QQQ |    SCHD |
 |:-------|--------:|--------:|--------:|
-| 2021   |  0.3178 |  0.278  |  0.32   |
-| 2022   | -0.2349 | -0.3837 | -0.0851 |
-| 2023   |  0.1797 |  0.4298 | -0.0232 |
-| 2024   |  0.1795 |  0.1826 |  0.0484 |
-| 2025   |  0.1199 |  0.135  | -0.0101 |
+| 2021   |  0.3176 |  0.278  |  0.3201 |
+| 2022   | -0.235  | -0.3837 | -0.0851 |
+| 2023   |  0.1796 |  0.4298 | -0.023  |
+| 2024   |  0.1793 |  0.1826 |  0.0485 |
+| 2025   |  0.1198 |  0.135  | -0.01   |
 
 ---
 
@@ -2181,7 +2196,7 @@ Which returns:
 | 2022   | 0.0375 | 0.0449 | 0.0339 |
 | 2023   | 0.023  | 0.0445 | 0.0183 |
 | 2024   | 0.0121 | 0.0145 | 0.016  |
-| 2025   | 0.0125 | 0.0257 | 0.0126 |
+| 2025   | 0.0125 | 0.0256 | 0.0126 |
 
 ---
 
@@ -2414,8 +2429,8 @@ columns. Within periods, the periods as the index and (statistic, ticker) as the
 
 - A zero return is neither a win nor a loss: it is left out of the Win Rate and ends a
 streak. Each ticker is measured over its own returns.
-- A Profit Factor with gains but no losses is infinite (inf), as for the Omega Ratio; a
-statistic without the returns it needs, such as the Payoff Ratio without losses, is NaN.
+- A statistic without the returns it needs, such as the Profit Factor or the Payoff Ratio
+without losses, is NaN, as for the Omega Ratio.
 - There is no Portfolio column: a weighted average of streak lengths or payoff ratios is
 not the statistic of the portfolio.
 
@@ -3218,7 +3233,7 @@ A factor of your own is a DataFrame with the dates as index and the tickers as c
 period, e.g. "get_sharpe_ratio", a list of them, "all", or a factor of your own
 as a DataFrame. "all" holds the returns, excess return, beta, Sharpe, Sortino,
 Treynor and information ratios, tracking error, Jensen's alpha, Calmar and
-Omega ratios and the win rate.
+Omega ratios and the win rate. Defaults to "all".
 - <u>period (str, optional):</u> The frequency at which the metrics are measured and
 evaluated: weekly, monthly, quarterly or yearly. Each metric is calculated
 within each period from that period's daily returns, so use monthly or longer
@@ -3285,8 +3300,323 @@ Which returns:
 
 |                                |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
 |:-------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('Custom Factor', '1 Month')   |    0.0178 |                  0.3743 |                 0.0476 |        0.4923 |    0.6235 |           0.4953 |            107 |             0.004  |              0.2391 |                 0.8822 |
-| ('Custom Factor', '12 Months') |    0.1121 |                  0.419  |                 0.2675 |        2.6214 |    0.0102 |           0.5729 |             96 |             0.0195 |              0.2391 |                 0.8822 |
+| ('Custom Factor', '1 Month')   |    0.018  |                  0.3745 |                 0.0481 |        0.498  |    0.6195 |           0.4953 |            107 |             0.004  |              0.2391 |                 0.8822 |
+| ('Custom Factor', '12 Months') |    0.1122 |                  0.419  |                 0.2678 |        2.6242 |    0.0101 |           0.5729 |             96 |             0.0195 |              0.2391 |                 0.8822 |
+
+---
+
+## get_sharpe_ratio_standard_error
+Calculate the standard error of the Sharpe ratio: how far the measured Sharpe ratio may lie from the true one. A Sharpe ratio measured over a year of daily returns is an estimate, and roughly 95% of the time the true ratio lies within two standard errors of it.
+
+The formulas are as follows, with SR the Sharpe ratio of one observation (the Sharpe ratio of `get_sharpe_ratio` without annualizing) and n the number of observations:
+
+$$
+\text{"iid":}\;\; \text{SE} = \sqrt{(1 + \text{SR} ^{2} / 2) / n},\;\; \text{for normally and independently distributed returns (Lo, 2002, equation 9)}
+$$
+
+$$
+\text{"non\_normal":}\;\; \text{SE} = \sqrt{(1 - \text{γ₃} \cdot \text{SR} + ((\text{γ₄} - 1) / 4) \cdot \text{SR} ^{2}) / (n - 1)},\;\; \text{for independent but skewed and fat-tailed returns},\;\; \text{with γ₃ the skewness and γ₄ the non-excess (raw) kurtosis (Mertens, 2002; the standard error inside the Probabilistic Sharpe Ratio of Bailey and López de Prado, 2012)}
+$$
+
+$$
+\text{"gmm":}\;\; \text{SE} = \sqrt{\text{∂g} / \text{∂theta} \cdot \text{Σ} \cdot \text{∂g} / \text{∂theta'} / n},\;\; \text{for} \;\; \text{returns that may also be serially correlated and heteroskedastic} (\text{Lo},\; 2002,\; \text{Appendix}) . \;\text{With}\; \theta = (\mu,\; \sigma ^{2}) \text{and}\; g (\theta) = \mu / \sigma,\;\; \text{∂g} / \text{∂theta} = (1 / \sigma,\; - \mu / (\text{2sigma} ^{3})) \text{and}\; \text{Σ} \;\text{is the Newey and West} (1987) \text{long-run covariance of the moment conditions} (r_{t} - \mu,\; (r_{t} - \mu) ^{2} - \sigma ^{2})
+$$
+
+Negative skewness, fat tails and positive autocorrelation all widen the standard error, so the same Sharpe ratio is then less certain. The standard error is on the scale of the Sharpe ratio of one observation; multiply by SQRT(252) to compare it with a Sharpe ratio annualized by SQRT(252) (exact for the "iid" and "non_normal" errors, a rescaling of the same estimate for "gmm").
+
+For more information about the method, see the following papers:
+
+- Lo, A.W. (2002). "The Statistics of Sharpe Ratios." Financial Analysts Journal, 58(4), 36-52.
+- Mertens, E. (2002). "Comments on Variance of the IID Estimator in Lo (2002)." Working Paper, University of Basel.
+- Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
+- Newey, W.K., & West, K.D. (1987). "A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix." Econometrica, 55(3), 703-708.
+
+**Also known as:** Sharpe ratio confidence interval, Sharpe ratio estimation error.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> "iid", "non_normal" or "gmm", as described above. Defaults
+to "iid".
+- <u>lags (int, optional):</u> The number of lags in the Newey-West covariance, only used
+when method="gmm". Defaults to None, which uses the Newey and West (1994) rule
+floor(4 * (n / 100)^(2/9)), 4 for a year of daily returns.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the standard errors. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: The standard error of the Sharpe ratio per period.
+
+**Notes:**
+
+- The Sharpe ratio is computed from the daily excess returns within each period, as in
+`get_sharpe_ratio`; period="daily" needs intraday data (initialise the Toolkit with an
+intraday_period).
+- The "non_normal" error uses the bias-corrected sample skewness and kurtosis, as
+`get_sharpe_ratio(method="probabilistic")` does; the "gmm" error uses the moments of
+GMM (σ² with 1 / n).
+- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["SPY", "TLT", "GLD", "BTCUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+    benchmark_ticker=None,
+)
+
+toolkit.performance.get_sharpe_ratio_standard_error(method="gmm")
+```
+
+Which returns:
+
+| Date   |    SPY |    TLT |    GLD |   BTCUSD |
+|:-------|-------:|-------:|-------:|---------:|
+| 2021   | 0.0586 | 0.0585 | 0.0635 |   0.0605 |
+| 2022   | 0.0602 | 0.0567 | 0.0624 |   0.0589 |
+| 2023   | 0.0635 | 0.0564 | 0.0609 |   0.0605 |
+| 2024   | 0.0645 | 0.063  | 0.0617 |   0.0585 |
+| 2025   | 0.0554 | 0.0611 | 0.0623 |   0.0634 |
+
+---
+
+## get_minimum_track_record_length
+Calculate the Minimum Track Record Length (MinTRL): how many return observations are needed before the measured Sharpe ratio is, with the given confidence, above the benchmark Sharpe ratio. A short track record with a high Sharpe ratio can still be luck; the MinTRL says how long the record has to be for it not to be, taking the skewness and fat tails of the returns into account.
+
+The formula is as follows:
+
+$$
+\text{MinTRL} = 1 + (1 - \text{γ₃} \cdot \text{SR} + ((\text{γ₄} - 1) / 4) \cdot \text{SR} ^{2}) \cdot (Z_{\alpha} / (\text{SR} - \text{SR} \cdot)) ^{2}
+$$
+
+Where SR is the Sharpe ratio of one observation (not annualized), SR* the benchmark Sharpe ratio on the same scale, γ₃ the skewness and γ₄ the non-excess (raw) kurtosis of the excess returns (3 for a normal distribution) and Z_α the standard normal quantile at `confidence_level` (1.645 for 95%). With n = MinTRL observations, the Probabilistic Sharpe Ratio, `get_sharpe_ratio(method="probabilistic")`, equals `confidence_level`. Negative skewness and fat tails lengthen the record needed. When SR does not exceed SR*, no track record is long enough and the value is left out (NaN).
+
+By default one MinTRL is reported per `period`, computed from the daily excess returns within that period, so it counts trading days (divide by 252 for years). For a rolling period, `period` sets the frequency of the returns and the measure is computed over a rolling window of `rolling` such returns, so it counts periods (e.g. months).
+
+For more information about the method, see the following paper:
+
+- Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
+
+**Also known as:** MinTRL, minimum track record, required track record length.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rolling (int, optional):</u> The rolling window size, in observations of `period`.
+Defaults to None, one value per period.
+- <u>benchmark_sharpe_ratio (float, optional):</u> The benchmark Sharpe ratio SR*, on the scale
+of one observation (e.g. 1 / SQRT(252) for an annualized benchmark of 1 on daily
+returns). Defaults to 0.0, i.e. any skill at all.
+- <u>confidence_level (float, optional):</u> The confidence level. Defaults to 0.95.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: The minimum number of return observations per period.
+
+**Notes:**
+
+- The skewness and kurtosis are the bias-corrected sample estimates, as in
+`get_sharpe_ratio(method="probabilistic")`.
+- period="daily" without rolling needs intraday data (initialise the Toolkit with an
+intraday_period).
+- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["SPY", "TLT", "GLD", "BTCUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+    benchmark_ticker=None,
+)
+
+toolkit.performance.get_minimum_track_record_length()
+```
+
+Which returns:
+
+| Date   |      SPY |    TLT |      GLD |   BTCUSD |
+|:-------|---------:|-------:|---------:|---------:|
+| 2021   |  176.151 |    nan |  nan     | 1701.64  |
+| 2023   |  282.904 | 627999 | 1490.71  |  247.195 |
+| 2024   |  319.167 |    nan |  381.29  |  337.604 |
+| 2025   | 1220.25  | 197659 |  135.453 |  nan     |
+
+---
+
+## get_coskewness
+Calculate the co-skewness of each asset with the benchmark: how the asset's return moves with the squared, i.e. large, moves of the market in either direction. An asset with a negative co-skewness does worse when the market makes large moves and adds to the downside skewness of a market portfolio, so investors demand a higher return for holding it (Kraus and Litzenberger, 1976; Harvey and Siddique, 2000). A positive co-skewness works as a hedge against large market moves.
+
+The formulas are as follows:
+
+$$
+\text{"standardized":}\;\; \text{Co-Skewness} = E \left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m}) ^{2}\right] / (\sigma_{i} \cdot \sigma_{m} ^{2})
+$$
+
+$$
+\text{"residual":}\;\; \beta_{SKD} = E \left[\epsilon_{i} \cdot \epsilon_{m} ^{2}\right] / (\sqrt{E \left[\epsilon_{i} ^{2}\right]} \cdot E \left[\epsilon_{m} ^{2}\right]) (\text{Harvey and Siddique},\; 2000)
+$$
+
+Where r_i is the asset return, r_m the benchmark return, ε_m = r_m − μ_m and ε_i the residual of the regression r_i = α + β·r_m + ε_i. The residual version only looks at the part of the asset's return the market does not explain, so the market's own skewness does not enter through the beta. For the benchmark itself the standardized co-skewness is the benchmark's skewness.
+
+By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so σ_i and σ_m use 1 / n as well and the measure does not depend on the scale of the returns.
+
+For more information about the method, see the following papers:
+
+- Harvey, C.R., & Siddique, A. (2000). "Conditional Skewness in Asset Pricing Tests." Journal of Finance, 55(3), 1263-1295.
+- Kraus, A., & Litzenberger, R.H. (1976). "Skewness Preference and the Valuation of Risk Assets." Journal of Finance, 31(4), 1085-1100.
+
+**Also known as:** coskewness, systematic skewness, co-skewness beta.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> "standardized" or "residual", as described above. Defaults to
+"standardized".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: The co-skewness of each asset with the benchmark per period.
+
+**Notes:**
+
+- The returns are the total returns (Adj Close), as for `get_beta`; the risk free rate,
+nearly constant within a period, drops out with the means.
+- period="daily" needs intraday data (initialise the Toolkit with an intraday_period).
+- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "TLT", "GLD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_coskewness()
+```
+
+Which returns:
+
+| Date   |    AAPL |    MSFT |     TLT |     GLD |
+|:-------|--------:|--------:|--------:|--------:|
+| 2021   | -0.1202 | -0.1723 | -0.069  | -0.0972 |
+| 2022   |  0.1063 |  0.09   |  0.1369 |  0.0849 |
+| 2023   |  0.1241 |  0.085  |  0.0816 |  0.059  |
+| 2024   | -0.423  | -0.6011 | -0.0005 | -0.418  |
+| 2025   |  1.4001 |  1.4254 |  0.2683 |  0.6826 |
+
+---
+
+## get_cokurtosis
+Calculate the co-kurtosis of each asset with the benchmark: how the asset's return moves with the cubed moves of the market, i.e. how much it shares the market's extreme moves. An asset with a high co-kurtosis adds to the fat tails of a market portfolio, and Dittmar (2002) shows that investors who dislike kurtosis demand a higher return for holding it.
+
+The formulas are as follows:
+
+$$
+\text{"standardized":}\;\; \text{Co-Kurtosis} = E \left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m}) ^{3}\right] / (\sigma_{i} \cdot \sigma_{m} ^{3})
+$$
+
+$$
+\text{"residual":}\;\; E \left[\epsilon_{i} \cdot \epsilon_{m} ^{3}\right] / (\sqrt{E \left[\epsilon_{i} ^{2}\right]} \cdot E \left[\epsilon_{m} ^{2}\right] ^{3 / 2})
+$$
+
+Where r_i is the asset return, r_m the benchmark return, ε_m = r_m − μ_m and ε_i the residual of the regression r_i = α + β·r_m + ε_i, the residual form Harvey and Siddique (2000) use for co-skewness. For the benchmark itself the standardized co-kurtosis is the benchmark's non-excess kurtosis (3 for normal returns); for an asset with a correlation ρ to normally distributed market returns it is 3ρ.
+
+By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so σ_i and σ_m use 1 / n as well.
+
+For more information about the method, see the following papers:
+
+- Dittmar, R.F. (2002). "Nonlinear Pricing Kernels, Kurtosis Preference, and Evidence from the Cross Section of Equity Returns." Journal of Finance, 57(1), 369-403.
+- Harvey, C.R., & Siddique, A. (2000). "Conditional Skewness in Asset Pricing Tests." Journal of Finance, 55(3), 1263-1295.
+
+**Also known as:** cokurtosis, systematic kurtosis, co-kurtosis beta.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> "standardized" or "residual", as described above. Defaults to
+"standardized".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+
+**Returns:**
+
+pd.DataFrame: The co-kurtosis of each asset with the benchmark per period.
+
+**Notes:**
+
+- The returns are the total returns (Adj Close), as for `get_beta`; the risk free rate,
+nearly constant within a period, drops out with the means.
+- period="daily" needs intraday data (initialise the Toolkit with an intraday_period).
+- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "TLT", "GLD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_cokurtosis()
+```
+
+Which returns:
+
+| Date   |    AAPL |    MSFT |     TLT |    GLD |
+|:-------|--------:|--------:|--------:|-------:|
+| 2021   |  2.3149 |  2.4305 | -0.3616 | 0.761  |
+| 2022   |  3.0324 |  2.9407 |  0.6437 | 1.1731 |
+| 2023   |  2.0735 |  1.5943 |  0.3763 | 0.0201 |
+| 2024   |  2.5064 |  3.5367 | -0.2675 | 1.2651 |
+| 2025   | 22.5236 | 18.9645 |  1.749  | 7.2913 |
 
 ---
 

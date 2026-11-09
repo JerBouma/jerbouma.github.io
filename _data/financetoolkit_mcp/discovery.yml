@@ -159,11 +159,14 @@ get_mergers_acquisitions_latest:
     limit: 5
     show_columns: Company Name,Targeted Company Name,Transaction Date
 get_earnings_calendar:
-  question: Which companies reported earnings from 1 to 3 October 2026, and how did they compare with the estimates? Show the first five.
+  question: Which five largest companies report earnings from 9 to 13 November 2026, counting each company once, and what earnings per share do analysts expect?
   tool: discovery
   arguments:
-    start_date: "2026-10-01"
-    end_date: "2026-10-03"
+    start_date: "2026-11-09"
+    end_date: "2026-11-13"
+    primary_only: true
+    sort_by: market_cap
+    show_columns: "Date,Name,Exchange Code,Market Cap (USD),Estimated EPS"
     limit: 5
 get_sec_filings_8k:
   question: Which 8-K filings were the latest to reach the SEC on 1 and 2 October 2026?

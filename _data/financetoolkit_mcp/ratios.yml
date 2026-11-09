@@ -475,12 +475,13 @@ get_price_to_earnings_growth_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_forward_price_earnings_ratio:
-  question: At their share prices at the end of 2025, what forward P/E ratios do the analyst EPS estimates for 2026 to 2030 imply for Eli Lilly, Johnson & Johnson and AbbVie?
+  question: At their share prices at the end of 2025, what forward P/E ratios do the analyst EPS estimates for 2026 to 2030 imply for Nvidia, AMD and Broadcom, counting only years with at least five analysts?
   tool: valuation
   arguments:
-    tickers: LLY,JNJ,ABBV
+    tickers: "NVDA,AMD,AVGO"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    min_analysts: 5
 get_forward_price_earnings_growth_ratio:
   question: At their share prices at the end of 2025, what forward PEG ratios do the analyst EPS estimates for 2026 to 2030 imply for Mastercard, American Express and JPMorgan Chase?
   tool: valuation
@@ -646,7 +647,7 @@ get_shareholder_yield:
   question: What shareholder yield, dividends plus net buybacks, did Home Depot and Lowe's offer from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: HD,LOW
+    tickers: "HD,LOW"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_sbc_adjusted_free_cash_flow:
@@ -654,5 +655,192 @@ get_sbc_adjusted_free_cash_flow:
   tool: valuation
   arguments:
     tickers: CRM,ADBE,NOW
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_factor_analysis:
+  question: How well did the P/E ratio, the P/B ratio and the return on equity predict the 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
+  tool: valuation
+  arguments:
+    tickers: "AAPL,MSFT,GOOGL,AMZN,META,NVDA,JPM,JNJ,XOM,PG,KO,WMT,V,UNH,HD,CVX"
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    metrics:
+    - get_price_to_earnings_ratio
+    - get_price_to_book_ratio
+    - get_return_on_equity
+    horizons: 12
+get_capex_intensity:
+  question: How much of their revenue did TSMC, Intel and Microsoft spend on capital expenditure in each year from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: "TSM,INTC,MSFT"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_capex_to_depreciation_ratio:
+  question: How did the capital expenditure of TSMC, Intel and Microsoft compare with their depreciation in each year from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: "TSM,INTC,MSFT"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_asset_growth:
+  question: How fast did the total assets of Apple, Microsoft, Nvidia and ExxonMobil grow in each year from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: "AAPL,MSFT,NVDA,XOM"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_net_operating_assets:
+  question: How large were the net operating assets of Apple, Microsoft, Coca-Cola and ExxonMobil relative to their total assets from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: "AAPL,MSFT,KO,XOM"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_gross_profitability:
+  question: What gross profit did Apple, Microsoft, Coca-Cola and ExxonMobil earn on their total assets from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: "AAPL,MSFT,KO,XOM"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_operating_profitability:
+  question: What was the operating profitability of Johnson & Johnson, Pfizer, Merck and AbbVie, relative to their book equity, from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: "JNJ,PFE,MRK,ABBV"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_cash_based_operating_profitability:
+  question: What was the cash-based operating profitability of Apple, Microsoft, Coca-Cola and ExxonMobil from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: "AAPL,MSFT,KO,XOM"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_cash_return_on_invested_capital:
+  question: What cash return on invested capital did Caterpillar, Deere and Cummins earn from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: "CAT,DE,CMI"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_free_cash_flow_conversion:
+  question: How much of their net income did Apple, Amazon and Netflix convert into free cash flow from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: "AAPL,AMZN,NFLX"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_free_cash_flow_to_ebitda_ratio:
+  question: How much of their EBITDA did AT&T, Verizon and Microsoft keep as free cash flow from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: "T,VZ,MSFT"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_percent_accruals:
+  question: How large were the accruals of Apple, Microsoft, Coca-Cola and ExxonMobil relative to their net income from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: "AAPL,MSFT,KO,XOM"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_ebitda_interest_coverage_ratio:
+  question: How many times did the EBITDA of AT&T, Union Pacific and Hershey cover their interest expense from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "T,UNP,HSY"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_ebitda_minus_capex_interest_coverage_ratio:
+  question: How many times did EBITDA minus capital expenditure cover the interest expense of AT&T, Union Pacific and Hershey from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "T,UNP,HSY"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_cash_interest_coverage_ratio:
+  question: How many times did the operating cash flow of AT&T, Union Pacific and Hershey cover the interest they paid from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "T,UNP,HSY"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_funds_from_operations_to_debt_ratio:
+  question: What were the funds from operations of AT&T, Union Pacific and Hershey relative to their debt from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "T,UNP,HSY"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_discretionary_cash_flow_to_debt_ratio:
+  question: What discretionary cash flow, after capital expenditure and dividends, did AT&T, Union Pacific and Hershey have relative to their debt from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "T,UNP,HSY"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_degree_of_operating_leverage:
+  question: What was the degree of operating leverage of Apple, Ford and Delta Air Lines from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "AAPL,F,DAL"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_degree_of_financial_leverage:
+  question: What was the degree of financial leverage of Apple, Ford and Delta Air Lines from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "AAPL,F,DAL"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_degree_of_total_leverage:
+  question: What was the degree of total leverage of Apple, Ford and Delta Air Lines from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: "AAPL,F,DAL"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_free_cash_flow_payout_ratio:
+  question: How much of their free cash flow did Coca-Cola, Pfizer and Verizon pay out as dividends from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: "KO,PFE,VZ"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_ev_to_invested_capital_ratio:
+  question: What was the enterprise value of Apple, Coca-Cola and Ford relative to their invested capital from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: "AAPL,KO,F"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_price_to_tangible_book_ratio:
+  question: What was the price-to-tangible-book ratio of JPMorgan Chase, Citigroup and Wells Fargo from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: "JPM,C,WFC"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_net_share_issuance:
+  question: How much did Apple, Tesla, Meta and Amazon change their share count through issuance and buybacks in each year from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: "AAPL,TSLA,META,AMZN"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_composite_equity_issuance:
+  question: What was the composite equity issuance of Apple, Tesla, Meta and Amazon over five-year windows from 2019 to 2025?
+  tool: valuation
+  arguments:
+    tickers: "AAPL,TSLA,META,AMZN"
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_net_external_financing:
+  question: How much net external financing did Apple, Microsoft, Coca-Cola and ExxonMobil raise or return, relative to their total assets, from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: "AAPL,MSFT,KO,XOM"
     start_date: "2021-01-01"
     end_date: "2025-12-31"

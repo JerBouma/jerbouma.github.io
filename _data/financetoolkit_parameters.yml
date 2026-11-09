@@ -232,7 +232,7 @@ names:
   show_full_results: true
   show_input_info: true
   show_standard_error: true
-  show_ticker_seperation: false
+  show_ticker_separation: false
   show_unique_combinations: true
   significance: 0.01
   simulations: 1000
@@ -381,10 +381,6 @@ functions:
     period: "quarterly"
   get_covariance_matrix:
     period: "quarterly"
-  get_derivative_price:
-    model: "bachelier"
-    show_input_info: false
-    years_to_maturity: [1, 2, 5]
   get_diebold_mariano_test:
     window_size: 26
   get_dividend_calendar:

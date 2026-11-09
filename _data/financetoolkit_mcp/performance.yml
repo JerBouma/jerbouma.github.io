@@ -2,7 +2,7 @@ get_beta:
   question: How did the beta of Nvidia, Tesla and JPMorgan Chase against the S&P 500 change each year from 2021 to 2025?
   tool: performance
   arguments:
-    tickers: NVDA,TSLA,JPM
+    tickers: "NVDA,TSLA,JPM"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_capital_asset_pricing_model:
@@ -45,13 +45,12 @@ get_carhart_four_factor_model:
     period: quarterly
     show_columns: Intercept,Mkt-RF Slope,SMB Slope,HML Slope,MOM Slope,R Squared
 get_style_analysis:
-  question: Which mix of large-cap growth (IWF), large-cap value (IWD), small-cap growth (IWO), small-cap value (IWN) and bonds (AGG) best explains the returns of ARKK from 2019 to 2025, and what selection return and tracking error remain?
+  question: Which mix of large-cap value, large-cap growth, small-cap value, small-cap growth, bonds and cash best explains the returns of ARKK and Berkshire Hathaway from 2019 to 2025, and what selection return and tracking error remain?
   tool: performance
   arguments:
-    tickers: ARKK,IWF,IWD,IWO,IWN,AGG
+    tickers: "ARKK,BRK-B"
     start_date: "2019-01-01"
     end_date: "2025-12-31"
-    style_tickers: IWF,IWD,IWO,IWN,AGG
 get_alpha:
   question: By how much did Costco, Walmart and Target beat or trail the S&P 500 in each year from 2021 to 2025?
   tool: performance
@@ -282,5 +281,52 @@ get_return_statistics:
   tool: performance
   arguments:
     tickers: "AAPL,MSFT,KO"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_morningstar_risk_adjusted_return:
+  question: What was the Morningstar risk-adjusted return of VOO, QQQ and SCHD in each year from 2021 to 2025, against the 13-week Treasury bill rate?
+  tool: performance
+  arguments:
+    tickers: "VOO,QQQ,SCHD"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    risk_free_rate: 13w
+get_morningstar_risk:
+  question: How much Morningstar risk did VOO, QQQ and SCHD carry in each year from 2021 to 2025, against the 13-week Treasury bill rate?
+  tool: performance
+  arguments:
+    tickers: "VOO,QQQ,SCHD"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    risk_free_rate: 13w
+get_sharpe_ratio_standard_error:
+  question: How precise were the yearly Sharpe ratios of SPY, TLT, gold (GLD) and Bitcoin from 2021 to 2025, measured by their standard error?
+  tool: performance
+  arguments:
+    tickers: "SPY,TLT,GLD,BTCUSD"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    benchmark_ticker: "None"
+    method: gmm
+get_minimum_track_record_length:
+  question: How many daily returns would SPY, TLT, gold (GLD) and Bitcoin need in each year from 2021 to 2025 to be confident that their Sharpe ratio is above zero?
+  tool: performance
+  arguments:
+    tickers: "SPY,TLT,GLD,BTCUSD"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    benchmark_ticker: "None"
+get_coskewness:
+  question: What was the coskewness of Apple, Microsoft, TLT and gold (GLD) with the S&P 500 in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: "AAPL,MSFT,TLT,GLD"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_cokurtosis:
+  question: What was the cokurtosis of Apple, Microsoft, TLT and gold (GLD) with the S&P 500 in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: "AAPL,MSFT,TLT,GLD"
     start_date: "2021-01-01"
     end_date: "2025-12-31"

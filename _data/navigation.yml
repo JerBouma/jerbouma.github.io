@@ -500,6 +500,14 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_deferred_revenue_ratio
       - title: Working Capital Turnover Ratio
         url: /projects/financetoolkit/docs/ratios#get_working_capital_turnover_ratio
+      - title: Capex Intensity
+        url: /projects/financetoolkit/docs/ratios#get_capex_intensity
+      - title: Capex to Depreciation
+        url: /projects/financetoolkit/docs/ratios#get_capex_to_depreciation_ratio
+      - title: Asset Growth
+        url: /projects/financetoolkit/docs/ratios#get_asset_growth
+      - title: Net Operating Assets
+        url: /projects/financetoolkit/docs/ratios#get_net_operating_assets
   - title: Liquidity Ratios
     children:
       - title: All Liquidity Ratios
@@ -568,6 +576,20 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_margin
       - title: Cash Return on Assets (CRoA)
         url: /projects/financetoolkit/docs/ratios#get_cash_return_on_assets
+      - title: Gross Profitability
+        url: /projects/financetoolkit/docs/ratios#get_gross_profitability
+      - title: Operating Profitability
+        url: /projects/financetoolkit/docs/ratios#get_operating_profitability
+      - title: Cash-Based Operating Profitability
+        url: /projects/financetoolkit/docs/ratios#get_cash_based_operating_profitability
+      - title: Cash Return on Invested Capital (CROIC)
+        url: /projects/financetoolkit/docs/ratios#get_cash_return_on_invested_capital
+      - title: Free Cash Flow Conversion
+        url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_conversion
+      - title: Free Cash Flow to EBITDA
+        url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_to_ebitda_ratio
+      - title: Percent Accruals
+        url: /projects/financetoolkit/docs/ratios#get_percent_accruals
   - title: Solvency Ratios
     children:
       - title: All Solvency Ratios
@@ -602,6 +624,22 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_asset_coverage_ratio
       - title: Gross Debt to EBITDA Ratio
         url: /projects/financetoolkit/docs/ratios#get_gross_debt_to_ebitda_ratio
+      - title: EBITDA Interest Coverage
+        url: /projects/financetoolkit/docs/ratios#get_ebitda_interest_coverage_ratio
+      - title: EBITDA Minus Capex Interest Coverage
+        url: /projects/financetoolkit/docs/ratios#get_ebitda_minus_capex_interest_coverage_ratio
+      - title: Cash Interest Coverage
+        url: /projects/financetoolkit/docs/ratios#get_cash_interest_coverage_ratio
+      - title: Funds from Operations to Debt
+        url: /projects/financetoolkit/docs/ratios#get_funds_from_operations_to_debt_ratio
+      - title: Discretionary Cash Flow to Debt
+        url: /projects/financetoolkit/docs/ratios#get_discretionary_cash_flow_to_debt_ratio
+      - title: Degree of Operating Leverage (DOL)
+        url: /projects/financetoolkit/docs/ratios#get_degree_of_operating_leverage
+      - title: Degree of Financial Leverage (DFL)
+        url: /projects/financetoolkit/docs/ratios#get_degree_of_financial_leverage
+      - title: Degree of Total Leverage (DTL)
+        url: /projects/financetoolkit/docs/ratios#get_degree_of_total_leverage
   - title: Valuation Ratios
     children:
       - title: All Valuation Ratios
@@ -666,6 +704,18 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_sbc_adjusted_free_cash_flow
       - title: Price to Sales Ratio (PS)
         url: /projects/financetoolkit/docs/ratios#get_price_to_sales_ratio
+      - title: Free Cash Flow Payout Ratio
+        url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_payout_ratio
+      - title: EV to Invested Capital
+        url: /projects/financetoolkit/docs/ratios#get_ev_to_invested_capital_ratio
+      - title: Price to Tangible Book
+        url: /projects/financetoolkit/docs/ratios#get_price_to_tangible_book_ratio
+      - title: Net Share Issuance
+        url: /projects/financetoolkit/docs/ratios#get_net_share_issuance
+      - title: Composite Equity Issuance
+        url: /projects/financetoolkit/docs/ratios#get_composite_equity_issuance
+      - title: Net External Financing
+        url: /projects/financetoolkit/docs/ratios#get_net_external_financing
   - title: Factor Analysis
     children:
       - title: Factor Analysis
@@ -718,9 +768,13 @@ financetoolkit-docs-models:
       - title: Intrinsic Valuation
         url:  /projects/financetoolkit/docs/models#get_intrinsic_valuation
       - title: Gordon Growth Model (GGM)
-        url:  /projects/financetoolkit/docs/models#get_gorden_growth_model
+        url:  /projects/financetoolkit/docs/models#get_gordon_growth_model
       - title: Altman Z-Score
         url:  /projects/financetoolkit/docs/models#get_altman_z_score
+      - title: Taffler Z-Score
+        url: /projects/financetoolkit/docs/models#get_taffler_z_score
+      - title: Campbell-Hilscher-Szilagyi Score
+        url: /projects/financetoolkit/docs/models#get_campbell_hilscher_szilagyi_score
       - title: Piotroski Score
         url:  /projects/financetoolkit/docs/models#get_piotroski_score
       - title: Beneish M-Score
@@ -1036,20 +1090,10 @@ financetoolkit-docs-technicals:
     children:
       - title: All Overlap Indicators
         url: /projects/financetoolkit/docs/technicals#collect_overlap_indicators
-      - title: Simple Moving Average (SMA)
+      - title: Moving Average
         url: /projects/financetoolkit/docs/technicals#get_moving_average
-      - title: Exponential Moving Average (EMA)
-        url: /projects/financetoolkit/docs/technicals#get_exponential_moving_average
-      - title: Double Exponential Moving Average (DEMA)
-        url: /projects/financetoolkit/docs/technicals#get_double_exponential_moving_average
       - title: Triple Exponential Moving Average (TRIX)
         url: /projects/financetoolkit/docs/technicals#get_trix
-      - title: Triangular Moving Average (TMA)
-        url: /projects/financetoolkit/docs/technicals#get_triangular_moving_average
-      - title: Weighted Moving Average (WMA)
-        url: /projects/financetoolkit/docs/technicals#get_weighted_moving_average
-      - title: Hull Moving Average (HMA)
-        url: /projects/financetoolkit/docs/technicals#get_hull_moving_average
       - title: Volume Weighted Average Price (VWAP)
         url: /projects/financetoolkit/docs/technicals#get_volume_weighted_average_price
       - title: Parabolic SAR
@@ -1317,6 +1361,10 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
       - title: "Deflated Sharpe Ratio (DSR)"
         url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+      - title: Sharpe Ratio Standard Error
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio_standard_error
+      - title: Minimum Track Record Length
+        url: /projects/financetoolkit/docs/performance#get_minimum_track_record_length
       - title: "Sortino Ratio"
         url: /projects/financetoolkit/docs/performance#get_sortino_ratio
       - title: "Treynor Ratio"
@@ -1377,6 +1425,10 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_return_statistics
       - title: Kelly Criterion
         url: /projects/financetoolkit/docs/performance#get_kelly_criterion
+      - title: Coskewness
+        url: /projects/financetoolkit/docs/performance#get_coskewness
+      - title: Cokurtosis
+        url: /projects/financetoolkit/docs/performance#get_cokurtosis
 
   - title: Factor Analysis
     children:
@@ -1441,14 +1493,6 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_bond_equivalent_yield
     - title: Taylor Series Price Change
       url: /projects/financetoolkit/docs/fixedincome#get_taylor_price_change
-    - title: Option-Adjusted Spread
-      url: /projects/financetoolkit/docs/fixedincome#get_option_adjusted_spread
-  - title: Derivative Valuations
-    children:
-    - title: Black Model
-      url: /projects/financetoolkit/docs/fixedincome#get_derivative_price
-    - title: Bachelier Model
-      url: /projects/financetoolkit/docs/fixedincome#get_derivative_price
   - title: Government Bonds
     children:
     - title: 3-Month Government Bond Yield
@@ -1463,12 +1507,16 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_bank_of_england_yield_curve
     - title: Treasury Auctions
       url: /projects/financetoolkit/docs/fixedincome#get_treasury_auctions
+    - title: Treasury Securities
+      url: /projects/financetoolkit/docs/fixedincome#get_treasury_securities
     - title: Term Premium
       url: /projects/financetoolkit/docs/fixedincome#get_term_premium
   - title: Corporate Bonds
     children:
     - title: Option Adjusted Spread (OAS)
       url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_option_adjusted_spread
+    - title: Bond Universe
+      url: /projects/financetoolkit/docs/fixedincome#get_bond_universe
     - title: Effective Yield
       url: /projects/financetoolkit/docs/fixedincome#get_ice_bofa_effective_yield
     - title: Total Return
@@ -1787,8 +1835,6 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_government_deficit_to_gdp_ratio
     - title: Trust in Government
       url: /projects/financetoolkit/docs/economics#get_trust_in_government
-    - title: Real GDP (USD)
-      url: /projects/financetoolkit/docs/economics#get_real_gross_domestic_product_usd
     - title: Real GDP per Capita
       url: /projects/financetoolkit/docs/economics#get_real_gross_domestic_product_per_capita
     - title: Output Gap
@@ -1837,6 +1883,8 @@ financetoolkit-docs-economics:
         url:  /projects/financetoolkit/docs/economics#get_commercial_real_estate_prices
       - title: Commodity Forward Curve
         url:  /projects/financetoolkit/docs/economics#get_commodity_forward_curve
+      - title: Commodity Term Structure
+        url: /projects/financetoolkit/docs/economics#get_commodity_term_structure
       - title: Recession Indicator
         url:  /projects/financetoolkit/docs/economics#get_recession_indicator
       - title: Economic Calendar
@@ -2046,6 +2094,24 @@ financetoolkit-docs-portfolio-optimization:
         url: /projects/financetoolkit/docs/portfolio-optimization#get_minimum_cvar_weights
       - title: Black-Litterman
         url: /projects/financetoolkit/docs/portfolio-optimization#get_black_litterman_weights
+      - title: Hierarchical Equal Risk Contribution (HERC)
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_hierarchical_equal_risk_contribution_weights
+      - title: Nested Clustered Optimization (NCO)
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_nested_clustered_optimization_weights
+      - title: Minimum Drawdown
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_minimum_drawdown_weights
+      - title: Maximum Omega Ratio
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_maximum_omega_weights
+      - title: Maximum CVaR Ratio
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_maximum_cvar_ratio_weights
+      - title: Maximum Diversification
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_maximum_diversification_weights
+      - title: Minimum Tracking Error
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_minimum_tracking_error_weights
+      - title: Growth Optimal (Kelly)
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_growth_optimal_weights
+      - title: Resampled Efficient Frontier
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_resampled_efficient_weights
   - title: Efficient Frontier
     children:
       - title: Efficient Frontier
@@ -2054,12 +2120,22 @@ financetoolkit-docs-portfolio-optimization:
     children:
       - title: Risk Contributions
         url: /projects/financetoolkit/docs/portfolio-optimization#get_risk_contributions
+      - title: Portfolio Risk Metrics
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_portfolio_risk_metrics
+      - title: Diversification Metrics
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_diversification_metrics
       - title: Stress Test
         url: /projects/financetoolkit/docs/portfolio-optimization#get_stress_test
       - title: Look-Through Exposure
         url: /projects/financetoolkit/docs/portfolio-optimization#get_look_through_exposure
       - title: Brinson Attribution
         url: /projects/financetoolkit/docs/portfolio-optimization#get_brinson_attribution
+  - title: Allocation & Backtest
+    children:
+      - title: Discrete Allocation
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_discrete_allocation
+      - title: Optimization Backtest
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_optimization_backtest
 financetoolkit-docs-portfolio:
   - title: Modules
     children:
