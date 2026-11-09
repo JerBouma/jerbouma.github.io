@@ -64,6 +64,26 @@ module DocsMetricPages
 
   SECTION = /^## (\w+)\n(.*?)(?=^## |\z)/m
 
+  # functions the Finance Toolkit removed or renamed: anchor => [the slug of
+  # its old page, the function that replaces it (nil: the class page)]. Old
+  # links and anchors forward there.
+  REMOVED = {
+    "technicals"  => {
+      "get_exponential_moving_average"        => ["exponential-moving-average-ema", "get_moving_average"],
+      "get_double_exponential_moving_average" => ["double-exponential-moving-average-dema", "get_moving_average"],
+      "get_triangular_moving_average"         => ["triangular-moving-average-tma", "get_moving_average"],
+      "get_weighted_moving_average"           => ["weighted-moving-average-wma", "get_moving_average"],
+      "get_hull_moving_average"               => ["hull-moving-average-hma", "get_moving_average"],
+      "simple-moving-average-sma"             => ["simple-moving-average-sma", "get_moving_average"],
+    },
+    "models"      => { "get_gorden_growth_model" => ["gordon-growth-model-ggm", "get_gordon_growth_model"] },
+    "economics"   => { "get_real_gross_domestic_product_usd" => ["real-gdp-usd", "get_gross_domestic_product"] },
+    "fixedincome" => {
+      "get_option_adjusted_spread" => ["option-adjusted-spread", nil],
+      "get_derivative_price"       => ["black-model", nil],
+    },
+  }.freeze
+
   # generated page paths, "page_url#anchor" => new url, and the sidebar urls of
   # the collect_ functions that link to their module instead
   GENERATED = []
@@ -602,6 +622,15 @@ module DocsMetricPages
         forward["portfolio"] = CLASSES["portfolio-optimization"][:url]
         # the External Datasets guide used to be a section of this page
         forward["using-external-datasets"] = "#{DOCS_ROOT}/external-datasets"
+      end
+      Array(REMOVED[key]).each do |anchor, (old_slug, replacement)|
+        target = urls[replacement] || cls[:url]
+        forward[anchor] = target unless anchor.include?("-")
+        URL_MAP["#{cls[:url]}##{anchor}"] = target
+        old = "#{cls[:url]}/#{old_slug}"
+        next if old == target
+        page = built.find { |pg, _, _| pg.url == target }&.first || class_page
+        page.data["redirect_from"] = Array(page.data["redirect_from"]) | [old, "#{old}/"]
       end
       started = started.rstrip + "\n\n" + getting_started_hint(key) + "\n" unless started.empty?
       # the hint goes under the intro text, just before the install instructions

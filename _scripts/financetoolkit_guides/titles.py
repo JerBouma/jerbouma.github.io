@@ -67,8 +67,8 @@ TITLES = {
     "econometrics-prices": "Apple and TSMC Weekly Prices",
     "econometrics-entity-effects": "Entity Effects per Stock",
     # Fixed Income
-    "fixed-income-duration": "Duration per Coupon and Years to Maturity",
-    "fixed-income-swaption": "Swaption Prices with the Black and Bachelier Models",
+    "fixed-income-corporate": "Apple's Bonds by Maturity",
+    "fixed-income-treasuries": "US Treasury Yields by Years to Maturity",
     "fixed-income-euribor": "Euribor Rates",
     "fixed-income-central-banks": "Central Bank Policy Rates",
     "fixed-income-government": "Government Bond Yields",

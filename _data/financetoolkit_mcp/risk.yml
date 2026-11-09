@@ -119,15 +119,6 @@ get_gjr_garch_parameters:
     tickers: ^GSPC,^STOXX50E
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_tail_dependence_coefficient:
-  question: How likely were the S&P 500 and the Euro Stoxx 50 to suffer extreme losses, or post extreme gains, together from 2021 to 2025?
-  tool: risk
-  arguments:
-    tickers: ^GSPC,^STOXX50E
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    ticker_a: ^GSPC
-    ticker_b: ^STOXX50E
 get_copula_parameters:
   question: What correlation, degrees of freedom and tail dependence does a Student-t copula fitted to the returns of gold and silver from 2021 to 2025 imply?
   tool: risk
@@ -160,15 +151,13 @@ get_best_fitting_copula:
     ticker_b: MA
     show_columns: Lower Tail Dependence,Upper Tail Dependence,Log-Likelihood,AIC
 get_covar:
-  question: What is the 95% CoVaR and Delta-CoVaR of Goldman Sachs when JPMorgan Chase is in distress, based on returns from 2021 to 2025?
+  question: What is the 95% CoVaR and Delta-CoVaR of the S&P 500 when Goldman Sachs or JPMorgan Chase is in distress, based on returns from 2021 to 2025?
   tool: risk
   arguments:
-    tickers: GS,JPM
+    tickers: "GS,JPM"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    ticker: GS
-    conditioning_ticker: JPM
-    show_columns: CoVaR,Delta-CoVaR
+    show_columns: "CoVaR,Delta-CoVaR"
 get_marginal_value_at_risk:
   question: What is the marginal Value at Risk of each holding in a portfolio of 60% VTI, 30% TLT and 10% GLD, based on returns from 2021 to 2025?
   tool: risk
@@ -361,4 +350,6 @@ get_factor_analysis:
     tickers: "AAPL,MSFT,GOOGL,AMZN,META,NVDA,JPM,JNJ,XOM,PG,KO,WMT,V,UNH,HD,CVX"
     start_date: "2016-01-01"
     end_date: "2025-12-31"
-    horizons: [1, 12]
+    horizons:
+    - 1
+    - 12

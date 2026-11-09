@@ -269,23 +269,6 @@ get_moving_average:
     end_date: "2025-12-31"
     window: 50
     limit: -5
-get_exponential_moving_average:
-  question: How did the 20-day exponential moving average of Ether move from 27 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: ETHUSD
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    window: 20
-    limit: -5
-get_double_exponential_moving_average:
-  question: How did the double exponential moving average of the Invesco QQQ move from 24 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: QQQ
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -5
 get_trix:
   question: How did the TRIX of the Nasdaq Composite move from 24 to 31 December 2025?
   tool: overlap
@@ -302,30 +285,6 @@ get_bollinger_bands:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: USDJPY
-    limit: -5
-get_triangular_moving_average:
-  question: How did the triangular moving average of the SPDR Gold Shares ETF (GLD) move from 24 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: GLD
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -5
-get_weighted_moving_average:
-  question: How did the weighted moving average of the iShares 20+ Year Treasury Bond ETF (TLT) move from 24 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: TLT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -5
-get_hull_moving_average:
-  question: How did the Hull moving average of Bitcoin move from 27 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: BTCUSD
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
     limit: -5
 get_kaufman_adaptive_moving_average:
   question: How did the Kaufman adaptive moving average of the Euro Stoxx 50 move from 24 to 31 December 2025?
@@ -474,4 +433,51 @@ get_relative_strength:
     start_date: "2022-01-01"
     end_date: "2025-12-31"
     show_columns: Relative Strength Rating
+    limit: -5
+get_factor_analysis:
+  question: How well did the 200-day rate of change and the distance from the 200-day moving average predict the 1- and 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
+  tool: momentum
+  arguments:
+    tickers: "AAPL,MSFT,GOOGL,AMZN,META,NVDA,JPM,JNJ,XOM,PG,KO,WMT,V,UNH,HD,CVX"
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    metrics:
+    - get_rate_of_change
+    - get_moving_average
+    horizons:
+    - 1
+    - 12
+    window: 200
+get_indicator_summary:
+  question: How low is Nvidia's RSI on 5 November 2026 compared with the five years before, and what did the stock return after earlier drops below 30?
+  tool: momentum
+  arguments:
+    tickers: NVDA
+    start_date: "2021-11-01"
+    end_date: "2026-11-05"
+    metric: get_relative_strength_index
+    below: 30
+    forward_periods:
+    - 5
+    - 21
+    - 63
+get_candlestick_patterns:
+  question: On which days at the end of 2025 did Apple, Microsoft and the S&P 500 form a bullish or bearish engulfing pattern?
+  tool: overlap
+  arguments:
+    tickers: "AAPL,MSFT"
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    patterns: Engulfing
+    signals_only: true
+    limit: -5
+get_signals:
+  question: When did Apple, Microsoft and the S&P 500 last give a moving average crossover signal up to the end of 2025?
+  tool: momentum
+  arguments:
+    tickers: "AAPL,MSFT"
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    signals_only: true
+    show_columns: Moving Average Crossover
     limit: -5

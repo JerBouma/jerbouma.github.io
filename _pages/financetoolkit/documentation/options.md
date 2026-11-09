@@ -138,8 +138,10 @@ The model price is only as good as its volatility input, and here that input is 
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
@@ -664,8 +666,10 @@ The resulting output is a DataFrame containing the tickers, strike prices and mo
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>american_option (bool, optional):</u> Whether to value an American option, which can be exercised at every
@@ -757,8 +761,10 @@ The resulting output is a DataFrame containing the tickers and movements as the 
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>time_to_expiration (float):</u> The number of years to use for the time to expiration. Defaults to 1 which equals
 one year.
 - <u>timesteps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
@@ -832,8 +838,10 @@ This method computes the Black-Scholes call and put price for each ticker, strik
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -922,8 +930,10 @@ Where S is the spot exchange rate, K is the strike price, r is the domestic risk
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
@@ -1026,8 +1036,10 @@ Where S is the stock price (the traded close on the pricing date), K is the stri
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>option_type (str, optional):</u> Either "cash-or-nothing" or "asset-or-nothing". Defaults to
@@ -1143,8 +1155,10 @@ See: Bjerksund, P., & Stensland, G. (2002), "Closed Form Valuation of American O
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
@@ -1247,8 +1261,10 @@ As it is a simulation, the result comes with sampling error. Set ``show_standard
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
@@ -1416,8 +1432,10 @@ A useful identity is in-out parity: without a rebate, a knock-in option plus its
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>barrier_percentage (float, optional):</u> The barrier level as a percentage of the current stock price.
@@ -1536,8 +1554,10 @@ Where S is the stock price (the traded close on the pricing date), K is the stri
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
@@ -1649,12 +1669,17 @@ Where K is the leg's strike price and the premium is the price paid (long) or re
 
 **Args:**
 
-- <u>legs (list[dict]):</u> A list of leg dictionaries as described above. Must
+- <u>legs (list[dict] &#124; None, optional):</u> A list of leg dictionaries as described above. Must
 contain at least one leg. The same legs are applied to every ticker, so
 strike prices should be chosen with the relevant tickers' price levels in
-mind.
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+mind. Defaults to None, which buys an at-the-money straddle on each ticker: a
+call and a put with the stock price on the start date as strike and 30 days to
+expiration, priced with the Black Scholes model on the volatility, risk free rate
+and dividend yield of that date, as `get_black_scholes_model` does.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>stock_price_range (float):</u> The percentage range to use for the stock prices at expiration. Defaults
 to 0.5 which equals 50% and thus results in stock prices from 50 to 150 if the current stock price is
 100.
@@ -1679,65 +1704,58 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-straddle_legs = [
-    {"strike_price": 450, "put_option": False, "position": "long", "premium": 30},
-    {"strike_price": 450, "put_option": True, "position": "long", "premium": 28},
-]
-
-toolkit.options.get_strategy_payoff(
-    legs=straddle_legs, stock_price_range=0.25, stock_price_step_size=5
-)
+toolkit.options.get_strategy_payoff(stock_price_range=0.25, stock_price_step_size=5)
 ```
 
 Which returns:
 
-|   Stock Price |   TSLA |
-|--------------:|-------:|
-|           335 |     57 |
-|           340 |     52 |
-|           345 |     47 |
-|           350 |     42 |
-|           355 |     37 |
-|           360 |     32 |
-|           365 |     27 |
-|           370 |     22 |
-|           375 |     17 |
-|           380 |     12 |
-|           385 |      7 |
-|           390 |      2 |
-|           395 |     -3 |
-|           400 |     -8 |
-|           405 |    -13 |
-|           410 |    -18 |
-|           415 |    -23 |
-|           420 |    -28 |
-|           425 |    -33 |
-|           430 |    -38 |
-|           435 |    -43 |
-|           440 |    -48 |
-|           445 |    -53 |
-|           450 |    -58 |
-|           455 |    -53 |
-|           460 |    -48 |
-|           465 |    -43 |
-|           470 |    -38 |
-|           475 |    -33 |
-|           480 |    -28 |
-|           485 |    -23 |
-|           490 |    -18 |
-|           495 |    -13 |
-|           500 |     -8 |
-|           505 |     -3 |
-|           510 |      2 |
-|           515 |      7 |
-|           520 |     12 |
-|           525 |     17 |
-|           530 |     22 |
-|           535 |     27 |
-|           540 |     32 |
-|           545 |     37 |
-|           550 |     42 |
-|           555 |     47 |
+|   Stock Price |     TSLA |
+|--------------:|---------:|
+|           335 |  49.7821 |
+|           340 |  44.7821 |
+|           345 |  39.7821 |
+|           350 |  34.7821 |
+|           355 |  29.7821 |
+|           360 |  24.7821 |
+|           365 |  19.7821 |
+|           370 |  14.7821 |
+|           375 |   9.7821 |
+|           380 |   4.7821 |
+|           385 |  -0.2179 |
+|           390 |  -5.2179 |
+|           395 | -10.2179 |
+|           400 | -15.2179 |
+|           405 | -20.2179 |
+|           410 | -25.2179 |
+|           415 | -30.2179 |
+|           420 | -35.2179 |
+|           425 | -40.2179 |
+|           430 | -45.2179 |
+|           435 | -50.2179 |
+|           440 | -55.2179 |
+|           445 | -60.2179 |
+|           450 | -64.6579 |
+|           455 | -59.6579 |
+|           460 | -54.6579 |
+|           465 | -49.6579 |
+|           470 | -44.6579 |
+|           475 | -39.6579 |
+|           480 | -34.6579 |
+|           485 | -29.6579 |
+|           490 | -24.6579 |
+|           495 | -19.6579 |
+|           500 | -14.6579 |
+|           505 |  -9.6579 |
+|           510 |  -4.6579 |
+|           515 |   0.3421 |
+|           520 |   5.3421 |
+|           525 |  10.3421 |
+|           530 |  15.3421 |
+|           535 |  20.3421 |
+|           540 |  25.3421 |
+|           545 |  30.3421 |
+|           550 |  35.3421 |
+|           555 |  40.3421 |
 
 ---
 
@@ -1778,8 +1796,10 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -1872,8 +1892,10 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -1967,8 +1989,10 @@ Delta is read as the hedge ratio: a call with a delta of 0.6 moves about $0.60 f
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2065,8 +2089,10 @@ The Dual Delta is the sensitivity of the option value to the strike price rather
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2169,8 +2195,10 @@ Vega is quoted per volatility point: a vega of 0.25 means the option gains about
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2276,8 +2304,10 @@ Theta is the cost of holding an option for one more calendar day, all else equal
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2376,8 +2406,10 @@ Rho is reported unscaled, as the amount of money per share of the underlying tha
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2470,8 +2502,10 @@ The Epsilon can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2575,8 +2609,10 @@ The Lambda can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2660,8 +2696,10 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2750,8 +2788,10 @@ Gamma is largest for at-the-money options close to expiry, which is where a delt
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2837,8 +2877,10 @@ Note that the dual gamma of a call option and put option are equal to each other
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -2929,8 +2971,10 @@ Note that the vanna of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3032,8 +3076,10 @@ The Charm can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3135,8 +3181,10 @@ The vomma can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3239,8 +3287,10 @@ Note that the vera of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3339,8 +3389,10 @@ The Veta can be interpreted as follows:
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3420,8 +3472,10 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3506,8 +3560,10 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3610,8 +3666,10 @@ Note that the speed of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3699,8 +3757,10 @@ Note that the zomma of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3795,8 +3855,10 @@ Note that the color of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -3886,8 +3948,10 @@ Note that the ultima of a call option and put option are equal to each other.
 
 **Args:**
 
-- <u>start_date (str &#124; None, optional):</u> The start date which determines the stock price. Defaults to None
-which means it will use the most recent date.
+- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
+start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
+ticker without a price on that day is left out with a warning. Defaults to None, which uses the
+last date of the historical data.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (int):</u> The step size to use for the strike prices. Defaults to 5 which means that the

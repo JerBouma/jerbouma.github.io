@@ -772,6 +772,8 @@ The drawdown series, also known as the underwater curve, shows the whole history
 
 Losses and gains are not symmetric: after a fall of 20% the asset needs a gain of 25% to be back at its high, after a fall of 50% a gain of 100%. With recovery=True the series shows that gain, the return needed from each period's value to get back to the running peak.
 
+With deepest_since=True every period below the peak also gets the last earlier date with a drawdown at least as deep, the familiar headline ("the deepest drawdown since April"), as `get_move_significance` gives the "largest since" date of a single move.
+
 The formula is as follows:
 
 $$
@@ -790,6 +792,10 @@ $$
 \text{Recovery Needed} (t) = \operatorname{Peak}(t) / \operatorname{Wealth}(t) - 1 = - \operatorname{Drawdown}(t) / (1 + \operatorname{Drawdown}(t))
 $$
 
+$$
+\text{Deepest Since} (t) = \text{the last date}\; s < t \;\text{with Drawdown} (s) \leq \operatorname{Drawdown}(t),\;\; \text{for Drawdown(t) < 0}
+$$
+
 Returns are total returns (Adj Close). Wealth starts at 1 at the first close of the window, so a decline from the start of the window counts as well.
 
 **Also known as:** underwater curve, underwater plot, drawdown curve, distance from the high, gain needed to recover, breakeven return, recovery return.
@@ -800,13 +806,17 @@ Returns are total returns (Adj Close). Wealth starts at 1 at the first close of 
 Defaults to "daily".
 - <u>recovery (bool, optional):</u> Whether to return the gain needed to get back to the running peak
 (Recovery Needed) instead of the drawdown. Defaults to False.
+- <u>deepest_since (bool, optional):</u> Whether to add the Deepest Since date of every period below the
+peak. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 
 **Returns:**
 
 pd.DataFrame: The drawdown per period as a negative decimal or, with recovery=True, the gain needed
-as a positive decimal (0 at a new high), with time as the index.
+as a positive decimal (0 at a new high), with time as the index. With deepest_since=True, the
+columns hold the measures (Drawdown or Recovery Needed, and Deepest Since, the date as text)
+and the tickers.
 
 **Notes:**
 
@@ -814,6 +824,8 @@ as a positive decimal (0 at a new high), with time as the index.
 and is NaN before it.
 - A longer period only compares the closes of each period, so period="monthly" shows shallower
 drawdowns than period="daily".
+- Deepest Since is NaN at a high and when no earlier period in the data was as deep, which makes
+the drawdown the deepest since the start_date. Choose an early start_date for a long history.
 
 **As an example:**
 
@@ -865,18 +877,34 @@ Where the Maximum Drawdown gives only the single worst decline, the drawdown tab
 The formula is as follows:
 
 $$
-\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t)) - 1 (\text{see}\; \text{get\_drawdown\_series})
+\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t)) - 1
 $$
 
-- A drawdown runs from the Peak (the last period at a high) to the Recovery (the first period back at that high), with its Trough at the lowest Drawdown in between
+$$
+\text{To Trough} = t(\text{trough}) - t(\text{peak})
+$$
 
 $$
-\text{To Trough} = t(\text{trough}) - t(\text{peak}),\;\; \text{To Recovery} = t(\text{recovery}) - t(\text{trough}) \text{and Length} = t(\text{recovery}) - t(\text{peak}),\;\; \text{in periods}
+\text{To Recovery} = t(\text{recovery}) - t(\text{trough})
+$$
+
+$$
+\text{Length} = t(\text{recovery}) - t(\text{peak})
 $$
 
 $$
 \text{Recovery Needed} = - \text{Drawdown} / (1 + \text{Drawdown})
 $$
+
+$$
+\text{To Trough} (\text{Days}) = \operatorname{date}(\text{trough}) - \operatorname{date}(\text{peak}),\;\; \text{likewise To Recovery (Days) and Length (Days)}
+$$
+
+$$
+\text{Length} (\text{Years}) = \text{Length} (\text{Days}) / 365.25
+$$
+
+The Drawdown is the drawdown series of `get_drawdown_series`. A drawdown runs from the Peak (the last period at a high) to the Recovery (the first period back at that high), with its Trough at the lowest Drawdown in between. To Trough, To Recovery and Length count periods (trading days for daily data), the columns marked (Days) count calendar days between the same dates (the last day of each period for weekly or longer periods), and Length (Years) is Length (Days) in years of 365.25 days. Calendar time compares assets on exchanges with other holidays, and reads as the time an investor waited.
 
 The dates follow pyfolio's drawdown table (peak, valley and recovery dates). QuantStats and ffn instead start a drawdown at the first period below the peak and count calendar days. The deepest drawdown matches `get_maximum_drawdown`, `get_maximum_drawdown_duration` (To Trough) and `get_maximum_drawdown_recovery_time` (To Recovery).
 
@@ -894,14 +922,16 @@ the rounding of the Toolkit (4 unless set otherwise).
 
 pd.DataFrame: One row per drawdown, indexed by ticker and rank, with the dates of the Peak, Trough
 and Recovery, the Drawdown as a negative decimal, the gain needed from the trough back to the peak
-(Recovery Needed) as a positive decimal and, in periods, the time from peak to trough
-(To Trough), from trough to recovery (To Recovery) and from peak to recovery (Length).
+(Recovery Needed) as a positive decimal, in periods the time from peak to trough
+(To Trough), from trough to recovery (To Recovery) and from peak to recovery (Length), the
+same in calendar days (To Trough (Days), To Recovery (Days), Length (Days)) and Length
+(Years).
 
 **Notes:**
 
 - A drawdown that has not recovered by the end of the window has no Recovery, To Recovery or
-Length (NaN). Its Recovery Needed is the gain from its trough; the gain still needed from the latest
-value is the last row of `get_drawdown_series(recovery=True)`.
+Length, in periods or calendar time (NaN). Its Recovery Needed is the gain from its trough; the gain
+still needed from the latest value is the last row of `get_drawdown_series(recovery=True)`.
 - Each ticker keeps its own history: a ticker that listed during the window starts at its first close.
 - The table depends on the window: a drawdown that started before the start date is measured from
 the first close of the window.
@@ -923,17 +953,17 @@ toolkit.risk.get_drawdown_table(top=3)
 
 Which returns:
 
-|                  | Peak       | Trough     | Recovery   |   Drawdown |   Recovery Needed |   To Trough |   To Recovery |   Length |
-|:-----------------|:-----------|:-----------|:-----------|-----------:|------------------:|------------:|--------------:|---------:|
-| ('META', 1)      | 2021-09-07 | 2022-11-03 | 2024-01-19 |    -0.7672 |            3.2955 |         293 |           302 |      595 |
-| ('META', 2)      | 2025-02-14 | 2025-04-21 | 2025-06-30 |    -0.3416 |            0.5189 |          44 |            48 |       92 |
-| ('META', 3)      | 2025-08-12 | 2025-11-20 | NaT        |    -0.2537 |            0.34   |          71 |           nan |      nan |
-| ('NFLX', 1)      | 2021-11-17 | 2022-05-11 | 2024-08-20 |    -0.7593 |            3.1548 |         120 |           571 |      691 |
-| ('NFLX', 2)      | 2025-06-30 | 2025-12-10 | NaT        |    -0.3076 |            0.4443 |         114 |           nan |      nan |
-| ('NFLX', 3)      | 2025-02-14 | 2025-04-04 | 2025-04-24 |    -0.1916 |            0.237  |          34 |            13 |       47 |
-| ('Benchmark', 1) | 2022-01-03 | 2022-10-12 | 2023-12-13 |    -0.245  |            0.3245 |         195 |           294 |      489 |
-| ('Benchmark', 2) | 2025-02-19 | 2025-04-08 | 2025-06-26 |    -0.1877 |            0.2311 |          34 |            54 |       88 |
-| ('Benchmark', 3) | 2024-07-16 | 2024-08-05 | 2024-09-19 |    -0.0841 |            0.0918 |          14 |            32 |       46 |
+|                  | Peak       | Trough     | Recovery   |   Drawdown |   Recovery Needed |   To Trough |   To Recovery |   Length |   To Trough (Days) |   To Recovery (Days) |   Length (Days) |   Length (Years) |
+|:-----------------|:-----------|:-----------|:-----------|-----------:|------------------:|------------:|--------------:|---------:|-------------------:|---------------------:|----------------:|-----------------:|
+| ('META', 1)      | 2021-09-07 | 2022-11-03 | 2024-01-19 |    -0.7672 |            3.2955 |         293 |           302 |      595 |                422 |                  442 |             864 |           2.3655 |
+| ('META', 2)      | 2025-02-14 | 2025-04-21 | 2025-06-30 |    -0.3416 |            0.5189 |          44 |            48 |       92 |                 66 |                   70 |             136 |           0.3723 |
+| ('META', 3)      | 2025-08-12 | 2025-11-20 | NaT        |    -0.2537 |            0.34   |          71 |           nan |      nan |                100 |                  nan |             nan |         nan      |
+| ('NFLX', 1)      | 2021-11-17 | 2022-05-11 | 2024-08-20 |    -0.7593 |            3.1548 |         120 |           571 |      691 |                175 |                  832 |            1007 |           2.757  |
+| ('NFLX', 2)      | 2025-06-30 | 2025-12-10 | NaT        |    -0.3076 |            0.4443 |         114 |           nan |      nan |                163 |                  nan |             nan |         nan      |
+| ('NFLX', 3)      | 2025-02-14 | 2025-04-04 | 2025-04-24 |    -0.1916 |            0.237  |          34 |            13 |       47 |                 49 |                   20 |              69 |           0.1889 |
+| ('Benchmark', 1) | 2022-01-03 | 2022-10-12 | 2023-12-13 |    -0.245  |            0.3245 |         195 |           294 |      489 |                282 |                  427 |             709 |           1.9411 |
+| ('Benchmark', 2) | 2025-02-19 | 2025-04-08 | 2025-06-26 |    -0.1877 |            0.2311 |          34 |            54 |       88 |                 48 |                   79 |             127 |           0.3477 |
+| ('Benchmark', 3) | 2024-07-16 | 2024-08-05 | 2024-09-19 |    -0.0841 |            0.0918 |          14 |            32 |       46 |                 20 |                   45 |              65 |           0.178  |
 
 ---
 
@@ -1745,7 +1775,7 @@ Which returns:
 ---
 
 ## get_tail_dependence_coefficient
-Calculate the Upper and Lower Tail Dependence Coefficients between `ticker_a` and `ticker_b`.
+Calculate the Upper and Lower Tail Dependence Coefficients between `ticker_a` and `ticker_b`. Without a pair, every ticker is paired with the benchmark, which tells how likely each company is to be in distress when the market is.
 
 Correlation only captures the *average* co-movement between two assets -- it says nothing about whether they are more likely to crash together than an equivalent gaussian relationship would imply. The Tail Dependence Coefficient answers that specific question directly: the probability that one asset is in extreme distress, given that the other one already is.
 
@@ -1772,8 +1802,9 @@ Where A and B are the values of `ticker_a` and `ticker_b` on their common dates 
 
 **Args:**
 
-- <u>ticker_a (str):</u> The first asset.
-- <u>ticker_b (str):</u> The second asset.
+- <u>ticker_a (str &#124; None, optional):</u> The first asset. Defaults to None, which pairs every other ticker
+in the Toolkit instance (the benchmark included when `ticker_b` is given) with `ticker_b`.
+- <u>ticker_b (str &#124; None, optional):</u> The second asset. Defaults to None, which uses the benchmark.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
 "daily", since a dependence estimate needs far more observations than a
 lower frequency provides -- at "yearly" a decade of history is only ten
@@ -1789,14 +1820,19 @@ Defaults to 0.95.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
+**Raises:**
+
+ValueError: If one of the two tickers is missing while the Toolkit has no benchmark.
+
 **Returns:**
 
-pd.Series: The Lower and Upper Tail Dependence Coefficients, the linear (Pearson)
-correlation between the two assets, and the number of observations used.
+pd.Series &#124; pd.DataFrame: The Lower and Upper Tail Dependence Coefficients, the linear (Pearson)
+correlation between the two assets, and the number of observations used -- a Series for a given
+pair, or a DataFrame with a row per ticker paired with `ticker_b` (or the benchmark) otherwise.
 
 **Notes:**
 
-- The method retrieves historical data based on the specified `period` for the two given
+- The method retrieves historical data based on the specified `period` for each pair of
 assets and estimates the tail dependence coefficient between them.
 
 **As an example:**
@@ -1805,23 +1841,23 @@ assets and estimates the tail dependence coefficient between them.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["^GSPC", "^STOXX50E"],
+    ["AAPL", "JPM", "XOM", "^STOXX50E"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_tail_dependence_coefficient("^GSPC", "^STOXX50E")
+toolkit.risk.get_tail_dependence_coefficient()
 ```
 
 Which returns:
 
-|                       |     Value |
-|:----------------------|----------:|
-| Lower Tail Dependence |    0.3231 |
-| Upper Tail Dependence |    0.3387 |
-| Correlation           |    0.4545 |
-| Observations          | 1289      |
+|           |   Lower Tail Dependence |   Upper Tail Dependence |   Correlation |   Observations |
+|:----------|------------------------:|------------------------:|--------------:|---------------:|
+| AAPL      |                  0.4545 |                  0.4769 |        0.7593 |           1290 |
+| JPM       |                  0.4    |                  0.3846 |        0.622  |           1290 |
+| XOM       |                  0.2424 |                  0.2154 |        0.3408 |           1290 |
+| ^STOXX50E |                  0.3231 |                  0.3438 |        0.4449 |           1289 |
 
 ---
 
@@ -2106,7 +2142,7 @@ Which returns:
 ---
 
 ## get_covar
-Calculate the (Delta-)CoVaR of `ticker` conditional on `conditioning_ticker` being in its own distress state.
+Calculate the (Delta-)CoVaR of `ticker` conditional on `conditioning_ticker` being in its own distress state. Without a pair, it measures how much each ticker's distress adds to the tail risk of the benchmark (the market as the "system"), as in Adrian & Brunnermeier (2016).
 
 Ordinary Value at Risk treats each asset in isolation, which misses systemic risk -- the fact that one asset's distress can spill over and worsen another's risk. CoVaR directly measures that spillover: it is the VaR of `ticker`, conditional on `conditioning_ticker` itself being at its own `alpha`-VaR, estimated via a linear Quantile Regression of `ticker`'s returns on `conditioning_ticker`'s returns at quantile `alpha`. The Delta-CoVaR isolates the marginal, distress-specific contribution by subtracting the same construction evaluated in the "normal" (median) state instead.
 
@@ -2136,9 +2172,11 @@ For more information about the method, see the following paper:
 
 **Args:**
 
-- <u>ticker (str):</u> The asset whose conditional VaR is being measured.
-- <u>conditioning_ticker (str):</u> The asset (or e.g. a benchmark/index) whose distress
-`ticker` is conditioned on.
+- <u>ticker (str &#124; None, optional):</u> The asset whose conditional VaR is being measured (the system).
+Defaults to None, which uses the benchmark.
+- <u>conditioning_ticker (str &#124; None, optional):</u> The asset whose distress `ticker` is conditioned on.
+Defaults to None, which conditions `ticker` on every other ticker in the Toolkit instance in turn
+(the benchmark included when `ticker` is given), a row each.
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
 "daily", since a dependence estimate needs far more observations than a
 lower frequency provides -- at "yearly" a decade of history is only ten
@@ -2149,14 +2187,19 @@ the VaR of `conditioning_ticker` (e.g., 0.05 for the 95% confidence level). Defa
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
 
+**Raises:**
+
+ValueError: If one of the two tickers is missing while the Toolkit has no benchmark.
+
 **Returns:**
 
-pd.Series: The CoVaR, the Delta-CoVaR, the tail (alpha-quantile) Quantile Regression
-slope and intercept, and the number of observations used.
+pd.Series &#124; pd.DataFrame: The CoVaR, the Delta-CoVaR, the tail (alpha-quantile) Quantile Regression
+slope and intercept, and the number of observations used -- a Series for a given pair, or a
+DataFrame with a row per conditioning ticker otherwise.
 
 **Notes:**
 
-- The method retrieves historical data based on the specified `period` for the two given
+- The method retrieves historical data based on the specified `period` for each pair of
 assets and estimates the CoVaR of `ticker` conditional on `conditioning_ticker`.
 
 **As an example:**
@@ -2171,15 +2214,15 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.risk.get_covar("GS", "JPM").loc[["CoVaR", "Delta-CoVaR"]]
+toolkit.risk.get_covar()[["CoVaR", "Delta-CoVaR"]]
 ```
 
 Which returns:
 
-|             |   Value |
-|:------------|--------:|
-| CoVaR       | -0.0353 |
-| Delta-CoVaR | -0.0206 |
+|     |   CoVaR |   Delta-CoVaR |
+|:----|--------:|--------------:|
+| GS  | -0.0232 |       -0.0104 |
+| JPM | -0.0247 |       -0.012  |
 
 ---
 
@@ -2575,6 +2618,7 @@ pd.Series: Skewness values with time as the index.
 - The method retrieves historical return data based on the specified `period` and calculates Skew for each
 asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of Skewness values using the specified `lag`.
+- Returns that do not vary (a constant price, such as a suspended stock) have no Skewness and give NaN.
 
 **As an example:**
 
@@ -2660,6 +2704,7 @@ pd.Series: Kurtosis values with time as the index.
 - The method retrieves historical return data based on the specified `period` and calculates Kurtosis for each
 asset in the Toolkit instance.
 - If `growth` is set to True, the method calculates the growth of Kurtosis values using the specified `lag`.
+- Returns that do not vary (a constant price, such as a suspended stock) have no Kurtosis and give NaN.
 
 **As an example:**
 
@@ -2918,6 +2963,9 @@ pd.Series: Volatility values with time as the index.
 the specified `period` for each asset in the Toolkit instance. The close-to-close estimator
 only needs the daily returns, Parkinson needs the High and Low, and the remaining
 estimators need the Open, High, Low and Close.
+- A range-based estimator leaves out each day on which a price it uses is 0 or below (a bad bar, as some
+feeds report for illiquid days), since its logarithm is undefined; the period is measured over the
+remaining days. The Yang-Zhang overnight return also needs the previous Close.
 - If `growth` is set to True, the method calculates the growth of Volatility values using the specified `lag`.
 
 Passing `method="parkinson"` (or another range-based estimator) uses the daily trading range instead of
@@ -3545,20 +3593,26 @@ A return only says how far a price moved, not whether that is a lot for the asse
 The formula is as follows:
 
 $$
-\text{Volatility Multiple} (t) = \operatorname{Return}(t) / \sigma(\operatorname{Return}(t - \text{window}),\; ...,\; \operatorname{Return}(t - 1)),\;\; \text{with ddof=1}
+\text{Volatility Multiple} (t) = \operatorname{Return}(t) / \sigma(\operatorname{Return}(t - \text{window}),\; ...,\; \operatorname{Return}(t - 1))
 $$
 
 $$
-\text{VaR Multiple} (t) = \operatorname{Return}(t) / | \operatorname{VaR}(t) |,\;\; \text{with VaR(t) the historic VaR: the alpha quantile of Return(t - window)},\;\; \text{...},\;\; \text{Return(t - 1)},\;\; \text{interpolated linearly as in get\_value\_at\_risk}
+\text{VaR Multiple} (t) = \operatorname{Return}(t) / | \operatorname{Quantile}(\operatorname{Return}(t - \text{window}),\; ...,\; \operatorname{Return}(t - 1) \text{;} \alpha) |
 $$
 
 $$
-\operatorname{Percentile}(t) = \text{share of the returns before}\; t \;\text{with} | \operatorname{Return}(s) | < | \operatorname{Return}(t) |
+\operatorname{Percentile}(t) = \operatorname{Count}(| \operatorname{Return}(s) | < | \operatorname{Return}(t) |,\; s < t) / \operatorname{Count}(s < t)
 $$
 
 $$
-\text{Largest Since} (t) = \text{the last date}\; s < t \;\text{with Return} (s) \leq \operatorname{Return}(t) \text{for}\; a \;\text{fall},\;\; \text{or Return} (s) \geq \operatorname{Return}(t) \text{for}\; a \;\text{rise}
+\text{Largest Since} (t) = \max(s < t \text{:} \;\text{Return} (s) \leq \operatorname{Return}(t)) \text{if Return} (t) < 0
 $$
+
+$$
+\text{Largest Since} (t) = \max(s < t \text{:} \;\text{Return} (s) \geq \operatorname{Return}(t)) \text{if Return} (t) > 0
+$$
+
+The volatility σ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly as in `get_value_at_risk`.
 
 Each measure only uses the returns before the period itself, so a move is never part of the volatility or the history it is measured against (no look-ahead). Largest Since compares falls with falls and rises with rises, as a headline does: a 6% fall is the largest fall since the last fall of 6% or more, whatever the rises in between.
 
@@ -3759,8 +3813,8 @@ e.g. "get_volatility", a list of them, or a collection: "anomalies" or "all".
 Defaults to "anomalies", the volatility, maximum drawdown, skewness and Amihud
 illiquidity. "all" adds the downside deviation, kurtosis, value at risk,
 conditional value at risk, tail ratio and Roll spread.
-- <u>period (str, optional):</u> The frequency at which the metrics are measured and
-evaluated: weekly, monthly, quarterly or yearly. Each metric is calculated
+- <u>period (str, optional):</u> The frequency at which the metrics are measured and evaluated
+(weekly, monthly, quarterly or yearly). Each metric is calculated
 within each period from that period's daily returns, so use monthly or longer
 for enough returns per period. Defaults to "monthly".
 - <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
@@ -3821,14 +3875,14 @@ Which returns:
 
 |                                         |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
 |:----------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('get_volatility', '1 Month')           |    0.096  |                  0.3681 |                 0.2607 |        2.8438 |    0.0053 |           0.6218 |            119 |             0.0184 |              0.4702 |                 0.5869 |
-| ('get_volatility', '12 Months')         |    0.2759 |                  0.3699 |                 0.7458 |        7.7505 |    0      |           0.7685 |            108 |             0.316  |              0.4702 |                 0.5869 |
-| ('get_maximum_drawdown', '1 Month')     |   -0.0251 |                  0.331  |                -0.0758 |       -0.8268 |    0.41   |           0.4538 |            119 |            -0.0038 |              0.6275 |                 0.2713 |
-| ('get_maximum_drawdown', '12 Months')   |   -0.1743 |                  0.3545 |                -0.4916 |       -5.1093 |    0      |           0.3241 |            108 |            -0.2068 |              0.6275 |                 0.2713 |
-| ('get_skewness', '1 Month')             |    0.0136 |                  0.295  |                 0.0462 |        0.5035 |    0.6155 |           0.5378 |            119 |            -0.0005 |              0.7535 |                 0.0582 |
-| ('get_skewness', '12 Months')           |    0.0106 |                  0.2989 |                 0.0354 |        0.3674 |    0.714  |           0.5185 |            108 |             0.0136 |              0.7535 |                 0.0582 |
-| ('get_amihud_illiquidity', '1 Month')   |   -0.0285 |                  0.3896 |                -0.0733 |       -0.7992 |    0.4258 |           0.479  |            119 |            -0.0059 |              0.1852 |                 0.9    |
-| ('get_amihud_illiquidity', '12 Months') |   -0.1154 |                  0.379  |                -0.3045 |       -3.1645 |    0.002  |           0.3611 |            108 |            -0.08   |              0.1852 |                 0.9    |
+| ('get_volatility', '1 Month')           |    0.0967 |                  0.368  |                 0.2628 |        2.8673 |    0.0049 |           0.6218 |            119 |             0.0184 |              0.4702 |                 0.586  |
+| ('get_volatility', '12 Months')         |    0.2766 |                  0.3693 |                 0.7489 |        7.7824 |    0      |           0.7685 |            108 |             0.3166 |              0.4702 |                 0.586  |
+| ('get_maximum_drawdown', '1 Month')     |   -0.0257 |                  0.3311 |                -0.0775 |       -0.8451 |    0.3997 |           0.4538 |            119 |            -0.0038 |              0.6275 |                 0.2711 |
+| ('get_maximum_drawdown', '12 Months')   |   -0.1745 |                  0.3544 |                -0.4923 |       -5.1158 |    0      |           0.3241 |            108 |            -0.2068 |              0.6275 |                 0.2711 |
+| ('get_skewness', '1 Month')             |    0.0137 |                  0.2949 |                 0.0464 |        0.5066 |    0.6134 |           0.5378 |            119 |            -0.0005 |              0.7521 |                 0.0583 |
+| ('get_skewness', '12 Months')           |    0.0107 |                  0.2985 |                 0.0358 |        0.3717 |    0.7109 |           0.5185 |            108 |             0.0142 |              0.7521 |                 0.0583 |
+| ('get_amihud_illiquidity', '1 Month')   |   -0.0285 |                  0.3897 |                -0.0732 |       -0.7985 |    0.4262 |           0.479  |            119 |            -0.0059 |              0.1852 |                 0.9003 |
+| ('get_amihud_illiquidity', '12 Months') |   -0.1158 |                  0.3791 |                -0.3054 |       -3.1735 |    0.002  |           0.3611 |            108 |            -0.08   |              0.1852 |                 0.9003 |
 
 ---
 

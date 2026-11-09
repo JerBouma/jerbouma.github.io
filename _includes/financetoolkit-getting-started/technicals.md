@@ -109,7 +109,7 @@ To calculate both:
 ```python
 donchian_channels = companies.technicals.get_donchian_channels()
 
-hull_moving_average = companies.technicals.get_hull_moving_average()
+hull_moving_average = companies.technicals.get_moving_average(method="hull")
 ```
 
 Which gives, for Microsoft with a tab per indicator:

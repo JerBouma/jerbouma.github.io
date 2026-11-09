@@ -320,7 +320,7 @@ toolkit.etf.get_profile()
 ---
 
 ## portfolio
-This gives access to the Portfolio Construction module, which builds and examines portfolios from the assets of this Toolkit: optimal weights (minimum variance, maximum Sharpe ratio, mean-variance, risk parity, Hierarchical Risk Parity, inverse volatility, minimum CVaR and Black-Litterman), the efficient frontier, risk contributions, historical stress tests, look-through exposure of funds and a Brinson-Fachler attribution against the benchmark.
+This gives access to the Portfolio Construction module, which builds and examines portfolios from the assets of this Toolkit: optimal weights (minimum variance, maximum Sharpe ratio, mean-variance, risk parity, Hierarchical Risk Parity, inverse volatility, minimum CVaR, Black-Litterman, maximum diversification, minimum tracking error and growth optimal), the efficient frontier, risk contributions, historical stress tests, look-through exposure of funds and a Brinson-Fachler attribution against the benchmark.
 
 When the Toolkit comes from a Portfolio (`Portfolio.toolkit`), the methods that take weights use the Portfolio's latest weights by default.
 
@@ -531,7 +531,9 @@ Which returns:
 ---
 
 ## get_analyst_estimates
-Obtain analyst estimates regarding revenues, EBITDA, EBIT, Net Income SGA Expenses and EPS. The number of analysts are also reported.
+Obtain analyst estimates regarding revenues, EBITDA, EBIT, Net Income SGA Expenses and EPS, with the number of analysts behind the revenue ("Number of Analysts Revenue") and the EPS ("Number of Analysts EPS") consensus.
+
+The estimates are the current consensus for each fiscal period, labelled like the financial statements with the calendar year (or quarter) holding most of the fiscal period: NVIDIA's fiscal year ending in January 2029 is 2028. The source has no date on which each estimate was made. The analyst counts show how much an estimate rests on: far-out years are often covered by a few analysts for EPS while many more still give a revenue estimate, and a consensus of one or two analysts is an opinion rather than a consensus. The forward ratios (e.g. `get_forward_price_earnings_ratio`) take `min_analysts` to leave such periods out.
 
 Note that this information requires a Premium FMP subscription.
 
@@ -565,16 +567,19 @@ toolkit = Toolkit(
     end_date="2028-12-31",
 )
 
-toolkit.get_analyst_estimates(show_columns=["Estimated Revenue Average"])
+toolkit.get_analyst_estimates(show_columns=["Estimated EPS Average", "Number of Analysts EPS"])
 ```
 
 Which returns:
 
-|      |        2026 |        2027 |        2028 |        2029 |        2030 |          2031 |
-|:-----|------------:|------------:|------------:|------------:|------------:|--------------:|
-| NVDA | 2.13656e+11 | 4.09929e+11 | 6.95178e+11 | 9.25214e+11 | 1.10649e+12 |   1.21149e+12 |
-| AMD  | 5.13395e+10 | 9.04101e+10 | 1.25666e+11 | 1.6376e+11  | 2.32364e+11 | nan           |
-| AVGO | 1.06009e+11 | 1.74279e+11 | 2.81861e+11 | 4.16476e+11 | 5.52387e+11 | nan           |
+|                                    |    2026 |    2027 |    2028 |   2029 |   2030 |
+|:-----------------------------------|--------:|--------:|--------:|-------:|-------:|
+| ('NVDA', 'Estimated EPS Average')  |  9.2906 | 15.8077 | 21.3755 | 25.6   | 33.19  |
+| ('NVDA', 'Number of Analysts EPS') | 33      | 32      | 20      |  9     | 10     |
+| ('AMD', 'Estimated EPS Average')   |  7.9762 | 17.4457 | 25.6269 | 34.46  | 44.395 |
+| ('AMD', 'Number of Analysts EPS')  | 28      | 31      | 22      | 10     | 10     |
+| ('AVGO', 'Estimated EPS Average')  | 11.6843 | 19.3182 | 30.6326 | 47.325 | 64.01  |
+| ('AVGO', 'Number of Analysts EPS') | 27      | 28      | 17      |  3     |  1     |
 
 ---
 
@@ -915,7 +920,7 @@ technical indicators.
 will return the earlier retrieved data. This is done to prevent too many API calls. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
+- <u>show_ticker_separation (bool, optional):</u> A boolean representing whether to show which tickers
 acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance. Defaults to True.
 - <u>show_columns (list[str], optional):</u> A list of columns to include in the output. Valid columns
 are Open, High, Low, Close, Adj Close, Volume, Dividends, Return and Cumulative Return.
@@ -1790,11 +1795,12 @@ The rows are:
 - Upside: Target Consensus / Price − 1.
 - Dispersion: (Target High − Target Low) / Target Consensus. Dispersion in analysts' forecasts is a measure of disagreement, studied for earnings forecasts by Diether, Malloy and Scherbina (2002).
 - Revision Momentum: Last Quarter Average / Last Year Average − 1, positive when the targets published over the last quarter are higher than those of the last year.
+- Latest Target Date and Days Since Latest Target: the date of the most recent target and the calendar days since. The consensus is made of every analyst's current target, so when no target was published for a while it can be months old; the Last Month and Last Quarter Count and Average are the recent consensus.
 - Last Month, Last Quarter, Last Year and All Time Count and Average: the number of targets published in each window and their average.
 
 The targets are today's: they are not filtered to this Toolkit instance's start_date and end_date. The targets as they were published over time come from get_price_target_history.
 
-**Also known as:** analyst price target, consensus price target, target upside.
+**Also known as:** analyst price target, consensus price target, target upside, stale price targets.
 
 **Args:**
 
@@ -1807,7 +1813,8 @@ names are reported and ignored. Defaults to None, which keeps every ticker.
 **Returns:**
 
 pd.DataFrame: The price targets and their measures with a column per ticker.
-Upside, Dispersion and Revision Momentum are decimals (0.05 is 5%).
+Upside, Dispersion and Revision Momentum are decimals (0.05 is 5%), the Latest
+Target Date is text (YYYY-MM-DD).
 
 **Notes:**
 
@@ -1832,24 +1839,26 @@ toolkit.get_price_targets()
 
 Which returns:
 
-|                      |     AAPL |     NVDA |     MSFT |
-|:---------------------|---------:|---------:|---------:|
-| Target Consensus     | 344.46   | 339.17   | 611.74   |
-| Target Median        | 355      | 325      | 625      |
-| Target High          | 400      | 515      | 750      |
-| Target Low           | 245      | 210      | 440      |
-| Price                | 344.17   | 181.6    | 535.93   |
-| Upside               |   0.0008 |   0.8677 |   0.1415 |
-| Dispersion           |   0.45   |   0.8993 |   0.5068 |
-| Revision Momentum    |   0.0557 |   0.0891 |   0.0824 |
-| Last Month Count     |  12      |   0      |  20      |
-| Last Month Average   | 349.42   | nan      | 643.95   |
-| Last Quarter Count   |  18      |  25      |  30      |
-| Last Quarter Average | 348.65   | 332.32   | 629.23   |
-| Last Year Count      |  61      |  83      |  92      |
-| Last Year Average    | 330.27   | 305.12   | 581.32   |
-| All Time Count       | 275      | 343      | 299      |
-| All Time Average     | 239.2    | 152.9    | 466.96   |
+|                          | AAPL       | NVDA       | MSFT       |
+|:-------------------------|:-----------|:-----------|:-----------|
+| Target Consensus         | 344.46     | 339.17     | 611.74     |
+| Target Median            | 355.0      | 325.0      | 625.0      |
+| Target High              | 400.0      | 515.0      | 750.0      |
+| Target Low               | 245.0      | 210.0      | 440.0      |
+| Price                    | 342.37     | 186.64     | 530.61     |
+| Upside                   | 0.0061     | 0.8172     | 0.1529     |
+| Dispersion               | 0.45       | 0.8993     | 0.5068     |
+| Revision Momentum        | 0.0557     | 0.0891     | 0.0824     |
+| Latest Target Date       | 2026-11-04 | 2026-10-05 | 2026-10-29 |
+| Days Since Latest Target | 3.0        | 33.0       | 9.0        |
+| Last Month Count         | 12.0       | 0.0        | 20.0       |
+| Last Month Average       | 349.42     | nan        | 643.95     |
+| Last Quarter Count       | 18.0       | 25.0       | 30.0       |
+| Last Quarter Average     | 348.65     | 332.32     | 629.23     |
+| Last Year Count          | 61.0       | 83.0       | 92.0       |
+| Last Year Average        | 330.27     | 305.12     | 581.32     |
+| All Time Count           | 275.0      | 343.0      | 299.0      |
+| All Time Average         | 239.2      | 152.9      | 466.96     |
 
 ---
 
@@ -2158,7 +2167,7 @@ technical indicators.
 - <u>rounding (int):</u> Defines the number of decimal places to round the returned data to. Defaults
 to None, which uses the rounding of the Toolkit. The rates the financial statements are
 translated with are never rounded.
-- <u>show_ticker_seperation (bool, optional):</u> A boolean representing whether to show which tickers
+- <u>show_ticker_separation (bool, optional):</u> A boolean representing whether to show which tickers
 acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance. Defaults to True.
 
 **Raises:**

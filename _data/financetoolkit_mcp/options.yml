@@ -137,21 +137,12 @@ get_asian_option:
     strike_step_size: 2
     expiration_time_range: 91
 get_strategy_payoff:
-  question: What is the profit or loss at expiry of a long $450 straddle on Tesla, paying $30 for the call and $28 for the put, for share prices within 25% of the end-2025 price in $5 steps?
+  question: What is the profit or loss at expiry of an at-the-money straddle on Tesla, bought at the end of 2025 with 30 days to expiry, for share prices within 25% of that price in $5 steps?
   tool: options
   arguments:
     tickers: TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-    legs:
-    - strike_price: 450
-      put_option: false
-      position: long
-      premium: 30
-    - strike_price: 450
-      put_option: true
-      position: long
-      premium: 28
     stock_price_range: 0.25
     stock_price_step_size: 5
 get_delta:

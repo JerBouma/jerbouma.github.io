@@ -53,15 +53,12 @@ get_market_value_added:
     end_date: "2025-12-31"
     show_columns: Market Value Added
 get_intrinsic_valuation:
-  question: What are Adobe, Salesforce and Intuit worth per share in a discounted cash flow model with 8% growth, 2.5% perpetual growth and a 9% WACC?
+  question: What are Adobe, Salesforce and Intuit worth per share in a discounted cash flow model based on their own growth and cost of capital?
   tool: models
   arguments:
-    tickers: ADBE,CRM,INTU
+    tickers: "ADBE,CRM,INTU"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    growth_rate: 0.08
-    perpetual_growth_rate: 0.025
-    weighted_average_cost_of_capital: 0.09
     show_columns: Intrinsic Value
 get_free_cash_flow_to_firm:
   question: How much free cash flow to the firm did ExxonMobil and Chevron generate from 2021 to 2025?
@@ -79,25 +76,20 @@ get_free_cash_flow_to_equity:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: Free Cash Flow to Equity
-get_gorden_growth_model:
-  question: What is Coca-Cola worth per share in the Gordon growth model with an 8% required return and 4% dividend growth, from 2021 to 2025 and projected to 2030?
+get_gordon_growth_model:
+  question: What is Coca-Cola worth per share in the Gordon growth model, based on its own dividend growth and cost of equity, from 2021 to 2025 and projected to 2030?
   tool: models
   arguments:
     tickers: KO
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    rate_of_return: 0.08
-    growth_rate: 0.04
 get_two_stage_dividend_discount_model:
-  question: What are Johnson & Johnson, Procter & Gamble and PepsiCo worth per share in a two-stage dividend discount model with 6% growth for five years, then 3%, at an 8% required return?
+  question: What are Johnson & Johnson, Procter & Gamble and PepsiCo worth per share in a two-stage dividend discount model based on their own dividend growth and cost of equity?
   tool: models
   arguments:
-    tickers: JNJ,PG,PEP
+    tickers: "JNJ,PG,PEP"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    rate_of_return: 0.08
-    high_growth_rate: 0.06
-    stable_growth_rate: 0.03
     show_columns: Intrinsic Value
 get_residual_income:
   question: How much residual income above their cost of equity did Visa, Mastercard and American Express earn from 2022 to 2025?
@@ -108,12 +100,13 @@ get_residual_income:
     end_date: "2025-12-31"
     show_columns: Residual Income
 get_altman_z_score:
-  question: What was the Altman Z-Score of Boeing, Lockheed Martin and General Dynamics from 2021 to 2025?
+  question: What was the Altman Z-Score of McDonald's, Netflix and Uber from 2021 to 2025, using the model for non-manufacturing companies?
   tool: models
   arguments:
-    tickers: BA,LMT,GD
+    tickers: "MCD,NFLX,UBER"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+    model: non-manufacturing
     show_columns: Altman Z-Score
 get_piotroski_score:
   question: What was the Piotroski F-Score of Ford, General Motors and Tesla from 2022 to 2025?
@@ -203,7 +196,7 @@ get_reverse_discounted_cash_flow:
   question: What growth rate do the share prices of Apple, Microsoft and Nvidia imply in a reverse discounted cash flow model at a 9% WACC, next to their historical growth from 2021 to 2025?
   tool: models
   arguments:
-    tickers: AAPL,MSFT,NVDA
+    tickers: "AAPL,MSFT,NVDA"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     weighted_average_cost_of_capital: 0.09
@@ -216,14 +209,12 @@ get_earnings_power_value:
     end_date: "2025-12-31"
     weighted_average_cost_of_capital: 0.08
 get_monte_carlo_intrinsic_valuation:
-  question: How is the discounted cash flow value of Apple and Microsoft distributed in a Monte Carlo simulation with 8% growth and a 9% WACC, and how likely is each to be undervalued?
+  question: How is the discounted cash flow value of Apple and Microsoft distributed in a Monte Carlo simulation, and how likely is each to be undervalued?
   tool: models
   arguments:
-    tickers: AAPL,MSFT
+    tickers: "AAPL,MSFT"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    growth_rate: 0.08
-    weighted_average_cost_of_capital: 0.09
 get_merton_distance_to_default:
   question: What were Ford's asset value, asset volatility, distance to default and probability of default in the Merton model in each year from 2021 to 2025?
   tool: models
@@ -285,24 +276,19 @@ get_accruals_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_h_model:
-  question: What are Coca-Cola and PepsiCo worth per share from 2021 to 2025 in an H-model with an 8% required return and dividend growth declining from 8% to 3%?
+  question: What were Coca-Cola and PepsiCo worth per share in each year from 2022 to 2025 in an H-model based on their own dividend growth and cost of equity?
   tool: models
   arguments:
     tickers: "KO,PEP"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    rate_of_return: 0.08
-    high_growth_rate: 0.08
-    stable_growth_rate: 0.03
 get_justified_multiples:
-  question: Which P/E and P/B ratios did Coca-Cola's payout and return on equity justify from 2021 to 2025, at an 8% required return and 4% growth, and how do they compare with its actual multiples?
+  question: Which P/E and P/B ratios did Coca-Cola's payout and return on equity justify from 2021 to 2025, and how do they compare with its actual multiples?
   tool: models
   arguments:
     tickers: KO
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    rate_of_return: 0.08
-    growth_rate: 0.04
 get_return_decomposition:
   question: How much of the share price returns of AMD and Microsoft from 2022 to 2025 came from earnings growth and how much from a change in their P/E?
   tool: models
@@ -319,3 +305,18 @@ get_quality_score:
     end_date: "2025-12-31"
     show_columns: Quality Score
     limit: -6
+get_taffler_z_score:
+  question: What was the Taffler Z-Score of Macy's, Kohl's and Gap from 2020 to 2024?
+  tool: models
+  arguments:
+    tickers: "M,KSS,GAP"
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    show_columns: Taffler Z-Score
+get_campbell_hilscher_szilagyi_score:
+  question: What did the Campbell-Hilscher-Szilagyi model say about Ford's probability of failure from 2021 to 2025, and which inputs drove it?
+  tool: models
+  arguments:
+    tickers: F
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
