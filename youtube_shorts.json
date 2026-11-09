@@ -1,5 +1,12 @@
 [
   {
+    "id": "o4ucaDdQq4k",
+    "title": "Forward curve, explained: oil a year out is $14 cheaper #Oil #ForwardCurve #Backwardation #OilPrice",
+    "published": "2026-11-08T16:00:00+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nA forward curve lines up the futures price of a commodity for each delivery month. Its slope is the price a year out ÷ next month's price − 1. When the near months cost more, the curve is in backwardation (supply is tight now); when the far months cost more, it is in contango, the normal shape for a commodity that only costs storage and interest to hold. At Friday 6 November's settlement, WTI crude for December 2026 delivery was $90.83 and for November 2027 $76.42: oil a year out is $14.41 (15.9%) cheaper. Shipping through the Strait of Hormuz has been disrupted since the US-Iran war began on 28 February (The National, 1 Nov). Before the war, on 27 February, the same two contracts were $2.04 apart; the gap peaked at $22.31 on 15 September. This week, as traders bet on a US-Iran deal (Oilprice.com, 6 Nov), the December contract fell 12.8% (from $104.12) and the November 2027 one 7.9%: the war premium sits in the near months. Gold's curve slopes up (+4.4% over twelve months). The pitfall: the curve is no forecast. On 27 February it priced December 2026 oil at $63.73; on Friday it settled at $90.83.\n\nCompare next month's futures price with the one a year out: a deep discount means supply is tight now. Read it as the price of time, not as a forecast.\n\nData: Finance Toolkit MCP (WTI crude, gold and natural gas futures curves, settlements of 6 November 2026 and 27 February 2026).\n\nMCP setup: https://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Shorts #ForwardCurve #OilPrice",
+    "series": "finance"
+  },
+  {
     "id": "4a1Pb4lYgS4",
     "title": "Drawdown, explained: Japan's Nikkei is 21% below its peak #Nikkei #BearMarket #Drawdown #Shorts",
     "published": "2026-11-07T16:00:28+00:00",
