@@ -19,7 +19,10 @@
       <p class="pj-card__lead">{{ t }}</p>
       {%- endfor %}
       <div class="pj-card__actions">
-        <a class="hp-link" href="{{ a.link.url }}" target="_blank" rel="noopener">{{ a.link.label }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        {%- if a.links %}{% assign links = a.links %}{% else %}{% assign links = "" | split: "" | push: a.link %}{% endif %}
+        {%- for l in links %}
+        <a class="hp-link" href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        {%- endfor %}
       </div>
     </div>
   </div>

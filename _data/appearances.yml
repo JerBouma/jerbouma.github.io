@@ -2,6 +2,20 @@
 # LinkedIn posts and the YouTube upload dates. media is a photo, a set of
 # photos or a YouTube video id.
 
+podcasts:
+  - title: "Your AI Shouldn't Guess the Formula"
+    date: "Nov 2026"
+    place: "Stack to Street podcast"
+    video: Ii-3CUUMKhY
+    text:
+      - "A conversation with Michael McLaughlin on why I started the Finance Toolkit: the same metric, like the P/E ratio, comes out differently on every website and platform, so every formula and its variations are written out in the code for anyone to check."
+      - "We talked about how the MCP server lets an AI assistant run a documented calculation instead of searching the web for a number, the Finance Database, keeping ownership of what agents produce, why fixed income and private markets are harder without public data, and why open-source code you can run on your own machines suits regulated firms."
+    links:
+      - { label: "Watch on YouTube", url: "https://www.youtube.com/watch?v=Ii-3CUUMKhY" }
+      - { label: "Listen on Apple Podcasts", url: "https://podcasts.apple.com/us/podcast/jeroen-bouma-your-ai-shouldnt-guess-the-formula/id6819263656?i=1000800868455" }
+      - { label: "Episode page and transcript", url: "https://stacktostreet.com/episodes/financetoolkit/" }
+      - { label: "Read more on LinkedIn", url: "https://www.linkedin.com/feed/update/urn:li:activity:7525957195419742208/" }
+
 talks:
   - title: "Speaker at the Student Capital Society Rotterdam"
     date: "Nov 2024"
