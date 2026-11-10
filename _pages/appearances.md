@@ -1,6 +1,6 @@
 ---
 title: Appearances
-description: My public talks and appearances connecting finance theory with open-source Python.
+description: My podcast appearances and public talks connecting finance theory with open-source Python.
 permalink: /appearances
 redirect_from:
   - /media
@@ -14,9 +14,15 @@ author_profile: false
 
 {%- assign d = site.data.appearances %}
 
-I enjoy talking about how financial theory is put into practice, and about the role Python and open source play in that. Below are my public talks, lectures and webinars, from university campuses to product launches. **Would you like me to speak at your event? Reach out via the [contact page](/contact).**
+I enjoy talking about how financial theory is put into practice, and about the role Python and open source play in that. Below are my podcast appearances and public talks, lectures and webinars, from university campuses to product launches. **Would you like me to speak at your event? Reach out via the [contact page](/contact).**
 
 <div class="hp pj ap">
+
+<section class="hp-section pj-section">
+  <p class="hp-kicker">Listen</p>
+  <h2 class="hp-h2">Podcasts</h2>
+  {%- for a in d.podcasts %}{% include appearance-card.html item=a %}{% endfor %}
+</section>
 
 <section class="hp-section pj-section">
   <p class="hp-kicker">In person</p>
