@@ -5,6 +5,10 @@ permalink: /insights
 redirect_from:
   - /articles
   - /articles/
+  - /insights/explained
+  - /explained
+  - /youtube
+  - /shorts
 layout: single
 classes: custom-document projects-v2 articles-v2
 author_profile: false
@@ -43,7 +47,7 @@ I write about the economy, financial markets and how financial theory is applied
   <p class="yt-lead">Two series of shorts, News Explained and Finance Explained, with every number calculated by the Finance Toolkit MCP.</p>
   <div class="yt-teaser">
   {%- for s in shorts limit: 4 %}{% assign pl = yt.playlists | where: "key", s.series | first %}
-    <a class="yt-teaser__item yt-teaser__item--{{ s.series }}" href="/insights/explained#short-{{ s.id }}">
+    <a class="yt-teaser__item yt-teaser__item--{{ s.series }}" href="https://www.youtube.com/shorts/{{ s.id }}" target="_blank" rel="noopener">
       <div class="yt-teaser__img"><img src="https://i.ytimg.com/vi/{{ s.id }}/hq720.jpg" alt="" loading="lazy" width="1280" height="720"></div>
       <div class="yt-teaser__body">
         <p class="yt-teaser__series">{{ pl.name }}</p>
@@ -52,7 +56,7 @@ I write about the economy, financial markets and how financial theory is applied
     </a>
   {%- endfor %}
   </div>
-  <a class="hp-link" href="/insights/explained">All {{ shorts | size }} shorts and what they calculate <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  <a class="hp-link" href="{{ yt.channel }}/shorts" target="_blank" rel="noopener">All {{ shorts | size }} shorts on YouTube <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
 </section>
 {%- endif %}
 
