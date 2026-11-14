@@ -5,6 +5,14 @@ get_beta:
     tickers: "NVDA,TSLA,JPM"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_beta_implied_return:
+  question: On 5 November 2026, how much of the falls in Nvidia, Coca-Cola, AMD and Tesla did their Beta to the market explain, and how unusual was what was left?
+  tool: performance
+  arguments:
+    tickers: NVDA,KO,AMD,TSLA
+    start_date: "2022-01-01"
+    end_date: "2026-11-05"
+    limit: -1
 get_capital_asset_pricing_model:
   question: What return did the CAPM require of JPMorgan Chase, Goldman Sachs and Morgan Stanley in each year from 2021 to 2025?
   tool: performance
