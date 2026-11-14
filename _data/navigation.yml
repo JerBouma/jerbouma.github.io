@@ -120,6 +120,8 @@ financetoolkit:
         url: /projects/financetoolkit#following-the-portfolio
   - title: Questions & Answers
     url: /projects/financetoolkit#questions--answers
+  - title: Release Notes
+    url: /projects/financetoolkit/releases
 financetoolkit-mcp:
   - title: Introduction
     url: /projects/financetoolkit/mcp#site-nav
