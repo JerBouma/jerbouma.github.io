@@ -421,6 +421,15 @@ Obtain the profile of the specified tickers. These include important metrics suc
 
 **Args:**
 
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The profile per ticker, with the profile items as the index.
+
 **As an example:**
 
 ```python
@@ -454,6 +463,15 @@ Get the quote of the specified tickers: the price and its change, the day's open
 **Also known as:** real-time price, current stock price, live quote.
 
 **Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The quote per ticker, with the quote items as the index.
 
 **As an example:**
 
@@ -500,6 +518,11 @@ Get the rating of the specified tickers: a letter rating and an overall score ba
 **Also known as:** stock rating, fundamental score, quantitative rating.
 
 **Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -548,8 +571,10 @@ Note that this information requires a Premium FMP subscription.
 - <u>compound (bool):</u> Defines whether the growth is the compound annual growth rate over the lag
 (e.g. lag=5, or lag=20 with quarterly data, for the five-year CAGR) instead of the total change.
 Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -586,6 +611,8 @@ Which returns:
 ## get_earnings_calendar
 Obtain Earnings Calendars for any range of companies. You have the option to obtain the actual dates or to convert to the corresponding quarters.
 
+Filtered to this Toolkit instance's start_date and end_date; when the end_date is today or later (the default), the scheduled releases after today are included too, with the estimates and without reported figures yet.
+
 Note that this information requires a Premium FMP subscription.
 
 The surprise is the reported EPS against the estimate, usually as a percentage of the estimate. Most companies report above the consensus, so a small beat is the norm, and the share price tends to react to the size of the surprise, to revenue against its estimate and to the guidance given on the call rather than to a beat as such.
@@ -597,8 +624,10 @@ The surprise is the reported EPS against the estimate, usually as a percentage o
 - <u>actual_dates (bool):</u> Defines whether to return the actual dates or the corresponding quarters. Defaults to
 True.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 - <u>rounding (int &#124; None):</u> The number of decimals to round the results to. Defaults to None,
 which uses the rounding set on the Toolkit.
 
@@ -660,9 +689,10 @@ reaction covers. Defaults to 1, the three days -1, 0 and +1.
 scale the SUE. Defaults to 8 (two years of quarterly reports).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding set on the Toolkit.
-- <u>show_columns (list[str] &#124; None, optional):</u> A list of column names to keep in the
-result. Invalid names are reported and ignored. Defaults to None, which keeps
-every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -712,8 +742,10 @@ Each ticker is matched with the right news feed. A currency pair such as EURUSD 
 - <u>pages (int, optional):</u> The number of pages to collect per news feed, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -758,8 +790,10 @@ Obtain the latest official company press releases for the tickers of this Toolki
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -804,8 +838,10 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -848,8 +884,10 @@ Note that this information requires a Premium FMP subscription.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -922,10 +960,10 @@ will return the earlier retrieved data. This is done to prevent too many API cal
 rounding of the Toolkit (4 unless set otherwise).
 - <u>show_ticker_separation (bool, optional):</u> A boolean representing whether to show which tickers
 acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance. Defaults to True.
-- <u>show_columns (list[str], optional):</u> A list of columns to include in the output. Valid columns
-are Open, High, Low, Close, Adj Close, Volume, Dividends, Return and Cumulative Return.
-Invalid column names are logged as warnings. If all
-provided columns are invalid the full dataset is returned. Defaults to None (all columns).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -990,8 +1028,10 @@ Defaults to "1hour".
 - <u>return_column (str, optional):</u> The column to use for the return calculation. Defaults to "Close".
 - <u>fill_nan (bool, optional):</u> Defines whether to forward fill NaN values. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1037,6 +1077,8 @@ Obtain Dividend Calendars for any range of companies. It includes the following 
 
 If a company does not pay any dividend, the function will mention that it was not able to find any dividend data for that company.
 
+Filtered to this Toolkit instance's start_date and end_date; when the end_date is today or later (the default), the dividends scheduled after today are included too.
+
 **Also known as:** dividend dates, ex-dividend date, dividend history.
 
 **Args:**
@@ -1044,8 +1086,10 @@ If a company does not pay any dividend, the function will mention that it was no
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1109,8 +1153,10 @@ ESG scores provide investors with a holistic view of a company's sustainability 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1153,6 +1199,10 @@ In a cost of equity the premium is applied in one of two common ways: beta times
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1206,6 +1256,10 @@ Positioning is usually read from the net position of the non-commercial traders 
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1246,8 +1300,10 @@ Obtain the key executives of each company: their title, pay, gender, year of bir
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1297,8 +1353,10 @@ Automatically filtered to the years of this Toolkit instance's start_date and en
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1339,8 +1397,10 @@ Obtain the securities other than common stock that each company has registered f
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1387,6 +1447,10 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1427,6 +1491,10 @@ Obtain the free float of each company: the number of shares available for public
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1467,8 +1535,10 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1510,6 +1580,10 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1558,8 +1632,10 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1609,8 +1685,10 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1680,8 +1758,10 @@ retrieves the Toolkit's whole date range (one download per trading day).
 Defaults to 20, about a month.
 - <u>rounding (int &#124; None):</u> The number of decimals to round the results to. Defaults to
 None, which uses the rounding of the Toolkit.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result.
-Invalid names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1730,8 +1810,10 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 **Args:**
 
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1807,8 +1889,10 @@ The targets are today's: they are not filtered to this Toolkit instance's start_
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of tickers to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every ticker.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1863,9 +1947,14 @@ Which returns:
 ---
 
 ## get_price_target_history
-Obtain every price target analysts published for each company: per date and analyst company the target (adjusted for stock splits), the share price when it was published and the upside it implied at that moment. Following the targets over time shows how analysts revise their expectations, and unlike today's consensus each row only uses what was known on its date.
+Obtain every price target analysts published for each company: per date and analyst company the target (adjusted for stock splits), the share price when it was published and the upside it implied at that moment, and the company's previous target with the change. Following the targets over time shows how analysts revise their expectations, and unlike today's consensus each row only uses what was known on its date.
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+- Previous Target and Previous Date: the analyst company's target before this one, when it published one in the year before (a price target looks about a year ahead, so an older one no longer stands). Without one, the target is new coverage (an initiation, or a company returning after more than a year).
+- Target Change: Price Target / Previous Target − 1.
+
+The median of the latest target per company over a window against the same companies' previous targets follows from these columns, e.g. with history.loc["2026-11-09":].groupby(level="Analyst Company").last().
+
+Automatically filtered to this Toolkit instance's start_date and end_date; the previous targets are looked up over the year before the start_date as well.
 
 **Also known as:** price target changes, analyst target revisions, price target news.
 
@@ -1874,20 +1963,26 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
 pd.DataFrame: The price targets per ticker, indexed by date and analyst company,
-with the Price Target, the Price When Posted and the Implied Upside
-(Price Target / Price When Posted − 1, a decimal).
+with the Price Target, the Price When Posted, the Implied Upside
+(Price Target / Price When Posted − 1, a decimal), the Previous Target, the
+Previous Date (text, YYYY-MM-DD) and the Target Change (a decimal).
 
 **Notes:**
 
 The targets come from the news articles that report them. A target reported by
 several publishers on the same day is kept once; a change of target that no
-article reported is missing.
+article reported is missing, so the previous target can be older than the
+company's last change. The news sometimes lists a target under another analyst
+company than the article names; such a target is credited to the company the
+article's title names, or dropped when the article already lists that company.
 
 **As an example:**
 
@@ -1901,26 +1996,28 @@ toolkit = Toolkit(
     end_date="2025-11-30",
 )
 
-toolkit.get_price_target_history()
+toolkit.get_price_target_history(
+    show_columns=["Price Target", "Implied Upside", "Previous Target", "Target Change"]
+)
 ```
 
 Which returns:
 
-|                                        |   Price Target |   Price When Posted |   Implied Upside |
-|:---------------------------------------|---------------:|--------------------:|-----------------:|
-| ('2025-11-03', 'Loop Capital Markets') |            350 |             202.49  |           0.7285 |
-| ('2025-11-14', 'Wells Fargo')          |            265 |             186.52  |           0.4208 |
-| ('2025-11-20', 'Barclays')             |            275 |             194.17  |           0.4163 |
-| ('2025-11-20', 'Bernstein')            |            275 |             186.52  |           0.4744 |
-| ('2025-11-20', 'Deutsche Bank')        |            215 |             186.52  |           0.1527 |
-| ('2025-11-20', 'Evercore ISI')         |            352 |             184.615 |           0.9067 |
-| ('2025-11-20', 'Jefferies')            |            250 |             195.096 |           0.2814 |
-| ('2025-11-20', 'KeyBanc')              |            275 |             189.96  |           0.4477 |
-| ('2025-11-20', 'Mizuho Securities')    |            245 |             184.615 |           0.3271 |
-| ('2025-11-20', 'Morgan Stanley')       |            235 |             186.52  |           0.2599 |
-| ('2025-11-20', 'Raymond James')        |            272 |             180.64  |           0.5058 |
-| ('2025-11-20', 'Robert W. Baird')      |            275 |             186.52  |           0.4744 |
-| ('2025-11-20', 'Susquehanna')          |            250 |             186.52  |           0.3403 |
+|                                        |   Price Target |   Implied Upside |   Previous Target |   Target Change |
+|:---------------------------------------|---------------:|-----------------:|------------------:|----------------:|
+| ('2025-11-03', 'Loop Capital Markets') |            350 |           0.7285 |               250 |          0.4    |
+| ('2025-11-14', 'Wells Fargo')          |            265 |           0.4208 |               nan |        nan      |
+| ('2025-11-20', 'Barclays')             |            275 |           0.4163 |               240 |          0.1458 |
+| ('2025-11-20', 'Bernstein')            |            275 |           0.4744 |               nan |        nan      |
+| ('2025-11-20', 'Deutsche Bank')        |            215 |           0.1527 |               140 |          0.5357 |
+| ('2025-11-20', 'Evercore ISI')         |            352 |           0.9067 |               261 |          0.3487 |
+| ('2025-11-20', 'Jefferies')            |            250 |           0.2814 |               220 |          0.1364 |
+| ('2025-11-20', 'KeyBanc')              |            275 |           0.4477 |               190 |          0.4474 |
+| ('2025-11-20', 'Mizuho Securities')    |            245 |           0.3271 |               235 |          0.0426 |
+| ('2025-11-20', 'Morgan Stanley')       |            235 |           0.2599 |               210 |          0.119  |
+| ('2025-11-20', 'Raymond James')        |            272 |           0.5058 |               150 |          0.8133 |
+| ('2025-11-20', 'Robert W. Baird')      |            275 |           0.4744 |               225 |          0.2222 |
+| ('2025-11-20', 'Susquehanna')          |            250 |           0.3403 |               nan |        nan      |
 
 ---
 
@@ -1936,8 +2033,10 @@ Automatically filtered to this Toolkit instance's start_date and end_date.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2001,6 +2100,10 @@ every transcript between the start_date and end_date is retrieved. Defaults to T
 differs from the calendar year for e.g. Apple and Microsoft. Takes precedence
 over latest. Defaults to None.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2046,6 +2149,13 @@ Retrieve statistics about each ticker's historical data. This is especially usef
 
 **Also known as:** listing details, instrument information, exchange and currency.
 
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
 **Returns:**
 
 pd.DataFrame: A DataFrame containing the statistics for each ticker.
@@ -2079,7 +2189,7 @@ Which returns:
 ---
 
 ## get_treasury_data
-Retrieve daily, weekly, monthly, quarterly or yearly US Treasury yields for four maturities, 13 weeks, 5 years, 10 years and 30 years, from FinancialModelingPrep or, as a free alternative, YahooFinance. With the default divide_ohlc_by of 100 the yields are returned as decimals (0.042 is 4.2%).
+Retrieve daily, weekly, monthly, quarterly or yearly US Treasury yields for four maturities, 13 weeks, 5 years, 10 years and 30 years, from FinancialModelingPrep or YahooFinance. With the default divide_ohlc_by of 100 the yields are returned as decimals (0.042 is 4.2%).
 
 A week, month, quarter or year holds the first (Open), highest, lowest and last (Close) yield of the period. The risk free rate the Performance, Risk and Models modules use for such a period is instead the average of the daily yields within it, which approximates what a holder earned over the period rather than where the yield happened to close at its end.
 
@@ -2104,6 +2214,10 @@ Defaults to None, which uses the rounding set on the Toolkit.
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself. Defaults to None, which falls back to
 the Toolkit's own enforce_source.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2169,6 +2283,10 @@ to None, which uses the rounding of the Toolkit. The rates the financial stateme
 translated with are never rounded.
 - <u>show_ticker_separation (bool, optional):</u> A boolean representing whether to show which tickers
 acquired data from FinancialModelingPrep and which tickers acquired data from YahooFinance. Defaults to True.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -2228,7 +2346,7 @@ With convert_currency, the statement is converted to the currency of the histori
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
-data from the free Yahoo Finance source while still using a FinancialModelingPrep
+data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
@@ -2240,8 +2358,10 @@ E.g. 4 with quarterly data gives the growth against the same quarter a year earl
 - <u>compound (bool):</u> Defines whether the growth is the compound annual growth rate over the lag
 (e.g. lag=5, or lag=20 with quarterly data, for the five-year CAGR) instead of the total change.
 Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2275,7 +2395,7 @@ Which returns:
 ## get_income_statement
 Retrieves the income statement data for the specified tickers. The income statement is a financial statement that shows a company's revenues and expenses over a specific period. It is used to calculate a company's net income.
 
-The income statement is a financial statement that shows a company's revenues and expenses over a specific period. Therefore, trailing results are available for this statement. A trailing result sums each item over the window, except the Weighted Average Shares, Weighted Average Shares Diluted and Tax Rate for Calcs rows, which keep the value of the latest period.
+As the income statement covers a period, trailing results are available for this statement. A trailing result sums each item over the window, except the Weighted Average Shares, Weighted Average Shares Diluted and Tax Rate for Calcs rows, which keep the value of the latest period.
 
 With convert_currency, the statement is converted to the currency of the historical data at the average exchange rate of each period, as IAS 21.39-40 does for income and expenses. EPS and EPS Diluted are converted as well; share counts and ratios are not.
 
@@ -2286,7 +2406,7 @@ With convert_currency, the statement is converted to the currency of the histori
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
-data from the free Yahoo Finance source while still using a FinancialModelingPrep
+data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
@@ -2300,8 +2420,10 @@ window.
 - <u>compound (bool):</u> Defines whether the growth is the compound annual growth rate over the lag
 (e.g. lag=5, or lag=20 with quarterly data, for the five-year CAGR) instead of the total change.
 Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2334,7 +2456,7 @@ Which returns:
 ## get_cash_flow_statement
 Retrieves the cash flow statement data for the specified tickers. The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. It breaks the analysis down to operating, investing and financing activities.
 
-The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. Therefore, trailing results are available for this statement. A trailing result sums each cash flow over the window, while Cash Beginning of Period is the cash at the beginning of the first period of the window and Cash End of Period the cash at the end of the last one.
+As the cash flow statement covers a period, trailing results are available for this statement. A trailing result sums each cash flow over the window, while Cash Beginning of Period is the cash at the beginning of the first period of the window and Cash End of Period the cash at the end of the last one.
 
 With convert_currency, the cash flows are converted to the currency of the historical data at the average exchange rate of each period (IAS 7.25), Cash End of Period at the closing rate of the period and Cash Beginning of Period at the closing rate of the period before, so it equals the Cash End of Period before it. Net Change in Cash is the change in the converted cash and Forex Changes on Cash holds the effect of the exchange rate changes on the cash held (IAS 7.28).
 
@@ -2345,7 +2467,7 @@ With convert_currency, the cash flows are converted to the currency of the histo
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
-data from the free Yahoo Finance source while still using a FinancialModelingPrep
+data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
@@ -2359,8 +2481,10 @@ window.
 - <u>compound (bool):</u> Defines whether the growth is the compound annual growth rate over the lag
 (e.g. lag=5, or lag=20 with quarterly data, for the five-year CAGR) instead of the total change.
 Defaults to False.
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2406,14 +2530,16 @@ Note that this also obtains the balance sheet statement at the same time given t
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
 source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
-data from the free Yahoo Finance source while still using a FinancialModelingPrep
+data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
 which falls back to the Toolkit's own enforce_source.
 - <u>overwrite (bool):</u> Defines whether to overwrite the existing data. Defaults to False.
 - <u>rounding (int):</u> Defines the number of decimal places to round the data to. Defaults to None, which uses the
 rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list[str] &#124; None):</u> A list of column names to keep in the result. Invalid
-names are reported and ignored. Defaults to None, which keeps every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2457,6 +2583,10 @@ The same function is available without a Toolkit instance as `from financetoolki
 
 - <u>path (str, optional):</u> The folder to save the files to. Defaults to "", which
 saves them to the 'Downloads' folder of your home directory.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2471,6 +2601,13 @@ Show what the cache currently holds, grouped by source and dataset.
 The cache stores data per source, per dataset and per entity (a ticker, a country, a series identifier), which makes it possible to remove part of it rather than all of it. This method is the counterpart to clear_cache: it shows what is there so that removing something is an informed decision.
 
 The cache is inspected even when this Toolkit was created with use_cached_data=False, so a cache filled by an earlier session can always be reviewed.
+
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 

@@ -39,6 +39,10 @@ An ISIN or CUSIP search returns every listing of the security, most traded first
 - <u>query (str):</u> A query to search for, e.g. 'META'.
 - <u>search_method (str, optional):</u> The field to search against. Valid options are 'symbol', 'name',
 'cik', 'cusip', and 'isin'. Defaults to 'name'.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -77,13 +81,15 @@ Screen stocks based on a set of criteria. This can be useful to find companies t
 
 The result is capped at `limit` companies, 1000 by default. Getting back exactly that many means the list was truncated, which is warned about in the log; narrow the criteria or raise the limit to see the remainder.
 
+Market caps are in each listing's own currency in "Market Cap" and in US dollars in "Market Cap (USD)", which the market cap bounds and the ranking use.
+
 **Also known as:** filter stocks, financial criteria screener.
 
 **Args:**
 
-- <u>market_cap_higher (int):</u> The minimum market capitalization of the stock in US dollars
+- <u>market_cap_higher (int &#124; None):</u> The minimum market capitalization of the stock in US dollars
 (not in millions), e.g. 1_000_000_000 for $1 billion. Defaults to None, which applies no filter.
-- <u>market_cap_lower (int):</u> The maximum market capitalization of the stock in US dollars.
+- <u>market_cap_lower (int &#124; None):</u> The maximum market capitalization of the stock in US dollars.
 The screener returns the largest companies first, so this bound is only sent to it
 when the currency of the listings is known: with an exchange, or with a country and
 primary_only. Otherwise it is applied to the companies returned. Defaults to None,
@@ -92,9 +98,9 @@ which applies no filter.
 - <u>price_lower (float &#124; None):</u> The maximum price of the stock. Defaults to None, which applies no filter.
 - <u>beta_higher (float &#124; None):</u> The minimum beta of the stock. Defaults to None, which applies no filter.
 - <u>beta_lower (float &#124; None):</u> The maximum beta of the stock. Defaults to None, which applies no filter.
-- <u>volume_higher (int):</u> The minimum volume of the stock, in shares traded. Defaults to None, which applies no
-filter.
-- <u>volume_lower (int):</u> The maximum volume of the stock. Defaults to None, which applies no filter.
+- <u>volume_higher (int &#124; None):</u> The minimum volume of the stock, in shares traded. Defaults to None, which
+applies no filter.
+- <u>volume_lower (int &#124; None):</u> The maximum volume of the stock. Defaults to None, which applies no filter.
 - <u>dividend_higher (float &#124; None):</u> The minimum dividend of the stock, as an amount per share
 over the last annual period rather than as a yield. Defaults to None, which applies no filter.
 - <u>dividend_lower (float &#124; None):</u> The maximum dividend of the stock. Defaults to None, which applies no filter.
@@ -113,9 +119,10 @@ applies no filter.
 exchange in its own country, the most traded one among several) rather than
 every listing (e.g. ING in Amsterdam, New York, Toronto and Frankfurt).
 Defaults to False.
-
-Market caps are in each listing's own currency in "Market Cap" and in US dollars in
-"Market Cap (USD)", which the market cap bounds and the ranking use.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -173,6 +180,13 @@ Which returns:
 ## get_stock_list
 The stock list function returns a complete list of all the symbols that can be used in the Finance Toolkit. These are over 60.000 symbols.
 
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
 **Returns:**
 
 pd.DataFrame: A dataframe with all the symbols in the toolkit.
@@ -209,6 +223,13 @@ Which returns:
 
 ## get_stock_shares_float
 Returns the shares float for each company. The shares float is the number of shares available for trading for each company. It also includes the number of shares outstanding and the date. The free float is the share of the outstanding shares that is available for trading, as a decimal (0.85 is 85%).
+
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -253,11 +274,15 @@ Without a date range the API hands back only the earliest days it holds, so the 
 **Args:**
 
 - <u>start_date (str &#124; None):</u> The start date to filter data with, e.g. "2024-01-01".
-Defaults to a year ago.
+Defaults to None, which uses the date a year ago.
 - <u>end_date (str &#124; None):</u> The end date to filter data with, e.g. "2024-12-31".
-Defaults to today.
+Defaults to None, which uses today.
 - <u>exchange (str, optional):</u> The exchange whose companies are averaged, "NASDAQ", "NYSE"
 or "AMEX". Defaults to "NASDAQ".
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -289,6 +314,13 @@ Which returns:
 
 ## get_biggest_gainers
 Returns the biggest gainers for the day. This includes the symbol, the name, the price, the change and the change percentage. The change percentage ("Change %") is a decimal (0.0125 is +1.25%).
+
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -326,6 +358,13 @@ Which returns:
 ## get_biggest_losers
 Returns the biggest losers for the day. This includes the symbol, the name, the price, the change and the change percentage. The change percentage ("Change %") is a decimal (0.0125 is +1.25%).
 
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
 **Returns:**
 
 pd.DataFrame: A dataframe with the biggest losers for the day.
@@ -361,6 +400,13 @@ Which returns:
 
 ## get_most_active_stocks
 Returns the most active stocks for the day. This includes the symbol, the name, the price, the change and the change percentage. The change percentage ("Change %") is a decimal (0.0125 is +1.25%).
+
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -404,6 +450,10 @@ The endpoint hands out at most 100 rows per call, so this is one page of the lis
 
 - <u>page (int):</u> The page of results to retrieve, starting at 0. Defaults to 0.
 - <u>limit (int):</u> The number of results per page, capped at 100 by the API. Defaults to 100.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -441,6 +491,13 @@ Which returns:
 ## get_crypto_list
 The crypto list function returns a complete list of all crypto symbols that can be used in the Finance Toolkit. These are over 4.000 symbols.
 
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
 **Returns:**
 
 pd.DataFrame: A dataframe with all the symbols in the toolkit.
@@ -476,6 +533,13 @@ Which returns:
 
 ## get_forex_list
 The forex list function returns a complete list of all forex symbols that can be used in the Finance Toolkit. These are over 1.000 symbols.
+
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -513,6 +577,13 @@ Which returns:
 ## get_commodity_list
 The commodity list function returns a complete list of all commodity symbols that can be used in the Finance Toolkit.
 
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
 **Returns:**
 
 pd.DataFrame: A dataframe with all the commodities available.
@@ -549,6 +620,13 @@ Which returns:
 ## get_etf_list
 The etf list function returns a complete list of all etf symbols that can be used in the Finance Toolkit.
 
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
 **Returns:**
 
 pd.DataFrame: A dataframe with all the etf symbols.
@@ -584,6 +662,13 @@ Which returns:
 
 ## get_index_list
 The index list function returns a complete list of all index symbols that can be used in the Finance Toolkit.
+
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -632,6 +717,10 @@ Today's members alone bias any history computed from them: the companies removed
 - <u>date (str &#124; None, optional):</u> The date (YYYY-MM-DD) to list the members of. A
 change takes effect on its own date, so the members on a change's date include
 it. Defaults to None, today's members.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -694,6 +783,10 @@ These are the changes `get_index_constituents(date=...)` undoes to reconstruct t
 Defaults to None, the first change recorded.
 - <u>end_date (str &#124; None, optional):</u> The last date (YYYY-MM-DD) to include. Defaults
 to None, the latest change.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -752,6 +845,10 @@ separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -791,6 +888,10 @@ Returns the latest general news articles, spanning macroeconomic and broad marke
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -832,6 +933,10 @@ separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -871,6 +976,10 @@ Returns the latest cryptocurrency news articles.
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -910,6 +1019,10 @@ Returns the latest forex news articles.
 - <u>pages (int, optional):</u> The number of pages to collect, each page is a
 separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -954,6 +1067,10 @@ separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -998,6 +1115,10 @@ separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1039,6 +1160,10 @@ separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1083,6 +1208,10 @@ separate API call, e.g. pages=5 makes 5 calls. Defaults to 1.
 - <u>limit (int, optional):</u> The number of articles to return per page. Defaults to 100.
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1123,6 +1252,10 @@ Note that the date range is limited to a maximum of 90 days.
 
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1161,6 +1294,10 @@ Returns IPO disclosure filings - the regulatory filings made ahead of an IPO, in
 
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1199,6 +1336,10 @@ Returns IPO prospectus filings, including public offering price, discounts and c
 
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1236,6 +1377,10 @@ Note that the date range is limited to a maximum of 90 days.
 
 - <u>start_date (str, optional):</u> The start date to filter data with.
 - <u>end_date (str, optional):</u> The end date to filter data with.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1274,11 +1419,16 @@ Returns sector performance - the average price change, as a decimal (0.0125 mean
 
 - <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
 - <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy". Defaults to None.
-- <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to a year
-ago.
-- <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to today.
+- <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to None,
+which uses the date a year ago.
+- <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to None, which
+uses today.
 - <u>exchange (str, optional):</u> The exchange whose companies are averaged, "NASDAQ", "NYSE"
 or "AMEX". Defaults to "NASDAQ".
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1322,11 +1472,16 @@ Returns industry performance - the average price change, as a decimal (0.0125 me
 
 - <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
 - <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology". Defaults to None.
-- <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to a year
-ago.
-- <u>end_date (str, optional):</u> The end of the history of one industry. Defaults to today.
+- <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to None,
+which uses the date a year ago.
+- <u>end_date (str, optional):</u> The end of the history of one industry. Defaults to None, which
+uses today.
 - <u>exchange (str, optional):</u> The exchange whose companies are averaged, "NASDAQ", "NYSE"
 or "AMEX". Defaults to "NASDAQ".
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1370,11 +1525,16 @@ Returns sector price-to-earnings (P/E) ratios of the companies listed on an exch
 
 - <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
 - <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy". Defaults to None.
-- <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to a year
-ago.
-- <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to today.
+- <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to None,
+which uses the date a year ago.
+- <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to None, which
+uses today.
 - <u>exchange (str, optional):</u> The exchange whose companies are averaged, "NASDAQ", "NYSE"
 or "AMEX". Defaults to "NASDAQ".
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1418,11 +1578,16 @@ Returns industry price-to-earnings (P/E) ratios of the companies listed on an ex
 
 - <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
 - <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology". Defaults to None.
-- <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to a year
-ago.
-- <u>end_date (str, optional):</u> The end of the history of one industry. Defaults to today.
+- <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to None,
+which uses the date a year ago.
+- <u>end_date (str, optional):</u> The end of the history of one industry. Defaults to None, which
+uses today.
 - <u>exchange (str, optional):</u> The exchange whose companies are averaged, "NASDAQ", "NYSE"
 or "AMEX". Defaults to "NASDAQ".
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1485,6 +1650,10 @@ The regions are the United States, Europe, Japan, Australia, New Zealand and Can
 - <u>region (str, optional):</u> The region: "United States", "Europe", "Japan",
 "Australia, New Zealand and Canada", "Emerging Markets", "China", "India" or
 "Global". Defaults to "United States".
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1548,6 +1717,10 @@ Returns the most recent mergers and acquisitions deal announcements, including t
 
 - <u>limit (int, optional):</u> The number of results to return. Defaults to 100.
 - <u>page (int, optional):</u> The page number to retrieve. Defaults to 0.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1580,7 +1753,7 @@ Which returns:
 ## get_earnings_calendar
 Returns the earnings releases of all companies in a date range: the reported and estimated earnings per share (EPS) and revenue, with the company name, the exchange of the listing and the company's market capitalisation in US dollars. Upcoming releases only have the estimates, so this also shows which companies report in the coming days. This is the market-wide counterpart of Toolkit.get_earnings_calendar, which covers the tickers of a Toolkit instance over their full history.
 
-A week holds thousands of releases, most of them small companies, and every listing of a company appears (Cisco in New York, Frankfurt and Hong Kong). To see the largest reporters, keep the primary listing of each company (its most traded one) with `primary_only=True` and sort by market cap with `sort_by="market_cap"`, or set a `min_market_cap`. Every listing of a company has the market cap of its primary listing, since the one reported for a depositary receipt or a secondary listing is often far off. The country filter uses the country of the company, so it also keeps a company's listings abroad.
+A week holds thousands of releases, most of them small companies, and every listing of a company appears (Cisco in New York, Frankfurt and Hong Kong). To see the largest reporters, keep the primary listing of each company (its most traded one) with `primary_only=True` and sort by market cap with `sort_by="market_cap"`, or set a `min_market_cap`. The listings of a company can show a release on different days (Berkshire Hathaway's in Frankfurt two days after New York), so the primary listing is chosen from the releases of the week before and after the range as well. Every listing of a company has the market cap of its primary listing, since the one reported for a depositary receipt or a secondary listing is often far off. The country filter uses the country of the company, so it also keeps a company's listings abroad.
 
 The EPS and revenue figures are in the currency the source reports them in for each listing, which is the reporting currency for some listings and the trading currency for others (Richemont's estimated revenue is in euros in Zurich and in US dollars for its depositary receipt), so they are not converted or used for ranking.
 
@@ -1590,10 +1763,10 @@ Note that the date range is limited to a maximum of 90 days.
 
 **Args:**
 
-- <u>start_date (str, optional):</u> The start date to filter data with. Defaults to today,
-or to seven days before the end date when only that is given.
-- <u>end_date (str, optional):</u> The end date to filter data with. Defaults to seven days
-after the start date.
+- <u>start_date (str, optional):</u> The start date to filter data with. Defaults to None,
+which uses today, or seven days before the end date when only that is given.
+- <u>end_date (str, optional):</u> The end date to filter data with. Defaults to None,
+which uses seven days after the start date.
 - <u>min_market_cap (float, optional):</u> The minimum market cap in US dollars, such as
 10e9 for ten billion. Releases without a market cap are left out. Defaults to
 None.
@@ -1607,6 +1780,10 @@ min_market_cap the smallest companies can be missing. Defaults to None.
 traded one) of each company. Defaults to False.
 - <u>sort_by (str, optional):</u> "date" to sort by date and symbol, or "market_cap" to put
 the largest companies first. Defaults to "date".
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1645,10 +1822,16 @@ Returns the most recent 8-K filings with the SEC. Companies file an 8-K to annou
 
 **Args:**
 
-- <u>start_date (str, optional):</u> The start date to filter data with. Defaults to 30 days ago.
-- <u>end_date (str, optional):</u> The end date to filter data with. Defaults to today.
+- <u>start_date (str, optional):</u> The start date to filter data with. Defaults to None,
+which uses the date 30 days ago.
+- <u>end_date (str, optional):</u> The end date to filter data with. Defaults to None, which
+uses today.
 - <u>limit (int, optional):</u> The number of results to return. Defaults to 100.
 - <u>page (int, optional):</u> The page number to retrieve. Defaults to 0.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1689,6 +1872,10 @@ Returns the most recent trades by company insiders (officers, directors and shar
 which returns the most recent trades.
 - <u>limit (int, optional):</u> The number of results to return. Defaults to 100.
 - <u>page (int, optional):</u> The page number to retrieve. Defaults to 0.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 

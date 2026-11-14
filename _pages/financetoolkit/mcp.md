@@ -447,7 +447,7 @@ If you prefer to do it by hand, pick your client below and add the snippet to it
 
   In every snippet `uvx` is the *command* and the rest are *args*. The `env` block takes either `FINANCIAL_MODELING_PREP_API_KEY` with the key inline, or `FINANCETOOLKIT_ENV_FILE` with the path to a `.env` file that contains `FINANCIAL_MODELING_PREP_API_KEY=FINANCIAL_MODELING_PREP_KEY`; when both are present the inline key wins.
 
-  A second key, `FRED_API_KEY`, is optional and free. It is only needed for a handful of US-only indicators without an OECD or FMP equivalent (nonfarm payrolls, initial jobless claims, the 30-year mortgage rate, the TIPS real yield curve and breakeven inflation expectations). The setup wizard picks it up automatically from your environment or `.env` file; [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
+  A second key, `FRED_API_KEY`, is optional and free. Moody's US corporate bond yields need it. Most other US series come straight from their publishers without it, and a few go back further with it, such as nonfarm payrolls from 1939. The setup wizard picks it up automatically from your environment or `.env` file; [register for one here](https://fred.stlouisfed.org/docs/api/api_key.html){:target="_blank"}.
 
   `financetoolkit[mcp]` also installs the `econometrics` extra, so `statsmodels` and `linearmodels` come along and the `econometrics` tool works out of the box.
 
@@ -643,22 +643,22 @@ The questions that come up most often about the server, its data sources and how
 | Portfolios and ETFs | `etf` | ETF holdings, sector and country weightings, overlap, concentration, tracking error, premium or discount to NAV |
 | Portfolios and ETFs | `portfolio` | Optimal weights (minimum variance, maximum Sharpe, risk parity, HRP, HERC, nested clustered optimization, Black-Litterman, Michaud resampling and more), efficient frontier, walk-forward backtests, discrete allocation, stress tests, look-through exposure, Brinson attribution |
 | Portfolios and ETFs | `portfolio_performance` | Value, returns, positions and money-weighted return of a portfolio from its transactions, holdings, weights or a classic preset such as 60/40 |
-| Econometrics | `econometrics` | Regression (OLS/WLS/GLS, logit, probit, quantile, Fama-MacBeth), panel data, causal inference (IV-2SLS, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), unit root and cointegration tests, Granger causality, ARIMA/VAR/VECM forecasting and event studies |
+| Econometrics | `econometrics` | Regression (OLS/WLS/GLS, logit, probit, quantile, Fama-MacBeth), panel data, causal inference (IV-2SLS, difference-in-differences, regression discontinuity, propensity score matching, synthetic control), unit root and cointegration tests, Granger causality, ARIMA/VAR/VECM forecasting, event studies, and how unusual a level, a move or a streak is, also for the indicators of other tools |
 | Ratios and Models | `efficiency` | Asset/inventory turnover, days of sales outstanding, cash conversion cycle |
 | Ratios and Models | `liquidity` | Current ratio, quick ratio, cash ratio, working capital |
 | Ratios and Models | `profitability` | Gross/net/operating margin, ROE, ROA, ROIC, ROCE |
 | Ratios and Models | `solvency` | Debt-to-equity, interest coverage, net debt to EBITDA |
-| Ratios and Models | `valuation` | P/E, EPS, EV/EBITDA, P/B, P/S, dividend yield, free cash flow yield |
-| Ratios and Models | `models` | WACC, DuPont analysis, Altman Z-Score, Piotroski F-Score, intrinsic value, FCFF/FCFE, Tobin's Q, bankruptcy and distress scores |
+| Ratios and Models | `valuation` | P/E, EPS, EV/EBITDA, P/B, P/S, dividend yield, free cash flow yield, market cap to GDP |
+| Ratios and Models | `models` | WACC, DuPont analysis, Altman Z-Score, Piotroski F-Score, intrinsic value, FCFF/FCFE, Tobin's Q, bankruptcy and distress scores with their zones |
 | Technical Indicators | `momentum` | RSI, MACD, Stochastic oscillator, Williams %R, Aroon |
 | Technical Indicators | `overlap` | Moving averages (simple, exponential, weighted, Hull and more), Bollinger Bands, Keltner Channels |
 | Technical Indicators | `volatility` | Average True Range, True Range, volatility series |
 | Technical Indicators | `breadth` | McClellan oscillator, OBV, Advance/Decline line, Chaikin |
-| Macro and Fixed Income | `macroeconomics` | GDP, CPI, inflation, trade balances, investment, consumption |
-| Macro and Fixed Income | `government` | Government debt, deficit, expenditure, revenue, tax rates |
+| Macro and Fixed Income | `macroeconomics` | GDP, CPI, inflation, purchasing power, producer, export and import prices, commodity prices, ship transits through chokepoints, trade balances, investment, consumption |
+| Macro and Fixed Income | `government` | Government debt, deficit, expenditure (also by function), interest expenditure, revenue, tax rates |
 | Macro and Fixed Income | `jobs` | Unemployment, population, poverty, income inequality |
-| Macro and Fixed Income | `rates` | Central bank rates, government bond yields, EURIBOR, US Treasury par yield curve, TIPS real yields |
-| Macro and Fixed Income | `fixed_income` | Every US Treasury and thousands of corporate bonds: price, YTM, duration, convexity, Z-spread, key rate duration, par/forward rates |
+| Macro and Fixed Income | `rates` | Central bank rates, government bond yields, EURIBOR, US Treasury par yield curve, TIPS real yields, nominal yields split into real yield and breakeven inflation |
+| Macro and Fixed Income | `fixed_income` | Every US Treasury and thousands of corporate bonds: price, YTM, duration, convexity, Z-spread, key rate duration, par/forward rates, issuer spreads at fixed maturities, mortgage payments and amortization |
 | Search | `search_metric_categories` | Lists all categories and the number of tools each contains |
 | Search | `search_by_category` | Lists every metric available within a given category |
 | Search | `search_metrics` | Finds the right tool and indicator for a question, in analyst wording ("how expensive is the stock", "bankruptcy risk", "option greeks"), abbreviations such as P/E or VaR, and with typos |
@@ -681,6 +681,8 @@ The questions that come up most often about the server, its data sources and how
   - Earnings call transcripts come back in full, one company and one fiscal period per call.
   - Parameters that make a call very large are capped, such as 10,000 simulated draws or a backtest lookback of 504 days; a call over a limit is refused with the limit. On the hosted server a call stops after 180 seconds and each user has at most three calls running at a time.
   - Notes in `_notes` say what was left out, ignored, assumed or converted: tickers without data, unknown columns, data that only exists yearly, a sample yield curve, assumed bond inputs, fiscal years mapped to calendar years and currency conversion.
+  - `_sources` names the publishers the data comes from, such as the IMF, Eurostat or Financial Modeling Prep.
+  - `rank=true` ranks the tickers or countries within every period, from the highest value to the lowest, with how far each stands from its neighbour.
 
   The server also sends instructions to the assistant when it connects, so it knows how to find the right tool with `search_metrics` before it starts.
 
@@ -767,7 +769,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "What does an answer from the server look like?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Each answer is compact JSON, with rates and ratios as decimals (0.05 is 5%), kept small enough for an assistant to read. limit works like head and tail (5 returns the first five periods, -5 the last five, per ticker when tickers are rows), show_columns keeps only the fields you name, an answer over 60,000 characters is cut to its most recent rows with a note on how to narrow the request, and earnings call transcripts come back in full, one company and one fiscal period per call. The performance, risk, models and portfolio tools take risk_free_rate ('13w', '5y', '10y' or '30y'). Very large calls are refused with the limit, and on the hosted server a call stops after 180 seconds with at most three calls per user at a time. Notes say what was left out, ignored, assumed or converted. The server also sends instructions to the assistant when it connects."
+        "text": "Each answer is compact JSON, with rates and ratios as decimals (0.05 is 5%), kept small enough for an assistant to read. limit works like head and tail (5 returns the first five periods, -5 the last five, per ticker when tickers are rows), show_columns keeps only the fields you name, an answer over 60,000 characters is cut to its most recent rows with a note on how to narrow the request, and earnings call transcripts come back in full, one company and one fiscal period per call. The performance, risk, models and portfolio tools take risk_free_rate ('13w', '5y', '10y' or '30y'). Very large calls are refused with the limit, and on the hosted server a call stops after 180 seconds with at most three calls per user at a time. Notes say what was left out, ignored, assumed or converted, and _sources names the publishers the data comes from. rank=true ranks the tickers or countries within every period. The server also sends instructions to the assistant when it connects."
       }
     },
     {

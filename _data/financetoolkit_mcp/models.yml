@@ -222,13 +222,6 @@ get_merton_distance_to_default:
     tickers: F
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_synthetic_credit_rating:
-  question: What synthetic credit rating, default spread and pre-tax cost of debt did the interest coverage of Ford, Apple and AT&T imply in each year from 2021 to 2025?
-  tool: models
-  arguments:
-    tickers: F,AAPL,T
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_peer_comparison:
   question: How does Microsoft compare with its peers on valuation, margins, returns, growth and leverage, based on 2021 to 2025?
   tool: models
@@ -320,3 +313,14 @@ get_campbell_hilscher_szilagyi_score:
     tickers: F
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_factor_analysis:
+  question: How well did the Piotroski F-Score and the Altman Z-Score predict the 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
+  tool: models
+  arguments:
+    tickers: "AAPL,MSFT,GOOGL,AMZN,META,NVDA,JPM,JNJ,XOM,PG,KO,WMT,V,UNH,HD,CVX"
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    metrics:
+    - get_piotroski_score
+    - get_altman_z_score
+    horizons: 12

@@ -100,9 +100,10 @@ get_government_bond_yield_curve:
     end_date: "2026-10-01"
     show_columns: 1Y,2Y,5Y,10Y,20Y,30Y
 get_treasury_rates:
-  question: What were the US Treasury par yields from 1 month to 30 years on each trading day from 1 to 15 January 2024?
+  question: What were the 3-month, 2-year, 10-year and 30-year US Treasury par yields on each trading day from 1 to 15 January 2024?
   tool: rates
   arguments:
+    maturities: 3M,2Y,10Y,30Y
     start_date: "2024-01-01"
     end_date: "2024-01-15"
 get_zero_coupon_curve:
@@ -331,3 +332,21 @@ get_treasury_securities:
   arguments:
     date: "2026-11-05"
     bonds: "91282CMM0,91282CNC1,91282CNT4,91282CPJ4,912810FT0,91282CPZ8,91282CQQ7,91282CRF0"
+get_loan_payment:
+  question: What was the monthly payment on a new 400,000 dollar 30-year US mortgage at the rate of 7 January 2021, and at the rate of 5 November 2026?
+  tool: fixed_income
+  arguments:
+    start_date: "2021-01-01"
+    end_date: "2026-11-06"
+get_affordable_loan:
+  question: With the monthly payment of a 400,000 dollar 30-year US mortgage in January 2021, how much could a buyer borrow on 5 November 2026?
+  tool: fixed_income
+  arguments:
+    start_date: "2021-01-01"
+    end_date: "2026-11-06"
+get_amortization_schedule:
+  question: How does a 400,000 dollar 30-year US mortgage at the latest mortgage rate split each payment into interest and principal?
+  tool: fixed_income
+  arguments:
+    start_date: "2026-01-01"
+    end_date: "2026-11-06"

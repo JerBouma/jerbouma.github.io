@@ -41,6 +41,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -153,6 +157,10 @@ quantile of a Student-T distribution fitted by maximum likelihood.
 of losses above which the Generalized Pareto Distribution is fitted; `alpha` can be at most
 1 - `threshold_percentile`, and a larger `alpha` gives an empty result (with a logged error).
 Defaults to 0.95.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -268,6 +276,10 @@ logistic, cornish-fisher or evt). Defaults to "historic".
 of losses above which the Generalized Pareto Distribution is fitted; `alpha` can be at most
 1 - `threshold_percentile`, and a larger `alpha` gives an empty result (with a logged error).
 Defaults to 0.95.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -343,6 +355,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -428,6 +444,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -503,6 +523,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -583,6 +607,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -656,6 +684,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -726,6 +758,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -810,6 +846,10 @@ Defaults to "daily".
 peak. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -906,7 +946,7 @@ $$
 
 The Drawdown is the drawdown series of `get_drawdown_series`. A drawdown runs from the Peak (the last period at a high) to the Recovery (the first period back at that high), with its Trough at the lowest Drawdown in between. To Trough, To Recovery and Length count periods (trading days for daily data), the columns marked (Days) count calendar days between the same dates (the last day of each period for weekly or longer periods), and Length (Years) is Length (Days) in years of 365.25 days. Calendar time compares assets on exchanges with other holidays, and reads as the time an investor waited.
 
-The dates follow pyfolio's drawdown table (peak, valley and recovery dates). QuantStats and ffn instead start a drawdown at the first period below the peak and count calendar days. The deepest drawdown matches `get_maximum_drawdown`, `get_maximum_drawdown_duration` (To Trough) and `get_maximum_drawdown_recovery_time` (To Recovery).
+Each drawdown is dated by its peak, valley and recovery, so it starts on the peak rather than on the first period below it. The deepest drawdown matches `get_maximum_drawdown`, `get_maximum_drawdown_duration` (To Trough) and `get_maximum_drawdown_recovery_time` (To Recovery).
 
 **Also known as:** worst drawdowns, drawdown details, drawdown periods, gain needed to recover.
 
@@ -917,6 +957,10 @@ The dates follow pyfolio's drawdown table (peak, valley and recovery dates). Qua
 Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1002,6 +1046,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1077,6 +1125,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1155,6 +1207,10 @@ False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1237,6 +1293,10 @@ Defaults to "daily".
 - <u>optimization_t (int, optional):</u> Time steps of the returns series to use for the optimization.
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1315,6 +1375,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1393,6 +1457,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1472,6 +1540,10 @@ Defaults to "daily".
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1555,6 +1627,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1653,6 +1729,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1733,6 +1813,10 @@ Defaults to "daily".
 Defaults to the full length of the returns series.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1819,6 +1903,10 @@ Defaults to 0.95.
 `method="student-t"`. Defaults to 4.0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -1854,10 +1942,10 @@ Which returns:
 
 |           |   Lower Tail Dependence |   Upper Tail Dependence |   Correlation |   Observations |
 |:----------|------------------------:|------------------------:|--------------:|---------------:|
-| AAPL      |                  0.4545 |                  0.4769 |        0.7593 |           1290 |
-| JPM       |                  0.4    |                  0.3846 |        0.622  |           1290 |
-| XOM       |                  0.2424 |                  0.2154 |        0.3408 |           1290 |
-| ^STOXX50E |                  0.3231 |                  0.3438 |        0.4449 |           1289 |
+| AAPL      |                  0.4603 |                  0.4921 |        0.7582 |           1254 |
+| JPM       |                  0.3968 |                  0.4127 |        0.6233 |           1254 |
+| XOM       |                  0.2063 |                  0.2222 |        0.3425 |           1254 |
+| ^STOXX50E |                  0.3387 |                  0.3226 |        0.4509 |           1240 |
 
 ---
 
@@ -1922,6 +2010,10 @@ observations.
 - <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -2015,6 +2107,10 @@ Defaults to True. When False, the raw pseudo-observations (each in (0, 1)) are r
 instead.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -2092,6 +2188,10 @@ parameter(s), Lower and Upper Tail Dependence, Log-Likelihood, AIC and the numbe
 observations used. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -2186,6 +2286,10 @@ observations.
 the VaR of `conditioning_ticker` (e.g., 0.05 for the 95% confidence level). Defaults to 0.05.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -2278,6 +2382,10 @@ VaR calculation (historic, gaussian, cornish-fisher or studentt). Defaults to
 "historic".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2360,6 +2468,10 @@ VaR calculation (historic, gaussian, cornish-fisher or studentt). Defaults to
 "historic".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2453,6 +2565,10 @@ estimate each VaR value. Defaults to 252 (approximately one trading year of dail
 - <u>test (str, optional):</u> Which test(s) to run, one of "kupiec", "christoffersen" or "both". Defaults
 to "both".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2532,6 +2648,10 @@ Error of Z2. Defaults to 1000.
 - <u>random_state (int, optional):</u> The seed for the bootstrap random number generator. Defaults to
 42.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2608,6 +2728,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2694,6 +2818,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2777,6 +2905,10 @@ without such observations reports NaN with 0 observations used. Defaults to 0.1 
 gain tail). Defaults to "left".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2844,6 +2976,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2952,6 +3088,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3043,6 +3183,10 @@ time. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3126,6 +3270,10 @@ time. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3202,6 +3350,10 @@ for the entire period. Defaults to False. Note that this requires intraday data 
 single day only nests observations when intraday data was fetched.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
 None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3271,6 +3423,10 @@ over time. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3348,6 +3504,10 @@ time. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3410,6 +3570,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3476,6 +3640,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3546,6 +3714,10 @@ time. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3630,6 +3802,10 @@ monthly, quarterly or yearly returns).
 the VaR Multiple divides by (0.05 for the 95% VaR). Defaults to 0.05.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3694,6 +3870,10 @@ Where r_t are the n daily returns (missing values dropped), the numerator runs o
 - <u>lags (int, optional):</u> The number of lags to calculate the ACF for. Defaults to 10.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3761,6 +3941,10 @@ Where P is the daily adjusted close, Std the population standard deviation (ddof
 the regression runs over the lags 2 up to and including `max_lag`. Defaults to 20.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3834,6 +4018,10 @@ Defaults to None, which uses the first.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the metrics that take them, e.g. alpha=0.05.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 

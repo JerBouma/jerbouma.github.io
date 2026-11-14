@@ -47,6 +47,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>strike_price_range (float &#124; None, optional):</u> Only the strikes within this fraction of the
 current stock price, e.g. 0.05 for strikes within 5% of it. Defaults to None, which
 keeps every strike.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -163,6 +167,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -266,6 +274,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -351,6 +363,10 @@ is treated as an outlier and dropped before fitting. Defaults to
 5.0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -496,6 +512,10 @@ is treated as an outlier and dropped before fitting. Defaults to
 5.0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
 results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -694,6 +714,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -781,6 +805,10 @@ Defaults to False.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -861,6 +889,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -955,6 +987,10 @@ plays the role of the dividend yield in the standard Black-Scholes model. Defaul
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1065,6 +1101,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1180,6 +1220,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1292,6 +1336,10 @@ estimate as a second DataFrame. Defaults to False.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1464,6 +1512,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1579,6 +1631,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1686,6 +1742,10 @@ to 0.5 which equals 50% and thus results in stock prices from 50 to 150 if the c
 - <u>stock_price_step_size (int):</u> The step size to use for the stock prices at expiration. Defaults to 1.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1821,6 +1881,10 @@ it will calculate the call option delta.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1917,6 +1981,10 @@ it will calculate the call option delta.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2014,6 +2082,10 @@ it will calculate the call option delta.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2114,6 +2186,10 @@ it will calculate the call option dual delta.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2218,6 +2294,10 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2329,6 +2409,10 @@ it will calculate the call option theta.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2431,6 +2515,10 @@ it will calculate the call option rho.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2527,6 +2615,10 @@ it will calculate the call option epsilon.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2634,6 +2726,10 @@ it will calculate the call option lambda.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2720,6 +2816,10 @@ it will calculate the call option delta.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2810,6 +2910,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2899,6 +3003,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2993,6 +3101,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3100,6 +3212,10 @@ it will calculate the call option charm.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3203,6 +3319,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3309,6 +3429,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3411,6 +3535,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3494,6 +3622,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3582,6 +3714,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3688,6 +3824,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3779,6 +3919,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3877,6 +4021,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3970,6 +4118,10 @@ means it will use the current dividend yield.
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
 time to expiration columns for each ticker and strike price. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4022,6 +4174,10 @@ None, the nearest `number_of_expirations` expiries.
 no dates are given. Defaults to 6.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4067,6 +4223,10 @@ None, the nearest `number_of_expirations` expiries.
 no dates are given. Defaults to 6.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4119,6 +4279,10 @@ when no dates are given. Defaults to 6.
 the totals. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4170,6 +4334,10 @@ None, the nearest `number_of_expirations` expiries.
 no dates are given. Defaults to 10.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4239,6 +4407,10 @@ None, the nearest `number_of_expirations` expiries.
 no dates are given. Defaults to 6.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4303,6 +4475,10 @@ no dates are given. Defaults to 4.
 earnings date instead. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4365,6 +4541,10 @@ For more information, see the following papers:
 - <u>days (int, optional):</u> The constant maturity in calendar days. Defaults to 30.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4425,6 +4605,10 @@ For more information, see the following papers:
 Defaults to 30.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
