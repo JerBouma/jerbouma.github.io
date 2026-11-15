@@ -54,6 +54,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -116,6 +120,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -192,6 +200,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -220,29 +232,32 @@ toolkit.ratios.collect_efficiency_ratios().loc['AAPL']
 
 Which returns:
 
-|                                      |     2021 |     2022 |     2023 |     2024 |     2025 |
-|:-------------------------------------|---------:|---------:|---------:|---------:|---------:|
-| Days of Inventory Outstanding        |   9.1181 |   9.4097 |   9.6109 |  11.814  |  10.7405 |
-| Days of Sales Outstanding            |  21.1517 |  25.2057 |  27.4699 |  29.3645 |  32.0949 |
-| Operating Cycle                      |  30.2698 |  34.6154 |  37.0808 |  41.1785 |  42.8354 |
-| Days of Accounts Payable Outstanding |  83.1683 |  97.0504 | 108.003  | 114.15   | 114.657  |
-| Cash Conversion Cycle                | -52.8985 | -62.435  | -70.9225 | -72.9716 | -71.8218 |
-| Cash Conversion Efficiency           |   0.2844 |   0.3098 |   0.2884 |   0.3024 |   0.2679 |
-| Receivables Turnover                 |  17.2563 |  14.4808 |  13.2873 |  12.43   |  11.3725 |
-| Inventory Turnover Ratio             |  40.0303 |  38.7899 |  37.9777 |  30.8955 |  33.9834 |
-| Accounts Payable Turnover Ratio      |   4.3887 |   3.7609 |   3.3795 |   3.1975 |   3.1834 |
-| SGA-to-Revenue Ratio                 |   0.0601 |   0.0636 |   0.065  |   0.0667 |   0.0663 |
-| Fixed Asset Turnover                 |   7.7125 |   7.7273 |   7.1702 |   7.091  |   7.1167 |
-| Asset Turnover Ratio                 |   1.0841 |   1.1206 |   1.0868 |   1.0899 |   1.1493 |
-| Operating Ratio                      |   0.7022 |   0.6971 |   0.7018 |   0.6849 |   0.6803 |
-| R&D Intensity Ratio                  |   0.0599 |   0.0666 |   0.078  |   0.0802 |   0.083  |
-| S&M to Revenue Ratio                 |   0      |   0      |   0      |   0.0477 |   0.0469 |
-| G&A to Revenue Ratio                 |   0      |   0      |   0      |   0.0191 |   0.0194 |
-| SBC to Revenue Ratio                 |   0.0216 |   0.0229 |   0.0283 |   0.0299 |   0.0309 |
-| Deferred Revenue Ratio               |   0.0208 |   0.0201 |   0.021  |   0.0211 |   0.0218 |
-| Working Capital Turnover Ratio       |  15.346  | -85.519  | -37.7268 | -31.0999 | -20.2615 |
-| Capex Intensity                      |   0.0303 |   0.0272 |   0.0286 |   0.0242 |   0.0306 |
-| Capex to Depreciation                |   0.9824 |   0.9643 |   0.9514 |   0.8254 |   1.0869 |
+|                                      |       2021 |       2022 |      2023 |        2024 |        2025 |
+|:-------------------------------------|-----------:|-----------:|----------:|------------:|------------:|
+| Days of Inventory Outstanding        |   9.1181   |   9.4097   |   9.6109  |  11.814     |  10.7405    |
+| Days of Sales Outstanding            |  21.1517   |  25.2057   |  27.4699  |  29.3645    |  32.0949    |
+| Operating Cycle                      |  30.2698   |  34.6154   |  37.0808  |  41.1785    |  42.8354    |
+| Days of Accounts Payable Outstanding |  83.1683   |  97.0504   | 108.003   | 114.15      | 114.657     |
+| Cash Conversion Cycle                | -52.8985   | -62.435    | -70.9225  | -72.9716    | -71.8218    |
+| Cash Conversion Efficiency           |   0.2844   |   0.3098   |   0.2884  |   0.3024    |   0.2679    |
+| Receivables Turnover                 |  17.2563   |  14.4808   |  13.2873  |  12.43      |  11.3725    |
+| Inventory Turnover Ratio             |  40.0303   |  38.7899   |  37.9777  |  30.8955    |  33.9834    |
+| Accounts Payable Turnover Ratio      |   4.3887   |   3.7609   |   3.3795  |   3.1975    |   3.1834    |
+| SGA-to-Revenue Ratio                 |   0.0601   |   0.0636   |   0.065   |   0.0667    |   0.0663    |
+| Fixed Asset Turnover                 |   7.7125   |   7.7273   |   7.1702  |   7.091     |   7.1167    |
+| Asset Turnover Ratio                 |   1.0841   |   1.1206   |   1.0868  |   1.0899    |   1.1493    |
+| Operating Ratio                      |   0.7022   |   0.6971   |   0.7018  |   0.6849    |   0.6803    |
+| R&D Intensity Ratio                  |   0.0599   |   0.0666   |   0.078   |   0.0802    |   0.083     |
+| S&M to Revenue Ratio                 |   0        |   0        |   0       |   0.0477    |   0.0469    |
+| G&A to Revenue Ratio                 |   0        |   0        |   0       |   0.0191    |   0.0194    |
+| SBC to Revenue Ratio                 |   0.0216   |   0.0229   |   0.0283  |   0.0299    |   0.0309    |
+| Deferred Revenue Ratio               |   0.0208   |   0.0201   |   0.021   |   0.0211    |   0.0218    |
+| Working Capital Turnover Ratio       |  15.346    | -85.519    | -37.7268  | -31.0999    | -20.2615    |
+| Capex Intensity                      |   0.0303   |   0.0272   |   0.0286  |   0.0242    |   0.0306    |
+| Net Capital Expenditure              |  -1.99e+08 |  -3.96e+08 |  -5.6e+08 |  -1.998e+09 |   1.017e+09 |
+| Capex to Depreciation                |   0.9824   |   0.9643   |   0.9514  |   0.8254    |   1.0869    |
+| Asset Growth                         |   0.0837   |   0.005    |  -0.0005  |   0.0352    |  -0.0157    |
+| Net Operating Assets                 |   0.3865   |   0.3488   |   0.3166  |   0.2791    |   0.3225    |
 
 ---
 
@@ -275,6 +290,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -343,6 +362,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -412,6 +435,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -483,6 +510,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -552,6 +583,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -618,6 +653,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -687,6 +726,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -758,6 +801,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -822,6 +869,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -889,6 +940,11 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
 **Returns:**
 
 pd.DataFrame: Receivables turnover ratio values.
@@ -953,6 +1009,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1019,6 +1079,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1085,6 +1149,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1153,6 +1221,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1221,6 +1293,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1287,6 +1363,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1357,6 +1437,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1428,6 +1512,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1496,6 +1584,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1565,6 +1657,10 @@ values. Defaults to False.
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
 None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1605,7 +1701,7 @@ Which returns:
 ## get_capex_to_depreciation_ratio
 Calculate the capital expenditure to depreciation ratio, which compares what a company invests in its assets with what wears off them.
 
-Depreciation and amortization approximate the investment needed to keep the asset base as it is, so a ratio above 1 means the company is growing its assets, a ratio around 1 that it is maintaining them, and a ratio persistently below 1 that it is underinvesting, which flatters the free cash flow for a while but erodes the business. Damodaran's net capital expenditure (capital expenditure minus depreciation) is the same comparison as a difference. Acquisitions are not capital expenditure, so a company that grows by buying others can show a low ratio while its assets grow.
+Depreciation and amortization approximate the investment needed to keep the asset base as it is, so a ratio above 1 means the company is growing its assets, a ratio around 1 that it is maintaining them, and a ratio persistently below 1 that it is underinvesting, which flatters the free cash flow for a while but erodes the business. Damodaran's net capital expenditure (capital expenditure minus depreciation, see get_net_capital_expenditure) is the same comparison as a difference. Acquisitions are not capital expenditure, so a company that grows by buying others can show a low ratio while its assets grow.
 
 The formula is as follows:
 
@@ -1632,6 +1728,10 @@ values. Defaults to False.
 items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
 and 3 with annual data a three-year cumulative figure. Defaults to None, which
 uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1672,6 +1772,83 @@ Which returns:
 
 ---
 
+## get_net_capital_expenditure
+Calculate the net capital expenditure, what a company invests in its assets beyond what wears off them.
+
+Depreciation and amortization approximate the investment needed to keep the asset base as it is, so the capital expenditure above it is the investment in growth. Damodaran's net capital expenditure is this difference, which with the change in working capital makes up the reinvestment of a company. It is the same comparison as the capex to depreciation ratio (see get_capex_to_depreciation_ratio), as an amount: a ratio of 3 says that capex is three times depreciation, the net capital expenditure how much money that is. A negative value means the company invests less than its assets depreciate. Acquisitions are not capital expenditure, so a company that grows by buying others can show a low or negative value while its assets grow.
+
+The formula is as follows:
+
+$$
+\text{Net Capital Expenditure} = | \text{Capital Expenditure} | - \text{Depreciation and Amortization}
+$$
+
+Capital expenditure is reported as a negative cash outflow, so its magnitude is used.
+
+**Also known as:** net capex, net investment, growth capex, capex minus depreciation.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (cash flow statement
+items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
+and 3 with annual data a three-year cumulative figure. Defaults to None, which
+uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Net capital expenditure values.
+
+**Notes:**
+
+- Damodaran, A., "Investment Valuation," 3rd edition, Wiley, 2012 (net capital
+expenditure and reinvestment).
+- Depreciation and amortization include the amortization of acquired intangibles,
+which is no wear of the assets that capital expenditure replaces, so the net capital
+expenditure is low for companies with large acquired intangibles.
+- If `growth` is set to True, the method calculates the growth of the values using the
+specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["MSFT", "AMZN", "GOOGL", "META"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+    basket=True,
+)
+
+toolkit.ratios.get_net_capital_expenditure()
+```
+
+Which returns:
+
+|       |       2021 |       2022 |       2023 |        2024 |        2025 |
+|:------|-----------:|-----------:|-----------:|------------:|------------:|
+| AMZN  | 2.662e+10  | 2.1724e+10 | 4.066e+09  | 3.0204e+10  | 6.6063e+10  |
+| GOOGL | 1.2199e+10 | 1.801e+10  | 2.0305e+10 | 3.7224e+10  | 7.0311e+10  |
+| META  | 1.06e+10   | 2.2745e+10 | 1.6088e+10 | 2.1758e+10  | 5.1075e+10  |
+| MSFT  | 8.936e+09  | 9.426e+09  | 1.4246e+10 | 2.219e+10   | 3.0398e+10  |
+| Total | 5.8355e+10 | 7.1905e+10 | 5.4705e+10 | 1.11376e+11 | 2.17847e+11 |
+
+---
+
 ## get_asset_growth
 Calculate the asset growth of Cooper, Gulen and Schill (2008): the change in total assets over a year relative to the total assets at the start of it.
 
@@ -1702,6 +1879,10 @@ values. Defaults to False.
 over. E.g. 3 with annual data gives the growth over three years. Defaults to
 None, which uses a year: 4 quarters with quarterly data and 1 year with annual
 data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1778,6 +1959,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1839,6 +2024,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1913,6 +2102,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1981,6 +2174,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2047,6 +2244,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2113,6 +2314,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2179,6 +2384,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2245,6 +2454,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2311,6 +2524,14 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Short-term coverage ratio values.
 
 **As an example:**
 
@@ -2371,6 +2592,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2427,6 +2652,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2520,6 +2749,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2588,6 +2821,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2654,6 +2891,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2720,6 +2961,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2787,6 +3032,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2853,6 +3102,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2921,6 +3174,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2989,6 +3246,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3056,6 +3317,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3125,6 +3390,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3191,6 +3460,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3257,6 +3530,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3321,6 +3598,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3389,6 +3670,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3456,6 +3741,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3522,6 +3811,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3585,6 +3878,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3651,6 +3948,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3715,6 +4016,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3779,6 +4084,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3843,6 +4152,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3911,6 +4224,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3978,6 +4295,10 @@ values. Defaults to False.
 sold over; the total assets stay those at the end of the last period. Defaults to
 None, which uses the trailing twelve months (4 quarters) with quarterly data and
 single years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4052,6 +4373,10 @@ values. Defaults to False.
 over; the book equity stays that at the end of the last period. Defaults to None,
 which uses the trailing twelve months (4 quarters) with quarterly data and single
 years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4124,6 +4449,10 @@ over, which is also the number of periods the balance changes span and the
 number of periods the total assets are taken before. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4201,6 +4530,10 @@ with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data) against
 the average of the opening and closing invested capital, as for the return on
 invested capital.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4269,6 +4602,10 @@ values. Defaults to False.
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
 None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4336,6 +4673,10 @@ values. Defaults to False.
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
 None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4402,6 +4743,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the net income and cash
 flow from operations over. Defaults to None, which uses the trailing twelve
 months (4 quarters) with quarterly data and single years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4463,6 +4808,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4549,6 +4898,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4592,7 +4945,7 @@ This ratio is commonly used by lenders and bondholders to assess the extent to w
 The formula is as follows:
 
 $$
-\text{Asset Coverage Ratio} = \left[(\text{Total Assets} - \text{Intangible Assets}) - (\text{Total Current Liabilities} - \text{Short Term Debt})\right] / \text{Total Debt}
+\text{Asset Coverage Ratio} = \left[(\text{Total Assets} - \text{Goodwill} - \text{Intangible Assets}) - (\text{Total Current Liabilities} - \text{Short Term Debt})\right] / \text{Total Debt}
 $$
 
 **Args:**
@@ -4611,6 +4964,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4640,9 +4997,9 @@ Which returns:
 
 |     |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:----|-------:|-------:|-------:|-------:|-------:|
-| KMI | 1.9926 | 2.0029 | 2.0193 | 2.0582 | 2.1545 |
-| OKE | 1.5362 | 1.6077 | 1.8371 | 1.7765 | 1.8112 |
-| WMB | 1.5739 | 1.6223 | 1.6147 | 1.649  | 1.6245 |
+| KMI | 1.4053 | 1.3851 | 1.4027 | 1.4371 | 1.5344 |
+| OKE | 1.4978 | 1.5692 | 1.6095 | 1.526  | 1.5656 |
+| WMB | 1.5739 | 1.6223 | 1.5972 | 1.6317 | 1.6245 |
 
 ---
 
@@ -4677,6 +5034,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4743,6 +5104,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4809,6 +5174,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4875,6 +5244,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4947,6 +5320,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5011,6 +5388,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5073,6 +5454,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5135,6 +5520,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5199,6 +5588,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5263,6 +5656,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5327,6 +5724,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5389,6 +5790,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5458,6 +5863,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5523,6 +5932,10 @@ values. Defaults to False.
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
 None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5590,6 +6003,10 @@ values. Defaults to False.
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
 None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5657,6 +6074,10 @@ values. Defaults to False.
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
 None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5728,6 +6149,10 @@ values. Defaults to False.
 stays that at the end of the last period. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5800,6 +6225,10 @@ values. Defaults to False.
 stays that at the end of the last period. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5867,6 +6296,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
 changes are compared, e.g. 4 with quarterly data compares trailing twelve months
 with those a year earlier. Defaults to None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5935,6 +6368,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
 changes are compared, e.g. 4 with quarterly data compares trailing twelve months
 with those a year earlier. Defaults to None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6001,6 +6438,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
 changes are compared, e.g. 4 with quarterly data compares trailing twelve months
 with those a year earlier. Defaults to None, which uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6060,6 +6501,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6159,6 +6604,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6224,6 +6673,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6300,6 +6753,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6368,6 +6825,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6435,6 +6896,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6504,6 +6969,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6564,6 +7033,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6637,6 +7110,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6703,6 +7180,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6772,6 +7253,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6846,6 +7331,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6918,6 +7407,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -6990,6 +7483,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7062,6 +7559,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7134,6 +7635,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7184,7 +7689,12 @@ $$
 
 Market cap is a point-in-time value, so the price is the close on the last trading day of each calendar period (or of each day with show_daily) and never an average. The periods follow the calendar, so for a company whose fiscal year ends in, for example, September, the price of the year is the December close while the shares come from the fiscal year. With show_daily, each day uses the shares of the latest period that has ended.
 
-**Also known as:** market capitalization.
+When the Toolkit analyses the tickers as a basket (Toolkit(basket=True)), a "Total" row (a column with show_daily) adds up their market caps, for example to compare a group of companies with a country (see get_market_cap_to_gdp). The total of a period is left empty when a ticker has no market cap in it, as the sum of the others would understate the basket. With share, each ticker is its share of that total (a decimal, the Total is 1). Market caps are summed in the currency the tickers are listed in, so a basket of tickers listed in different currencies is refused.
+
+- Basket Market Capitalization = Sum of the Market Capitalizations of the Tickers
+- Share of the Basket = Market Capitalization / Basket Market Capitalization
+
+**Also known as:** market capitalization, basket market cap, aggregate market value, market cap weight.
 
 **Args:**
 
@@ -7192,6 +7702,76 @@ Market cap is a point-in-time value, so the price is the close on the last tradi
 against the statement figures of the latest period that has ended on or before
 that day (also when it ended before the start date), so no figures are used before
 their period closes. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>share (bool, optional):</u> Whether to return each ticker's share of the total market cap
+of the tickers instead of its market cap, with the "Total" as 1. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Market capitalization values, or each ticker's share of the total.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "GOOGL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+    basket=True,
+)
+
+toolkit.ratios.get_market_cap()
+```
+
+Which returns:
+
+|       |        2021 |        2022 |        2023 |        2024 |        2025 |
+|:------|------------:|------------:|------------:|------------:|------------:|
+| AAPL  | 2.9947e+12  | 2.12121e+12 | 3.04439e+12 | 3.8585e+12  | 4.07918e+12 |
+| GOOGL | 1.96322e+12 | 1.16102e+12 | 1.77714e+12 | 2.35622e+12 | 3.82799e+12 |
+| MSFT  | 2.55872e+12 | 1.80824e+12 | 2.80977e+12 | 3.14818e+12 | 3.61022e+12 |
+| Total | 7.51665e+12 | 5.09048e+12 | 7.6313e+12  | 9.3629e+12  | 1.15174e+13 |
+
+---
+
+## get_market_cap_to_gdp
+Calculates the market capitalization to Gross Domestic Product (GDP) ratio of the tickers as one basket: their total market cap divided by a country's nominal GDP in US dollars.
+
+This is the Buffett indicator, which Warren Buffett called "probably the best single measure of where valuations stand at any given moment" (Fortune, 2001): the value of a country's whole stock market against the annual output of its economy. Its classic form divides the total US market (the Wilshire 5000) by US GDP, which is why the United States is the default country. A basket of tickers is a part of a market, so its ratio is the market value of that basket as a share of an economy's annual output, for example the largest technology companies against the GDP of China. Market cap is a stock (a value at a moment) and GDP a flow (the output of a year), so the ratio compares a value with a year of income rather than two values.
+
+The formula is as follows:
+
+$$
+\text{Market Cap to GDP} = \text{Basket Market Capitalization} / \text{Nominal GDP} (\text{last complete year})
+$$
+
+The basket market cap is the sum of the market caps of the tickers, as get_market_cap returns it for a basket Toolkit (the traded close times the weighted average diluted shares), so the tickers must be listed in US dollars. The GDP is the nominal GDP in current US dollars of the Global Macro Database. GDP is annual and comes without publication dates, so each date (or period) is divided by the GDP of the calendar year before the year it falls in, the last complete year: the close of 9 November 2026 by the GDP of 2025, the 2025 value by the GDP of 2024. The first estimate of a year is published in the first months of the next year, so in those months the ratio uses a GDP that was about to be published.
+
+**Also known as:** Buffett indicator, market cap to GDP, stock market capitalization to GDP, basket market cap to GDP.
+
+**Args:**
+
+- <u>country (str, optional):</u> The country whose GDP the basket is divided by, as named in
+toolkit.economics.get_gross_domestic_product. Defaults to "United States".
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading
+day against the shares of the latest period that has ended and the GDP of the
+last complete year. Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -7202,10 +7782,15 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
-pd.DataFrame: Market capitalization values.
+pd.DataFrame: The market cap to GDP ratio with the country as row (as column with
+show_daily).
 
 **As an example:**
 
@@ -7213,22 +7798,24 @@ pd.DataFrame: Market capitalization values.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["NVDA", "AAPL", "MSFT"],
+    ["NVDA", "MSFT", "GOOGL", "AMZN", "META", "AVGO", "TSM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
+    start_date="2025-01-01",
+    end_date="2026-11-06",
 )
 
-toolkit.ratios.get_market_cap()
+toolkit.ratios.get_market_cap_to_gdp(country="China", show_daily=True).tail()
 ```
 
 Which returns:
 
-|      |        2021 |        2022 |        2023 |        2024 |        2025 |
-|:-----|------------:|------------:|------------:|------------:|------------:|
-| AAPL | 2.9947e+12  | 2.12121e+12 | 3.04439e+12 | 3.8585e+12  | 4.07918e+12 |
-| MSFT | 2.55872e+12 | 1.80824e+12 | 2.80977e+12 | 3.14818e+12 | 3.61022e+12 |
-| NVDA | 7.45569e+11 | 3.66373e+11 | 1.23508e+12 | 3.33093e+12 | 4.57186e+12 |
+| Date       |   China |
+|:-----------|--------:|
+| 2026-11-02 |  1.0252 |
+| 2026-11-03 |  1.0458 |
+| 2026-11-04 |  1.0621 |
+| 2026-11-05 |  1.0009 |
+| 2026-11-06 |  1.0132 |
 
 ---
 
@@ -7263,6 +7850,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7328,6 +7919,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7395,6 +7990,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7458,6 +8057,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7525,6 +8128,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7586,6 +8193,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7645,6 +8256,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7702,6 +8317,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7759,6 +8378,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7822,6 +8445,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7887,6 +8514,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -7949,6 +8580,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8017,6 +8652,10 @@ period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) a
 with annual data a three-year cumulative figure. Defaults to None, which uses the
 trailing twelve months (4 quarters) with quarterly data and single years with
 annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8085,6 +8724,10 @@ statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
 with annual data a three-year cumulative figure. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8152,6 +8795,10 @@ values. Defaults to False.
 items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
 and 3 with annual data a three-year cumulative figure. Defaults to None, which
 uses single-period flows.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8227,6 +8874,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of period ends to average the balance sheet
 items over, as for the price to book ratio. Defaults to None, which uses the
 balance sheet at the end of each period.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8303,6 +8954,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of period ends to average the balance sheet
 items over, as for the price to book ratio. Defaults to None, which uses the
 balance sheet at the end of each period.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8372,6 +9027,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods the shares are compared over.
 E.g. 5 with annual data gives the five-year issuance. Defaults to None, which
 uses a year: 4 quarters with quarterly data and 1 year with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8446,6 +9105,10 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods of the window. E.g. 1 with annual
 data gives the issuance over a year. Defaults to None, which uses five years:
 20 quarters with quarterly data and 5 years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8524,6 +9187,10 @@ values. Defaults to False.
 items over, with the total assets averaged over the start and the end of that
 window. Defaults to None, which uses the trailing twelve months (4 quarters)
 with quarterly data and single years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8601,6 +9268,10 @@ to None.
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the ratios that take them, e.g. trailing=4 or
 diluted=False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -8647,9 +9318,9 @@ Which returns:
 
 |                                              |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
 |:---------------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('get_price_to_earnings_ratio', '12 Months') |    0.0495 |                  0.2919 |                 0.1697 |        1.7636 |    0.0807 |           0.5648 |            108 |             0.0842 |              0.0896 |                 0.95   |
-| ('get_price_to_book_ratio', '12 Months')     |    0.1156 |                  0.2966 |                 0.3898 |        4.0507 |    0.0001 |           0.6759 |            108 |             0.1691 |              0.0501 |                 0.978  |
-| ('get_return_on_equity', '12 Months')        |    0.0425 |                  0.355  |                 0.1198 |        1.1976 |    0.2339 |           0.5    |            100 |             0.065  |              0.0517 |                 0.9671 |
+| ('get_price_to_earnings_ratio', '12 Months') |    0.0505 |                  0.2917 |                 0.173  |        1.7981 |    0.075  |           0.5741 |            108 |             0.0854 |              0.0872 |                 0.9499 |
+| ('get_price_to_book_ratio', '12 Months')     |    0.1163 |                  0.2959 |                 0.393  |        4.0845 |    0.0001 |           0.6759 |            108 |             0.1699 |              0.0476 |                 0.978  |
+| ('get_return_on_equity', '12 Months')        |    0.0423 |                  0.3551 |                 0.1191 |        1.1915 |    0.2363 |           0.5    |            100 |             0.065  |              0.0517 |                 0.9671 |
 
 ---
 

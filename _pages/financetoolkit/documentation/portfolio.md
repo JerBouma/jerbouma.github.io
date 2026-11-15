@@ -159,25 +159,25 @@ The function also allows for customization of the column names used in the datas
 **Args:**
 
 - <u>adjust_duplicates (bool &#124; None):</u> Flag to indicate whether to adjust duplicate rows in the dataset.
-If None, defaults to the configuration setting.
+Defaults to None, which uses the configuration setting.
 - <u>date_column (list[str] &#124; None):</u> List of column names for date information.
-Defaults to configuration settings.
+Defaults to None, which uses the configuration.
 - <u>date_format_options (list[str] &#124; None):</u> List of date format strings to attempt when parsing
-date columns (e.g. ['%Y-%m-%d', '%d/%m/%Y']). Defaults to configuration.
+date columns (e.g. ['%Y-%m-%d', '%d/%m/%Y']). Defaults to None, which uses the configuration.
 - <u>name_columns (list[str] &#124; None):</u> List of column names for transaction descriptions.
-Defaults to configuration.
+Defaults to None, which uses the configuration.
 - <u>ticker_columns (list[str] &#124; None):</u> List of column names for asset tickers.
-Defaults to configuration.
+Defaults to None, which uses the configuration.
 - <u>price_columns (list[str] &#124; None):</u> List of column names for asset prices.
-Defaults to configuration.
+Defaults to None, which uses the configuration.
 - <u>volume_columns (list[str] &#124; None):</u> List of column names for asset volumes.
-Defaults to configuration.
+Defaults to None, which uses the configuration.
 - <u>currency_columns (list[str] &#124; None):</u> List of column names for transaction currencies.
-Defaults to configuration.
+Defaults to None, which uses the configuration.
 - <u>costs_columns (list[str] &#124; None):</u> List of column names for costs or income categories.
-Defaults to configuration.
+Defaults to None, which uses the configuration.
 - <u>column_mapping (dict[str, str] &#124; None):</u> Dictionary mapping dataset columns to the appropriate field names.
-Defaults to configuration.
+Defaults to None, which uses the configuration.
 
 **Returns:**
 
@@ -185,7 +185,7 @@ pd.DataFrame: A DataFrame containing the consolidated and processed portfolio da
 
 **Raises:**
 
-FileNotFoundError: If any of the files or directories specified in 'excel_location' cannot be found.
+FileNotFoundError: If any of the files or directories in the portfolio dataset path cannot be found.
 ValueError: If essential columns (date, description, amount) are missing in the dataset or configuration.
 - Columns can be specified in the configuration or provided explicitly.
 - For missing cost or income columns, an exception is raised if no valid configuration is found.
@@ -261,6 +261,10 @@ on the portfolio tickers. The resulting benchmark data is returned in a structur
 
 - <u>benchmark_ticker (str &#124; None):</u> The benchmark ticker symbol. Defaults to None, the benchmark ticker
 given to the Portfolio, or the one of the configuration file when none was given.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -353,6 +357,10 @@ data's currency.
 
 - <u>rounding (int &#124; None):</u> An optional integer specifying the number of decimal places to round the
 historical price data. If None, the default rounding value is used.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -426,6 +434,10 @@ The resulting overview includes information about the positions, such as the val
 
 - <u>rounding (int &#124; None):</u> An optional integer specifying the number of decimal places to round the data.
 If None, the default rounding precision is used.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -512,6 +524,10 @@ in the overview. Defaults to `True`.
 to True.
 - <u>rounding (int &#124; None):</u> An optional integer specifying the number of decimal places to round the data.
 If None, the default rounding precision is used.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -572,6 +588,10 @@ otherwise, it defaults to 'yearly'.
 - <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions. Defaults to True.
 - <u>rounding (int &#124; None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding precision specified in the configuration.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -633,6 +653,10 @@ in the Cumulative PnL column. Pass False to see the PnL of each sale. Defaults t
 - <u>pnl_method (str):</u> The method for calculating profit & loss. Options are:
 'FIFO' (First In, First Out), 'LIFO' (Last In, First Out), or 'AVERAGE'.
 Defaults to 'FIFO'.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -722,6 +746,10 @@ purchases cost nothing (a price of 0), which have no return to measure. Defaults
 to True.
 - <u>rounding (int &#124; None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding specified in the configuration.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -787,6 +815,10 @@ For more information, see the following book:
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Portfolio's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 

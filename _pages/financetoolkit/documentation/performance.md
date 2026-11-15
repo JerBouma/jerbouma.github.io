@@ -41,6 +41,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -129,6 +133,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -149,8 +157,8 @@ each Beta in proportion to its uncertainty: the prior is the mean and sample var
 OLS Betas of the tickers in the same period, so it depends on which tickers are passed. A single
 ticker gets a prior mean of 1 (the market's Beta) with a variance of 0.25.
 - The upside and downside Betas show asymmetric market exposure: a stock with a downside Beta above
-its upside Beta falls harder in down markets than it rises in up markets. They follow empyrical's
-up_alpha_beta and down_alpha_beta, which pick the observations by the benchmark's direction.
+its upside Beta falls harder in down markets than it rises in up markets. The benchmark's direction
+picks the observations: upside uses the periods the benchmark rose, downside those it fell.
 - Every estimator needs at least three observations in a period (Dimson: more than the number of
 slopes plus one), otherwise the period is NaN.
 
@@ -214,6 +222,12 @@ $$
 
 The Beta of each period is estimated from the daily returns over the `beta_window` trading days that end on the day before the period starts, so the move being explained never helps estimate the Beta that explains it, and the figure is what an investor could have known at the start of the period. With the default daily period every row explains one day's move; a monthly or yearly period explains that month or year with the Beta known when it began.
 
+Three measures put the Residual in context. The Residual Value is the Residual in money: the market value the asset's own move added or took away, the Residual times the market capitalization at the close before the period. The Residual Percentile and the Residual Largest Since measure the Residual against the earlier residuals, as `get_move_significance` does for the return itself: the Percentile is the share of the earlier residuals that were smaller in size and Largest Since the date of the last residual at least as large in the same direction ("the largest stock-specific fall since"), so the whole history counts without returning it.
+
+- Residual Value = Residual × Market Cap at the previous close
+- Residual Percentile(t) = Count(&#124;Residual(s)&#124; < &#124;Residual(t)&#124;, s < t) / Count(s < t)
+- Residual Largest Since(t) = max(s < t : Residual(s) <= Residual(t)) if Residual(t) < 0, and max(s < t : Residual(s) >= Residual(t)) if Residual(t) > 0
+
 **See definition:** [https://en.wikipedia.org/wiki/Single-index_model](https://en.wikipedia.org/wiki/Single-index_model){:target="_blank"}
 
 **Also known as:** beta-adjusted return, market-implied move, idiosyncratic return, abnormal return.
@@ -228,12 +242,16 @@ estimation window that is long enough for a stable Beta and short enough to foll
 changes in the business.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
 pd.DataFrame: The periods as rows and a MultiIndex of (measure, ticker) as columns, with the
-measures Beta, Benchmark Return, Implied Return, Actual Return and Residual. All returns are
-decimals.
+measures Beta, Benchmark Return, Implied Return, Actual Return, Residual, Residual Value,
+Residual Percentile and Residual Largest Since (the date as text). All returns are decimals.
 
 **Notes:**
 
@@ -245,6 +263,15 @@ a few basis points per day, and is available through `get_capital_asset_pricing_
 data or a recent listing) has no Beta, so its Implied Return and Residual are empty. Start the
 Toolkit at least `beta_window` trading days before the first period of interest.
 - The Beta is the ordinary least squares Beta of `get_beta`, on the daily returns of the window.
+- The market cap is that of `get_market_cap` with show_daily=True: the traded split-adjusted Close
+times the weighted average diluted shares of the latest fiscal period that ended on or before
+that day, so no shares are used before their period closes. It is in the currency the ticker
+trades in, and so is the Residual Value. Without shares, as for an ETF or an index, the Residual
+Value is empty.
+- The Percentile needs a year of earlier residuals (252 days, 52 weeks or 20 periods otherwise),
+and Largest Since is empty when no earlier residual was as large, which makes the Residual the
+largest since the first residual. The residuals start `beta_window` trading days after the
+Toolkit's start_date, so choose an early start_date for a long history.
 
 **As an example:**
 
@@ -254,22 +281,25 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(
     ["NVDA", "KO", "AMD", "TSLA"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2025-06-01",
+    start_date="2022-01-01",
     end_date="2026-11-05",
 )
 
-toolkit.performance.get_beta_implied_return().loc["2026-11-05"].unstack()
+toolkit.performance.get_beta_implied_return().loc["2026-11-05"].unstack(sort=False)
 ```
 
 Which returns:
 
-|                  |    NVDA |      KO |     AMD |    TSLA |
-|:-----------------|--------:|--------:|--------:|--------:|
-| Beta             |  1.8757 | -0.2777 |  3.2846 |  2.1039 |
-| Benchmark Return | -0.0441 | -0.0441 | -0.0441 | -0.0441 |
-| Implied Return   | -0.0827 |  0.0122 | -0.1448 | -0.0928 |
-| Actual Return    | -0.0926 | -0.0007 | -0.1726 | -0.1077 |
-| Residual         | -0.0099 | -0.0129 | -0.0278 | -0.0149 |
+|                        | NVDA              | KO               | AMD               | TSLA              |
+|:-----------------------|:------------------|:-----------------|:------------------|:------------------|
+| Beta                   | 1.8763            | -0.2785          | 3.2862            | 2.1033            |
+| Benchmark Return       | -0.0441           | -0.0441          | -0.0441           | -0.0441           |
+| Implied Return         | -0.0827           | 0.0123           | -0.1449           | -0.0927           |
+| Actual Return          | -0.0926           | -0.0007          | -0.1726           | -0.1077           |
+| Residual               | -0.0099           | -0.013           | -0.0277           | -0.015            |
+| Residual Value         | -48381834809.5885 | -5375271284.7669 | -22181273645.0303 | -20387379231.5616 |
+| Residual Percentile    | 0.4241            | 0.8493           | 0.7588            | 0.4896            |
+| Residual Largest Since | 2026-11-04        | 2026-10-27       | 2026-11-04        | 2026-11-04        |
 
 ---
 
@@ -308,6 +338,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -386,8 +420,10 @@ otherwise the exchange rate's moves end up in the factor loadings, mostly the ma
 beta. Defaults to "United States".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
-Defaults to None, which returns every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -450,6 +486,10 @@ U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate 
 Defaults to "United States".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -545,8 +585,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
-Defaults to None, which returns every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -638,8 +680,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>show_columns (list of str, optional):</u> Restrict the result to these top level columns.
-Defaults to None, which returns every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -714,6 +758,10 @@ rolling basis, which adds the Out-of-Sample Selection Return. Defaults to None,
 which uses every period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -775,6 +823,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -841,6 +893,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -910,6 +966,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1058,6 +1118,10 @@ intraday returns within a day (period="daily" with an intraday_period), or the
 periods in a year for a rolling Sharpe ratio (e.g. 12 for monthly). Only for method="standard" and "adjusted", since the
 probabilistic and deflated methods return probabilities; method="lo" is annualized
 either way. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1154,6 +1218,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1226,6 +1294,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1296,6 +1368,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1367,6 +1443,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1433,6 +1513,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1504,6 +1588,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1575,6 +1663,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1647,6 +1739,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1716,6 +1812,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1783,6 +1883,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1848,6 +1952,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1921,6 +2029,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1997,6 +2109,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2079,6 +2195,10 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2161,6 +2281,10 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2226,6 +2350,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2268,7 +2396,7 @@ Which returns:
 ## get_kelly_criterion
 Calculate the Kelly Criterion, the share of capital to put at risk that maximizes the expected logarithmic growth of wealth, from the returns of an investment portfolio or asset.
 
-The discrete form is Kelly's (1956) bet: a probability of winning and a ratio of the average win to the average loss, as the QuantStats package calculates it from returns. The continuous form is Thorp's (2006) for returns that are close to normally distributed: the average excess return over the risk free rate divided by the variance of the excess returns. Since investors rarely bet the full Kelly amount, whose wealth swings widely, `fraction` gives a fractional Kelly such as half Kelly.
+The discrete form is Kelly's (1956) bet: a probability of winning and a ratio of the average win to the average loss, calculated from the returns. The continuous form is Thorp's (2006) for returns that are close to normally distributed: the average excess return over the risk free rate divided by the variance of the excess returns. Since investors rarely bet the full Kelly amount, whose wealth swings widely, `fraction` gives a fractional Kelly such as half Kelly.
 
 The formulas are as follows:
 
@@ -2317,6 +2445,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2401,12 +2533,11 @@ $$
 \text{Common Sense Ratio} = \text{Profit Factor}\; x \;\text{Tail Ratio} (\text{95th} / \text{5th} \;\text{percentile})
 $$
 
-The definitions follow the QuantStats package, except that the Recovery Factor compounds the returns into the cumulative return and keeps its sign (QuantStats takes the absolute value of the summed returns), so a history that lost money does not appear to recover.
+The Recovery Factor compounds the returns into the cumulative return and keeps its sign, so a history that lost money does not appear to recover.
 
 For more information, see the following sources:
 
 - Tharp, V.K. (2006). "Trade Your Way to Financial Freedom." 2nd ed., McGraw-Hill.
-- Aroussi, R. "QuantStats: Portfolio analytics for quants." [https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}
 
 **Args:**
 
@@ -2419,6 +2550,10 @@ within each period (e.g. each year if period = 'yearly') instead of from the ret
 `period` over the whole history. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2493,6 +2628,10 @@ The CAGR is measured on calendar time: each asset from its own first to its own 
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. If not provided,
 the function will use the default rounding value set in the class instance.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2568,6 +2707,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2649,6 +2792,10 @@ Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2710,6 +2857,10 @@ $$
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2760,6 +2911,10 @@ $$
 to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2824,6 +2979,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2898,6 +3057,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2971,6 +3134,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3045,6 +3212,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3110,6 +3281,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3177,6 +3352,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3255,6 +3434,10 @@ Defaults to None, which uses the first.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the metrics that take them, e.g. alpha=0.05.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3349,6 +3532,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3428,6 +3615,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3505,6 +3696,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3581,6 +3776,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 

@@ -34,9 +34,10 @@ Tickers that are not an ETF or fund have no holdings and return no data. They ar
 **Args:**
 
 - <u>overwrite (bool, optional):</u> Whether to retrieve the holdings again. Defaults to False.
-- <u>show_columns (list[str] &#124; None, optional):</u> A list of column names to keep in the
-result. Invalid names are reported and ignored. Defaults to None, which keeps
-every column.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 - <u>limit (int &#124; None, optional):</u> The number of largest holdings (by weight) to keep per
 fund, e.g. 10 for the top 10, or of the smallest for a negative number, e.g.
 -10. Defaults to None, which keeps every holding. The holdings carry no sector or
@@ -90,6 +91,10 @@ Tickers that are not an ETF or fund return no data. They are not removed from th
 
 - <u>overwrite (bool, optional):</u> Whether to retrieve the information again. Defaults to
 False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -144,6 +149,10 @@ Tickers that are not an ETF or fund return no data. They are not removed from th
 
 - <u>overwrite (bool, optional):</u> Whether to retrieve the weightings again. Defaults to
 False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -188,6 +197,10 @@ Tickers that are not an ETF or fund return no data. They are not removed from th
 
 - <u>overwrite (bool, optional):</u> Whether to retrieve the weightings again. Defaults to
 False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -241,6 +254,10 @@ which leaves the premium empty without a close within three days before the
 NAV Date.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -302,6 +319,10 @@ yearly). Defaults to "daily".
 Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -345,6 +366,10 @@ Measure how concentrated every fund is from its holdings: the number of holdings
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -382,6 +407,10 @@ Measure how much the funds hold of the same: for every pair of funds the sum, ov
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -427,6 +456,10 @@ For more information, see the following paper:
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -478,6 +511,10 @@ The ratios are the trailing twelve month ratios Financial Modeling Prep calculat
 Defaults to 25.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -525,6 +562,10 @@ Also known as: ETF liquidity, dollar volume, Amihud illiquidity, price impact.
 Defaults to None, which uses the rounding of the Toolkit for every measure but
 the price impact: that of the largest funds is a fraction of a basis point, so it
 keeps its full precision unless rounding is given.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -577,6 +618,10 @@ the period converts the contributions into index points, e.g. "^GSPC" for SPY.
 Defaults to None, which gives points of the fund's own price.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -645,6 +690,10 @@ price, one request each; the rest counts towards the rest of the fund.
 Defaults to None, which prices every holding with a symbol.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 

@@ -436,3 +436,20 @@ get_wald_test:
     independent_tickers: MSFT,Benchmark
     restriction_matrix: [[0, 1, 0], [0, 0, 1]]
     period: weekly
+get_window_change_by_year:
+  question: How much did US consumer prices rise from February to October in each year from 2019 to 2026, and how does each year rank?
+  tool: econometrics
+  arguments:
+    series: "macroeconomics:get_consumer_price_index:United States"
+    from_month: 2
+    to_month: 10
+    start_date: "2019-01-01"
+    end_date: "2026-10-31"
+get_streaks:
+  question: How long have China's producer price inflation and consumer price inflation been positive or negative in a row, by month, from June 2021 to October 2026?
+  tool: econometrics
+  arguments:
+    series: "macroeconomics:get_economic_calendar:China:Producer Price Index YoY; macroeconomics:get_economic_calendar:China:Inflation Rate YoY"
+    period: monthly
+    start_date: "2021-06-01"
+    end_date: "2026-11-09"

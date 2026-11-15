@@ -219,13 +219,15 @@ get_inflation_rate:
     start_date: "2003-01-01"
     end_date: "2009-03-01"
 get_producer_price_index:
-  question: How did producer prices in the United States and Germany develop each year from 2018 to 2022?
+  question: How much did producer prices change from a year earlier in the United States, the euro area and Japan in each month from October 2025 to September 2026?
   tool: macroeconomics
   arguments:
-    countries: United States,Germany
-    period: yearly
-    start_date: "2018-01-01"
-    end_date: "2022-01-01"
+    countries: United States,Euro Area,Japan
+    period: monthly
+    growth: true
+    lag: 12
+    start_date: "2025-10-01"
+    end_date: "2026-09-30"
 get_consumer_confidence_index:
   question: How did consumer confidence in Germany, France and Portugal develop each month from September 2008 to March 2009?
   tool: macroeconomics
@@ -346,12 +348,13 @@ get_overnight_rate:
     start_date: "2026-04-01"
     end_date: "2026-09-30"
 get_real_interest_rate:
-  question: How did real long-term interest rates, the 10-year bond yield minus inflation, develop in the United States, Germany and Japan from 2018 to 2023?
+  question: What was the real policy rate, the central bank rate minus inflation, in the United States, the euro area and Japan in each month from January to September 2026?
   tool: macroeconomics
   arguments:
-    countries: United States,Germany,Japan
-    start_date: "2018-01-01"
-    end_date: "2023-01-01"
+    countries: United States,Euro Area,Japan
+    rate_type: policy
+    start_date: "2026-01-01"
+    end_date: "2026-09-30"
 get_yield_curve_slope:
   question: How did the gap between 10-year and 3-month interest rates in the United States, Germany and Japan develop each year from 2021 to 2023?
   tool: rates
@@ -612,12 +615,12 @@ get_life_table:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
 get_shiller_stock_market_data:
-  question: What were the price, dividend, earnings and CAPE of the S&P Composite in Shiller's data in each month from January to October 2026?
+  question: What were the price, dividend, earnings and CAPE of the S&P Composite in Shiller's data in each month from January to September 2026?
   tool: macroeconomics
   arguments:
     show_columns: Price,Dividend,Earnings,CAPE
     start_date: "2026-01-01"
-    end_date: "2026-10-31"
+    end_date: "2026-09-30"
 get_economic_calendar:
   question: What were the first five high-impact economic releases for the United States and the euro area in September 2026, with their previous, expected and actual values?
   tool: macroeconomics
@@ -667,3 +670,74 @@ get_commodity_term_structure:
     commodity: Crude Oil
     start_date: "2026-10-26"
     end_date: "2026-11-06"
+get_government_interest_expenditure:
+  question: How much interest did the governments of the United States, Germany and Italy pay in each year from 2015 to 2025, in national currency?
+  tool: government
+  arguments:
+    countries: United States,Germany,Italy
+    period: yearly
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_government_interest_expenditure_to_gdp_ratio:
+  question: What was government interest spending as a share of GDP in the United States, Germany, Italy and the United Kingdom in each year from 2015 to 2025?
+  tool: government
+  arguments:
+    countries: United States,Germany,Italy,United Kingdom
+    period: yearly
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_government_interest_expenditure_to_revenue_ratio:
+  question: What share of government revenue went to interest in the United States, France and Canada in each quarter of 2024 and 2025?
+  tool: government
+  arguments:
+    countries: United States,France,Canada
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+get_government_expenditure_by_function:
+  question: How much did the US government spend on defence, health and education in each year from 2018 to 2024, in dollars?
+  tool: government
+  arguments:
+    countries: United States
+    functions: Defence,Health,Education
+    start_date: "2018-01-01"
+    end_date: "2025-12-31"
+get_government_expenditure_by_function_to_gdp_ratio:
+  question: What was government defence spending as a share of GDP in the United States, Japan, Germany and the United Kingdom in each year from 2015 to 2024?
+  tool: government
+  arguments:
+    countries: United States,Japan,Germany,United Kingdom
+    functions: Defence
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_purchasing_power:
+  question: How much of its purchasing power did cash earning the overnight rate keep in the euro area, the Netherlands and the United States each January from 2020 to 2026, starting from 100?
+  tool: macroeconomics
+  arguments:
+    countries: Euro Area,Netherlands,United States
+    overnight_rate: true
+    start_date: "2020-01-01"
+    end_date: "2026-09-30"
+get_yield_decomposition:
+  question: How did the US 5-year nominal yield split into the real yield and breakeven inflation on each day from 2 to 10 November 2026?
+  tool: rates
+  arguments:
+    countries: United States
+    maturities: 5Y
+    start_date: "2026-11-02"
+    end_date: "2026-11-10"
+get_commodity_prices:
+  question: What was the gold price in today's dollars in January 1980, September 2011 and January 2026?
+  tool: macroeconomics
+  arguments:
+    commodity: Gold
+    deflate_with: United States
+    start_date: "1979-01-01"
+    end_date: "2026-10-31"
+get_chokepoint_transits:
+  question: How many tankers and cargo ships passed through the Strait of Hormuz on each day from 24 February to 3 March 2026?
+  tool: macroeconomics
+  arguments:
+    chokepoints: Strait of Hormuz
+    show_columns: Tanker,Cargo,Total
+    start_date: "2026-02-24"
+    end_date: "2026-03-03"

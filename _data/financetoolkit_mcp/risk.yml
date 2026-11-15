@@ -353,3 +353,10 @@ get_factor_analysis:
     horizons:
     - 1
     - 12
+get_tail_dependence_coefficient:
+  question: How strongly did Apple, JPMorgan Chase, Exxon Mobil and the Euro Stoxx 50 crash and rally together with the S&P 500 (SPY) from 2021 to 2025, measured by their tail dependence?
+  tool: risk
+  arguments:
+    tickers: "AAPL,JPM,XOM,^STOXX50E"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"

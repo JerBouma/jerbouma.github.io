@@ -348,13 +348,6 @@ get_debt_to_assets_ratio:
     tickers: NEE,DUK,SO
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_asset_coverage_ratio:
-  question: How many times did the tangible assets of Kinder Morgan, Williams Companies and ONEOK, net of their non-debt current liabilities, cover their debt from 2021 to 2025?
-  tool: solvency
-  arguments:
-    tickers: KMI,WMB,OKE
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_debt_to_equity_ratio:
   question: How much debt did Caterpillar, Deere and CNH Industrial carry per dollar of equity from 2021 to 2025?
   tool: solvency
@@ -553,10 +546,11 @@ get_price_to_sales_ratio:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_market_cap:
-  question: How did the market capitalization of Nvidia, Apple and Microsoft develop from 2021 to 2025?
+  question: How did the market capitalization of Apple, Microsoft and Alphabet, and their total, develop from 2021 to 2025?
   tool: valuation
   arguments:
-    tickers: NVDA,AAPL,MSFT
+    tickers: AAPL,MSFT,GOOGL
+    basket: true
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_enterprise_value:
@@ -844,3 +838,21 @@ get_net_external_financing:
     tickers: "AAPL,MSFT,KO,XOM"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_net_capital_expenditure:
+  question: How much did Microsoft, Amazon, Alphabet and Meta spend on capital expenditure, net of asset sales, in each year from 2021 to 2025, and in total?
+  tool: efficiency
+  arguments:
+    tickers: MSFT,AMZN,GOOGL,META
+    basket: true
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_market_cap_to_gdp:
+  question: How large was the combined market value of Nvidia, Microsoft, Alphabet, Amazon, Meta, Broadcom and TSMC relative to China's GDP on the last five trading days up to 6 November 2026?
+  tool: valuation
+  arguments:
+    tickers: NVDA,MSFT,GOOGL,AMZN,META,AVGO,TSM
+    country: China
+    show_daily: true
+    start_date: "2025-01-01"
+    end_date: "2026-11-06"
+    limit: -5

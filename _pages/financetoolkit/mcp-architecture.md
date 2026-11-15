@@ -65,9 +65,9 @@ This produces an ordered list of indicator names. `_build_router_wrapper()` then
 2. Coerces all typed parameters from strings via `coercion_model.coerce_value()`.
 3. Validates required inputs (`tickers` for equity tools, date formats).
 4. Delegates to `ToolkitProvider.call_method()`.
-5. Passes the result through `formatting_model.format_result()` and returns compact JSON, with `_notes` on anything left out, ignored, assumed or converted.
+5. Passes the result through `formatting_model.format_result()` and returns compact JSON, with `_notes` on anything left out, ignored, assumed or converted and `_sources` naming the publishers the data comes from.
 
-The wrapper's `__signature__` is replaced with a proper `inspect.Signature` so that FastMCP can introspect it and generate accurate JSON Schema for the LLM. Each parameter's description comes from the docstrings of the methods behind the tool, so the assistant reads the same explanation as the documentation.
+The wrapper's `__signature__` is replaced with a proper `inspect.Signature` so that FastMCP can introspect it and generate accurate JSON Schema for the LLM. Each parameter's description comes from the docstrings of the methods behind the tool, so the assistant reads the same explanation as the documentation. With `FT_MCP_COMPACT_TOOLS=1` a tool's description is cut to its first sentence and its parameters lose their descriptions, so a client that loads every tool on each run reads a few hundred characters per tool instead of tens of thousands; `search_metrics` with an indicator's name still gives what it calculates and its parameters.
 
 ## Dispatch Categories
 {: .heading-as-h3}
@@ -82,7 +82,7 @@ Every tool group has a `category` that controls how `ToolkitProvider` routes the
 | `discovery` | Instantiates `Discovery(api_key=…)`, no tickers or dates required |
 | `mixed` | Per-method routing table: each indicator maps to its own `(module, category)` pair |
 
-`ToolkitProvider` caches `Toolkit` instances by a key derived from tickers, date range, quarterly flag, and a hash of the API key, so repeated calls for the same parameters reuse an existing instance. Standalone module instances are cached the same way. The provider keeps at most 64 `Toolkit` instances and 4 `Economics`, `FixedIncome` and `Discovery` instances, and drops the least recently used one first; an `Economics` instance holds the Global Macro Database, so one copy of that dataset is shared per process. Full DataFrame results are written to and read from `SQLiteCache` with configurable TTL.
+`ToolkitProvider` caches `Toolkit` instances by a key derived from tickers, date range, quarterly flag, and a hash of the API key, so repeated calls for the same parameters reuse an existing instance. Standalone module instances are cached the same way. The provider keeps at most 64 `Toolkit` instances and 4 `Economics`, `FixedIncome` and `Discovery` instances, and drops the least recently used one first. An instance unused for 30 minutes is dropped as well and its memory handed back to the operating system, so a server that runs for days doesn't keep data it no longer answers from. An `Economics` instance holds the Global Macro Database, so one copy of that dataset is shared per process. Full DataFrame results are written to and read from `SQLiteCache` with configurable TTL.
 
 ## OAuth 2.1 and API Key Resolution
 {: .heading-as-h3}

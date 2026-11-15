@@ -64,8 +64,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] &#124; None, optional):</u> Restrict the result to these columns. Defaults to None,
-which shows all columns.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -150,8 +152,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] &#124; None, optional):</u> Restrict the result to these columns. Defaults to None,
-which shows all columns.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -242,8 +246,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>show_columns (list[str] &#124; None, optional):</u> Restrict the result to these columns. Defaults to None,
-which shows all columns.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -324,8 +330,10 @@ Because the book value of assets leaves out most intangibles (brands, software, 
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -430,8 +438,10 @@ values. Defaults to False.
 uses. Defaults to None, which takes the equity risk premium of each company's country
 (Damodaran's Total Equity Risk Premium, see get_market_risk_premium) and, where that is
 not available, the benchmark's average return above the risk-free rate over the data.
-- <u>show_columns (list[str] &#124; None, optional):</u> Restrict the result to these columns. Defaults to None,
-which shows all columns.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -480,9 +490,9 @@ Which returns:
 
 |      |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|
-| T    | 0.0453 | 0.0457 | 0.0358 | 0.0411 |
-| TMUS | 0.047  | 0.0437 | 0.0447 | 0.0425 |
-| VZ   | 0.0304 | 0.0406 | 0.036  | 0.0358 |
+| T    | 0.0453 | 0.0458 | 0.0358 | 0.0411 |
+| TMUS | 0.0469 | 0.0437 | 0.0447 | 0.0425 |
+| VZ   | 0.0304 | 0.0407 | 0.036  | 0.0358 |
 
 ---
 
@@ -520,8 +530,10 @@ values. Defaults to False.
 uses. Defaults to None, which takes the equity risk premium of each company's country
 (Damodaran's Total Equity Risk Premium, see get_market_risk_premium) and, where that is
 not available, the benchmark's average return above the risk-free rate over the data.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -565,9 +577,9 @@ Which returns:
 
 |    |        2022 |        2023 |        2024 |          2025 |
 |:---|------------:|------------:|------------:|--------------:|
-| HD | 1.51584e+10 | 1.23683e+10 | 1.21347e+10 | nan           |
-| MA | 9.17363e+09 | 1.03441e+10 | 1.21321e+10 |   1.32974e+10 |
-| V  | 1.14101e+10 | 1.30222e+10 | 1.54505e+10 |   1.53159e+10 |
+| HD | 1.51594e+10 | 1.23711e+10 | 1.21373e+10 | nan           |
+| MA | 9.17378e+09 | 1.03453e+10 | 1.21332e+10 |   1.32984e+10 |
+| V  | 1.14114e+10 | 1.30249e+10 | 1.54532e+10 |   1.53188e+10 |
 
 ---
 
@@ -600,8 +612,10 @@ $$
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -716,6 +730,10 @@ which gives the intrinsic value per share over time. Each period is valued from 
 flow ending in it and the cash, debt and shares reported at its end. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -760,9 +778,9 @@ Which returns:
 
 |      |   Periods = 5 |
 |:-----|--------------:|
-| ADBE |      212.536  |
-| CRM  |       67.9382 |
-| INTU |      173.485  |
+| ADBE |      212.653  |
+| CRM  |       67.9487 |
+| INTU |      173.559  |
 
 And the same valuation for every period with `historical=True`:
 
@@ -804,8 +822,10 @@ $$
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -870,8 +890,10 @@ $$
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -950,6 +972,10 @@ long-run growth rate of 2.5% (2.5% where it has none).
 last complete period. Defaults to 5.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -989,16 +1015,16 @@ Which returns:
 
 |      |       KO |
 |:-----|---------:|
-| 2021 | 133.98   |
-| 2022 |  68.3625 |
-| 2023 |  59.2227 |
-| 2024 | 102.938  |
-| 2025 | 104.472  |
-| 2026 | 107.084  |
-| 2027 | 109.761  |
-| 2028 | 112.505  |
-| 2029 | 115.318  |
-| 2030 | 118.201  |
+| 2021 | 133.744  |
+| 2022 |  68.4186 |
+| 2023 |  59.3591 |
+| 2024 | 102.976  |
+| 2025 | 104.728  |
+| 2026 | 107.347  |
+| 2027 | 110.03   |
+| 2028 | 112.781  |
+| 2029 | 115.601  |
+| 2030 | 118.491  |
 
 ---
 
@@ -1051,6 +1077,10 @@ declines linearly from the high to the stable growth rate (the Three-Stage Divid
 Discount Model). Defaults to 0, no transition phase.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1094,9 +1124,9 @@ Which returns:
 
 |     |   High-Growth Periods = 5 |
 |:----|--------------------------:|
-| JNJ |                   295.957 |
-| PEP |                   294.465 |
-| PG  |                   200.93  |
+| JNJ |                   296.375 |
+| PEP |                   294.698 |
+| PG  |                   201.233 |
 
 ---
 
@@ -1136,6 +1166,10 @@ rate declines from the high to the stable rate. Defaults to 10.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit (4 unless set
 otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1177,10 +1211,10 @@ Which returns:
 
 |      |       KO |     PEP |
 |:-----|---------:|--------:|
-| 2022 |  75.9054 | 210.913 |
-| 2023 |  65.4444 | 203.503 |
-| 2024 | 115.057  | 382.112 |
-| 2025 | 117.078  | 291.965 |
+| 2022 |  75.9677 | 211.132 |
+| 2023 |  65.5951 | 203.877 |
+| 2024 | 115.099  | 382.255 |
+| 2025 | 117.365  | 292.194 |
 
 ---
 
@@ -1235,8 +1269,10 @@ which is 4 for quarterly data (a trailing twelve months) and 1 otherwise.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit (4 unless set
 otherwise).
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1279,9 +1315,9 @@ Which returns:
 | Payout Ratio            |  0.7422 |  0.7982 |  0.7422 |  0.7863 |  0.6698 |
 | Return on Equity        |  0.4591 |  0.3838 |  0.4149 |  0.3869 |  0.497  |
 | Growth Rate             |  0.025  |  0.025  |  0.025  |  0.025  |  0.025  |
-| Justified Trailing P/E  | 59.1899 | 31.0022 | 23.8889 | 41.721  | 34.3015 |
-| Justified Leading P/E   | 57.7463 | 30.2461 | 23.3062 | 40.7035 | 33.4648 |
-| Justified P/B           | 33.7732 | 13.5978 | 12.2419 | 18.7325 | 23.5827 |
+| Justified Trailing P/E  | 59.0857 | 31.0277 | 23.9439 | 41.7365 | 34.3856 |
+| Justified Leading P/E   | 57.6446 | 30.2709 | 23.3599 | 40.7185 | 33.5469 |
+| Justified P/B           | 33.7137 | 13.609  | 12.2701 | 18.7394 | 23.6405 |
 | Price-to-Earnings Ratio | 26.2994 | 28.9985 | 23.8657 | 25.2999 | 23.0046 |
 | Price-to-Book Ratio     | 11.1732 | 11.4791 |  9.8569 | 10.8209 |  9.3731 |
 
@@ -1311,8 +1347,10 @@ values. Defaults to False.
 uses. Defaults to None, which takes the equity risk premium of each company's country
 (Damodaran's Total Equity Risk Premium, see get_market_risk_premium) and, where that is
 not available, the benchmark's average return above the risk-free rate over the data.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1360,9 +1398,9 @@ Which returns:
 
 |     |        2022 |        2023 |        2024 |        2025 |
 |:----|------------:|------------:|------------:|------------:|
-| AXP | 5.6287e+09  | 5.94485e+09 | 7.56011e+09 | 7.62486e+09 |
-| MA  | 9.35646e+09 | 1.06974e+10 | 1.23824e+10 | 1.44718e+10 |
-| V   | 1.24384e+10 | 1.48241e+10 | 1.71898e+10 | 1.69421e+10 |
+| AXP | 5.62881e+09 | 5.94452e+09 | 7.56109e+09 | 7.62666e+09 |
+| MA  | 9.35653e+09 | 1.06972e+10 | 1.23826e+10 | 1.44721e+10 |
+| V   | 1.24393e+10 | 1.48221e+10 | 1.71906e+10 | 1.69441e+10 |
 
 ---
 
@@ -1438,8 +1476,13 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> Restrict the result to these columns. Defaults to None,
-which shows all columns.
+- <u>zone (bool, optional):</u> Whether to add a "Zone" row per ticker: "Distress" below the lower cut-off of
+the chosen model, "Grey" up to the upper one and "Safe" from it (see above). Not with growth or
+standardize. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1580,8 +1623,10 @@ Please see Piotroski, Joseph D. "Value Investing: The Use of Historical Financia
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all columns
-will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1673,8 +1718,10 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1795,8 +1842,10 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1902,8 +1951,13 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>zone (bool, optional):</u> Whether to add a "Zone" row per ticker: "Distress" from a score of 0, a
+bankruptcy probability of 0.5 and up (Zmijewski's classification), "Safe" below it. Not with
+growth or standardize. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1991,8 +2045,12 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>zone (bool, optional):</u> Whether to add a "Zone" row per ticker: "Distress" below Springate's cut-off
+of 0.862, "Safe" from it. Not with growth or standardize. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2027,11 +2085,11 @@ toolkit.models.get_springate_score().xs("Springate Score", level=1)
 
 Which returns:
 
-|     |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:----|-------:|-------:|-------:|-------:|-------:|
-| GAP | 0.8575 | 0.6249 | 0.9346 | 1.1942 | 1.1859 |
-| KSS | 1.2226 | 0.5896 | 0.809  | 0.6373 | 0.759  |
-| M   | 1.2937 | 1.1721 | 0.7495 | 0.9653 | 1.015  |
+|     |   2021 |   2022 |   2023 |   2024 |
+|:----|-------:|-------:|-------:|-------:|
+| GAP | 0.8575 | 0.6249 | 0.9346 | 1.1942 |
+| KSS | 1.2226 | 0.5896 | 0.809  | 0.6373 |
+| M   | 1.2937 | 1.1721 | 0.7495 | 0.9653 |
 
 ---
 
@@ -2074,8 +2132,10 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2185,8 +2245,10 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to
 None, which is 4 on quarterly data (a trailing twelve months), as the score was estimated on
 yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2287,8 +2349,12 @@ values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation: flows are
 summed and balances averaged over it. Defaults to None, which is 4 on quarterly data (a
 trailing twelve months), as the score was estimated on yearly statements.
-- <u>show_columns (list[str] &#124; None, optional):</u> List of columns to show in the results. If None, all
-columns will be shown. Defaults to None.
+- <u>zone (bool, optional):</u> Whether to add a "Zone" row per ticker: "Distress" below zero (Taffler's at
+risk profile), "Safe" from it. Not with growth or standardize. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2368,6 +2434,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2403,10 +2473,10 @@ Which returns:
 
 | Date   |     ADI |     NVDA |      TXN |
 |:-------|--------:|---------:|---------:|
-| 2022   | 103.667 |  13.2452 |  44.5164 |
-| 2023   | 129.843 |  40.3354 |  96.3598 |
-| 2024   | 183.868 | 116.003  | 136.601  |
-| 2025   | 230.98  | nan      | 119.94   |
+| 2022   | 103.653 |  13.245  |  44.4637 |
+| 2023   | 129.817 |  40.3285 |  96.3362 |
+| 2024   | 183.861 | 115.999  | 136.661  |
+| 2025   | 230.965 | nan      | 119.911  |
 
 ---
 
@@ -2456,6 +2526,10 @@ the P/E ratio does.
 simple returns, which multiply. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2539,6 +2613,10 @@ The SGR assumes the company keeps its leverage and pays out only through dividen
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2573,11 +2651,11 @@ toolkit.models.get_sustainable_growth_rate()
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| DECK | 0.3129 | 0.3359 | 0.4302 | 0.4584 | 0.4075 |
-| LULU | 0.3812 | 0.312  | 0.4923 | 0.4288 | 0.3652 |
-| NKE  | 0.3297 | 0.2001 | 0.2521 | 0.0637 | 0.0531 |
+|      |   2021 |   2022 |   2023 |   2024 |
+|:-----|-------:|-------:|-------:|-------:|
+| DECK | 0.3129 | 0.3359 | 0.4302 | 0.4584 |
+| LULU | 0.3812 | 0.312  | 0.4923 | 0.4288 |
+| NKE  | 0.3297 | 0.2001 | 0.2521 | 0.0637 |
 
 ---
 
@@ -2609,6 +2687,10 @@ $$
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int &#124; None, optional):</u> The trailing period to use for the calculation. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2643,11 +2725,11 @@ toolkit.models.get_internal_growth_rate()
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| ADBE | 0.2151 | 0.2122 | 0.2229 | 0.2254 | 0.3188 |
-| ADSK | 0.0613 | 0.0955 | 0.1006 | 0.1144 | 0.0991 |
-| INTU | 0.1004 | 0.0489 | 0.0569 | 0.0639 | 0.0782 |
+|      |   2021 |   2022 |   2023 |   2024 |     2025 |
+|:-----|-------:|-------:|-------:|-------:|---------:|
+| ADBE | 0.2151 | 0.2122 | 0.2229 | 0.2254 |   0.3188 |
+| ADSK | 0.0613 | 0.0955 | 0.1006 | 0.1144 | nan      |
+| INTU | 0.1004 | 0.0489 | 0.0569 | 0.0639 |   0.0782 |
 
 ---
 
@@ -2679,6 +2761,10 @@ the rounding of the Toolkit (4 unless set otherwise).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2770,6 +2856,10 @@ the last 4 quarters (a trailing twelve months) for quarterly data and takes
 the latest year otherwise, as the projection periods are years.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2847,6 +2937,10 @@ margin is applied to a year of revenue. Defaults to None, which uses 4 (a
 trailing twelve months) for quarterly data and the yearly figures otherwise.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2935,6 +3029,10 @@ the latest year otherwise, as the projection periods are years.
 can be reproduced. Defaults to 0; None gives different draws every time.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2961,8 +3059,8 @@ Which returns:
 
 |      |     Mean |   Standard Deviation |   5th Percentile |   25th Percentile |   50th Percentile |   75th Percentile |   95th Percentile |   Share Price |   Probability Undervalued |
 |:-----|---------:|---------------------:|-----------------:|------------------:|------------------:|------------------:|------------------:|--------------:|--------------------------:|
-| AAPL |  82.5131 |              16.2376 |          60.9873 |           71.2762 |           80.2102 |           91.0734 |            112.25 |        271.86 |                    0      |
-| MSFT | 201.173  |              54.5108 |         137.44   |          165.612  |          191.216  |          225.004  |            297.14 |        483.62 |                    0.0025 |
+| AAPL |  82.5536 |              16.2524 |          61.0122 |            71.306 |           80.2468 |           91.1154 |           112.314 |        271.86 |                    0      |
+| MSFT | 201.341  |              54.6203 |         137.524  |           165.728 |          191.35   |          225.201  |           297.467 |        483.62 |                    0.0026 |
 
 ---
 
@@ -3004,8 +3102,10 @@ For more information, see the following papers:
 measured. Defaults to 1.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3040,11 +3140,11 @@ Which returns:
 |                        |        2021 |        2022 |        2023 |        2024 |        2025 |
 |:-----------------------|------------:|------------:|------------:|------------:|------------:|
 | Equity Value           | 8.37862e+10 | 4.66828e+10 | 4.92598e+10 | 3.98079e+10 | 5.22045e+10 |
-| Equity Volatility      | 0.4163      | 0.491       | 0.355       | 0.36        | 0.3319      |
+| Equity Volatility      | 0.4163      | 0.491       | 0.3549      | 0.36        | 0.3319      |
 | Default Point          | 9.3892e+10  | 9.45665e+10 | 9.945e+10   | 1.07294e+11 | 1.1133e+11  |
-| Asset Value            | 1.76267e+11 | 1.3761e+11  | 1.44934e+11 | 1.42307e+11 | 1.58997e+11 |
-| Asset Volatility       | 0.1979      | 0.1675      | 0.1207      | 0.1008      | 0.109       |
-| Distance to Default    | 3.1592      | 2.3878      | 3.3814      | 3.2062      | 3.5969      |
+| Asset Value            | 1.76332e+11 | 1.38452e+11 | 1.44842e+11 | 1.42679e+11 | 1.58862e+11 |
+| Asset Volatility       | 0.1979      | 0.1665      | 0.1207      | 0.1005      | 0.1091      |
+| Distance to Default    | 3.1586      | 2.3846      | 3.3822      | 3.2046      | 3.598       |
 | Probability of Default | 0.0008      | 0.0085      | 0.0004      | 0.0007      | 0.0002      |
 
 ---
@@ -3106,8 +3206,10 @@ The probability is that of failing in the month 12 months ahead, given that the 
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3216,8 +3318,10 @@ other financial firms) or "auto", which picks large or small from the market
 capitalization of every period. Defaults to "auto".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3255,18 +3359,18 @@ Which returns:
 | ('AAPL', 'Interest Coverage Ratio') | 41.1905  | 40.7496 | 29.062  | nan     | nan     |
 | ('AAPL', 'Rating')                  | Aaa/AAA  | Aaa/AAA | Aaa/AAA | Aaa/AAA | Aaa/AAA |
 | ('AAPL', 'Default Spread')          | 0.004    | 0.004   | 0.004   | 0.004   | 0.004   |
-| ('AAPL', 'Risk Free Rate')          | 0.0151   | 0.0388  | 0.0387  | 0.0457  | 0.0416  |
-| ('AAPL', 'Pre-tax Cost of Debt')    | 0.0191   | 0.0428  | 0.0427  | 0.0497  | 0.0456  |
+| ('AAPL', 'Risk Free Rate')          | 0.0144   | 0.0296  | 0.0397  | 0.0421  | 0.0429  |
+| ('AAPL', 'Pre-tax Cost of Debt')    | 0.0184   | 0.0336  | 0.0437  | 0.0461  | 0.0469  |
 | ('F', 'Interest Coverage Ratio')    | 2.7915   | 5.0905  | 4.1306  | 4.5695  | 2.0191  |
 | ('F', 'Rating')                     | Baa2/BBB | A2/A    | A3/A-   | A2/A    | Ba2/BB  |
 | ('F', 'Default Spread')             | 0.0111   | 0.0078  | 0.0089  | 0.0078  | 0.0184  |
-| ('F', 'Risk Free Rate')             | 0.0151   | 0.0388  | 0.0387  | 0.0457  | 0.0416  |
-| ('F', 'Pre-tax Cost of Debt')       | 0.0262   | 0.0466  | 0.0476  | 0.0535  | 0.06    |
+| ('F', 'Risk Free Rate')             | 0.0144   | 0.0296  | 0.0397  | 0.0421  | 0.0429  |
+| ('F', 'Pre-tax Cost of Debt')       | 0.0255   | 0.0374  | 0.0486  | 0.0499  | 0.0613  |
 | ('T', 'Interest Coverage Ratio')    | 3.8675   | -0.7472 | 3.7011  | 3.5969  | 3.6743  |
 | ('T', 'Rating')                     | A3/A-    | D2/D    | A3/A-   | A3/A-   | A3/A-   |
 | ('T', 'Default Spread')             | 0.0089   | 0.19    | 0.0089  | 0.0089  | 0.0089  |
-| ('T', 'Risk Free Rate')             | 0.0151   | 0.0388  | 0.0387  | 0.0457  | 0.0416  |
-| ('T', 'Pre-tax Cost of Debt')       | 0.024    | 0.2288  | 0.0476  | 0.0546  | 0.0505  |
+| ('T', 'Risk Free Rate')             | 0.0144   | 0.0296  | 0.0397  | 0.0421  | 0.0429  |
+| ('T', 'Pre-tax Cost of Debt')       | 0.0233   | 0.2196  | 0.0486  | 0.051   | 0.0518  |
 
 ---
 
@@ -3292,6 +3396,10 @@ Financial Modeling Prep lists for each company (same sector and exchange,
 similar size).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3324,18 +3432,18 @@ Which returns:
 
 |                                        |   Company |   Peer Median |   Peer Mean |   Percentile |   Peers |
 |:---------------------------------------|----------:|--------------:|------------:|-------------:|--------:|
-| ('MSFT', 'Price-to-Earnings')          |   29.2276 |       30.5776 |     27.5171 |          0.5 |      10 |
-| ('MSFT', 'EV-to-EBITDA')               |   20.7309 |       19.8087 |     17.9245 |          0.5 |      10 |
-| ('MSFT', 'Price-to-Book')              |    8.8365 |        7.2576 |      6.1536 |          0.6 |      10 |
-| ('MSFT', 'Price-to-Sales')             |   11.7803 |        6.1724 |      4.2807 |          0.9 |      10 |
-| ('MSFT', 'Gross Margin')               |    0.6794 |        0.6242 |      0.6164 |          0.6 |      10 |
-| ('MSFT', 'Operating Margin')           |    0.4678 |        0.1998 |      0.2226 |          1   |      10 |
+| ('MSFT', 'Price-to-Earnings')          |   29.5676 |       30.6062 |     27.9825 |          0.5 |      10 |
+| ('MSFT', 'EV-to-EBITDA')               |   20.677  |       19.9245 |     18.115  |          0.5 |      10 |
+| ('MSFT', 'Price-to-Book')              |    8.9393 |        7.3435 |      6.2418 |          0.6 |      10 |
+| ('MSFT', 'Price-to-Sales')             |   11.9173 |        6.1931 |      4.3639 |          0.9 |      10 |
+| ('MSFT', 'Gross Margin')               |    0.6794 |        0.6243 |      0.6164 |          0.6 |      10 |
+| ('MSFT', 'Operating Margin')           |    0.4678 |        0.1999 |      0.2226 |          1   |      10 |
 | ('MSFT', 'Net Profit Margin')          |    0.4031 |        0.1682 |      0.187  |          1   |      10 |
-| ('MSFT', 'Return on Equity')           |    0.3404 |        0.2392 |      0.287  |          0.6 |      10 |
-| ('MSFT', 'Return on Invested Capital') |    0.209  |        0.1001 |      0.1434 |          0.8 |      10 |
-| ('MSFT', 'Revenue Growth')             |    0.1779 |        0.1146 |      0.128  |          0.8 |      10 |
-| ('MSFT', 'Debt-to-Equity')             |    0.2912 |        0.3313 |      0.7928 |          0.5 |      10 |
-| ('MSFT', 'Dividend Yield')             |    0.0052 |        0.0088 |      0.0096 |          0.4 |      10 |
+| ('MSFT', 'Return on Equity')           |    0.3404 |        0.2392 |      0.2864 |          0.6 |      10 |
+| ('MSFT', 'Return on Invested Capital') |    0.2437 |        0.1307 |      0.166  |          0.8 |      10 |
+| ('MSFT', 'Revenue Growth')             |    0.1779 |        0.1145 |      0.1197 |          0.9 |      10 |
+| ('MSFT', 'Debt-to-Equity')             |    0.2912 |        0.3313 |      0.7927 |          0.5 |      10 |
+| ('MSFT', 'Dividend Yield')             |    0.0051 |        0.0094 |      0.01   |          0.4 |      10 |
 
 ---
 
@@ -3368,8 +3476,10 @@ the capital are taken at the period end. Defaults to None, which is 4 for
 quarterly data (a year of operating income) and 1 otherwise.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3441,8 +3551,10 @@ Balance sheet items are taken at the period end. Defaults to None, which is
 compare quarter over quarter.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3480,12 +3592,12 @@ Which returns:
 
 |       |   2023 |   2024 |   2025 |
 |:------|-------:|-------:|-------:|
-| AAPL  |      4 |      4 |      3 |
+| AAPL  |      4 |      4 |      2 |
 | ADBE  |      5 |      5 |      5 |
 | GOOGL |      4 |      4 |      6 |
 | META  |      6 |      5 |      4 |
-| MSFT  |      4 |      5 |      4 |
-| NVDA  |      3 |      3 |      3 |
+| MSFT  |      4 |      5 |      3 |
+| NVDA  |      3 |      3 |    nan |
 
 ---
 
@@ -3516,8 +3628,10 @@ Balance sheet items are taken at the period end. Defaults to None, which is
 compare quarter over quarter.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3556,9 +3670,9 @@ Which returns:
 
 |      |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|
-| AAPL | 0.4226 | 0.3916 | 0.4136 | 0.4214 |
+| AAPL | 0.4226 | 0.3916 | 0.3913 | 0.3962 |
 | MSFT | 0.811  | 0.7759 | 1.018  | 0.8628 |
-| SMCI | 2.8035 | 0.6471 | 6.128  | 0.8275 |
+| SMCI | 2.797  | 0.6471 | 6.128  | 0.8275 |
 
 ---
 
@@ -3590,8 +3704,10 @@ Balance sheet items are taken at the period end. Defaults to None, which is
 compare quarter over quarter.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3627,9 +3743,9 @@ Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL |      4 |      2 |      3 |      2 |      3 |
+| AAPL |      4 |      2 |      3 |      3 |      3 |
 | MSFT |      5 |      2 |      5 |      3 |      2 |
-| SMCI |      3 |      5 |      2 |      5 |      2 |
+| SMCI |      5 |      5 |      2 |      5 |      2 |
 
 ---
 
@@ -3663,8 +3779,10 @@ None, which is 4 for quarterly data (a trailing twelve months) and 1 otherwise.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit (4 unless set
 otherwise).
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3704,16 +3822,16 @@ toolkit.models.get_quality_score().xs("Quality Score", level=1)
 
 Which returns:
 
-|       |    2020 |    2021 |    2022 |    2023 |    2024 |     2025 |
-|:------|--------:|--------:|--------:|--------:|--------:|---------:|
-| AAPL  |  0.6124 |  1.0206 |  1.4289 |  0.6124 |  0.6124 |   1.3363 |
-| GOOGL | -1.0206 |  0.2041 |  0.6124 |  1.0206 |  1.0206 |   0.8018 |
-| IBM   | -1.4289 | -0.6124 | -0.6124 | -0.6124 | -0.6124 |  -0.2673 |
-| INTC  | -0.6124 | -1.0206 | -1.4289 | -1.4289 | -1.4289 |  -1.3363 |
-| META  |  1.4289 |  1.4289 |  0.2041 | -0.2041 |  0.2041 |   0.2673 |
-| MSFT  |  1.0206 |  0.6124 |  1.0206 |  0.2041 | -0.2041 |  -0.8018 |
-| NVDA  |  0.2041 | -0.2041 | -0.2041 |  1.4289 |  1.4289 | nan      |
-| ORCL  | -0.2041 | -1.4289 | -1.0206 | -1.0206 | -1.0206 | nan      |
+|       |    2019 |    2020 |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:------|--------:|--------:|--------:|--------:|--------:|--------:|---------:|
+| AAPL  |  0.6124 |  0.6124 |  1.0206 |  1.4289 |  0.6124 |  0.6124 |   1.3363 |
+| GOOGL | -1.0206 | -1.0206 |  0.2041 |  0.6124 |  1.0206 |  1.0206 |   0.8018 |
+| IBM   | -1.4289 | -1.4289 | -0.6124 | -0.6124 | -0.6124 | -0.6124 |  -0.2673 |
+| INTC  | -0.6124 | -0.6124 | -1.0206 | -1.4289 | -1.4289 | -1.4289 |  -1.3363 |
+| META  |  1.0206 |  1.4289 |  1.4289 |  0.2041 | -0.2041 |  0.2041 |   0.2673 |
+| MSFT  |  0.2041 |  1.0206 |  0.6124 |  1.0206 |  0.2041 | -0.2041 |  -0.8018 |
+| NVDA  |  1.4289 |  0.2041 | -0.2041 | -0.2041 |  1.4289 |  1.4289 | nan      |
+| ORCL  | -0.2041 | -0.2041 | -1.4289 | -1.0206 | -1.0206 | -1.0206 | nan      |
 
 ---
 
@@ -3743,8 +3861,10 @@ Balance sheet items are taken at the period end. Defaults to None, which is
 compare quarter over quarter.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (list[str] &#124; None, optional):</u> The periods to show. Defaults to None,
-all periods.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3815,6 +3935,10 @@ which uses the model's score (its last row).
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the models that take them, e.g. trailing=4 or
 diluted=False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3861,8 +3985,8 @@ Which returns:
 
 |                                      |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
 |:-------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('get_piotroski_score', '12 Months') |    -0.146 |                  0.3791 |                -0.3852 |       -3.6131 |    0.0005 |           0.2841 |             88 |            -0.1812 |              0.0794 |                 0.9301 |
-| ('get_altman_z_score', '12 Months')  |     0.121 |                  0.3923 |                 0.3085 |        3.0853 |    0.0026 |           0.7    |            100 |             0.1264 |              0.0285 |                 0.9941 |
+| ('get_piotroski_score', '12 Months') |   -0.1352 |                  0.3685 |                -0.3669 |       -3.6693 |    0.0004 |             0.31 |            100 |            -0.1482 |              0.0787 |                 0.93   |
+| ('get_altman_z_score', '12 Months')  |    0.1209 |                  0.3923 |                 0.3082 |        3.0824 |    0.0027 |             0.7  |            100 |             0.1264 |              0.0285 |                 0.9941 |
 
 ---
 

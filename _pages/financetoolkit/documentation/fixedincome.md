@@ -30,7 +30,7 @@ pip install financetoolkit -U
 ## collect_bond_statistics
 Collects the statistics of individual bonds from their market price: the yield to maturity, current yield, the Macaulay, modified, effective and dollar duration, DV01 and convexity, plus the present value on the Treasury zero-coupon curve and the Z-spread over it.
 
-Treasuries come from the Treasury's daily FedInvest prices without an API key (see `get_treasury_securities`), corporate bonds from the holdings of bond ETFs (see `get_bond_universe`). Without bonds or an issuer the statistics are those of the benchmark Treasuries: the note or bond maturing closest to 2, 3, 5, 7, 10, 20 and 30 years after the price date, which is the latest issue of that maturity or one that matures a few months earlier. With only a maturity range they are those of every bill, note and bond maturing within it.
+Treasuries come from the Treasury's daily FedInvest prices (see `get_treasury_securities`), corporate bonds from the holdings of bond ETFs (see `get_bond_universe`). Without bonds or an issuer the statistics are those of the benchmark Treasuries: the note or bond maturing closest to 2, 3, 5, 7, 10, 20 and 30 years after the price date, which is the latest issue of that maturity or one that matures a few months earlier. With only a maturity range they are those of every bill, note and bond maturing within it.
 
 The fields are:
 
@@ -118,6 +118,10 @@ bond ETF holdings are always the latest. Defaults to None, the latest day
 with prices.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -217,6 +221,10 @@ to None.
 Defaults to None, the latest day with prices.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -309,6 +317,10 @@ to None.
 Defaults to None, the latest day with prices.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -391,6 +403,10 @@ to None.
 Defaults to None, the latest day with prices.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -456,6 +472,10 @@ to None.
 Defaults to None, the latest day with prices.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -537,6 +557,10 @@ to None.
 Defaults to None, the latest day with prices.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -572,7 +596,7 @@ Which returns:
 ---
 
 ## get_taylor_price_change
-Estimates the percentage change in the price of individual bonds for a change in their yield, using a second-order Taylor series expansion that combines modified duration and convexity.
+Estimates the percentage change in the price of individual bonds for a change in their yield, using a second-order Taylor series expansion that combines modified duration and convexity. With a from_date, the yield change is each bond's own change in yield from that day to the price date, and the realised change of its market price sits next to the estimate.
 
 Modified duration alone only captures the first-order (linear) relationship between a bond's price and its yield, which understates the price increase for a yield decrease and overstates the price decrease for a yield increase because the true price-yield relationship is curved (convex), not linear. Adding a convexity term corrects for this and produces a substantially more accurate estimate, especially for larger yield changes.
 
@@ -592,12 +616,29 @@ $$
 
 Where YTM is the bond's yield to maturity at its market price, compounded twice a year (see `get_yield_to_maturity`), Δy is the yield change (0.01 by default) and %ΔPrice is the change of the full (dirty) price as a decimal. The bonds are selected as in `collect_bond_statistics`. For terms of your own, use `bond_model.get_taylor_price_change`.
 
-**Also known as:** duration-convexity approximation, second-order price approximation.
+With a from_date, the Treasuries are selected on from_date (so the benchmark Treasuries are those that already traded then) and priced again on the price date (`date`):
+
+$$
+\text{Yield Change} = \operatorname{YTM}(\text{date}) - \operatorname{YTM}(\text{from\_date})
+$$
+
+$$
+\text{Price Change} = \text{the Taylor estimate above},\;\; \text{with the modified duration},\;\; \text{convexity and YTM of}\; \text{from\_date} \;\text{and}\; \Delta y = \text{Yield Change}
+$$
+
+$$
+\text{Realised Price Change} = \operatorname{Price}(\text{date}) / \operatorname{Price}(\text{from\_date}) - 1,\;\; \text{on the clean FedInvest prices}
+$$
+
+The Taylor estimate holds the time to maturity fixed, while the realised change also includes the pull of the price towards par over the period and is measured on the clean price, so the two differ slightly even for a small yield change; over a few days the difference is mostly the approximation itself. Only Treasuries have prices on earlier days, so other bonds are left out.
+
+**Also known as:** duration-convexity approximation, second-order price approximation, realised bond price change.
 
 **Args:**
 
-- <u>yield_change (float, optional):</u> The change in the yield to maturity (decimal), negative
-for a fall. Defaults to 0.01.
+- <u>yield_change (float &#124; None, optional):</u> The change in the yield to maturity (decimal),
+negative for a fall. Defaults to None, which is 0.01, or each bond's own yield change
+since from_date when that is given.
 - <u>bonds (list[str] &#124; str &#124; None, optional):</u> CUSIPs or ISINs, see
 `collect_bond_statistics`. Defaults to None.
 - <u>issuer (list[str] &#124; str &#124; None, optional):</u> Part of an issuer's name, such as
@@ -608,15 +649,24 @@ see `get_bond_universe`. Defaults to None.
 Defaults to None.
 - <u>maturity_end (str &#124; None, optional):</u> The latest maturity (YYYY-MM-DD). Defaults
 to None.
-- <u>date (str &#124; None, optional):</u> The day of the Treasury prices (YYYY-MM-DD).
-Defaults to None, the latest day with prices.
+- <u>date (str &#124; None, optional):</u> The day of the Treasury prices (YYYY-MM-DD); a weekend or
+holiday uses the business day before it. Defaults to None, the latest day with prices.
+- <u>from_date (str &#124; None, optional):</u> The day (YYYY-MM-DD) to measure each Treasury's yield
+and price change from, up to `date`; a weekend or holiday uses the business day before
+it. Defaults to None, which estimates the price change for yield_change instead.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
 pd.DataFrame: One row per bond with the Issuer, Security Type, Coupon, Maturity,
-Price, Price Date and Price Change (decimal).
+Price, Price Date and Price Change (decimal); with a from_date the From Price and
+From Date before the Price and Price Date, followed by the Yield Change, Price Change
+and Realised Price Change, all decimals.
 
 **As an example:**
 
@@ -641,6 +691,31 @@ Which returns:
 | 91282CRF0 | Note            |   0.0462 | 2036-08-15 |  98.4375 |        -0.0733 |
 | 912810RU4 | Bond            |   0.0288 | 2046-11-15 |  70.0312 |        -0.1242 |
 | 912810UW6 | Bond            |   0.0512 | 2056-08-15 |  98.125  |        -0.1321 |
+
+The price changes of the benchmark Treasuries from 28 October to 6 November 2026, each
+for its own yield change:
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+price_changes = fixedincome.get_taylor_price_change(from_date="2026-10-28", date="2026-11-06")
+
+price_changes.loc[:, "Maturity":].drop(columns=["From Date", "Price Date"])
+```
+
+
+
+|           | Maturity   |   From Price |   Price |   Yield Change |   Price Change |   Realised Price Change |
+|:----------|:-----------|-------------:|--------:|---------------:|---------------:|------------------------:|
+| 91282CDF5 | 2028-10-31 |      93.6562 | 94.0938 |        -0.002  |         0.0039 |                  0.0047 |
+| 91282CLR0 | 2029-10-31 |      98.0938 | 98.7188 |        -0.0022 |         0.0061 |                  0.0064 |
+| 91282CLU3 | 2031-10-31 |      96.6562 | 97.6562 |        -0.0023 |         0.01   |                  0.0103 |
+| 91282CJJ1 | 2033-11-15 |      97.3438 | 98.5312 |        -0.002  |         0.0119 |                  0.0122 |
+| 91282CRF0 | 2036-08-15 |      96.7812 | 98.2188 |        -0.0019 |         0.0147 |                  0.0149 |
+| 912810RU4 | 2046-11-15 |      68.6875 | 69.9062 |        -0.0012 |         0.0171 |                  0.0177 |
+| 912810UW6 | 2056-08-15 |      96.375  | 97.9688 |        -0.0011 |         0.0164 |                  0.0165 |
 
 ---
 
@@ -675,6 +750,10 @@ a list or a comma-separated string. Defaults to None, every bill.
 the latest day with prices.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -756,6 +835,10 @@ maturities), in years or as labels such as '10Y'. Defaults to None, 5 to 10 year
 before it with a curve. Defaults to None, the end date.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -814,6 +897,10 @@ or as labels such as '15Y'. Defaults to None, 1 to 30 years.
 before it with a curve. Defaults to None, the end date.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -868,6 +955,10 @@ Defaults to "United States".
 before it with a curve. Defaults to None, the end date.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -915,6 +1006,10 @@ The breakeven rate is often read as the market's expected inflation, but it also
 before it. Defaults to None, the end date.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -971,6 +1066,10 @@ created with quarterly=True).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1007,7 +1106,7 @@ Which returns:
 ## get_government_bond_yield_curve
 Retrieves the government bond yield curve of a variety of countries, every maturity a country's government borrows at, from treasury bills to bonds of 30 years and more. The yield curve is the basis for discounting cash flows and pricing bonds, and its shape is one of the most watched signals in markets: an inverted curve, with short rates above long rates, has preceded most recessions.
 
-Every curve comes from the official source without an API key:
+Every curve comes from the official source:
 
 - United States: the U.S. Department of the Treasury's par yield curve, 1 month to 30 years, from 1990.
 - Euro Area: the yield curve the European Central Bank estimates from the bonds of all euro area central governments, 3 months to 30 years, from 2004, as zero-coupon (spot) rates of a Svensson model, continuously compounded.
@@ -1019,7 +1118,7 @@ Every curve comes from the official source without an API key:
 - Norway: Norges Bank's generic government bond yields, 3 to 10 years.
 - Australia: the Reserve Bank of Australia's government bond yields interpolated to 2, 3, 5 and 10 years, from 2013.
 
-With period="monthly", every other European Union member, such as France, Italy, Spain, the Netherlands and Poland, is included with its 10-year yield, the long-term interest rate for convergence purposes the ECB publishes monthly. For other countries no official source publishes a curve without a key; see `get_government_bond_yield` for the monthly 3-month and 10-year rates of around forty countries from the OECD. Only the requested countries are retrieved, and only the days that are not cached yet.
+With period="monthly", every other European Union member, such as France, Italy, Spain, the Netherlands and Poland, is included with its 10-year yield, the long-term interest rate for convergence purposes the ECB publishes monthly. For other countries, see `get_government_bond_yield` for the monthly 3-month and 10-year rates of around forty countries from the OECD. Only the requested countries are retrieved, and only the days that are not cached yet.
 
 The yields are returned as decimal fractions per annum (0.0419 for 4.19%), with one column per country and maturity, sorted from the shortest to the longest maturity. Each curve is returned as its source publishes it: the Euro Area and Germany curves are continuously compounded zero-coupon rates, while the other countries publish par or benchmark bond yields, which compound with the coupon frequency of their bonds. The two are not interchangeable: a continuously compounded zero rate r equals an annually compounded zero rate of exp(r) - 1, and a par yield is the coupon rate at which a bond prices at par, which differs from the zero rate of the same maturity whenever the curve is not flat. Weekly and monthly periods take the yields on the last trading day of each period (weeks end on Friday).
 
@@ -1040,6 +1139,10 @@ Defaults to "daily".
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1074,7 +1177,7 @@ Which returns:
 ## get_treasury_rates
 Retrieves the daily U.S. Treasury par yield curve rates as officially published by the U.S. Department of the Treasury, covering every maturity from 1 Month through 30 Year in a single dataset. This is the official, risk-free curve widely used as the discount curve for bond valuation and as the benchmark for credit spreads.
 
-No API key is needed: with a FinancialModelingPrep API key the rates come from FinancialModelingPrep, and without one, or when the key's plan does not include them, from the U.S. Department of the Treasury directly, which gives the same figures.
+With a FinancialModelingPrep API key the rates come from FinancialModelingPrep, and without one, or when the key's plan does not include them, from the U.S. Department of the Treasury directly, which gives the same figures.
 
 These are par yields: the coupons at which a new Treasury of each maturity would price at par, interpolated by the Treasury from the most recently auctioned securities. Discounting individual cash flows needs zero-coupon (spot) rates bootstrapped from them; on a steep curve the two differ by several basis points at long maturities. The 10-year minus 2-year and 10-year minus 3-month spreads from this curve are the most watched recession indicators.
 
@@ -1082,12 +1185,20 @@ These are par yields: the coupons at which a new Treasury of each maturity would
 
 **Args:**
 
+- <u>maturities (float &#124; str &#124; list &#124; None, optional):</u> The maturities to return, in years
+or as labels such as "3M" and "10Y" (a list or a comma-separated string, e.g.
+"2Y,10Y,30Y"), from 1M, 2M, 3M, 6M, 1Y, 2Y, 3Y, 5Y, 7Y, 10Y, 20Y and 30Y.
+Defaults to None, which returns every maturity.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Notes:**
 
@@ -1121,22 +1232,22 @@ from financetoolkit import FixedIncome
 
 fixedincome = FixedIncome(start_date='2024-01-01', end_date='2024-01-15')
 
-fixedincome.get_treasury_rates()
+fixedincome.get_treasury_rates(maturities='3M,2Y,10Y,30Y')
 ```
 
 Which returns:
 
-| Date       |   1 Month |   2 Month |   3 Month |   6 Month |   1 Year |   2 Year |   3 Year |   5 Year |   7 Year |   10 Year |   20 Year |   30 Year |
-|:-----------|----------:|----------:|----------:|----------:|---------:|---------:|---------:|---------:|---------:|----------:|----------:|----------:|
-| 2024-01-02 |    0.0555 |    0.0554 |    0.0546 |    0.0524 |   0.048  |   0.0433 |   0.0409 |   0.0393 |   0.0395 |    0.0395 |    0.0425 |    0.0408 |
-| 2024-01-03 |    0.0554 |    0.0554 |    0.0548 |    0.0525 |   0.0481 |   0.0433 |   0.0407 |   0.039  |   0.0392 |    0.0391 |    0.0421 |    0.0405 |
-| 2024-01-04 |    0.0556 |    0.0548 |    0.0548 |    0.0525 |   0.0485 |   0.0438 |   0.0414 |   0.0397 |   0.0399 |    0.0399 |    0.043  |    0.0413 |
-| 2024-01-05 |    0.0554 |    0.0548 |    0.0547 |    0.0524 |   0.0484 |   0.044  |   0.0417 |   0.0402 |   0.0404 |    0.0405 |    0.0437 |    0.0421 |
-| 2024-01-08 |    0.0554 |    0.0548 |    0.0549 |    0.0524 |   0.0482 |   0.0436 |   0.0411 |   0.0397 |   0.0399 |    0.0401 |    0.0433 |    0.0417 |
-| 2024-01-09 |    0.0553 |    0.0546 |    0.0547 |    0.0524 |   0.0482 |   0.0436 |   0.0409 |   0.0397 |   0.04   |    0.0402 |    0.0433 |    0.0418 |
-| 2024-01-10 |    0.0553 |    0.0546 |    0.0546 |    0.0523 |   0.0482 |   0.0437 |   0.041  |   0.0399 |   0.0401 |    0.0404 |    0.0435 |    0.042  |
-| 2024-01-11 |    0.0554 |    0.0547 |    0.0546 |    0.0522 |   0.0475 |   0.0426 |   0.0402 |   0.039  |   0.0395 |    0.0398 |    0.0432 |    0.0418 |
-| 2024-01-12 |    0.0555 |    0.0547 |    0.0545 |    0.0516 |   0.0465 |   0.0414 |   0.0392 |   0.0384 |   0.0391 |    0.0396 |    0.0432 |    0.042  |
+| Date       |   3 Month |   2 Year |   10 Year |   30 Year |
+|:-----------|----------:|---------:|----------:|----------:|
+| 2024-01-02 |    0.0546 |   0.0433 |    0.0395 |    0.0408 |
+| 2024-01-03 |    0.0548 |   0.0433 |    0.0391 |    0.0405 |
+| 2024-01-04 |    0.0548 |   0.0438 |    0.0399 |    0.0413 |
+| 2024-01-05 |    0.0547 |   0.044  |    0.0405 |    0.0421 |
+| 2024-01-08 |    0.0549 |   0.0436 |    0.0401 |    0.0417 |
+| 2024-01-09 |    0.0547 |   0.0436 |    0.0402 |    0.0418 |
+| 2024-01-10 |    0.0546 |   0.0437 |    0.0404 |    0.042  |
+| 2024-01-11 |    0.0546 |   0.0426 |    0.0398 |    0.0418 |
+| 2024-01-12 |    0.0545 |   0.0414 |    0.0396 |    0.042  |
 
 ---
 
@@ -1158,6 +1269,10 @@ with c the par yield of maturity t_n and f the coupons per year (two, and one fo
 - <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
 Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1221,6 +1336,10 @@ as labels such as "3M" and "10Y" (a list or a comma-separated string), to
 return the fitted zero-coupon yields at instead of the parameters. Defaults
 to None, which returns the parameters.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1274,6 +1393,10 @@ choice as yields themselves are not stationary, or their levels. Defaults to Tru
 - <u>scores (bool, optional):</u> Whether to return the value of every component per date
 (the scores) instead of the loadings. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1340,6 +1463,10 @@ such as "1M", "3M" or "6M". Defaults to "3M".
 - <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
 Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1414,6 +1541,10 @@ Defaults to "daily".
 - <u>seed (int &#124; None, optional):</u> The random seed, None for a different simulation
 every time. Defaults to 0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1450,7 +1581,7 @@ Which returns:
 ## get_treasury_auctions
 Retrieves the results of the US Treasury auctions held between the start and end date: every bill, note, bond, TIPS and floating rate note the Treasury sold, with the yield it sold at, how many times the offering was bid (the bid-to-cover ratio) and who bought it. Auction results are the most direct read of the demand for US government debt: a lower bid-to-cover ratio or a smaller share for indirect bidders (which include foreign central banks) at a large auction is a sign of weak demand.
 
-The data comes from the Treasury's Fiscal Data API, from 1979 on, without an API key. The Yield is the high yield of notes and bonds and the investment rate (the bond equivalent yield) of bills; the High Discount Rate is the discount rate bills are quoted at. The Bid-to-Cover Ratio is the Treasury's, which leaves out the Federal Reserve's (SOMA) bids, while the Total Tendered and Total Accepted include them, so their ratio is lower when the Federal Reserve rolls over maturing holdings. The bidder shares are each class's part of the competitive awards: primary dealers (who must bid at every auction), direct bidders (buying for their own account) and indirect bidders (bidding through a dealer, such as foreign and international monetary authorities and investment funds). Auctions that are announced but not yet held, and older auctions for which the Treasury did not publish a breakdown, show NaN for the missing results.
+The data comes from the Treasury's Fiscal Data API, from 1979 on. The Yield is the high yield of notes and bonds and the investment rate (the bond equivalent yield) of bills; the High Discount Rate is the discount rate bills are quoted at. The Bid-to-Cover Ratio is the Treasury's, which leaves out the Federal Reserve's (SOMA) bids, while the Total Tendered and Total Accepted include them, so their ratio is lower when the Federal Reserve rolls over maturing holdings. The bidder shares are each class's part of the competitive awards: primary dealers (who must bid at every auction), direct bidders (buying for their own account) and indirect bidders (bidding through a dealer, such as foreign and international monetary authorities and investment funds). Auctions that are announced but not yet held, and older auctions for which the Treasury did not publish a breakdown, show NaN for the missing results.
 
 **See definition:** [https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/](https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/){:target="_blank"}
 
@@ -1465,6 +1596,10 @@ a comma-separated string). Defaults to None, which returns every kind.
 "13-Week", "10-Year" or "30-Year". Defaults to None, which returns every term.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which keeps the precision the Treasury publishes.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1540,6 +1675,10 @@ date (YYYY-MM-DD). Defaults to None.
 CUSIPs, as a list or a comma-separated string. Defaults to None, every bond.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1594,6 +1733,72 @@ Which returns:
 
 ---
 
+## get_issuer_spreads
+Compares the credit spreads of bond issuers at the same maturities: the G-Spread (yield to maturity minus the Treasury par yield) of each issuer at, for example, 2, 5 and 10 years, interpolated between the issuer's own bonds from `get_bond_universe`. Picking one bond per issuer by hand compares bonds of different maturities, and spreads rise with maturity; at the same maturity the difference is the credit.
+
+The formula is as follows:
+
+$$
+\text{Spread} (\text{issuer},\; T) = s(a) + (s(b) - s(a)) \cdot (T - a) / (b - a)
+$$
+
+Where a and b are the years to maturity of the issuer's bonds closest below and above T and s their G-Spreads (see `get_bond_universe`). Bonds of the same maturity count with their average spread, and a maturity outside the range of the issuer's bonds has no spread, as a spread curve is not extrapolated.
+
+**Also known as:** issuer spread curve, credit curve, spread at a maturity, interpolated G-spread, credit spread comparison.
+
+**Args:**
+
+- <u>issuer (list[str] &#124; str &#124; None, optional):</u> The issuers, each kept by the text its
+name contains (case-insensitive), e.g. "APPLE,BOEING". Defaults to None, every
+issuer in the funds.
+- <u>maturity_years (list[float] &#124; str &#124; float &#124; None, optional):</u> The maturities in years,
+as a list or comma-separated, e.g. "2,5,10". Defaults to None, which uses 2, 3,
+5, 7, 10, 20 and 30 years.
+- <u>etfs (list[str] &#124; str &#124; None, optional):</u> The bond ETFs to read the bonds from (see
+`get_bond_universe`). Defaults to None, LQD, IGSB and USHY.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per issuer (the name the funds give it) the G-Spread at each
+maturity (decimals, columns such as "5Y"), the number of Bonds and the Shortest
+and Longest years to maturity among them.
+
+**Notes:**
+
+- An issuer's bonds of one name can differ in seniority, and the funds list a
+finance subsidiary (such as Ford Motor Credit) under its own name, apart from its
+parent.
+- The spreads are those of `get_bond_universe`: to maturity, at the funds' evaluated
+prices of the previous business day. A callable bond priced above its call price
+has a lower yield to worst.
+- Requires a FinancialModelingPrep API key for the holdings.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(api_key="FINANCIAL_MODELING_PREP_KEY")
+
+fixedincome.get_issuer_spreads(issuer="APPLE INC,BOEING,INTEL", maturity_years="2,5,10")
+```
+
+Which returns:
+
+| Issuer            |     2Y |     5Y |    10Y |   Bonds |   Shortest |   Longest |
+|:------------------|-------:|-------:|-------:|--------:|-----------:|----------:|
+| APPLE INC         | 0.0017 | 0.0029 | 0.0052 |      43 |     1.2473 |   35.7473 |
+| BOEING CO         | 0.0062 | 0.0083 | 0.0093 |      20 |     1.2283 |   37.4779 |
+| INTEL CORPORATION | 0.0081 | 0.0112 | 0.0149 |      35 |     1.2527 |   36.2527 |
+
+---
+
 ## get_treasury_securities
 Retrieves every marketable US Treasury (bills, notes, bonds, TIPS and floating rate notes) with its price, yield to maturity and modified duration on a day, without an API key.
 
@@ -1631,6 +1836,10 @@ string). Defaults to None, which returns every kind.
 every security.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1687,6 +1896,10 @@ See definitions:
 Defaults to True (by maturity).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Notes:**
 
@@ -1752,6 +1965,10 @@ See definitions:
 Defaults to True (by maturity).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Notes:**
 
@@ -1811,6 +2028,10 @@ See definitions:
 Defaults to True (by maturity).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Notes:**
 
@@ -1871,6 +2092,10 @@ See definitions:
 Defaults to True (by maturity).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Notes:**
 
@@ -1920,7 +2145,7 @@ Retrieves the High Quality Market (HQM) corporate bond yield curve of the U.S. D
 
 Two curves are available. Spot rates (rate="spot") are zero-coupon yields, the rate to discount a single payment at that maturity, for 17 maturities. Par yields (rate="par") are the coupons a bond priced at par would pay, for 2, 5, 10 and 30 years, comparable to the Treasury par yield curve (see `get_treasury_rates`). Every value is the average over the month.
 
-No API key is needed: without a FRED API key the curve comes from the Treasury's own HQM files, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `FixedIncome` class), it comes from FRED, which republishes the Treasury's curve. The rates are returned as decimal fractions (0.0558 for 5.58%), semi-annual bond-equivalent as the Treasury publishes them.
+Without a FRED API key the curve comes from the Treasury's own HQM files, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `FixedIncome` class), it comes from FRED, which republishes the Treasury's curve. The rates are returned as decimal fractions (0.0558 for 5.58%), semi-annual bond-equivalent as the Treasury publishes them.
 
 **See definition:** [https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves](https://home.treasury.gov/data/treasury-coupon-issues-and-corporate-bond-yield-curves){:target="_blank"}
 
@@ -1936,6 +2161,10 @@ Defaults to "spot".
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1975,7 +2204,7 @@ $$
 \text{HQM Spread} (\text{maturity}) = \text{HQM Corporate Par Yield} (\text{maturity}) - \text{Treasury Constant Maturity Yield} (\text{maturity}),\;\; \text{both monthly averages},\;\; \text{for 2},\;\; \text{5},\;\; \text{10 and 30 years}
 $$
 
-No API key is needed: without a FRED API key both legs come from the Treasury, the HQM par yields from its HQM files and the Treasury yields as the monthly averages of its daily par yield curve, rounded to two decimals in percent as the Federal Reserve's H.15 release publishes them. That curve starts in 1990 and has no 30-year yield from February 2002 to February 2006, so the keyless spread starts in 1990 and leaves those 30-year months empty. When a FRED API key is set (see the `fred_api_key` parameter of the `FixedIncome` class), the Treasury yields are FRED's constant maturity series, from 1984. The spreads are returned as decimal fractions (0.0079 for 0.79 percentage points).
+Without a FRED API key both legs come from the Treasury, the HQM par yields from its HQM files and the Treasury yields as the monthly averages of its daily par yield curve, rounded to two decimals in percent as the Federal Reserve's H.15 release publishes them. That curve starts in 1990 and has no 30-year yield from February 2002 to February 2006, so the spread without a FRED API key starts in 1990 and leaves those 30-year months empty. When a FRED API key is set (see the `fred_api_key` parameter of the `FixedIncome` class), the Treasury yields are FRED's constant maturity series, from 1984. The spreads are returned as decimal fractions (0.0079 for 0.79 percentage points).
 
 **Also known as:** corporate credit spread curve, credit spread term structure, investment grade spread.
 
@@ -1987,6 +2216,10 @@ No API key is needed: without a FRED API key both legs come from the Treasury, t
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2018,8 +2251,8 @@ Which returns:
 ## get_corporate_bond_yields
 Retrieves the yields of corporate bonds of a variety of countries, by rating where the source splits them, monthly and with long histories: the input for a credit spread factor outside the United States, where corporate bond indices by rating (iBoxx, ICE BofA) are licensed data.
 
-- Germany: the average yield on debt securities outstanding of non-MFI corporations the Bundesbank publishes monthly from 1957 (monthly averages), all ratings together ("All ratings"). No API key is needed.
-- Australia: the yields of non-financial corporate bonds rated A and BBB with a target tenor of 3, 5, 7 and 10 years the Reserve Bank of Australia publishes from 2005 (end of month), e.g. "BBB 10Y". No API key is needed.
+- Germany: the average yield on debt securities outstanding of non-MFI corporations the Bundesbank publishes monthly from 1957 (monthly averages), all ratings together ("All ratings").
+- Australia: the yields of non-financial corporate bonds rated A and BBB with a target tenor of 3, 5, 7 and 10 years the Reserve Bank of Australia publishes from 2005 (end of month), e.g. "BBB 10Y".
 - United States: Moody's seasoned Aaa and Baa corporate bond yields, from 1919. This requires a FRED API key (the fred_api_key of the FixedIncome class); see get_moodys_corporate_bond_yields for daily data.
 
 With spread=True each yield is returned as a spread over government bonds: for Germany over the yield on public debt securities outstanding (from 1956), for Australia over the Australian government bond yield of the same tenor (end of month, interpolated between 5 and 10 years for 7 years, from 2013), and for the United States over the 10-year Treasury yield.
@@ -2044,6 +2277,10 @@ instead of the yield. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2082,7 +2319,7 @@ Which returns:
 ## get_rating_transition_matrix
 Retrieves the rating transition matrix of a credit rating agency: for every rating at the start of a period, the share of ratings that ended the period in each rating category, in default or withdrawn. It is the input of rating migration and default models, such as the Jarrow-Lando-Turnbull model, and of credit portfolio models.
 
-The data comes from CEREP, the central repository where every credit rating agency registered in the European Union reports its ratings to ESMA, published twice a year with periods from 1989. It covers the global ratings of agencies such as S&P, Moody's, Fitch, DBRS and Scope, for corporates (non-financial, financial and insurance), sovereigns, structured finance and covered bonds, in each agency's own rating scale. No API key is needed.
+The data comes from CEREP, the central repository where every credit rating agency registered in the European Union reports its ratings to ESMA, published twice a year with periods from 1989. It covers the global ratings of agencies such as S&P, Moody's, Fitch, DBRS and Scope, for corporates (non-financial, financial and insurance), sovereigns, structured finance and covered bonds, in each agency's own rating scale.
 
 By default the matrix is withdrawal-adjusted, the convention of the agencies' own default studies: ratings withdrawn during the period are left out, so each row sums to 1. The matrix compares the rating at the start of the period with the rating at its end, so a default that was followed by a new rating within the period (as after a distressed exchange) shows as that new rating; get_default_rates counts every default within the period and is the measure to calibrate default rates on. With include_withdrawals=True they are a separate "Withdrawals" column, and with probabilities=False the counts are returned instead.
 
@@ -2117,6 +2354,10 @@ during the period as a "Withdrawals" column. Defaults to False.
 "America", "Asia", "Europe", "EU members", "International" or "Oceania".
 Defaults to None, which covers all of them.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2152,7 +2393,7 @@ Which returns:
 ## get_default_rates
 Retrieves the one-year default rates per rating of a credit rating agency, year by year from 1989: the share of the ratings outstanding at the start of each year that defaulted within it. The history of default rates per rating calibrates the default intensity of credit risk models and shows how defaults cluster in recessions.
 
-The data comes from CEREP, the central repository where every credit rating agency registered in the European Union reports its ratings to ESMA, in each agency's own rating scale (AAA to C for S&P and Fitch, Aaa to C for Moody's). Only the years between the start and end date are retrieved, one request per year. No API key is needed. CEREP answers slowly (up to half a minute per year), so a long history takes a few minutes the first time; each year is cached afterwards. The years before an agency reported to CEREP read as zero defaults and are left out, so the history starts at the first year with a default.
+The data comes from CEREP, the central repository where every credit rating agency registered in the European Union reports its ratings to ESMA, in each agency's own rating scale (AAA to C for S&P and Fitch, Aaa to C for Moody's). Only the years between the start and end date are retrieved, one request per year. CEREP answers slowly (up to half a minute per year), so a long history takes a few minutes the first time; each year is cached afterwards. The years before an agency reported to CEREP read as zero defaults and are left out, so the history starts at the first year with a default.
 
 Default rates rise steeply down the rating scale, from close to zero for investment grade to tens of percent a year for CCC, and because they cluster in recessions a probability of default calibrated on calm years understates the risk. Practitioners average over a full cycle, often decades, for through-the-cycle estimates and use the worst years for stress scenarios. Rates for the top ratings rest on very few defaults.
 
@@ -2171,6 +2412,10 @@ Defaults to "S&P".
 "America", "Asia", "Europe", "EU members", "International" or "Oceania".
 Defaults to None, which covers all of them.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2228,6 +2473,10 @@ average recovery of senior unsecured bonds.
 - <u>horizons (list[float] &#124; str &#124; None, optional):</u> The horizons in years, as a list or
 a comma-separated string. Defaults to None, which uses 1, 3, 5 and 10 years.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2283,8 +2532,10 @@ The data comes from FRED, so a free FRED API key is required. The yields and spr
 
 **Args:**
 
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> Whether to return the daily, weekly, monthly, quarterly or
+yearly data. Weekly takes the last day of every week; quarterly and yearly
+average the monthly averages of the complete quarters and years. Defaults to
+"daily".
 - <u>spread (bool, optional):</u> Whether to return the spreads over the 10-year Treasury
 yield instead of the yields. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -2293,6 +2544,10 @@ yield instead of the yields. Defaults to False.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2327,7 +2582,7 @@ Retrieves the credit spread of Gilchrist and Zakrajšek (2012) and its excess bo
 
 Gilchrist, S., & Zakrajšek, E. (2012). Credit Spreads and Business Cycle Fluctuations. American Economic Review, 102(4), 1692-1720. [https://doi.org/10.1257/aer.102.4.1692](https://doi.org/10.1257/aer.102.4.1692){:target="_blank"}
 
-No API key is needed. The spread and premium are returned as decimal fractions (0.0084 for 0.84 percentage points) and the probability as a fraction (0.108 for 10.8%).
+The spread and premium are returned as decimal fractions (0.0084 for 0.84 percentage points) and the probability as a fraction (0.108 for 10.8%).
 
 **See definition:** [https://www.federalreserve.gov/econres/notes/feds-notes/updating-the-recession-risk-and-the-excess-bond-premium-20161006.html](https://www.federalreserve.gov/econres/notes/feds-notes/updating-the-recession-risk-and-the-excess-bond-premium-20161006.html){:target="_blank"}
 
@@ -2341,6 +2596,10 @@ No API key is needed. The spread and premium are returned as decimal fractions (
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2375,7 +2634,7 @@ Retrieves the Treasury term premia of Adrian, Crump and Moench (2013), as the Fe
 
 Adrian, T., Crump, R. K., & Moench, E. (2013). Pricing the Term Structure with Linear Regressions. Journal of Financial Economics, 110(1), 110-138. [https://doi.org/10.1016/j.jfineco.2013.04.009](https://doi.org/10.1016/j.jfineco.2013.04.009){:target="_blank"}
 
-Three components are returned per maturity: the "Term Premium", the "Expected Short Rate" (the risk-neutral yield, the yield if investors were indifferent to risk) and the "Fitted Yield" of the model, which is their sum. The model is fitted to the zero-coupon Treasury curve of Gürkaynak, Sack and Wright (2007), so every value is a continuously compounded zero-coupon rate, as a decimal fraction (0.0067 for 0.67%). No API key is needed. Weekly and monthly periods take the last day of each period, matching the New York Fed's own month-end series.
+Three components are returned per maturity: the "Term Premium", the "Expected Short Rate" (the risk-neutral yield, the yield if investors were indifferent to risk) and the "Fitted Yield" of the model, which is their sum. The model is fitted to the zero-coupon Treasury curve of Gürkaynak, Sack and Wright (2007), so every value is a continuously compounded zero-coupon rate, as a decimal fraction (0.0067 for 0.67%). Weekly and monthly periods take the last day of each period, matching the New York Fed's own month-end series.
 
 The term premium is a model estimate rather than an observed price: it rests on the model's five pricing factors (principal components of the yield curve), and other models, such as that of Kim and Wright (2005), give different levels with similar movements.
 
@@ -2396,6 +2655,10 @@ maturity.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2432,7 +2695,7 @@ Retrieves the risk-free interest rate term structures the European Insurance and
 
 Four curves are published: the basic spot curve (curve="spot_no_va"), the spot curve with the volatility adjustment (curve="spot_with_va"), and the basic curve after the interest rate shocks of the Solvency II standard formula (curve="shock_up" and curve="shock_down"). EIOPA ships the shocked worksheets as formulas without computed values, so they are computed here with those formulas: upwards by the relative shock per maturity and at least one percentage point, downwards by the relative shock with negative rates left unchanged. Every value is a decimal fraction (0.0358 for 3.58%), at the end of the month the release is for.
 
-No API key is needed. EIOPA's page links the releases from January 2023; each is a separate file, so only the months between the start and end date are downloaded, and a release is cached for a year since it does not change.
+EIOPA's page links the releases from January 2023; each is a separate file, so only the months between the start and end date are downloaded, and a release is cached for a year since it does not change.
 
 Up to the last liquid point the curve follows market rates (for the euro, swap rates minus a credit risk adjustment); beyond it the curve is extrapolated towards the ultimate forward rate, so long maturities reflect the regulatory assumption more than market prices. Insurers that are allowed to apply the volatility adjustment discount with that curve, and the shocked curves give the interest rate risk capital requirement of the standard formula.
 
@@ -2456,6 +2719,10 @@ values. Defaults to False.
 - <u>maturity_years (list[int] &#124; None, optional):</u> The maturities in years to keep, e.g.
 [1, 2, 5, 10, 20, 30] (or "1,2,5,10,20,30") for the key points of the curve. Defaults to None, which
 keeps every maturity from 1 to 150 years.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2493,7 +2760,7 @@ $$
 $$
 
 $$
-\text{Type}\; 2 \;\text{Equity Charge} = 0.49 + \text{Symmetric Adjustment},\;\; \text{for other equities Every value is a decimal fraction (0.0771 for 7.71\%). No API key is needed. Weekly and monthly periods take the value on the last day of each period},\;\; \text{which is the value insurers apply at that reporting date}
+\text{Type}\; 2 \;\text{Equity Charge} = 0.49 + \text{Symmetric Adjustment},\;\; \text{for other equities Every value is a decimal fraction (0.0771 for 7.71\%). Weekly and monthly periods take the value on the last day of each period},\;\; \text{which is the value insurers apply at that reporting date}
 $$
 
 **See definition:** [https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en](https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en){:target="_blank"}
@@ -2510,6 +2777,10 @@ Defaults to "daily".
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2544,7 +2815,7 @@ Retrieves the UK yield curves the Bank of England estimates daily from 1985, for
 
 The Bank of England's real and implied inflation curves are part of `economics.get_real_yield_curve` and `economics.get_breakeven_inflation_expectations` (countries='United Kingdom').
 
-No API key is needed. The archive is a set of large files, of which only those covering the requested years are read, and they are cached since past years do not change. Weekly and monthly periods take the curve on the last day of each period.
+The archive is a set of large files, of which only those covering the requested years are read, and they are cached since past years do not change. Weekly and monthly periods take the curve on the last day of each period.
 
 **See definition:** [https://www.bankofengland.co.uk/statistics/yield-curves](https://www.bankofengland.co.uk/statistics/yield-curves){:target="_blank"}
 
@@ -2561,6 +2832,10 @@ Defaults to "daily".
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2595,7 +2870,7 @@ Which returns:
 ## get_corporate_borrowing_cost
 Retrieves the composite cost of borrowing for non-financial corporations the European Central Bank publishes monthly from 2003, for the euro area and every member: the average interest rate on new bank loans to companies across maturities and loan sizes. Euro area companies borrow mostly from banks rather than in the bond market, which makes this the broadest measure of their cost of credit, and the closest freely available proxy for euro area corporate credit conditions, since euro area corporate bond indices are licensed data.
 
-No API key is needed. The rate is a decimal fraction (0.0377 for 3.77%).
+The rate is a decimal fraction (0.0377 for 3.77%).
 
 **See definition:** [https://data.ecb.europa.eu/data/datasets/MIR](https://data.ecb.europa.eu/data/datasets/MIR){:target="_blank"}
 
@@ -2611,6 +2886,10 @@ No API key is needed. The rate is a decimal fraction (0.0377 for 3.77%).
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2646,7 +2925,7 @@ Retrieves the Composite Indicator of Systemic Stress (CISS) the European Central
 
 Hollo, D., Kremer, M., & Lo Duca, M. (2012). CISS - A Composite Indicator of Systemic Stress in the Financial System. ECB Working Paper No. 1426.
 
-No API key is needed. Weekly and monthly periods take the index on the last day of each period.
+Weekly and monthly periods take the index on the last day of each period.
 
 **See definition:** [https://data.ecb.europa.eu/data/datasets/CISS](https://data.ecb.europa.eu/data/datasets/CISS){:target="_blank"}
 
@@ -2664,6 +2943,10 @@ Defaults to "daily".
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2714,6 +2997,10 @@ maturity, so nominal=False returns that maturity alone and warns about any other
 were requested rather than silently answering them with a nominal rate. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> Rounding precision for the rates. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2776,6 +3063,8 @@ The deposit facility rate is one of the three interest rates the ECB sets every 
 
 With ample excess liquidity in the banking system the deposit facility rate is the rate that steers money markets: the euro short-term rate (€STR) trades just below it. The marginal lending rate forms the top of the corridor and the deposit facility rate the bottom, with the main refinancing rate in between; the main refinancing rate matters more when banks rely on the ECB's weekly operations for funding.
 
+The rates change on the dates the Governing Council's decisions take effect. Weekly, monthly, quarterly and yearly data hold the rate in force on the last day of each period, so the current period shows the rate so far.
+
 See source: [https://data.ecb.europa.eu/main-figures/](https://data.ecb.europa.eu/main-figures/){:target="_blank"}
 
 **Also known as:** ECB rates, deposit facility rate.
@@ -2784,8 +3073,14 @@ See source: [https://data.ecb.europa.eu/main-figures/](https://data.ecb.europa.e
 
 - <u>rate (str, optional):</u> The rate to return. Defaults to None, which returns all rates.
 Choose between 'refinancing', 'lending' or 'deposit'.
+- <u>period (str, optional):</u> Whether to return the daily, weekly, monthly, quarterly or
+yearly data. Defaults to 'daily'.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2852,6 +3147,10 @@ See source: [https://www.newyorkfed.org/markets/reference-rates/](https://www.ne
 - <u>rate (str):</u> The rate to return. Defaults to 'EFFR' (Effective Federal Funds Rate).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2884,6 +3183,214 @@ Which returns:
 | 2025-12-29       | 0.0364 |            0.036 |            0.0363 |            0.0365 |            0.0368 |
 | 2025-12-30       | 0.0364 |            0.036 |            0.0364 |            0.0365 |            0.0368 |
 | 2025-12-31       | 0.0364 |            0.036 |            0.0364 |            0.0365 |            0.0369 |
+
+---
+
+## get_loan_payment
+Calculates the monthly payment of a new 30-year fixed-rate mortgage at every weekly US mortgage rate: what the same loan costs a buyer at each date, with the total interest over its life and the interest in its first payment. By default the loan is 400,000 US dollars, so the payment of the same house at the same price can be followed through the rate cycle (1,611.86 a month at the 2.65% of January 2021, 2,709.74 at 7.18%).
+
+The loan is an annuity, repaid in equal payments. The formula is as follows:
+
+$$
+\text{Payment} = L \cdot r / (1 - (1 + r) ^{-n}),\;\; \text{or}\; L / n \;\text{when}\; r \;\text{is zero}
+$$
+
+$$
+\text{Total Interest} = \text{Payment} \cdot n - L
+$$
+
+$$
+\text{First Payment Interest} = L \cdot r
+$$
+
+Where:
+
+$$
+L = \text{Principal},\;\; \text{the amount borrowed}
+$$
+
+$$
+r = \text{Rate} / \text{payments per year},\;\; \text{the rate per payment}
+$$
+
+$$
+n = \text{years} \cdot \text{payments per year},\;\; \text{the number of payments}
+$$
+
+US mortgage rates are quoted as a nominal annual rate compounded monthly, so the rate per payment is the annual rate divided by twelve (7.18% is 0.5983% a month). The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey (the rate of `Economics.get_mortgage_rate_30_year`), from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_loan_payment`, which takes a number or a series of rates.
+
+**Also known as:** mortgage payment, monthly payment, annuity payment, mortgage calculator, loan calculator, cost of a mortgage.
+
+**Args:**
+
+- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+fixed mortgage rate for another term. Defaults to 30.
+- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per survey date the Rate (a decimal), the Payment, the Total Interest
+over the life of the loan and the First Payment Interest, in the currency of the
+principal.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2021-01-01', end_date='2026-11-06')
+
+fixedincome.get_loan_payment().iloc[[0, -1]]
+```
+
+Which returns:
+
+| Date       |   Rate |   Payment |   Total Interest |   First Payment Interest |
+|:-----------|-------:|----------:|-----------------:|-------------------------:|
+| 2021-01-07 | 0.0265 | 1611.8552 |      180267.8595 |                 883.3333 |
+| 2026-11-05 | 0.0718 | 2709.7393 |      575506.1579 |                2393.3333 |
+
+---
+
+## get_affordable_loan
+Calculates the loan a fixed monthly payment carries at every weekly US mortgage rate: the 30-year fixed-rate mortgage the payment repays, and how that loan compares with the one it carried at the start date. By default the payment is the one a 400,000 US dollar loan had at the first rate of the range, so the answer is how much house the same monthly budget buys as rates move (the 1,611.86 a month of a 400,000 loan at 2.65% carries 237,935 at 7.18%).
+
+The loan is an annuity, repaid in equal payments. The formula is as follows:
+
+$$
+\text{Affordable Loan} = P \cdot (1 - (1 + r) ^{-n}) / r,\;\; \text{or}\; P \cdot n \;\text{when}\; r \;\text{is zero}
+$$
+
+$$
+\text{Change} = \text{Affordable Loan} / \text{Affordable Loan} (\text{first date}) - 1
+$$
+
+Where:
+
+$$
+P = \text{Payment per period}
+$$
+
+$$
+r = \text{Rate} / \text{payments per year},\;\; \text{the rate per payment}
+$$
+
+$$
+n = \text{years} \cdot \text{payments per year},\;\; \text{the number of payments}
+$$
+
+US mortgage rates are quoted as a nominal annual rate compounded monthly, so the rate per payment is the annual rate divided by twelve. The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey, from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_affordable_loan`.
+
+**Also known as:** affordability, how much can I borrow, mortgage affordability, borrowing capacity, loan amount from payment.
+
+**Args:**
+
+- <u>payment (float &#124; None, optional):</u> The payment per period. Defaults to None, the
+payment of a loan of principal at the first rate between the start and end date.
+- <u>principal (float, optional):</u> The loan whose payment at the first rate is used when
+no payment is given. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+fixed mortgage rate for another term. Defaults to 30.
+- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per survey date the Rate (a decimal), the Payment, the Affordable Loan
+and its Change since the first date (a decimal).
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2021-01-01', end_date='2026-11-06')
+
+fixedincome.get_affordable_loan().iloc[[0, -1]]
+```
+
+Which returns:
+
+| Date       |   Rate |   Payment |   Affordable Loan |   Change |
+|:-----------|-------:|----------:|------------------:|---------:|
+| 2021-01-07 | 0.0265 | 1611.8552 |       400000.0000 |   0.0000 |
+| 2026-11-05 | 0.0718 | 1611.8552 |       237935.0883 |  -0.4052 |
+
+---
+
+## get_amortization_schedule
+Calculates the amortization schedule of a new 30-year fixed-rate mortgage at the US mortgage rate of a date: per monthly payment the part that is interest, the part that repays the loan and the balance left. Early payments are mostly interest, the more so the higher the rate: the first payment of a 400,000 US dollar loan at 7.18% is 2,393.33 of interest and 316.41 of repayment.
+
+The formula is as follows:
+
+$$
+\operatorname{Interest}(k) = \operatorname{Balance}(k - 1) \cdot r
+$$
+
+$$
+\operatorname{Principal}(k) = \text{Payment} - \operatorname{Interest}(k)
+$$
+
+$$
+\operatorname{Balance}(k) = \operatorname{Balance}(k - 1) - \operatorname{Principal}(k),\;\; \text{with Balance} (0) = L
+$$
+
+Where L is the principal, r = Rate / payments per year the rate per payment and Payment the annuity payment of `get_loan_payment`. US mortgage rates are quoted as a nominal annual rate compounded monthly. The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey on the date (the last survey on or before it), from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_amortization_schedule`.
+
+**Also known as:** amortization table, mortgage schedule, repayment schedule, interest and principal per payment, remaining balance.
+
+**Args:**
+
+- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+fixed mortgage rate for another term. Defaults to 30.
+- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>date (str &#124; None, optional):</u> The date of the rate (YYYY-MM-DD). Defaults to None, the
+latest rate up to the end date.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per payment number (1 to years * payments per year) the Rate (a
+decimal), the Payment, the Interest, the Principal repaid and the Balance after it.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-01-01', end_date='2026-11-06')
+
+fixedincome.get_amortization_schedule().iloc[[0, 1, 2, 119, 239, 359]]
+```
+
+Which returns:
+
+|   Payment Number |   Rate |   Payment |   Interest |   Principal |     Balance |
+|-----------------:|-------:|----------:|-----------:|------------:|------------:|
+|                1 | 0.0718 | 2709.7393 |  2393.3333 |    316.4060 | 399683.5940 |
+|                2 | 0.0718 | 2709.7393 |  2391.4402 |    318.2992 | 399365.2948 |
+|                3 | 0.0718 | 2709.7393 |  2389.5357 |    320.2036 | 399045.0912 |
+|              120 | 0.0718 | 2709.7393 |  2066.2399 |    643.4995 | 344689.0688 |
+|              240 | 0.0718 | 2709.7393 |  1393.1739 |   1316.5655 | 231525.8632 |
+|              360 | 0.0718 | 2709.7393 |    16.1168 |   2693.6225 |      0.0000 |
 
 ---
 

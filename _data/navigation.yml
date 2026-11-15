@@ -508,6 +508,8 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_asset_growth
       - title: Net Operating Assets
         url: /projects/financetoolkit/docs/ratios#get_net_operating_assets
+      - title: Net Capital Expenditure
+        url: /projects/financetoolkit/docs/ratios#get_net_capital_expenditure
   - title: Liquidity Ratios
     children:
       - title: All Liquidity Ratios
@@ -674,6 +676,8 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_price_to_free_cash_flow_ratio
       - title: Market Capitalization
         url: /projects/financetoolkit/docs/ratios#get_market_cap
+      - title: Market Cap to GDP
+        url: /projects/financetoolkit/docs/ratios#get_market_cap_to_gdp
       - title: Enterprise Value
         url: /projects/financetoolkit/docs/ratios#get_enterprise_value
       - title: EV to Sales Ratio
@@ -1533,6 +1537,8 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_hqm_corporate_bond_spread
     - title: Corporate Borrowing Cost (ECB)
       url: /projects/financetoolkit/docs/fixedincome#get_corporate_borrowing_cost
+    - title: Issuer Spreads
+      url: /projects/financetoolkit/docs/fixedincome#get_issuer_spreads
   - title: Credit Risk & Stress
     children:
     - title: Rating Transition Matrix
@@ -1585,6 +1591,14 @@ financetoolkit-docs-fixedincome:
         url: /projects/financetoolkit/docs/fixedincome#get_short_rate_model
       - title: Short-Rate Simulation
         url: /projects/financetoolkit/docs/fixedincome#get_short_rate_simulation
+  - title: Loans
+    children:
+      - title: Loan Payment
+        url: /projects/financetoolkit/docs/fixedincome#get_loan_payment
+      - title: Affordable Loan
+        url: /projects/financetoolkit/docs/fixedincome#get_affordable_loan
+      - title: Amortization Schedule
+        url: /projects/financetoolkit/docs/fixedincome#get_amortization_schedule
 financetoolkit-docs-econometrics:
   - title: Modules
     children:
@@ -1748,6 +1762,16 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_markov_regime_switching
       - title: Structural Breaks (Bai-Perron)
         url: /projects/financetoolkit/docs/econometrics#get_structural_breaks
+  - title: Historical Context
+    children:
+      - title: Level Significance
+        url: /projects/financetoolkit/docs/econometrics#get_level_significance
+      - title: Move Significance
+        url: /projects/financetoolkit/docs/econometrics#get_move_significance
+      - title: Streaks
+        url: /projects/financetoolkit/docs/econometrics#get_streaks
+      - title: Window Change by Year
+        url: /projects/financetoolkit/docs/econometrics#get_window_change_by_year
 financetoolkit-docs-economics:
   - title: Modules
     children:
@@ -1833,6 +1857,16 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_government_deficit
     - title: Deficit to GDP
       url:  /projects/financetoolkit/docs/economics#get_government_deficit_to_gdp_ratio
+    - title: Interest Expenditure
+      url: /projects/financetoolkit/docs/economics#get_government_interest_expenditure
+    - title: Interest Expenditure to GDP
+      url: /projects/financetoolkit/docs/economics#get_government_interest_expenditure_to_gdp_ratio
+    - title: Interest Expenditure to Revenue
+      url: /projects/financetoolkit/docs/economics#get_government_interest_expenditure_to_revenue_ratio
+    - title: Expenditure by Function (COFOG)
+      url: /projects/financetoolkit/docs/economics#get_government_expenditure_by_function
+    - title: Expenditure by Function to GDP
+      url: /projects/financetoolkit/docs/economics#get_government_expenditure_by_function_to_gdp_ratio
     - title: Trust in Government
       url: /projects/financetoolkit/docs/economics#get_trust_in_government
     - title: Real GDP per Capita
@@ -1847,6 +1881,8 @@ financetoolkit-docs-economics:
         url:  /projects/financetoolkit/docs/economics#get_consumer_price_index
       - title: Inflation Rate
         url:  /projects/financetoolkit/docs/economics#get_inflation_rate
+      - title: Purchasing Power
+        url: /projects/financetoolkit/docs/economics#get_purchasing_power
       - title: Consumer Confidence Index
         url:  /projects/financetoolkit/docs/economics#get_consumer_confidence_index
       - title: Business Confidence Index
@@ -1863,6 +1899,10 @@ financetoolkit-docs-economics:
         url:  /projects/financetoolkit/docs/economics#get_exchange_rates
       - title: Producer Price Index
         url:  /projects/financetoolkit/docs/economics#get_producer_price_index
+      - title: Export Price Index
+        url: /projects/financetoolkit/docs/economics#get_export_price_index
+      - title: Import Price Index
+        url: /projects/financetoolkit/docs/economics#get_import_price_index
       - title: Real Effective Exchange Rate
         url:  /projects/financetoolkit/docs/economics#get_real_effective_exchange_rate
       - title: Household Savings Rate
@@ -1885,12 +1925,16 @@ financetoolkit-docs-economics:
         url:  /projects/financetoolkit/docs/economics#get_commodity_forward_curve
       - title: Commodity Term Structure
         url: /projects/financetoolkit/docs/economics#get_commodity_term_structure
+      - title: Commodity Prices
+        url: /projects/financetoolkit/docs/economics#get_commodity_prices
       - title: Recession Indicator
         url:  /projects/financetoolkit/docs/economics#get_recession_indicator
       - title: Economic Calendar
         url:  /projects/financetoolkit/docs/economics#get_economic_calendar
       - title: Global Supply Chain Pressure Index
         url: /projects/financetoolkit/docs/economics#get_supply_chain_pressure_index
+      - title: Chokepoint Transits
+        url: /projects/financetoolkit/docs/economics#get_chokepoint_transits
   - title: Finance
     children:
     - title: Money Supply
@@ -1911,6 +1955,8 @@ financetoolkit-docs-economics:
       url:  /projects/financetoolkit/docs/economics#get_real_yield_curve
     - title: Breakeven Inflation Expectations
       url:  /projects/financetoolkit/docs/economics#get_breakeven_inflation_expectations
+    - title: Yield Decomposition
+      url: /projects/financetoolkit/docs/economics#get_yield_decomposition
     - title: Survey Inflation Expectations
       url:  /projects/financetoolkit/docs/economics#get_inflation_expectations
     - title: 30-Year Mortgage Rate

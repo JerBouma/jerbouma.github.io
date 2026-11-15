@@ -58,6 +58,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -96,7 +100,7 @@ The quarterly growth of real Gross Domestic Product (GDP) is the headline measur
 
 By default the growth is measured on the previous quarter (quarter on quarter), as Eurostat and the Office for National Statistics report it. Set year_over_year=True for the change on the same quarter a year earlier. The growth is not annualized, so a US figure is about a quarter of the annualized rate the Bureau of Economic Analysis headlines.
 
-Every country comes from the most current source without an API key: Eurostat for the euro area and the countries it covers (including the preliminary flash estimate for the euro area, about thirty days after the quarter ends), the Office for National Statistics for the United Kingdom and the OECD Quarterly National Accounts for every other country, including the United States and Japan.
+Every country comes from the most current source: Eurostat for the euro area and the countries it covers (including the preliminary flash estimate for the euro area, about thirty days after the quarter ends), the Office for National Statistics for the United Kingdom and the OECD Quarterly National Accounts for every other country, including the United States and Japan.
 
 The growth is the source's own figure, published in percent and divided by 100 here.
 
@@ -129,6 +133,10 @@ year earlier instead of on the previous quarter. Defaults to False.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -185,6 +193,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -249,6 +261,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -316,6 +332,10 @@ Potential output cannot be observed, so the gap is an estimate, and the estimate
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -371,6 +391,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -436,6 +460,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -493,6 +521,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -561,6 +593,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -617,6 +653,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -679,6 +719,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -738,6 +782,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -803,6 +851,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -861,6 +913,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -931,6 +987,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1000,6 +1060,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1051,6 +1115,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1118,6 +1186,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1177,6 +1249,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1245,6 +1321,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1303,6 +1383,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1365,6 +1449,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1423,6 +1511,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1489,6 +1581,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1548,6 +1644,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1614,6 +1714,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1673,6 +1777,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1741,6 +1849,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1776,6 +1888,336 @@ Which returns:
 
 ---
 
+## get_government_interest_expenditure
+Get the Government Interest Expenditure for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government (the central, state and local governments and the social security funds together) owes on its debt: GFS item 24, interest payable, which is D.41 in the national accounts.
+
+The interest is recorded when it accrues rather than when it is paid, and before the interest the government receives is netted against it. It is therefore higher than the net interest of a national budget: for the United States, the general government interest also covers the states and local governments, and the federal net interest the Congressional Budget Office reports subtracts the interest the federal government receives.
+
+The figures are quarterly (period="quarterly", the default) or yearly and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Quarterly figures are not seasonally adjusted; trailing=4 gives the interest over the last four quarters. The IMF's quarterly government finance statistics cover around 40 economies, among which the United States, the euro area and its members, the United Kingdom, Canada, Australia, Brazil, Turkey and Indonesia; countries outside them are left out with a warning. For those, get_government_expenditure_by_function with functions="Public Debt Transactions" has the yearly public debt transactions (COFOG 01.7, mostly interest) of around 180 countries.
+
+Data comes from the IMF's Quarterly Government Finance Statistics, further information can be found within [https://data.imf.org/en/datasets/IMF.STA:QGFS](https://data.imf.org/en/datasets/IMF.STA:QGFS){:target="_blank"}
+
+**Also known as:** interest payments, debt service cost, interest outlays, cost of government debt.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" or "yearly". Defaults to None, which is
+quarterly, the highest frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Interest Expenditure
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_interest_expenditure(
+    countries=['United States', 'Germany', 'Italy'], period='yearly')
+```
+
+Which returns:
+
+|      |    United States |   Germany |   Italy |
+|:-----|-----------------:|----------:|--------:|
+| 2015 | 428286           |     42913 |   68116 |
+| 2016 | 468186           |     37888 |   66258 |
+| 2017 | 494638           |     34489 |   65333 |
+| 2018 | 571996           |     31787 |   64366 |
+| 2019 | 606869           |     28052 |   60214 |
+| 2020 | 541832           |     22390 |   57125 |
+| 2021 | 631404           |     21756 |   63003 |
+| 2022 | 815793           |     28018 |   81614 |
+| 2023 | 997791           |     36848 |   77780 |
+| 2024 |      1.17905e+06 |     45828 |   85484 |
+| 2025 |      1.24322e+06 |     49544 |   87145 |
+
+---
+
+## get_government_interest_expenditure_to_gdp_ratio
+Get the Government Interest Expenditure to GDP Ratio for a variety of countries over time from the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable, D.41 in the national accounts) as a share of the Gross Domestic Product (GDP).
+
+The interest burden as a share of GDP shows how much of the economy's output goes to servicing government debt. It rises with the debt ratio and with the interest rate the debt is refinanced at, and is the item that turns a primary balance into the overall balance. Comparing it with the spending on a function, such as defence with get_government_expenditure_by_function_to_gdp_ratio, uses the same general government and the same GDP.
+
+The interest is general government interest payable, on an accrual basis and before interest received is netted, so it is higher than the net interest of a national budget (see get_government_interest_expenditure). Both the interest and the GDP come from the IMF: its Quarterly Government Finance Statistics and its National Economic Accounts (quarterly GDP not seasonally adjusted, like the interest). Around 40 economies are covered; countries outside them are left out with a warning.
+
+The ratio is expressed as a decimal fraction (0.0402 for 4.02% of GDP).
+
+The formula is as follows:
+
+$$
+\text{Government Interest Expenditure to GDP Ratio} = \text{Interest Payable} / \text{Nominal GDP},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without seasonal swings) or over the year for period="yearly"}
+$$
+
+**Also known as:** interest burden, interest to GDP, debt service to GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
+each quarter) or "yearly". Defaults to None, which is quarterly, the highest
+frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Interest Expenditure to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_interest_expenditure_to_gdp_ratio(
+    countries=['United States', 'Germany', 'Italy', 'United Kingdom'], period='yearly')
+```
+
+Which returns:
+
+|      |   United States |   Germany |   Italy |   United Kingdom |
+|:-----|----------------:|----------:|--------:|-----------------:|
+| 2015 |          0.0234 |    0.0139 |  0.041  |           0.0244 |
+| 2016 |          0.0249 |    0.0118 |  0.0389 |           0.0256 |
+| 2017 |          0.0252 |    0.0103 |  0.0375 |           0.028  |
+| 2018 |          0.0277 |    0.0092 |  0.0363 |           0.0258 |
+| 2019 |          0.0282 |    0.0079 |  0.0334 |           0.0229 |
+| 2020 |          0.0253 |    0.0064 |  0.0343 |           0.0208 |
+| 2021 |          0.0266 |    0.0059 |  0.0343 |           0.0277 |
+| 2022 |          0.0313 |    0.007  |  0.0408 |           0.0426 |
+| 2023 |          0.0359 |    0.0087 |  0.0363 |           0.0322 |
+| 2024 |          0.0402 |    0.0104 |  0.0387 |           0.0292 |
+| 2025 |          0.0404 |    0.0109 |  0.0385 |           0.0332 |
+
+---
+
+## get_government_interest_expenditure_to_revenue_ratio
+Get the Government Interest Expenditure to Revenue Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable) as a share of its revenue (GFS item 1: taxes, social contributions, grants and other revenue).
+
+The share of revenue that goes to interest is the measure rating agencies use for debt affordability: it says how much of what the government collects is committed to its creditors before anything else is paid for. Both come from the same statistics of the same general government, on an accrual basis, with the interest before interest received is netted. Around 40 economies are covered; countries outside them are left out with a warning.
+
+The ratio is expressed as a decimal fraction (0.1351 for 13.51% of revenue).
+
+The formula is as follows:
+
+$$
+\text{Government Interest Expenditure to Revenue Ratio} = \text{Interest Payable} / \text{Government Revenue},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without the seasonal swings of tax receipts) or over the year for period="yearly"}
+$$
+
+**Also known as:** interest to revenue, interest burden on revenue, debt affordability.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
+each quarter) or "yearly". Defaults to None, which is quarterly, the highest
+frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Interest Expenditure to Revenue Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2024-01-01', end_date="2025-12-31")
+
+economics.get_government_interest_expenditure_to_revenue_ratio(
+    countries=['United States', 'France', 'Canada'])
+```
+
+Which returns:
+
+|        |   United States |   France |   Canada |
+|:-------|----------------:|---------:|---------:|
+| 2024Q1 |          0.1258 |   0.038  |   0.0788 |
+| 2024Q2 |          0.1301 |   0.0386 |   0.0805 |
+| 2024Q3 |          0.1335 |   0.0402 |   0.0822 |
+| 2024Q4 |          0.1351 |   0.04   |   0.082  |
+| 2025Q1 |          0.1354 |   0.0416 |   0.0812 |
+| 2025Q2 |          0.1347 |   0.0418 |   0.0808 |
+| 2025Q3 |          0.1334 |   0.0423 |   0.0792 |
+| 2025Q4 |          0.1325 |   0.0427 |   0.08   |
+
+---
+
+## get_government_expenditure_by_function
+Get the Government Expenditure by Function for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). The spending of the general government (the central, state and local governments and the social security funds together) is split by purpose according to the United Nations' Classification of the Functions of Government (COFOG), the classification Eurostat, the OECD and the IMF all publish.
+
+The ten COFOG divisions are General Public Services, Defence, Public Order and Safety, Economic Affairs, Environmental Protection, Housing and Community Amenities, Health, Recreation, Culture and Religion, Education and Social Protection, which add up to the Total. General Public Services include the Public Debt Transactions (group 01.7), which are mostly the interest on government debt, also available as a function of its own where a country reports it. Defence is military and civil defence, foreign military aid and defence research; military pensions are Social Protection.
+
+The data is yearly, in millions of national currency, for around 180 countries; the most recent year is usually one or two years back. Levels are not comparable across countries with different currencies, but growth rates are, and get_government_expenditure_by_function_to_gdp_ratio returns the shares of GDP.
+
+The columns are a country and a function each; a country without data for a function has no column for it, and countries without data are left out with a warning.
+
+Data comes from the IMF's Government Finance Statistics, further information can be found within [https://data.imf.org/en/datasets/IMF.STA:GFS_COFOG](https://data.imf.org/en/datasets/IMF.STA:GFS_COFOG){:target="_blank"}
+
+**Also known as:** COFOG, government spending by function, defence spending, military spending, health spending, education spending, social spending.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>functions (list[str] &#124; str &#124; None, optional):</u> The functions to return, a list or a
+comma-separated string of the ten divisions above, "Public Debt Transactions"
+or "Total". Defaults to None, which returns the ten divisions.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Expenditure by Function, with a
+(Country, Function) column
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
+
+expenditure = economics.get_government_expenditure_by_function(
+    countries=['United States', 'Germany'], functions='Defence,Health,Education')
+
+expenditure['United States']
+```
+
+Which returns:
+
+|      |   Defence |      Health |   Education |
+|:-----|----------:|------------:|------------:|
+| 2018 |    660147 | 1.91712e+06 | 1.22016e+06 |
+| 2019 |    712831 | 2.0491e+06  | 1.26193e+06 |
+| 2020 |    744556 | 2.26781e+06 | 1.28909e+06 |
+| 2021 |    762090 | 2.45445e+06 | 1.37456e+06 |
+| 2022 |    775165 | 2.64297e+06 | 1.47586e+06 |
+| 2023 |    843209 | 2.79374e+06 | 1.54819e+06 |
+| 2024 |    911017 | 3.01146e+06 | 1.63922e+06 |
+
+---
+
+## get_government_expenditure_by_function_to_gdp_ratio
+Get the Government Expenditure by Function to GDP Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the spending of the general government on each function of the United Nations' Classification of the Functions of Government (COFOG) as a share of the Gross Domestic Product (GDP).
+
+Shares of GDP make the functions comparable across countries and over time, such as NATO's 2% of GDP guideline for defence. The ten divisions, the Public Debt Transactions (group 01.7, mostly interest) and the Total are described in get_government_expenditure_by_function. Defence covers military and civil defence, foreign military aid and defence research, not military pensions, so it differs from NATO's definition and from a national defence budget.
+
+For the interest itself, get_government_interest_expenditure_to_gdp_ratio uses the same general government and the same GDP, so the two together answer whether a government pays more in interest than it spends on defence.
+
+The data is yearly, for around 180 countries; the most recent year is usually one or two years back. The ratio is the IMF's own figure, published in percent and divided by 100 here, so it is a decimal fraction (0.0311 for 3.11% of GDP).
+
+The formula is as follows:
+
+$$
+\text{Government Expenditure by Function to GDP Ratio} = \text{Expenditure on the Function} / \text{Nominal GDP}
+$$
+
+**Also known as:** defence spending to GDP, military spending to GDP, health spending to GDP, education spending to GDP, social spending to GDP, COFOG to GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>functions (list[str] &#124; str &#124; None, optional):</u> The functions to return, a list or a
+comma-separated string of the ten COFOG divisions, "Public Debt Transactions"
+or "Total". Defaults to None, which returns the ten divisions.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Expenditure by Function to GDP
+Ratio, with a (Country, Function) column
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+defence = economics.get_government_expenditure_by_function_to_gdp_ratio(
+    countries=['United States', 'Japan', 'Germany', 'United Kingdom'], functions='Defence')
+
+defence.xs('Defence', axis=1, level='Function')
+```
+
+Which returns:
+
+|      |   United States |   Japan |   Germany |   United Kingdom |
+|:-----|----------------:|--------:|----------:|-----------------:|
+| 2015 |          0.0327 |  0.0086 |    0.0094 |           0.0198 |
+| 2016 |          0.0318 |  0.0079 |    0.0096 |           0.0189 |
+| 2017 |          0.0314 |  0.0085 |    0.0099 |           0.0185 |
+| 2018 |          0.032  |  0.009  |    0.0105 |           0.0183 |
+| 2019 |          0.0331 |  0.0089 |    0.0106 |           0.0196 |
+| 2020 |          0.0348 |  0.0092 |    0.0112 |           0.0214 |
+| 2021 |          0.0321 |  0.0099 |    0.0114 |           0.0212 |
+| 2022 |          0.0298 |  0.0092 |    0.0115 |           0.0214 |
+| 2023 |          0.0303 |  0.0105 |    0.0125 |           0.022  |
+| 2024 |          0.0311 |  0.013  |    0.0135 |           0.0225 |
+
+---
+
 ## get_trust_in_government
 Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “don’t know”) to the survey question: “In this country, do you have confidence in… national government?”
 
@@ -1798,6 +2240,10 @@ The sample is ex ante designed to be nationally representative of the population
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1847,11 +2293,19 @@ Consumer Price Index (CPI) is a measure that examines the average change in pric
 
 By default the data is monthly, from the most current national source per country (see below). With period="yearly" the data comes from the Global Macro Database (GMDB), annual with 2015 = 100. Set `oecd_source=True` to retrieve monthly or quarterly data from the OECD instead (base year varies per country).
 
-With period="monthly" and without oecd_source, every country comes from its most current source without an API key: Eurostat for the euro area and the European Economic Area (the HICP, 2015 = 100), the Office for National Statistics for the United Kingdom (CPI, 2015 = 100), the Statistics Bureau of Japan for Japan (CPI from 2015, on its latest base) and the Bank for International Settlements for every other country (2010 = 100). The base year differs between countries, so compare the changes rather than the levels.
+The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
+
+With period="monthly" and without oecd_source, every country comes from its most current source: Eurostat for the euro area and the European Economic Area (the HICP, 2015 = 100), the Office for National Statistics for the United Kingdom (CPI, 2015 = 100), the Statistics Bureau of Japan for Japan (CPI from 2015, on its latest base) and the Bank for International Settlements for every other country (2010 = 100). The base year differs between countries, so compare the changes rather than the levels.
+
+The measure parameter selects the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
+
+The US index of the BIS is the BLS's CPI-U rebased to 2010 = 100, which the BIS publishes a few days after the BLS. The months the BLS has published since are added to it, so a release appears the same day.
+
+With cumulative=True, every country's index is divided by its value in the first period of the date range: the growth of 1 in prices since the start_date (1.3460 for prices 34.60% higher), which compares countries regardless of their base year. A country without data in the first period starts from its own first period. The purchasing power of money is its inverse (see get_purchasing_power).
 
 Further information about the Global Macro Database (GMDB) variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
-**Also known as:** CPI, cost of living index.
+**Also known as:** CPI, cost of living index, core CPI, CPI components, energy prices, food prices, shelter costs.
 
 **Args:**
 
@@ -1862,6 +2316,12 @@ annual data comes from the GMDB. Defaults to None, which is the monthly data (qu
 with `oecd_source=True` when the Economics class was initialized with quarterly=True).
 - <u>oecd_source (bool, optional):</u> Whether to get the data from the OECD instead of the
 Global Macro Database (GMDB). Defaults to False.
+- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
+energy, or a component: "energy", "food", "goods", "services" or "shelter"
+(United States only). Other measures than "all" are monthly, without
+oecd_source. Defaults to "all".
+- <u>cumulative (bool, optional):</u> Whether to return the growth of 1 in prices since the
+first period of the date range instead of the index. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1874,6 +2334,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1914,7 +2378,13 @@ Inflation Rate is the percentage change in the Consumer Price Index (CPI) from o
 
 With period="yearly" the data comes from the Global Macro Database (GMDB). Its years that are IMF World Economic Outlook projections are only included with gmdb_forecasts=True; by default a series ends with its last observation. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
-With period="monthly", the default, the annual rate of change is returned for every month, the figure statistical offices publish, taken per country from the most current source without an API key: Eurostat for the euro area and the European Economic Area (the HICP, including the flash estimate at the end of the month itself), the Office for National Statistics for the United Kingdom (CPI), the Statistics Bureau of Japan for Japan (CPI, from 2016), the Bank for International Settlements for around sixty other countries, including the United States, China, India and Brazil, and the IMF for around a hundred more, all republishing the national consumer price indices.
+The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
+
+With period="monthly", the default, the annual rate of change is returned for every month, the figure statistical offices publish, taken per country from the most current source: Eurostat for the euro area and the European Economic Area (the HICP, including the flash estimate at the end of the month itself), the Office for National Statistics for the United Kingdom (CPI), the Statistics Bureau of Japan for Japan (CPI, from 2016), the Bank for International Settlements for around sixty other countries, including the United States, China, India and Brazil, and the IMF for around a hundred more, all republishing the national consumer price indices.
+
+The measure parameter selects the inflation of the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
+
+The US index of the BIS is the BLS's CPI-U rebased to 2010 = 100, which the BIS publishes a few days after the BLS. The months the BLS has published since are added to it, so a release appears the same day.
 
 The result is a decimal fraction (0.041166 for 4.1166%), like every other rate in the Finance Toolkit.
 
@@ -1932,13 +2402,16 @@ $$
 
 Headline inflation is what most central banks target, usually at 2% a year, but they read it together with core inflation, which excludes energy and food, to see past temporary price shocks. Year-on-year rates react to base effects: a large price jump a year earlier lowers today's rate once it drops out of the comparison. The Eurostat figures are the harmonised index (HICP), which differs from national CPIs, for example in leaving out the costs of owner-occupied housing.
 
-**Also known as:** CPI-based inflation, price increases, consumer prices.
+**Also known as:** CPI-based inflation, price increases, consumer prices, core inflation, energy inflation, food inflation, services inflation, shelter inflation.
 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
 Defaults to None, which is the monthly data.
+- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
+energy, or a component: "energy", "food", "goods", "services" or "shelter"
+(United States only). Other measures than "all" are monthly. Defaults to "all".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1951,6 +2424,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -1980,14 +2457,96 @@ Which returns:
 
 ---
 
+## get_purchasing_power
+Purchasing Power is what 100 units of a currency at the start of the date range buy in every later period, in the prices of the start: it falls as consumer prices rise, so 74.29 means that money has lost a quarter of its value. It is the inverse of the growth in the Consumer Price Index since the first period of the range (see get_consumer_price_index with cumulative=True), on the same monthly sources by default (period="yearly" for the Global Macro Database's annual averages).
+
+With overnight_rate=True, the 100 is not held as banknotes but deposited at the overnight rate of its currency, compounded day by day (see get_overnight_rate with cumulative=True): €STR for the Euro Area and its members, SONIA for the United Kingdom, TONA for Japan and SOFR for the United States. The result is the real value of cash, which stays above 100 only when the interest outpaced inflation. Countries without an overnight rate are left out with a note. A euro member earns €STR over the whole range, also before it adopted the euro.
+
+The formula is as follows:
+
+$$
+\text{Purchasing Power} (t) = 100 \cdot \text{CPI} (\text{start}) / \text{CPI} (t)
+$$
+
+$$
+\text{Purchasing Power of Cash} (t) = 100 \cdot \text{Overnight Rate Growth} (t) \cdot \text{CPI} (\text{start}) / \text{CPI} (t)
+$$
+
+CPI (start) is each country's index in the first period of the date range (its own first period when it starts later). The cash growth starts at 1 on the first day of the range and every month takes it on the last day of the month, next to the index of that same month (the reference month). The index of a month is published some weeks after it ends, so the latest months of the cash growth are left out until their index is published rather than paired with older prices.
+
+**Also known as:** real value of money, value of money, real value of cash, real return on cash, inflation erosion.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data.
+Defaults to None, which is every country with a consumer price index, or the
+Euro Area, Japan, the United Kingdom and the United States with
+overnight_rate=True.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
+Defaults to None, which is the monthly data. The overnight rate is only
+combined with the monthly data.
+- <u>overnight_rate (bool, optional):</u> Whether the 100 earns the overnight rate of its
+currency instead of being held as banknotes. Defaults to False.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The purchasing power of 100 per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2020-01-01', end_date='2026-09-30')
+
+economics.get_purchasing_power(
+    countries=['Euro Area', 'Netherlands', 'United States'], overnight_rate=True
+).iloc[::12]
+```
+
+Which returns:
+
+|         |   Euro Area |   Netherlands |   United States |
+|:--------|------------:|--------------:|----------------:|
+| 2020-01 |     99.9567 |       99.9567 |        100.124  |
+| 2021-01 |     98.5071 |       97.8545 |         98.9891 |
+| 2022-01 |     93.1777 |       90.4128 |         92.1353 |
+| 2023-01 |     85.9347 |       83.578  |         88.3553 |
+| 2024-01 |     86.5277 |       83.8851 |         90.2447 |
+| 2025-01 |     87.5091 |       84.4527 |         92.2405 |
+| 2026-01 |     87.9163 |       84.4219 |         93.9886 |
+
+---
+
 ## get_producer_price_index
-Get the Producer Price Index (PPI) for a variety of countries over time from the OECD. The PPI measures the average change over time in the prices received by domestic producers (manufacturing) for their output. Because producers tend to pass rising input costs on to their customers with a lag, the PPI is generally seen as a leading, upstream indicator of cost pressure that later shows up in the Consumer Price Index (CPI).
+Get the Producer Price Index (PPI) for a variety of countries over time. The PPI measures the average change over time in the prices domestic producers receive for their output. Because producers tend to pass rising input costs on to their customers with a lag, the PPI is generally seen as a leading, upstream indicator of cost pressure that later shows up in the Consumer Price Index (CPI).
 
-The index covers manufacturing output only, is not seasonally adjusted, and is set to 100 in the base year, which can vary per country.
+Each country's headline index comes monthly from its official publisher:
 
-The OECD stopped updating this series in its Key Economic Indicators dataset during 2023: annual values end in 2022, and monthly and quarterly values end in early 2023 for all but a couple of countries. A start_date after that point returns an empty DataFrame.
+$$
+\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100
+$$
 
-**See definition:** [https://www.oecd.org/en/data/indicators/producer-prices-ppi.html](https://www.oecd.org/en/data/indicators/producer-prices-ppi.html){:target="_blank"}
+$$
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the PPI for final demand},\;\; \text{November}\; 2009 = 100. \;\text{The BLS API returns about the last three}\; \text{years;} \;\text{with}\; a \;\text{FRED API key the full history comes from FRED},\;\; \text{which republishes it}
+$$
+
+$$
+\text{The Bank of Japan for Japan:}\;\; \text{the Corporate Goods Price Index (domestic)},\;\; 2020 = 100,\;\; \text{from 1960}
+$$
+
+China is not included: the National Bureau of Statistics of China publishes its producer prices as changes rather than as an index, and its database refuses automated requests. Its monthly year-on-year figure is in get_economic_calendar.
+
+All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+
+**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm){:target="_blank"}
 
 **Also known as:** PPI, wholesale prices, factory gate prices, upstream inflation.
 
@@ -2005,33 +2564,206 @@ quarterly=True and monthly otherwise.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
-pd.DataFrame: A DataFrame containing the Producer Price Index.
+pd.DataFrame: A DataFrame containing the Producer Price Index per country.
 
 **As an example:**
 
 ```python
 from financetoolkit import Economics
 
-economics = Economics(start_date='2018-01-01', end_date='2022-01-01')
+economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
 
 economics.get_producer_price_index(
-    countries=['United States', 'Germany'],
-    period='yearly'
+    countries=['United States', 'Euro Area', 'Japan'],
+    period='monthly',
+    growth=True,
+    lag=12,
 )
 ```
 
 Which returns:
 
-|      |   United States |   Germany |
-|:-----|----------------:|----------:|
-| 2018 |         106.059 |   102.758 |
-| 2019 |         106.067 |   103.65  |
-| 2020 |         103.849 |   103.15  |
-| 2021 |         116.511 |   108.242 |
-| 2022 |         134.46  |   122.75  |
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2025-10 |          0.0284 |     -0.004  |  0.0282 |
+| 2025-11 |          0.0314 |     -0.0126 |  0.0281 |
+| 2025-12 |          0.0314 |     -0.0204 |  0.0248 |
+| 2026-01 |          0.0308 |     -0.021  |  0.0247 |
+| 2026-02 |          0.0337 |     -0.0303 |  0.0223 |
+| 2026-03 |          0.0429 |      0.0198 |  0.0301 |
+| 2026-04 |          0.057  |      0.0493 |  0.0553 |
+| 2026-05 |          0.0592 |      0.0586 |  0.068  |
+| 2026-06 |          0.0559 |      0.046  |  0.0752 |
+| 2026-07 |          0.0494 |      0.0578 |  0.0773 |
+| 2026-08 |          0.0561 |      0.083  |  0.0759 |
+| 2026-09 |          0.0634 |      0.1113 |  0.0677 |
+
+---
+
+## get_export_price_index
+Get the Export Price Index for a variety of countries over time. The index measures the average change over time in the prices a country's producers receive for the goods they sell abroad, in its own currency. Together with the Import Price Index it gives the terms of trade, and it shows how much of a currency move or a foreign price shock exporters pass on.
+
+Each country's index comes monthly from its official publisher:
+
+$$
+\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the non-domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100. \;\text{For the euro area these include sales to other members}
+$$
+
+$$
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the export price index of all commodities},\;\; 2000 = 100. \;\text{The BLS API returns about the last three}\; \text{years;} \;\text{with}\; a \;\text{FRED API key the full history comes from FRED}
+$$
+
+$$
+\text{The Bank of Japan for Japan:}\;\; \text{the export price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
+$$
+
+All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+
+**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm){:target="_blank"}
+
+**Also known as:** export prices, XPI, trade prices.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Export Price Index per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
+
+economics.get_export_price_index(
+    countries=['United States', 'Euro Area', 'Japan'],
+    period='monthly',
+    growth=True,
+    lag=12,
+)
+```
+
+Which returns:
+
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2025-10 |        nan      |     -0.0052 |  0.0224 |
+| 2025-11 |          0.0329 |     -0.0087 |  0.0205 |
+| 2025-12 |          0.0341 |     -0.0147 |  0.04   |
+| 2026-01 |          0.0251 |     -0.0129 |  0.0494 |
+| 2026-02 |          0.038  |     -0.018  |  0.0838 |
+| 2026-03 |          0.0564 |      0.0121 |  0.113  |
+| 2026-04 |          0.0931 |      0.0323 |  0.1809 |
+| 2026-05 |          0.1135 |      0.042  |  0.2057 |
+| 2026-06 |          0.0998 |      0.042  |  0.2126 |
+| 2026-07 |          0.0812 |      0.0525 |  0.1936 |
+| 2026-08 |          0.0928 |      0.0623 |  0.1796 |
+| 2026-09 |          0.1163 |      0.0747 |  0.1786 |
+
+---
+
+## get_import_price_index
+Get the Import Price Index for a variety of countries over time. The index measures the average change over time in the prices of the goods a country buys from abroad, in its own currency. It shows how foreign price shocks and currency moves reach the domestic economy, ahead of the Producer and Consumer Price Indices.
+
+Each country's index comes monthly from its official publisher:
+
+$$
+\text{Eurostat for the euro area, the European Union and around 20 European countries:}\;\; \text{the import prices of industrial products (mining, manufacturing and energy supply)},\;\; 2021 = 100. \;\text{For the euro area these include imports from other members}
+$$
+
+$$
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the import price index of all commodities},\;\; 2000 = 100. \;\text{The BLS API returns about the last three}\; \text{years;} \;\text{with}\; a \;\text{FRED API key the full history comes from FRED}
+$$
+
+$$
+\text{The Bank of Japan for Japan:}\;\; \text{the import price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
+$$
+
+All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+
+**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpi_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpi_esms.htm){:target="_blank"}
+
+**Also known as:** import prices, MPI, trade prices.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Import Price Index per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
+
+economics.get_import_price_index(
+    countries=['United States', 'Euro Area', 'Japan'],
+    period='monthly',
+    growth=True,
+    lag=12,
+)
+```
+
+Which returns:
+
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2025-10 |        nan      |     -0.0231 | -0.016  |
+| 2025-11 |         -0.0007 |     -0.0291 | -0.017  |
+| 2025-12 |          0      |     -0.036  |  0.0018 |
+| 2026-01 |          0.0021 |     -0.0357 |  0.0072 |
+| 2026-02 |          0.0099 |     -0.033  |  0.0283 |
+| 2026-03 |          0.0226 |      0.015  |  0.0831 |
+| 2026-04 |          0.0452 |      0.0617 |  0.217  |
+| 2026-05 |          0.0688 |      0.073  |  0.2642 |
+| 2026-06 |          0.0675 |      0.0604 |  0.3042 |
+| 2026-07 |          0.0602 |      0.064  |  0.2939 |
+| 2026-08 |          0.0674 |      0.0835 |  0.2506 |
+| 2026-09 |          0.081  |      0.1072 |  0.2447 |
 
 ---
 
@@ -2055,6 +2787,10 @@ An indicator above 100 signals a boost in the consumers’ confidence towards th
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2104,6 +2840,10 @@ Numbers above 100 suggest an increased confidence in near future business perfor
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2155,6 +2895,10 @@ The CLI is read for its direction and turning points rather than its level: a re
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2220,6 +2964,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2278,6 +3026,10 @@ highest frequency the OECD publishes.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2336,6 +3088,10 @@ highest frequency the OECD publishes.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2391,6 +3147,10 @@ highest frequency the OECD publishes.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2450,6 +3210,10 @@ quarterly=True and monthly otherwise.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2519,6 +3283,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2576,6 +3344,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2641,6 +3413,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2684,7 +3460,9 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 The rate is annual and expressed as a decimal fraction per annum (0.0538 for 5.375%), taken at the end of the year rather than averaged over it.
 
-With period="daily", "weekly" or "monthly" the rates come from the Bank for International Settlements (BIS) instead, without an API key. It publishes the policy rates of around fifty central banks daily, including the Federal Reserve, the European Central Bank (as "Euro Area"), the Bank of England and the Bank of Japan, some back to the 1940s. Weekly and monthly take the rate on the last day of each period, so the current week or month shows the rate so far.
+With period="daily", "weekly" or "monthly" the rates come from the Bank for International Settlements (BIS) instead. It publishes the policy rates of around fifty central banks daily, including the Federal Reserve, the European Central Bank (as "Euro Area"), the Bank of England and the Bank of Japan, some back to the 1940s. Weekly and monthly take the rate on the last day of each period, so the current week or month shows the rate so far.
+
+The BIS updates its series about once a week. The days since are added from the Bank of England (Bank Rate) and the European Central Bank, which publish their rates the same day; other countries end at the latest BIS update. For the euro area the BIS reports the main refinancing rate up to 17 September 2024 and the deposit facility rate from 18 September 2024, when the ECB began steering money markets with it; get_european_central_bank_rates has either rate throughout.
 
 The result is a decimal fraction (0.05375 for 5.375%), like every other rate in the Finance Toolkit.
 
@@ -2707,6 +3485,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2766,6 +3548,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2814,7 +3600,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 Both sources return the rate as a decimal fraction per annum (0.0357 for 3.57%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
 
-With period="daily" or "weekly" the 10-year yields come from the issuers themselves, without an API key: the U.S. Department of the Treasury (par yield, from 1990), the Bank of England (nominal par yield of gilts, from 1993), the Japanese Ministry of Finance (JGBs, from 1974) and the European Central Bank (the euro area yield curve of all central government bonds, from 2004). The euro area rate is the 10-year zero-coupon rate of the ECB's Svensson curve, converted from continuous to annual compounding, while the other three are par yields. Weekly takes the yield on the last trading day of each week. Other countries have no daily source and are not included.
+With period="daily" or "weekly" the 10-year yields come from the issuers themselves: the U.S. Department of the Treasury (par yield, from 1990), the Bank of England (nominal par yield of gilts, from 1993), the Japanese Ministry of Finance (JGBs, from 1974) and the European Central Bank (the euro area yield curve of all central government bonds, from 2004). The euro area rate is the 10-year zero-coupon rate of the ECB's Svensson curve, converted from continuous to annual compounding, while the other three are par yields. Weekly takes the yield on the last trading day of each week. Other countries have no daily source and are not included.
 
 A few countries report a national long-term rate to the OECD that is not a 10-year government bond yield, such as Brazil, whose series is the TJLP (Taxa de Juros de Longo Prazo), the long-term lending rate of the national development bank BNDES.
 
@@ -2842,6 +3628,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2886,7 +3676,15 @@ Each currency has its own benchmark, published by its central bank:
 - Japan: the uncollateralized overnight call rate, the Tokyo Overnight Average Rate (TONA), from the Bank of Japan, since 1985.
 - United States: the Secured Overnight Financing Rate (SOFR) from the Federal Reserve Bank of New York, since April 2018.
 
-None of these sources require an API key. The rates are returned as decimal fractions per annum (0.0244 for 2.44%). Weekly and monthly periods take the rate on the last day of each period (weeks end on Friday).
+The rates are returned as decimal fractions per annum (0.0244 for 2.44%). Weekly and monthly periods take the rate on the last day of each period (weeks end on Friday).
+
+With cumulative=True, the rates are compounded day by day into the growth of 1 deposited on the first day of the date range, the method of the compounded €STR index of the European Central Bank and the SOFR Index of the New York Fed:
+
+$$
+\text{Growth} (t) = \text{Growth} (t-1) \cdot (1 + \text{Overnight Rate} (t-1) \cdot \text{Days} (t-1) / \text{Day Count})
+$$
+
+Days (t-1) is the number of calendar days the previous rate applies to (three over a weekend) and the Day Count is that of each money market: 360 for €STR and SOFR (ACT/360) and 365 for SONIA and TONA (ACT/365). The value on a day includes the interest up to that day, so the first day is 1, and weekly and monthly periods take the value on the last day of each period. It is the cash return of money deposited at the overnight rate, before costs and taxes.
 
 **Also known as:** €STR, ESTR, SONIA, TONA, SOFR, overnight interbank rate, risk-free rate.
 
@@ -2894,6 +3692,9 @@ None of these sources require an API key. The rates are returned as decimal frac
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
 - <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data. Defaults to "daily".
+- <u>cumulative (bool, optional):</u> Whether to return the growth of 1 deposited at the
+overnight rate on the first day of the date range instead of the rate.
+Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -2902,6 +3703,10 @@ None of these sources require an API key. The rates are returned as decimal frac
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2936,10 +3741,16 @@ Get the Real Interest Rate for a variety of countries over time. The Real Intere
 The formula is as follows (the Fisher equation, approximation):
 
 $$
-\text{Real Interest Rate} (\text{year}) = \text{Nominal Interest Rate} (\text{year}) - \text{Inflation Rate} (\text{year}),\;\; \text{with the nominal rate the annual Long Term Interest Rate by default (rate\_type="long\_term") and the inflation rate the Global Macro Database's annual CPI inflation}
+\text{Real Interest Rate} = \text{Nominal Interest Rate} - \text{Inflation Rate},\;\; \text{with the nominal rate the Long Term Interest Rate by default (rate\_type="long\_term") and the inflation rate the year-over-year change in consumer prices}
 $$
 
-The nominal interest rate is either the Long Term Interest Rate (the 10-year government bond yield) or the Short Term Interest Rate (the 3-month money market rate), selected via the rate_type parameter. The Inflation Rate is always the annual inflation rate of the Global Macro Database (GMDB), whichever source the nominal rate comes from; this differs from get_inflation_rate, which defaults to monthly year-over-year inflation from national sources. Both legs are annual decimal fractions (0.05 for 5%) whichever source is used, so they line up directly for the subtraction and the result is itself a decimal fraction (-0.0016 for a real rate of -0.16%).
+The nominal interest rate is the Long Term Interest Rate (the 10-year government bond yield), the Short Term Interest Rate (the 3-month money market rate) or the Central Bank Policy Rate, selected via the rate_type parameter.
+
+Monthly (the default) subtracts the monthly year-over-year inflation rate of get_inflation_rate (national statistical offices, Eurostat for the euro area and the BIS) from the OECD's monthly long or short-term rate, the monthly average of the daily rates, or from the policy rate at the end of the month (see get_central_bank_policy_rate). The OECD has no euro area rates, so the euro area is available with rate_type="policy": the ECB's deposit facility rate minus euro area inflation. A month the inflation rate is not published yet is empty.
+
+Yearly subtracts the annual inflation rate of the Global Macro Database (GMDB) from its annual long or short-term rate (or the OECD's with gmdb_source=False) or its end-of-year policy rate.
+
+Both legs are decimal fractions (0.05 for 5%), so the result is itself a decimal fraction (-0.0016 for a real rate of -0.16%).
 
 A negative real interest rate means that, after inflation, savers are effectively losing purchasing power and borrowers are being subsidized in real terms; this occurred in many countries during the 2021-2022 inflation surge.
 
@@ -2951,13 +3762,16 @@ This is the ex post real rate: the nominal rate minus the inflation that was rea
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>rate_type (str, optional):</u> Which nominal interest rate to use. Can be 'long_term'
-(10-year government bond yield) or 'short_term' (3-month money market rate).
-Defaults to 'long_term'.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the nominal interest rate from
-the Global Macro Database (GMDB) instead of the OECD. Defaults to None, which
-falls back to the gmdb_source set on the Economics class (True by default).
-Either way the countries carry the GMDB names, such as "Russian Federation",
-"Eswatini" and "Congo DR", as the inflation rate comes from the GMDB.
+(10-year government bond yield), 'short_term' (3-month money market rate) or
+'policy' (central bank policy rate). Defaults to 'long_term'.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the yearly data.
+Defaults to None, which is the monthly data.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the yearly long or short-term
+rate from the Global Macro Database (GMDB) instead of the OECD. Defaults to
+None, which falls back to the gmdb_source set on the Economics class (True by
+default). Either way the yearly countries carry the GMDB names, such as
+"Russian Federation", "Eswatini" and "Congo DR", as the yearly inflation
+rate comes from the GMDB.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -2970,6 +3784,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -2980,21 +3798,26 @@ pd.DataFrame: A DataFrame containing the Real Interest Rate
 ```python
 from financetoolkit import Economics
 
-economics = Economics(start_date='2018-01-01', end_date='2023-01-01')
+economics = Economics(start_date='2026-01-01', end_date='2026-09-30')
 
-economics.get_real_interest_rate(countries=['United States', 'Germany', 'Japan'])
+economics.get_real_interest_rate(
+    countries=['United States', 'Euro Area', 'Japan'], rate_type='policy'
+)
 ```
 
 Which returns:
 
-|      |   United States |   Germany |   Japan |
-|:-----|----------------:|----------:|--------:|
-| 2018 |          0.0047 |   -0.0151 | -0.009  |
-| 2019 |          0.0033 |   -0.0163 | -0.0057 |
-| 2020 |         -0.0037 |   -0.0088 |  0.0001 |
-| 2021 |         -0.0324 |   -0.0358 |  0.0032 |
-| 2022 |         -0.0505 |   -0.0753 | -0.023  |
-| 2023 |         -0.0017 |   -0.0359 | -0.0269 |
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2026-01 |          0.0124 |      0.003  | -0.0079 |
+| 2026-02 |          0.0121 |      0.001  | -0.0054 |
+| 2026-03 |          0.0037 |     -0.006  | -0.0073 |
+| 2026-04 |         -0.0019 |     -0.01   | -0.006  |
+| 2026-05 |         -0.0062 |     -0.012  | -0.0074 |
+| 2026-06 |          0.0009 |     -0.0055 | -0.0064 |
+| 2026-07 |          0.0026 |     -0.0065 | -0.0095 |
+| 2026-08 |          0.0023 |     -0.0095 | -0.0089 |
+| 2026-09 |          0.0014 |     -0.013  | -0.009  |
 
 ---
 
@@ -3036,6 +3859,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3088,6 +3915,10 @@ This indicator is the renewable share of total primary energy supply, returned a
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3143,6 +3974,10 @@ This series currently ends in 2020, so a date range that starts after that retur
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3191,7 +4026,7 @@ It is also possible to get the data from the Global Macro Database (GMDB) by set
 
 Both sources return the rate as a decimal fraction of the labour force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so a monthly or quarterly request uses the OECD unless gmdb_source=True is passed, in which case the period argument has no effect.
 
-With period="monthly" (unless gmdb_source=True is passed explicitly) the euro area and the countries Eurostat covers come from Eurostat and the United Kingdom from the Office for National Statistics, which publish weeks before the OECD republishes their figures, and Brazil from the IBGE (as the UK, the average of the three months ending in each month); every other country comes from the OECD. The United States is extended with the months the Bureau of Labor Statistics has published since, when both agree on the months they share. None of these need an API key. The UK figure is the average of the three months ending in each month, as the Labour Force Survey reports it.
+With period="monthly" (unless gmdb_source=True is passed explicitly) the euro area and the countries Eurostat covers come from Eurostat and the United Kingdom from the Office for National Statistics, which publish weeks before the OECD republishes their figures, and Brazil from the IBGE (as the UK, the average of the three months ending in each month); every other country comes from the OECD. The United States is extended with the months the Bureau of Labor Statistics has published since, when both agree on the months they share. The UK figure is the average of the three months ending in each month, as the Labour Force Survey reports it.
 
 Both sources return a decimal fraction (0.036 for 3.6%).
 
@@ -3216,6 +4051,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3286,6 +4125,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3344,6 +4187,10 @@ $$
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3398,6 +4245,10 @@ One Gini coefficient is returned per country, for the total population and on th
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3470,6 +4321,10 @@ values. Defaults to False.
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3522,6 +4377,10 @@ However, two countries with the same poverty rates may differ in terms of the re
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3572,6 +4431,10 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3620,6 +4483,10 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3666,6 +4533,10 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 Database projects, from the IMF's World Economic Outlook, up to five years
 ahead. Only applies to data from the Global Macro Database. Defaults to
 False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3716,7 +4587,7 @@ Nonfarm Payrolls is the headline monthly employment report and one of the most c
 
 The series is the monthly level of employment in thousands of persons, seasonally adjusted, so 156857 means 156.857 million jobs -- not the monthly change that the headline "jobs added" number refers to. Use growth=True for that change.
 
-Without a FRED API key the data comes from the Bureau of Labor Statistics' keyless API, which gives the same figures but only for about the last three years. The full history, from 1939, comes from FRED when a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class).
+Without a FRED API key the data comes from the Bureau of Labor Statistics' API, which gives the same figures but only for about the last three years. The full history, from 1939, comes from FRED when a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class).
 
 **See definition:** [https://fred.stlouisfed.org/series/PAYEMS](https://fred.stlouisfed.org/series/PAYEMS){:target="_blank"}
 
@@ -3734,6 +4605,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3771,7 +4646,7 @@ Get weekly Initial Claims for Unemployment Insurance for the United States from 
 
 Initial Jobless Claims counts the number of individuals filing for unemployment insurance for the first time in a given week. Because it is reported weekly (versus Nonfarm Payrolls' monthly cadence, see `get_nonfarm_payrolls`) and captures layoffs essentially in real time, it is one of the most timely leading indicators of labor-market deterioration and a core component of the Conference Board's Leading Economic Index.
 
-No API key is needed: without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/ICSA](https://fred.stlouisfed.org/series/ICSA){:target="_blank"}
 
@@ -3789,6 +4664,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3827,7 +4706,7 @@ Retail Sales measures nominal spending at retail and food-service establishments
 
 The series is monthly, in millions of US dollars, seasonally adjusted, and covers retail trade and food services. It is nominal, so growth=True mixes volume and price changes together; compare against the Consumer Price Index to separate the two.
 
-No API key is needed: without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/RSAFS](https://fred.stlouisfed.org/series/RSAFS){:target="_blank"}
 
@@ -3845,6 +4724,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3881,7 +4764,7 @@ Get the Industrial Production Index for the United States from the Federal Reser
 
 The Industrial Production Index measures real output in manufacturing, mining, and electric and gas utilities. Unlike survey-based sentiment indices, it is a hard, quantity-based measure of physical production and is one of the four coincident indicators the NBER's Business Cycle Dating Committee uses to date US recessions (alongside real personal income, real manufacturing/trade sales and, see `get_nonfarm_payrolls`, nonfarm payroll employment).
 
-No API key is needed: without a FRED API key the data comes from the Federal Reserve's G.17 release directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Federal Reserve's G.17 release directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/INDPRO](https://fred.stlouisfed.org/series/INDPRO){:target="_blank"}
 
@@ -3899,6 +4782,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3932,7 +4819,7 @@ Get Housing Starts (Total New Privately-Owned Housing Units Started) for the Uni
 
 Housing Starts counts the number of new residential construction projects that have begun in a given month. Residential investment is one of the most interest-rate-sensitive components of GDP, and construction activity leads the broader business cycle (it typically turns down before a recession and turns up before a recovery), making Housing Starts one of the ten components of the Conference Board's Leading Economic Index.
 
-No API key is needed: without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/HOUST](https://fred.stlouisfed.org/series/HOUST){:target="_blank"}
 
@@ -3950,6 +4837,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -3986,7 +4877,7 @@ Get Real Personal Income Excluding Current Transfer Receipts for the United Stat
 
 This is the exact series (not a proxy) the NBER's Business Cycle Dating Committee uses as one of its four primary coincident indicators for dating US recessions - alongside Nonfarm Payrolls (see `get_nonfarm_payrolls`), the Industrial Production Index (see `get_industrial_production_index`) and Real Personal Consumption Expenditures. It measures aggregate household income from wages, investments and proprietors' income, deliberately excluding government transfer payments (e.g. unemployment insurance, Social Security) so that the series reflects income generated by ongoing economic activity rather than the fiscal cushioning that automatically increases during a downturn.
 
-No API key is needed: without a FRED API key the data comes from the Bureau of Economic Analysis directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Bureau of Economic Analysis directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/W875RX1](https://fred.stlouisfed.org/series/W875RX1){:target="_blank"}
 
@@ -4004,6 +4895,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4043,7 +4938,7 @@ The 30-year fixed mortgage rate is the primary interest rate US households actua
 
 The rate is weekly (week ending Thursday), returned as a decimal fraction per annum (0.0648 for 6.48%) and not seasonally adjusted. FRED publishes it in percentage points; it is rescaled here so that every rate the Finance Toolkit returns is a decimal fraction.
 
-No API key is needed: without a FRED API key the data comes from Freddie Mac's Primary Mortgage Market Survey directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from Freddie Mac's Primary Mortgage Market Survey directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/MORTGAGE30US](https://fred.stlouisfed.org/series/MORTGAGE30US){:target="_blank"}
 
@@ -4061,6 +4956,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4094,7 +4993,7 @@ Get the NBER-based US Recession Indicator from FRED.
 
 This is the official US business-cycle chronology maintained by the National Bureau of Economic Research (NBER) Business Cycle Dating Committee, encoded as 1 during NBER-dated recession months (peak through trough) and 0 otherwise. The Committee determines recession dates retrospectively from a broad set of coincident indicators - including Nonfarm Payrolls (see `get_nonfarm_payrolls`) and the Industrial Production Index (see `get_industrial_production_index`) - rather than the popular "two consecutive quarters of negative GDP growth" rule of thumb, which the NBER does not use. This series is the standard ground-truth label used in academic and applied business-cycle research to backtest whether other indicators lead, lag or coincide with recessions.
 
-No API key is needed: without a FRED API key the data comes from the NBER's business cycle dates directly, built the way FRED builds USREC, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the NBER's business cycle dates directly, built the way FRED builds USREC, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/USREC](https://fred.stlouisfed.org/series/USREC){:target="_blank"}
 
@@ -4112,6 +5011,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4145,7 +5048,7 @@ Get the quarterly growth of commercial real estate prices: the change in the pri
 
 This tracks commercial (office, retail, industrial, apartment) property prices, as distinct from residential house prices (see `get_house_prices`, which tracks a completely different asset class/market). It is a transaction-based index rather than the appraisal-smoothed methodology used by institutional benchmarks like the NCREIF Property Index -- which is not freely available anywhere -- so expect more volatility and less autocorrelation than an appraisal-based series would show.
 
-No API key is needed: the prices come from the commercial property price indices the Bank for International Settlements collects from national sources, for the euro area, the United States (from 1945), Japan, Denmark, the Netherlands, Germany, France, Spain and around ten more, taking per country a nominal index of commercial property, preferably all commercial property in the whole country. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), the United States instead comes from FRED's series sourced from the IMF's Financial Soundness Indicators.
+The prices come from the commercial property price indices the Bank for International Settlements collects from national sources, for the euro area, the United States (from 1945), Japan, Denmark, the Netherlands, Germany, France, Spain and around ten more, taking per country a nominal index of commercial property, preferably all commercial property in the whole country. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), the United States instead comes from FRED's series sourced from the IMF's Financial Soundness Indicators.
 
 See definitions: [https://data.bis.org/topics/CPP](https://data.bis.org/topics/CPP){:target="_blank"} and [https://fred.stlouisfed.org/series/COMREPUSQ159N](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}
 
@@ -4164,6 +5067,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4196,7 +5103,7 @@ Get the credit-to-GDP gap: how far the ratio of credit to the private non-financ
 
 A gap that stays above two percentage points of GDP has preceded most banking crises of the past decades, often by several years, which is why Basel III uses it as the guide for the countercyclical capital buffer: banks hold extra capital when the gap is wide (Drehmann and Tsatsaronis, 2014). A negative gap means credit grew slower than its trend, as it did in most advanced economies after the 2008 crisis.
 
-The credit is all credit to households and non-financial corporations from all lenders, banks and non-banks, at market value, as compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1950s for some. No API key is needed.
+The credit is all credit to households and non-financial corporations from all lenders, banks and non-banks, at market value, as compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1950s for some.
 
 **See definition:** [https://data.bis.org/topics/CREDIT_GAPS](https://data.bis.org/topics/CREDIT_GAPS){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1403g.htm](https://www.bis.org/publ/qtrpdf/r_qt1403g.htm){:target="_blank"}
 
@@ -4215,6 +5122,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4268,6 +5179,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4298,7 +5213,7 @@ Which returns:
 ## get_credit_to_gdp_ratio
 Get the total credit to a non-financial sector as a share of GDP: all loans and debt securities owed by households, non-financial corporations or the government, whoever the lender is (banks, other financial institutions, foreign lenders or bond holders). It measures how leveraged an economy is and where the debt sits, such as the high corporate debt in China or the high household debt in Australia and Canada.
 
-Unlike bank lending alone, it also counts market and cross-border funding, so it is comparable across countries where companies borrow from banks (the euro area, Japan) and where they issue bonds (the United States). The data is compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1940s for some, from national financial accounts. No API key is needed.
+Unlike bank lending alone, it also counts market and cross-border funding, so it is comparable across countries where companies borrow from banks (the euro area, Japan) and where they issue bonds (the United States). The data is compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1940s for some, from national financial accounts.
 
 **See definition:** [https://data.bis.org/topics/TOTAL_CREDIT](https://data.bis.org/topics/TOTAL_CREDIT){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1303h.htm](https://www.bis.org/publ/qtrpdf/r_qt1303h.htm){:target="_blank"}
 
@@ -4322,6 +5237,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4352,12 +5271,11 @@ Which returns:
 ## get_real_yield_curve
 Get the real yield curve of a variety of countries: the yields of inflation-linked government bonds, which pay a return on top of inflation, by maturity. Together with the nominal curve (see `fixedincome.get_government_bond_yield_curve`) it gives the inflation the bond market expects, see `get_breakeven_inflation_expectations`.
 
-Every curve comes from the official source without an API key:
+Every curve comes from the official source:
 
-- United States: the U.S. Department of the Treasury's real par yield curve of Treasury Inflation-Protected Securities (TIPS), 5, 7, 10, 20 and 30 years, from
-2003. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), the same figures come from FRED.
-   - United Kingdom: the Bank of England's real spot curve of index-linked gilts, 3 to 40 years, from 1985. Index-linked gilts pay the Retail Prices Index (RPI).
-   - Germany: the real yields of the inflation-linked German federal securities the Bundesbank publishes, interpolated to constant maturities between 3 and 30 years from 2014. Germany has four to six of these bonds outstanding at a time, so only the maturities between its shortest (at least two years) and longest bond are filled. The bonds are indexed to euro area inflation (HICP excluding tobacco).
+- United States: the U.S. Department of the Treasury's real par yield curve of Treasury Inflation-Protected Securities (TIPS), 5, 7, 10, 20 and 30 years, from 2003, the figures FRED republishes a day later as DFII.
+- United Kingdom: the Bank of England's real spot curve of index-linked gilts, 3 to 40 years, from 1985. Index-linked gilts pay the Retail Prices Index (RPI).
+- Germany: the real yields of the inflation-linked German federal securities the Bundesbank publishes, interpolated to constant maturities between 3 and 30 years from 2014. Germany has four to six of these bonds outstanding at a time, so only the maturities between its shortest (at least two years) and longest bond are filled. The bonds are indexed to euro area inflation (HICP excluding tobacco).
 
 Yields are returned as a decimal fraction per annum (0.0174 for 1.74%), with one column per country and maturity. Weekly and monthly periods take the curve on the last trading day of each period.
 
@@ -4382,6 +5300,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4416,9 +5338,9 @@ Which returns:
 ## get_breakeven_inflation_expectations
 Get the market-implied (Q-measure) breakeven inflation of a variety of countries by maturity: the nominal government bond yield minus the real yield of an inflation-linked bond of the same maturity, which is the inflation rate at which both earn the same. It is the bond market's expectation of inflation, including an inflation risk premium. See `get_inflation_expectations` for the expectations of professional forecasters instead.
 
-Every curve comes from the official source without an API key:
+Every curve comes from the official source:
 
-- United States: the U.S. Department of the Treasury's nominal minus real (TIPS) par yields, 5, 7, 10, 20 and 30 years from 2003, plus the 5-year, 5-year forward rate ("5Y5Y"), the average inflation expected over the five years starting five years from now, with the formulas FRED uses. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), the same figures come from FRED.
+- United States: the U.S. Department of the Treasury's nominal minus real (TIPS) par yields, 5, 7, 10, 20 and 30 years from 2003, plus the 5-year, 5-year forward rate ("5Y5Y"), the average inflation expected over the five years starting five years from now, with the formulas FRED uses for T5YIE, T10YIE and T5YIFR.
 - United Kingdom: the Bank of England's implied inflation spot curve, 3 to 40 years, from 1985. It is measured against the Retail Prices Index (RPI), which index-linked gilts pay and which has run above CPI inflation.
 - Germany: the nominal term structure of German federal securities at the remaining maturity of each inflation-linked federal security minus its real yield, interpolated to constant maturities between 3 and 30 years from 2014. The bonds are indexed to euro area inflation (HICP excluding tobacco), which makes this the euro area's market-implied inflation expectation, priced off its benchmark issuer, and a free proxy for euro area inflation swaps, which are licensed data. Only the maturities between the shortest (at least two years) and longest bond are filled.
 
@@ -4447,6 +5369,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4478,10 +5404,72 @@ Which returns:
 
 ---
 
+## get_yield_decomposition
+Split the nominal government bond yield of a maturity into the real yield of the inflation-linked bond of that maturity and the breakeven inflation, the part the market demands for inflation, with the change of each part since the previous period:
+
+$$
+\text{Nominal Yield} = \text{Real Yield} + \text{Breakeven Inflation}
+$$
+
+A rise of the nominal yield is either a rise of real rates (tighter monetary policy, stronger growth, more supply of bonds) or of inflation compensation (a higher expectation of inflation or a larger inflation risk premium), and the split says which: a 5-year US yield up 0.14 with an unchanged breakeven rose on real rates alone.
+
+The curves are those of `get_real_yield_curve` and `get_breakeven_inflation_expectations`, from the official sources: the U.S. Department of the Treasury (par yields, 5 to 30 years), the Bank of England (spot rates, 3 to 40 years) and, for Germany, the Bundesbank (constant maturities between 3 and 30 years). Each source's breakeven is its nominal yield minus its real yield, so the parts add up to the nominal yield in that source's own compounding. UK breakevens are measured against the Retail Prices Index (RPI) and German ones against euro area inflation (HICP excluding tobacco).
+
+The changes are the difference with the previous period the country has a curve for, in decimals (0.0014 for 14 basis points), so a market holiday is not a change. The first period of the date range has no change.
+
+**Also known as:** real yield and breakeven split, nominal yield decomposition, inflation compensation, real rate versus inflation.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries, from the United
+States, the United Kingdom and Germany. Defaults to None, which is all three.
+- <u>maturities (list[str] &#124; str, optional):</u> The maturities, such as "5Y" or
+["5Y", "10Y"], each one both curves of a country have. Defaults to "10Y".
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data, the
+curve on the last trading day of each week or month. Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The Nominal Yield, Real Yield, Breakeven Inflation and their Nominal
+Change, Real Change and Breakeven Change per country and maturity, with the dates
+as the index.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-11-02', end_date='2026-11-10')
+
+economics.get_yield_decomposition(
+    countries=['United States', 'Germany'], maturities='5Y'
+).xs(('United States', '5Y'), axis=1)
+```
+
+Which returns:
+
+|            |   Nominal Yield |   Real Yield |   Breakeven Inflation |   Nominal Change |   Real Change |   Breakeven Change |
+|:-----------|----------------:|-------------:|----------------------:|-----------------:|--------------:|-------------------:|
+| 2026-11-02 |          0.047  |       0.0231 |                0.0239 |         nan      |      nan      |           nan      |
+| 2026-11-03 |          0.0474 |       0.0235 |                0.0239 |           0.0004 |        0.0004 |             0      |
+| 2026-11-04 |          0.0469 |       0.0239 |                0.023  |          -0.0005 |        0.0004 |            -0.0009 |
+| 2026-11-05 |          0.0459 |       0.0233 |                0.0226 |          -0.001  |       -0.0006 |            -0.0004 |
+| 2026-11-06 |          0.0464 |       0.0235 |                0.0229 |           0.0005 |        0.0002 |             0.0003 |
+| 2026-11-09 |          0.0467 |       0.0242 |                0.0225 |           0.0003 |        0.0007 |            -0.0004 |
+| 2026-11-10 |          0.0481 |       0.0256 |                0.0225 |           0.0014 |        0.0014 |             0      |
+
+---
+
 ## get_inflation_expectations
 Get the inflation professional forecasters expect over the longer term, from surveys. Where `get_breakeven_inflation_expectations` is the bond market's expectation, priced daily and including risk premia, this is the forecasters' own expectation, with no inflation risk or liquidity premium in it and a longer history.
 
-Every series comes from the official source without an API key:
+Every series comes from the official source:
 
 - Germany: the inflation Consensus Economics' forecasters expect over 5 and 10 years, monthly from 1989. The Bundesbank publishes the expected real interest rate, the yield on debt securities outstanding issued by German residents with a residual maturity of 5 to 6 (or 9 to 10) years minus the expected inflation, so adding that yield back gives the expected inflation.
 - Euro Area: the average longer-term (five years ahead) HICP inflation forecast of the ECB's quarterly Survey of Professional Forecasters, from 1999. With period="monthly" each survey round is shown from the first month of its quarter until the next round.
@@ -4508,6 +5496,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4563,8 +5555,9 @@ The volatility is returned as a decimal fraction per annum (0.155 for a VIX of 1
 - <u>markets (list[str] &#124; str &#124; None, optional):</u> The markets to retrieve, from
 "US Equity", "Euro Area Equity", "Emerging Markets Equity", "US Equity
 Volatility", "US Treasury Bonds", "Crude Oil", "Gold", "US Treasury Rates" and
-"Japan Government Bonds". Defaults to None, which retrieves every market that
-needs no API key, and the MOVE and JGB VIX as well when an API key is set.
+"Japan Government Bonds". Defaults to None, which retrieves every market, with
+"US Treasury Rates" (the MOVE) and "Japan Government Bonds" (the JGB VIX) only
+when an API key is set.
 - <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
 Defaults to "daily".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
@@ -4577,6 +5570,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4613,7 +5610,7 @@ Which returns:
 ## get_stress_test_scenario
 Get the scenarios regulators publish for their stress tests: documented paths of the economy and financial markets under a baseline and an adverse scenario, which serve as calibration and validation targets for scenario generators and as the stresses banks and insurers are tested against.
 
-Two authorities are available, both without an API key:
+Two authorities are available:
 
 - "federal_reserve": the Federal Reserve's supervisory stress test, quarterly over 13 quarters. For the United States: real and nominal GDP and disposable income growth, unemployment, CPI inflation, the 3-month, 5-year and 10-year Treasury rates, the BBB corporate yield, the mortgage and prime rate, the Dow Jones Total Stock Market Index, house and commercial real estate price indices and the VIX; for the euro area, developing Asia, Japan and the United Kingdom: GDP growth, inflation and the dollar exchange rate. scenario="historic" returns the history of the same variables from 1976. year selects the year of the test (published in February), from 2025; by default the latest.
 - "esrb": the macro-financial scenario the European Systemic Risk Board designs for the EU-wide bank stress test of the EBA, yearly over three years: GDP growth, inflation, unemployment, residential and commercial real estate prices and long-term rates for every EU member and the main other economies, stock prices by region, commodity prices, iTraxx credit spreads and euro exchange rates. scenario="historic" returns the starting point. Always the latest exercise.
@@ -4637,6 +5634,10 @@ include. Defaults to None, which includes all of them.
 - <u>year (int &#124; None, optional):</u> The year of the Federal Reserve's stress test, from
 2025. Defaults to None, which takes the latest.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4674,7 +5675,7 @@ Get the Global Supply Chain Pressure Index (GSCPI) of the Federal Reserve Bank o
 
 Benigno, G., di Giovanni, J., Groen, J. J. J., & Noble, A. I. (2022). The GSCPI: A New Barometer of Global Supply Chain Pressures. Federal Reserve Bank of New York Staff Reports, 1017. [https://www.newyorkfed.org/research/staff_reports/sr1017](https://www.newyorkfed.org/research/staff_reports/sr1017){:target="_blank"}
 
-The index is the first principal component of the series after removing the part explained by demand, measured in standard deviations from its average: zero is the average pressure and 1 is one standard deviation above it. It is not a rate, so it is not a decimal fraction. No API key is needed. The New York Fed re-estimates the whole history with every release, so past months can change slightly.
+The index is the first principal component of the series after removing the part explained by demand, measured in standard deviations from its average: zero is the average pressure and 1 is one standard deviation above it. It is not a rate, so it is not a decimal fraction. The New York Fed re-estimates the whole history with every release, so past months can change slightly.
 
 **See definition:** [https://www.newyorkfed.org/research/policy/gscpi](https://www.newyorkfed.org/research/policy/gscpi){:target="_blank"}
 
@@ -4690,6 +5691,10 @@ moving average). Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4722,7 +5727,7 @@ Which returns:
 ## get_carbon_price
 Get the price of emitting one tonne of CO2 under the EU Emissions Trading System (EU ETS): the clearing price of the primary auctions of EU emission allowances (EUAs) the European Energy Exchange holds for the European Union, Germany and Poland almost every trading day, daily from 2020. The carbon price is the main transition risk variable of climate scenarios; see get_climate_scenario for its projected paths.
 
-The price is the average of the day's auctions of general allowances, in euro per tonne of CO2. No API key is needed. Weekly and monthly periods take the price of the last auction of each period.
+The price is the average of the day's auctions of general allowances, in euro per tonne of CO2. Weekly and monthly periods take the price of the last auction of each period.
 
 **See definition:** [https://www.eex.com/en/markets/environmental-markets/eu-ets-auctions](https://www.eex.com/en/markets/environmental-markets/eu-ets-auctions){:target="_blank"}
 
@@ -4742,6 +5747,10 @@ trailing periods. Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4780,7 +5789,7 @@ The variables: "gdp" (2017 PPP US$ billion), "inflation", "long_term_interest_ra
 
 By default the level is returned: the NiGEM baseline (a world without further climate change and policy, scenario="Baseline") with the scenario's deviation applied. With deviation=True the deviation from the baseline itself is returned: relative for levels (-0.034 for 3.4% lower GDP) and in decimal points for rates (0.0094 for 0.94 percentage points higher). Rates are decimal fractions (0.041 for 4.1%).
 
-The data is the Phase 5 vintage (November 2024), hosted by IIASA and retrieved without an API key; the NGFS licence allows commercial use with attribution but not the redistribution of substantial parts, so it is retrieved when needed rather than stored with the Finance Toolkit.
+The data is the Phase 5 vintage (November 2024), hosted by IIASA. The NGFS licence allows commercial use with attribution but not the redistribution of substantial parts, so it is retrieved when needed rather than stored with the Finance Toolkit.
 
 **See definition:** [https://www.ngfs.net/ngfs-scenarios-portal/](https://www.ngfs.net/ngfs-scenarios-portal/){:target="_blank"}
 
@@ -4806,6 +5815,10 @@ physical risk only, which is also its combined risk. Defaults to "combined".
 - <u>deviation (bool, optional):</u> Whether to return the deviation from the baseline
 instead of the level. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4848,7 +5861,7 @@ The asset classes: "equity" (dividends reinvested), "housing" (rental income inc
 
 Returns are decimal fractions (0.08 for 8%), in local currency, and with real=True deflated by consumer price inflation.
 
-The database is licensed under CC BY-NC-SA 4.0: it may be used for non-commercial purposes with attribution, and its authors expressly exclude commercial data providers. Pass accept_licence=True to confirm the use is non-commercial; the data is retrieved from macrohistory.net when needed and is not distributed with the Finance Toolkit. No API key is needed.
+The database is licensed under CC BY-NC-SA 4.0: it may be used for non-commercial purposes with attribution, and its authors expressly exclude commercial data providers. Pass accept_licence=True to confirm the use is non-commercial; the data is retrieved from macrohistory.net when needed and is not distributed with the Finance Toolkit.
 
 **See definition:** [https://www.macrohistory.net/database/](https://www.macrohistory.net/database/){:target="_blank"}
 
@@ -4873,6 +5886,10 @@ moving average). Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4915,7 +5932,11 @@ Get the headline annual series of "A millennium of macroeconomic data for the UK
 
 The series keep the names of the dataset, such as "Bank Rate", "Consols / long-term government bond yields", "Corporate bond yields", "Share prices", "Consumer price index", "Consumer price inflation", "House price index" and "$/£ exchange rate"; a second column of a series, such as its growth rate or its share of GDP, carries that unit in brackets. Rates, growth rates and shares of GDP are decimal fractions (0.05 for 5%); levels, indices and exchange rates are returned as published.
 
-The dataset is not updated anymore. No API key is needed; the workbook is large (around 28 MB), so it is cached for a year.
+The dataset is not updated anymore. The workbook is large (around 28 MB), so it is cached for a year.
+
+With deflate_with, every series is in real terms: in the money of the latest year of that country's yearly consumer price index up to the end date (see get_consumer_price_index), such as the dollar oil price ("$ Oil prices") in 2025 dollars with deflate_with="United States", which compares the oil price of 1864 with that of 2008. A year before the first year of the consumer price index has no real value. Only deflate series in money, such as prices, in the currency of that country: rates, indices and growth rates are not amounts of money.
+
+- Real Value (t) = Value (t) * CPI (latest year) / CPI (t)
 
 **See definition:** [https://www.bankofengland.co.uk/statistics/research-datasets](https://www.bankofengland.co.uk/statistics/research-datasets){:target="_blank"}
 
@@ -4926,6 +5947,10 @@ The dataset is not updated anymore. No API key is needed; the workbook is large 
 - <u>series (list[str] &#124; str &#124; None, optional):</u> The series to include, matched on
 (part of) their name without regard to case, e.g. "Bank Rate" or ["consols",
 "share prices"]. Defaults to None, which includes all of them.
+- <u>deflate_with (str &#124; None, optional):</u> The country whose yearly consumer price index
+the series are deflated with, e.g. "United States" for the dollar oil price
+or "United Kingdom" for sterling series. Defaults to None, which returns the
+series as published.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -4934,6 +5959,10 @@ moving average). Defaults to None.
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -4972,7 +6001,7 @@ Available is the scenario set of De Nederlandsche Bank (authority="dnb"), which 
 
 The variables, as decimals per year of the horizon (year 0 is the end of the quarter the set is for): the annually compounded nominal zero rates "Nominal rate 1Y", "5Y", "10Y", "20Y" and "30Y" and the euro area "Real rate EU 10Y", derived from the model's term structure, and the annual "Equity return", "Inflation EU" and "Inflation NL" (from year 1).
 
-By default the distribution per year is returned: the quantiles of the 20,000 scenarios and their mean. With scenarios=True every scenario is returned instead (20,000 columns per variable). The set is a large workbook (around 180 MB) that takes a minute or two to download and read the first time; it is cached for 30 days. No API key is needed.
+By default the distribution per year is returned: the quantiles of the 20,000 scenarios and their mean. With scenarios=True every scenario is returned instead (20,000 columns per variable). The set is a large workbook (around 180 MB) that takes a minute or two to download and read the first time; it is cached for 30 days.
 
 **See definition:** [https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/){:target="_blank"}
 
@@ -4993,6 +6022,10 @@ per year. Defaults to None, which is [0.01, 0.05, 0.25, 0.5, 0.75, 0.95,
 - <u>scenarios (bool, optional):</u> Whether to return every scenario instead of the
 distribution. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5059,6 +6092,10 @@ moving average). Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result.
 Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5123,6 +6160,10 @@ today. Defaults to False.
 of the price. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The number of trading days to calculate the
 change over. Defaults to 1.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -5188,6 +6229,10 @@ them: "Crude Oil", "Natural Gas", "Gold", "Silver", "Copper", "Corn",
 - <u>generic (bool, optional):</u> Whether the front and far contract are
 those of each day's curve, instead of today's. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Raises:**
 
@@ -5233,7 +6278,7 @@ Retrieves the life tables Eurostat compiles yearly for the countries of the Euro
 
 The measures are the probability of dying within the year (death_probability, qx), the probability of surviving it (survival_probability, px), the age-specific death rate (death_rate, mx), the number of survivors out of 100,000 births (survivors, lx), the number dying (deaths, dx), the person-years lived within the year (person_years, Lx) and above the age (total_person_years, Tx), and the life expectancy at the age (life_expectancy, ex). Probabilities and rates are fractions; the others are counts or years.
 
-No API key is needed. For countries outside Europe the UN World Population Prospects publish life tables for every country (bulk files at population.un.org/wpp), and the Human Mortality Database long national histories (with free registration).
+For countries outside Europe the UN World Population Prospects publish life tables for every country (bulk files at population.un.org/wpp), and the Human Mortality Database long national histories (with free registration).
 
 **Also known as:** mortality table, qx table, survival table, actuarial table.
 
@@ -5250,6 +6295,10 @@ No API key is needed. For countries outside Europe the UN World Population Prosp
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5288,8 +6337,6 @@ The CAPE is mostly used as a long-run valuation gauge: across the history of the
 
 Shiller, R. J. (2015). Irrational Exuberance (3rd ed.). Princeton University Press.
 
-No API key is needed.
-
 **See definition:** [https://shillerdata.com/](https://shillerdata.com/){:target="_blank"}
 
 **Also known as:** Shiller data, CAPE, Shiller PE, long-run stock returns.
@@ -5302,6 +6349,10 @@ No API key is needed.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
@@ -5314,7 +6365,7 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2026-01-01', end_date='2026-09-30')
 
-economics.get_shiller_stock_market_data()[['Price', 'Dividend', 'Earnings', 'CAPE']]
+economics.get_shiller_stock_market_data(show_columns=['Price', 'Dividend', 'Earnings', 'CAPE'])
 ```
 
 Which returns:
@@ -5333,10 +6384,154 @@ Which returns:
 
 ---
 
+## get_commodity_prices
+Retrieves the World Bank's monthly commodity prices from 1960 (The Pink Sheet): the average price of each month in US dollars of around seventy commodities, among which crude oil (Brent, WTI, Dubai), natural gas, coal, gold, silver, platinum, copper, aluminum, iron ore, nickel, zinc, grains, softs and fertilizers. Futures prices from exchanges reach back to 2000 at most, which leaves out the commodity booms and busts of the 1970s and 1980s, such as gold's peak of January 1980 and the oil shocks.
+
+With deflate_with, the prices are in real terms: in the money of the latest month of that country's consumer price index up to the end date (see get_consumer_price_index), so that the gold price of 1980 can be compared with today's. A month after the latest month of the consumer price index, which is published a few weeks late, keeps its nominal price, and a month the consumer price index skipped has no real price.
+
+The formula is as follows:
+
+$$
+\text{Real Price} (t) = \text{Price} (t) \cdot \text{CPI} (\text{latest month}) / \text{CPI} (t)
+$$
+
+The units are those of the World Bank: US dollars per barrel ($/bbl) for crude oil, per million British thermal units ($/mmbtu) for natural gas, per troy ounce ($/troy oz) for gold, silver and platinum, per metric ton ($/mt) for coal, base metals, grains, oils and fertilizers, per kilogram ($/kg) for cocoa, coffee, tea, sugar, meat, fruit, cotton and rubber, per dry metric ton unit ($/dmtu) for iron ore, per cubic meter for logs and sawnwood and cents per sheet for plywood. The Natural gas index is an index (2010=100).
+
+**Also known as:** Pink Sheet, commodity price history, long-run gold price, real gold price, real oil price, inflation-adjusted commodity prices.
+
+**Args:**
+
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodities, e.g. "Gold" or
+["Gold", "Crude oil Brent"], as named by the World Bank without commas ("Crude
+oil, Brent" is "Crude oil Brent"), in any casing. Defaults to None, which
+returns all of them.
+- <u>deflate_with (str &#124; None, optional):</u> The country whose consumer price index the
+prices are deflated with, e.g. "United States" for US dollar prices. Defaults
+to None, which returns nominal prices.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>growth (bool, optional):</u> Whether to calculate the growth. Defaults to False.
+- <u>lag (int, optional):</u> The lag in months for the growth, e.g. 12 for the change
+over a year. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result.
+Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The monthly prices with a column per commodity.
+
+**Notes:**
+
+- World Bank, "Commodity Markets: The Pink Sheet", monthly prices, licensed under
+CC BY 4.0.
+- The prices are monthly averages: a peak within a month, such as gold's $850 London
+fix of 21 January 1980, is higher than the average of its month.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date="1979-01-01", end_date="2026-10-31")
+
+prices = economics.get_commodity_prices(commodity="Gold", deflate_with="United States")
+prices.loc[["1980-01", "2011-09", "2026-01"]]
+```
+
+Which returns:
+
+|         |    Gold |
+|:--------|--------:|
+| 1980-01 | 2923.32 |
+| 2011-09 | 2631.5  |
+| 2026-01 | 4923.8  |
+
+---
+
+## get_chokepoint_transits
+Retrieves IMF PortWatch's daily ship transits through the world's maritime chokepoints from 2019, such as the Strait of Hormuz, the Suez Canal, the Bab el-Mandeb Strait, the Panama Canal, the Malacca Strait and the Bosporus, 28 in all. For each chokepoint and day it gives the number of ships that passed it (transits) or the estimated cargo they carried (trade volume, in metric tons), by ship category: Container, Dry Bulk, General Cargo, Ro-Ro and Tanker, with Cargo (all but tankers) and Total.
+
+The transits show disruptions to trade as they happen, weeks before trade statistics are published: tankers through the Strait of Hormuz fell from 36 on 28 February 2026 to 5 on 1 March, and when ships avoided the Red Sea, the monthly transits of the Bab el-Mandeb Strait fell from 2,438 in October 2023 to 1,013 in February 2024 while those around the Cape of Good Hope rose from 1,561 to 2,487.
+
+PortWatch reads the transits from the Automatic Identification System (AIS) signals ships broadcast, as collected by satellites for the UN Global Platform. A ship is counted when it crosses a chokepoint's boundary, once per transit and not again within 48 hours. Its trade volume is its deadweight tonnage (the most it can carry) times its load factor, which PortWatch estimates from the ship's draft and dimensions. It is an estimate: on a day with few transits it can be zero while ships passed.
+
+With period, the days are summed by week (Monday to Sunday), month, quarter or year. Only complete periods are returned, since PortWatch adds the latest days once a week.
+
+**Also known as:** shipping traffic, strait of Hormuz tanker traffic, Suez Canal transits, Red Sea shipping, maritime trade disruptions, oil flows.
+
+**Args:**
+
+- <u>chokepoints (str &#124; list[str] &#124; None, optional):</u> The chokepoints, e.g. "Strait
+of Hormuz" or ["Suez Canal", "Cape of Good Hope"], in any casing; a part of
+a name that identifies one chokepoint, such as "Hormuz" or "Suez", works
+too. Defaults to None, which returns all of them.
+- <u>measure (str, optional):</u> "transits" for the number of ships or "trade_volume"
+for the estimated cargo they carried in metric tons. Defaults to
+"transits".
+- <u>period (str, optional):</u> "daily", "weekly", "monthly", "quarterly" or "yearly".
+Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>growth (bool, optional):</u> Whether to calculate the growth. Defaults to False.
+- <u>lag (int, optional):</u> The lag in periods for the growth, e.g. 12 with monthly
+data for the change over a year. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result.
+Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The transits or trade volumes by day (or period), with a column
+per ship category, and per chokepoint and ship category when there are several
+chokepoints.
+
+**Notes:**
+
+- Sources: UN Global Platform; IMF PortWatch (portwatch.imf.org).
+- Arslanalp, S., Koepke, R. and Verschuur, J. (2021). "Tracking Trade from Space:
+An Application to Pacific Island Countries." IMF Working Paper No. 2021/225.
+- The days are in Coordinated Universal Time (UTC).
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date="2026-02-24", end_date="2026-03-03")
+
+economics.get_chokepoint_transits(chokepoints="Strait of Hormuz", show_columns=["Tanker", "Cargo", "Total"])
+```
+
+Which returns:
+
+|            |   Tanker |   Cargo |   Total |
+|:-----------|---------:|--------:|--------:|
+| 2026-02-24 |       49 |      44 |      93 |
+| 2026-02-25 |       59 |      57 |     116 |
+| 2026-02-26 |       45 |      44 |      89 |
+| 2026-02-27 |       37 |      27 |      64 |
+| 2026-02-28 |       36 |      21 |      57 |
+| 2026-03-01 |        5 |      15 |      20 |
+| 2026-03-02 |        1 |       3 |       4 |
+| 2026-03-03 |        1 |       3 |       4 |
+
+---
+
 ## get_economic_calendar
 Returns the scheduled releases of economic data for every country, such as inflation, employment, GDP and central bank decisions. Each release comes with its previous value, the consensus estimate and, once published, the actual value and the change. The estimate versus the actual value is what moves markets: a release far from the consensus tends to cause the largest reaction.
 
-The calendar covers well over a hundred countries, so it is best narrowed down: select a date range and filter by country, currency, impact and/or event. Filtering on events="PMI" gives the latest purchasing managers' indices with their consensus, figures that are otherwise only available as licensed data. The "Impact" column rates how much a release usually moves the market (Low, Medium or High). The "Unit" column gives the unit of each release. Releases quoted in percent (for example an inflation or unemployment rate) are converted to decimals, as is the "Change %" column, so an unemployment rate of 4.1% is returned as 0.041. Releases in other units, such as thousands of jobs or index points, keep their values, as do survey levels such as PMIs and confidence indices, which the calendar sometimes labels "%" as well.
+The calendar covers well over a hundred countries, so it is best narrowed down: select a date range and filter by country, currency, impact and/or event. Filtering on events="PMI" gives the latest purchasing managers' indices with their consensus, figures that are otherwise only available as licensed data. The "Impact" column rates how much a release usually moves the market (Low, Medium or High). The "Unit" column gives the unit of each release. Releases quoted in percent (for example an inflation or unemployment rate) are converted to decimals, as is the "Change %" column, so an unemployment rate of 4.1% is returned as 0.041. Releases in other units, such as thousands of jobs or index points, keep their values, as do survey levels such as PMIs and confidence indices, which the calendar sometimes labels "%" as well. The "Currency" column is the currency of the market a release concerns, not the unit of its value: China's balance of trade is in US dollars while its row shows CNY (the yuan figure is the separate "Balance of Trade Yuan"). The "Previous" value is the source's own and can differ from the Actual of the release before it, e.g. after a revision.
+
+The calendar comes from FinancialModelingPrep and starts in 2013 for most countries; the first release of a series is the first period of its as_series answer.
+
+With as_series=True the releases become time series: the Actual value of every event by the period it covers, with a column per country and event and the consensus Estimate next to it ("<event> Estimate"). The calendar only names the period in the event, e.g. "Producer Price Index YoY (Oct)", so the period is read from it: a month, a quarter "(Q3)", the day a weekly figure ends "(Oct/10)", a year "(2026)" or, for an event without one (an interest rate decision), the day of the release. The year is that of the release, or the year before when the period starts after the release month (a December figure released in January). Several releases of the same period, such as a flash estimate and the final figure, keep the latest one published. A figure published for two consecutive periods on the same day, such as China's January and February trade figures, is one release of both and is kept once, under the later period (February), leaving January empty; a release without a period, of an event that otherwise has one, is left out. The index is monthly for monthly events, quarterly for quarterly ones and daily, at the last day of each period, when events of different frequencies are combined. The series can be analysed further with `Econometrics(data=...)`, e.g. how unusual the latest value is (get_level_significance) or how long it has been above or below zero (get_streaks).
 
 Without a start_date and end_date the dates this Economics instance was created with are used, and without those the last 90 days. The endpoint returns at most 90 days per request, so a longer range is retrieved in 90-day windows. This requires a FinancialModelingPrep API key, passed via api_key when initializing.
 
@@ -5358,10 +6553,18 @@ and/or "High", or "All" for every release. Defaults to None, which keeps every r
 - <u>events (str &#124; list[str], optional):</u> Parts of event names to keep, matched without
 regard to case, e.g. "PMI" for every purchasing managers' index or ["CPI",
 "Unemployment"]. Defaults to None, which keeps every event.
+- <u>as_series (bool, optional):</u> Whether to return the Actual and Estimate of every
+event as time series by the period they cover, with (Country, Event) columns,
+instead of the releases by date. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
-pd.DataFrame: The economic data releases, indexed by date.
+pd.DataFrame: The economic data releases, indexed by date, or with as_series=True
+the values of every event by the period they cover.
 
 **As an example:**
 
@@ -5400,6 +6603,13 @@ In the CAPM the cost of equity is the risk-free rate plus beta times the total e
 The same data is available as Toolkit.get_market_risk_premium; both share one cached copy. This requires a FinancialModelingPrep API key, passed via api_key when initializing.
 
 **Also known as:** equity risk premium, country risk premium, MRP.
+
+**Args:**
+
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
 
 **Returns:**
 
