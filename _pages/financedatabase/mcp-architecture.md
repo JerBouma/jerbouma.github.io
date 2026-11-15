@@ -190,16 +190,17 @@ With `FD_MCP_ANALYTICS=1`, `analytics_model.py` counts tool calls and publishes 
 ## Setup Wizard
 {: .heading-as-h3}
 
-`setup_model.py` powers both the interactive wizard (`financedatabase-mcp-setup`) and the non-interactive `--client` path. It supports six clients:
+`setup_model.py` powers both the interactive wizard (`financedatabase-mcp-setup`) and the non-interactive `--client` path. It supports seven clients:
 
 | Client | `--client` | Config file |
 |:---|:---|:---|
-| Claude Desktop | `claude-desktop` | `claude_desktop_config.json` in the platform's Claude folder |
+| Claude Desktop | `claude-desktop` | `claude_desktop_config.json` in the platform's Claude folder (`~/.config/Claude/` on Linux) |
 | Claude Code | `claude-code` | `~/.claude.json` |
 | VS Code | `vscode` | `.vscode/mcp.json` in the current folder |
 | Cursor | `cursor` | `.cursor/mcp.json` in the current folder |
 | Gemini CLI | `gemini` | `~/.gemini/settings.json` |
-| Windsurf | `windsurf` | `~/.codeium/windsurf/mcp_config.json` |
+| Devin Desktop (Windsurf) | `devin` | `devin/mcp_config.json` in the user's config folder: `~/.config/devin/` (or `$XDG_CONFIG_HOME/devin/`), `%APPDATA%\devin\` on Windows |
+| Windsurf (older versions) | `windsurf` | `~/.codeium/windsurf/mcp_config.json` |
 
 The wizard writes a `finance-database` entry that starts the server through `uvx --from financedatabase[mcp] financedatabase-mcp`, so nothing needs to be installed first and no environment variables are needed. Other server entries in the file are left untouched. An existing entry is only replaced with `--overwrite` or after confirmation. If a client's config folder doesn't exist, the wizard prints the block to paste instead.
 

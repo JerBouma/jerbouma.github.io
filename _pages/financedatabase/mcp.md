@@ -233,7 +233,7 @@ Pick your client below for the exact steps; most clients accept the URL through 
 
 ### Local Clients
 
-The local server runs on your own machine through `uvx` and works with every client that supports the `stdio` transport. The setup wizard finds the config file of Claude Desktop, Claude Code, VS Code, Cursor, Gemini CLI or Windsurf and writes the entry for you:
+The local server runs on your own machine through `uvx` and works with every client that supports the `stdio` transport. The setup wizard finds the config file of Claude Desktop, Claude Code, VS Code, Cursor, Gemini CLI or Devin Desktop (Windsurf) and writes the entry for you:
 
 ```bash
 uvx --from "financedatabase[mcp]" financedatabase-mcp-setup
