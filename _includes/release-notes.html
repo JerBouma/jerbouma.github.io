@@ -1,0 +1,14 @@
+{%- comment -%}
+  Release notes of one project, newest first: {% include release-notes.html project="financetoolkit" %}
+  Data: _plugins/release_notes.rb (GitHub releases, with _data/releases/<project>.json as fallback).
+{%- endcomment -%}
+{%- assign releases = site.data.releases[include.project] -%}
+{%- for r in releases -%}
+<details class="ft-details release-note" id="{{ r.id }}"{% if forloop.index <= 3 %} open{% endif %}>
+  <summary><h3>{{ r.tag | replace: "v.", "v" }}</h3> <span class="ft-details__meta">{{ r.date | date: "%-d %B %Y" }}</span></summary>
+  <div class="release-note__body">
+{{ r.body_html }}
+  <p class="release-note__link"><a href="{{ r.url }}" target="_blank" rel="noopener"><i class="fab fa-github"></i> {{ r.tag }} on GitHub</a></p>
+  </div>
+</details>
+{%- endfor -%}
