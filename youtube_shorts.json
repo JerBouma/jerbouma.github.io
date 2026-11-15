@@ -1,5 +1,12 @@
 [
   {
+    "id": "REQ2p-OzUtM",
+    "title": "Term premium, explained in 60 seconds #Bonds #Fed #Shorts",
+    "published": "2026-11-15T16:00:27+00:00",
+    "description": "America's ten-year Treasury yield ended the week at 5.15% (Friday 13 Nov 2026). The New York Fed's model splits it in two: the rate traders expect the Fed to set over ten years (4.39% on 12 Nov) and the term premium, the extra lenders ask for locking money away that long (0.68%). In December 1981 that premium was 4.62% of a 13.55% yield.\n\nFormula: ten-year yield = expected average short rate over ten years + term premium.\n\nThis week the yield rose about 0.2 points, almost all of it in the expected rate, after October's US inflation came in above forecast and traders priced in more Fed hikes (CNN, 10 Nov 2026; CNBC, 12 Nov 2026). The premium barely moved. Pitfall: the split is a model's estimate (Adrian, Crump and Moench at the New York Fed), and other models give other levels.\n\nSearch \"Finance Toolkit MCP\" to give your AI these numbers.\n\nData: Federal Reserve Bank of New York (ACM term premium), U.S. Department of the Treasury, FinancialModelingPrep, Bank for International Settlements and BLS via the Finance Toolkit.\n\nhttps://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Bonds #Fed #Shorts",
+    "series": "finance"
+  },
+  {
     "id": "mEUqftlVZh0",
     "title": "Nvidia lost a fifth of its value in nine days #Nvidia #Stocks #Shorts",
     "published": "2026-11-13T16:00:37+00:00",
