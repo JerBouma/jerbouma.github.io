@@ -18,7 +18,7 @@ Today the Finance Toolkit and Finance Database are used by thousands of develope
 <div class="fourty-column mobile-max-column-width">
 <div class="pj-gh">
   <div class="pj-gh__who">
-    <img src="https://avatars.githubusercontent.com/u/46355364?v=4" alt="Jeroen Bouma">
+    <img src="https://avatars.githubusercontent.com/u/46355364?v=4" alt="Jeroen Bouma" width="460" height="460">
     <span><strong>Jeroen Bouma</strong>@JerBouma</span>
   </div>
   <div class="pj-gh__stats">

@@ -21,6 +21,7 @@
   {%- if content contains "\[" or content contains "\(" -%}{%- assign has_math = true -%}{%- endif -%}
 {%- endif -%}
 {% if has_math %}
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <script>
   window.MathJax = {
     output: { displayOverflow: "linebreak" }
@@ -39,17 +40,9 @@
 </style>
 {% endif %}
 
-<!-- Preconnect to external origins for faster resource loading -->
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<!-- Google Fonts — non-blocking via preload swap pattern -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap">
-</noscript>
+<!-- Inter and Mr Dafoe are served from the site (_sass/_fonts.scss); the Latin
+     subset of Inter is used by every page, so it starts loading right away -->
+<link rel="preload" href="/assets/fonts/inter/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- WebSite structured data — enables Google Sitelinks -->
 <script type="application/ld+json">

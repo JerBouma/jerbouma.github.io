@@ -1,7 +1,7 @@
 ---
 layout: splash
 title: "Jeroen Bouma"
-description: "Jeroen Bouma, Quantitative Investment Strategist, creator of the open-source Finance Toolkit and Finance Database Python libraries (14,000+ GitHub stars)."
+description: "Jeroen Bouma, Quantitative Investment Strategist and creator of the Finance Toolkit and Finance Database, open-source Python libraries for financial analysis."
 excerpt: "Quantitative Investment Strategist who analyzes the economy and financial markets and turns that into investment conclusions, sharpened by deep expertise in Python and AI. Creator of Finance Toolkit and Finance Database."
 classes: custom-splash home-v2
 ---

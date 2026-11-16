@@ -5,6 +5,8 @@ search: false
 
 @charset "utf-8";
 
+@import "fonts"; // self-hosted Inter and Mr Dafoe (assets/fonts)
+
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 @import "custom"; // premium UI overrides
