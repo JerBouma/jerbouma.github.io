@@ -4,6 +4,12 @@ software:
   name: "Finance Database"
   repository: "https://github.com/JerBouma/FinanceDatabase"
   download: "https://pypi.org/project/financedatabase/"
+# schema.org Dataset (Google Dataset Search), rendered in _includes/head/custom.html
+dataset:
+  name: "Finance Database: equities, ETFs, indices, currencies and cryptocurrencies"
+  data: "https://github.com/JerBouma/FinanceDatabase/tree/main/database"
+  keywords: ["stock list", "ticker symbols", "sector classification", "industry classification", "ETF list", "stock indices", "ISIN", "FIGI"]
+  variables: ["symbol", "name", "summary", "currency", "sector", "industry group", "industry", "exchange", "MIC", "market", "country", "city", "website", "market cap tier", "ISIN", "CUSIP", "FIGI", "ETF category", "ETF family", "index category", "delisted"]
 title: Finance Database
 excerpt: The Finance Database features 300,000+ symbols containing Equities, ETFs, Indices, Currencies and Cryptocurrencies. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 description: "The Finance Database is an open-source Python package with 300,000+ symbols: equities, ETFs, indices, currencies and cryptocurrencies."
