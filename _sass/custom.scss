@@ -6441,3 +6441,15 @@ body.ft-overview .page__content {
     max-width: none !important;
   }
 }
+
+// "Jump to: Python example · MCP question · Parameters" under the first
+// paragraph of a long function page (_plugins/docs_metric_pages.rb)
+.page__content p.docs-jump {
+  margin: -0.4em 0 1.4em;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+
+  a { white-space: nowrap; }
+}
+
+#python-example, #mcp-question, #parameters { scroll-margin-top: 90px; }

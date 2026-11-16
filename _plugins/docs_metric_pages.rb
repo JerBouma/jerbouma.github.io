@@ -1,6 +1,7 @@
 require "cgi"
 require "json"
 require "kramdown"
+require "uri"
 
 # Structures the Finance Toolkit documentation as one introduction page per
 # class plus one page per function.
@@ -147,7 +148,8 @@ module DocsMetricPages
   def plain(markdown)
     markdown.gsub(/\$\$.*?\$\$/m, " ")
             .gsub(/\[([^\]]+)\]\([^)]+\)(\{:[^}]*\})?/, '\1')
-            .gsub(/[*_`]/, "")
+            .gsub(/[*`]/, "")
+            .gsub(/(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])/, "") # emphasis, not snake_case names
             .gsub(/\s+/, " ").strip
   end
 
@@ -155,6 +157,7 @@ module DocsMetricPages
   # it is a one-liner ("Calculate the Ljung-Box test for autocorrelation."),
   # and with a line about the page itself when even that stays short.
   def description_for(desc)
+    formula = desc.include?("$$")
     paragraphs = desc.split(/\n\s*\n/)
                      .reject { |p| p.lstrip.start_with?("- ", "$$", "|") }
                      .map { |p| plain(p) }
@@ -168,12 +171,26 @@ module DocsMetricPages
     end
     text = paragraphs.shift.to_s
     text = "#{text} #{paragraphs.shift}" while text.length < 110 && !paragraphs.empty?
-    text = "#{text} Parameters and examples with the Finance Toolkit." if text.length < 110
     text = text.sub(/:\z/, ".")
-    return text if text.length <= 158
-    cut = text[0, 155]
-    cut = cut[0, cut.rindex(" ") || cut.length].sub(/[,;:]\z/, "")
-    "#{cut}..."
+    # whole sentences while they fit, so a search result doesn't end in "..."
+    sentences = text.split(/(?<=[.!?])\s+(?=[A-Z(])/)
+    fitted = sentences.each_with_object([]) do |sentence, kept|
+      break kept if (kept + [sentence]).join(" ").length > 158
+      kept << sentence
+    end.join(" ")
+    if fitted.empty?
+      # one long sentence: end it at the last clause break that leaves enough
+      # to read ("... (2004): the operating assets minus ..." keeps the part
+      # before the colon), and only cut mid-clause when there is none
+      cut = text[0, 156]
+      stop = [": ", "; ", " – "].lazy.map { |sep| cut.rindex(sep) }.find { |i| i && i >= 70 }
+      return "#{cut[0, stop].sub(/[,;:]\z/, "")}." if stop
+      return "#{cut[0, cut.rindex(" ") || cut.length].sub(/[,;:]\z/, "")}..."
+    end
+    closing = [formula ? " Includes the formula, parameters and a Python example." : nil,
+               " Includes the parameters and a Python example."].compact
+                .find { |c| fitted.length + c.length <= 158 && fitted.length < 120 }
+    closing ? "#{fitted}#{closing}" : fitted
   end
 
   # The theme runs <title> through markdownify, where a bare "|" turns the
@@ -267,7 +284,7 @@ module DocsMetricPages
     spec = site.data.dig("financetoolkit_mcp", key, fn_name)
     return "" unless spec
     out = +"Or, after setting up the [Finance Toolkit MCP](/projects/financetoolkit/mcp), ask:\n{: .docs-boilerplate}\n\n"
-    out << %(<div class="ca-q docs-mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
+    out << %(<div class="ca-q docs-mcp-question" id="mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
   end
 
   # The econometrics functions run on any data, not only prices: Econometrics(data=...)
@@ -304,19 +321,56 @@ module DocsMetricPages
     out
   end
 
+  DEFINITION_SOURCES = {
+    "oecd.org" => "OECD", "stlouisfed.org" => "FRED", "ec.europa.eu" => "European Commission",
+    "bis.org" => "BIS", "newyorkfed.org" => "Federal Reserve Bank of New York",
+    "federalreserve.gov" => "Federal Reserve", "eiopa.europa.eu" => "EIOPA",
+    "bankofengland.co.uk" => "Bank of England", "esma.europa.eu" => "ESMA", "ecb.europa.eu" => "ECB",
+  }.freeze
+
+  # "**See definition:** [https://en.wikipedia.org/wiki/Sharpe_ratio](...)" reads
+  # "Sharpe ratio (Wikipedia)"; other sources show the publisher's name
+  def readable_definition_link(desc)
+    desc.gsub(/(\*\*See definition:\*\* )\[(https?:\/\/[^\]\s]+)\]\(\2\)/) do
+      lead, url = Regexp.last_match(1), Regexp.last_match(2)
+      host = URI(url).host.to_s.sub(/\Awww\./, "") rescue ""
+      label = if host.end_with?("wikipedia.org") && url.include?("/wiki/")
+                "#{CGI.unescape(url.split('/wiki/').last).tr('_', ' ').sub(/#.*\z/, '')} (Wikipedia)"
+              else
+                DEFINITION_SOURCES.find { |domain, _| host.end_with?(domain) }&.last || host
+              end
+      "#{lead}[#{label}](#{url})"
+    end
+  rescue StandardError
+    desc
+  end
+
   def content_for(site, name, key, fn_name, parts, related)
     cls = CLASSES[key]
     out = +""
-    out << parts[:description] << "\n\n"
+    description = readable_definition_link(parts[:description])
+    # long explanations push the example far down: a line under the first
+    # paragraph jumps straight to the code, the MCP question or the parameters
+    parameters = parameters_for(parts[:arguments])
+    mcp = mcp_question(site, key, fn_name)
+    has_example = !(parts[:example].empty? && parameters.empty? && mcp.empty?)
+    if description.length > 1200 && has_example
+      first, rest = description.split(/\n\s*\n/, 2)
+      if rest && !first.lstrip.start_with?("$$", "- ", "|")
+        links = [%(<a href="#python-example">Python example</a>)]
+        links << %(<a href="#mcp-question">MCP question</a>) unless mcp.empty?
+        links << %(<a href="#parameters">Parameters</a>) unless parameters.empty?
+        description = "#{first}\n\n<p class=\"docs-jump\">Jump to: #{links.join(' · ')}</p>\n\n#{rest}"
+      end
+    end
+    out << description << "\n\n"
     # Python, or the same question through the Finance Toolkit MCP: the
     # question asks for exactly what the example's first table shows, so it
     # sits between the code and "Which returns:"
-    mcp = mcp_question(site, key, fn_name)
-    parameters = parameters_for(parts[:arguments])
-    unless parts[:example].empty? && parameters.empty? && mcp.empty?
-      out << "## #{name} in Python#{' or via the MCP' unless mcp.empty?}\n\n"
+    if has_example
+      out << "## #{name} in Python#{' or via the MCP' unless mcp.empty?}\n{: #python-example}\n\n"
       out << "Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
-      out << "```python\npip install financetoolkit -U\n```\n\n"
+      out << "```bash\npip install financetoolkit -U\n```\n\n"
       out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless parts[:example].empty?
       code, returns, rest = parts[:example].partition(/^Which returns:/)
       out << code.rstrip << "\n\n" unless code.strip.empty?
@@ -325,7 +379,7 @@ module DocsMetricPages
       out << own_data(fn_name, parameters) if key == "econometrics"
     end
     unless parameters.empty?
-      out << "## Parameters\n\n"
+      out << "## Parameters\n{: #parameters}\n\n"
       out << "`#{fn_name}` accepts the following parameters.\n{: .docs-boilerplate}\n\n"
       out << parameters_table(site, fn_name, parameters) << "\n"
     end
