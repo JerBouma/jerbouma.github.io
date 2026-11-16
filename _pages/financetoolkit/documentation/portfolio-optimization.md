@@ -1,9 +1,9 @@
 ---
 title: Portfolio Optimization
-seo_title: "Portfolio Optimization | Finance Toolkit"
+seo_title: "Portfolio Optimization in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Portfolio Optimization module builds portfolios from the tickers of a Toolkit, from minimum variance, maximum Sharpe ratio and risk parity weights to the efficient frontier, risk contributions, stress tests and attribution.
-description: The Portfolio Optimization module builds portfolios from the tickers of a Toolkit, from minimum variance, maximum Sharpe ratio and risk parity weights to the efficient frontier, risk contributions, stress tests and attribution.
+description: "Build minimum variance, maximum Sharpe and risk parity portfolios, plot the efficient frontier and run stress tests and attribution in Python."
 author_profile: false
 permalink: /projects/financetoolkit/docs/portfolio-optimization
 classes: wide-sidebar

@@ -1,9 +1,9 @@
 ---
 title: ETF
-seo_title: "ETF Module | Finance Toolkit"
+seo_title: "ETF Analysis in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The ETF module analyzes exchange-traded funds, from their holdings, sector and country weightings to their tracking, concentration, overlap, valuation and liquidity.
-description: The ETF module analyzes exchange-traded funds, from their holdings, sector and country weightings to their tracking, concentration, overlap, valuation and liquidity.
+description: "Analyze ETFs in Python: holdings, sector and country weights, tracking error, concentration, overlap, valuation and liquidity with the Finance Toolkit."
 author_profile: false
 permalink: /projects/financetoolkit/docs/etf
 classes: wide-sidebar

@@ -1,7 +1,8 @@
 ---
 permalink: /projects/financedatabase/mcp
 title: Finance Database MCP Server
-seo_title: Finance Database MCP Server
+seo_title: "Finance Database MCP Server: Find Stocks and ETFs with AI"
+seo_title_suffix: false
 excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Database, hosted or on your own machine, and find equities, ETFs, indices, currencies and cryptocurrencies in plain English."
 description: "Open-source MCP server for the Finance Database: find 300,000+ stocks, ETFs and indices by sector, country or issuer in Claude, ChatGPT or Cursor."
 classes: wide-sidebar

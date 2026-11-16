@@ -1,9 +1,9 @@
 ---
 title: Technicals
-seo_title: "Technicals Module | Finance Toolkit"
+seo_title: "Technical Indicators in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Technicals Module contains 50+ Technical Indicators that can be used to analyze companies. These ratios are divided into 4 categories which are breadth, momentum, overlap and volatility. Each indicator is calculated using the data from the Toolkit module.
-description: "Reference for every function and parameter in the Finance Toolkit's Technicals module: 50+ breadth, momentum, overlap and volatility indicators in Python."
+description: "Calculate 50+ technical indicators in Python, from RSI, MACD and Bollinger Bands to breadth, momentum, overlap and volatility, with the Finance Toolkit."
 author_profile: false
 permalink: /projects/financetoolkit/docs/technicals
 classes: wide-sidebar

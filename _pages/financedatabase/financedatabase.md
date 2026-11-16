@@ -5,6 +5,8 @@ software:
   repository: "https://github.com/JerBouma/FinanceDatabase"
   download: "https://pypi.org/project/financedatabase/"
 title: Finance Database
+seo_title: "Finance Database: 300,000+ Stocks, ETFs and Indices"
+seo_title_suffix: false
 excerpt: The Finance Database features 300,000+ symbols containing Equities, ETFs, Indices, Currencies and Cryptocurrencies. It therefore allows you to obtain a broad overview of sectors, industries, types of investments and much more.
 description: "The Finance Database is an open-source Python package with 300,000+ symbols: equities, ETFs, indices, currencies and cryptocurrencies."
 classes: wide-sidebar

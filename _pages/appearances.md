@@ -1,6 +1,6 @@
 ---
 title: Appearances
-description: My podcast appearances and public talks connecting finance theory with open-source Python.
+description: "Podcasts, talks and hackathon jury work on open-source Python for finance, from the Finance Toolkit to the OpenBB Terminal, with links to each."
 permalink: /appearances
 redirect_from:
   - /media

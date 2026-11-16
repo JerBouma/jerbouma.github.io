@@ -1,6 +1,8 @@
 ---
 title: Literature
-description: Financial literature, articles, and papers that inform my work in quantitative finance.
+seo_title: "Quantitative Finance Reading List: Papers and Books"
+seo_title_suffix: false
+description: "A reading list of the papers, articles and books behind my work: portfolio optimization, factor investing, behavioral finance, econometrics and AI."
 permalink: /literature
 layout: single
 classes: custom-document projects-v2 literature-v2

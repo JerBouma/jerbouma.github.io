@@ -1,9 +1,9 @@
 ---
 title: Risk
-seo_title: "Risk Module | Finance Toolkit"
+seo_title: "Value at Risk and Risk Metrics in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Risk module is meant to calculate important risk metrics such as Value at Risk (VaR), Conditional Value at Risk (cVaR), Maximum Drawdown, Correlations, GARCH, EWMA and more.
-description: "Reference for every function and parameter in the Finance Toolkit's Risk module: Value at Risk, Conditional VaR, maximum drawdown, GARCH and EWMA."
+description: "Calculate Value at Risk (VaR), Conditional VaR, maximum drawdown, GARCH and EWMA volatility and other risk metrics in Python with the Finance Toolkit."
 author_profile: false
 permalink: /projects/financetoolkit/docs/risk
 classes: wide-sidebar

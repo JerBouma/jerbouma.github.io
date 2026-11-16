@@ -1,9 +1,9 @@
 ---
 title: Ratios
-seo_title: "Ratios Module | Finance Toolkit"
+seo_title: "Financial Ratios in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Ratios Module contains 80+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
-description: "Reference for every function and parameter in the Finance Toolkit's Ratios module: 80+ efficiency, liquidity, profitability, solvency and valuation ratios."
+description: "Calculate 80+ financial ratios in Python from financial statements: efficiency, liquidity, profitability, solvency and valuation, with formulas and examples."
 author_profile: false
 permalink: /projects/financetoolkit/docs/ratios
 classes: wide-sidebar

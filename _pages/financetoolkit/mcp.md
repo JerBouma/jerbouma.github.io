@@ -1,6 +1,8 @@
 ---
 permalink: /projects/financetoolkit/mcp
 title: Finance Toolkit MCP Server
+seo_title: "Finance Toolkit MCP Server: Financial Data for Claude and AI"
+seo_title_suffix: false
 excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Toolkit, hosted or on your own machine, and analyze stocks, financial statements, technical indicators and macro data in plain English."
 description: "Open-source MCP server for stock analysis: 600+ financial methods, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
 classes: wide-sidebar

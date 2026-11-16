@@ -2,6 +2,7 @@
 permalink: /projects/financetoolkit/releases
 title: Finance Toolkit Release Notes
 seo_title: Release Notes | Finance Toolkit
+seo_title_suffix: false
 excerpt: "What changed in every Finance Toolkit release, newest first, from the release notes on GitHub."
 description: "Every Finance Toolkit release with its notes, newest first: new methods, changes and fixes in the open-source Python package and its MCP server."
 classes: wide-sidebar
