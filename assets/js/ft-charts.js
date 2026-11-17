@@ -12,6 +12,23 @@
  * with the page.
  */
 (function () {
+  // The Python and MCP buttons in an article chart's top right (_includes/ft-chart.html
+  // with code= or mcp=) open the code or the question under the chart, one at a time
+  Array.prototype.forEach.call(document.querySelectorAll('.ft-chart-box'), function (box) {
+    var buttons = box.querySelectorAll('.ft-chart-action');
+    Array.prototype.forEach.call(buttons, function (button) {
+      button.addEventListener('click', function () {
+        var open = button.getAttribute('aria-expanded') !== 'true';
+        Array.prototype.forEach.call(buttons, function (b) {
+          var on = open && b === button;
+          b.setAttribute('aria-expanded', on ? 'true' : 'false');
+          b.classList.toggle('is-on', on);
+          box.querySelector('.ft-chart-panel[data-panel="' + b.getAttribute('data-panel') + '"]').hidden = !on;
+        });
+      });
+    });
+  });
+
   // charts only meant for the Medium images stay hidden and undrawn on the site
   var boxes = Array.prototype.slice.call(document.querySelectorAll('.ft-chart[data-chart]')).filter(function (b) {
     return !b.closest('.mcp-show__cell--medium') || window.mediumExport;

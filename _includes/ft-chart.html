@@ -5,8 +5,36 @@
   The data URL carries the build time (?v=), so after a deploy browsers and
   Cloudflare fetch the new data instead of a cached copy without the new charts.
   The page loads the script once with {% include ft-charts-script.html %}.
+
+  Optional, for the articles: code= (Markdown with a fenced Python block,
+  usually captured into a variable) and mcp= (a question for the Finance Toolkit MCP
+  server). Each adds a button to the chart's top right that opens the code or
+  the question under the chart (toggled in ft-charts.js).
 {%- endcomment -%}
 {%- assign ft_src = include.src | default: "/assets/data/financetoolkit-charts.json" -%}
+{%- if include.code or include.mcp -%}
+<div class="ft-chart-box">
+<div class="ft-chart-actions">
+{%- if include.code %}<button type="button" class="ft-chart-action" data-panel="python" aria-expanded="false"><i class="fab fa-python" aria-hidden="true"></i><span>Python</span></button>{% endif -%}
+{%- if include.mcp %}<button type="button" class="ft-chart-action" data-panel="mcp" aria-expanded="false"><i class="fas fa-robot" aria-hidden="true"></i><span>MCP</span></button>{% endif -%}
+</div>
 <div class="ft-chart" data-chart="{{ include.id }}" data-src="{{ ft_src }}?v={{ site.time | date: '%s' }}" role="figure" aria-label="{{ include.label | default: include.id }}">
   <div class="ft-chart__loading" aria-hidden="true"></div>
 </div>
+{%- if include.code %}
+<div class="ft-chart-panel" data-panel="python" hidden>
+{{ include.code | markdownify }}
+</div>
+{%- endif -%}
+{%- if include.mcp %}
+<div class="ft-chart-panel" data-panel="mcp" hidden>
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>{{ include.mcp | strip | escape }}</p></div>
+<p class="ft-chart-panel__note">Ask this through the <a href="/projects/financetoolkit/mcp">Finance Toolkit MCP server</a>, from Claude, ChatGPT or any other MCP client.</p>
+</div>
+{%- endif %}
+</div>
+{%- else -%}
+<div class="ft-chart" data-chart="{{ include.id }}" data-src="{{ ft_src }}?v={{ site.time | date: '%s' }}" role="figure" aria-label="{{ include.label | default: include.id }}">
+  <div class="ft-chart__loading" aria-hidden="true"></div>
+</div>
+{%- endif -%}

@@ -269,3 +269,54 @@
   &[open] .chart-code__hide { display: inline; }
   > .highlighter-rouge, > div.language-python { margin-top: 10px; }
 }
+
+// An article chart with Python and MCP buttons in its top right
+// (_includes/ft-chart.html with code= or mcp=); the panels open under the chart
+.ft-chart-box {
+  position: relative;
+  margin: 1.6em 0;
+
+  > .ft-chart { margin: 0; }
+  // room for the buttons next to the title (and the tabs of a tabbed chart)
+  .ft-chart__head { padding-right: 190px; }
+}
+
+.ft-chart-actions {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 2;
+  display: flex;
+  gap: 6px;
+}
+
+.ft-chart-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--accent-color);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover { border-color: var(--accent-color); }
+  &.is-on { color: var(--accent-orange); border-color: var(--accent-orange); background: rgba(249, 115, 22, 0.1); }
+}
+
+.ft-chart-panel {
+  margin-top: 10px;
+  > .highlighter-rouge, > div.language-python { margin: 0; }
+  .ca-q { margin: 0 0 8px; }
+}
+
+.page__content .ft-chart-panel__note { margin: 0 !important; color: var(--text-muted); font-size: 0.85rem !important; }
+
+// on a phone the buttons show only their icons
+@media (max-width: 600px) {
+  .ft-chart-box .ft-chart__head { padding-right: 96px; }
+  .ft-chart-action span { display: none; }
+}
