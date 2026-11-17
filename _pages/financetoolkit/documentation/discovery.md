@@ -23,7 +23,7 @@ Use it in Claude, ChatGPT or another AI assistant through the [Finance Toolkit M
 pip install financetoolkit -U
 ```
 
-{% include algolia.html %}
+{% include docs-search.html %}
 
 {% include financetoolkit-getting-started/discovery.md %}
 

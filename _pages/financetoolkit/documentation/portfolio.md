@@ -23,7 +23,7 @@ To install the FinanceToolkit it simply requires the following:
 pip install financetoolkit -U
 ```
 
-{% include algolia.html %}
+{% include docs-search.html %}
 
 {% include financetoolkit-getting-started/portfolio.md %}
 

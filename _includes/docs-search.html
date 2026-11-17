@@ -1,0 +1,16 @@
+{%- comment -%}
+  The search field and module switcher at the top of the Finance Toolkit docs
+  pages. The field opens the site search (_includes/site-search.html).
+{%- endcomment -%}
+<div class="docs-search-wrap">
+<button type="button" class="docs-search" data-site-search aria-label="Search the documentation"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4"/></svg><span class="docs-search__text">Search the documentation…</span><kbd class="docs-search__key">/</kbd></button>
+</div>
+
+{% assign ft_modules_group = site.data.navigation["financetoolkit-docs"] | where: "title", "Modules" | first %}
+{% assign ft_modules = ft_modules_group.children %}
+<div class="ft-module-switcher">
+  <span class="ft-module-switcher__label">Modules:</span>
+  {% for ft_module in ft_modules %}
+    <a href="{{ ft_module.url | relative_url }}" class="ft-module-pill{% if ft_module.url == page.url %} active{% endif %}">{{ ft_module.title }}</a>
+  {% endfor %}
+</div>

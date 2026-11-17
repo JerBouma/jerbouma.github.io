@@ -1,0 +1,23 @@
+{%- comment -%}
+  Site-wide search. The button sits in the masthead (and on the docs module
+  pages, _includes/docs-search.html); the dialog opens on a click, on "/" or on
+  Ctrl/Cmd+K. The script (assets/js/site-search.js) loads the two indexes from
+  _plugins/site_search.rb the first time the dialog opens and matches in the
+  browser. Styles: _sass/custom.scss, "Site search".
+{%- endcomment -%}
+{%- capture v %}{{ site.time | date: "%s" }}{% endcapture -%}
+<dialog class="site-search" id="site-search" aria-label="Search the site"
+  data-pages="{{ '/assets/data/search.json' | relative_url }}?v={{ v }}"
+  data-content="{{ '/assets/data/search-content.json' | relative_url }}?v={{ v }}">
+  <div class="site-search__box">
+    <div class="site-search__field">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4"/></svg>
+      <input type="search" id="site-search-input" placeholder="Search the docs, articles and pages" autocomplete="off"
+        spellcheck="false" role="combobox" aria-expanded="false" aria-controls="site-search-results" aria-autocomplete="list">
+      <button type="button" class="site-search__close" aria-label="Close search">Esc</button>
+    </div>
+    <ul class="site-search__results" id="site-search-results" role="listbox" aria-label="Results"></ul>
+    <p class="site-search__hint" id="site-search-hint" aria-live="polite"></p>
+  </div>
+</dialog>
+<script src="{{ '/assets/js/site-search.js' | relative_url }}?v={{ v }}" defer></script>
