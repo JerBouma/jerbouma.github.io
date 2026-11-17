@@ -1,4 +1,22 @@
 <!-- start custom footer snippets -->
 {% if page.url contains "/projects/financetoolkit/docs" %}{% include mcp-notice.html %}{% endif %}
 
+{% if content contains "mcp-demo-video" %}
+<script>
+  // The launch and demo videos autoplay, except for readers who asked their
+  // system for less motion or their browser to save data: for them the video
+  // waits for the play button, and only its first frame loads.
+  (function () {
+    var quiet = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+                (navigator.connection && navigator.connection.saveData);
+    if (!quiet) return;
+    document.querySelectorAll('.mcp-demo-video').forEach(function (v) {
+      v.dataset.noAutoplay = '1';
+      v.removeAttribute('autoplay');
+      v.preload = 'metadata';
+      v.pause();
+    });
+  })();
+</script>
+{% endif %}
 <!-- end custom footer snippets -->

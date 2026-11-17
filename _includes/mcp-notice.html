@@ -1,7 +1,8 @@
 {%- comment -%}
   A small card in the bottom-right corner of the Finance Toolkit docs that
   tells readers without programming experience about the MCP server. It shows
-  on someone's first visit to the docs and follows them from page to page
+  on someone's first visit to the docs (on phones only after the first screen
+  has been scrolled past) and follows them from page to page
   during that visit until they close it; after closing it, or in any later
   visit, it stays away. The state lives in the reader's own browser only
   (localStorage and sessionStorage), and without storage the card never shows.
@@ -28,7 +29,19 @@
       }
     } catch (e) { show = false; }
     if (!show) return;
-    card.hidden = false;
+    function reveal() { card.hidden = false; }
+    // on a phone the card would cover the opening paragraph, so it waits
+    // until the reader has scrolled past the first screen
+    if (window.innerWidth < 700) {
+      var onScroll = function () {
+        if (window.scrollY < window.innerHeight) return;
+        window.removeEventListener('scroll', onScroll);
+        reveal();
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+    } else {
+      reveal();
+    }
     card.querySelector('.mcp-notice__close').addEventListener('click', function () {
       card.hidden = true;
       try { localStorage.setItem(DISMISSED, '1'); } catch (e) {}

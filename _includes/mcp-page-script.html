@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // pageshow covers bfcache (back/forward); click is the last-resort fallback.
   (function () {
     var v = document.querySelector(".mcp-demo-video");
-    if (!v) return;
+    if (!v || v.dataset.noAutoplay) return;
     function tryPlay() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
     tryPlay();
     v.addEventListener("canplay", tryPlay);
