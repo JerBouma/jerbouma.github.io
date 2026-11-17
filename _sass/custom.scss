@@ -6622,6 +6622,7 @@ body.ft-overview .page__content {
   .fdx-status { color: var(--text-muted); font-size: 0.9rem; margin: 12px 0; }
 
   .fdx-table-wrap {
+    container: fdx-table / inline-size;
     overflow-x: auto;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -6637,14 +6638,21 @@ body.ft-overview .page__content {
     border-collapse: collapse;
     font-size: 0.84rem;
 
-    th, td { padding: 7px 12px; text-align: left; border-bottom: 1px solid var(--card-border); white-space: nowrap; }
+    th, td { text-align: left; border-bottom: 1px solid var(--card-border); }
+
     th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); background: var(--card-bg); }
-    td:nth-child(2) { white-space: normal; min-width: 200px; }
+    td:nth-child(2) { min-width: 9em; }
+    // the cells wrap, and the last columns drop out as the table gets narrower,
+    // so it never scrolls sideways (they are all in the CSV)
+    @container fdx-table (max-width: 960px) { th:nth-child(n+7), td:nth-child(n+7) { display: none; } }
+    @container fdx-table (max-width: 800px) { th:nth-child(n+6), td:nth-child(n+6) { display: none; } }
+    @container fdx-table (max-width: 640px) { th:nth-child(n+5), td:nth-child(n+5) { display: none; } }
+    @container fdx-table (max-width: 480px) { th:nth-child(n+4), td:nth-child(n+4) { display: none; } td:nth-child(2) { min-width: 0; } }
     tbody tr:last-child td { border-bottom: 0; }
     tbody tr:hover td { background: rgba(56, 189, 248, 0.05); }
   }
 
-  .fdx-symbol { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 600; color: var(--accent-color); }
+  .fdx-symbol { white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 600; color: var(--accent-color); }
   .fdx-empty { color: var(--text-muted); }
 
   .fdx-more { display: block; margin: 12px auto 0; }
@@ -6762,8 +6770,14 @@ body.ft-overview .page__content {
 
   .fdx-bar-row__n { text-align: right; font-variant-numeric: tabular-nums; color: var(--text-muted); }
 
-  .page__content & .fdx-table th { padding: 9px 12px; }
 }
 
 @keyframes fdx-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @media (prefers-reduced-motion: reduce) { .fdx .fdx-bar-row__fill { animation: none; } }
+
+// the site's tables pad their cells 18px 24px (.page__content table:not(.highlight),
+// !important); the explorer's rows are denser, and tighter still on a phone
+.page__content .fdx table.fdx-table {
+  thead th, tbody td { padding: 10px 14px !important; }
+  @container fdx-table (max-width: 480px) { thead th, tbody td { padding: 8px 8px !important; } }
+}
