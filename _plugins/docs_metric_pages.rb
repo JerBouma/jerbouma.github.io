@@ -626,6 +626,28 @@ module DocsMetricPages
     out.join("\n\n")
   end
 
+  # The function's own page keeps to the default: the docstring's lines on the
+  # variants go and a line links to their pages instead.
+  def focus_text(description, focus, siblings)
+    lines = description.lines.map(&:rstrip)
+    Array(focus["cut"]).each do |from, upto|
+      i = lines.index { |l| l.include?(from) }
+      next unless i
+      prev = (0...i).to_a.reverse.find { |j| !lines[j].strip.empty? }
+      i = prev if prev && lines[prev].strip == "$$" # the formula block it opens
+      j = upto ? (lines.index { |l| l.include?(upto) } || lines.size) : lines.size
+      lines.slice!(i...j) if j > i
+    end
+    Array(focus["trim"]).each do |t|
+      lines.map! { |l| (k = l.index(t)) ? l[0...k] : l }
+    end
+    text = lines.join("\n").gsub(/\n{3,}/, "\n\n").strip
+    return text if siblings.empty?
+    links = siblings.map { |t, u| "[#{t}](#{u})" }
+    list = links.size > 1 ? "#{links[0..-2].join(', ')} and #{links[-1]}" : links[0]
+    text + "\n\nThe same function with another argument gives the #{list}, each on its own page."
+  end
+
   def variant_example(example, fn_name, argument, drop = [])
     code = example.partition(/^Which returns:/).first.strip
     code = code.sub(/\.#{Regexp.escape(fn_name)}\(([^)]*)\)/) do
@@ -642,6 +664,7 @@ module DocsMetricPages
     text += "\n\nIn the Finance Toolkit this is #{call}" +
             (base ? "; the [#{base[:title]}](#{base[:url]}) page has the function's full description." : ".")
     example = variant["example"] ? variant["example"].strip : variant_example(parts[:example], fn_name, variant["argument"], variant["drop"])
+    example += "\n\nWhich returns:\n\n#{variant['output'].strip}" if variant["output"]
     { :description => text, :arguments => parts[:arguments], :example => example }
   end
 
@@ -680,9 +703,13 @@ module DocsMetricPages
         fn_name, body = sections[base_anchor]
         parts   = parse(body)
         variant = site.data.dig("docs_variants", key, anchor)
-        if variant
+        if variant && variant["argument"]
           base = anchor == base_anchor ? nil : { :title => functions[base_anchor][:title], :url => urls[base_anchor] }
           parts = variant_parts(parts, variant, fn_name, base)
+        elsif variant
+          siblings = functions.keys.select { |a| a.start_with?("#{anchor}--") }
+                              .map { |a| [functions[a][:title], urls[a]] }
+          parts = parts.merge(:description => focus_text(parts[:description], variant, siblings))
         end
         # a function alone in its sidebar group falls back to its neighbours in
         # the whole class, so every page links onwards

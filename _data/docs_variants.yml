@@ -9,40 +9,147 @@
 #             or the whole formula block when the line sits inside one)
 #   intro     optional: words put in front of a docstring bullet that starts mid-sentence
 #   drop      optional: arguments of the function's own example that don't apply here
+#   output    what the example returns, from _scripts/docs_variant_outputs.py
 #   example   optional: the code example, when adding the argument to the
 #             function's own example doesn't read right
+#
+# The function's own page (the anchor without "--") keeps to the default. Its
+# entry has no argument but:
+#   cut       [from, until] pairs: the lines from the one containing "from" up to
+#             the one containing "until" go (until left out: to the end)
+#   trim      sentences that go, from where the text is found to the line's end
+# and the page links to the variant pages instead.
 performance:
+  get_sharpe_ratio:
+    cut: [["The plain Sharpe ratio only looks at", "**See definition:**"]]
+    trim: [" The variants are also known as"]
   get_sharpe_ratio--adjusted:
     argument: 'method="adjusted"'
+    output: |
+      | Date   |     SPY |     TLT |     GLD |   BTCUSD |
+      |:-------|--------:|--------:|--------:|---------:|
+      | 2021   |  2.0065 | -0.3649 | -0.5182 |   0.6323 |
+      | 2022   | -0.8295 | -1.8794 | -0.1654 |  -1.1936 |
+      | 2023   |  1.5603 |  0.0303 |  0.6773 |   1.6328 |
+      | 2024   |  1.4898 | -0.8126 |  1.3636 |   1.4048 |
+      | 2025   |  0.7316 |  0.0595 |  2.3471 |  -0.1906 |
     match: ['- `"adjusted"`']
   get_sharpe_ratio--probabilistic:
     argument: 'method="probabilistic"'
+    output: |
+      | Date   |    SPY |    TLT |    GLD |   BTCUSD |
+      |:-------|-------:|-------:|-------:|---------:|
+      | 2021   | 0.9751 | 0.3584 | 0.3016 |   0.7363 |
+      | 2022   | 0.2047 | 0.0321 | 0.4346 |   0.116  |
+      | 2023   | 0.939  | 0.512  | 0.7505 |   0.9511 |
+      | 2024   | 0.9276 | 0.2083 | 0.9094 |   0.9221 |
+      | 2025   | 0.7708 | 0.5236 | 0.9876 |   0.4249 |
     drop: [annualize] # a probability can't be annualized
     match: ['- `"probabilistic"`']
   get_sharpe_ratio--deflated:
     argument: 'method="deflated"'
-    drop: [annualize]
+    output: |
+      | Date   |    SPY |    TLT |    GLD |
+      |:-------|-------:|-------:|-------:|
+      | 2021   | 0.2164 | 0.0111 | 0.0003 |
+      | 2022   | 0.0001 | 0.0001 | 0.0011 |
+      | 2023   | 0.1043 | 0.0289 | 0.013  |
+      | 2024   | 0.099  | 0.003  | 0.069  |
+      | 2025   | 0.0157 | 0.031  | 0.3167 |
+    # without BTCUSD: with a crypto among the tickers method="deflated" returns no rows
+    example: |
+      ```python
+      from financetoolkit import Toolkit
+
+      toolkit = Toolkit(
+          ["SPY", "TLT", "GLD"],
+          api_key="FINANCIAL_MODELING_PREP_KEY",
+          start_date="2021-01-01",
+          end_date="2025-12-31",
+          benchmark_ticker=None,
+      )
+
+      toolkit.performance.get_sharpe_ratio(method="deflated")
+      ```
     match: ['- `"deflated"`']
+
 risk:
+  get_volatility:
+    cut:
+      - ['- `"parkinson"`', "The formula is as follows (with"]
+      - ["Parkinson Variance}", "With `rolling`"]
+      - ["For more information about the range-based"]
+    trim: [" The `method` parameter selects", " The range-based estimators take", " The range-based estimators are also known as"]
   get_volatility--parkinson:
     argument: 'method="parkinson"'
+    output: |
+      | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+      |:-------|---------:|---------:|--------:|--------:|------------:|
+      | 2021   |   0.0544 |   0.7735 |  0.1062 |  0.1467 |      0.1073 |
+      | 2022   |   0.1013 |   0.5457 |  0.1876 |  0.1557 |      0.1916 |
+      | 2023   |   0.0736 |   0.3792 |  0.1084 |  0.1332 |      0.1101 |
+      | 2024   |   0.0597 |   0.464  |  0.0973 |  0.1479 |      0.0989 |
+      | 2025   |   0.0744 |   0.3779 |  0.1491 |  0.1911 |      0.152  |
     intro: Parkinson Volatility
     match: ['- `"parkinson"`', 'Parkinson Variance}', '- Parkinson, M. (1980)']
   get_volatility--garman-klass:
     argument: 'method="garman_klass"'
+    output: |
+      | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+      |:-------|---------:|---------:|--------:|--------:|------------:|
+      | 2021   |   0.0535 |   0.809  |  0.1048 |  0.1496 |      0.1094 |
+      | 2022   |   0.1021 |   0.5488 |  0.1813 |  0.1599 |      0.188  |
+      | 2023   |   0.0736 |   0.3849 |  0.1058 |  0.1365 |      0.1089 |
+      | 2024   |   0.0603 |   0.4724 |  0.0975 |  0.1492 |      0.0997 |
+      | 2025   |   0.0744 |   0.3889 |  0.1436 |  0.1913 |      0.1441 |
     intro: Garman-Klass Volatility
     match: ['- `"garman_klass"`', 'Garman-Klass Variance}', '- Garman, M.B.']
   get_volatility--rogers-satchell:
     argument: 'method="rogers_satchell"'
+    output: |
+      | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+      |:-------|---------:|---------:|--------:|--------:|------------:|
+      | 2021   |   0.0525 |   0.8414 |  0.1059 |  0.1523 |      0.1112 |
+      | 2022   |   0.1024 |   0.5527 |  0.1783 |  0.1596 |      0.1852 |
+      | 2023   |   0.0732 |   0.3849 |  0.1039 |  0.1376 |      0.1075 |
+      | 2024   |   0.0599 |   0.4737 |  0.0993 |  0.1479 |      0.1015 |
+      | 2025   |   0.0745 |   0.395  |  0.1389 |  0.1878 |      0.1392 |
     intro: Rogers-Satchell Volatility is
     match: ['- `"rogers_satchell"`', '{Rogers-Satchell Variance} =', '- Rogers, L.C.G.']
   get_volatility--yang-zhang:
     argument: 'method="yang_zhang"'
+    output: |
+      | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+      |:-------|---------:|---------:|--------:|--------:|------------:|
+      | 2021   |   0.0533 |   0.8192 |  0.1162 |  0.1589 |      0.1332 |
+      | 2022   |   0.1035 |   0.5504 |  0.2073 |  0.1678 |      0.2325 |
+      | 2023   |   0.0736 |   0.3817 |  0.1205 |  0.1477 |      0.1324 |
+      | 2024   |   0.0604 |   0.4691 |  0.1227 |  0.1606 |      0.1315 |
+      | 2025   |   0.0771 |   0.3885 |  0.1737 |  0.2071 |      0.1864 |
     intro: Yang-Zhang Volatility is
     match: ['- `"yang_zhang"`', 'Yang-Zhang Variance}', 'k = 0.34', '- Yang, D.']
 fixedincome:
+  get_federal_reserve_rates:
+    cut:
+      - ["The overnight bank funding rate (OBFR) is", "The New York Fed publishes"]
+      - ["SOFR is the US dollar reference rate", "See source:"]
+  get_government_bond_yield:
+    cut: [["Short-term (short_term=True):", "**Also known as:**"]]
   get_federal_reserve_rates--sofr:
     argument: 'rate="SOFR"'
+    output: |
+      | Effective Date   |   Rate |   1st Percentile |   25th Percentile |   75th Percentile |   99th Percentile |
+      |:-----------------|-------:|-----------------:|------------------:|------------------:|------------------:|
+      | 2025-12-17       | 0.0369 |           0.0363 |            0.0366 |            0.0375 |            0.0378 |
+      | 2025-12-18       | 0.0366 |           0.036  |            0.0363 |            0.0372 |            0.0374 |
+      | 2025-12-19       | 0.0366 |           0.0361 |            0.0363 |            0.0372 |            0.0375 |
+      | 2025-12-22       | 0.0368 |           0.0362 |            0.0366 |            0.0375 |            0.0378 |
+      | 2025-12-23       | 0.0366 |           0.0361 |            0.0364 |            0.0373 |            0.0375 |
+      | 2025-12-24       | 0.0366 |           0.0362 |            0.0364 |            0.0373 |            0.0375 |
+      | 2025-12-26       | 0.0376 |           0.0366 |            0.0374 |            0.0385 |            0.0387 |
+      | 2025-12-29       | 0.0377 |           0.0367 |            0.0376 |            0.0386 |            0.0389 |
+      | 2025-12-30       | 0.0371 |           0.0363 |            0.0369 |            0.0379 |            0.0383 |
+      | 2025-12-31       | 0.0387 |           0.037  |            0.0382 |            0.0396 |            0.04   |
     match: ['The SOFR is calculated', 'SOFR is the US dollar reference rate']
     example: |
       ```python
@@ -50,10 +157,25 @@ fixedincome:
 
       fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
 
-      fixedincome.get_federal_reserve_rates(rate="SOFR")
+      sofr = fixedincome.get_federal_reserve_rates(rate="SOFR")
+
+      sofr.loc[:, ["Rate", "1st Percentile", "25th Percentile", "75th Percentile", "99th Percentile"]]
       ```
   get_federal_reserve_rates--obfr:
     argument: 'rate="OBFR"'
+    output: |
+      | Effective Date   |   Rate |   1st Percentile |   25th Percentile |   75th Percentile |   99th Percentile |
+      |:-----------------|-------:|-----------------:|------------------:|------------------:|------------------:|
+      | 2025-12-17       | 0.0364 |           0.0352 |            0.0363 |            0.0365 |            0.0368 |
+      | 2025-12-18       | 0.0364 |           0.035  |            0.0362 |            0.0365 |            0.0368 |
+      | 2025-12-19       | 0.0364 |           0.035  |            0.0363 |            0.0365 |            0.0368 |
+      | 2025-12-22       | 0.0364 |           0.035  |            0.0363 |            0.0365 |            0.0368 |
+      | 2025-12-23       | 0.0364 |           0.035  |            0.0363 |            0.0365 |            0.0368 |
+      | 2025-12-24       | 0.0364 |           0.0352 |            0.0363 |            0.0365 |            0.0368 |
+      | 2025-12-26       | 0.0364 |           0.035  |            0.0363 |            0.0365 |            0.0368 |
+      | 2025-12-29       | 0.0364 |           0.035  |            0.0363 |            0.0365 |            0.0368 |
+      | 2025-12-30       | 0.0364 |           0.0353 |            0.0363 |            0.0365 |            0.037  |
+      | 2025-12-31       | 0.0365 |           0.0355 |            0.0363 |            0.0365 |            0.037  |
     match: ['The overnight bank funding rate (OBFR) is']
     example: |
       ```python
@@ -61,10 +183,25 @@ fixedincome:
 
       fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
 
-      fixedincome.get_federal_reserve_rates(rate="OBFR")
+      obfr = fixedincome.get_federal_reserve_rates(rate="OBFR")
+
+      obfr.loc[:, ["Rate", "1st Percentile", "25th Percentile", "75th Percentile", "99th Percentile"]]
       ```
   get_federal_reserve_rates--tgcr:
     argument: 'rate="TGCR"'
+    output: |
+      | Effective Date   |   Rate |   1st Percentile |   25th Percentile |   75th Percentile |   99th Percentile |
+      |:-----------------|-------:|-----------------:|------------------:|------------------:|------------------:|
+      | 2025-12-17       | 0.0366 |           0.036  |            0.0366 |            0.0366 |            0.037  |
+      | 2025-12-18       | 0.0363 |           0.0355 |            0.0363 |            0.0363 |            0.037  |
+      | 2025-12-19       | 0.0363 |           0.0358 |            0.0363 |            0.0364 |            0.0367 |
+      | 2025-12-22       | 0.0366 |           0.0358 |            0.0366 |            0.0366 |            0.0368 |
+      | 2025-12-23       | 0.0364 |           0.0355 |            0.0364 |            0.0364 |            0.0369 |
+      | 2025-12-24       | 0.0364 |           0.0355 |            0.0364 |            0.0365 |            0.0367 |
+      | 2025-12-26       | 0.0374 |           0.0358 |            0.0374 |            0.0374 |            0.0376 |
+      | 2025-12-29       | 0.0375 |           0.0359 |            0.0375 |            0.0376 |            0.0377 |
+      | 2025-12-30       | 0.0369 |           0.0359 |            0.0369 |            0.037  |            0.0378 |
+      | 2025-12-31       | 0.0382 |           0.0359 |            0.0382 |            0.0383 |            0.0385 |
     match: ['The TGCR is calculated']
     example: |
       ```python
@@ -72,10 +209,25 @@ fixedincome:
 
       fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
 
-      fixedincome.get_federal_reserve_rates(rate="TGCR")
+      tgcr = fixedincome.get_federal_reserve_rates(rate="TGCR")
+
+      tgcr.loc[:, ["Rate", "1st Percentile", "25th Percentile", "75th Percentile", "99th Percentile"]]
       ```
   get_federal_reserve_rates--bgcr:
     argument: 'rate="BGCR"'
+    output: |
+      | Effective Date   |   Rate |   1st Percentile |   25th Percentile |   75th Percentile |   99th Percentile |
+      |:-----------------|-------:|-----------------:|------------------:|------------------:|------------------:|
+      | 2025-12-17       | 0.0366 |           0.036  |            0.0366 |            0.0366 |            0.0373 |
+      | 2025-12-18       | 0.0363 |           0.0355 |            0.0363 |            0.0363 |            0.037  |
+      | 2025-12-19       | 0.0363 |           0.0358 |            0.0363 |            0.0364 |            0.037  |
+      | 2025-12-22       | 0.0366 |           0.0358 |            0.0366 |            0.0366 |            0.0372 |
+      | 2025-12-23       | 0.0364 |           0.0355 |            0.0364 |            0.0364 |            0.037  |
+      | 2025-12-24       | 0.0364 |           0.0355 |            0.0364 |            0.0365 |            0.037  |
+      | 2025-12-26       | 0.0374 |           0.0357 |            0.0374 |            0.0374 |            0.038  |
+      | 2025-12-29       | 0.0375 |           0.036  |            0.0375 |            0.0376 |            0.0381 |
+      | 2025-12-30       | 0.0369 |           0.0358 |            0.0369 |            0.037  |            0.0378 |
+      | 2025-12-31       | 0.0382 |           0.0359 |            0.0382 |            0.0383 |            0.039  |
     match: ['The BGCR is calculated']
     example: |
       ```python
@@ -83,19 +235,71 @@ fixedincome:
 
       fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
 
-      fixedincome.get_federal_reserve_rates(rate="BGCR")
+      bgcr = fixedincome.get_federal_reserve_rates(rate="BGCR")
+
+      bgcr.loc[:, ["Rate", "1st Percentile", "25th Percentile", "75th Percentile", "99th Percentile"]]
       ```
   get_european_central_bank_rates:
     argument: 'rate="refinancing"'
+    output: |
+      |            |   Refinancing |
+      |:-----------|--------------:|
+      | 2025-12-22 |        0.0215 |
+      | 2025-12-23 |        0.0215 |
+      | 2025-12-24 |        0.0215 |
+      | 2025-12-25 |        0.0215 |
+      | 2025-12-26 |        0.0215 |
+      | 2025-12-27 |        0.0215 |
+      | 2025-12-28 |        0.0215 |
+      | 2025-12-29 |        0.0215 |
+      | 2025-12-30 |        0.0215 |
+      | 2025-12-31 |        0.0215 |
     match: ['The main refinancing operations (MRO) rate is']
   get_european_central_bank_rates--lending:
     argument: 'rate="lending"'
+    output: |
+      |            |   Lending |
+      |:-----------|----------:|
+      | 2025-12-22 |     0.024 |
+      | 2025-12-23 |     0.024 |
+      | 2025-12-24 |     0.024 |
+      | 2025-12-25 |     0.024 |
+      | 2025-12-26 |     0.024 |
+      | 2025-12-27 |     0.024 |
+      | 2025-12-28 |     0.024 |
+      | 2025-12-29 |     0.024 |
+      | 2025-12-30 |     0.024 |
+      | 2025-12-31 |     0.024 |
     match: ['The marginal lending facility rate is']
   get_european_central_bank_rates--deposit:
     argument: 'rate="deposit"'
+    output: |
+      |            |   Deposit |
+      |:-----------|----------:|
+      | 2025-12-22 |      0.02 |
+      | 2025-12-23 |      0.02 |
+      | 2025-12-24 |      0.02 |
+      | 2025-12-25 |      0.02 |
+      | 2025-12-26 |      0.02 |
+      | 2025-12-27 |      0.02 |
+      | 2025-12-28 |      0.02 |
+      | 2025-12-29 |      0.02 |
+      | 2025-12-30 |      0.02 |
+      | 2025-12-31 |      0.02 |
     match: ['The deposit facility rate is one of', 'With ample excess liquidity']
   get_government_bond_yield--3-month:
     argument: 'short_term=True'
+    output: |
+      |         |   Japan |   United States |   Germany |
+      |:--------|--------:|----------------:|----------:|
+      | 2023-05 | -0.0002 |          0.0515 |    0.0337 |
+      | 2023-06 |  0      |          0.0522 |    0.0354 |
+      | 2023-07 |  0      |          0.0535 |    0.0367 |
+      | 2023-08 |  0      |          0.0544 |    0.0378 |
+      | 2023-09 |  0.0002 |          0.0549 |    0.0388 |
+      | 2023-10 | -0.0001 |          0.0546 |    0.0397 |
+      | 2023-11 |  0.0002 |          0.0541 |    0.0397 |
+      | 2023-12 |  0.0005 |          0.0532 |    0.0393 |
     match: ['Short-term (short_term=True):']
     example: |
       ```python
