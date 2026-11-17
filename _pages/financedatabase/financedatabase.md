@@ -19,6 +19,18 @@ classes: wide-sidebar
 author_profile: false
 redirect_from:
   - /financedatabase
+  - /projects/financedatabase/docs
+  - /projects/financedatabase/docs/equities
+  - /projects/financedatabase/docs/etfs
+  - /projects/financedatabase/docs/indices
+  - /projects/financedatabase/docs/currencies
+  - /projects/financedatabase/docs/cryptos
+  - /projects/financedatabase/documentation
+  - /projects/financedatabase/getting-started
+  - /projects/financedatabase/querying-netherlands
+  - /projects/financedatabase/technical-analysis
+  - /projects/financedatabase/dupont-analysis
+  - /projects/financetoolkit/finance-database
 sidebar:
   nav: "financedatabase"
 ---
@@ -73,7 +85,7 @@ No API key is needed. Each asset class is downloaded once and cached locally, se
 
 ## Functionality
 {: .heading-as-h1}
-This section is an introduction to the Finance Database. Search and filter the database in your browser, and copy any selection as Python code, with the Database Explorer. The [documentation](/projects/financedatabase/docs) has every function with its parameters and the output of each example.
+This section is an introduction to the Finance Database. Search and filter the database in your browser, and copy any selection as Python code, with the Database Explorer.
 
 [Open the Database Explorer](/projects/financedatabase/explorer){: .btn .btn--warning .btn--large .align-center}
 
@@ -153,7 +165,7 @@ And below the number of companies in each of these industries is shown. Each com
 
 {% include ft-chart.html id="options" src="/assets/data/financedatabase-charts.json" label="Financial companies in the Netherlands per industry" %}
 
-The options of every column can be shown this way, including `currency`, `exchange`, `market`, `country` and `market_cap` (Mega, Large, Mid, Small, Micro and Nano Cap). **Try it in the [Database Explorer](/projects/financedatabase/explorer) and find the full documentation [here](/projects/financedatabase/docs/equities#show_options).**
+The options of every column can be shown this way, including `currency`, `exchange`, `market`, `country` and `market_cap` (Mega, Large, Mid, Small, Micro and Nano Cap). **Try it in the [Database Explorer](/projects/financedatabase/explorer).**
 
 ### Selecting Equities
 
@@ -200,7 +212,7 @@ This gives the following three companies:
 | ASRNL.AS | ASR Nederland N.V. | EUR        | Financials | Insurance  | AMS        | Euronext Amsterdam | Netherlands | Large Cap    | NL0011872643 |
 | NN.AS    | NN Group N.V.      | EUR        | Financials | Insurance  | AMS        | Euronext Amsterdam | Netherlands | Large Cap    | NL0010773842 |
 
-Every filter also accepts a list, so both queries can be combined into one with `country=["Netherlands", "United States"]` and `market=["Euronext Amsterdam", "New York Stock Exchange", "NASDAQ Global Select"]`. Equities can be selected on `country`, `sector`, `industry_group`, `industry`, `currency`, `exchange`, `mic`, `market` and `market_cap`. **Try it in the [Database Explorer](/projects/financedatabase/explorer) and find the full documentation [here](/projects/financedatabase/docs/equities#select).**
+Every filter also accepts a list, so both queries can be combined into one with `country=["Netherlands", "United States"]` and `market=["Euronext Amsterdam", "New York Stock Exchange", "NASDAQ Global Select"]`. Equities can be selected on `country`, `sector`, `industry_group`, `industry`, `currency`, `exchange`, `mic`, `market` and `market_cap`. **Try it in the [Database Explorer](/projects/financedatabase/explorer).**
 
 ### Searching the Database
 
@@ -230,7 +242,7 @@ And below the results are counted per industry.
 
 {% include ft-chart.html id="search" src="/assets/data/financedatabase-charts.json" label="Frankfurt search results per industry" %}
 
-The `search` function works on every column of every asset class, including `name`, `isin`, `cusip` and `figi`. **Try it in the [Database Explorer](/projects/financedatabase/explorer) and find the full documentation [here](/projects/financedatabase/docs/equities#search).**
+The `search` function works on every column of every asset class, including `name`, `isin`, `cusip` and `figi`. **Try it in the [Database Explorer](/projects/financedatabase/explorer).**
 
 ### Exploring Other Asset Classes
 
@@ -281,7 +293,7 @@ And below all actively listed ETFs are divided over their category groups.
 
 {% include ft-chart.html id="etfs" src="/assets/data/financedatabase-charts.json" label="Actively listed ETFs per category group" %}
 
-The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency` and currencies on `base_currency` and `quote_currency`. **Try it in the [Database Explorer](/projects/financedatabase/explorer?class=indices) and find the full documentation [here](/projects/financedatabase/docs).**
+The categories of each asset class can again be found with `show_options`, e.g. `fd.Indices().show_options(selection="category")` returns the index categories, from 'Corporate Bonds' and 'Emerging Markets' to 'Small Cap' and 'Value'. Cryptocurrencies are selected on `cryptocurrency` and `currency` and currencies on `base_currency` and `quote_currency`. **Try it in the [Database Explorer](/projects/financedatabase/explorer?class=indices).**
 
 ### Combining with the Finance Toolkit
 
