@@ -349,20 +349,9 @@ module DocsMetricPages
     cls = CLASSES[key]
     out = +""
     description = readable_definition_link(parts[:description])
-    # long explanations push the example far down: a line under the first
-    # paragraph jumps straight to the code, the MCP question or the parameters
     parameters = parameters_for(parts[:arguments])
     mcp = mcp_question(site, key, fn_name)
     has_example = !(parts[:example].empty? && parameters.empty? && mcp.empty?)
-    if description.length > 1200 && has_example
-      first, rest = description.split(/\n\s*\n/, 2)
-      if rest && !first.lstrip.start_with?("$$", "- ", "|")
-        links = [%(<a href="#python-example">Python example</a>)]
-        links << %(<a href="#mcp-question">MCP question</a>) unless mcp.empty?
-        links << %(<a href="#parameters">Parameters</a>) unless parameters.empty?
-        description = "#{first}\n\n<p class=\"docs-jump\">Jump to: #{links.join(' · ')}</p>\n\n#{rest}"
-      end
-    end
     out << description << "\n\n"
     # Python, or the same question through the Finance Toolkit MCP: the
     # question asks for exactly what the example's first table shows, so it
