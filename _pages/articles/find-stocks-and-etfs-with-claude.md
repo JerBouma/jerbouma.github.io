@@ -141,7 +141,6 @@ Below are six real questions, answered through both servers on October 12, 2026,
 
 <div class="mcp-show__grid">
 <div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-uranium-growth" src="/assets/data/article-charts.json" label="Value of 100 invested in uranium ETFs and Cameco since February 2023" %}</div>
-<div class="mcp-show__cell mcp-show__cell--medium">{% include ft-chart.html id="fdb-uranium-corr" src="/assets/data/article-charts.json" label="Correlation of weekly returns of uranium ETFs and Cameco" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-uranium-years" src="/assets/data/article-charts.json" label="Calendar-year returns of uranium ETFs" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-uranium-risk" src="/assets/data/article-charts.json" label="Total return against maximum drawdown of uranium ETFs" %}</div>
 </div>
@@ -157,7 +156,6 @@ Below are six real questions, answered through both servers on October 12, 2026,
 <details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> The steps behind the answer</summary><ol><li><code>search_instruments</code><span>Finance Database: the ISIN, every listing with its exchange and currency</span></li><li><code>market_data</code><span>Prices of seven listings, one per market, since January 2025</span></li><li><code>market_data</code><span>Exchange rates of the dollar against the euro, peso, real and others</span></li></ol></details>
 
 <div class="mcp-show__grid">
-<div class="mcp-show__cell mcp-show__cell--medium">{% include ft-chart.html id="fdb-isin-listings" src="/assets/data/article-charts.json" label="Listings of Apple's ISIN by country" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-apple-listings" src="/assets/data/article-charts.json" label="Apple's return on each of seven listings since January 2025" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-apple-dollar" src="/assets/data/article-charts.json" label="The dollar against five currencies since January 2025" %}</div>
 <div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-apple-fx" src="/assets/data/article-charts.json" label="Apple on Nasdaq, Xetra, Buenos Aires and São Paulo since January 2025" %}</div>

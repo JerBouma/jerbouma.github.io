@@ -96,6 +96,3 @@ reddit:
       Caveats: annual FMP data, fiscal years as reported, multiples have moved since. Disclosure: I built the open-source Python library I used for this (Finance Toolkit). Full write-up with code and charts: https://www.jeroenbouma.com/articles/semiconductor-sector-analysis-finance-toolkit
 
       Not investment advice.
-medium:
-  subtitle: "Fifteen years of revenue, margins and returns on capital for six chipmakers, and what the market is pricing in."
-  tags: [Semiconductors, Nvidia, Fundamental Analysis, Investing, Stocks]

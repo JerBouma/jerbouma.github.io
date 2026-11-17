@@ -90,6 +90,3 @@ reddit:
       3. For a one-off event like this, do you flag it explicitly or let the kurtosis number speak?
 
       Disclosure: I maintain the Finance Toolkit, an open-source Python library, and used it for these numbers. Write-up with the charts and code: https://www.jeroenbouma.com/articles/risk-exposure-major-indices-finance-toolkit
-medium:
-  subtitle: "VaR, CVaR, drawdown, skewness and kurtosis across six index ETFs, and what volatility alone misses."
-  tags: [Risk Management, Investing, ETF, Quantitative Finance, Finance]

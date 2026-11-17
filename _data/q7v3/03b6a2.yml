@@ -76,6 +76,3 @@ reddit:
       The compute side is small: the model on the client does the reasoning, the server does a few hundred ms of pandas per call, which is why a Mini PC is enough.
 
       Disclosure: I'm the author of the Finance Toolkit and its MCP server; the code, Dockerfile and compose file are MIT-licensed on GitHub (github.com/JerBouma/FinanceToolkit). Full write-up: https://www.jeroenbouma.com/articles/hosting-the-finance-toolkit-mcp-server
-medium:
-  subtitle: "Why a public MCP server runs fine on a home Mini PC, with Proxmox and Cloudflare doing the heavy lifting."
-  tags: [MCP, Self Hosting, Cloudflare, Proxmox, AI]

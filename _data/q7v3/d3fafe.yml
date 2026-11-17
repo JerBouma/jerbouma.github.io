@@ -94,6 +94,3 @@ reddit:
       https://www.jeroenbouma.com/articles/connect-claude-to-financial-data
 
       Happy to hear how others handle large tool surfaces: categories with an indicator parameter like this, or search-then-call?
-medium:
-  subtitle: "Give Claude real financial statements and ratios to work with, instead of numbers recalled from memory."
-  tags: [Claude, AI, Financial Analysis, MCP, Investing]
