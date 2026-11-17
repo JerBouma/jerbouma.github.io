@@ -1230,13 +1230,13 @@ financetoolkit-docs-risk:
       - title: "EWMA Volatility"
         url: /projects/financetoolkit/docs/risk#get_ewma_volatility
       - title: "Parkinson Volatility"
-        url: /projects/financetoolkit/docs/risk#get_volatility
+        url: /projects/financetoolkit/docs/risk#get_volatility--parkinson
       - title: "Garman-Klass Volatility"
-        url: /projects/financetoolkit/docs/risk#get_volatility
+        url: /projects/financetoolkit/docs/risk#get_volatility--garman-klass
       - title: "Rogers-Satchell Volatility"
-        url: /projects/financetoolkit/docs/risk#get_volatility
+        url: /projects/financetoolkit/docs/risk#get_volatility--rogers-satchell
       - title: "Yang-Zhang Volatility"
-        url: /projects/financetoolkit/docs/risk#get_volatility
+        url: /projects/financetoolkit/docs/risk#get_volatility--yang-zhang
   - title: Volatility Models
     children:
       - title: "GARCH Volatility Model"
@@ -1360,11 +1360,11 @@ financetoolkit-docs-performance:
       - title: "Sharpe Ratio"
         url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
       - title: "Adjusted Sharpe Ratio"
-        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio--adjusted
       - title: "Probabilistic Sharpe Ratio (PSR)"
-        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio--probabilistic
       - title: "Deflated Sharpe Ratio (DSR)"
-        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio--deflated
       - title: Sharpe Ratio Standard Error
         url: /projects/financetoolkit/docs/performance#get_sharpe_ratio_standard_error
       - title: Minimum Track Record Length
@@ -1500,7 +1500,7 @@ financetoolkit-docs-fixedincome:
   - title: Government Bonds
     children:
     - title: 3-Month Government Bond Yield
-      url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
+      url: /projects/financetoolkit/docs/fixedincome#get_government_bond_yield--3-month
     - title: 10-Year Government Bond Yield
       url:  /projects/financetoolkit/docs/fixedincome#get_government_bond_yield
     - title: U.S. Treasury Par Yield Curve
@@ -1562,21 +1562,21 @@ financetoolkit-docs-fixedincome:
     - title: Euro Interbank Offered Rate (Euribor)
       url: /projects/financetoolkit/docs/fixedincome#get_euribor_rates
     - title: Secured Overnight Financing Rate (SOFR)
-      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates--sofr
     - title: Main Refinancing Operations (ECB)
       url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
     - title: Marginal Lending Facility (ECB)
-      url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
+      url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates--lending
     - title: Deposit Facility (ECB)
-      url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates
+      url: /projects/financetoolkit/docs/fixedincome#get_european_central_bank_rates--deposit
     - title: Effective Federal Funds Rate (EFFR)
       url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
     - title: Overnight Bank Funding Rate (OBFR)
-      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates--obfr
     - title: Tri-Party General Collateral Rate (TGCR)
-      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates--tgcr
     - title: Broad General Collateral Rate (BGCR)
-      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates
+      url: /projects/financetoolkit/docs/fixedincome#get_federal_reserve_rates--bgcr
   - title: Yield Curves
     children:
       - title: Zero-Coupon Curve

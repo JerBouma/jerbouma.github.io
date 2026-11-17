@@ -1,0 +1,109 @@
+# Sidebar entries that are the same Finance Toolkit function with a different
+# argument each get their own page (_plugins/docs_metric_pages.rb). In
+# _data/navigation.yml such an entry links to "<module>#<function>--<variant>".
+#
+# Per module and sidebar anchor:
+#   argument  the argument added to the function call ('method="adjusted"')
+#   match     lines of the function's own docstring that describe this variant
+#             (each line is found, together with a formula block right under it,
+#             or the whole formula block when the line sits inside one)
+#   intro     optional: words put in front of a docstring bullet that starts mid-sentence
+#   drop      optional: arguments of the function's own example that don't apply here
+#   example   optional: the code example, when adding the argument to the
+#             function's own example doesn't read right
+performance:
+  get_sharpe_ratio--adjusted:
+    argument: 'method="adjusted"'
+    match: ['- `"adjusted"`']
+  get_sharpe_ratio--probabilistic:
+    argument: 'method="probabilistic"'
+    drop: [annualize] # a probability can't be annualized
+    match: ['- `"probabilistic"`']
+  get_sharpe_ratio--deflated:
+    argument: 'method="deflated"'
+    drop: [annualize]
+    match: ['- `"deflated"`']
+risk:
+  get_volatility--parkinson:
+    argument: 'method="parkinson"'
+    intro: Parkinson Volatility
+    match: ['- `"parkinson"`', 'Parkinson Variance}', '- Parkinson, M. (1980)']
+  get_volatility--garman-klass:
+    argument: 'method="garman_klass"'
+    intro: Garman-Klass Volatility
+    match: ['- `"garman_klass"`', 'Garman-Klass Variance}', '- Garman, M.B.']
+  get_volatility--rogers-satchell:
+    argument: 'method="rogers_satchell"'
+    intro: Rogers-Satchell Volatility is
+    match: ['- `"rogers_satchell"`', '{Rogers-Satchell Variance} =', '- Rogers, L.C.G.']
+  get_volatility--yang-zhang:
+    argument: 'method="yang_zhang"'
+    intro: Yang-Zhang Volatility is
+    match: ['- `"yang_zhang"`', 'Yang-Zhang Variance}', 'k = 0.34', '- Yang, D.']
+fixedincome:
+  get_federal_reserve_rates--sofr:
+    argument: 'rate="SOFR"'
+    match: ['The SOFR is calculated', 'SOFR is the US dollar reference rate']
+    example: |
+      ```python
+      from financetoolkit import FixedIncome
+
+      fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
+
+      fixedincome.get_federal_reserve_rates(rate="SOFR")
+      ```
+  get_federal_reserve_rates--obfr:
+    argument: 'rate="OBFR"'
+    match: ['The overnight bank funding rate (OBFR) is']
+    example: |
+      ```python
+      from financetoolkit import FixedIncome
+
+      fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
+
+      fixedincome.get_federal_reserve_rates(rate="OBFR")
+      ```
+  get_federal_reserve_rates--tgcr:
+    argument: 'rate="TGCR"'
+    match: ['The TGCR is calculated']
+    example: |
+      ```python
+      from financetoolkit import FixedIncome
+
+      fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
+
+      fixedincome.get_federal_reserve_rates(rate="TGCR")
+      ```
+  get_federal_reserve_rates--bgcr:
+    argument: 'rate="BGCR"'
+    match: ['The BGCR is calculated']
+    example: |
+      ```python
+      from financetoolkit import FixedIncome
+
+      fixedincome = FixedIncome(start_date="2023-12-01", end_date="2025-12-31")
+
+      fixedincome.get_federal_reserve_rates(rate="BGCR")
+      ```
+  get_european_central_bank_rates:
+    argument: 'rate="refinancing"'
+    match: ['The main refinancing operations (MRO) rate is']
+  get_european_central_bank_rates--lending:
+    argument: 'rate="lending"'
+    match: ['The marginal lending facility rate is']
+  get_european_central_bank_rates--deposit:
+    argument: 'rate="deposit"'
+    match: ['The deposit facility rate is one of', 'With ample excess liquidity']
+  get_government_bond_yield--3-month:
+    argument: 'short_term=True'
+    match: ['Short-term (short_term=True):']
+    example: |
+      ```python
+      from financetoolkit import FixedIncome
+
+      fixedincome = FixedIncome(start_date="2023-05-01", end_date="2023-12-31")
+
+      short_term_interest_rate = fixedincome.get_government_bond_yield(short_term=True, period="monthly")
+
+      short_term_interest_rate.loc[:, ["Japan", "United States", "Germany"]]
+      ```
