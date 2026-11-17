@@ -805,6 +805,9 @@ readers do not read off random characters that represent icons */
 .fa-tumblr-square {
   --fa: "\f174"; }
 
+.fa-python {
+  --fa: "\f3e2"; }
+
 .fa-github {
   --fa: "\f09b"; }
 

@@ -63,7 +63,7 @@ financedatabase:
     url: /projects/financedatabase#installation
   - title: <font color="#d67f05">Getting Started Notebook</font>
     url: /projects/financedatabase/getting-started
-  - title: <font color="#8b5cf6">Explorer</font>
+  - title: <font color="#8b5cf6">Database Explorer</font>
     url: /projects/financedatabase/explorer
   - title: "Functionality"
     url: /projects/financedatabase#functionality
@@ -2824,6 +2824,8 @@ financedatabase-mcp:
         url: /projects/financedatabase/mcp#local-clients
       - title: Self-Hosting
         url: /projects/financedatabase/mcp#self-hosting
+  - title: <font color="#8b5cf6">Database Explorer</font>
+    url: /projects/financedatabase/explorer
   - title: "Example Conversations"
     url: /projects/financedatabase/mcp#example-conversations
     children:
