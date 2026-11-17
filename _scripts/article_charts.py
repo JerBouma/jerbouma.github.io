@@ -80,10 +80,14 @@ def screen_charts() -> dict:
     final = [t for t in candidates if snapshot.loc[t, "roic"] > 0.10]
 
     priced = snapshot[snapshot["pe"] > 0].sort_values("pe")
+    source = "Company filings and share prices via FinancialModelingPrep"
+    to_year = [c for c in roic.columns if str(c) <= YEAR]
     charts = {
         "screen-valuation": {
             "type": "scatter",
-            "title": "P/E against EV/EBITDA, fiscal 2025 (Intel left out: negative earnings)",
+            "title": "P/E against EV/EBITDA",
+            "subtitle": "14 large caps, fiscal 2025, in times; Intel left out (negative earnings); dashed lines at 20x and 18x",
+            "source": source,
             "legend": "Orange: below 20x earnings and 18x EBITDA",
             "xname": "P/E",
             "yname": "EV/EBITDA",
@@ -95,12 +99,14 @@ def screen_charts() -> dict:
         },
         "screen-quality": {
             "type": "tabs",
-            "title": "Quality of the five stocks that pass the valuation filter",
+            "title": "Return on equity, ROIC and gross margin of the five value candidates",
+            "subtitle": "Percent; fiscal 2025, and ROIC for each fiscal year from 2022 to 2025",
+            "source": source,
             "tabs": [
                 {
                     "label": "Fiscal 2025",
                     "type": "bar",
-                    "title": "Return on equity, ROIC and gross margin, fiscal 2025",
+                    "title": "",
                     "x": candidates,
                     "series": [
                         {"name": "ROE", "data": values(roe.loc[candidates, YEAR])},
@@ -112,16 +118,18 @@ def screen_charts() -> dict:
                 {
                     "label": "ROIC 2022 to 2025",
                     "type": "line",
-                    "title": "Return on invested capital, fiscal 2022 to 2025",
-                    "x": [y for y in years(roic) if y <= YEAR],
-                    "series": [{"name": t, "data": values(roic.loc[t, [c for c in roic.columns if str(c) <= YEAR]])} for t in candidates],
+                    "title": "",
+                    "x": [str(c) for c in to_year],
+                    "series": [{"name": t, "data": values(roic.loc[t, to_year])} for t in candidates],
                     "format": "percent",
                 },
             ],
         },
         "screen-final": {
             "type": "scatter",
-            "title": "Price against quality, all 15 stocks, fiscal 2025",
+            "title": "ROIC against EV/EBITDA",
+            "subtitle": "All 15 stocks, fiscal 2025; ROIC in percent, EV/EBITDA in times; dashed line at 10% ROIC",
+            "source": source,
             "legend": "Orange: passes the valuation filter and earns more than 10% on invested capital",
             "xname": "ROIC",
             "yname": "EV/EBITDA",

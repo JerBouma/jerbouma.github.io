@@ -1,11 +1,11 @@
 ---
-title: Screening for Undervalued Stocks with the Finance Toolkit
-seo_title: "Screening for Undervalued Stocks in Python"
+title: How to Screen for Undervalued Stocks Without Value Traps
+seo_title: "Screening for Undervalued Stocks and Value Traps"
 date: 2026-06-14
 last_modified_at: 2026-11-17
 permalink: /articles/screening-undervalued-stocks-finance-toolkit
-excerpt: "Merck traded at 14 times its fiscal 2025 earnings and Walmart at 41 times, yet Merck earned more on its capital. A two-pass screen of 15 large caps, valuation first and quality second, shows how to separate cheap from merely low-priced."
-description: "A stock screen in Python on P/E, EV/EBITDA, ROIC and gross margins across 15 large caps, separating real value from value traps with the Finance Toolkit."
+excerpt: "Merck traded at 14.5 times its fiscal 2025 earnings and Walmart at 40.8 times, yet Merck earned more on its capital. Screening 15 large caps on price first and quality second leaves three names that are both cheap and profitable."
+description: "A two-pass stock screen of 15 large caps on P/E, EV/EBITDA, ROIC and gross margin in fiscal 2025 that separates cheap stocks from value traps."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -14,15 +14,13 @@ tags: [Fundamental Analysis]
 share: true
 ---
 
-At the end of their 2025 fiscal years, Merck traded at 14.5 times earnings and Walmart at 40.8 times. On the multiple alone, Merck is the bargain and Walmart the expensive one. Yet Merck also earned more on its capital: a return on invested capital of 21.7%, against 13.6% for Walmart. A low multiple and a strong business at the same time is what a value screen is looking for, and it is rarer than either on its own.
+At the end of their 2025 fiscal years, Merck traded at 14.5 times earnings and Walmart at 40.8 times, which makes Merck the bargain on the multiple alone. Yet Merck also earned more on its capital, with a return on invested capital (ROIC) of 21.7% against 13.6% for Walmart.
 
-The difficulty is that a low multiple is just as often a warning. Stocks get cheap because investors expect earnings to fall, the balance sheet to strain or the industry to shrink, the classic value trap. In this article I build a two-pass screen on 15 large caps across technology, healthcare, consumer staples, financials and energy: valuation multiples first, then profitability to test whether the low price is deserved. It ends with a watchlist of three names, and with the reasons the other twelve dropped out. A real screen would cast a wider net, which the [Discovery module](/projects/financetoolkit/docs/discovery) supports, but fifteen names are enough to show the logic.
+So how do you tell a stock that is cheap from one that is cheap for a reason? In a screen of fifteen large caps, asking two valuation multiples to agree and then requiring an ROIC above 10% leaves three names: Merck, Johnson & Johnson and Pfizer. The second step matters because stocks often get cheap when investors expect earnings to fall, and a screen on price alone fills up with those value traps. The fifteen companies cover technology, healthcare, consumer staples, financials and energy, with ratios from their filings and share prices for fiscal 2025. The result is a watchlist for further research, and none of it is investment advice.
 
-The data comes from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}, and every chart has a Python button with the code behind it and an MCP button with a question that gets the same data from the [Finance Toolkit MCP server](/projects/financetoolkit/mcp). Everything uses fiscal year 2025, the latest year all fifteen companies have reported, with data retrieved on November 17, 2026. Fiscal years don't line up: Microsoft's 2025 ends in June, Apple's in September and Walmart's in January 2026. The code needs an FMP API key, which you can get at [jeroenbouma.com/fmp](/fmp){:target="_blank"}.
+## The Multiples Run From 14 to 41 Times Earnings
 
-## The Valuation Map: Five Stocks Are Cheap on Two Measures
-
-The first pass uses four [valuation ratios](/projects/financetoolkit/docs/ratios). P/E (price over earnings per share) and EV/EBITDA (enterprise value, so equity plus net debt, over operating earnings before depreciation) are the usual entry points. Price to free cash flow and price to book are cross-checks that accounting choices move less easily.
+The first pass uses four valuation ratios. The price-to-earnings ratio (P/E) divides the share price by earnings per share. EV/EBITDA divides enterprise value, which is market cap plus net debt, by operating earnings before depreciation and amortisation, so it compares companies however they are financed. Price to free cash flow (P/FCF) and price to book (P/B) are cross-checks that accounting choices move less easily.
 
 The four ratios for all fifteen companies in fiscal 2025, sorted by P/E:
 
@@ -44,11 +42,15 @@ The four ratios for all fifteen companies in fiscal 2025, sorted by P/E:
 | AAPL | 36.4 | 41.3 | 55.3 | 28.6 |
 | WMT | 40.8 | 59.9 | 9.0 | 21.7 |
 
-The spread is wide: Bank of America and Merck trade at 14.3 and 14.5 times earnings, Walmart at 40.8. Intel sorts to the top only because its P/E is negative: a net loss so small that the ratio runs to -626.1, which means nothing. Bank of America has a negative EV/EBITDA of -3.9 for a similar reason: its enterprise value comes out at about -$157 billion, because the cash on its balance sheet is larger than its market cap plus debt. That is why sorting on a single metric misleads without further filters.
+Bank of America and Merck are the cheapest on earnings at about 14 times, and Walmart the most expensive at about 41. Intel tops the sort only because a small net loss turns its P/E negative, at -626.1, a number that means nothing. Bank of America's EV/EBITDA is negative for another reason: the cash on its balance sheet is larger than its market cap plus debt, so its enterprise value drops below zero. **Sorted on one multiple, the list starts with a loss-maker and a bank with a negative enterprise value.**
 
-The cross-checks add their own warnings. Coca-Cola trades at 56.9 times free cash flow on a P/E of 23.0, a gap that points at cash going into capital spending and working capital rather than into free cash flow. Apple's price to book of 55.3 reflects years of buybacks that left it with little book equity, a reminder that P/B works best for asset-heavy businesses such as banks and energy companies. And JPMorgan's negative P/FCF says more about how a bank's cash flow statement moves with its loan book and trading positions than about its value.
+The cross-checks add their own warnings. Coca-Cola trades at 56.9 times free cash flow on a P/E of 23.0, which means much of its profit goes into capital spending and working capital before it becomes free cash flow. Next to that, Apple's price to book of 55.3 reflects years of buybacks that left it with little book equity, a reminder that P/B works best for asset-heavy businesses such as banks and energy companies. JPMorgan's negative P/FCF says more about how a bank's cash flow moves with its loan book and trading positions than about its value.
 
-Plotting the two main multiples against each other shows where the cheap corner is:
+## Five Stocks Pass When Two Multiples Must Agree
+
+One multiple is easy to distort through a one-time charge or an unusual capital structure. The filter therefore asks for two at the same time: a P/E below 20 and an EV/EBITDA below 18, with negative values left out.
+
+The two multiples plotted against each other, with the thresholds as dashed lines:
 
 {% capture code_screen_valuation %}
 ```python
@@ -63,21 +65,15 @@ ev_ebitda = toolkit.ratios.get_ev_to_ebitda_ratio()["2025"]
 {% endcapture %}
 {% include ft-chart.html id="screen-valuation" src="/assets/data/article-charts.json" label="P/E against EV/EBITDA for 14 large caps, fiscal 2025" code=code_screen_valuation mcp="What were the P/E ratio and the EV/EBITDA of AAPL, MSFT, INTC, IBM, JNJ, PFE, MRK, KO, WMT, JPM, BAC, XOM, CVX, META and GOOGL in fiscal 2025, and which of them were below 20 times earnings and 18 times EBITDA at the same time, leaving out negative ratios?" %}
 
-## The Filter: Requiring Two Multiples to Agree
+Five stocks land in the cheap corner: Merck, JPMorgan, Exxon Mobil, Pfizer and Johnson & Johnson. Bank of America clears the P/E filter but drops out on its negative EV/EBITDA. Chevron misses the other way, at 8.8 times EBITDA but 23.0 times earnings after its 2025 profit fell.
 
-A single multiple is easy to distort through one-time charges, accounting choices or an unusual capital structure. The filter therefore requires two to pass at the same time: a P/E below 20 and an EV/EBITDA below 18, with negative earners excluded. The dashed lines in the chart above are these thresholds.
+**EV/EBITDA is a poor fit for the two banks.** Deposits and debt are what a bank works with, so enterprise value and operating earnings don't mean what they mean for an industrial company. JPMorgan passes on paper at 4.7 times EBITDA and Bank of America fails on a negative enterprise value, and both deserve a separate look with bank measures such as price to tangible book and return on equity.
 
-Five stocks pass both filters: Merck, JPMorgan, Exxon Mobil, Pfizer and Johnson & Johnson. The near misses tell you as much as the passes. Bank of America clears the P/E filter at 14.3, but its negative EV/EBITDA takes it out. Chevron misses the other way: 8.8 times EBITDA, one of the lowest of the fifteen, but a P/E of 23.0 after its 2025 earnings fell.
+## Three of the Five Earn More Than 10% on Their Capital
 
-**For the two banks, EV/EBITDA is a poor fit**: deposits and debt are their raw material rather than their financing, so enterprise value and operating earnings don't mean what they mean for an industrial company. JPMorgan passes on paper at 4.7 times EBITDA, Bank of America drops out on a negative enterprise value, and both deserve a separate look with bank-specific measures such as price to tangible book and return on equity.
+A low multiple is only interesting when the business behind it holds up, and three profitability ratios test that. Return on equity (ROE) is net income over average shareholders' equity. [Return on invested capital](/projects/financetoolkit/docs/ratios/return-on-invested-capital-roic) is net operating profit after tax (NOPAT) over the average of debt plus equity, so it measures the return on all the capital a business uses, however it is financed. The gross margin is the share of sales left after the direct cost of producing them, a rough measure of pricing power.
 
-## The Quality Test: Which Low Multiples Are Deserved?
-
-A low valuation doesn't make a stock undervalued. Before any of the five goes on a watchlist, its profitability has to hold up. Three [profitability ratios](/projects/financetoolkit/docs/ratios) do most of the work. Return on equity (ROE) is net income over average shareholders' equity. Return on invested capital (ROIC) is net operating profit after tax (NOPAT) over the average of debt plus equity, so it measures the return on all the capital the business uses, regardless of how it is financed. The gross margin shows how much of each dollar of sales is left after the direct cost of producing it, a rough measure of pricing power.
-
-Because it starts from operating profit, ROIC isn't moved by how much interest a company pays or how much it pays out in dividends. The second tab adds the same ROIC from 2022 on, because a value trap is usually a trend before it shows up in a single year.
-
-The three ratios for the five candidates, and their ROIC since 2022:
+A value trap usually shows up as a falling trend before it shows up in a single year. The three ratios for the five candidates in fiscal 2025, with their ROIC since 2022 in the second tab:
 
 {% capture code_screen_quality %}
 ```python
@@ -87,21 +83,21 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(tickers=["MRK", "JNJ", "PFE", "XOM", "JPM"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2022-01-01")
 
 roe = toolkit.ratios.get_return_on_equity()["2025"]
-roic = toolkit.ratios.get_return_on_invested_capital()
+roic = toolkit.ratios.get_return_on_invested_capital().loc[:, :"2025"]
 gross_margin = toolkit.ratios.get_gross_margin()["2025"]
 ```
 {% endcapture %}
 {% include ft-chart.html id="screen-quality" src="/assets/data/article-charts.json" label="Return on equity, ROIC and gross margin of the five value candidates" code=code_screen_quality mcp="Show the fiscal 2025 return on equity, return on invested capital and gross margin of MRK, JNJ, PFE, XOM and JPM, and their return on invested capital for every fiscal year from 2022 to 2025." %}
 
-The candidates split into three groups. Merck and Johnson & Johnson earn 21.7% and 17.7% on invested capital with gross margins of 72.0% and 67.9%. Their low multiples reflect pressure across pharmaceuticals, with Merck's Keytruda patent expiry ahead and Johnson & Johnson's litigation, rather than a weakening business. Merck's dip to 0.8% in 2023 was a one-off: a large acquisition charge for research in progress, after which ROIC was back at 21.9% the following year.
+Three of the five earn more than 10% on invested capital. Merck and Johnson & Johnson lead at 21.7% and 17.7%, and keep about 70% of sales as gross profit. Their low multiples most likely reflect the patent expiry ahead for Merck's cancer drug Keytruda and the litigation Johnson & Johnson faces, and so far neither shows up in their returns. Merck's dip in 2023 came from a one-off charge for research it bought with an acquisition, and by 2024 its ROIC was back where it had been.
 
-Pfizer and Exxon Mobil are the ones where the trend matters. Pfizer's ROIC collapsed from 28.1% in 2022 to 3.0% in 2023 once COVID vaccine revenue ran off, and has come back since, to 9.5% in 2024 and 11.2% in 2025. Its gross margin of 74.3%, the highest of the five, says the underlying drug business still has pricing power. But its ROE was only 8.9%, and **a low multiple on earnings that have already reset is not the same as a low multiple on earnings that are intact**. Exxon's ROIC fell every year, from 20.3% in 2022 to 7.9% in 2025, as oil and gas prices came down from their 2022 peak; its gross margin of 21.7% reflects the commodity economics of refining and distribution.
+Pfizer is where the trend matters most. Its ROIC fell from 28.1% in 2022 to 3.0% in 2023 once COVID vaccine revenue ran off, and has recovered to 11.2% since. Its gross margin of 74.3%, the highest of the five, says the drug business still has pricing power. However, **a low multiple on earnings that have already reset is a different thing from a low multiple on earnings that are intact.**
 
-JPMorgan earns 4.8% on invested capital, which would disqualify an industrial company. For a bank funded largely by deposits, its ROE of 15.8% is the more relevant measure, and a P/E of 16.1 on that return doesn't look like an obvious bargain or an obvious trap. Deciding which needs the bank measures this screen doesn't use.
+Exxon Mobil's ROIC fell every year, from 20.3% in 2022 to 7.9% in 2025, as oil and gas prices came down from their 2022 peak. JPMorgan earns 4.8% on invested capital, which would rule out an industrial company. For a bank funded mostly by deposits, its ROE of 15.8% is the more relevant measure, and judging it needs the bank measures this screen doesn't use.
 
-## The Shortlist: Where Quality Comes Cheap
+## The Shortlist Trades at Half the Multiple of Other Quality Stocks
 
-The final step applies a quality threshold: an ROIC above 10%. The level is a judgment call; it roughly separates businesses that earn well above a typical cost of capital from those that don't.
+The last step keeps the candidates with an ROIC above 10%. The level is a judgment call. It roughly separates businesses that earn well above a typical cost of capital from those that don't.
 
 The candidates that earn more than 10% on invested capital, sorted by ROIC:
 
@@ -111,9 +107,9 @@ The candidates that earn more than 10% on invested capital, sorted by ROIC:
 | JNJ | 35.0% | 17.7% | 67.9% |
 | PFE | 8.9% | 11.2% | 74.3% |
 
-Three names remain. A hard cutoff decides a lot here: Pfizer passes at 11.2% but would have missed a year earlier at 9.5%, and Exxon Mobil misses at 7.9% but would just have passed in 2024 at 10.0%. JPMorgan falls away clearly at 4.8%.
+A hard cutoff decides a lot here. Pfizer passes at 11.2% but would have missed a year earlier at 9.5%, and Exxon Mobil misses at 7.9% but would just have passed in 2024 at 10.0%.
 
-Placing all fifteen stocks on a map of quality against price shows what the screen does:
+All fifteen stocks on a map of return on capital against the EBITDA multiple:
 
 {% capture code_screen_final %}
 ```python
@@ -128,14 +124,43 @@ ev_ebitda = toolkit.ratios.get_ev_to_ebitda_ratio()["2025"]
 {% endcapture %}
 {% include ft-chart.html id="screen-final" src="/assets/data/article-charts.json" label="ROIC against EV/EBITDA for all 15 stocks, fiscal 2025" code=code_screen_final mcp="Compare the fiscal 2025 return on invested capital and EV/EBITDA of AAPL, MSFT, INTC, IBM, JNJ, PFE, MRK, KO, WMT, JPM, BAC, XOM, CVX, META and GOOGL. Which ones earn more than 10 percent on invested capital while trading below 20 times earnings and 18 times EBITDA?" %}
 
-Quality is easy to find in this universe. Apple (62.0%), Alphabet (26.0%), Microsoft (25.8%), Coca-Cola (14.7%), Walmart (13.6%) and IBM (13.5%) all earn more on their capital than the 10% threshold, but at 19 to 29 times EBITDA. Meta earns 22.0% at 16.7 times EBITDA, so it sits in the same corner as the shortlist on this chart, but its P/E of 28.1 kept it out of the first pass. Merck, Johnson & Johnson and Pfizer are the three that combine an ROIC above 10% with EV/EBITDA of 10.2, 16.0 and 8.2. Chevron and Exxon Mobil are about as cheap at 8.8 and 9.3 times EBITDA, but earn 5.1% and 7.9% on their capital.
+High returns are easy to find in this group: most of the fifteen clear the threshold. The seven that aren't on the shortlist, from Apple to Meta, trade at a median of 22.3 times EBITDA, against 10.2 for Merck, Johnson & Johnson and Pfizer. **The shortlist trades at about half the EBITDA multiple of the other high-return stocks.**
 
-## Conclusion: A Watchlist, Not a Buy List
+Meta is the closest call. At 16.7 times EBITDA it sits in the same corner as the shortlist, but its P/E of 28.1 kept it out of the first pass. Chevron and Exxon Mobil are about as cheap as Pfizer on EBITDA, but earn 5.1% and 7.9% on their capital.
 
-The screen reduced fifteen stocks to three, and the reasons the others dropped out are as useful as the result: Intel on earnings that have collapsed, Chevron and Exxon Mobil on falling returns as commodity prices normalised, the banks on metrics that don't fit them, and most of technology and consumer staples on price rather than quality.
+## What This Means for a Value Watchlist
 
-What the screen can't tell you is whether the market's reasons for the low multiples are right. Merck's trailing ROIC says nothing about revenue after Keytruda loses patent protection, Johnson & Johnson's says nothing about the outcome of its litigation, and Pfizer's says nothing about whether its recovery since 2023 continues. Those need analysis the Toolkit can support but not automate: pipelines, debt maturities, capital allocation and the catalysts in the next few quarters. The thresholds are also choices: an ROIC limit of 12% instead of 10% would have dropped Pfizer, and one of 7.5% would have kept Exxon Mobil.
+The screen took fifteen stocks down to three, and the reasons the others dropped out are as useful as the result: Intel on collapsed earnings, Chevron and Exxon Mobil on falling profits and returns as commodity prices normalised, the banks on metrics that don't fit them, and most of technology and consumer staples on price.
 
-The output of this screen is a watchlist rather than a buy list. What it does well is take twelve names off the desk quickly, for reasons you can check, so the time goes to the three where price and quality point the same way. This is an illustration of a method, not investment advice.
+A single year can't show whether a low multiple is new or normal for the company. The EBITDA multiple and ROIC of each name on the watchlist since 2022:
+
+| | 2022 | 2023 | 2024 | 2025 |
+|---|---|---|---|---|
+| **Merck**, EV/EBITDA | 13.6x | 45.0x | 11.2x | 10.2x |
+| Merck, ROIC | 21.4% | 0.8% | 21.9% | 21.7% |
+| **Johnson & Johnson**, EV/EBITDA | 17.4x | 13.2x | 12.3x | 16.0x |
+| Johnson & Johnson, ROIC | 15.9% | 19.3% | 18.1% | 17.7% |
+| **Pfizer**, EV/EBITDA | 7.1x | 20.8x | 9.0x | 8.2x |
+| Pfizer, ROIC | 28.1% | 3.0% | 9.5% | 11.2% |
+
+Merck's 10.2 times EBITDA in 2025 is the lowest of its four years, while its ROIC held at about 22% outside the 2023 charge, so the gap between price and return has widened. Johnson & Johnson went the other way: its multiple rose from 12.3 to 16.0 in 2025 on a steady return, which means it was cheaper on this measure a year earlier.
+
+Pfizer traded at about the same EBITDA multiple in 2025 as in 2022, 8.2 against 7.1, on an ROIC that fell from 28.1% to 11.2%. Its enterprise value fell along with its EBITDA, so on its own history it is no cheaper than in 2022, when it earned far more on its capital.
+
+The screen can't tell you whether the market's reasons for the low multiples are right. Merck's trailing ROIC says nothing about revenue after Keytruda loses patent protection, Johnson & Johnson's nothing about the outcome of its litigation, and Pfizer's nothing about whether its recovery continues. Those need work on pipelines, debt maturities and capital allocation. The thresholds are choices too: an ROIC limit of 12% would have dropped Pfizer, and one of 7.5% would have kept Exxon Mobil.
+
+The two series in the last chart are the ones to follow for each name: whether the return on capital holds as the patent and litigation questions play out, and whether the multiple moves with it. What the screen does well is take twelve names off the desk quickly, for reasons you can check, so the research time goes to the three where price and quality point the same way. It illustrates a method and is not investment advice.
+
+### Data and method
+
+**Source.** Annual financial statements of fifteen US large caps from company filings via FinancialModelingPrep, and their share prices from FinancialModelingPrep, fiscal years 2022 to 2025, retrieved on November 17, 2026.
+
+**How the series is built.** Each ratio uses the fiscal year as the company reports it, and fiscal years don't line up: Microsoft's 2025 ends in June, Apple's in September and Walmart's in January 2026. Fiscal 2025 is the latest year all fifteen have reported.
+
+**What I did to it.** ROIC is operating income taxed at the effective tax rate (NOPAT), over the average of total debt plus total equity. ROE is net income over average equity. The screen keeps the stocks with a positive P/E below 20 and a positive EV/EBITDA below 18, and of those the ones with an ROIC above 10%. The medians in the fourth section are of the seven stocks with an ROIC above 10% that are not on the shortlist, and of the shortlist itself. The last chart shows EV/EBITDA and not P/E, because the 2023 charges pushed the P/E of Merck into the hundreds and that of Pfizer into the seventies.
+
+**Limits.** The screen uses trailing ratios for a single year, which can't see the earnings ahead. Fifteen names are enough to show the logic, but a real screen would cast a wider net. Other data providers define some of these ratios differently, and their numbers can differ from the ones here.
+
+**Reproduce it.** The charts and tables are made with the [Finance Toolkit](/projects/financetoolkit), my open-source Python library. The Python button on each chart shows the code, and its MCP button a question that returns the same data from the [MCP server](/projects/financetoolkit/mcp). The code needs an FMP API key, which you can get at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The [Discovery module](/projects/financetoolkit/docs/discovery) can build a wider universe to screen.
 
 {% include ft-charts-script.html %}

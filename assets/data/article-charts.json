@@ -16528,7 +16528,9 @@
   },
   "screen-valuation": {
    "type": "scatter",
-   "title": "P/E against EV/EBITDA, fiscal 2025 (Intel left out: negative earnings)",
+   "title": "P/E against EV/EBITDA",
+   "subtitle": "14 large caps, fiscal 2025, in times; Intel left out (negative earnings); dashed lines at 20x and 18x",
+   "source": "Company filings and share prices via FinancialModelingPrep",
    "legend": "Orange: below 20x earnings and 18x EBITDA",
    "xname": "P/E",
    "yname": "EV/EBITDA",
@@ -16629,12 +16631,14 @@
   },
   "screen-quality": {
    "type": "tabs",
-   "title": "Quality of the five stocks that pass the valuation filter",
+   "title": "Return on equity, ROIC and gross margin of the five value candidates",
+   "subtitle": "Percent; fiscal 2025, and ROIC for each fiscal year from 2022 to 2025",
+   "source": "Company filings and share prices via FinancialModelingPrep",
    "tabs": [
     {
      "label": "Fiscal 2025",
      "type": "bar",
-     "title": "Return on equity, ROIC and gross margin, fiscal 2025",
+     "title": "",
      "x": [
       "MRK",
       "JNJ",
@@ -16679,7 +16683,7 @@
     {
      "label": "ROIC 2022 to 2025",
      "type": "line",
-     "title": "Return on invested capital, fiscal 2022 to 2025",
+     "title": "",
      "x": [
       "2022",
       "2023",
@@ -16739,7 +16743,9 @@
   },
   "screen-final": {
    "type": "scatter",
-   "title": "Price against quality, all 15 stocks, fiscal 2025",
+   "title": "ROIC against EV/EBITDA",
+   "subtitle": "All 15 stocks, fiscal 2025; ROIC in percent, EV/EBITDA in times; dashed line at 10% ROIC",
+   "source": "Company filings and share prices via FinancialModelingPrep",
    "legend": "Orange: passes the valuation filter and earns more than 10% on invested capital",
    "xname": "ROIC",
    "yname": "EV/EBITDA",
