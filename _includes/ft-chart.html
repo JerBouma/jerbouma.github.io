@@ -14,9 +14,9 @@
 {%- assign ft_src = include.src | default: "/assets/data/financetoolkit-charts.json" -%}
 {%- if include.code or include.mcp -%}
 <div class="ft-chart-box">
-<div class="ft-chart-actions">
-{%- if include.code %}<button type="button" class="ft-chart-action" data-panel="python" aria-expanded="false"><i class="fab fa-python" aria-hidden="true"></i><span>Python</span></button>{% endif -%}
-{%- if include.mcp %}<button type="button" class="ft-chart-action" data-panel="mcp" aria-expanded="false"><i class="fas fa-robot" aria-hidden="true"></i><span>MCP</span></button>{% endif -%}
+<div class="ft-chart-actions" role="group" aria-label="Behind this chart">
+{%- if include.code %}<button type="button" class="ft-chart-action" data-panel="python" aria-expanded="false" title="The Python code that returns this chart's data"><i class="fas fa-code" aria-hidden="true"></i><span>Python</span></button>{% endif -%}
+{%- if include.mcp %}<button type="button" class="ft-chart-action" data-panel="mcp" aria-expanded="false" title="The question to ask an AI assistant through the MCP server"><i class="fas fa-comment-dots" aria-hidden="true"></i><span>MCP</span></button>{% endif -%}
 </div>
 <div class="ft-chart" data-chart="{{ include.id }}" data-src="{{ ft_src }}?v={{ site.time | date: '%s' }}" role="figure" aria-label="{{ include.label | default: include.id }}">
   <div class="ft-chart__loading" aria-hidden="true"></div>
@@ -29,8 +29,12 @@
 {%- if include.mcp %}
 <div class="ft-chart-panel" data-panel="mcp" hidden>
 <div class="ft-chart-panel__card">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>{{ include.mcp | strip | escape }}</p></div>
-<p class="ft-chart-panel__note">Ask this through the <a href="/projects/financetoolkit/mcp">Finance Toolkit MCP server</a>, from Claude, ChatGPT or any other MCP client.</p>
+<p class="ft-chart-panel__label"><i class="fas fa-comment-dots" aria-hidden="true"></i> Ask your AI assistant</p>
+<p class="ft-chart-panel__question">{{ include.mcp | strip | escape }}</p>
+<div class="ft-chart-panel__foot">
+<p class="ft-chart-panel__note">Works in Claude, ChatGPT or any other client connected to the <a href="/projects/financetoolkit/mcp">Finance Toolkit MCP server</a>.</p>
+<button type="button" class="ft-chart-panel__copy"><i class="fas fa-copy" aria-hidden="true"></i><span>Copy</span></button>
+</div>
 </div>
 </div>
 {%- endif %}

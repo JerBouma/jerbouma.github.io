@@ -1,19 +1,29 @@
-{%- comment -%} The five most recent other articles, plus a link to all of them {%- endcomment -%}
-{% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
+{%- comment -%} Three other articles, those sharing a tag with this one first, then the newest; plus a link to all of them {%- endcomment -%}
+{%- assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
+{%- assign related = "" | split: "" %}{% assign used = "|" %}
+{%- for article in articles %}
+  {%- if article.url == page.url %}{% continue %}{% endif %}
+  {%- assign shares = false %}
+  {%- for tag in article.tags %}{% if page.tags contains tag %}{% assign shares = true %}{% endif %}{% endfor %}
+  {%- if shares %}{% assign related = related | push: article %}{% assign used = used | append: article.url | append: "|" %}{% endif %}
+{%- endfor %}
+{%- for article in articles %}
+  {%- assign key = "|" | append: article.url | append: "|" %}
+  {%- if article.url == page.url or used contains key %}{% continue %}{% endif %}
+  {%- assign related = related | push: article %}
+{%- endfor %}
 <details class="article-side" open>
-<summary class="article-sidebar__title">More insights <span class="article-sidebar__count">{{ articles.size | minus: 1 }}</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
-<nav class="article-sidebar__list">
-  {%- assign shown = 0 %}
-  {%- for article in articles %}
-    {%- if article.url == page.url or shown >= 5 %}{% continue %}{% endif %}
-    {%- assign shown = shown | plus: 1 %}
+<summary class="article-sidebar__title">Keep reading <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
+<nav class="article-sidebar__list article-sidebar__list--cards">
+  {%- for article in related limit: 3 %}
     <a href="{{ article.url | relative_url }}" class="article-sidebar__item">
+      <span class="article-sidebar__item-tag">{{ article.tags | first }}</span>
       <span class="article-sidebar__item-title">{{ article.title }}</span>
       <span class="article-sidebar__item-date">{{ article.date | date: "%b %-d, %Y" }}</span>
     </a>
   {%- endfor %}
 </nav>
-<a class="article-sidebar__all" href="{{ '/insights' | relative_url }}">All insights <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+<a class="article-sidebar__all" href="{{ '/insights' | relative_url }}">All {{ articles.size }} insights <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
 </details>
 <script>
 // On phones and tablets the sidebar sits above the article, so both sections
