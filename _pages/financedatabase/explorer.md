@@ -31,7 +31,7 @@ Search and filter the Finance Database without installing anything. Pick an asse
     <button type="button" role="tab" data-class="currencies" aria-selected="false">Currencies <span class="fdx-tab__count"></span></button>
     <button type="button" role="tab" data-class="cryptos" aria-selected="false">Cryptocurrencies <span class="fdx-tab__count"></span></button>
   </div>
-  <div class="fdx-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4"/></svg><input type="search" class="fdx-query" placeholder="Ticker, name or ISIN, e.g. ASML or bank" aria-label="Search by ticker, name or ISIN" autocomplete="off" spellcheck="false"></div>
+  <div class="fdx-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4"/></svg><input type="search" class="fdx-query" data-find placeholder="Ticker, name or ISIN, e.g. ASML or bank" aria-label="Search by ticker, name or ISIN" autocomplete="off" spellcheck="false"></div>
   <div class="fdx-filters"></div>
   <div class="fdx-bar">
     <span class="fdx-count" aria-live="polite"></span>

@@ -284,6 +284,17 @@
     if ((ev.key === "k" && (ev.metaKey || ev.ctrlKey)) || (ev.key === "/" && !typing && !dialog.open)) {
       ev.preventDefault();
       open();
+      return;
+    }
+    // Ctrl/Cmd+F goes to the page's own search field (data-find, such as the
+    // Finance Database explorer), else to the site search. Pressed again while
+    // that search has focus, it is the browser's find in page as usual.
+    if ((ev.key === "f" || ev.key === "F") && (ev.metaKey || ev.ctrlKey) && !ev.altKey && !ev.shiftKey) {
+      if (dialog.open) return;
+      var field = document.querySelector("[data-find]");
+      if (field && t === field) return;
+      ev.preventDefault();
+      if (field) { field.focus(); field.select(); } else open();
     }
   });
   // ?q=... opens the search with that text (the 404 page links to it)
