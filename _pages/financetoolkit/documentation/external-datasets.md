@@ -14,7 +14,7 @@ sidebar:
     nav: "financetoolkit-docs-external-datasets"
 ---
 
-{% include algolia.html %}
+{% include docs-search.html %}
 
 {% include financetoolkit-getting-started/external-datasets.md %}
 

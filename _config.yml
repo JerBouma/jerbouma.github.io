@@ -62,28 +62,9 @@ atom_feed:
   hide                   : true
 search                   : # true, false (default)
 search_full_content      : # true, false (default)
-search_provider          : algolia # lunr (default), algolia, google
+search_provider          : # site search: _plugins/site_search.rb and assets/js/site-search.js
 lunr:
   search_within_pages    : # true, false (default)
-algolia:
-  application_id         : HIVML6LDM1 # YOUR_APPLICATION_ID
-  index_name             : FinanceToolkit # YOUR_INDEX_NAME
-  search_only_api_key    : 7235c7187748faa8c4d04c19127da368 # YOUR_SEARCH_ONLY_API_KEY
-  powered_by             : false # true (default), false
-  files_to_exclude       : 
-    - index.md
-    - _pages/q7v3.html
-    - _pages/*.md
-    - _pages/articles/*.md
-    - _pages/coding/*.md
-    - _pages/financedatabase/*.md
-    - _pages/financescenarios/*.md
-    - _pages/financescenarios/*/*.md
-    - _pages/financescenarios/*/*/*.md
-    - _pages/financetoolkit/financetoolkit.md
-    - _pages/financetoolkit/mcp.md
-    - _pages/cv.html
-    - _pages/openbbterminal/*.md
 google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
   instant_search         : # false (default), true

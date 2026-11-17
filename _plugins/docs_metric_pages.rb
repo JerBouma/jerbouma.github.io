@@ -791,23 +791,3 @@ end
 Jekyll::Hooks.register [:pages, :documents], :post_render do |doc|
   DocsMetricPages.rewrite_links(doc)
 end
-
-# Search: the function pages hold the full text now that the class pages are
-# introductions, so they are indexed. Paragraphs that repeat on every page (the
-# install and parameter lead-ins) are skipped so they do not flood the results.
-# (This site defines no other Algolia hooks; move them here if that changes.)
-if defined?(Jekyll::Algolia::Hooks)
-  module Jekyll
-    module Algolia
-      module Hooks
-        SKIPPED_CLASSES = %w[docs-boilerplate docs-mcp-note].freeze
-
-        def self.before_indexing_each(record, node, _context)
-          classes = node.respond_to?(:[]) ? node["class"].to_s.split : []
-          return nil if (classes & SKIPPED_CLASSES).any?
-          record
-        end
-      end
-    end
-  end
-end
