@@ -431,6 +431,6 @@ If you have any questions about the Finance Database or would like to share with
 
 If you'd like to support my efforts, either help me out via the [Contributing Guidelines](https://github.com/JerBouma/FinanceDatabase/blob/main/CONTRIBUTING.md){:target="_blank"} or [Sponsor Me](https://github.com/sponsors/JerBouma){:target="_blank"}.
 
-[![Star History Chart](https://star-history.dera.page/svg?repos=JerBouma/FinanceDatabase&type=Date)](https://star-history.dera.page/#JerBouma/FinanceDatabase&Date){:target="_blank"}
+[![Star History Chart](https://star-history.dera.page/svg?repos=JerBouma/FinanceDatabase&type=Date){: width="800" height="533"}](https://star-history.dera.page/#JerBouma/FinanceDatabase&Date){:target="_blank"}
 
 {% include ft-charts-script.html %}
