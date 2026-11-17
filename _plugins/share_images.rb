@@ -16,7 +16,7 @@ require "json"
 module ShareImages
   DIR = "assets/images/share".freeze
   DOCS = "/projects/financetoolkit/docs/".freeze
-  SKIP = %w[/404.html /q7v3 /resume/cv].freeze
+  SKIP = %w[/404.html /resume/cv].freeze
 
   class Manifest < Jekyll::PageWithoutAFile; end
 

@@ -9,7 +9,6 @@ layout: null
 User-agent: *
 Allow: /
 # unlisted drafts page, not meant for search results
-Disallow: /q7v3
 Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 Sitemap: {{ site.url }}/sitemap.xml
