@@ -2408,6 +2408,9 @@ body.wide-no-sidebar:not(.no-title) {
 
     // Section title link hover
     > a {
+      // block, so an active link (which has a border) doesn't add empty line
+      // boxes above and below its title
+      display: block;
       text-decoration: none !important;
 
       .nav__sub-title:hover {
