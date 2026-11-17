@@ -15,17 +15,22 @@ Articles covered:
   record of what the server returned on July 17, 2026 (estimates, price
   targets and 13F counts change over time, so they can't be fetched again);
   the Finance Toolkit dashboard is recalculated with prices up to that date.
+- The history series (/articles/black-death-economic-effects, ...): one
+  event from economic history per article, from the Finance Toolkit's
+  historical datasets. These need no key and end at a fixed date, so a rerun
+  gives the same charts. Run only these with `python _scripts/article_charts.py history`.
 """
 
 import json
 import logging
 import os
+import sys
 import warnings
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from financetoolkit import Toolkit
+from financetoolkit import Economics, Toolkit
 
 warnings.filterwarnings("ignore")
 logging.disable(logging.CRITICAL)
@@ -256,12 +261,96 @@ def axon_charts() -> dict:
     return charts
 
 
+# --- History series: the Black Death and English wages ---------------------
+
+BOE = {
+    "population": "Population (England)",
+    "wages": "Real consumption wages",
+    "earnings": "Earnings per head",
+    "prices": "Consumer price index",
+    "gdp": "Real GDP of England at market prices",
+}
+
+
+def millennium() -> pd.DataFrame:
+    """The Bank of England's millennium dataset, by year, with short column names."""
+    economics = Economics(start_date="1086-01-01")
+    data = economics.get_millennium_of_macroeconomic_data(series=list(BOE.values()))
+    data = data[list(BOE.values())].rename(columns={v: k for k, v in BOE.items()})
+    data.index = [int(str(year)) for year in data.index]
+    return data
+
+
+def index_to(series: pd.Series, start: int, end: int) -> pd.Series:
+    """A series as an index, with its average over start..end set to 100."""
+    return series / series.loc[start:end].mean() * 100
+
+
+def black_death_charts() -> dict:
+    data = millennium()
+    data["gdp_per_head"] = data["gdp"] / data["population"]
+
+    def line(title, frame, names, fmt, digits=2):
+        return {
+            "type": "line",
+            "title": title,
+            "x": [str(year) for year in frame.index],
+            "series": [{"name": name, "data": values(frame[column], digits)} for column, name in names.items()],
+            "format": fmt,
+        }
+
+    span = data.loc[1300:1500]
+    charts = {
+        "bd-population": line(
+            "Population of England (millions)", span.assign(population=span["population"] / 1000),
+            {"population": "Population"}, "ratio"),
+        "bd-wages": line(
+            "Real consumption wages in England", data.loc[1300:1550], {"wages": "Real consumption wage"}, "number"),
+    }
+
+    pay = data.loc[1330:1450]
+    charts["bd-pay-prices"] = line(
+        "Earnings and consumer prices in England (1340-1347 = 100)",
+        pd.DataFrame({"earnings": index_to(pay["earnings"], 1340, 1347), "prices": index_to(pay["prices"], 1340, 1347)}),
+        {"earnings": "Earnings per head", "prices": "Consumer prices"}, "number", 1)
+
+    output = pd.DataFrame({
+        "gdp": index_to(pay["gdp"], 1340, 1347),
+        "gdp_per_head": index_to(pay["gdp_per_head"], 1340, 1347),
+    })
+    charts["bd-output"] = {
+        "type": "tabs",
+        "title": "Real GDP of England (1340-1347 = 100)",
+        "tabs": [
+            {**line("Real GDP of England (1340-1347 = 100)", output, {"gdp": "Real GDP"}, "number", 1), "label": "Real GDP"},
+            {**line("Real GDP per head in England (1340-1347 = 100)", output, {"gdp_per_head": "Real GDP per head"}, "number", 1),
+             "label": "Real GDP per head"},
+        ],
+    }
+
+    long_run = data.loc[1250:1700]
+    charts["bd-long-run"] = line(
+        "Population and real wages in England (1340-1347 = 100)",
+        pd.DataFrame({
+            "population": index_to(long_run["population"], 1340, 1347),
+            "wages": index_to(long_run["wages"], 1340, 1347),
+        }),
+        {"population": "Population", "wages": "Real consumption wage"}, "number", 1)
+    return charts
+
+
+HISTORY = [black_death_charts]
+
+
 def main() -> None:
-    if not API_KEY:
-        raise SystemExit("Set FINANCIAL_MODELING_PREP_KEY first.")
     payload = json.loads(OUTPUT.read_text())
-    payload["charts"].update(screen_charts())
-    payload["charts"].update(axon_charts())
+    for build in HISTORY:
+        payload["charts"].update(build())
+    if sys.argv[1:] != ["history"]:
+        if not API_KEY:
+            raise SystemExit("Set FINANCIAL_MODELING_PREP_KEY first, or run only the history series with 'history'.")
+        payload["charts"].update(screen_charts())
+        payload["charts"].update(axon_charts())
     OUTPUT.write_text(json.dumps(payload, indent=1) + "\n")
 
 
