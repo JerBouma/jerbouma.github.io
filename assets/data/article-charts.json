@@ -95,7 +95,7 @@
   },
   "macro-inflation": {
    "type": "line",
-   "title": "Inflation by country",
+   "title": "Consumer price inflation",
    "x": [
     "2019",
     "2020",
@@ -167,7 +167,9 @@
      ]
     }
    ],
-   "format": "percent"
+   "format": "percent",
+   "subtitle": "Yearly change in consumer prices, percent, 2019 to 2025",
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
   },
   "macro-rates": {
    "type": "line",
@@ -240,6 +242,86 @@
       0.05375,
       0.04375,
       0.03625
+     ]
+    }
+   ],
+   "format": "percent",
+   "subtitle": "Policy rate at the end of each year, percent, 2019 to 2025 (Germany: euro area rate)",
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
+  },
+  "macro-real-rates": {
+   "type": "line",
+   "title": "Real central bank policy rates",
+   "subtitle": "Year-end policy rate minus the year's consumer price inflation, percent, 2019 to 2025",
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), own calculation",
+   "x": [
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "series": [
+    {
+     "name": "Germany",
+     "data": [
+      -0.0183,
+      -0.0087,
+      -0.0371,
+      -0.0823,
+      -0.0239,
+      0.0107,
+      -0.0014
+     ]
+    },
+    {
+     "name": "United Kingdom",
+     "data": [
+      -0.0103,
+      -0.0078,
+      -0.0233,
+      -0.0555,
+      -0.0205,
+      0.0221,
+      0.0038
+     ]
+    },
+    {
+     "name": "Japan",
+     "data": [
+      -0.0058,
+      -0.0009,
+      0.0016,
+      -0.0262,
+      -0.0335,
+      -0.0249,
+      -0.0245
+     ]
+    },
+    {
+     "name": "Brazil",
+     "data": [
+      0.0077,
+      -0.0121,
+      0.0095,
+      0.0447,
+      0.0716,
+      0.0788,
+      0.0998
+     ]
+    },
+    {
+     "name": "United States",
+     "data": [
+      -0.0019,
+      -0.0113,
+      -0.0456,
+      -0.0362,
+      0.0125,
+      0.0142,
+      0.0092
      ]
     }
    ],
@@ -319,7 +401,9 @@
      ]
     }
    ],
-   "format": "percent"
+   "format": "percent",
+   "subtitle": "Unemployed as a share of the labour force, percent, 2019 to 2025",
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
   },
   "macro-debt": {
    "type": "line",
@@ -389,7 +473,9 @@
      ]
     }
    ],
-   "format": "percent"
+   "format": "percent",
+   "subtitle": "Consolidated government debt, percent of GDP, 2019 to 2024",
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
   },
   "msft-revenue": {
    "type": "bar",
