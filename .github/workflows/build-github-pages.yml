@@ -67,6 +67,17 @@ jobs:
           JEKYLL_ENV: production
           YOUTUBE_SNAPSHOT: 1 # writes the merged list of shorts back to _data/youtube_shorts.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # higher GitHub API limit for the live stats
+      - name: Write the Finance Database explorer data
+        # /projects/financedatabase/explorer filters the database in the
+        # browser from one JSON file per asset class, written from the
+        # financedatabase package (_scripts/build_fd_explorer.py), so the daily
+        # rebuild keeps it current. If this fails, the page says the data
+        # couldn't be loaded and the rest of the site deploys as usual.
+        continue-on-error: true
+        run: |
+          python3 -m venv /tmp/fdenv
+          /tmp/fdenv/bin/pip install --quiet financedatabase
+          /tmp/fdenv/bin/python _scripts/build_fd_explorer.py _site/assets/data/financedatabase
       - name: Save the YouTube shorts snapshot
         # Commits the updated list to the youtube-data branch (only that one
         # file, never main), so shorts that dropped out of the feeds stay on
