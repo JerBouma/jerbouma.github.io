@@ -301,9 +301,10 @@ def black_death_charts() -> dict:
 
     span = data.loc[1300:1500]
     charts = {
-        "bd-population": line(
+        # bars from zero, so the fall of almost half in three years shows as the drop it was
+        "bd-population": dict(line(
             "Population of England (millions)", span.assign(population=span["population"] / 1000),
-            {"population": "Population"}, "ratio"),
+            {"population": "Population"}, "ratio"), type="bar"),
         "bd-wages": line(
             "Real consumption wages in England", data.loc[1300:1550], {"wages": "Real consumption wage"}, "number"),
     }
