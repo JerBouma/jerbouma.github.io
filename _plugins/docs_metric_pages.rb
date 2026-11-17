@@ -182,10 +182,23 @@ module DocsMetricPages
   # "Altman Z-Score | Finance Toolkit". When that runs past 60 characters the
   # bracketed acronym goes first ("Forward Price to Earnings Growth Ratio
   # (Forward PEG)" loses "(Forward PEG)"), and only then the suffix.
-  def seo_title_for(name)
+  #
+  # People search for "<metric> python" ("sharpe ratio python", "black scholes
+  # python code"), so a function page says "in Python" whenever it fits:
+  # "Sharpe Ratio in Python | Finance Toolkit". A one-word option Greek gets
+  # "Option" in front ("Option Delta in Python"), and the Economics series get
+  # "Data" ("Unemployment Rate Data in Python").
+  def seo_title_for(name, key = nil)
     short = name.sub(/\s*\([^()]*\)\s*\z/, "")
-    title = ["#{name} | Finance Toolkit", "#{short} | Finance Toolkit", short]
-              .find { |t| t.length <= 60 } || short
+    subject = lambda do |n|
+      n = "Option #{n}" if key == "options" && n.match?(/\A[A-Z][a-z]+\z/)
+      n = "#{n} Data" if key == "economics" && !n.match?(/\bData\b/)
+      n
+    end
+    candidates = []
+    candidates += ["#{subject.call(name)} in Python | Finance Toolkit", "#{subject.call(short)} in Python | Finance Toolkit"] if key
+    candidates += ["#{name} | Finance Toolkit", "#{short} | Finance Toolkit", short]
+    title = candidates.find { |t| t.length <= 60 } || short
     title.sub(" | ", " &#124; ")
   end
 
@@ -575,7 +588,7 @@ module DocsMetricPages
         page.data.merge!(
           "layout"               => "single",
           "title"                => info[:title],
-          "seo_title"            => seo_title_for(info[:title]),
+          "seo_title"            => seo_title_for(info[:title], key),
           "seo_title_suffix"     => false,
           "description"          => description,
           "excerpt"              => description,

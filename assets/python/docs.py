@@ -950,7 +950,7 @@ The Economics module provides insights for 60+ countries into key economic indic
         "location": "_pages/financetoolkit/documentation/etf.md",
         "header": f"""---
 title: ETF
-seo_title: "ETF Module | Finance Toolkit"
+seo_title: "ETF Analysis in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The ETF module analyzes exchange-traded funds, from their holdings, sector and country weightings to their tracking, concentration, overlap, valuation and liquidity.
 description: The ETF module analyzes exchange-traded funds, from their holdings, sector and country weightings to their tracking, concentration, overlap, valuation and liquidity.
@@ -973,7 +973,7 @@ The ETF module analyzes exchange-traded funds: their holdings, sector and countr
         "location": "_pages/financetoolkit/documentation/portfolio-optimization.md",
         "header": f"""---
 title: Portfolio Optimization
-seo_title: "Portfolio Optimization | Finance Toolkit"
+seo_title: "Portfolio Optimization in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Portfolio Optimization module builds portfolios from the tickers of a Toolkit, from minimum variance, maximum Sharpe ratio and risk parity weights to the efficient frontier, risk contributions, stress tests and attribution.
 description: The Portfolio Optimization module builds portfolios from the tickers of a Toolkit, from minimum variance, maximum Sharpe ratio and risk parity weights to the efficient frontier, risk contributions, stress tests and attribution.

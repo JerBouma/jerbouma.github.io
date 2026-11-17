@@ -1,9 +1,9 @@
 ---
 title: Models
-seo_title: "Models Module | Finance Toolkit"
+seo_title: "DCF, DuPont and Valuation Models in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
-description: "Reference for every function and parameter in the Finance Toolkit's Models module: DuPont analysis, Discounted Cash Flow (DCF) and valuation models."
+description: "DuPont analysis, discounted cash flow (DCF), WACC, the Altman Z-Score, the Piotroski F-Score and other valuation models in Python with the Finance Toolkit."
 author_profile: false
 permalink: /projects/financetoolkit/docs/models
 classes: wide-sidebar

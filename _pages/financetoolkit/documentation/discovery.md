@@ -1,9 +1,9 @@
 ---
 title: Discovery
-seo_title: "Discovery Module | Finance Toolkit"
+seo_title: "Stock Screener and Market Data in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Discovery Module contains lists of companies, cryptocurrencies, forex, commodities, etfs and indices including screeners, quotes, performance metrics and more to find and select tickers to use in the Finance Toolkit.
-description: "Reference for every function and parameter in the Finance Toolkit's Discovery module: screeners, quotes and lists of stocks, crypto, ETFs and indices."
+description: "Screen stocks and pull quotes, lists of stocks, ETFs, indices and crypto in Python with the Finance Toolkit's Discovery module, with every parameter explained."
 author_profile: false
 permalink: /projects/financetoolkit/docs/discovery
 classes: wide-sidebar

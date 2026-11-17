@@ -1,9 +1,9 @@
 ---
 title: Performance
-seo_title: "Performance Module | Finance Toolkit"
+seo_title: "Sharpe Ratio, Alpha and CAPM in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Performance module is meant to calculate important performance metrics such as Sharpe Ratio, Sortino Ratio, Treynor Ratio, Information Ratio, Jensen's Alpha, Beta, Capital Asset Pricing Model, R-Squared and more.
-description: "Reference for every function and parameter in the Finance Toolkit's Performance module: Sharpe, Sortino, Treynor ratios, Jensen's Alpha, Beta and CAPM."
+description: "Calculate the Sharpe, Sortino and Treynor ratios, Jensen's Alpha, Beta, CAPM and factor models for stocks and portfolios in Python with the Finance Toolkit."
 author_profile: false
 permalink: /projects/financetoolkit/docs/performance
 classes: wide-sidebar

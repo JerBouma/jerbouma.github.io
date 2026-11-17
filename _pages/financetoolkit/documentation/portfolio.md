@@ -1,9 +1,9 @@
 ---
 title: Portfolio
-seo_title: "Portfolio Module | Finance Toolkit"
+seo_title: "Portfolio Tracking in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Portfolio module is meant to calculate important portfolio metrics allows you to compare your own portfolio to a benchmark, seeing performance of individual assets and directly load the portfolio into the Finance Toolkit.
-description: "Reference for every function and parameter in the Finance Toolkit's Portfolio module: load your transactions, track holdings and compare to a benchmark."
+description: "Load your transactions, track positions and returns, including the money-weighted return, and compare a portfolio with its benchmark in Python."
 author_profile: false
 permalink: /projects/financetoolkit/docs/portfolio
 classes: wide-sidebar

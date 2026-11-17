@@ -1,9 +1,9 @@
 ---
 title: Fixed Income
-seo_title: "Fixed Income Module | Finance Toolkit"
+seo_title: "Bond and Fixed Income Analytics in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Fixed Income module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
-description: "Reference for every function and parameter in the Finance Toolkit's Fixed Income module: yield, duration, convexity, Black and Bachelier models."
+description: "Calculate bond yields, duration and convexity, fit yield curves and read Treasury, corporate and policy rates in Python with the Finance Toolkit."
 author_profile: false
 permalink: /projects/financetoolkit/docs/fixedincome
 classes: wide-sidebar

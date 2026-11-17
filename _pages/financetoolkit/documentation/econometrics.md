@@ -1,9 +1,9 @@
 ---
 title: Econometrics
-seo_title: "Econometrics Module | Finance Toolkit"
+seo_title: "Econometrics in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Econometrics module contains statistical tests and estimators for financial time series and panel data, including unit root and cointegration tests, regression estimators, causal inference methods, diagnostics, forecasting and event studies.
-description: "Reference for every function and parameter in the Finance Toolkit's Econometrics module: unit root and cointegration tests, regressions and forecasting."
+description: "Run unit root and cointegration tests, regressions and forecasts on financial and economic data in Python with the Finance Toolkit's Econometrics module."
 author_profile: false
 permalink: /projects/financetoolkit/docs/econometrics
 classes: wide-sidebar

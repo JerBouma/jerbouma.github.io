@@ -1,9 +1,9 @@
 ---
 title: Economics
-seo_title: "Economics Module | Finance Toolkit"
+seo_title: "Macroeconomic Data in Python | Finance Toolkit"
 seo_title_suffix: false
 excerpt: The Economics module gives insights for 60+ countries into key economic indicators such as the Consumer Price Index (CPI), Gross Domestic Product (GDP), Unemployment Rates and 3-month and 10-year Government Interest Rates. This is done through the economics module and can be used as a standalone module as well.
-description: "Reference for every function and parameter in the Finance Toolkit's Economics module: CPI, GDP, unemployment and interest rates for 60+ countries."
+description: "Get CPI, inflation, GDP, unemployment, interest rates and centuries of macro history for 60+ countries in Python with the Finance Toolkit's Economics module."
 author_profile: false
 permalink: /projects/financetoolkit/docs/economics
 classes: wide-sidebar
