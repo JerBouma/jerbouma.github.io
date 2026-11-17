@@ -15,7 +15,7 @@ require "fileutils"
 # left out.
 module SiteSearch
   PATH = "assets/data".freeze
-  SKIP = %r{\A/(404\.html|q7v3|resume/cv|projects/financescenarios)}.freeze
+  SKIP = %r{\A/(404\.html|resume/cv|projects/financescenarios)}.freeze
 
   CONTENT = "search-content.json".freeze
   CHUNK_CHARS = 500
