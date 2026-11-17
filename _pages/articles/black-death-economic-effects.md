@@ -10,6 +10,7 @@ layout: single
 classes: wide-sidebar article-document
 author_profile: false
 collection: article
+series: history
 tags: [Macroeconomics]
 share: true
 ---
