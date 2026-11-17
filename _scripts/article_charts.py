@@ -54,7 +54,7 @@ SCREEN = ["AAPL", "MSFT", "INTC", "IBM", "JNJ", "PFE", "MRK", "KO", "WMT", "JPM"
 YEAR = "2025"
 # label positions for points that sit on top of each other
 POS_VALUATION = {"PFE": "bottom"}
-POS_FINAL = {"PFE": "left", "CVX": "bottom"}
+POS_FINAL = {"XOM": "top", "CVX": "bottom"}
 
 
 def point(name, x, y, positions):
@@ -69,13 +69,13 @@ def screen_charts() -> dict:
     pe = screener.ratios.get_price_to_earnings_ratio()
     ev_ebitda = screener.ratios.get_ev_to_ebitda_ratio()
     roe = screener.ratios.get_return_on_equity()
-    # net income over average debt plus equity, without subtracting dividends
-    # (the default would penalise exactly the dividend payers a value screen finds)
-    roic = screener.ratios.get_return_on_invested_capital(dividend_adjusted=False)
+    # NOPAT over average debt plus equity
+    roic = screener.ratios.get_return_on_invested_capital()
     gross = screener.ratios.get_gross_margin()
 
     snapshot = pd.DataFrame({"pe": pe[YEAR], "ev": ev_ebitda[YEAR], "roic": roic[YEAR]})
-    passing = snapshot[(snapshot["pe"] > 0) & (snapshot["pe"] < 20) & (snapshot["ev"] < 18)].index
+    # negative multiples mean nothing, so both have to be positive
+    passing = snapshot[(snapshot["pe"] > 0) & (snapshot["pe"] < 20) & (snapshot["ev"] > 0) & (snapshot["ev"] < 18)].index
     candidates = list(snapshot.loc[passing].sort_values("roic", ascending=False).index)
     final = [t for t in candidates if snapshot.loc[t, "roic"] > 0.10]
 
