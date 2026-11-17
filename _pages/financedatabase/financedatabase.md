@@ -4,6 +4,12 @@ software:
   name: "Finance Database"
   repository: "https://github.com/JerBouma/FinanceDatabase"
   download: "https://pypi.org/project/financedatabase/"
+# schema.org Dataset (Google Dataset Search), rendered in _includes/head/custom.html
+dataset:
+  name: "Finance Database: equities, ETFs, indices, currencies and cryptocurrencies"
+  data: "https://github.com/JerBouma/FinanceDatabase/tree/main/database"
+  keywords: ["stock list", "ticker symbols", "sector classification", "industry classification", "ETF list", "stock indices", "ISIN", "FIGI"]
+  variables: ["symbol", "name", "summary", "currency", "sector", "industry group", "industry", "exchange", "MIC", "market", "country", "city", "website", "market cap tier", "ISIN", "CUSIP", "FIGI", "ETF category", "ETF family", "index category", "delisted"]
 title: Finance Database
 seo_title: "Finance Database: 300,000+ Stocks, ETFs and Indices"
 seo_title_suffix: false
