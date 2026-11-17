@@ -1402,6 +1402,8 @@
   "semis-revenue": {
    "type": "bar",
    "title": "Semiconductor revenue",
+   "subtitle": "Annual revenue in US$ billions, fiscal years 2010, 2014, 2018, 2022 and 2025",
+   "source": "Company filings via FinancialModelingPrep",
    "x": [
     "2010",
     "2014",
@@ -1476,6 +1478,8 @@
   "semis-margins": {
    "type": "line",
    "title": "Semiconductor gross margins",
+   "subtitle": "Gross profit as a share of revenue, fiscal years 2010, 2014, 2018, 2022 and 2025",
+   "source": "Company filings via FinancialModelingPrep",
    "x": [
     "2010",
     "2014",
@@ -1550,6 +1554,8 @@
   "semis-intc-amd": {
    "type": "tabs",
    "title": "Intel versus AMD",
+   "subtitle": "Revenue in US$ billions, gross margin and return on invested capital, selected fiscal years from 2010 to 2025",
+   "source": "Company filings via FinancialModelingPrep",
    "tabs": [
     {
      "type": "bar",
@@ -1679,6 +1685,8 @@
   "semis-nvda-amd": {
    "type": "tabs",
    "title": "NVIDIA versus AMD",
+   "subtitle": "Revenue in US$ billions, gross margin and return on invested capital, selected fiscal years from 2010 to 2025",
+   "source": "Company filings via FinancialModelingPrep",
    "tabs": [
     {
      "type": "bar",
@@ -1807,7 +1815,9 @@
   },
   "semis-valuation": {
    "type": "bar",
-   "title": "Semiconductor valuation multiples, 2025",
+   "title": "Semiconductor valuation multiples",
+   "subtitle": "Price-to-earnings and EV-to-EBITDA ratios at the end of fiscal 2025, Intel's negative P/E left out",
+   "source": "Company filings and share prices via FinancialModelingPrep",
    "x": [
     "QCOM",
     "INTC",
