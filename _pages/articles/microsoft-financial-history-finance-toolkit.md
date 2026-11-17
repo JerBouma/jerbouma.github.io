@@ -136,7 +136,7 @@ returns = profitability_ratios.loc[["Return on Equity", "Return on Assets", "Ret
 
 The early numbers show what a capital-light monopoly looks like. An ROE of 38% in 1990 with zero debt and no buybacks means the underlying business really was that profitable. Those returns compressed through the 2000s as the business mix changed and the equity base remained large.
 
-The 2015 figures are distorted by the Nokia write-down, which depressed net income and inflated the apparent collapse in ROA and ROE. By 2020 ROE had rebounded to 40%, though this partly reflects the equity base shrinking from buybacks rather than purely improved profitability. ROIC strips out the effects of capital structure and gives a cleaner picture: Microsoft earned roughly 30-31% on invested capital in 2025, which is strong but not far from what it earned in the 1990s. The quality of the business has held up; what changed is how the returns are distributed to shareholders.
+The 2015 figures are distorted by the Nokia write-down, which depressed net income and inflated the apparent collapse in ROA and ROE. By 2020 ROE had rebounded to 40%, though this partly reflects the equity base shrinking from buybacks rather than purely improved profitability. ROIC gives a cleaner picture because it doesn't depend on how the capital is financed. The Finance Toolkit takes operating income, taxes it at the effective tax rate and divides it by average equity plus debt, without deducting cash. On that basis Microsoft earned about 26% on invested capital in 2025. That is strong for a company of this size, but below the 28% to 35% it earned in 1990 and 1995. The business has become more capital-intensive, and part of the higher ROE comes from a smaller equity base rather than from the business itself.
 
 Return on assets shows something similar. ROA of 18% in 2025 reflects that Microsoft now carries a much heavier asset base of cloud infrastructure, acquisitions, and data centers than the software company of the 1990s. The 30%-plus ROA of the Gates era (30.6% in 1990) is gone, but 18% is a strong number for a company of this size and scope.
 
@@ -154,7 +154,7 @@ Valuation ratios on the left, beta and alpha against the S&P 500 on the right, f
 | P/E | 38.6 | 41.8 | 24.9 | 38.8 | 35.7 | 35.5 |
 | P/B | 14.4 | 18.0 | 10.9 | 13.6 | 11.7 | 10.5 |
 | P/FCF | 37.8 | 45.6 | 27.8 | 47.2 | 42.5 | 50.4 |
-| EV/EBITDA | 27.0 | 32.2 | 19.1 | 27.9 | 24.5 | 22.7 |
+| EV/EBITDA | 25.2 | 30.8 | 18.2 | 27.1 | 24.1 | 22.3 |
 
 </div>
 
@@ -162,8 +162,8 @@ Valuation ratios on the left, beta and alpha against the S&P 500 on the right, f
 
 | Metric | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
 |--------|------|------|------|------|------|------|
-| Beta | 1.14 | 1.15 | 1.28 | 1.16 | 1.19 | 0.88 |
-| Alpha | +0.25 | +0.24 | -0.09 | +0.33 | -0.11 | -0.02 |
+| Beta | 1.15 | 1.16 | 1.28 | 1.17 | 1.19 | 0.88 |
+| Alpha | +0.24 | +0.24 | -0.10 | +0.32 | -0.12 | -0.02 |
 
 </div>
 </div>
@@ -172,7 +172,7 @@ At 35x earnings and 50x free cash flow, Microsoft is priced for sustained growth
 
 The drop in beta to 0.88 in 2025 stands out. For most of the Nadella era, Microsoft moved in line with or slightly above the broader market. A beta below 1 suggests the market increasingly treats it as a defensive-quality holding: a large, profitable, cash-generative business that belongs in portfolios regardless of the macro environment.
 
-Alpha has been positive in most years, notably +0.33 in 2023 when Microsoft's AI positioning drove a 57% stock return (Finance Toolkit historical data) against the S&P 500's 26%. The negative alpha in 2022 and 2024 reflects years when the market rotated toward other sectors rather than any fundamental deterioration, as the business kept compounding throughout.
+Alpha here is the stock's return minus that of the S&P 500, and it was positive in three of the six years. The largest was +0.32 in 2023, when Microsoft's AI positioning drove a 58% stock return (Finance Toolkit historical data) against the S&P 500's 26%. In 2022 and 2024 the market rotated toward other sectors, and 2025 was close to even. The business kept compounding through all three years, so I read the negative alpha as a matter of market preference rather than fundamental deterioration.
 
 What I would watch over the next few years is the pace of Azure growth (which funds everything else), margin expansion as the AI CapEx cycle matures, and whether Activision contributes enough to earnings to justify the $69 billion price tag. The 40-year financial track record gives Microsoft the benefit of the doubt, but at these valuations the margin for error is narrower than it has been at any point in the company's history outside the dot-com peak.
 
