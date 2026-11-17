@@ -38,7 +38,7 @@ inflation = economics.get_inflation_rate(countries=["United States", "United Kin
 {% endcapture %}
 {% include ft-chart.html id="macro-inflation" src="/assets/data/article-charts.json" label="Inflation by country" code=code_inflation mcp="What was the yearly inflation rate of the United States, United Kingdom, Germany, Japan and Brazil from 2019 to 2025, and which country's inflation peaked first?" %}
 
-Brazil's inflation took off a full year before the others, hitting 8.3% in 2021 while the US was still at 4.7% and Japan was in mild deflation at -0.2%. By 2022 the developed economies had caught up (Germany at 6.9%, the UK at 7.9%, the US at 8.0%), but Brazil had already peaked and was on its way back down to 4.6% by 2023. Japan never had a real inflation problem by international standards; its highest reading in this entire window is 3.3%, a number that would have counted as a good year almost anywhere else.
+Brazil's inflation took off a full year before the others, hitting 8.3% in 2021 while the US was still at 4.7% and Japan was in mild deflation at -0.26%. In 2022 the developed economies caught up (the US at 8.0%, Germany at 8.7%, the UK at 9.1%) and Brazil reached 9.3%. Brazil also came down first: 4.6% in 2023, while the UK was still at 7.3% and Germany at 6.0%. Japan never had a real inflation problem by international standards. Its highest reading in this window is 3.3% in 2023, a number that would have counted as a good year almost anywhere else, although at 3.2% in 2025 it was above the US (2.7%) and Germany (2.3%). 2025 also brought inflation back up in Brazil (5.0%) and the UK (3.4%).
 
 ## Central Banks Respond, But Not on the Same Clock
 
@@ -58,9 +58,11 @@ policy_rate = economics.get_central_bank_policy_rate(countries=["United States",
 {% endcapture %}
 {% include ft-chart.html id="macro-rates" src="/assets/data/article-charts.json" label="Central bank policy rates" code=code_rates mcp="Show the yearly central bank policy rate for the United States, United Kingdom, Germany, Japan and Brazil from 2019 to 2025. Which country hiked first, which hiked the most, and which barely moved?" %}
 
-Brazil started hiking in 2021, a full year ahead of the Federal Reserve and the Bank of England, and took its policy rate from 2.0% to 13.75% in eighteen months, the steepest tightening cycle of the five. By the time the Fed and the Bank of England started moving in 2022, Brazil was already near its peak. The European Central Bank (the rate driving Germany's number here) lagged furthest behind, staying negative until mid-2022 and not clearing 3% until 2023.
+Brazil started hiking in 2021, a full year ahead of the Federal Reserve and the Bank of England, and took its policy rate from 2.0% to 13.75% in eighteen months, the steepest tightening cycle of the five. By the time the Fed and the Bank of England started moving in 2022, Brazil was already near the top of that cycle. The European Central Bank (the rate driving Germany's number here) lagged furthest behind, staying negative until mid-2022 and not clearing 3% until 2023.
 
-Japan is the biggest outlier. The Bank of Japan held its policy rate at -0.10% through the entire inflation shock, only inching to 0.25% in 2024 and 0.50% in 2025. After more than a decade of fighting deflation, the BOJ treated even a 3% inflation print as something to look through rather than react to, the opposite of how every other central bank in this table behaved.
+Brazil cut to 11.75% in 2023 while the Fed and the Bank of England were still hiking, but with inflation coming back it raised its rate again, to 12.25% in 2024 and 15.0% in 2025, the highest of any country here in this whole window.
+
+Japan is the biggest outlier. The Bank of Japan held its policy rate at -0.10% through the entire inflation shock, only inching to 0.25% in 2024 and 0.75% in 2025. After more than a decade of fighting deflation, the BOJ treated even a 3% inflation print as something to look through rather than react to, the opposite of how every other central bank in this table behaved.
 
 ## The Labor Market Question: Did Higher Rates Cost Jobs?
 
@@ -80,38 +82,38 @@ unemployment = economics.get_unemployment_rate(countries=["United States", "Unit
 {% endcapture %}
 {% include ft-chart.html id="macro-unemployment" src="/assets/data/article-charts.json" label="Unemployment rates" code=code_unemployment mcp="What was the yearly unemployment rate of the United States, United Kingdom, Germany, Japan and Brazil from 2019 to 2025, and did it rise when central banks raised rates?" %}
 
-The US is the clearest case of a pandemic-driven spike rather than a rate-driven one: unemployment jumped to 8.1% in 2020 from lockdowns, then fell back to 3.6% by 2022, the same year the Fed started its steepest hikes since the 1980s. Unemployment barely moved after that, which sums up the soft landing debate in a single line of the chart: rates rose nearly five points and the labor market hardly reacted.
+The US is the clearest case of a pandemic-driven spike rather than a rate-driven one: unemployment jumped to 8.1% in 2020 from lockdowns, then fell back to 3.65% by 2022, the same year the Fed started its steepest hikes since the 1980s. It stayed there in 2023 and only crept up afterwards, to 4.0% in 2024 and 4.3% in 2025, when the Fed was already cutting. That sums up the soft landing debate in a single line of the chart: rates rose more than five points and unemployment went up by less than one.
 
-Brazil shows the opposite. Despite running the highest policy rate of any country here for three straight years, Brazilian unemployment fell every year from 2020 onward, from 13.8% to 7.2% by 2025. High rates did not stop the labor market from healing; whatever was driving Brazilian employment had little to do with the cost of borrowing at the margin. Germany and Japan, the two economies with the smallest rate moves, also show the smallest unemployment swings, which is closer to what theory predicts.
+Brazil shows the opposite. Despite running the highest policy rate of any country here in every year since 2021, Brazilian unemployment fell every year from 2020 onward, from 13.8% to 6.0% in 2025. High rates did not stop the labor market from healing; whatever was driving Brazilian employment had little to do with the cost of borrowing at the margin. Germany and Japan, the two economies with the smallest rate moves, also show the smallest unemployment swings, which is closer to what theory predicts.
 
 ## Government Debt: Who Paid Down the COVID Bill?
 
 Inflation and rate hikes affect more than households and businesses. They also change the math on government debt: both the cost of servicing it and the rate at which it gets inflated away.
 
-Government debt as a share of GDP for the five economies from 2019 to 2025:
+Government debt as a share of GDP for the five economies from 2019 to 2024 (Japan and Brazil don't have a 2025 figure yet, so the chart ends in 2024):
 
 {% capture code_debt %}
 ```python
 # pip install financetoolkit
 from financetoolkit import Economics
 
-economics = Economics(start_date="2019-01-01", end_date="2025-12-31")
+economics = Economics(start_date="2019-01-01", end_date="2024-12-31")
 
 debt_to_gdp = economics.get_government_debt_to_gdp_ratio(countries=["United States", "United Kingdom", "Germany", "Japan", "Brazil"])
 ```
 {% endcapture %}
-{% include ft-chart.html id="macro-debt" src="/assets/data/article-charts.json" label="Government debt to GDP" code=code_debt mcp="Compare government debt to GDP for the United States, United Kingdom, Germany, Japan and Brazil from 2019 to 2025. Which countries reduced their debt burden after the 2020 spike, and which kept climbing?" %}
+{% include ft-chart.html id="macro-debt" src="/assets/data/article-charts.json" label="Government debt to GDP" code=code_debt mcp="Compare government debt to GDP for the United States, United Kingdom, Germany, Japan and Brazil from 2019 to 2024. Which countries reduced their debt burden after the 2020 spike, and which kept climbing?" %}
 
-Japan's debt-to-GDP ratio of roughly 249% is far above every other country here, more than double the United States and nearly two and a half times the United Kingdom. It has stayed in a tight band for years, which is itself notable: a decade of near-zero rates means rolling over that debt costs almost nothing, a luxury the BOJ's reluctance to hike helps preserve.
+Japan's debt-to-GDP ratio of 214% in 2024 is far above every other country here, about 1.75 times the United States and more than twice the United Kingdom. It is also coming down, from 229% in 2020 and 228% in 2022. With inflation finally above 2%, nominal GDP grows faster than the debt, while a decade of near-zero rates means rolling over that debt still costs very little, which the BOJ's slow pace of hikes helps preserve.
 
-The US and UK both jumped sharply in 2020 from COVID stimulus, 108% to 132% for the US and 86% to 106% for the UK, and neither has come close to working that back down; both sit higher in 2025 than they did in 2022. Germany and Brazil show the opposite pattern: both peaked in 2020-2021 and have since declined, Germany from 67.9% to 62.1%, Brazil from 96.0% to a low of 83.9% in 2022 before drifting back up to 92.0%. Brazil's case is partly mechanical. The same high inflation that pushed its central bank to 13.75% also inflated away a chunk of the real value of its debt, the kind of side effect that does not show up if you only look at the policy rate in isolation.
+The US and UK both jumped sharply in 2020 from COVID stimulus, 109% to 133% for the US and 85% to 105% for the UK, and neither has come close to working that back down. Both sit higher in 2024 than they did in 2022. Germany and Brazil peaked in 2020 and came down from there: Germany from 68.0% to 62.2% in 2024, Brazil from 96.0% to a low of 83.9% in 2022 before drifting back up to 87.0%. Brazil's case is partly mechanical. The same high inflation that pushed its central bank to 13.75% also inflated away a chunk of the real value of its debt, the kind of side effect that does not show up if you only look at the policy rate in isolation.
 
 ## What This Means for the Next Cycle
 
 Looking at these four indicators side by side for the same five countries shows something that any one of them alone would miss. Rather than following a single global business cycle, each economy absorbed the same global shock and is unwinding it on its own schedule, shaped by its starting debt level, its central bank's tolerance for inflation, and the structure of its labor market.
 
-Brazil moved first and is furthest along in normalizing, having hiked early, peaked early, and started easing while the US and UK were still raising. Japan is the mirror image, having barely participated in the global tightening cycle and only now taking its first tentative steps away from negative rates after more than a decade. The US delivered the cleanest soft landing in the group: a sharp hiking cycle with almost no labor market damage, though its debt-to-GDP ratio shows the COVID stimulus bill has not gone away. Germany comes closest to the textbook: moderate inflation, moderate hikes, and the only economy in the group steadily reducing its debt burden.
+Brazil moved first: it hiked early, peaked early and started easing in 2023 while the US and UK were still raising. That head start didn't last, as inflation came back and its policy rate reached 15.0% in 2025, higher than at the 2022 peak. Japan is the mirror image, having barely taken part in the global tightening cycle and only now taking its first small steps away from negative rates after more than a decade. The US delivered the cleanest soft landing in the group, a sharp hiking cycle with little labor market damage, though its debt-to-GDP ratio shows the COVID stimulus bill has not gone away. Germany comes closest to the textbook, with moderate inflation, moderate hikes and a debt ratio that fell every year from 2020 to 2024.
 
-Going forward, I would watch whether Japan's exit from negative rates accelerates as inflation proves more persistent than the BOJ expects, whether US and UK debt-to-GDP keeps climbing without consequence, and whether Brazil's early-mover advantage on rate cuts gives it room to support growth while the others are still catching up.
+Going forward, I would watch whether Japan's exit from negative rates accelerates as inflation proves more persistent than the BOJ expects, whether US and UK debt-to-GDP keeps climbing without consequence, and how long Brazil can keep its policy rate at 15% without the labor market finally turning.
 
 {% include ft-charts-script.html %}
