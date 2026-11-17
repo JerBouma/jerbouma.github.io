@@ -4,7 +4,7 @@ date: 2026-06-14
 last_modified_at: 2026-06-26
 permalink: /articles/microsoft-financial-history-finance-toolkit
 excerpt: "Forty years of Microsoft's financials in the Finance Toolkit: revenue, net income and other key metrics, and what they show about how the company changed."
-description: "Learn how Microsoft's financials have evolved since its IPO, with detailed analysis and Python code using the Finance Toolkit."
+description: "Microsoft's financial history since its 1986 IPO in Python: revenue in three eras, margins, the balance sheet, free cash flow and ROE, with the Finance Toolkit."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -15,7 +15,7 @@ share: true
 
 Microsoft went public on March 13, 1986 at $21 per share ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft){:target="_blank"}). Split-adjusted, that works out to roughly $0.08. The stock closed 2025 at $484 (Finance Toolkit historical data), a return of more than 5,000x over four decades and one of the best compounding records in market history.
 
-The stock price alone hides how much the company underneath has changed. The Microsoft that went public in 1986 and the Microsoft that generates $282 billion in annual revenue today are very different companies. The financials show three distinct businesses operating under the same name, each shaped by a different CEO, product strategy and approach to capital. Pulling 40 years of data through the Finance Toolkit makes those changes easy to see.
+The stock price alone hides how much the company underneath has changed. The Microsoft that went public in 1986 and the Microsoft that generated $282 billion in revenue in fiscal 2025 are very different companies. The financials show three distinct businesses operating under the same name, each shaped by a different CEO, product strategy and approach to capital. Pulling 40 years of data through the Finance Toolkit makes those changes easy to see.
 
 In this article I use the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
@@ -156,7 +156,7 @@ Which returns:
 
 The early numbers show what a capital-light monopoly looks like. An ROE of 38% in 1990 with zero debt and no buybacks means the underlying business really was that profitable. Those returns compressed through the 2000s as the business mix changed and the equity base remained large.
 
-The 2015 figures are distorted by the Nokia write-down, which depressed net income and inflated the apparent collapse in ROA and ROE. By 2020 ROE had rebounded to 40%, though this partly reflects the equity base shrinking from buybacks rather than purely improved profitability. ROIC strips out the effects of capital structure and gives a cleaner picture: Microsoft earns roughly 30-31% on invested capital today, which is strong but not far from what it earned in the 1990s. The quality of the business has held up; what changed is how the returns are distributed to shareholders.
+The 2015 figures are distorted by the Nokia write-down, which depressed net income and inflated the apparent collapse in ROA and ROE. By 2020 ROE had rebounded to 40%, though this partly reflects the equity base shrinking from buybacks rather than purely improved profitability. ROIC strips out the effects of capital structure and gives a cleaner picture: Microsoft earned roughly 30-31% on invested capital in 2025, which is strong but not far from what it earned in the 1990s. The quality of the business has held up; what changed is how the returns are distributed to shareholders.
 
 Return on assets shows something similar. ROA of 18% in 2025 reflects that Microsoft now carries a much heavier asset base of cloud infrastructure, acquisitions, and data centers than the software company of the 1990s. The 30%-plus ROA of the Gates era (30.6% in 1990) is gone, but 18% is a strong number for a company of this size and scope.
 
