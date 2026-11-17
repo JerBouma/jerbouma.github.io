@@ -2831,8 +2831,8 @@ financedatabase-mcp:
         url: /projects/financedatabase/mcp#ex-isin
       - title: Vanguard Bond ETFs
         url: /projects/financedatabase/mcp#ex-vanguard
-      - title: Dutch Financials
-        url: /projects/financedatabase/mcp#ex-dutch-financials
+      - title: Dutch Tech
+        url: /projects/financedatabase/mcp#ex-dutch-tech
   - title: "FAQ"
     url: /projects/financedatabase/mcp#faq
   - title: "Under the Hood"

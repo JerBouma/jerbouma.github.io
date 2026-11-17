@@ -60,7 +60,7 @@ The Finance Database holds classifications, not prices or financial statements. 
 You never have to name a tool or a filter value: ask in plain English and the assistant looks up the valid options and picks the right tool. A few examples of what that covers:
 
 <div class="mcp-uses">
-  <div class="mcp-use"><i class="fas fa-building" aria-hidden="true"></i><h3>Screen companies</h3><p>"Which Dutch financial companies are Large or Mega Cap?"</p><span>equities by country, sector, industry, exchange and market cap</span></div>
+  <div class="mcp-use"><i class="fas fa-building" aria-hidden="true"></i><h3>Screen companies</h3><p>"Which Dutch technology companies are Large or Mega Cap?"</p><span>equities by country, sector, industry, exchange and market cap</span></div>
   <div class="mcp-use"><i class="fas fa-fingerprint" aria-hidden="true"></i><h3>Find a symbol</h3><p>"Which ticker belongs to ISIN US0378331005, and where is it listed?"</p><span>search by ticker, name, ISIN, CUSIP or FIGI</span></div>
   <div class="mcp-use"><i class="fas fa-layer-group" aria-hidden="true"></i><h3>ETFs</h3><p>"What bond ETFs does Vanguard list in the US?"</p><span>by category, issuer, currency and exchange</span></div>
   <div class="mcp-use"><i class="fas fa-earth-europe" aria-hidden="true"></i><h3>Listings and exchanges</h3><p>"On which European exchanges do the large chipmakers trade?"</p><span>exchanges, market identifier codes, primary listings</span></div>
@@ -433,7 +433,7 @@ Four questions of the kind an analyst or portfolio manager would ask, each answe
   <a href="#ex-semiconductors"><i class="fas fa-microchip" aria-hidden="true"></i>Europe's large chipmakers</a>
   <a href="#ex-isin"><i class="fas fa-fingerprint" aria-hidden="true"></i>One ISIN, many listings</a>
   <a href="#ex-vanguard"><i class="fas fa-layer-group" aria-hidden="true"></i>Vanguard's bond ETFs</a>
-  <a href="#ex-dutch-financials"><i class="fas fa-landmark" aria-hidden="true"></i>Large Dutch financials</a>
+  <a href="#ex-dutch-tech"><i class="fas fa-microchip" aria-hidden="true"></i>Large Dutch tech</a>
 </div>
 
 <div class="mcp-show" id="ex-semiconductors" markdown="1">
@@ -505,28 +505,26 @@ Four questions of the kind an analyst or portfolio manager would ask, each answe
 <div class="ca-nums"><span><b>35</b>US-listed bond ETFs</span><span><b>10</b>target maturity ETFs</span><span><b>8</b>categories</span></div>
 </div>
 
-<div class="mcp-show" id="ex-dutch-financials" markdown="1">
-<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Dutch financial companies on Euronext Amsterdam are Large or Mega Cap?</p></div>
-<div class="mcp-show__meta"><span><b>2</b> tool calls</span><span><b>3</b> industry groups</span><span><b>8</b> companies</span></div>
-<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>show_options</code><span>The industry groups of Dutch financial companies on Euronext Amsterdam: Banking, Insurance and Investing, Lending &amp; Payments</span></li><li><code>equities</code><span>Netherlands, Financials, Large and Mega Cap, Euronext Amsterdam</span></li></ol></details>
+<div class="mcp-show" id="ex-dutch-tech" markdown="1">
+<div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Which Dutch technology and communication companies on Euronext Amsterdam are Large or Mega Cap?</p></div>
+<div class="mcp-show__meta"><span><b>2</b> tool calls</span><span><b>3</b> industry groups</span><span><b>6</b> companies</span></div>
+<details class="mcp-show__trace"><summary><i class="fas fa-list-check" aria-hidden="true"></i> What the assistant looked up</summary><ol><li><code>show_options</code><span>The industry groups of Dutch technology and communication companies on Euronext Amsterdam: Hardware &amp; Electronics, Media, Entertainment &amp; Internet, Semiconductors, Software &amp; IT Services and Telecommunications</span></li><li><code>equities</code><span>Netherlands, Information Technology and Communication Services, Large and Mega Cap, Euronext Amsterdam</span></li></ol></details>
 
 <div class="mcp-show__result" markdown="1">
 
-| Company | Ticker | Industry group |
-|:---|:---|:---|
-| ABN AMRO Bank | ABN.AS | Banking |
-| ING Groep | INGA.AS | Banking |
-| Aegon | AGN.AS | Insurance |
-| ASR Nederland | ASRNL.AS | Insurance |
-| NN Group | NN.AS | Insurance |
-| Adyen | ADYEN.AS | Investing, Lending & Payments |
-| CVC Capital Partners | CVC.AS | Investing, Lending & Payments |
-| Exor | EXO.AS | Investing, Lending & Payments |
+| Company | Ticker | Industry group | Market cap |
+|:---|:---|:---|:---|
+| ASML | ASML.AS | Semiconductors | Mega Cap |
+| ASM International | ASM.AS | Semiconductors | Large Cap |
+| BE Semiconductor Industries | BESI.AS | Semiconductors | Large Cap |
+| Prosus | PRX.AS | Media, Entertainment & Internet | Large Cap |
+| Universal Music Group | UMG.AS | Media, Entertainment & Internet | Large Cap |
+| KPN | KPN.AS | Telecommunications | Large Cap |
 
 </div>
 
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> The answer</p><p>Eight companies, all Large Cap: none reaches the Mega Cap tier of $200 billion. Three are insurers (Aegon, ASR Nederland and NN Group), two are banks (ABN AMRO and ING) and three are in investing, lending and payments (Adyen, CVC Capital Partners and Exor). These tickers go straight into the Finance Toolkit MCP server to compare their solvency and profitability.</p></div>
-<div class="ca-nums"><span><b>8</b>Large Cap financials</span><span><b>3</b>insurers</span><span><b>0</b>Mega Caps</span></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-robot" aria-hidden="true"></i> The answer</p><p>Six companies. ASML is the only Mega Cap, at $200 billion or more; the other five are Large Cap. Three are chipmakers (ASML, ASM International and BESI), two are in media and internet (Prosus and Universal Music Group) and one is a telecom operator (KPN). Of the five industry groups that occur among these Dutch companies, hardware and software have none of this size. These tickers go straight into the Finance Toolkit MCP server to compare their margins and returns.</p></div>
+<div class="ca-nums"><span><b>6</b>Large or Mega Caps</span><span><b>3</b>chipmakers</span><span><b>1</b>Mega Cap</span></div>
 </div>
 
 ## FAQ

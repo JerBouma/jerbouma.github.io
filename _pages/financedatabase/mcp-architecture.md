@@ -108,13 +108,13 @@ Without a query, primary listings come first, ordered by market cap tier (the da
 ## Responses and Limits
 {: .heading-as-h3}
 
-Every asset class tool returns compact JSON from `formatting_model.format_page()`. A real response for Dutch financials with `limit=2`:
+Every asset class tool returns compact JSON from `formatting_model.format_page()`. A real response for Dutch technology companies with `limit=2`:
 
 ```json
-{"asset_class":"equities","total":101,"returned":2,"offset":0,"limit":2,
+{"asset_class":"equities","total":98,"returned":2,"offset":0,"limit":2,
  "columns":["symbol","name","currency","sector","industry_group","industry","exchange","country","market_cap"],
- "rows":[{"symbol":"INGA.AS","name":"ING Groep N.V.", ...}, {"symbol":"AGN.AS","name":"Aegon N.V.", ...}],
- "_notes":["Showing rows 1-2 of 101. Use offset=2 to get the next page, or narrow the filters."]}
+ "rows":[{"symbol":"ASML.AS","name":"ASML Holding N.V.", ...}, {"symbol":"NXPI","name":"NXP Semiconductors NV", ...}],
+ "_notes":["Showing rows 1-2 of 98. Use offset=2 to get the next page, or narrow the filters."]}
 ```
 
 The limits come from `config.yaml` and bound every call, so no request can return the full dataset:
