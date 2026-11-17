@@ -241,37 +241,10 @@
 
 @media (max-width: 800px) { .lit .lit-grid { grid-template-columns: 1fr; } }
 
-// The code behind an article chart, hidden behind a button under the chart
-// (<details class="chart-code" markdown="block"> with a fenced code block)
-.chart-code {
-  margin: -6px 0 1.6em;
-
-  > summary {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    list-style: none;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--accent-color);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 4px 12px;
-    user-select: none;
-    &::-webkit-details-marker { display: none; }
-    &:hover { border-color: var(--accent-color); }
-  }
-
-  &[open] > summary { color: var(--accent-orange); border-color: var(--accent-orange); }
-  .chart-code__hide { display: none; }
-  &[open] .chart-code__show { display: none; }
-  &[open] .chart-code__hide { display: inline; }
-  > .highlighter-rouge, > div.language-python { margin-top: 10px; }
-}
-
 // An article chart with Python and MCP buttons in its top right
-// (_includes/ft-chart.html with code= or mcp=); the panels open under the chart
+// (_includes/ft-chart.html with code= or mcp=). A button dims the chart and lays
+// the code or the question over it; the button again, Escape or a click on the
+// dimmed chart closes it (ft-charts.js).
 .ft-chart-box {
   position: relative;
   margin: 1.6em 0;
@@ -279,13 +252,26 @@
   > .ft-chart { margin: 0; }
   // room for the buttons next to the title (and the tabs of a tabbed chart)
   .ft-chart__head { padding-right: 190px; }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  &.is-open::after { opacity: 1; }
 }
 
 .ft-chart-actions {
   position: absolute;
   top: 14px;
   right: 16px;
-  z-index: 2;
+  z-index: 4;
   display: flex;
   gap: 6px;
 }
@@ -297,20 +283,36 @@
   padding: 5px 11px;
   border: 1px solid var(--card-border);
   border-radius: 8px;
-  background: transparent;
+  background: var(--card-bg);
   color: var(--accent-color);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   &:hover { border-color: var(--accent-color); }
-  &.is-on { color: var(--accent-orange); border-color: var(--accent-orange); background: rgba(249, 115, 22, 0.1); }
+  &.is-on { color: var(--accent-orange); border-color: var(--accent-orange); }
 }
 
 .ft-chart-panel {
-  margin-top: 10px;
-  > .highlighter-rouge, > div.language-python { margin: 0; }
-  .ca-q { margin: 0 0 8px; }
+  position: absolute;
+  inset: 62px 18px 18px;
+  z-index: 3;
+  display: flex;
+  overflow: auto;
+  &[hidden] { display: none; }
+
+  // centred over the chart, scrolling inside when it is taller than the chart
+  > * { width: 100%; margin: auto !important; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); }
+  > .highlighter-rouge, > div.language-python { margin: auto !important; }
+}
+
+.ft-chart-panel__card {
+  padding: 16px 18px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  // opaque, so the chart does not show through
+  background: linear-gradient(var(--card-bg), var(--card-bg)), var(--ft-chart-panel-bg, #0f172a);
+  .ca-q { margin: 0 0 10px; }
 }
 
 .page__content .ft-chart-panel__note { margin: 0 !important; color: var(--text-muted); font-size: 0.85rem !important; }
@@ -319,4 +321,6 @@
 @media (max-width: 600px) {
   .ft-chart-box .ft-chart__head { padding-right: 96px; }
   .ft-chart-action span { display: none; }
+  .ft-chart-panel { inset: 56px 10px 10px; }
 }
+:root[data-theme="light"] .ft-chart-panel__card { --ft-chart-panel-bg: #ffffff; }

@@ -8,8 +8,8 @@
 
   Optional, for the articles: code= (Markdown with a fenced Python block,
   usually captured into a variable) and mcp= (a question for the Finance Toolkit MCP
-  server). Each adds a button to the chart's top right that opens the code or
-  the question under the chart (toggled in ft-charts.js).
+  server). Each adds a button to the chart's top right that lays the code or the
+  question over the dimmed chart (toggled in ft-charts.js).
 {%- endcomment -%}
 {%- assign ft_src = include.src | default: "/assets/data/financetoolkit-charts.json" -%}
 {%- if include.code or include.mcp -%}
@@ -28,8 +28,10 @@
 {%- endif -%}
 {%- if include.mcp %}
 <div class="ft-chart-panel" data-panel="mcp" hidden>
+<div class="ft-chart-panel__card">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>{{ include.mcp | strip | escape }}</p></div>
 <p class="ft-chart-panel__note">Ask this through the <a href="/projects/financetoolkit/mcp">Finance Toolkit MCP server</a>, from Claude, ChatGPT or any other MCP client.</p>
+</div>
 </div>
 {%- endif %}
 </div>

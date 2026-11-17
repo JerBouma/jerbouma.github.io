@@ -13,19 +13,31 @@
  */
 (function () {
   // The Python and MCP buttons in an article chart's top right (_includes/ft-chart.html
-  // with code= or mcp=) open the code or the question under the chart, one at a time
+  // with code= or mcp=) dim the chart and lay the code or the question over it, one at a
+  // time; the same button, Escape or a click on the dimmed chart closes it
   Array.prototype.forEach.call(document.querySelectorAll('.ft-chart-box'), function (box) {
     var buttons = box.querySelectorAll('.ft-chart-action');
+    function show(button) {
+      Array.prototype.forEach.call(buttons, function (b) {
+        var on = b === button;
+        b.setAttribute('aria-expanded', on ? 'true' : 'false');
+        b.classList.toggle('is-on', on);
+        box.querySelector('.ft-chart-panel[data-panel="' + b.getAttribute('data-panel') + '"]').hidden = !on;
+      });
+      box.classList.toggle('is-open', !!button);
+    }
     Array.prototype.forEach.call(buttons, function (button) {
       button.addEventListener('click', function () {
-        var open = button.getAttribute('aria-expanded') !== 'true';
-        Array.prototype.forEach.call(buttons, function (b) {
-          var on = open && b === button;
-          b.setAttribute('aria-expanded', on ? 'true' : 'false');
-          b.classList.toggle('is-on', on);
-          box.querySelector('.ft-chart-panel[data-panel="' + b.getAttribute('data-panel') + '"]').hidden = !on;
-        });
+        show(button.getAttribute('aria-expanded') === 'true' ? null : button);
       });
+    });
+    box.addEventListener('click', function (e) {
+      if (!box.classList.contains('is-open') || e.target.closest('.ft-chart-action')) return;
+      var panel = e.target.closest('.ft-chart-panel');
+      if (!panel || e.target === panel) show(null);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && box.classList.contains('is-open')) show(null);
     });
   });
 
