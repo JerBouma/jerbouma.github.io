@@ -65,6 +65,13 @@ module ReleaseNotes
     seen = Hash.new(0)
     html
       .gsub(/\s(?:class|data-[a-z-]+)="[^"]*"/, "")
+      # GitHub hands out screenshots as private-user-images URLs with a token that
+      # expires within minutes; the user-attachments address of the same file lasts
+      .gsub(%r{https://private-user-images\.githubusercontent\.com/\d+/\d+-([0-9a-f-]{36})\.\w+\?[^"\s]*}) do
+        "https://github.com/user-attachments/assets/#{Regexp.last_match(1)}"
+      end
+      .gsub(/<img(?![^>]*\sloading=)/, '<img loading="lazy"')
+      .gsub(/<img(?![^>]*\salt=)/, '<img alt="Screenshot"')
       .gsub(/<a href="(https?:[^"]+)"(?![^>]*target=)/, '<a href="\1" target="_blank" rel="noopener"')
       .gsub(%r{<h([1-6])>(.*?)</h\1>}m) do
         level = [Regexp.last_match(1).to_i + 2, 6].min
