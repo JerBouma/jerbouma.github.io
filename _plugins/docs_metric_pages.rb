@@ -358,12 +358,12 @@ module DocsMetricPages
     desc
   end
 
-  def content_for(site, name, key, fn_name, parts, related)
+  def content_for(site, name, key, fn_name, parts, related, mcp_key = fn_name)
     cls = CLASSES[key]
     out = +""
     description = readable_definition_link(parts[:description])
     parameters = parameters_for(parts[:arguments])
-    mcp = mcp_question(site, key, fn_name)
+    mcp = mcp_question(site, key, mcp_key)
     has_example = !(parts[:example].empty? && parameters.empty? && mcp.empty?)
     out << description << "\n\n"
     # Python, or the same question through the Finance Toolkit MCP: the
@@ -586,6 +586,65 @@ module DocsMetricPages
     "## Getting Started\n\n#{lead}\n\n```python\n#{lines.join.rstrip}\n```\n"
   end
 
+  # A sidebar entry "<function>--<variant>" is the same function with another
+  # argument (_data/docs_variants.yml): the Adjusted Sharpe Ratio is
+  # get_sharpe_ratio with method="adjusted". Its page takes the lines of the
+  # function's own docstring about that variant, the function's example with the
+  # argument added and the function's parameters.
+  def variant_text(description, matches, intro = nil)
+    lines = description.lines.map(&:rstrip)
+    math = lines.each_index.select { |i| lines[i].strip == "$$" }
+    pieces_started = nil
+    pieces = Array(matches).filter_map do |m|
+      i = lines.index { |l| l.include?(m) }
+      next unless i
+      open_at = math.select { |j| j < i }
+      if open_at.size.odd? # inside a formula block: the whole block
+        close = math.find { |j| j > i }
+        next ["formula", lines[open_at.last..close].join("\n")]
+      end
+      text = lines[i]
+      nxt = (i + 1...lines.size).find { |j| !lines[j].strip.empty? }
+      if nxt && lines[nxt].strip == "$$"
+        close = math.find { |j| j > nxt }
+        text += "\n\n" + lines[nxt..close].join("\n")
+      end
+      text = text.sub(/\A- `"[^"]+"` - /) { "" }
+                 .sub(/\A[A-Z][\w-]* \(\w+=\w+\): /, "")
+                 .sub(/\A- (.+\(\d{4}\)\..*)\z/m, 'Source: \1')
+      # a docstring bullet reads "- `"parkinson"` - uses the daily trading range…"; the
+      # variant's name goes in front ("Parkinson Volatility uses…")
+      text = "#{intro} #{text}" if intro && pieces_started.nil?
+      pieces_started = true
+      ["text", text.sub(/\A[a-z]/, &:upcase)]
+    end
+    out = []
+    pieces.each do |kind, text|
+      out << "The formula is as follows:" if kind == "formula" && !out.last.to_s.rstrip.end_with?(":", "$$")
+      out << text
+    end
+    out.join("\n\n")
+  end
+
+  def variant_example(example, fn_name, argument, drop = [])
+    code = example.partition(/^Which returns:/).first.strip
+    code = code.sub(/\.#{Regexp.escape(fn_name)}\(([^)]*)\)/) do
+      inner = Regexp.last_match(1).split(",").map(&:strip)
+                .reject { |a| a.empty? || Array(drop).include?(a.split("=").first.strip) }.join(", ")
+      ".#{fn_name}(#{argument}#{inner.empty? ? '' : ", #{inner}"})"
+    end
+    code[/\A```python\n.*?^```/m] || code
+  end
+
+  def variant_parts(parts, variant, fn_name, base)
+    text = variant_text(parts[:description], variant["match"], variant["intro"])
+    call = "`#{fn_name}` with `#{variant['argument']}`"
+    text += "\n\nIn the Finance Toolkit this is #{call}" +
+            (base ? "; the [#{base[:title]}](#{base[:url]}) page has the function's full description." : ".")
+    example = variant["example"] ? variant["example"].strip : variant_example(parts[:example], fn_name, variant["argument"], variant["drop"])
+    { :description => text, :arguments => parts[:arguments], :example => example }
+  end
+
   def generate(site)
     seen_descriptions = []
     built = []
@@ -608,7 +667,7 @@ module DocsMetricPages
       urls = {}
       used = CLASSES.keys.to_h { |k| [k, true] } # toolkit pages share /docs/ with the classes
       functions.each do |anchor, info|
-        next unless sections.key?(anchor)
+        next unless sections.key?(anchor.split("--").first)
         slug = slugify(info[:title])
         slug = "#{slug}-#{slugify(anchor.delete_prefix('get_'))}" if used[slug]
         used[slug] = true
@@ -617,8 +676,14 @@ module DocsMetricPages
 
       urls.each do |anchor, url|
         info    = functions[anchor]
-        fn_name, body = sections[anchor]
+        base_anchor = anchor.split("--").first
+        fn_name, body = sections[base_anchor]
         parts   = parse(body)
+        variant = site.data.dig("docs_variants", key, anchor)
+        if variant
+          base = anchor == base_anchor ? nil : { :title => functions[base_anchor][:title], :url => urls[base_anchor] }
+          parts = variant_parts(parts, variant, fn_name, base)
+        end
         # a function alone in its sidebar group falls back to its neighbours in
         # the whole class, so every page links onwards
         pool    = groups[info[:group]].count { |a| urls[a] } > 1 ? groups[info[:group]] : functions.keys
@@ -627,7 +692,8 @@ module DocsMetricPages
 
         description = unique_description(info[:title], description_for(parts[:description]), seen_descriptions)
         page = Page.new(site, site.source, url.delete_prefix("/").sub(%r{/[^/]+\z}, ""), "#{url.split('/').last}.md")
-        page.content = content_for(site, info[:title], key, fn_name, parts, related)
+        # a variant's page has no MCP question of its own (the function's asks for the default)
+        page.content = content_for(site, info[:title], key, fn_name, parts, related, variant ? anchor + "--variant" : fn_name)
         page.data.merge!(
           "layout"               => "single",
           "title"                => info[:title],
