@@ -23,7 +23,7 @@ sidebar:
   nav: "financedatabase"
 ---
 
-<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+<div class="page-header-action notebook-viewer-actions"><a href="/projects/financedatabase/explorer"><i class="fas fa-magnifying-glass"></i> Database Explorer</a><a href="https://github.com/JerBouma/FinanceDatabase" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
 {%- assign fd = site.data.projects.maintained | where: "name", "Finance Database" | first %}
 {%- assign fd_stars = fd.stats | where: "icon", "fa-star" | first %}

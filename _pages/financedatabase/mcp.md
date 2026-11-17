@@ -14,7 +14,7 @@ sidebar:
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
 ---
 
-<div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceDatabase#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
+<div class="page-header-action notebook-viewer-actions"><a href="/projects/financedatabase/explorer"><i class="fas fa-magnifying-glass"></i> Database Explorer</a><a href="https://github.com/JerBouma/FinanceDatabase#mcp-server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
 <div class="ft-hero ft-hero--compact">
   <div class="mcp-video-wrapper ft-hero__video">
