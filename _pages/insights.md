@@ -141,14 +141,25 @@ I write about the economy, financial markets and how financial theory is applied
     empty.style.display = visible === 0 ? '' : 'none';
   }
 
+  function select(btn) {
+    filters.forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    applyFilter(btn.getAttribute('data-filter'));
+  }
+
   updateCounts();
 
   filters.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      filters.forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      applyFilter(btn.getAttribute('data-filter'));
-    });
+    btn.addEventListener('click', function() { select(btn); });
   });
+
+  // /insights?tag=history (where /history redirects to) opens with that filter on
+  var tag = new URLSearchParams(window.location.search).get('tag');
+  var preset = tag && document.querySelector('#article-filters .ar-filter[data-filter="' + tag.toLowerCase().replace(/[^a-z0-9-]/g, '') + '"]');
+  if (preset) {
+    select(preset);
+    var top = document.getElementById('article-filters').closest('section').getBoundingClientRect().top;
+    window.scrollTo(0, top + window.pageYOffset - 80);
+  }
 })();
 </script>
