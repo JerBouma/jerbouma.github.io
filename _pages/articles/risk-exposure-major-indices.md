@@ -1,11 +1,11 @@
 ---
-title: Understanding Risk Exposure Across Major Indices
-seo_title: "Risk Exposure Across Major Indices"
+title: What Volatility Misses About Risk in Major Indices
+seo_title: "Tail Risk Across Major Indices"
 date: 2026-07-21
 last_modified_at: 2026-11-17
 permalink: /articles/risk-exposure-major-indices-finance-toolkit
-excerpt: "Compare Value at Risk, Conditional Value at Risk, maximum drawdown, skewness, and kurtosis across the S&P 500, Nasdaq 100, Dow Jones, Russell 2000, EAFE, and Emerging Markets with the Finance Toolkit."
-description: "Measure tail risk across SPY, QQQ, DIA, IWM, EFA and EEM with Value at Risk, CVaR, maximum drawdown, skewness and kurtosis in the Finance Toolkit."
+excerpt: "Six trading days in April 2025 pushed the S&P 500's kurtosis to 26.6, nine times its 2023 reading, while its volatility rose by about half. Five risk measures across six major indices show what volatility misses."
+description: "Value at Risk, CVaR, maximum drawdown, skewness and kurtosis for SPY, QQQ, DIA, IWM, EFA and EEM from 2019 to 2025, and what volatility alone misses."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -14,15 +14,15 @@ tags: [Risk & Derivatives]
 share: true
 ---
 
-On April 4, 2025, two days after the US tariff announcement, the S&P 500 ETF fell 5.85% in a single day. Five days later, on April 9, it rose 10.5%. Between 2019 and 2025 these six indices only had daily falls of that size during the 2020 COVID crash and in those April days. Outside of them, 2025 was a fairly normal year. Those few days are enough to push the S&P 500's kurtosis for the year to 26.6, roughly nine times its reading in a calmer year like 2023. Leave out the six trading days from April 3 to April 10 and it drops to 4.4. Volatility alone would not show this, but kurtosis does.
+On April 9, 2025, the day the US paused most of its new tariffs, the S&P 500 ETF (SPY) rose 10.5%, its largest daily gain between 2019 and 2025. Five days earlier it had fallen 5.85%. Those few days pushed the kurtosis of SPY's daily returns for 2025, a measure of how fat the tails are, to 26.6. That is about nine times its reading in 2023.
 
-That is a good reason to look beyond plain volatility when measuring risk. The Finance Toolkit's risk module covers Value at Risk, Conditional Value at Risk, maximum drawdown, the Ulcer Index, GARCH volatility, skewness, and kurtosis, each describing a different shape of risk that a single standard deviation number flattens into one figure. In this article I run five of them across six major indices: the S&P 500 (SPY), Nasdaq 100 (QQQ), Dow Jones (DIA), Russell 2000 (IWM), MSCI EAFE developed markets (EFA), and MSCI Emerging Markets (EEM). The data covers the daily returns of 2019 through 2025 and comes from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}, with prices from Financial Modeling Prep (you can get a key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}). Every chart has a Python button with the code behind it and an MCP button with a question for the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) that gets the same data.
+How much of a year's risk can a handful of days carry, and which measures show it? In 2025 those days set most of the year's tail risk, and volatility is the measure that shows it least. SPY's volatility, by comparison, was only about 1.5 times its 2023 level. Leave out the six trading days from April 3 to April 10 and the kurtosis drops to 4.4, close to its 2024 reading. A standard deviation spreads risk evenly over the year, so it can't tell a year of many bad days from a year with a few extreme ones, and those call for different protection. I compare five measures across six index ETFs, the S&P 500 (SPY), Nasdaq 100 (QQQ), Dow Jones (DIA), Russell 2000 (IWM), MSCI EAFE (EFA) and MSCI Emerging Markets (EEM), with daily prices from FinancialModelingPrep for 2019 to 2025.
 
-## Value at Risk and Conditional VaR: How Bad Could a Bad Day Get?
+## In 2020 the Worst Days Were About 30% Worse Than Volatility Implied
 
-Value at Risk (VaR) at the 95% confidence level answers one specific question: on the worst 5% of trading days, how much do you lose at least? Conditional Value at Risk (CVaR) answers the harder follow-up: once you are already in that worst 5%, how much do you actually lose on average? CVaR is always worse than VaR; the question is by how much.
+Value at Risk (VaR) at 95% confidence is the daily loss that is only exceeded on the worst 5% of trading days. [Conditional Value at Risk](/projects/financetoolkit/docs/risk/conditional-value-at-risk-cvar) (CVaR) is the average loss on those worst days. Both can be read from the actual returns (historical) or from a normal distribution with the same mean and volatility, which is what volatility alone implies. Where the historical figure sits beyond the normal one, the tail was fatter than volatility suggests.
 
-The Value at Risk and Conditional Value at Risk of each index per year:
+The normal and historical Value at Risk and Conditional Value at Risk of each index per year, with one tab per index:
 
 {% capture code_var %}
 ```python
@@ -31,19 +31,25 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["SPY", "QQQ", "DIA", "IWM", "EFA", "EEM"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2019-01-01", end_date="2025-12-31", benchmark_ticker=None)
 
-var = toolkit.risk.get_value_at_risk(period="yearly", within_period=True)
-cvar = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True)
+normal_var = toolkit.risk.get_value_at_risk(period="yearly", within_period=True, distribution="gaussian")
+historical_var = toolkit.risk.get_value_at_risk(period="yearly", within_period=True)
+normal_cvar = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True, distribution="gaussian")
+historical_cvar = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True)
 ```
 {% endcapture %}
-{% include ft-chart.html id="risk-var" src="/assets/data/article-charts.json" label="Value at Risk and Conditional Value at Risk" code=code_var mcp="What were the Value at Risk and Conditional Value at Risk at the 95 percent confidence level of SPY, QQQ, DIA, IWM, EFA and EEM, measured within each calendar year from 2019 to 2025, and in which years does the gap between the two widen the most?" %}
+{% include ft-chart.html id="risk-var" src="/assets/data/article-charts.json" label="Normal and historical Value at Risk and Conditional Value at Risk" code=code_var mcp="What were the Value at Risk and Conditional Value at Risk at the 95 percent confidence level of SPY, QQQ, DIA, IWM, EFA and EEM within each calendar year from 2019 to 2025, both historical and under a normal distribution, and in which years did the historical CVaR go furthest beyond the normal CVaR?" %}
 
-IWM has the worst or second-worst CVaR in every year, including 2024 at -2.9% when most other indices were calm, which shows that small-cap stress can build even when large-cap headlines stay quiet. The gap between VaR and CVaR says more: for SPY in 2020, VaR was -3.15% but CVaR was -5.45%, so the average day inside the worst 5% was about 1.7 times as bad as the threshold itself. That gap widens in every index in 2020, to about 3 percentage points for IWM and EEM, and again in 2025 because of the April days. 2022, the other deep drawdown year, has worse VaR readings but a gap close to 2019's, which fits a bear market made of many bad days rather than a few extreme ones. For most indices the gap is narrowest in 2023, when SPY's CVaR was only 0.2 percentage points below its VaR.
+In 2020 SPY's historical CVaR was -5.45%, while a normal distribution with the same volatility put it at -4.25%. **The worst days of 2020 were about 30% worse than volatility implied, and every index shows a gap of at least 24% that year.**
 
-## Maximum Drawdown: The Worst Case Each Index Actually Lived Through
+2022 looks very different. Historical and normal CVaR were close to equal for all six, which fits a bear market made of many bad days and few extreme ones. The calm year 2019, on the other hand, had SPY's historical CVaR 29% beyond the normal one, driven by the trade-war selloffs of May and August.
 
-VaR and CVaR are statistical estimates, whereas maximum drawdown is the actual peak-to-trough loss an investor in each index lived through.
+2025 sits between 2020 and 2022. The April days pushed up volatility for the whole year, so the normal VaR was more cautious than the historical one in every index, and still SPY's historical CVaR ended up 12% beyond its normal value. Next to that, IWM has the worst or second-worst historical CVaR in every year, including 2024 at -2.9%, a calm year for SPY and DIA.
 
-The maximum drawdown of each index per year:
+## Small Caps Fell the Furthest, 41.1% in 2020
+
+VaR and CVaR come from the spread of daily returns. Maximum drawdown is the actual fall from a peak to the lowest point after it, measured here within each calendar year, so it is the loss of someone who bought at that year's high and held on to its low.
+
+The maximum drawdown of each index per year, where a deeper fall has a stronger colour:
 
 {% capture code_drawdown %}
 ```python
@@ -57,13 +63,15 @@ max_drawdown = toolkit.risk.get_maximum_drawdown(period="yearly", within_period=
 {% endcapture %}
 {% include ft-chart.html id="risk-drawdown" src="/assets/data/article-charts.json" label="Maximum drawdown per year" code=code_drawdown mcp="What was the maximum drawdown of SPY, QQQ, DIA, IWM, EFA and EEM within each calendar year from 2019 to 2025, which index had the single worst drawdown and which was the most resilient?" %}
 
-2020's COVID crash hit IWM hardest at -41.1%, deeper than any other index in any year of this dataset, consistent with small-caps having less balance sheet cushion and less liquid trading during a panic. DIA, by contrast, never has the worst drawdown of any year. Its blue-chip composition made it the most resilient of the six in 2022 (-20.8%), although in the 2020 crash only IWM fell further. In the 2022 bear market it was tech's turn: QQQ's -34.8% drawdown was the worst of that year, driven by the same rate-hike sensitivity that put growth stocks at the center of the selloff. EEM had the worst showing in 2019 and 2021, both years with no broad global crisis, which shows that emerging markets can draw down on their own schedule, independent of US conditions.
+**The COVID crash took IWM down 41.1% in 2020, the deepest fall of any index in any year here.** That fits small caps having less balance sheet cushion and thinner trading in a panic. In 2022 it was the Nasdaq's turn: QQQ fell 34.8%, the worst of that year, as rate hikes hit growth stocks hardest.
 
-## Skewness: Which Years Had Fatter Downside Than Upside
+DIA never had the worst drawdown of a year, and in 2022 it held up best of the six at 20.8%, although in the 2020 crash only IWM fell further. EEM had the worst year in 2019 and 2021, two years without a global crisis, which shows that emerging markets can draw down on their own schedule.
 
-Skewness measures asymmetry. A return distribution with negative skew has a longer, fatter left tail, infrequent but severe losses outweighing the frequency of gains. Positive skew is the opposite: frequent small losses, occasional large gains.
+## One Day Turned the Skew of 2025 Positive
 
-The skewness of each index's returns per year:
+Skewness measures whether the bad days or the good days are the more extreme. Negative skew means a longer left tail, with rare but large losses, while positive skew means the largest moves were gains.
+
+The skewness of each index's daily returns per year, pink for negative and blue for positive:
 
 {% capture code_skew %}
 ```python
@@ -77,13 +85,15 @@ skewness = toolkit.risk.get_skewness(period="yearly", within_period=True)
 {% endcapture %}
 {% include ft-chart.html id="risk-skew" src="/assets/data/article-charts.json" label="Skewness of daily returns" code=code_skew mcp="What was the skewness of the returns of SPY, QQQ, DIA, IWM, EFA and EEM within each calendar year from 2019 to 2025, and which years show the most negative skew?" %}
 
-Every index ran negative in 2019 and 2020, two years with sharp, sudden selloffs (the trade-war days of August 2019 and the COVID crash) rather than steady grinding declines. EFA and EEM show the most extreme negative skew of the whole chart in 2020, at -1.21 and -1.24, consistent with international markets taking a sharper, more concentrated hit than US large caps that year. In 2022 skew turns mildly positive for five of the six, since that bear market ground lower day after day rather than crashing in a handful of sessions. That is the opposite shape of risk from 2020, even though every index still fell between 20% and 35% from its peak. 2025's positive skew across the board, led by SPY at 1.51, comes mostly from one day: the 10.5% jump on April 9, when the tariffs were paused. Leave that day out and SPY's skewness for 2025 flips to -1.51.
+Every index had negative skew in 2019 and 2020, both years with sudden selloffs: the trade-war days of August 2019 and the COVID crash. EFA and EEM were the most negative in 2020, at -1.21 and -1.24. In 2022 the skew turned slightly positive for five of the six. That bear market went down day after day without one big crash, even though every index fell between 20% and 35% from its peak.
 
-## Kurtosis: Why 2025 Doesn't Look Like a Normal Year
+2025 had positive skew in every index, led by SPY at 1.51. That comes almost entirely from April 9 and its 10.5% jump. **Leave out that one day and SPY's skewness for 2025 becomes -1.51.** With one year of daily data, a single day can flip the sign, so a yearly skewness is best read next to the days behind it.
 
-Kurtosis measures how fat the tails are relative to a normal distribution, regardless of which direction. High kurtosis means more extreme days than a bell curve would predict, in either direction. A normal distribution has a kurtosis of 3.
+## Six Trading Days Pushed SPY's Kurtosis to 26.6
 
-The kurtosis of each index's returns per year:
+Kurtosis measures how often extreme days happen, in either direction, compared with a bell curve, which has a kurtosis of 3.
+
+The kurtosis of each index's daily returns per year:
 
 {% capture code_kurtosis %}
 ```python
@@ -93,16 +103,48 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(tickers=["SPY", "QQQ", "DIA", "IWM", "EFA", "EEM"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2019-01-01", end_date="2025-12-31", benchmark_ticker=None)
 
 kurtosis = toolkit.risk.get_kurtosis(period="yearly", within_period=True)
+volatility = toolkit.risk.get_volatility(period="yearly")
 ```
 {% endcapture %}
 {% include ft-chart.html id="risk-kurtosis" src="/assets/data/article-charts.json" label="Kurtosis of daily returns" code=code_kurtosis mcp="What was the kurtosis of the returns of SPY, QQQ, DIA, IWM, EFA and EEM within each calendar year from 2019 to 2025, and which year and index show the most extreme tails?" %}
 
-This is where the April 2025 tariff shock shows up most clearly. SPY's kurtosis of 26.6 in 2025 is more than double the highest reading of any other year (EFA's 11.9 in 2020), and roughly nine times its calmest year (2023, at 2.84). QQQ and EFA show the same pattern, both above 20, while IWM's 2025 kurtosis of 8.89 is the lowest of the six. Small caps already moved more on an ordinary day, so the April days stood out less against the rest of the year. 2020 is the only other year that comes close, when four of the six indices posted double-digit kurtosis during the COVID crash. It is worth reading this next to the skewness chart above: 2025 had positive skew (the biggest single move was a gain) and extreme kurtosis (a handful of April days dominating the whole year's tail risk) at the same time. The two look contradictory, but they describe different things.
+SPY's 26.6 in 2025 is more than double the highest reading of any other year, EFA's 11.9 in 2020. QQQ and EFA were above 20 in 2025 as well. 2020 is the only other year with high readings across the board, with four of the six indices above 10 during the COVID crash.
+
+IWM's 2025 kurtosis of 8.9 was the lowest of the six. Small caps already move more on an ordinary day, so the April days stood out less against the rest of their year. For SPY, volatility (the annualised standard deviation of daily returns) and kurtosis rank the years quite differently:
+
+| Year | SPY volatility | SPY kurtosis |
+|---|---|---|
+| 2022 | 24.2% | 3.4 |
+| 2023 | 13.1% | 2.8 |
+| 2025 | 19.5% | 26.6 |
+
+**By volatility, 2025 was a calmer year for SPY than 2022, and by kurtosis it was the most extreme of the seven.** Volatility weighs every day of the year, while kurtosis weighs the largest moves most. Read next to the skewness chart, 2025 had its biggest move on the upside and its tails set by a handful of April days.
 
 ## What This Means for Portfolio Construction
 
-None of the measures in this article is sufficient on its own. Volatility alone would have shown 2025 as a somewhat more volatile year, not that a handful of April days caused most of it. Maximum drawdown alone would have missed that the deep losses of 2020 and 2022 were completely different in shape (one a crash, the other a grind). CVaR alone would have missed that IWM's tail risk shows up in quiet years like 2024 as much as in crisis years.
+Each measure ranks the indices differently. The averages of the yearly figures from 2019 to 2025:
 
-Side by side, they give a more complete picture: Dow Jones (DIA) has been the most consistently resilient by drawdown across this entire period, Russell 2000 (IWM) carries the worst tail risk almost regardless of which metric you use, and emerging markets (EEM) move on their own schedule independent of what the US indices are doing. None of that changes the case for diversification; it just makes clearer what each piece of a portfolio is buying protection against.
+| Index | Yearly maximum drawdown | Daily historical CVaR | Kurtosis |
+|---|---|---|---|
+| S&P 500 (SPY) | -15.3% | -2.69% | 8.3 |
+| Nasdaq 100 (QQQ) | -18.9% | -3.28% | 7.0 |
+| Dow Jones (DIA) | -14.4% | -2.55% | 7.4 |
+| Russell 2000 (IWM) | -20.2% | -3.39% | 5.3 |
+| MSCI EAFE (EFA) | -16.2% | -2.47% | 7.5 |
+| Emerging Markets (EEM) | -19.2% | -2.84% | 6.3 |
+
+IWM had the deepest drawdowns and the worst CVaR, so by the usual loss measures it carried the most risk. It also had the lowest kurtosis, with or without 2025. Its risk is spread over many volatile days, which volatility and VaR already pick up. SPY is the other way around: one of the smaller drawdowns and the highest average kurtosis at 8.3, which is 5.2 without 2025, so more of its risk sat in a few days that volatility smooths over.
+
+DIA had the smallest average drawdown at 14.4% and EFA the mildest CVaR, while EEM drew down in years without a US crisis. For diversification this means each index brings its own kind of risk to a portfolio, and one volatility figure per index hides which kind that is.
+
+Besides volatility, I would watch how far the historical CVaR sits beyond the normal one, which grows when losses cluster in a few days, and the yearly kurtosis, which shows when a handful of days set the tail of a whole year. When both are high, as in 2020, a stress test built on that year's worst days says more than its standard deviation. Each yearly figure rests on about 250 trading days, so a single day can move it, as April 9 showed.
+
+### Data and method
+
+- **Source:** daily adjusted closing prices of the SPY, QQQ, DIA, IWM, EFA and EEM ETFs from FinancialModelingPrep, from 2 January 2019 to 31 December 2025.
+- **How the series is built:** daily returns from adjusted closing prices, so dividends are included. The ETFs stand in for their indices and include their fund costs.
+- **What I did to it:** each measure is computed within each calendar year: VaR and CVaR at 95% confidence, both historical and normal (a normal distribution with that year's mean and standard deviation), maximum drawdown from that year's prices, sample skewness and kurtosis (the Pearson definition, 3 for a normal distribution) and annualised volatility. The table in the last section averages the seven yearly figures. For the April 2025 comparisons I removed the named days from the 2025 returns and computed the measure again.
+- **Limits:** seven years and one confidence level. I left out the Cornish-Fisher VaR, which adjusts the normal VaR for skewness and kurtosis, because it breaks down at readings as extreme as 2025's: it gives SPY a smaller VaR for 2025 than for 2023. EFA and EEM trade in New York while their home markets close earlier, so part of a move can show up a day late in those two.
+- **Reproduce it:** the charts are made with the [Finance Toolkit](/projects/financetoolkit), my open-source Python library, using its [risk module](/projects/financetoolkit/docs/risk) and prices from [FinancialModelingPrep](/fmp){:target="_blank"}. The Python button on each chart shows the code and its MCP button a question that returns the same data.
 
 {% include ft-charts-script.html %}
