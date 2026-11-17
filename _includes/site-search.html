@@ -1,0 +1,158 @@
+{%- comment -%}
+  Site-wide search: the button sits in the masthead, the dialog below opens on
+  a click, on "/" or on Ctrl/Cmd+K. The index (/assets/data/search.json, from
+  _plugins/site_search.rb) loads the first time the dialog opens; matching runs
+  in the browser. Styles: _sass/custom.scss, "Site search".
+{%- endcomment -%}
+<dialog class="site-search" id="site-search" aria-label="Search the site">
+  <div class="site-search__box">
+    <div class="site-search__field">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4 4"/></svg>
+      <input type="search" id="site-search-input" placeholder="Search the docs, articles and pages" autocomplete="off"
+        spellcheck="false" aria-controls="site-search-results" aria-autocomplete="list">
+      <button type="button" class="site-search__close" aria-label="Close search">Esc</button>
+    </div>
+    <ul class="site-search__results" id="site-search-results" role="listbox" aria-label="Results"></ul>
+    <p class="site-search__hint" id="site-search-hint">Try "sharpe ratio", "value at risk" or "MCP server".</p>
+  </div>
+</dialog>
+<script>
+(function () {
+  var dialog = document.getElementById('site-search');
+  if (!dialog || !dialog.showModal) return;
+  var input = document.getElementById('site-search-input');
+  var list = document.getElementById('site-search-results');
+  var hint = document.getElementById('site-search-hint');
+  var index = null, loading = null, active = -1, shown = [];
+
+  function norm(s) {
+    return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[_\-/]+/g, ' ');
+  }
+
+  function load() {
+    if (!loading) {
+      loading = fetch('{{ "/assets/data/search.json" | relative_url }}?v={{ site.time | date: "%s" }}')
+        .then(function (r) { return r.json(); })
+        .then(function (rows) {
+          index = rows.map(function (r) {
+            return { r: r, t: norm(r.t), f: norm(r.f), s: norm(r.s), d: norm(r.d) };
+          });
+          run();
+        })
+        .catch(function () { hint.textContent = 'The search could not load. Please try again later.'; });
+    }
+    return loading;
+  }
+
+  function wordStart(text, w) {
+    var i = text.indexOf(w);
+    while (i >= 0) {
+      if (i === 0 || text[i - 1] === ' ' || text[i - 1] === '(') return true;
+      i = text.indexOf(w, i + 1);
+    }
+    return false;
+  }
+
+  // in a description only whole words count ("sharpe" isn't "sharpened")
+  function wholeWord(text, w) {
+    return new RegExp('(^|[^a-z0-9])' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 's?([^a-z0-9]|$)').test(text);
+  }
+
+  function score(e, words, phrase) {
+    var total = 0;
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i], s = 0;
+      if (wordStart(e.t, w)) s = 10;
+      else if (e.t.indexOf(w) >= 0) s = 6;
+      else if (e.f.indexOf(w) >= 0) s = 5;
+      else if (wordStart(e.s, w)) s = 2;
+      else if (wholeWord(e.d, w)) s = 1;
+      if (!s) return 0;
+      total += s;
+    }
+    var title = e.t.replace(/ \(.*\)$/, '');  // "value at risk (var)" is an exact hit
+    if (title === phrase) total += 30;
+    else if (title.indexOf(phrase) === 0) total += 15;
+    else if (title.indexOf(phrase) >= 0) total += 8;
+    // the closer the title is to the query, the higher: "MCP Server" above a long article title
+    total += 10 * Math.min(1, phrase.length / title.length);
+    return total - e.r.u.split('/').length * 0.1;
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text) n.textContent = text;
+    return n;
+  }
+
+  function run() {
+    var q = norm(input.value).trim();
+    list.textContent = '';
+    active = -1; shown = [];
+    if (!q) { hint.hidden = false; hint.textContent = 'Try "sharpe ratio", "value at risk" or "MCP server".'; return; }
+    if (!index) { hint.hidden = false; hint.textContent = 'Loading…'; return; }
+    // "ratios" also finds "ratio"
+    var words = q.split(/\s+/).map(function (w) { return w.length > 4 ? w.replace(/s$/, '') : w; });
+    shown = index.map(function (e) { return { e: e, s: score(e, words, q) }; })
+      .filter(function (x) { return x.s > 0; })
+      .sort(function (a, b) { return b.s - a.s; })
+      .slice(0, 12).map(function (x) { return x.e.r; });
+    hint.hidden = shown.length > 0;
+    if (!shown.length) hint.textContent = 'Nothing found for "' + input.value.trim() + '".';
+    shown.forEach(function (r, i) {
+      var li = el('li'), a = el('a', 'site-search__item');
+      a.href = r.u || '/';
+      a.id = 'site-search-opt-' + i;
+      a.setAttribute('role', 'option');
+      if (r.s) a.appendChild(el('span', 'site-search__section', r.s));
+      a.appendChild(el('span', 'site-search__title', r.t));
+      if (r.d) a.appendChild(el('span', 'site-search__desc', r.d));
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+  }
+
+  function move(step) {
+    if (!shown.length) return;
+    var items = list.querySelectorAll('.site-search__item');
+    if (active >= 0) items[active].classList.remove('is-active');
+    active = (active + step + items.length) % items.length;
+    items[active].classList.add('is-active');
+    items[active].scrollIntoView({ block: 'nearest' });
+    input.setAttribute('aria-activedescendant', items[active].id);
+  }
+
+  function open() {
+    if (dialog.open) return;
+    dialog.showModal();
+    document.documentElement.classList.add('site-search-open');
+    input.select();
+    load();
+  }
+
+  input.addEventListener('input', run);
+  input.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { ev.preventDefault(); dialog.close(); }
+    else if (ev.key === 'ArrowDown') { ev.preventDefault(); move(1); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); move(-1); }
+    else if (ev.key === 'Enter') {
+      var items = list.querySelectorAll('.site-search__item');
+      var target = items[active >= 0 ? active : 0];
+      if (target) { ev.preventDefault(); location.href = target.href; }
+    }
+  });
+  dialog.addEventListener('close', function () { document.documentElement.classList.remove('site-search-open'); });
+  // a click on the backdrop (the dialog itself, outside the box) closes it
+  dialog.addEventListener('click', function (ev) { if (ev.target === dialog) dialog.close(); });
+  dialog.querySelector('.site-search__close').addEventListener('click', function () { dialog.close(); });
+  document.querySelectorAll('.site-search__toggle-btn').forEach(function (b) { b.addEventListener('click', open); });
+  document.addEventListener('keydown', function (ev) {
+    var t = ev.target, typing = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+    if ((ev.key === 'k' && (ev.metaKey || ev.ctrlKey)) || (ev.key === '/' && !typing)) {
+      ev.preventDefault();
+      open();
+    }
+  });
+})();
+</script>
