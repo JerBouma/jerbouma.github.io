@@ -1,7 +1,7 @@
 ---
 title: How Microsoft Has Changed Since Its IPO
 date: 2026-06-14
-last_modified_at: 2026-06-26
+last_modified_at: 2026-11-17
 permalink: /articles/microsoft-financial-history-finance-toolkit
 excerpt: "Forty years of Microsoft's financials in the Finance Toolkit: revenue, net income and other key metrics, and what they show about how the company changed."
 description: "Microsoft's financial history since its 1986 IPO in Python: revenue in three eras, margins, the balance sheet, free cash flow and ROE, with the Finance Toolkit."
@@ -17,46 +17,26 @@ Microsoft went public on March 13, 1986 at $21 per share ([Wikipedia](https://en
 
 The stock price alone hides how much the company underneath has changed. The Microsoft that went public in 1986 and the Microsoft that generated $282 billion in revenue in fiscal 2025 are very different companies. The financials show three distinct businesses operating under the same name, each shaped by a different CEO, product strategy and approach to capital. Pulling 40 years of data through the Finance Toolkit makes those changes easy to see.
 
-In this article I use the Finance Toolkit to analyze Microsoft's financial history. It also includes MCP prompts at the end of each section so you can run the same analysis yourself. **For more information, see the [Finance Toolkit on GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. To run the same analysis conversationally, explore the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
-
-## Setting Things Up
-
-Start by installing the Finance Toolkit:
-
-```bash
-pip install financetoolkit
-```
-
-Then import the library and create a Toolkit instance for Microsoft, specifying the ticker, your FMP API key, and the start date for historical data:
-
-```python
-from financetoolkit import Toolkit
-
-company = Toolkit(
-    tickers=["MSFT"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="1986-01-01"
-)
-```
-
-Get your FMP API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free plan covers five years of history; a paid plan gives access to the full 40-year dataset used here.
+In this article I go through Microsoft's annual financials from 1986 to 2025. The data comes from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}, and every chart has a Python button with the code behind it and an MCP button with a question that gets the same data from the [Finance Toolkit MCP server](/projects/financetoolkit/mcp). The free [FMP plan](/fmp){:target="_blank"} covers five years of history; the full 40 years need a paid plan.
 
 ## Revenue: Three Very Different Eras
 
 Microsoft's revenue history divides cleanly into three phases, each corresponding to a CEO tenure: Bill Gates (1986-2000), Steve Ballmer (2000-2014), and Satya Nadella (2014-present).
 
+Revenue and net income at five-year intervals, in billions of dollars:
+
+{% capture code_revenue %}
 ```python
-income_statement = company.get_income_statement()
+# pip install financetoolkit
+from financetoolkit import Toolkit
 
-revenue = income_statement.loc[
-    ["Revenue", "Net Income"],
-    ["1986", "1990", "1995", "2000", "2005", "2010", "2015", "2020", "2025"]
-]
+toolkit = Toolkit(tickers=["MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="1986-01-01")
+
+income_statement = toolkit.get_income_statement()
+income_statement = income_statement.loc[["Revenue", "Net Income"], ["1986", "1990", "1995", "2000", "2005", "2010", "2015", "2020", "2025"]]
 ```
-
-Which returns:
-
-{% include ft-chart.html id="msft-revenue" src="/assets/data/article-charts.json" label="Microsoft revenue and net income" %}
+{% endcapture %}
+{% include ft-chart.html id="msft-revenue" src="/assets/data/article-charts.json" label="Microsoft revenue and net income" code=code_revenue mcp="What were Microsoft's revenue and net income in 1986, 1990, 1995, 2000, 2005, 2010, 2015, 2020 and 2025?" %}
 
 Growth in the Gates era was exceptional. Revenue grew from $197 million in 1986 to $23 billion in 2000, a 115-fold increase in 14 years driven almost entirely by Windows and Office on the back of the PC revolution. In economic terms Microsoft was a licensing business, with near-zero cost of reproduction and near-monopoly pricing power.
 
@@ -64,24 +44,22 @@ The Ballmer era is often described as a lost decade, but that framing is partly 
 
 The 2015 net income of $12.2 billion against $93.6 billion in revenue reflects Nadella's first full year, when Microsoft took a $7.5 billion write-down on the Nokia acquisition ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft){:target="_blank"}). Excluding that charge, the underlying business was already accelerating. Net income grew to $44 billion by 2020 and reached $102 billion in 2025, a level that would have been hard to imagine when Nadella took over.
 
-> **Try this in the Finance Toolkit MCP:** *"Show me Microsoft's annual revenue from 1986 to 2025, and identify the three distinct growth phases under Gates, Ballmer, and Nadella."*
-
 ## Profitability: Margins That Compress, Then Recover
 
-Margins have moved around more than revenue has.
+Margins have moved around more than revenue has. Gross and net profit margins from 1990 to 2025:
 
+{% capture code_margins %}
 ```python
-ratios = company.ratios.collect_profitability_ratios()
+# pip install financetoolkit
+from financetoolkit import Toolkit
 
-margins = ratios.loc[
-    ["Gross Margin", "Net Profit Margin"],
-    ["1990", "1995", "2000", "2005", "2010", "2015", "2020", "2025"]
-]
+toolkit = Toolkit(tickers=["MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="1986-01-01")
+
+profitability_ratios = toolkit.ratios.collect_profitability_ratios()
+margins = profitability_ratios.loc[["Gross Margin", "Net Profit Margin"], ["1990", "1995", "2000", "2005", "2010", "2015", "2020", "2025"]]
 ```
-
-Which returns:
-
-{% include ft-chart.html id="msft-margins" src="/assets/data/article-charts.json" label="Microsoft gross and net margins" %}
+{% endcapture %}
+{% include ft-chart.html id="msft-margins" src="/assets/data/article-charts.json" label="Microsoft gross and net margins" code=code_margins mcp="What were Microsoft's gross margin and net profit margin at five-year intervals from 1990 to 2025?" %}
 
 Gross margins peaked near 90% in the mid-1990s, which is what pure software economics look like: once the disc was pressed, distributing a copy of Windows cost almost nothing. As Microsoft expanded into hardware (Xbox, Surface), services, and cloud infrastructure, the cost structure changed. Running Azure compute costs real money, as do gaming content, data center operations, and technical support at enterprise scale. By 2015, gross margins had compressed to 64.7%.
 
@@ -89,24 +67,24 @@ Gross margins have since largely stabilized. Azure's gross margin has improved a
 
 The recovery comes from operating leverage. Revenue nearly tripled from 2015 to 2025, but operating expenses did not. Each additional dollar of cloud or subscription revenue drops to the bottom line at an increasingly favorable rate.
 
-> **Try this in the Finance Toolkit MCP:** *"What were Microsoft's gross margin and net profit margin at five-year intervals from 1990 to 2025? Highlight where margins compressed and where they recovered."*
-
 ## The Balance Sheet Tells a Story by Decade
 
 Early Microsoft had no debt at all. The business generated more cash than it could spend and management had no desire to lever up, so for most of the Gates era and the first half of the Ballmer era the balance sheet simply accumulated cash.
 
+Cash and short-term investments, long-term debt and goodwill from 1995 to 2025, in billions of dollars:
+
+{% capture code_balance %}
 ```python
-balance_sheet = company.get_balance_sheet_statement()
+# pip install financetoolkit
+from financetoolkit import Toolkit
 
-snapshot = balance_sheet.loc[
-    ["Cash and Short Term Investments", "Long Term Debt", "Goodwill"],
-    ["1995", "2000", "2005", "2010", "2015", "2020", "2025"]
-]
+toolkit = Toolkit(tickers=["MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="1986-01-01")
+
+balance_sheet = toolkit.get_balance_sheet_statement()
+balance_sheet = balance_sheet.loc[["Cash and Short Term Investments", "Long Term Debt", "Goodwill"], ["1995", "2000", "2005", "2010", "2015", "2020", "2025"]]
 ```
-
-Which returns:
-
-{% include ft-chart.html id="msft-balance" src="/assets/data/article-charts.json" label="Microsoft cash, debt and goodwill" %}
+{% endcapture %}
+{% include ft-chart.html id="msft-balance" src="/assets/data/article-charts.json" label="Microsoft cash, debt and goodwill" code=code_balance mcp="How did Microsoft's cash and short-term investments, long-term debt and goodwill change at five-year intervals from 1995 to 2025?" %}
 
 The first debt appeared in 2009 (Finance Toolkit balance sheet). Microsoft did not need the money, but borrowing at low rates to fund buybacks was more tax-efficient than repatriating overseas cash. By 2020, cash and investments had reached $136 billion while long-term debt stood at $60 billion. The net position was still comfortably positive, but the capital structure had become more aggressive.
 
@@ -118,41 +96,43 @@ The cash balance fell from $136 billion in 2020 to $94.6 billion in 2025, largel
 
 Revenue and earnings can be managed, while free cash flow is harder to fake. It is also the number that ultimately determines what a company is worth: the actual cash that flows out of the business after maintaining and expanding the asset base, rather than earnings per share or operating income.
 
+Operating cash flow, capital expenditure and free cash flow from 1995 to 2025, in billions of dollars:
+
+{% capture code_fcf %}
 ```python
-cash_flow = company.get_cash_flow_statement()
+# pip install financetoolkit
+from financetoolkit import Toolkit
 
-fcf_table = cash_flow.loc[
-    ["Operating Cash Flow", "Capital Expenditure", "Free Cash Flow"],
-    ["1995", "2000", "2005", "2010", "2015", "2020", "2025"]
-]
+toolkit = Toolkit(tickers=["MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="1986-01-01")
+
+cash_flow = toolkit.get_cash_flow_statement()
+cash_flow = cash_flow.loc[["Operating Cash Flow", "Capital Expenditure", "Free Cash Flow"], ["1995", "2000", "2005", "2010", "2015", "2020", "2025"]]
 ```
-
-Which returns:
-
-{% include ft-chart.html id="msft-fcf" src="/assets/data/article-charts.json" label="Microsoft free cash flow" %}
+{% endcapture %}
+{% include ft-chart.html id="msft-fcf" src="/assets/data/article-charts.json" label="Microsoft free cash flow" code=code_fcf mcp="What were Microsoft's operating cash flow, capital expenditure and free cash flow at five-year intervals from 1995 to 2025?" %}
 
 Microsoft generated $71.6 billion in free cash flow in fiscal 2025, more than the entire annual revenue of companies like Netflix or Airbnb. That comes from two things: subscription and consumption revenue that scales without proportional cost increases, and a customer base so embedded in Microsoft's products that churn is structurally low.
 
 There is a caveat in those numbers. Capital expenditure has increased from $5.9 billion in 2015 to $64.6 billion in 2025, the vast majority of it AI infrastructure. Microsoft is making a large bet on data center capacity to support Azure AI and Copilot services, and whether that $65 billion in annual CapEx generates returns commensurate with its cost will be the main capital allocation question of the next five years. For now, operating cash flow has grown fast enough to absorb it, but the ratio of FCF to operating cash flow has compressed.
 
-> **Try this in the Finance Toolkit MCP:** *"What was Microsoft's free cash flow in 2015 and 2025? Show the operating cash flow and capital expenditure over time."*
-
 ## Return on Equity: What Buybacks and Leverage Changed
 
 Return on equity is often read as a clean measure of profitability, but it depends on the size of the equity base, which Microsoft has spent the last 15 years shrinking through aggressive buybacks and debt-funded capital return. A company can raise its ROE by buying back enough shares to reduce equity even if underlying profitability does not improve.
 
+Return on equity, return on assets and return on invested capital from 1990 to 2025:
+
+{% capture code_returns %}
 ```python
-profitability_ratios = company.ratios.collect_profitability_ratios()
+# pip install financetoolkit
+from financetoolkit import Toolkit
 
-profitability_ratios.loc[
-    ["Return on Equity", "Return on Assets", "Return on Invested Capital"],
-    ["1990", "1995", "2000", "2010", "2015", "2020", "2025"]
-]
+toolkit = Toolkit(tickers=["MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="1986-01-01")
+
+profitability_ratios = toolkit.ratios.collect_profitability_ratios()
+returns = profitability_ratios.loc[["Return on Equity", "Return on Assets", "Return on Invested Capital"], ["1990", "1995", "2000", "2010", "2015", "2020", "2025"]]
 ```
-
-Which returns:
-
-{% include ft-chart.html id="msft-returns" src="/assets/data/article-charts.json" label="Microsoft ROE, ROA and ROIC" %}
+{% endcapture %}
+{% include ft-chart.html id="msft-returns" src="/assets/data/article-charts.json" label="Microsoft ROE, ROA and ROIC" code=code_returns mcp="What were Microsoft's return on equity, return on assets and return on invested capital in 1990, 1995, 2000, 2010, 2015, 2020 and 2025?" %}
 
 The early numbers show what a capital-light monopoly looks like. An ROE of 38% in 1990 with zero debt and no buybacks means the underlying business really was that profitable. Those returns compressed through the 2000s as the business mix changed and the equity base remained large.
 
@@ -164,23 +144,7 @@ Return on assets shows something similar. ROA of 18% in 2025 reflects that Micro
 
 Forty years of operating history show what Microsoft has been, while valuation multiples show what the market expects it to become. The tables below show where Microsoft's key ratios and risk-adjusted performance metrics have stood over the past six years, alongside the Alpha and Beta figures that put the stock's behavior in market context.
 
-```python
-valuation_ratios = company.ratios.collect_valuation_ratios()
-
-current_valuation = valuation_ratios.loc[
-    ["Price-to-Earnings", "Price-to-Book", "Price-to-Free-Cash-Flow", "EV-to-EBITDA"],
-    ["2020", "2021", "2022", "2023", "2024", "2025"]
-]
-
-performance = company.performance.collect_all_metrics()
-
-alpha_beta_performance = performance.loc[
-    ["2020", "2021", "2022", "2023", "2024", "2025"],
-    ["Beta", "Alpha"]
-]
-```
-
-Which returns:
+Valuation ratios on the left, beta and alpha against the S&P 500 on the right, for 2020 to 2025:
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
