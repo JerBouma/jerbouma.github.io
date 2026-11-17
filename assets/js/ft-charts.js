@@ -954,13 +954,32 @@
     return ready[src];
   }
 
+  // the chart, plus its optional "subtitle" (what is plotted: unit, base, period)
+  // under the title and its "source" line under the chart
+  function draw(box, spec) {
+    render(box, spec);
+    var title = box.querySelector('.ft-chart__title');
+    if (spec.subtitle && title && !box.querySelector('.ft-chart__subtitle')) {
+      var sub = document.createElement('p');
+      sub.className = 'ft-chart__subtitle';
+      sub.textContent = spec.subtitle;
+      title.insertAdjacentElement('afterend', sub);
+    }
+    if (spec.source && !box.querySelector('.ft-chart__source')) {
+      var src = document.createElement('p');
+      src.className = 'ft-chart__source';
+      src.textContent = 'Source: ' + spec.source;
+      box.appendChild(src);
+    }
+  }
+
   function show(box) {
     if (box.ftShown) return;
     box.ftShown = true;
     var src = box.getAttribute('data-src') || DATA;
     start(src).then(function (data) {
       var id = box.getAttribute('data-chart');
-      if (data.charts[id]) return render(box, data.charts[id]);
+      if (data.charts[id]) return draw(box, data.charts[id]);
       // not in this copy of the data (a cached file from before a deploy):
       // fetch it once more past every cache, and show an error if it is still missing
       if (!fresh[src]) {
@@ -968,7 +987,7 @@
       }
       return fresh[src].then(function (d) {
         if (!d.charts[id]) throw new Error('missing chart ' + id);
-        render(box, d.charts[id]);
+        draw(box, d.charts[id]);
       });
     }).catch(function () {
       box.innerHTML = '<p class="ft-chart__error">The chart could not be loaded.</p>';

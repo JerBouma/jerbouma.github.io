@@ -396,3 +396,18 @@
   .ft-chart-panel { inset: 54px 10px 10px; }
   .ft-chart-panel__foot { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
+
+// a chart's subtitle (what is plotted: unit, base, period) and source line
+.page__content .ft-chart__subtitle {
+  margin: 2px 0 0 !important;
+  color: var(--text-muted);
+  font-size: 0.82rem !important;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.page__content .ft-chart__source {
+  margin: 8px 2px 0 !important;
+  color: var(--text-muted);
+  font-size: 0.74rem !important;
+  line-height: 1.4;
+}
