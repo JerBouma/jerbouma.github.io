@@ -1,7 +1,7 @@
 {%- comment -%} The five most recent other articles, plus a link to all of them {%- endcomment -%}
 {% assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
 <details class="article-side" open>
-<summary class="article-sidebar__title">More Insights <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
+<summary class="article-sidebar__title">More insights <span class="article-sidebar__count">{{ articles.size | minus: 1 }}</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
 <nav class="article-sidebar__list">
   {%- assign shown = 0 %}
   {%- for article in articles %}

@@ -1,4 +1,23 @@
+{%- assign toc_count = content | split: '<h2 id=' | size | minus: 1 -%}
 <details class="article-side" open>
-  <summary class="article-sidebar__title">On This Page <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
+  <summary class="article-sidebar__title">On this page{% if toc_count > 0 %} <span class="article-sidebar__count">{{ toc_count }}</span>{% endif %} <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
   {% include toc.html sanitize=true html=content h_min=2 h_max=3 class="article-toc__menu" skip_no_ids=true %}
 </details>
+<script>
+// The section being read gets the accent bar in "On this page"
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.article-toc__menu a[href^="#"]'));
+  if (!links.length) return;
+  var heads = null, ticking = false;
+  function update() {
+    ticking = false;
+    // the article comes after the sidebar, so its headings are looked up once it is there
+    heads = heads || links.map(function (a) { return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); });
+    var current = -1;
+    heads.forEach(function (h, i) { if (h && h.getBoundingClientRect().top < 140) current = i; });
+    links.forEach(function (a, i) { a.classList.toggle('is-active', i === current); });
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', update); else update();
+})();
+</script>
