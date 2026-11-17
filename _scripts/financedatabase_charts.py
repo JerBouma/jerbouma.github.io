@@ -1,7 +1,7 @@
 """Builds the data behind the interactive charts on /projects/financedatabase.
 
 Runs the same Finance Database calls as the examples on that page, then loads
-the three large Dutch insurers from those examples into the Finance Toolkit,
+the Dutch semiconductor companies from those examples into the Finance Toolkit,
 and writes the results to assets/data/financedatabase-charts.json, which the
 page draws with ECharts. Rerun it to refresh the charts:
 
@@ -34,10 +34,9 @@ import financedatabase as fd
 warnings.filterwarnings("ignore")
 logging.disable(logging.CRITICAL)
 
-START = "2017-12-31"
 OUTPUT = Path(__file__).resolve().parent.parent / "assets" / "data" / "financedatabase-charts.json"
 API_KEY = os.environ.get("FINANCIAL_MODELING_PREP_KEY") or os.environ.get("FINANCIAL_MODELING_PREP_API_KEY", "")
-TICKERS = {"AGN.AS": "Aegon", "ASRNL.AS": "ASR Nederland", "NN.AS": "NN Group"}
+TICKERS = {"ASM.AS": "ASM International", "ASML.AS": "ASML", "BESI.AS": "BE Semiconductor Industries"}
 RATIOS = [
     "Net Profit Margin",
     "Income Before Tax Profit Margin",
@@ -130,14 +129,14 @@ def database_charts() -> dict:
 
 
 def toolkit_charts() -> tuple[dict, str]:
-    """The Dutch insurers from the page's example, loaded into the Finance Toolkit."""
+    """The Dutch semiconductor companies from the page's example, loaded into the Finance Toolkit."""
     equities = fd.Equities()
-    insurers = equities.select(
-        country="Netherlands", industry="Insurance", market="Euronext Amsterdam", market_cap="Large Cap"
+    semiconductors = equities.select(
+        country="Netherlands", industry="Semiconductors & Chip Equipment", market="Euronext Amsterdam"
     )
     del equities
     gc.collect()
-    toolkit = insurers.to_toolkit(api_key=API_KEY, start_date=START, progress_bar=False)
+    toolkit = semiconductors.to_toolkit(api_key=API_KEY, progress_bar=False)
 
     # daily cumulative returns, as in the page's table, up to the last full
     # trading day (today's session may still be running) with a benchmark close
@@ -154,11 +153,11 @@ def toolkit_charts() -> tuple[dict, str]:
         }
     }
 
-    ratios = toolkit.ratios.collect_profitability_ratios().loc["ASRNL.AS"]
-    ratios = ratios.loc[RATIOS, [c for c in ratios.columns if int(str(c)) >= 2018]]
+    ratios = toolkit.ratios.collect_profitability_ratios().loc["ASML.AS"]
+    ratios = ratios.loc[RATIOS]
     charts["ratios"] = {
         "type": "kpis",
-        "title": "Profitability ratios for ASR Nederland, fiscal years",
+        "title": "Profitability ratios for ASML, fiscal years",
         "x": RATIOS,
         "series": [{"name": str(year), "data": values(ratios[year])} for year in ratios.columns],
         "format": "percent",
