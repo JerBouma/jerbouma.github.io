@@ -415,7 +415,7 @@ Market Value of Equity (E): The market value of equity is the total value of the
 
 Market Value of Debt (D): The market value of debt is the total value of the company's outstanding debt obligations, such as bonds and loans. It represents the current market price of the debt instruments.
 
-Total Market Value of Capital (V): The total market value of capital is the sum of the market value of equity and the market value of debt (V = E + D). It represents the total value of the company's financing, both through equity and debt.
+Total Market Value of Capital (V): The total market value of capital is the sum of the market value of equity and the market value of debt ($$V = E + D$$). It represents the total value of the company's financing, both through equity and debt.
 
 The WACC is the discount rate for the free cash flow to the firm and the hurdle rate for new investments, so analysts usually build it from forward-looking inputs: a long-term government bond yield, an equity risk premium of a few percent, a beta measured over several years and the yield on the company's debt. Small changes matter: in a DCF with 2.5% perpetual growth, moving the WACC from 8% to 9% lowers the terminal value by about 15%.
 
@@ -3083,7 +3083,7 @@ $$
 \text{Probability of Default} = N(- \text{Distance to Default})
 $$
 
-where E is the market capitalization, σ_E the volatility of the share price over the year before, D the default point (short-term debt plus half of the long-term debt, the KMV convention), r the risk free rate and T the time horizon. The distance to default is the number of standard deviations the asset value is above the default point; it reacts to the share price immediately, long before a rating changes.
+where E is the market capitalization, $$\sigma_{E}$$ the volatility of the share price over the year before, D the default point (short-term debt plus half of the long-term debt, the KMV convention), r the risk free rate and T the time horizon. The distance to default is the number of standard deviations the asset value is above the default point; it reacts to the share price immediately, long before a rating changes.
 
 The risk free rate is the Toolkit's (the 10-year Treasury yield unless set otherwise with `risk_free_rate`) at every period end, where Vassalou and Xing (2004) and Bharath and Shumway (2008) use the one-year rate for a one-year horizon; the difference moves the distance to default only slightly.
 
@@ -3156,7 +3156,7 @@ The model is the 12-month-ahead logit of Table IV, column (3), of the paper:
 
 - LPFD = -9.164 - 20.264 NIMTAAVG + 1.416 TLMTA - 7.129 EXRETAVG + 1.411 SIGMA
 - 0.045 RSIZE - 2.132 CASHMTA + 0.075 MB - 0.058 PRICE
-- Failure Probability = 1 / (1 + e^(-LPFD))
+- Failure Probability = $$1 / (1 + e^{- \text{LPFD}})$$
 
 with:
 
@@ -3258,7 +3258,7 @@ The Journal of Finance, 63(6), 2899-2939.
 - Cohen, R.B., Polk, C. and Vuolteenaho, T. (2003). "The Value Spread." The Journal
 of Finance, 58(2), 609-641.
 - Davis, J.L., Fama, E.F. and French, K.R. (2000). "Characteristics, Covariances, and
-Average **Returns:** 1929 to 1997." The Journal of Finance, 55(1), 389-406.
+Average Returns: 1929 to 1997." The Journal of Finance, 55(1), 389-406.
 - Shumway, T. (2001). "Forecasting Bankruptcy More Accurately: A Simple Hazard
 Model." The Journal of Business, 74(1), 101-124.
 
@@ -3608,7 +3608,7 @@ Calculate the Dechow F-Score, the probability that a company's financial stateme
 - Performance: the change in cash sales and in return on assets.
 - Incentives: whether the company issued long-term debt or stock.
 
-Predicted Value = -7.893 + 0.790 RSST Accruals + 2.518 ΔReceivables + 1.191 ΔInventory + 1.979 Soft Assets + 0.171 ΔCash Sales - 0.932 ΔROA + 1.029 Issuance Probability = e^PV / (1 + e^PV), F-Score = Probability / 0.0037
+Predicted Value = -7.893 + 0.790 RSST Accruals + 2.518 ΔReceivables + 1.191 ΔInventory + 1.979 Soft Assets + 0.171 ΔCash Sales - 0.932 ΔROA + 1.029 Issuance Probability = $$e^{\text{PV}} / (1 + e^{\text{PV}})$$, F-Score = Probability / 0.0037
 
 An F-Score of 1 is average risk; above 1 the risk is elevated, above 1.85 substantial and above 2.45 high.
 
@@ -3898,7 +3898,7 @@ Which returns:
 ---
 
 ## get_factor_analysis
-Factor analysis (predictive power) of the models: whether the tickers that score high on a model, such as the Piotroski F-Score or the Altman Z-Score, go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the model score of the tickers at the end of the period and their return over the following horizon: 1 means the score ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, IR ≈ IC × √breadth: a small but consistent IC across many tickers and periods gives a high information ratio.
+Factor analysis (predictive power) of the models: whether the tickers that score high on a model, such as the Piotroski F-Score or the Altman Z-Score, go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the model score of the tickers at the end of the period and their return over the following horizon: 1 means the score ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
 The summary has a row per model and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the score from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single model.
 

@@ -145,21 +145,65 @@ module DocsMetricPages
     { :description => desc, :arguments => args, :example => example }
   end
 
+  # A display formula ($$ on its own lines) is left out of plain text; an inline
+  # one inside a sentence (docs.py writes "found by minimizing $$\tfrac{1}{2} w' \Sigma w$$")
+  # is part of it, so it is written back in plain Unicode.
   def plain(markdown)
-    markdown.gsub(/\$\$.*?\$\$/m, " ")
+    markdown.gsub(/^\s*\$\$\s*\n.*?\n\s*\$\$\s*$/m, " ")
+            .gsub(/\$\$(.+?)\$\$/) { math_plain(Regexp.last_match(1)) }
             .gsub(/\[([^\]]+)\]\([^)]+\)(\{:[^}]*\})?/, '\1')
             .gsub(/[*`]/, "")
-            .gsub(/(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])/, "") # emphasis, not snake_case names
+            .gsub(/(?<![[:alnum:]])_+|_+(?![[:alnum:](])/, "") # emphasis, not snake_case names or σ_p
             .gsub(/\s+/, " ").strip
+  end
+
+  MATH_SYMBOLS = {
+    "sum" => "Σ", "cdot" => "·", "times" => "×", "approx" => "≈", "leq" => "≤", "geq" => "≥",
+    "neq" => "≠", "sim" => "~", "vert" => "|", "ldots" => "...", "partial" => "∂", "div" => "÷",
+    "to" => "→", "quad" => ",", "ln" => "ln", "log" => "log", "exp" => "exp", "max" => "max", "min" => "min",
+    "alpha" => "α", "beta" => "β", "gamma" => "γ", "delta" => "δ", "epsilon" => "ε", "zeta" => "ζ",
+    "eta" => "η", "theta" => "θ", "kappa" => "κ", "lambda" => "λ", "mu" => "μ", "nu" => "ν",
+    "xi" => "ξ", "pi" => "π", "rho" => "ρ", "sigma" => "σ", "tau" => "τ", "phi" => "φ", "chi" => "χ",
+    "psi" => "ψ", "omega" => "ω", "Gamma" => "Γ", "Delta" => "Δ", "Theta" => "Θ", "Lambda" => "Λ",
+    "Pi" => "Π", "Sigma" => "Σ", "Phi" => "Φ", "Psi" => "Ψ", "Omega" => "Ω"
+  }.freeze
+  SUPERSCRIPTS = { "2" => "²", "3" => "³", "-1" => "⁻¹", "*" => "*", "*2" => "*²" }.freeze
+
+  # The LaTeX of an inline formula as the plain text it was written in: \sigma_{p} is σ_p.
+  def math_plain(tex)
+    text = tex.dup
+    loop do
+      before = text.dup
+      text.gsub!(/\\(?:text|operatorname)\{([^{}]*)\}/) { Regexp.last_match(1).gsub(/\\(.)/, '\1') }
+      text.gsub!(/\\tfrac\{([^{}]*)\}\{([^{}]*)\}/, '\1/\2')
+      text.gsub!(/\\(?:hat|widehat)\{([^{}]*)\}/) { "#{Regexp.last_match(1)}̂" }
+      text.gsub!(/\\(?:bar|overline)\{([^{}]*)\}/) { "#{Regexp.last_match(1)}̄" }
+      text.gsub!(/\\sqrt\{([^{}]*)\}/) { "√(#{Regexp.last_match(1)})" }
+      text.gsub!(/_\{([^{}]*)\}/) { s = Regexp.last_match(1); s.match?(/\A[[:alnum:]\\,]+\z/) ? "_#{s}" : "_(#{s})" }
+      text.gsub!(/\^\{([^{}]*)\}/) { s = Regexp.last_match(1); SUPERSCRIPTS[s] || "^(#{s})" }
+      break if text == before
+    end
+    text = text.gsub(/\\([A-Za-z]+)/) { MATH_SYMBOLS[Regexp.last_match(1)] || Regexp.last_match(1) }
+               .gsub(/\\(.)/, '\1')
+               .gsub(/\s+([,)_'^])|([(])\s+/, '\1\2')
+               .gsub(/([(\[,]) ?- /, '\1-') # a minus sign: e^(-λt)
+               .gsub(/\s+/, " ").strip
+    # single symbols side by side are a product written without spaces: λt, w'Σw
+    loop do
+      joined = text.gsub(/(?<![[:alpha:]])([[:alpha:]]'?) ([[:alpha:]])(?![[:alpha:]_])/, '\1\2')
+      break if joined == text
+      text = joined
+    end
+    text
   end
 
   # First paragraph of the docstring, topped up with the next paragraphs when
   # it is a one-liner ("Calculate the Ljung-Box test for autocorrelation."),
   # and with a line about the page itself when even that stays short.
   def description_for(desc)
-    formula = desc.include?("$$")
+    formula = desc.match?(/^\s*\$\$\s*$/) # a display formula, not one inside a sentence
     paragraphs = desc.split(/\n\s*\n/)
-                     .reject { |p| p.lstrip.start_with?("- ", "$$", "|") }
+                     .reject { |p| p.lstrip.start_with?("- ", "|") || p.match?(/\A\s*\$\$\s*$/) }
                      .map { |p| plain(p) }
                      .reject { |p| p.empty? || (p.end_with?(":") && p.length < 40) }
     # a sentence that only introduces a list ("It contains the following
