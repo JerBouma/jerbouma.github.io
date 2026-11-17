@@ -682,7 +682,7 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_enterprise_value
       - title: EV to Sales Ratio
         url: /projects/financetoolkit/docs/ratios#get_ev_to_sales_ratio
-      - title: EV to EBITDA  Ratio
+      - title: EV to EBITDA Ratio
         url: /projects/financetoolkit/docs/ratios#get_ev_to_ebitda_ratio
       - title: EV to Operating Cashflow Ratio
         url: /projects/financetoolkit/docs/ratios#get_ev_to_operating_cashflow_ratio
