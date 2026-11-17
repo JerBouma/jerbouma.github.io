@@ -337,6 +337,9 @@ readers do not read off random characters that represent icons */
 .fa-0 {
   --fa: "\30"; }
 
+.fa-file-lines {
+  --fa: "\f15c"; }
+
 .fa-file-alt {
   --fa: "\f15c"; }
 
@@ -358,20 +361,11 @@ readers do not read off random characters that represent icons */
 .fa-pen-ruler {
   --fa: "\f5ae"; }
 
-.fa-compass {
-  --fa: "\f14e"; }
-
 .fa-lightbulb {
   --fa: "\f0eb"; }
 
 .fa-sitemap {
   --fa: "\f0e8"; }
-
-.fa-plug {
-  --fa: "\f1e6"; }
-
-.fa-chevron-up {
-  --fa: "\f077"; }
 
 .fa-square-rss {
   --fa: "\f143"; }
@@ -412,8 +406,8 @@ readers do not read off random characters that represent icons */
 .fa-microchip {
   --fa: "\f2db"; }
 
-.fa-arrow-circle-up {
-  --fa: "\f0aa"; }
+.fa-fire {
+  --fa: "\f06d"; }
 
 .fa-folder-open {
   --fa: "\f07c"; }
@@ -431,9 +425,6 @@ readers do not read off random characters that represent icons */
   --fa: "\f160"; }
 
 .fa-shield-halved {
-  --fa: "\f3ed"; }
-
-.fa-shield-alt {
   --fa: "\f3ed"; }
 
 .fa-layer-group {
@@ -517,11 +508,17 @@ readers do not read off random characters that represent icons */
 .fa-sun {
   --fa: "\f185"; }
 
+.fa-industry {
+  --fa: "\f275"; }
+
 .fa-toolbox {
   --fa: "\f552"; }
 
 .fa-car {
   --fa: "\f1b9"; }
+
+.fa-podcast {
+  --fa: "\f2ce"; }
 
 .fa-location-dot {
   --fa: "\f3c5"; }
@@ -556,23 +553,17 @@ readers do not read off random characters that represent icons */
 .fa-wind {
   --fa: "\f72e"; }
 
-.fa-project-diagram {
-  --fa: "\f542"; }
-
 .fa-copy {
   --fa: "\f0c5"; }
+
+.fa-quote-left {
+  --fa: "\f10d"; }
 
 .fa-rocket {
   --fa: "\f135"; }
 
 .fa-arrow-trend-up {
   --fa: "\e098"; }
-
-.fa-chevron-right {
-  --fa: "\f054"; }
-
-.fa-percentage {
-  --fa: "\25"; }
 
 .fa-trophy {
   --fa: "\f091"; }
@@ -588,6 +579,9 @@ readers do not read off random characters that represent icons */
 
 .fa-building {
   --fa: "\f1ad"; }
+
+.fa-clock-rotate-left {
+  --fa: "\f1da"; }
 
 .fa-history {
   --fa: "\f1da"; }
@@ -638,9 +632,6 @@ readers do not read off random characters that represent icons */
   --fa: "\f0f4"; }
 
 .fa-building-columns {
-  --fa: "\f19c"; }
-
-.fa-university {
   --fa: "\f19c"; }
 
 .fa-graduation-cap {
