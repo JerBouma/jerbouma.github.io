@@ -84,6 +84,8 @@ financedatabase:
     url: /projects/financedatabase#contributing
   - title: "Contact"
     url: /projects/financedatabase#contact
+  - title: Release Notes
+    url: /projects/financedatabase/releases
 financetoolkit:
   - title: Introduction
     url: /projects/financetoolkit#site-nav

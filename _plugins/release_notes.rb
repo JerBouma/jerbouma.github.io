@@ -1,6 +1,7 @@
-# Release notes of the Finance Toolkit, read from its GitHub releases at build
-# time, so a new release shows up on /projects/financetoolkit/releases without
-# a commit. The deploy workflow rebuilds the site every morning.
+# Release notes of the Finance Toolkit and the Finance Database, read from their
+# GitHub releases at build time, so a new release shows up on
+# /projects/<project>/releases without a commit. The deploy workflow rebuilds
+# the site every morning.
 #
 # The copy in _data/releases/<project>.json is the fallback when GitHub cannot
 # be reached (offline builds, rate limits, LIVE_STATS=off), so a build never
@@ -20,6 +21,7 @@ require "uri"
 module ReleaseNotes
   PROJECTS = {
     "financetoolkit" => "JerBouma/FinanceToolkit",
+    "financedatabase" => "JerBouma/FinanceDatabase",
   }.freeze
 
   module_function
