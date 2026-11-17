@@ -407,6 +407,15 @@
     renderTable();
   });
 
+  // the Python code of the selection, shown and hidden with its button
+  var python = root.querySelector('.fdx-python'), panel = root.querySelector('.fdx-code-panel');
+  python.addEventListener('click', function () {
+    var show = panel.hidden;
+    panel.hidden = !show;
+    python.setAttribute('aria-expanded', show ? 'true' : 'false');
+    python.classList.toggle('is-on', show);
+  });
+
   el.download.addEventListener('click', function () {
     var cols = data.columns;
     var cell = function (v) { v = v == null ? '' : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };

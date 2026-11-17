@@ -14,7 +14,7 @@ sidebar:
 image: /assets/images/projects/FinanceDatabase.jpg
 ---
 
-Search and filter the Finance Database without installing anything. Pick an asset class, type a ticker, name or ISIN, and narrow it down by country, sector, industry or category. Each dropdown shows how many matches a value would leave, and the bars break the selection down further: click one to filter on it. The code under the table returns the same selection with the `financedatabase` package, and the CSV button downloads it. <span class="fdx-updated"></span>
+Search and filter the Finance Database without installing anything. Pick an asset class, type a ticker, name or ISIN, and narrow it down by country, sector, industry or category. Each dropdown shows how many matches a value would leave, and the bars break the selection down further: click one to filter on it. The Python code button shows the same selection with the `financedatabase` package, and the CSV button downloads it. <span class="fdx-updated"></span>
 
 <div class="fdx-stats" aria-label="The Finance Database in numbers">
   <div class="fdx-stat"><span class="fdx-stat__n" data-stat="countries">110</span><span class="fdx-stat__l">countries</span></div>
@@ -37,14 +37,17 @@ Search and filter the Finance Database without installing anything. Pick an asse
     <span class="fdx-count" aria-live="polite"></span>
     <label class="fdx-primary"><input type="checkbox" checked> Only primary listings</label>
     <button type="button" class="fdx-reset" hidden>Clear filters</button>
+    <button type="button" class="fdx-python" aria-expanded="false" aria-controls="fdx-code-panel"><i class="fab fa-python" aria-hidden="true"></i> Python code</button>
     <button type="button" class="fdx-download" hidden><i class="fas fa-download" aria-hidden="true"></i> CSV</button>
+  </div>
+  <div class="fdx-code-panel" id="fdx-code-panel" hidden>
+    <p class="fdx-code-lead">The same selection in Python:</p>
+    <div class="language-python highlighter-rouge fdx-code"><div class="highlight"><pre class="highlight"><code>import financedatabase as fd</code></pre></div></div>
   </div>
   <p class="fdx-status">Loading…</p>
   <div class="fdx-insights" aria-label="Breakdown of the selection"></div>
   <div class="fdx-table-wrap"></div>
   <button type="button" class="fdx-more" hidden>Show more</button>
-  <p class="fdx-code-lead">The same selection in Python:</p>
-  <div class="language-python highlighter-rouge fdx-code"><div class="highlight"><pre class="highlight"><code>import financedatabase as fd</code></pre></div></div>
 </div>
 
 A company is often listed on many exchanges. ASML has 21 listings, from Amsterdam and NASDAQ to Frankfurt, Milan and Mexico City. With "Only primary listings" checked, each company shows up once, under its primary listing (ASML.AS for ASML). Uncheck it to see every listing. The [Getting Started](/projects/financedatabase/getting-started) page explains the `select` and `search` functions, and the [MCP server](/projects/financedatabase/mcp) answers the same questions in plain English from Claude or ChatGPT.

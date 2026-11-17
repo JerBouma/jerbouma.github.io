@@ -6600,7 +6600,11 @@ body.ft-overview .page__content {
     input { margin: 0; accent-color: var(--accent-orange); }
   }
 
-  .fdx-reset, .fdx-download, .fdx-more {
+  .fdx-python.is-on { color: var(--accent-orange); border-color: var(--accent-orange); background: rgba(249, 115, 22, 0.1); }
+
+  .fdx-code-panel { margin: 0 0 16px; }
+
+  .fdx-reset, .fdx-download, .fdx-more, .fdx-python {
     font: inherit;
     font-size: 0.85rem;
     font-weight: 600;
@@ -6645,7 +6649,7 @@ body.ft-overview .page__content {
 
   .fdx-more { display: block; margin: 12px auto 0; }
 
-  .fdx-code-lead { margin: 22px 0 8px; }
+  .fdx-code-lead { margin: 4px 0 8px; }
 }
 
 .fdx-stats {
