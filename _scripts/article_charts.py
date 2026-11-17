@@ -301,15 +301,17 @@ def black_death_charts() -> dict:
 
     span = data.loc[1300:1500]
     charts = {
-        # bars from zero, so the fall of almost half in three years shows as the drop it was
-        "bd-population": dict(line(
+        "bd-population": line(
             "Population of England (millions)", span.assign(population=span["population"] / 1000),
-            {"population": "Population"}, "ratio"), type="bar"),
+            {"population": "Population"}, "ratio"),
         "bd-wages": line(
             "Real consumption wages in England", data.loc[1300:1550], {"wages": "Real consumption wage"}, "number"),
     }
 
     pay = data.loc[1330:1450]
+    # an area from zero, so the fall of almost half in three years shows as the drop it was
+    charts["bd-population"]["series"][0]["area"] = True
+
     charts["bd-pay-prices"] = line(
         "Earnings and consumer prices in England (1340-1347 = 100)",
         pd.DataFrame({"earnings": index_to(pay["earnings"], 1340, 1347), "prices": index_to(pay["prices"], 1340, 1347)}),

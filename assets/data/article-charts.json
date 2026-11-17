@@ -17090,7 +17090,7 @@
    "format": "percent"
   },
   "bd-population": {
-   "type": "bar",
+   "type": "line",
    "title": "Population of England (millions)",
    "x": [
     "1300",
@@ -17500,7 +17500,8 @@
       2.19,
       2.2,
       2.2
-     ]
+     ],
+     "area": true
     }
    ],
    "format": "ratio"
