@@ -21,7 +21,18 @@
       <div class="pj-card__actions">
         {%- if a.links %}{% assign links = a.links %}{% else %}{% assign links = "" | split: "" | push: a.link %}{% endif %}
         {%- for l in links %}
+        {%- case l.icon %}
+          {%- when "youtube" %}{% assign fa = "fab fa-youtube" %}
+          {%- when "apple-podcasts" %}{% assign fa = "fas fa-podcast" %}
+          {%- when "transcript" %}{% assign fa = "fas fa-file-lines" %}
+          {%- when "linkedin" %}{% assign fa = "fab fa-linkedin" %}
+          {%- else %}{% assign fa = "" %}
+        {%- endcase %}
+        {%- if fa != "" %}
+        <a class="ap-btn ap-btn--{{ l.icon }}" href="{{ l.url }}" target="_blank" rel="noopener"><i class="{{ fa }}" aria-hidden="true"></i>{{ l.label }}</a>
+        {%- else %}
         <a class="hp-link" href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        {%- endif %}
         {%- endfor %}
       </div>
     </div>

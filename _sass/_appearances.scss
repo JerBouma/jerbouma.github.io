@@ -138,3 +138,40 @@ $ap-img: 'img:not([data-hp-a]):not([data-hp-b])';
 @media (max-width: 900px) {
   .ct-grid { grid-template-columns: 1fr; }
 }
+
+// Link buttons in the colour of where they go (_includes/appearance-card.html, `icon` in _data/appearances.yml)
+.ap-btn {
+  --brand: var(--accent-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid color-mix(in srgb, var(--brand) 45%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--brand) 10%, transparent);
+  color: var(--text-primary) !important;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none !important;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+
+  i { font-size: 1.1rem; color: var(--brand); }
+
+  &:hover {
+    background: color-mix(in srgb, var(--brand) 20%, transparent);
+    border-color: var(--brand);
+    color: var(--text-primary) !important;
+    transform: translateY(-1px);
+  }
+
+  &--youtube { --brand: #ff0033; }
+  &--apple-podcasts { --brand: #a855f7; } // Apple Podcasts purple, lightened to read on the dark cards
+  &--transcript { --brand: var(--accent-color); }
+  &--linkedin { --brand: #0a66c2; }
+}
+
+:root[data-theme="light"] .ap-btn--apple-podcasts { --brand: #9933cc; }
+:root:not([data-theme="light"]) .ap-btn--linkedin i { color: #4a9eff; }
+
+.ap-card .pj-card__actions:has(.ap-btn) { gap: 10px; }
