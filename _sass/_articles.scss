@@ -242,16 +242,18 @@
 @media (max-width: 800px) { .lit .lit-grid { grid-template-columns: 1fr; } }
 
 // An article chart with Python and MCP buttons in its top right
-// (_includes/ft-chart.html with code= or mcp=). A button dims the chart and lays
-// the code or the question over it; the button again, Escape or a click on the
-// dimmed chart closes it (ft-charts.js).
+// (_includes/ft-chart.html with code= or mcp=). A button blurs and dims the chart
+// and lays the code or the question over it; the button again, Escape or a click
+// on the chart closes it (ft-charts.js).
 .ft-chart-box {
   position: relative;
   margin: 1.6em 0;
+  --ft-scrim: rgba(15, 23, 42, 0.55);
+  --ft-panel-bg: #0f172a;
 
   > .ft-chart { margin: 0; }
   // room for the buttons next to the title (and the tabs of a tabbed chart)
-  .ft-chart__head { padding-right: 190px; }
+  .ft-chart__head { padding-right: 180px; }
 
   &::after {
     content: "";
@@ -259,68 +261,138 @@
     inset: 0;
     z-index: 2;
     border-radius: 16px;
-    background: rgba(15, 23, 42, 0.45);
+    background: var(--ft-scrim);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
   &.is-open::after { opacity: 1; }
 }
+:root[data-theme="light"] .ft-chart-box { --ft-scrim: rgba(241, 245, 249, 0.6); --ft-panel-bg: #ffffff; }
 
+// one quiet segmented control: grey labels, the open one filled with the accent
 .ft-chart-actions {
   position: absolute;
-  top: 14px;
-  right: 16px;
+  top: 13px;
+  right: 14px;
   z-index: 4;
-  display: flex;
-  gap: 6px;
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  background: var(--card-bg);
 }
 
 .ft-chart-action {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 11px;
-  border: 1px solid var(--card-border);
-  border-radius: 8px;
-  background: var(--card-bg);
-  color: var(--accent-color);
+  padding: 4px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  &:hover { border-color: var(--accent-color); }
-  &.is-on { color: var(--accent-orange); border-color: var(--accent-orange); }
+  transition: background 0.15s ease, color 0.15s ease;
+
+  i { font-size: 11px; }
+  &:hover { color: var(--text-primary); background: rgba(128, 128, 128, 0.12); }
+  &:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 1px; }
+  &.is-on, &.is-on:hover { color: #fff; background: var(--accent-color); }
 }
+:root:not([data-theme="light"]) .ft-chart-action.is-on { color: #0b1220; }
 
 .ft-chart-panel {
   position: absolute;
-  inset: 62px 18px 18px;
+  inset: 60px 18px 18px;
   z-index: 3;
   display: flex;
   overflow: auto;
+  animation: ft-panel-in 0.18s ease;
   &[hidden] { display: none; }
 
   // centred over the chart, scrolling inside when it is taller than the chart
-  > * { width: 100%; margin: auto !important; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); }
+  > * { width: 100%; margin: auto !important; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3); }
   > .highlighter-rouge, > div.language-python { margin: auto !important; }
+
+  // a code panel, not a desktop window: no traffic-light dots
+  .code-header::before { display: none; }
+  .code-header .code-lang { margin-left: 0; }
+}
+
+@keyframes ft-panel-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
 }
 
 .ft-chart-panel__card {
-  padding: 16px 18px;
+  padding: 18px 20px 16px;
   border: 1px solid var(--card-border);
   border-radius: 12px;
   // opaque, so the chart does not show through
-  background: linear-gradient(var(--card-bg), var(--card-bg)), var(--ft-chart-panel-bg, #0f172a);
-  .ca-q { margin: 0 0 10px; }
+  background: linear-gradient(var(--card-bg), var(--card-bg)), var(--ft-panel-bg);
 }
 
-.page__content .ft-chart-panel__note { margin: 0 !important; color: var(--text-muted); font-size: 0.85rem !important; }
+.page__content .ft-chart-panel__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px !important;
+  color: var(--accent-color);
+  font-size: 0.72rem !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page__content .ft-chart-panel__question {
+  margin: 0 0 14px !important;
+  padding-left: 14px;
+  border-left: 3px solid var(--accent-color);
+  color: var(--text-primary);
+  font-size: 1.02rem !important;
+  line-height: 1.55;
+}
+
+.ft-chart-panel__foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-border);
+}
+
+.page__content .ft-chart-panel__note { flex: 1; margin: 0 !important; color: var(--text-muted); font-size: 0.8rem !important; line-height: 1.45; }
+
+.ft-chart-panel__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  &:hover { color: var(--accent-color); border-color: var(--accent-color); }
+}
 
 // on a phone the buttons show only their icons
 @media (max-width: 600px) {
-  .ft-chart-box .ft-chart__head { padding-right: 96px; }
+  .ft-chart-box .ft-chart__head { padding-right: 84px; }
+  .ft-chart-action { padding: 5px 9px; }
   .ft-chart-action span { display: none; }
-  .ft-chart-panel { inset: 56px 10px 10px; }
+  .ft-chart-panel { inset: 54px 10px 10px; }
+  .ft-chart-panel__foot { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
-:root[data-theme="light"] .ft-chart-panel__card { --ft-chart-panel-bg: #ffffff; }

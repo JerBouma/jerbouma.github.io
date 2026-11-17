@@ -4275,6 +4275,69 @@ body.article-document {
   }
 }
 
+// numbered sections; those already read keep a faint accent on the guide line
+.article-toc__menu { counter-reset: toc; }
+.article-toc__menu > li > a {
+  position: relative;
+  padding-left: 40px !important;
+  &::before {
+    counter-increment: toc;
+    content: counter(toc, decimal-leading-zero);
+    position: absolute;
+    left: 14px;
+    top: 6px;
+    color: var(--text-muted);
+    font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+  }
+  &.is-read { border-left-color: rgba(56, 189, 248, 0.35); color: var(--text-muted) !important; }
+  &.is-active::before { color: var(--accent-color); }
+}
+
+// reading progress under "On this page"
+.article-progress {
+  height: 3px;
+  margin: 2px 8px 10px;
+  border-radius: 3px;
+  background: rgba(128, 128, 128, 0.15);
+  overflow: hidden;
+}
+.article-progress__bar {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent-color);
+  transition: width 0.15s linear;
+}
+
+// "Keep reading": three small cards instead of a long list
+.article-sidebar__list--cards {
+  gap: 8px;
+  margin: 4px 0 10px !important;
+  border-left: 0 !important;
+
+  .article-sidebar__item {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--card-border);
+    border-left: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: rgba(128, 128, 128, 0.04);
+    &:hover { border-color: var(--accent-color); background: rgba(56, 189, 248, 0.06); }
+  }
+}
+.article-sidebar__item-tag {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--accent-color);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .article-toc__menu ul {
   margin: 0;
   padding: 0;

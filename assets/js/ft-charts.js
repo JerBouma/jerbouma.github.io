@@ -39,6 +39,16 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && box.classList.contains('is-open')) show(null);
     });
+    // the MCP card's Copy button copies the question
+    var copy = box.querySelector('.ft-chart-panel__copy');
+    if (copy) copy.addEventListener('click', function () {
+      var q = box.querySelector('.ft-chart-panel__question').textContent.trim();
+      var label = copy.querySelector('span');
+      (navigator.clipboard ? navigator.clipboard.writeText(q) : Promise.reject()).then(function () {
+        label.textContent = 'Copied';
+        setTimeout(function () { label.textContent = 'Copy'; }, 1600);
+      }, function () {});
+    });
   });
 
   var boxes = Array.prototype.slice.call(document.querySelectorAll('.ft-chart[data-chart]'));
