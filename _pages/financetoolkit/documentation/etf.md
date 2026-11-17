@@ -549,12 +549,9 @@ Measure how liquid every fund is to trade over the last year of the period: its 
 
 For more information, see the following paper:
 
-- Amihud, Y. (2002). "Illiquidity and Stock
+- Amihud, Y. (2002). "Illiquidity and Stock Returns: Cross-Section and Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
 
-**Returns:** Cross-Section and Time-Series
-Effects." Journal of Financial Markets, 5(1), 31-56.
-
-Also known as: ETF liquidity, dollar volume, Amihud illiquidity, price impact.
+**Also known as:** ETF liquidity, dollar volume, Amihud illiquidity, price impact.
 
 **Args:**
 

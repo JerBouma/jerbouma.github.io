@@ -27,7 +27,7 @@ pip install financetoolkit -U
 ## get_minimum_variance_weights
 Calculate the weights of the minimum variance portfolio: the fully invested portfolio of the Toolkit's assets with the lowest volatility. It uses only the covariance matrix, not the expected returns, which makes it the most robust of the mean-variance portfolios to estimation error.
 
-The weights minimize w'Σw subject to the weights summing to one and lying between the minimum and maximum weight, where Σ is the annualized covariance matrix of the returns.
+The weights minimize $$w' \Sigma w$$ subject to the weights summing to one and lying between the minimum and maximum weight, where $$\Sigma$$ is the annualized covariance matrix of the returns.
 
 For more information, see the following paper:
 
@@ -77,12 +77,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -108,10 +108,10 @@ ratios use the average risk free rate over the same periods.
 - Every optimizer with weight bounds takes the same constraints. Sector and
 country bounds limit the total weight of the assets in a group (an asset
 without a sector or country, such as the benchmark, is in none). A gross
-exposure limit is linearized with one extra variable t_i ≥ &#124;w_i&#124; per asset
-(t_i ≥ w_i, t_i ≥ -w_i, Σ t_i ≤ the limit), so the solution stays exact. A
+exposure limit is linearized with one extra variable $$t_{i} \geq \vert w_{i} \vert$$ per asset
+($$t_{i} \geq w_{i} , t_{i} \geq - w_{i} , \sum t_{i}$$ ≤ the limit), so the solution stays exact. A
 maximum turnover from the current weights is linearized the same way, with one
-variable d_i ≥ &#124;w_i - w0_i&#124; per asset and Σ d_i ≤ the limit (Lobo, Fazel and
+variable $$d_{i} \geq \vert w_{i} - w_{0,i} \vert$$ per asset and $$\sum d_{i}$$ ≤ the limit (Lobo, Fazel and
 Boyd, 2007). A combination of constraints no portfolio can meet raises an
 error before the optimization runs.
 
@@ -147,7 +147,7 @@ Which returns:
 ## get_maximum_sharpe_weights
 Calculate the weights of the maximum Sharpe ratio portfolio: the fully invested portfolio with the highest expected return per unit of volatility above the risk free rate. It is the tangency portfolio, where a line from the risk free rate touches the efficient frontier.
 
-The weights maximize (w'μ - r_f) / sqrt(w'Σw) subject to the weights summing to one and lying between the minimum and maximum weight, with μ the annualized expected returns, Σ the annualized covariance matrix and r_f the risk free rate.
+The weights maximize $$(w' \mu - r_{f}) / \sqrt{w' \Sigma w}$$ subject to the weights summing to one and lying between the minimum and maximum weight, with $$\mu$$ the annualized expected returns, $$\Sigma$$ the annualized covariance matrix and $$r_{f}$$ the risk free rate.
 
 For more information, see the following papers:
 
@@ -205,12 +205,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>transaction_cost (float, optional):</u> The cost per unit of weight traded
 from the current weights, e.g. 0.001 for 10 basis points, subtracted once
@@ -270,7 +270,7 @@ Which returns:
 ---
 
 ## get_mean_variance_weights
-Calculate the weights of a mean-variance efficient portfolio. With a target return, it is the portfolio with the lowest volatility that expects that return. With a target volatility σ*, it is the portfolio with the highest expected return whose annualized volatility is at most σ*: max w'μ subject to w'Σw ≤ σ*². Without either, it is the portfolio that maximizes the investor's utility, the expected return minus half the risk aversion times the variance: w'μ - (λ/2) w'Σw.
+Calculate the weights of a mean-variance efficient portfolio. With a target return, it is the portfolio with the lowest volatility that expects that return. With a target volatility $$\sigma^{*}$$, it is the portfolio with the highest expected return whose annualized volatility is at most $$\sigma^{*}$$: $$\max w' \mu$$ subject to $$w' \Sigma w \leq \sigma^{*2}$$. Without either, it is the portfolio that maximizes the investor's utility, the expected return minus half the risk aversion times the variance: $$w' \mu - (\lambda / 2) w' \Sigma w$$.
 
 A risk aversion of 2 to 4 is typical; 2.5 is the value commonly used for the market as a whole.
 
@@ -286,7 +286,7 @@ For more information, see the following papers:
 - <u>target_return (float &#124; None, optional):</u> The annualized return the portfolio must
 expect, e.g. 0.12 for 12%. Defaults to None, which uses the target
 volatility or the risk aversion.
-- <u>risk_aversion (float, optional):</u> The investor's risk aversion λ; higher values
+- <u>risk_aversion (float, optional):</u> The investor's risk aversion $$\lambda$$; higher values
 give less risky portfolios. Not used with a target return or target
 volatility. Defaults to 2.5.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
@@ -336,12 +336,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>transaction_cost (float, optional):</u> The cost per unit of weight traded
 from the current weights, e.g. 0.001 for 10 basis points, subtracted once
@@ -466,12 +466,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -517,7 +517,7 @@ Which returns:
 ## get_risk_parity_weights
 Calculate the risk parity weights: the portfolio in which every asset contributes the same share of the volatility, or the share set by a risk budget. Volatile assets get smaller weights, and correlated assets share their risk budget, so no single asset dominates the portfolio's risk.
 
-The weights solve w_i (Σw)_i / σ_p = b_i σ_p for every asset, found by minimizing the convex function 1/2 w'Σw - Σ b_i ln(w_i) and scaling the result to sum to one.
+The weights solve $$w_{i} (\Sigma w)_{i} / \sigma_{p} = b_{i} \sigma_{p}$$ for every asset, found by minimizing the convex function $$\tfrac{1}{2} w' \Sigma w - \sum b_{i} \ln (w_{i})$$ and scaling the result to sum to one.
 
 For more information, see the following papers:
 
@@ -579,7 +579,7 @@ Volatility, Sharpe Ratio and Risk Contribution.
 **Notes:**
 
 - Weight, sector and country bounds turn it into constrained risk budgeting
-(Richard and Roncalli, 2019): the bounds are linear constraints on w = y / Σy,
+(Richard and Roncalli, 2019): the bounds are linear constraints on $$w = y / \sum y$$,
 so the problem stays convex. Where a bound
 binds, the risk contributions can no longer all match the budget.
 - Risk parity holds long positions only and is fully invested, so it takes no
@@ -615,7 +615,7 @@ Which returns:
 ## get_hierarchical_risk_parity_weights
 Calculate the Hierarchical Risk Parity (HRP) weights. The assets are clustered by their correlations, ordered so that similar assets sit next to each other, and the weight is split top-down between the two halves of every cluster in inverse proportion to their variance. It never inverts the covariance matrix, so it stays stable with many or highly correlated assets, where mean-variance weights become erratic.
 
-As in the paper, the clustering uses the Euclidean distance between the columns of the correlation distance matrix √((1 - ρ) / 2): two assets are close when they relate to all the other assets in the same way. Some libraries cluster on the correlation distance itself, which can order the assets differently.
+As in the paper, the clustering uses the Euclidean distance between the columns of the correlation distance matrix $$\sqrt{(1 - \rho) / 2}$$: two assets are close when they relate to all the other assets in the same way. Some libraries cluster on the correlation distance itself, which can order the assets differently.
 
 For more information, see the following paper:
 
@@ -629,9 +629,9 @@ For more information, see the following paper:
 "single", "complete", "average" or "ward". Defaults to "single", as in the
 paper.
 - <u>codependence (str, optional):</u> The correlation the assets are clustered on,
-through the distance √((1 - ρ) / 2): "pearson" (the linear correlation of
+through the distance $$\sqrt{(1 - \rho) / 2}$$: "pearson" (the linear correlation of
 the covariance matrix), "spearman" (the rank correlation of the returns,
-Spearman, 1904) or "kendall" (the rank correlation τ_b of the returns,
+Spearman, 1904) or "kendall" (the rank correlation $$\tau_{b}$$ of the returns,
 Kendall, 1938). The rank correlations depend only on the order of the
 returns, so a few extreme returns weigh less. Defaults to "pearson".
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
@@ -709,7 +709,7 @@ Which returns:
 ## get_hierarchical_equal_risk_contribution_weights
 Calculate the Hierarchical Equal Risk Contribution (HERC) weights. The assets are clustered by their correlations and the dendrogram is cut into clusters. Within a cluster every asset gets a weight in inverse proportion to its variance; between clusters the weight is split top-down along the dendrogram, each branch getting a weight in inverse proportion to its risk, the sum of the variances of its clusters. Unlike Hierarchical Risk Parity, which halves the ordered list of assets, the splits follow the tree, so assets that belong together are never split up, and the weight is allocated over the clusters rather than over the assets: riskier clusters get less.
 
-The clustering uses the correlation distance √((1 - ρ) / 2) with Ward linkage, as in the paper. Without a number of clusters, it is the one at the sharpest bend of the pooled within-cluster dispersion, the two-order difference of the gap statistic (Yue, Wang and Wei, 2008; Tibshirani, Walther and Hastie, 2001).
+The clustering uses the correlation distance $$\sqrt{(1 - \rho) / 2}$$ with Ward linkage, as in the paper. Without a number of clusters, it is the one at the sharpest bend of the pooled within-cluster dispersion, the two-order difference of the gap statistic (Yue, Wang and Wei, 2008; Tibshirani, Walther and Hastie, 2001).
 
 For more information, see the following papers:
 
@@ -726,9 +726,9 @@ paper.
 - <u>clusters (int &#124; None, optional):</u> The number of clusters. Defaults to None,
 chosen by the two-order difference of the gap statistic.
 - <u>codependence (str, optional):</u> The correlation the assets are clustered on,
-through the distance √((1 - ρ) / 2): "pearson" (the linear correlation of
+through the distance $$\sqrt{(1 - \rho) / 2}$$: "pearson" (the linear correlation of
 the covariance matrix), "spearman" (the rank correlation of the returns,
-Spearman, 1904) or "kendall" (the rank correlation τ_b of the returns,
+Spearman, 1904) or "kendall" (the rank correlation $$\tau_{b}$$ of the returns,
 Kendall, 1938). The rank correlations depend only on the order of the
 returns, so a few extreme returns weigh less. Defaults to "pearson".
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
@@ -781,7 +781,7 @@ Volatility, Sharpe Ratio and Risk Contribution, with the Cluster of every asset
 
 - Weight, sector and country bounds are applied after the allocation: when the
 weights fall outside them, they move to the weights within the bounds with the
-smallest relative change, Σ (w_i / w_HERC,i - 1)².
+smallest relative change, $$\sum (w_{i} / w_{\text{HERC},i} - 1)^{2}$$.
 - HERC is long only and fully invested, so short positions and a net or gross
 exposure do not apply.
 
@@ -817,7 +817,7 @@ Which returns:
 ## get_nested_clustered_optimization_weights
 Calculate the Nested Clustered Optimization (NCO) weights. The assets are clustered by their correlations, the objective is optimized within every cluster, and then once more across the clusters, each cluster acting as one asset that holds its own optimal portfolio. Estimation noise in the covariance matrix mostly sits among correlated assets, which is what makes mean-variance weights unstable; by optimizing within and across clusters separately, NCO keeps that noise contained and the weights steadier out of sample.
 
-With W the matrix whose column k holds the optimal weights within cluster k, the clusters have the expected returns W'μ and the covariance matrix W'ΣW; the weights across the clusters v are optimal for those, and the weight of every asset is w = W v. The clusters are found as in HERC (correlation distance, Ward linkage, the number of clusters from the two-order difference of the gap statistic) and the covariance matrix is denoised by default, as in the paper.
+With W the matrix whose column k holds the optimal weights within cluster k, the clusters have the expected returns $$W' \mu$$ and the covariance matrix $$W' \Sigma W$$; the weights across the clusters v are optimal for those, and the weight of every asset is $$w = W v$$. The clusters are found as in HERC (correlation distance, Ward linkage, the number of clusters from the two-order difference of the gap statistic) and the covariance matrix is denoised by default, as in the paper.
 
 For more information, see the following papers:
 
@@ -836,9 +836,9 @@ For more information, see the following papers:
 - <u>clusters (int &#124; None, optional):</u> The number of clusters. Defaults to None,
 chosen by the two-order difference of the gap statistic.
 - <u>codependence (str, optional):</u> The correlation the assets are clustered on,
-through the distance √((1 - ρ) / 2): "pearson" (the linear correlation of
+through the distance $$\sqrt{(1 - \rho) / 2}$$: "pearson" (the linear correlation of
 the covariance matrix), "spearman" (the rank correlation of the returns,
-Spearman, 1904) or "kendall" (the rank correlation τ_b of the returns,
+Spearman, 1904) or "kendall" (the rank correlation $$\tau_{b}$$ of the returns,
 Kendall, 1938). The rank correlations depend only on the order of the
 returns, so a few extreme returns weigh less. Defaults to "pearson".
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
@@ -925,7 +925,7 @@ Which returns:
 ---
 
 ## get_inverse_volatility_weights
-Calculate inverse volatility weights: each asset's weight is proportional to one over its volatility, w_i = (1/σ_i) / Σ(1/σ_j). It is the simplest risk-based allocation and equals risk parity when all correlations are the same.
+Calculate inverse volatility weights: each asset's weight is proportional to one over its volatility, $$w_{i} = (1 / \sigma_{i}) / \sum (1 / \sigma_{j})$$. It is the simplest risk-based allocation and equals risk parity when all correlations are the same.
 
 **Also known as:** naive risk parity, volatility weighting.
 
@@ -992,7 +992,7 @@ Which returns:
 ## get_minimum_cvar_weights
 Calculate the weights of the minimum Conditional Value at Risk (CVaR) portfolio: the fully invested portfolio whose average loss in the worst periods is the smallest. Unlike variance, CVaR only looks at the losses in the tail, so it accounts for skewed and fat-tailed returns.
 
-The problem is solved as a linear programme over the historical returns: minimize VaR + 1/((1 - α)T) Σ max(0, -r_t'w - VaR), with α the confidence level and T the number of periods.
+The problem is solved as a linear programme over the historical returns: minimize $$\text{VaR} + 1 / ((1 - \alpha) T) \sum \max (0 , - r_{t}' w - \text{VaR})$$, with $$\alpha$$ the confidence level and T the number of periods.
 
 For more information, see the following paper:
 
@@ -1028,12 +1028,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -1053,8 +1053,8 @@ on its own and of the portfolio (per period, as a loss) in the CVaR column.
 **Notes:**
 
 - The CVaR column is the value the linear programme minimizes: the average of the
-worst 1 - α share of the periods, with a fraction of the boundary period when
-(1 - α)T is not a whole number (Rockafellar and Uryasev, 2002), as in the
+worst $$1 - \alpha$$ share of the periods, with a fraction of the boundary period when
+$$(1 - \alpha) T$$ is not a whole number (Rockafellar and Uryasev, 2002), as in the
 maximum CVaR ratio weights and the expected shortfall contributions.
 
 **As an example:**
@@ -1087,7 +1087,7 @@ Which returns:
 ## get_minimum_drawdown_weights
 Calculate the weights of the portfolio with the lowest drawdown risk over the historical returns: the lowest Conditional Drawdown at Risk (CDaR, the average of the worst drawdowns), the lowest maximum drawdown or the lowest average drawdown. Drawdowns are what investors feel and what ends strategies, and unlike volatility or CVaR they account for losses that build up over consecutive periods.
 
-The problem is a linear programme over the uncompounded cumulative returns y_t = Σ_(s≤t) r_s'w, with the running peak u_t ≥ y_t, u_t ≥ u_(t-1) from u_0 = 0 and the drawdown u_t - y_t. It minimizes ζ + Σ max(0, u_t - y_t - ζ) / ((1 - α)T) for the CDaR with α the confidence level and T the number of periods, the largest drawdown for the maximum and the average over all periods for the average.
+The problem is a linear programme over the uncompounded cumulative returns $$y_{t} = \sum_{s \leq t} r_{s}' w$$, with the running peak $$u_{t} \geq y_{t}$$, $$u_{t} \geq u_{t - 1}$$ from $$u_{0} = 0$$ and the drawdown $$u_{t} - y_{t}$$. It minimizes $$\zeta + \sum \max (0 , u_{t} - y_{t} - \zeta) / ((1 - \alpha) T)$$ for the CDaR with $$\alpha$$ the confidence level and T the number of periods, the largest drawdown for the maximum and the average over all periods for the average.
 
 For more information, see the following paper:
 
@@ -1124,12 +1124,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -1185,7 +1185,7 @@ Which returns:
 ## get_maximum_omega_weights
 Calculate the weights of the portfolio with the highest Omega ratio over the historical returns: the gains above a minimum acceptable return divided by the losses below it. The Omega ratio uses the whole return distribution instead of its mean and variance, so it rewards positive skew and penalizes fat left tails that a Sharpe ratio overlooks.
 
-With τ the minimum acceptable return, Ω(w) = 1 + (r̄'w - τ) / E[max(0, τ - r_t'w)]. This ratio is maximized exactly as a linear programme with the Charnes-Cooper transformation: with y = κw and κ > 0, maximize r̄'y - τκ subject to Σ max(0, τκ - r_t'y) / T = 1 and the weight constraints, then w = y / κ.
+With $$\tau$$ the minimum acceptable return, $$\Omega (w) = 1 + (\bar{r}' w - \tau) / E [\max (0 , \tau - r_{t}' w)]$$. This ratio is maximized exactly as a linear programme with the Charnes-Cooper transformation: with $$y = \kappa w$$ and $$\kappa > 0$$, maximize $$\bar{r}' y - \tau \kappa$$ subject to $$\sum \max (0 , \tau \kappa - r_{t}' y) / T = 1$$ and the weight constraints, then $$w = y / \kappa$$.
 
 For more information, see the following papers:
 
@@ -1230,12 +1230,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -1290,7 +1290,7 @@ Which returns:
 ## get_maximum_cvar_ratio_weights
 Calculate the weights of the portfolio with the highest CVaR ratio: the average return above the risk free rate divided by the Conditional Value at Risk, the average loss in the worst periods. It is the maximum Sharpe ratio portfolio with the tail loss in place of the volatility, so upside swings are not penalized and crash risk is.
 
-The ratio (r̄ - r_f)'w / CVaR_α(w), with the CVaR of Rockafellar and Uryasev (2000), is maximized exactly as a linear programme with the Charnes-Cooper transformation y = κw, κ > 0: maximize (r̄ - r_f)'y subject to ζ + Σ max(0, -r_t'y - ζ) / ((1 - α)T) ≤ 1 and the weight constraints, then w = y / κ.
+The ratio $$(\bar{r} - r_{f})' w / \text{CVaR}_{\alpha} (w)$$, with the CVaR of Rockafellar and Uryasev (2000), is maximized exactly as a linear programme with the Charnes-Cooper transformation $$y = \kappa w$$, $$\kappa > 0$$: maximize $$(\bar{r} - r_{f})' y$$ subject to $$\zeta + \sum \max (0 , - r_{t}' y - \zeta) / ((1 - \alpha) T) \leq 1$$ and the weight constraints, then $$w = y / \kappa$$.
 
 For more information, see the following papers:
 
@@ -1334,12 +1334,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -1396,7 +1396,7 @@ Which returns:
 ## get_maximum_diversification_weights
 Calculate the weights of the maximum diversification portfolio: the fully invested portfolio with the highest diversification ratio, the weighted average volatility of its assets divided by its own volatility. The ratio is one for a single asset and grows as the assets move less together, so the portfolio holds the assets that diversify each other most. It needs no expected returns, and when every asset has the same Sharpe ratio it is also the maximum Sharpe ratio portfolio.
 
-The weights maximize DR(w) = w'σ / √(w'Σw) subject to the weights summing to one and lying between the minimum and maximum weight, with σ the volatilities of the assets and Σ their annualized covariance matrix. The square of the ratio is the number of independent risk factors a long-only portfolio effectively holds.
+The weights maximize $$\text{DR} (w) = w' \sigma / \sqrt{w' \Sigma w}$$ subject to the weights summing to one and lying between the minimum and maximum weight, with $$\sigma$$ the volatilities of the assets and $$\Sigma$$ their annualized covariance matrix. The square of the ratio is the number of independent risk factors a long-only portfolio effectively holds.
 
 For more information, see the following papers:
 
@@ -1446,12 +1446,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -1507,7 +1507,7 @@ Which returns:
 ## get_minimum_tracking_error_weights
 Calculate the weights of the portfolio of the Toolkit's assets that follows the benchmark most closely: the fully invested portfolio with the lowest tracking error, the volatility of its return minus the benchmark's. With the objective "information_ratio" it is instead the portfolio with the highest information ratio, the expected return above the benchmark per unit of tracking error, which is what an active manager measured against the benchmark maximizes.
 
-The tracking error is TE(w) = √Var(R w - r_b) = √(w'Σ_AA w - 2 w'Σ_Ab + σ_b²), with Σ_AA the annualized covariance matrix of the assets, Σ_Ab their covariances with the benchmark and σ_b² the benchmark's variance. The information ratio is (w'μ - μ_b) / TE(w), with μ and μ_b the annualized expected returns. The weights sum to one and lie between the minimum and maximum weight; the benchmark is the Toolkit's (SPY by default) and is not one of the assets.
+The tracking error is $$\text{TE} (w) = \sqrt{\operatorname{Var} (R w - r_{b})} = \sqrt{w' \Sigma_{\text{AA}} w - 2 w' \Sigma_{\text{Ab}} + \sigma_{b}^{2}}$$, with $$\Sigma_{\text{AA}}$$ the annualized covariance matrix of the assets, $$\Sigma_{\text{Ab}}$$ their covariances with the benchmark and $$\sigma_{b}^{2}$$ the benchmark's variance. The information ratio is $$(w' \mu - \mu_{b}) / \text{TE} (w)$$, with $$\mu$$ and $$\mu_{b}$$ the annualized expected returns. The weights sum to one and lie between the minimum and maximum weight; the benchmark is the Toolkit's (SPY by default) and is not one of the assets.
 
 For more information, see the following papers:
 
@@ -1568,12 +1568,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
@@ -1593,7 +1593,7 @@ the portfolio). Returns, volatilities and tracking errors are annualized.
 
 - Only the periods in which every asset and the benchmark have a return are used.
 - With the sample covariance the tracking error equals the annualized standard
-deviation (ddof=1) of the historical active returns R w - r_b.
+deviation (ddof=1) of the historical active returns $$R w - r_{b}$$.
 - The information ratio needs an asset that expects more than the benchmark;
 otherwise no portfolio has a positive information ratio and an error is raised.
 
@@ -1629,7 +1629,7 @@ Which returns:
 ## get_growth_optimal_weights
 Calculate the weights of the growth optimal (Kelly) portfolio: the fully invested portfolio with the highest expected logarithmic growth of wealth, which in the long run ends up with more wealth than any other strategy with near certainty. Because the full Kelly portfolio is volatile and sensitive to errors in the expected returns, investors often hold a fraction of it (fractional Kelly) and keep the rest in cash.
 
-The "exact" method maximizes the average log return over the historical returns, (1/T) Σ ln(1 + r_t'w). The "approximate" method maximizes its second-order approximation w'μ - ½ w'Σw, which is a mean-variance portfolio with a risk aversion of one; it uses the expected returns and covariance matrix instead of the returns themselves. Both keep the weights summing to one and between the minimum and maximum weight. The weights are then multiplied by the fraction and the remainder, 1 - fraction, is held in cash at the risk free rate (borrowed when the fraction is above one).
+The "exact" method maximizes the average log return over the historical returns, $$(1 / T) \sum \ln (1 + r_{t}' w)$$. The "approximate" method maximizes its second-order approximation $$w' \mu$$ - ½ $$w' \Sigma w$$, which is a mean-variance portfolio with a risk aversion of one; it uses the expected returns and covariance matrix instead of the returns themselves. Both keep the weights summing to one and between the minimum and maximum weight. The weights are then multiplied by the fraction and the remainder, 1 - fraction, is held in cash at the risk free rate (borrowed when the fraction is above one).
 
 For more information, see the following papers:
 
@@ -1821,12 +1821,12 @@ weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
 - <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
 e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, &#124;w_i - w0_i&#124;
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
 per asset and its sum for the portfolio. Defaults to None, which uses
 the latest weights of the Portfolio the Toolkit came from when a maximum
 turnover needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-Σ &#124;w_i - w0_i&#124; from the current weights, e.g. 0.2 to trade at most 10%
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
@@ -1888,13 +1888,13 @@ Which returns:
 ---
 
 ## get_black_litterman_weights
-Calculate the Black-Litterman expected returns and the weights they lead to. The starting point is the return the market implies through its capitalization weights: the excess return Π = δΣw_mkt at which holding the market is optimal, plus the risk free rate, so the Implied Return is a total return. Views then move these returns towards the investor's expectations, in proportion to the confidence in each view. The result avoids the extreme weights that historical average returns give.
+Calculate the Black-Litterman expected returns and the weights they lead to. The starting point is the return the market implies through its capitalization weights: the excess return $$\Pi = \delta \Sigma w_{\text{mkt}}$$ at which holding the market is optimal, plus the risk free rate, so the Implied Return is a total return. Views then move these returns towards the investor's expectations, in proportion to the confidence in each view. The result avoids the extreme weights that historical average returns give.
 
 Views are absolute ({"AAPL": 0.10}: AAPL returns 10% a year in total, risk free rate included) or relative ({"AAPL-MSFT": 0.02}: AAPL beats MSFT by 2% a year). Without a confidence, a view is as uncertain as the variance of the view portfolio scaled by tau; a confidence c scales that by (1 - c) / c, Idzorek's confidence method in the closed form of Walters (2014). The weights are the mean-variance portfolio of the Black-Litterman returns with the same risk aversion. Without views, or with relative views only, the risk free rate shifts every return by the same amount and leaves the weights unchanged; an absolute view is compared with the implied total return, so there it matters.
 
-The risk aversion is 2.5 by default, the value He and Litterman (1999) use for the world market, or the one the benchmark implies with risk_aversion="market": δ = (E[r_m] - r_f) / σ²_m, the benchmark's annualized average excess return over its annualized variance on the same periods as the assets.
+The risk aversion is 2.5 by default, the value He and Litterman (1999) use for the world market, or the one the benchmark implies with risk_aversion="market": $$\delta = (E [r_{m}] - r_{f}) / \sigma_{m}^{2}$$, the benchmark's annualized average excess return over its annualized variance on the same periods as the assets.
 
-The Posterior Volatility is the square root of the diagonal of the posterior covariance matrix Σ + M (He and Litterman, 1999), with M = ((τΣ)⁻¹ + P'Ω⁻¹P)⁻¹ the uncertainty that remains in the Black-Litterman returns: the volatility to expect for each asset once the estimation error of its return is counted too. The weights use Σ itself, so that without views they are the market weights.
+The Posterior Volatility is the square root of the diagonal of the posterior covariance matrix $$\Sigma + M$$ (He and Litterman, 1999), with $$M = ((\tau \Sigma)^{- 1} + P' \Omega^{- 1} P)^{- 1}$$ the uncertainty that remains in the Black-Litterman returns: the volatility to expect for each asset once the estimation error of its return is counted too. The weights use $$\Sigma$$ itself, so that without views they are the market weights.
 
 For more information, see the following papers:
 
@@ -1915,8 +1915,8 @@ between 0 and 1. Defaults to None, which sets each view's uncertainty to the
 variance of the view scaled by tau.
 - <u>market_weights (dict[str, float] &#124; None, optional):</u> The market weight per asset.
 Defaults to None, which uses the market capitalizations of the assets.
-- <u>risk_aversion (float &#124; str, optional):</u> The risk aversion δ of the market, or
-"market" for the one the benchmark implies, (E[r_m] - r_f) / σ²_m, with
+- <u>risk_aversion (float &#124; str, optional):</u> The risk aversion $$\delta$$ of the market, or
+"market" for the one the benchmark implies, $$(E [r_{m}] - r_{f}) / \sigma_{m}^{2}$$, with
 the benchmark's arithmetic average return and variance (ddof=1) per
 period both annualized by the number of periods in a year. Defaults to
 2.5.
@@ -2007,11 +2007,11 @@ Which returns:
 ## get_risk_contributions
 Calculate how much each asset contributes to the risk of a portfolio, measured as its volatility, expected shortfall (CVaR), semideviation, mean absolute deviation or Conditional Drawdown at Risk (CDaR). The marginal contribution is the change in the portfolio's risk from a small increase in an asset's weight; the risk contribution is the weight times that, and the contributions add up to the portfolio's risk (Euler allocation). A large position in a calm asset can contribute less risk than a small one in a volatile asset.
 
-- risk_measure="volatility": the marginal contribution is (Σw)_i / σ_p, with Σ the annualized covariance matrix.
-- risk_measure="cvar": the expected shortfall is the average loss in the periods in which the portfolio's return is at or below its Value at Risk, and the marginal contribution of an asset is its average loss in those same periods, -E[r_i &#124; r_p ≤ VaR], so the contributions show which assets lose in the portfolio's worst periods. These are per period (e.g. daily), like the Finance Toolkit's historical CVaR, and not annualized.
-- risk_measure="semideviation": the downside deviation of the portfolio's return below zero, SD⁻ = √(Σ min(r_p,t, 0)² / T), with the marginal contribution Σ min(r_p,t, 0) r_i,t / (T SD⁻): an asset contributes by losing in the periods in which the portfolio loses. Per period, not annualized.
-- risk_measure="mad": the mean absolute deviation of the portfolio's return, Σ &#124;r_p,t - μ_p&#124; / T, with the marginal contribution Σ sign(r_p,t - μ_p)(r_i,t - μ_i) / T. Per period, not annualized.
-- risk_measure="cdar": the Conditional Drawdown at Risk, the average of the worst 1 - α share of the drawdowns of the uncompounded cumulative return (the drawdowns the minimum drawdown optimization minimizes). Each drawdown is the sum of the assets' drawdowns from the portfolio's peak, so the marginal contribution of an asset is its average drawdown over the portfolio's worst drawdown periods (Goldberg and Mahmoud, 2017).
+- risk_measure="volatility": the marginal contribution is $$(\Sigma w)_{i} / \sigma_{p}$$, with $$\Sigma$$ the annualized covariance matrix.
+- risk_measure="cvar": the expected shortfall is the average loss in the periods in which the portfolio's return is at or below its Value at Risk, and the marginal contribution of an asset is its average loss in those same periods, $$- E [r_{i} \vert r_{p} \leq \text{VaR}]$$, so the contributions show which assets lose in the portfolio's worst periods. These are per period (e.g. daily), like the Finance Toolkit's historical CVaR, and not annualized.
+- risk_measure="semideviation": the downside deviation of the portfolio's return below zero, $$\text{SD}^{-} = \sqrt{\sum \min (r_{p,t} , 0)^{2} / T}$$, with the marginal contribution $$\sum \min (r_{p,t} , 0) r_{i,t} / (T \text{SD}^{-})$$: an asset contributes by losing in the periods in which the portfolio loses. Per period, not annualized.
+- risk_measure="mad": the mean absolute deviation of the portfolio's return, $$\sum \vert r_{p,t} - \mu_{p} \vert / T$$, with the marginal contribution $$\sum \operatorname{sign} (r_{p,t} - \mu_{p}) (r_{i,t} - \mu_{i}) / T$$. Per period, not annualized.
+- risk_measure="cdar": the Conditional Drawdown at Risk, the average of the worst $$1 - \alpha$$ share of the drawdowns of the uncompounded cumulative return (the drawdowns the minimum drawdown optimization minimizes). Each drawdown is the sum of the assets' drawdowns from the portfolio's peak, so the marginal contribution of an asset is its average drawdown over the portfolio's worst drawdown periods (Goldberg and Mahmoud, 2017).
 
 For more information, see the following papers:
 
@@ -2101,10 +2101,10 @@ Which returns:
 ## get_diversification_metrics
 Calculate how diversified a portfolio is, by the concentration of its weights and by how its risk spreads over independent sources.
 
-- Herfindahl-Hirschman Index: Σ w_i², from 1/N for equal weights to 1 for a single asset.
-- Effective Number of Assets: 1 / Σ w_i², the number of equally weighted assets that would be as concentrated.
-- Diversification Ratio: the weighted average volatility of the assets over the portfolio's volatility, w'σ / √(w'Σw); one for a single asset, higher as the assets move less together (Choueifaty and Coignard, 2008).
-- Effective Number of Bets: the covariance matrix is split into uncorrelated principal components, p_k is the share of the portfolio's variance from component k, and the number of bets is exp(-Σ p_k ln p_k): 1 when all risk comes from one source and N when it spreads evenly over all of them (Meucci, 2009). Equal weights in assets that all follow the market are many assets but close to one bet.
+- Herfindahl-Hirschman Index: $$\sum w_{i}^{2}$$, from 1/N for equal weights to 1 for a single asset.
+- Effective Number of Assets: $$1 / \sum w_{i}^{2}$$, the number of equally weighted assets that would be as concentrated.
+- Diversification Ratio: the weighted average volatility of the assets over the portfolio's volatility, $$w' \sigma / \sqrt{w' \Sigma w}$$; one for a single asset, higher as the assets move less together (Choueifaty and Coignard, 2008).
+- Effective Number of Bets: the covariance matrix is split into uncorrelated principal components, $$p_{k}$$ is the share of the portfolio's variance from component k, and the number of bets is $$\exp (- \sum p_{k} \ln p_{k})$$: 1 when all risk comes from one source and N when it spreads evenly over all of them (Meucci, 2009). Equal weights in assets that all follow the market are many assets but close to one bet.
 
 For more information, see the following papers:
 
@@ -2178,21 +2178,21 @@ Which returns:
 ---
 
 ## get_portfolio_risk_metrics
-Calculate the return and risk of a portfolio with given weights over the Toolkit's date range, next to the benchmark. The portfolio's return in each period is the weighted return of its assets, r_p,t = Σ w_i r_i,t, which holds the weights constant by rebalancing to them every period. The measures use the formulas of the Performance and Risk modules:
+Calculate the return and risk of a portfolio with given weights over the Toolkit's date range, next to the benchmark. The portfolio's return in each period is the weighted return of its assets, $$r_{p,t} = \sum w_{i} r_{i,t}$$, which holds the weights constant by rebalancing to them every period. The measures use the formulas of the Performance and Risk modules:
 
 $$
 \text{Annualized Return:}\;\; \text{the geometric average},\;\; \operatorname{Π}(1 + r_{t}) ^{P / T} - 1,\;\; \text{with P the periods per year and T the number of periods}
 $$
 
-- Annualized Volatility: the standard deviation (ddof=1) times √P.
+- Annualized Volatility: the standard deviation (ddof=1) times $$\sqrt{P}$$.
 
-- Sharpe Ratio: the average return above the risk free rate over its standard deviation, annualized with √P (Sharpe, 1966).
+- Sharpe Ratio: the average return above the risk free rate over its standard deviation, annualized with $$\sqrt{P}$$ (Sharpe, 1966).
 
-- Sortino Ratio: the average return above the risk free rate over its downside deviation below zero, annualized with √P (Sortino and Price, 1994).
+- Sortino Ratio: the average return above the risk free rate over its downside deviation below zero, annualized with $$\sqrt{P}$$ (Sortino and Price, 1994).
 
 - Maximum Drawdown: the largest fall of the compounded value from its peak.
 
-- Value at Risk: the 1 - α quantile of the returns per period (historical).
+- Value at Risk: the $$1 - \alpha$$ quantile of the returns per period (historical).
 
 - Conditional Value at Risk: the average return at or below the Value at Risk per period (historical).
 
@@ -2263,9 +2263,9 @@ Which returns:
 ---
 
 ## get_discrete_allocation
-Calculate how many whole shares to buy of each asset to hold weights with a portfolio value, at the latest traded (split-adjusted) closing price. Weights rarely come out in whole shares, so some cash is left over and the weights held differ a little from the targets; the smaller the portfolio value compared to the share prices, the larger the difference. With t_i = w_i V the target amount of asset i and p_i its price:
+Calculate how many whole shares to buy of each asset to hold weights with a portfolio value, at the latest traded (split-adjusted) closing price. Weights rarely come out in whole shares, so some cash is left over and the weights held differ a little from the targets; the smaller the portfolio value compared to the share prices, the larger the difference. With $$t_{i} = w_{i} V$$ the target amount of asset i and $$p_{i}$$ its price:
 
-- method="integer": the number of shares n_i that minimizes the absolute deviation from the target amounts with the leftover cash c counted as a holding with a target of zero, min Σ &#124;t_i - n_i p_i&#124; + c with Σ n_i p_i + c = V and c ≥ 0, solved as an integer programme (Cornuejols, Peña and Tütüncü, 2018).
+- method="integer": the number of shares $$n_{i}$$ that minimizes the absolute deviation from the target amounts with the leftover cash c counted as a holding with a target of zero, $$\min \sum \vert t_{i} - n_{i} p_{i} \vert + c$$ with $$\sum n_{i} p_{i} + c = V$$ and $$c \geq 0$$, solved as an integer programme (Cornuejols, Peña and Tütüncü, 2018).
 - method="greedy": every position is first rounded down to whole shares and the leftover cash then buys one more share at a time of the asset furthest below its target amount, while its price fits the cash. Quick and close to the integer programme, which can do better by leaving out a share of one asset to buy more of another.
 
 A short weight becomes a negative number of shares, with the proceeds funding the long positions: weights that sum to one keep a net investment of the portfolio value. Short positions are rounded to a larger short, so the leftover cash is never negative.
@@ -2334,7 +2334,7 @@ Which returns:
 ## get_optimization_backtest
 Backtest the portfolio optimizers out of sample against equal weights (1/N) and the benchmark. On every rebalancing date (the last trading day of each month, quarter or year) each optimizer sets its weights from the daily returns of the `lookback` trading days up to and including that date, and the portfolio holds them from the next day on, so no weight is estimated with a return it is then measured on (walk-forward). Between rebalancing dates the weights drift with the prices, as those of a portfolio that does not trade. The 1/N portfolio is rebalanced to equal weights on the same dates and the benchmark is bought and held.
 
-Each rebalancing trades from the drifted weights to the new ones. Its turnover is Σ &#124;w_i,new - w_i,drifted&#124; and its cost the transaction cost times the turnover, taken from the portfolio's value, so the returns shown are after costs (DeMiguel, Garlappi and Uppal, 2009). With a maximum turnover, a portfolio trades towards its new weights only as far as the limit allows. DeMiguel et al. found that none of fourteen optimizers consistently beat 1/N out of sample, because the estimation error in the expected returns outweighs the gain from optimizing; a backtest shows whether that holds for these assets.
+Each rebalancing trades from the drifted weights to the new ones. Its turnover is $$\sum \vert w_{i,\text{new}} - w_{i,\text{drifted}} \vert$$ and its cost the transaction cost times the turnover, taken from the portfolio's value, so the returns shown are after costs (DeMiguel, Garlappi and Uppal, 2009). With a maximum turnover, a portfolio trades towards its new weights only as far as the limit allows. DeMiguel et al. found that none of fourteen optimizers consistently beat 1/N out of sample, because the estimation error in the expected returns outweighs the gain from optimizing; a backtest shows whether that holds for these assets.
 
 For more information, see the following paper:
 

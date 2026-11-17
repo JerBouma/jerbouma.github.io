@@ -218,7 +218,7 @@ $$
 \text{VaR} = \operatorname{Quantile}(\text{Returns},\; \alpha)
 $$
 
-The quantile interpolates linearly and the CVaR is reported as a return (negative for a loss). The other distributions use closed forms, with Std the sample standard deviation (ddof=1) and z_alpha the standard normal quantile at alpha:
+The quantile interpolates linearly and the CVaR is reported as a return (negative for a loss). The other distributions use closed forms, with Std the sample standard deviation (ddof=1) and $$z_{\alpha}$$ the standard normal quantile at alpha:
 
 $$
 \text{Gaussian CVaR} = \text{Mean} - \text{Std} \cdot \operatorname{pdf}(z_{\alpha}) / \alpha
@@ -244,7 +244,7 @@ $$
 \text{EVT CVaR} = - (\text{VaR\_loss} + \text{Scale\_GPD} - \xi \cdot u) / (1 - \xi)
 $$
 
-Where the Student-T v, Location and Scale are fitted by maximum likelihood (NaN for v <= 1), z_cf is the Cornish-Fisher quantile of `get_value_at_risk`, and u, xi, Scale_GPD and VaR_loss are the loss threshold, the fitted Generalized Pareto shape and scale and the EVT VaR as a positive loss (NaN for xi >= 1).
+Where the Student-T v, Location and Scale are fitted by maximum likelihood (NaN for v <= 1), $$z_{\text{cf}}$$ is the Cornish-Fisher quantile of `get_value_at_risk`, and u, xi, Scale_GPD and $$\text{VaR}_{\text{loss}}$$ are the loss threshold, the fitted Generalized Pareto shape and scale and the EVT VaR as a positive loss (NaN for xi >= 1).
 
 **Also known as:** CVaR, expected shortfall, ES, tail risk.
 
@@ -1089,7 +1089,7 @@ Which returns:
 ---
 
 ## get_garch
-Calculates the conditional variance (sigma_t^2) of the returns with a GARCH(1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_garch_forecast` for the variance forecast beyond the last observation.
+Calculates the conditional variance ($$\sigma_{t}^{2}$$) of the returns with a GARCH(1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_garch_forecast` for the variance forecast beyond the last observation.
 
 GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series, which is for instance used to model volatility clusters, stock return and inflation. It is a generalisation of the ARCH models.
 
@@ -1103,7 +1103,7 @@ $$
 \sigma_{1} ^{2} = \text{Omega} + (\text{Alpha} + \text{Beta}) \cdot \text{Backcast}
 $$
 
-Where r_t are the returns (not demeaned) and the Backcast is an exponentially weighted average (decay 0.94) of the first 75 squared returns. Omega, Alpha and Beta maximize the Gaussian log-likelihood, i.e. minimize Σ (ln sigma_t^2 + r_t^2 / sigma_t^2), under Omega, Alpha, Beta > 0 and Alpha + Beta < 1 (see `get_garch_parameters`).
+Where $$r_{t}$$ are the returns (not demeaned) and the Backcast is an exponentially weighted average (decay 0.94) of the first 75 squared returns. Omega, Alpha and Beta maximize the Gaussian log-likelihood, i.e. minimize $$\sum (\ln \sigma_{t}^{2} + r_{t}^{2} / \sigma_{t}^{2})$$, under Omega, Alpha, Beta > 0 and Alpha + Beta < 1 (see `get_garch_parameters`).
 
 **Also known as:** GARCH, volatility clustering, conditional heteroscedasticity.
 
@@ -1184,7 +1184,7 @@ $$
 \sigma_{L} ^{2} = \text{Omega} / (1 - \text{Alpha} - \text{Beta})
 $$
 
-Where n is the last observation, h = 1, ..., `time_steps` (10 by default) the forecast step, sigma_(n+1)^2 the one-step-ahead variance of the fitted GARCH(1, 1) recursion (see `get_garch`) and sigma_L^2 the long-run variance.
+Where n is the last observation, $$h = 1$$, ..., `time_steps` (10 by default) the forecast step, $$\sigma_{n + 1}^{2}$$ the one-step-ahead variance of the fitted GARCH(1, 1) recursion (see `get_garch`) and $$\sigma_{L}^{2}$$ the long-run variance.
 
 For more information about the method, see the following book:
 
@@ -1272,7 +1272,7 @@ $$
 \text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
 $$
 
-Where r_t are the returns (not demeaned), with the constraints Omega, Alpha, Beta > 0 and Alpha + Beta < 1. The parameters are estimated by maximizing the Gaussian log-likelihood with L-BFGS-B, started from a domain-informed initial guess and from 32 points of a Sobol sequence, and the best fit is finished with Nelder-Mead. The search runs on the parameters scaled to their bounds, as Omega (of the order of a daily variance) and Alpha and Beta differ by orders of magnitude.
+Where $$r_{t}$$ are the returns (not demeaned), with the constraints Omega, Alpha, Beta > 0 and Alpha + Beta < 1. The parameters are estimated by maximizing the Gaussian log-likelihood with L-BFGS-B, started from a domain-informed initial guess and from 32 points of a Sobol sequence, and the best fit is finished with Nelder-Mead. The search runs on the parameters scaled to their bounds, as Omega (of the order of a daily variance) and Alpha and Beta differ by orders of magnitude.
 
 The variance recursion starts from a backcast, an exponentially weighted average (decay 0.94) of the first 75 squared returns, which stands in for both the squared return and the variance before the first observation, and every observation enters the likelihood. This is the start the arch package uses, so the estimates agree with it.
 
@@ -1335,7 +1335,7 @@ Which returns:
 ---
 
 ## get_gjr_garch
-Calculates the conditional variance (sigma_t^2) of the returns with a GJR-GARCH(1, 1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_gjr_garch_forecast` for the variance forecast.
+Calculates the conditional variance ($$\sigma_{t}^{2}$$) of the returns with a GJR-GARCH(1, 1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_gjr_garch_forecast` for the variance forecast.
 
 GJR-GARCH extends GARCH with a leverage term that lets negative shocks (bad news) raise volatility by more than positive shocks of the same size, a well documented asymmetry in equity returns that symmetric GARCH cannot capture.
 
@@ -1353,7 +1353,7 @@ $$
 \sigma_{1} ^{2} = \text{Omega} + (\text{Alpha} + \text{Gamma} / 2 + \text{Beta}) \cdot \text{Backcast}
 $$
 
-Where r_t are the returns (not demeaned), I_(t-1) is 1 when r_(t-1) < 0 and 0 otherwise, and the Backcast is the same as in `get_garch`. The parameters maximize the Gaussian log-likelihood under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0 (see `get_gjr_garch_parameters`).
+Where $$r_{t}$$ are the returns (not demeaned), $$I_{t - 1}$$ is 1 when $$r_{t - 1} < 0$$ and 0 otherwise, and the Backcast is the same as in `get_garch`. The parameters maximize the Gaussian log-likelihood under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0 (see `get_gjr_garch_parameters`).
 
 **Also known as:** GJR-GARCH, threshold GARCH, TGARCH.
 
@@ -1433,7 +1433,7 @@ $$
 \sigma_{L} ^{2} = \text{Omega} / (1 - \text{Alpha} - \text{Gamma} / 2 - \text{Beta})
 $$
 
-Where n is the last observation, h = 1, ..., `time_steps` (10 by default) the forecast step and sigma_(n+1)^2 the one-step-ahead variance of the fitted GJR-GARCH(1, 1, 1) recursion (see `get_gjr_garch`). The leverage term enters at its expectation, Gamma / 2, as a negative shock is as likely as a positive one.
+Where n is the last observation, $$h = 1$$, ..., `time_steps` (10 by default) the forecast step and $$\sigma_{n + 1}^{2}$$ the one-step-ahead variance of the fitted GJR-GARCH(1, 1, 1) recursion (see `get_gjr_garch`). The leverage term enters at its expectation, Gamma / 2, as a negative shock is as likely as a positive one.
 
 For more information about the method, see the following paper:
 
@@ -1522,7 +1522,7 @@ $$
 \text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
 $$
 
-Where r_t are the returns (not demeaned) and I_(t-1) is 1 when r_(t-1) < 0 and 0 otherwise. The log-likelihood is maximized under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0.
+Where $$r_{t}$$ are the returns (not demeaned) and $$I_{t - 1}$$ is 1 when $$r_{t - 1} < 0$$ and 0 otherwise. The log-likelihood is maximized under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0.
 
 The variance recursion starts from a backcast, an exponentially weighted average (decay 0.94) of the first 75 squared returns, with the leverage term at its expectation (Gamma / 2) for the period before the first observation, and every observation enters the likelihood. This is the start the arch package uses, so the estimates agree with it.
 
@@ -1555,7 +1555,7 @@ pd.DataFrame: Omega, Alpha, Gamma and Beta values per asset.
 GJR-GARCH(1, 1, 1) model for each asset in the Toolkit instance.
 - Every asset is fitted on its own available returns, so an asset with a shorter history (or a gap)
 does not shorten the sample of the others.
-- GJR-GARCH nests GARCH (gamma = 0), so the fit never ends at a lower log-likelihood than the
+- GJR-GARCH nests GARCH ($$\gamma = 0$$), so the fit never ends at a lower log-likelihood than the
 GARCH(1, 1) fit of `get_garch_parameters`: if the search does, the GARCH weights with a Gamma of 0
 are returned.
 
@@ -1586,28 +1586,31 @@ Which returns:
 ---
 
 ## get_egarch
-Calculates the conditional variance (sigma_t^2) of the returns with an EGARCH(1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_egarch_forecast` for the variance forecast.
+Calculates the conditional variance ($$\sigma_{t}^{2}$$) of the returns with an EGARCH(1, 1) model fitted to them. Take the square root for the conditional volatility, and see `get_egarch_forecast` for the variance forecast.
 
 EGARCH models the log of the conditional variance, which avoids having to constrain the parameters to keep the variance positive and, like GJR-GARCH, lets negative and positive shocks of the same size have a different impact on volatility (the leverage effect).
 
 For more information about the method, see the following paper:
 
-- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset
-
-**Returns:** A New
-Approach." Econometrica, 59(2), 347-370.
+- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset Returns: A New Approach." Econometrica, 59(2), 347-370.
 
 The formula is as follows:
 
-- ln sigma_t^2 = Omega + Alpha * (&#124;z_(t-1)&#124; - √(2 / π)) + Gamma * z_(t-1) + Beta * ln sigma_(t-1)^2
-- z_t = r_t / sigma_t
-- ln sigma_1^2 = Omega + Beta * ln(Backcast)
+$$
+\text{ln}\; \sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot (| z_{t-1} | - \sqrt{2 / \pi}) + \text{Gamma} \cdot z_{t-1} + \text{Beta} \cdot \text{ln}\; \sigma_{t-1} ^{2}
+$$
 
-Where r_t are the returns (not demeaned), √(2 / π) is the expected &#124;z&#124; of a standard normal shock, the
-log variance is kept within [-20, 20] and the Backcast is the same as in `get_garch`. The parameters
-maximize the Gaussian log-likelihood with &#124;Beta&#124; < 1 (see `get_egarch_parameters`).
+$$
+z_{t} = r_{t} / \sigma_{t}
+$$
 
-Also known as: exponential GARCH, log-GARCH.
+$$
+\text{ln}\; \sigma_{1} ^{2} = \text{Omega} + \text{Beta} \cdot \ln(\text{Backcast})
+$$
+
+Where $$r_{t}$$ are the returns (not demeaned), $$\sqrt{2 / \pi}$$ is the expected &#124;z&#124; of a standard normal shock, the log variance is kept within [-20, 20] and the Backcast is the same as in `get_garch`. The parameters maximize the Gaussian log-likelihood with &#124;Beta&#124; < 1 (see `get_egarch_parameters`).
+
+**Also known as:** exponential GARCH, log-GARCH.
 
 **Args:**
 
@@ -1692,7 +1695,7 @@ Calculates sigma_2 forecasts based on the EGARCH model.
 The formula is as follows:
 
 $$
-\text{ln}\; \sigma_{} (n + h) ^{2} = L + \text{Beta} ^{h - 1} \cdot (\text{ln}\; \sigma_{} (n + 1) ^{2} - L)
+\text{ln}\; \sigma_{n + h} ^{2} = L + \text{Beta} ^{h - 1} \cdot (\text{ln}\; \sigma_{n + 1} ^{2} - L)
 $$
 
 $$
@@ -1700,19 +1703,16 @@ L = \text{Omega} / (1 - \text{Beta})
 $$
 
 $$
-\sigma_{n + h} ^{2} = \exp(\text{ln}\; \sigma_{} (n + h) ^{2})
+\sigma_{n + h} ^{2} = \exp(\text{ln}\; \sigma_{n + h} ^{2})
 $$
 
-Where n is the last observation, h = 1, ..., `time_steps` (10 by default) the forecast step and sigma_(n+1)^2 the one-step-ahead variance of the fitted EGARCH(1, 1) recursion (see `get_egarch`). The shock terms drop out at their expectation of zero, so the forecast is the exponential of the expected log variance.
+Where n is the last observation, $$h = 1$$, ..., `time_steps` (10 by default) the forecast step and $$\sigma_{n + 1}^{2}$$ the one-step-ahead variance of the fitted EGARCH(1, 1) recursion (see `get_egarch`). The shock terms drop out at their expectation of zero, so the forecast is the exponential of the expected log variance.
 
 For more information about the method, see the following paper:
 
-- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset
+- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset Returns: A New Approach." Econometrica, 59(2), 347-370.
 
-**Returns:** A New
-Approach." Econometrica, 59(2), 347-370.
-
-Also known as: volatility forecast, predicted volatility.
+**Also known as:** volatility forecast, predicted volatility.
 
 **Args:**
 
@@ -1787,23 +1787,20 @@ A negative Gamma indicates the presence of a leverage effect (negative shocks ra
 The formula is as follows:
 
 $$
-\text{ln}\; \sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot (| z_{t-1} | - \sqrt{2 / \pi}) + \text{Gamma} \cdot z_{t-1} + \text{Beta} \cdot \text{ln}\; \sigma_{} (t-1) ^{2}
+\text{ln}\; \sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot (| z_{t-1} | - \sqrt{2 / \pi}) + \text{Gamma} \cdot z_{t-1} + \text{Beta} \cdot \text{ln}\; \sigma_{t-1} ^{2}
 $$
 
 $$
 \text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
 $$
 
-Where r_t are the returns (not demeaned) and z_t = r_t / sigma_t. The log-likelihood is maximized with Omega in [-15, 5], Alpha and Gamma in [-1, 1] and &#124;Beta&#124; < 1, starting the recursion from ln sigma_1^2 = Omega + Beta * ln(Backcast), with the Backcast of `get_garch_parameters`.
+Where $$r_{t}$$ are the returns (not demeaned) and $$z_{t} = r_{t} / \sigma_{t}$$. The log-likelihood is maximized with Omega in [-15, 5], Alpha and Gamma in [-1, 1] and &#124;Beta&#124; < 1, starting the recursion from $$\ln \sigma_{1}^{2} = \text{Omega} + \text{Beta} \cdot \ln (\text{Backcast})$$, with the Backcast of `get_garch_parameters`.
 
 For more information about the method, see the following paper:
 
-- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset
+- Nelson, D.B. (1991). "Conditional Heteroskedasticity in Asset Returns: A New Approach." Econometrica, 59(2), 347-370.
 
-**Returns:** A New
-Approach." Econometrica, 59(2), 347-370.
-
-Also known as: EGARCH weights, EGARCH coefficients, leverage parameters.
+**Also known as:** EGARCH weights, EGARCH coefficients, leverage parameters.
 
 **Args:**
 
@@ -1863,7 +1860,7 @@ Calculate the Upper and Lower Tail Dependence Coefficients between `ticker_a` an
 
 Correlation only captures the *average* co-movement between two assets -- it says nothing about whether they are more likely to crash together than an equivalent gaussian relationship would imply. The Tail Dependence Coefficient answers that specific question directly: the probability that one asset is in extreme distress, given that the other one already is.
 
-The empirical estimate at q = 0.95 rests on the few days on which both assets are in their worst (or best) 5% at the same time, so it needs several years of daily data to be stable. A gaussian dependence of any correlation below 1 implies zero tail dependence, so a Lower Tail Dependence Coefficient well above zero means that diversification between the two assets is weakest exactly when it is needed.
+The empirical estimate at $$q = 0.95$$ rests on the few days on which both assets are in their worst (or best) 5% at the same time, so it needs several years of daily data to be stable. A gaussian dependence of any correlation below 1 implies zero tail dependence, so a Lower Tail Dependence Coefficient well above zero means that diversification between the two assets is weakest exactly when it is needed.
 
 For more information about the method, see the following papers:
 
@@ -1880,7 +1877,7 @@ $$
 \text{Lower Tail Dependence} = \operatorname{\#}(A \leq Q_{A}(1 - q) \text{and}\; B \leq Q_{B}(1 - q)) / \operatorname{\#}(A \leq Q_{A}(1 - q))
 $$
 
-Where A and B are the values of `ticker_a` and `ticker_b` on their common dates and Q_A and Q_B their empirical quantiles. With method="gaussian" both coefficients are 0 (1 only for a correlation of exactly 1), and with method="student-t" both are 2 * t_(v+1)(-√((v + 1) * (1 - rho) / (1 + rho))), with v = `dof`, rho the Pearson correlation and t_(v+1) the Student-T distribution function.
+Where A and B are the values of `ticker_a` and `ticker_b` on their common dates and $$Q_{A}$$ and $$Q_{B}$$ their empirical quantiles. With method="gaussian" both coefficients are 0 (1 only for a correlation of exactly 1), and with method="student-t" both are $$2 \cdot t_{v + 1} (- \sqrt{(v + 1) \cdot (1 - \rho) / (1 + \rho)})$$, with v = `dof`, rho the Pearson correlation and $$t_{v + 1}$$ the Student-T distribution function.
 
 **Also known as:** tail dependence, extremal dependence coefficient.
 
@@ -1986,7 +1983,7 @@ $$
 \text{AIC} = 2 \cdot k - 2 \cdot \text{Log-Likelihood}
 $$
 
-Where A and B are the values of the two assets on their n common dates, c is the copula density and k the number of fitted parameters (2 for the Student-T, 1 otherwise). The search bounds are [2.05, 60] for the Degrees of Freedom and, for Theta, [0.0001, 100] (Clayton), [1, 50] (Gumbel) and [-50, 50] (Frank). The implied tail dependence is 2^(-1 / Theta) in the lower tail for Clayton, 2 - 2^(1 / Theta) in the upper tail for Gumbel, 2 * t_(v+1)(-√((v + 1) * (1 - Rho) / (1 + Rho))) in both tails for the Student-T and 0 otherwise.
+Where A and B are the values of the two assets on their n common dates, c is the copula density and k the number of fitted parameters (2 for the Student-T, 1 otherwise). The search bounds are [2.05, 60] for the Degrees of Freedom and, for Theta, [0.0001, 100] (Clayton), [1, 50] (Gumbel) and [-50, 50] (Frank). The implied tail dependence is $$2^{- 1 / \text{Theta}}$$ in the lower tail for Clayton, $$2 - 2^{1 / \text{Theta}}$$ in the upper tail for Gumbel, $$2 \cdot t_{v + 1} (- \sqrt{(v + 1) \cdot (1 - \text{Rho}) / (1 + \text{Rho})})$$ in both tails for the Student-T and 0 otherwise.
 
 For more information about the method, see:
 
@@ -2083,7 +2080,7 @@ $$
 \text{Simulated Return}\; A = \operatorname{Quantile}(A,\; U),\;\; \text{Simulated Return}\; B = \operatorname{Quantile}(B,\; V)
 $$
 
-Where Rho is fitted as in `get_copula_parameters` and Quantile is the empirical quantile (linear interpolation) of each asset's own history. The Student-T copula scales (Z1, Z2) by √(v / W), with W ~ χ²(v), and maps them with the Student-T distribution function; the Clayton, Gumbel and Frank copulas draw U and T uniformly and solve C(V &#124; U) = T for V.
+Where Rho is fitted as in `get_copula_parameters` and Quantile is the empirical quantile (linear interpolation) of each asset's own history. The Student-T copula scales (Z1, Z2) by $$\sqrt{v / W}$$, with $$W \sim \chi^{2} (v)$$, and maps them with the Student-T distribution function; the Clayton, Gumbel and Frank copulas draw U and T uniformly and solve $$C (V \vert U) = T$$ for V.
 
 **Also known as:** copula Monte Carlo, dependence simulation, scenario generation.
 
@@ -2262,7 +2259,7 @@ $$
 \text{Delta-CoVaR} = \text{Slope} \cdot (\text{VaR}_{B} - \operatorname{Median}(B))
 $$
 
-Where A are the values of `ticker` and B those of `conditioning_ticker` on their common dates, the Intercept and Slope come from a linear quantile regression at quantile alpha (minimizing the check loss) and VaR_B is the empirical alpha-quantile of B.
+Where A are the values of `ticker` and B those of `conditioning_ticker` on their common dates, the Intercept and Slope come from a linear quantile regression at quantile alpha (minimizing the check loss) and $$\text{VaR}_{B}$$ is the empirical alpha-quantile of B.
 
 For more information about the method, see the following paper:
 
@@ -2349,7 +2346,7 @@ $$
 \text{Marginal VaR}_{i} = \text{Beta}_{i} \cdot \text{Portfolio VaR}
 $$
 
-Where the weights are normalized to sum to 1, the covariance and variance are sample estimates (ddof=1) on the dates all assets have a return, and Portfolio VaR is the VaR of the portfolio return under `distribution` (see `get_value_at_risk`). The beta-based sensitivity is exact for a zero-mean elliptical distribution and an approximation otherwise; distribution="gaussian" uses the exact derivative instead, with z_alpha the standard normal quantile at alpha:
+Where the weights are normalized to sum to 1, the covariance and variance are sample estimates (ddof=1) on the dates all assets have a return, and Portfolio VaR is the VaR of the portfolio return under `distribution` (see `get_value_at_risk`). The beta-based sensitivity is exact for a zero-mean elliptical distribution and an approximation otherwise; distribution="gaussian" uses the exact derivative instead, with $$z_{\alpha}$$ the standard normal quantile at alpha:
 
 $$
 \text{Gaussian Marginal VaR}_{i} = \text{Mean}_{i} + z_{\alpha} \cdot \operatorname{Cov}(\text{Return}_{i},\; \text{Portfolio Return}) / \operatorname{Std}(\text{Portfolio Return})
@@ -2437,7 +2434,7 @@ $$
 \operatorname{SUM}(\text{Component VaR}_{i}) = \text{Portfolio VaR}
 $$
 
-Where the weights are normalized to sum to 1 and Marginal VaR_i is that of `get_marginal_value_at_risk`: Beta_i * Portfolio VaR by default, or the exact derivative with distribution="gaussian".
+Where the weights are normalized to sum to 1 and Marginal $$\text{VaR}_{i}$$ is that of `get_marginal_value_at_risk`: Beta_i * Portfolio VaR by default, or the exact derivative with distribution="gaussian".
 
 Where Marginal VaR measures each asset's risk *sensitivity*, Component VaR measures its actual *contribution* in the same units as portfolio VaR, making it directly usable to identify which holdings account for the largest share of portfolio risk.
 
@@ -2538,7 +2535,7 @@ $$
 \text{Christoffersen Statistic} = - 2 \cdot \text{ln} \left[L(\pi) / L(\pi_{01},\; \pi_{11})\right]
 $$
 
-Where n is the number of out-of-sample VaR estimates and x the number of breaches. L(pi) is the likelihood of the breach sequence with a single breach probability pi, and L(pi_01, pi_11) that of a first-order Markov chain in which the breach probability depends on whether the previous period was a breach. Both statistics are compared with a χ² distribution with one degree of freedom for the p-value.
+Where n is the number of out-of-sample VaR estimates and x the number of breaches. L(pi) is the likelihood of the breach sequence with a single breach probability pi, and $$L (\pi_{01} , \pi_{11})$$ that of a first-order Markov chain in which the breach probability depends on whether the previous period was a breach. Both statistics are compared with a $$\chi^{2}$$ distribution with one degree of freedom for the p-value.
 
 For more information about the methods, see the following papers:
 
@@ -2620,7 +2617,7 @@ $$
 \text{P-Value} = 1 - \Phi(Z_{2} / \text{Standard Error})
 $$
 
-Where VaR_t and CVaR_t are estimated from the 252 returns before t (see `get_var_backtest`), Breach_t is 1 if Return_t < VaR_t and 0 otherwise, n is the number of estimates and the Standard Error is the sample standard deviation (ddof=1) of Z2 over `n_bootstrap` paired bootstrap resamples. Returns and CVaR are both negative, so Z2 is about 0 for a well-calibrated model and positive when the realized tail losses exceed the CVaR (the opposite sign of the paper, which counts losses as positive).
+Where $$\text{VaR}_{t}$$ and CVaR_t are estimated from the 252 returns before t (see `get_var_backtest`), Breach_t is 1 if Return_t < $$\text{VaR}_{t}$$ and 0 otherwise, n is the number of estimates and the Standard Error is the sample standard deviation (ddof=1) of Z2 over `n_bootstrap` paired bootstrap resamples. Returns and CVaR are both negative, so Z2 is about 0 for a well-calibrated model and positive when the realized tail losses exceed the CVaR (the opposite sign of the paper, which counts losses as positive).
 
 For more information about the method, see the following paper:
 
@@ -2871,7 +2868,7 @@ For daily stock returns the tail index typically lies between about 2 and 5, whi
 The formula is as follows (with the default tail="left" and k=0.1):
 
 $$
-\text{Hill Shape} (\xi) = (1 / k) \cdot \text{Σ} (\text{ln}\; X_{} (i) - \text{ln}\; X_{} (k + 1)) \text{for}\; i = 1,\;\; \text{...},\;\; \text{k}
+\text{Hill Shape} (\xi) = (1 / k) \cdot \text{Σ} (\text{ln}\; X_{i} - \text{ln}\; X_{k + 1}) \text{for}\; i = 1,\;\; \text{...},\;\; \text{k}
 $$
 
 $$
@@ -2882,7 +2879,7 @@ $$
 \text{Standard Error} = \text{Hill Tail Index} / \sqrt{k}
 $$
 
-Where X_(1) >= X_(2) >= ... are the strictly positive losses (the negated returns, or the returns themselves for tail="right") sorted from large to small, and k is the number of order statistics used: int(0.1 * the number of positive losses) by default, or `k` itself when it is an integer.
+Where $$X_{1} \geq X_{2} \geq \ldots$$ are the strictly positive losses (the negated returns, or the returns themselves for tail="right") sorted from large to small, and k is the number of order statistics used: int(0.1 * the number of positive losses) by default, or `k` itself when it is an integer.
 
 For more information about the method, see the following paper:
 
@@ -3036,7 +3033,7 @@ $$
 \text{Volatility} = \operatorname{Std}(\text{Daily Returns within the period}) \cdot \sqrt{\text{Trading Days per Period}}
 $$
 
-Where Std is the sample standard deviation (ddof=1) and the trading days per period are 252 / 52 (weekly), 252 / 12 (monthly), 252 / 4 (quarterly) or 252 (yearly). The range-based estimators take the square root of a daily variance and scale it the same way, with H, L, O and C the daily High, Low, Open and Close, C_(-1) the previous Close, Mean the average and Var the sample variance (ddof=1) over the days in the period:
+Where Std is the sample standard deviation (ddof=1) and the trading days per period are 252 / 52 (weekly), 252 / 12 (monthly), 252 / 4 (quarterly) or 252 (yearly). The range-based estimators take the square root of a daily variance and scale it the same way, with H, L, O and C the daily High, Low, Open and Close, $$C_{- 1}$$ the previous Close, Mean the average and Var the sample variance (ddof=1) over the days in the period:
 
 $$
 \text{Parkinson Variance} = \operatorname{Mean}(\ln(H / L) ^{2}) / (4 \cdot \text{ln}\; 2)
@@ -3154,10 +3151,10 @@ $$
 $$
 
 $$
-\text{Forecast of RV}_{} (t + 1) = b_{0} + b_{d} \cdot \text{RV}_{t} + b_{w} \cdot \text{RV} ^{w_{t}} + b_{m} \cdot \text{RV} ^{m_{t}}
+\text{Forecast of RV}_{t + 1} = b_{0} + b_{d} \cdot \text{RV}_{t} + b_{w} \cdot \text{RV} ^{w_{t}} + b_{m} \cdot \text{RV} ^{m_{t}}
 $$
 
-Where b_0, b_d, b_w and b_m are estimated once by ordinary least squares over each asset's full history, and the forecast of RV_(t+1) is shown at date t. The range-based estimators replace RV_t with the daily Parkinson, Garman-Klass or Rogers-Satchell variance term (see `get_volatility`).
+Where $$b_{0}$$, $$b_{d}$$, $$b_{w}$$ and $$b_{m}$$ are estimated once by ordinary least squares over each asset's full history, and the forecast of $$\text{RV}_{t + 1}$$ is shown at date t. The range-based estimators replace $$\text{RV}_{t}$$ with the daily Parkinson, Garman-Klass or Rogers-Satchell variance term (see `get_volatility`).
 
 For more information about the method, see the following paper:
 
@@ -3239,19 +3236,17 @@ The Amihud ratio is mainly a cross-sectional measure: it ranks stocks by how muc
 
 For more information about the method, see the following paper:
 
-- Amihud, Y. (2002). "Illiquidity and Stock
+- Amihud, Y. (2002). "Illiquidity and Stock Returns: Cross-Section and Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
 
-**Returns:** Cross-Section and
-Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
+The formula is as follows (with the default scale of 1,000,000):
 
-The formula is as - <u>follows (with the default scale of 1,000,000):</u>
+$$
+\text{Amihud Illiquidity} = \operatorname{Mean}(| \text{Return}_{t} | / (\text{Close}_{t} \cdot \text{Volume}_{t})) \cdot 1,\;\; \text{000},\;\; \text{000}
+$$
 
-- Amihud Illiquidity = Mean(&#124;Return_t&#124; / (Close_t * Volume_t)) * 1,000,000
+Where the mean runs over the periods of the chosen frequency (within each period with `within_period`), and periods without dollar volume are skipped.
 
-Where the mean runs over the periods of the chosen frequency (within each period with `within_period`),
-and periods without dollar volume are skipped.
-
-Also known as: Amihud illiquidity ratio, ILLIQ, price impact ratio.
+**Also known as:** Amihud illiquidity ratio, ILLIQ, price impact ratio.
 
 **Args:**
 
@@ -3330,14 +3325,14 @@ For more information about the method, see the following paper:
 The formula is as follows:
 
 $$
-\text{Roll Spread} = 2 \cdot \sqrt{- \operatorname{Cov}(\Delta P_{t},\; \Delta P_{} (t-1))}
+\text{Roll Spread} = 2 \cdot \sqrt{- \operatorname{Cov}(\Delta P_{t},\; \Delta P_{t-1})}
 $$
 
 $$
 \text{Relative Roll Spread} = \text{Roll Spread} / \operatorname{Mean}(P)
 $$
 
-Where P is the Close price, ΔP_t = P_t - P_(t-1) and Cov the sample autocovariance (ddof=1) of consecutive price changes; a covariance of zero or above gives NaN.
+Where P is the Close price, $$\Delta P_{t} = P_{t} - P_{t - 1}$$ and Cov the sample autocovariance (ddof=1) of consecutive price changes; a covariance of zero or above gives NaN.
 
 **Also known as:** Roll's implied spread, Roll measure.
 
@@ -3784,7 +3779,7 @@ $$
 \text{Largest Since} (t) = \max(s < t \text{:} \;\text{Return} (s) \geq \operatorname{Return}(t)) \text{if Return} (t) > 0
 $$
 
-The volatility σ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly as in `get_value_at_risk`.
+The volatility $$\sigma$$ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly as in `get_value_at_risk`.
 
 Each measure only uses the returns before the period itself, so a move is never part of the volatility or the history it is measured against (no look-ahead). Largest Since compares falls with falls and rises with rises, as a headline does: a 6% fall is the largest fall since the last fall of 6% or more, whatever the rises in between.
 
@@ -3863,7 +3858,7 @@ $$
 \operatorname{ACF}(k) = \text{Σ} (r_{t} - \text{Mean}) \cdot (r_{t + k} - \text{Mean}) / \text{Σ} (r_{t} - \text{Mean}) ^{2}
 $$
 
-Where r_t are the n daily returns (missing values dropped), the numerator runs over t = 1, ..., n - k, the denominator over all n returns, and k = 1, ..., `lags` (10 by default).
+Where $$r_{t}$$ are the n daily returns (missing values dropped), the numerator runs over $$t = 1$$, ..., n - k, the denominator over all n returns, and $$k = 1$$, ..., `lags` (10 by default).
 
 **Args:**
 
@@ -3917,16 +3912,16 @@ Calculate the Hurst Exponent of each asset's daily (adjusted close) log price se
 
 The Hurst Exponent (H) is interpreted as follows:
 
-- H < 0.5: the series is mean-reverting (anti-persistent).
-- H = 0.5: the series is a random walk (no memory).
-- H > 0.5: the series is trending (persistent).
+- $$H < 0.5$$: the series is mean-reverting (anti-persistent).
+- $$H = 0.5$$: the series is a random walk (no memory).
+- $$H > 0.5$$: the series is trending (persistent).
 
 For liquid stocks the estimate is usually close to 0.5, and with lags of at most `max_lag` days it describes short-term behaviour only; a value of 0.45 or 0.55 over a few years is within estimation noise rather than evidence of a tradable pattern.
 
 The formula is as follows (with the default max_lag=20):
 
 $$
-\sigma(\tau) = \operatorname{Std}(\text{ln}\; P_{} (t + \tau) - \text{ln}\; P_{t})
+\sigma(\tau) = \operatorname{Std}(\text{ln}\; P_{t + \tau} - \text{ln}\; P_{t})
 $$
 
 $$
@@ -3984,7 +3979,7 @@ Which returns:
 ---
 
 ## get_factor_analysis
-Factor analysis (predictive power) of the risk metrics: whether the tickers that score high on a metric go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the metric of the tickers in the period and their return over the following horizon: 1 means the metric ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, IR ≈ IC × √breadth: a small but consistent IC across many tickers and periods gives a high information ratio.
+Factor analysis (predictive power) of the risk metrics: whether the tickers that score high on a metric go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the metric of the tickers in the period and their return over the following horizon: 1 means the metric ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
 The summary has a row per metric and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the metric from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single metric.
 

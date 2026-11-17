@@ -134,7 +134,7 @@ $$
 \text{Put Option Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{- q \cdot t} \cdot N(- d_{1})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 The model price is only as good as its volatility input, and here that input is realised (historical) volatility, while traded options are priced off implied volatility, which usually differs from it and varies by strike and expiry. Practitioners therefore use the Black Scholes value as a benchmark and compare it with market prices from `get_option_chains`, or back the market's volatility out with `get_implied_volatility`. Deep out-of-the-money options are most sensitive to that choice, since the model's flat volatility ignores the skew.
 
@@ -239,7 +239,7 @@ $$
 \text{Put Option Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{- q \cdot t} \cdot N(- d_{1})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 In which the Implied Volatility is then calculated as follows:
 
@@ -247,7 +247,7 @@ $$
 \text{Implied Volatility} = \text{the}\; \sigma \;\text{for which Black Scholes Theoretical Price} (\sigma) - \text{Actual Option Price} = 0
 $$
 
-To determine the Implied Volatility, the Black Scholes Model is used to calculate the theoretical option price in which sigma (σ) is the only unknown variable. Since that price rises strictly with σ, the implied volatility is the root of the difference between the theoretical and actual option price, found with Brent's method on the interval [1e-6, 5]. Prices outside the no-arbitrage bounds have no root and return NaN.
+To determine the Implied Volatility, the Black Scholes Model is used to calculate the theoretical option price in which sigma ($$\sigma$$) is the only unknown variable. Since that price rises strictly with $$\sigma$$, the implied volatility is the root of the difference between the theoretical and actual option price, found with Brent's method on the interval [1e-6, 5]. Prices outside the no-arbitrage bounds have no root and return NaN.
 
 The implied volatility is solved from each option's last traded price, which can be hours or days old for illiquid strikes, while the stock price is the latest close. Deep in-the-money and far out-of-the-money strikes therefore often show extreme values (above 100%) that say more about stale quotes than about the market's view. Practitioners read the smile around the money, where trading is liquid, and use `get_volatility_surface`, which filters outliers and fits a smooth curve, when they need values across all strikes.
 
@@ -328,7 +328,7 @@ Calibrate an arbitrage-checked implied volatility surface across multiple expiri
 
 A single per-expiry smile only tells you the shape of the market's volatility skew at that one maturity. Stitching several calibrated SVI slices together instead gives a full surface, which is what is needed to price/interpolate options at maturities or strikes that don't trade directly, and to check for term-structure inconsistencies (see Notes).
 
-Before fitting, strikes whose market-implied volatility is a statistical outlier relative to its neighbors (a common symptom of a stale or wide-bid/ask illiquid quote) are dropped via a median-absolute-deviation filter, since a single bad quote can otherwise dominate the least-squares SVI fit for that whole expiry. Each fit keeps the total variance non-negative through Gatheral's condition a + b * sigma * sqrt(1 - rho^2) >= 0.
+Before fitting, strikes whose market-implied volatility is a statistical outlier relative to its neighbors (a common symptom of a stale or wide-bid/ask illiquid quote) are dropped via a median-absolute-deviation filter, since a single bad quote can otherwise dominate the least-squares SVI fit for that whole expiry. Each fit keeps the total variance non-negative through Gatheral's condition $$a + b \cdot \sigma \cdot \sqrt{1 - \rho^{2}} \geq 0$$.
 
 The option chains and the days to expiration are live, while the stock price is the close of the last historical date; a warning is logged when that date lies more than five days before today.
 
@@ -474,7 +474,7 @@ $$
 f(K) = e ^{r \cdot t} \cdot d ^{2} C(K) / \text{dK} ^{2}
 $$
 
-Where C(K) is the Black-Scholes call price at strike K, using the SVI-smoothed implied volatility at that strike, r is the risk-free rate and t is the time to expiration. The second derivative is approximated numerically via the three-point central difference (C(K - h) - 2 * C(K) + C(K + h)) / h^2 on a fine, evenly-spaced strike grid with spacing h, since the smile only gives implied volatility at a sparse set of traded strikes. The first and last grid points have no neighbor on one side and are left out.
+Where C(K) is the Black-Scholes call price at strike K, using the SVI-smoothed implied volatility at that strike, r is the risk-free rate and t is the time to expiration. The second derivative is approximated numerically via the three-point central difference $$(C (K - h) - 2 \cdot C (K) + C (K + h)) / h^{2}$$ on a fine, evenly-spaced strike grid with spacing h, since the smile only gives implied volatility at a sparse set of traded strikes. The first and last grid points have no neighbor on one side and are left out.
 
 The option chains and the days to expiration are live, while the stock price is the close of the last historical date; a warning is logged when that date lies more than five days before today.
 
@@ -678,7 +678,7 @@ $$
 \text{put option price at each node} = \max(K - S,\; (p \cdot P_{u} + (1 - p) \cdot P_{d}) \cdot e ^{- r \cdot \Delta t})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, T is the time to expiration, Δt is the length of one time step, j is the number of up movements, n is the number of time steps, C_u is the call option price at the up movement, C_d is the call option price at the down movement, P_u is the put option price at the up movement and P_d is the put option price at the down movement.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, T is the time to expiration, $$\Delta t$$ is the length of one time step, j is the number of up movements, n is the number of time steps, $$C_{u}$$ is the call option price at the up movement, $$C_{d}$$ is the call option price at the down movement, $$P_{u}$$ is the put option price at the up movement and $$P_{d}$$ is the put option price at the down movement.
 
 The resulting output is a DataFrame containing the tickers, strike prices and movements as the index and the time to expiration as the columns. The movements index contains the number of up movements and the number of down movements. The output is the binomial tree displayed in a table. E.g. when using 10 time steps, the table for each strike price from each company will contain the actual binomial tree as also depicted in the image found here: [https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method](https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method){:target="_blank"}
 
@@ -757,7 +757,7 @@ Which returns:
 ---
 
 ## get_stock_price_simulation
-Simulate the Stock Price based on the Binomial Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset based on the stock price, its volatility and the time to expiration: each step multiplies the price by u = e^(σ * sqrt(Δt)) or by d = 1 / u. The stock price is then simulated based on these up and down movements.
+Simulate the Stock Price based on the Binomial Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset based on the stock price, its volatility and the time to expiration: each step multiplies the price by $$u = e^{\sigma \cdot \sqrt{\Delta t}}$$ or by $$d = 1 / u$$. The stock price is then simulated based on these up and down movements.
 
 By default the most recent stock price is used, you can alter this by changing the start date. The volatility is the annualized standard deviation of the daily returns over the year before that date, so an earlier start date only uses what was known on that date.
 
@@ -775,7 +775,7 @@ $$
 \text{stock price at each node} = S \cdot u ^{j} \cdot d ^{n - j}
 $$
 
-Where S is the stock price, σ is the volatility, Δt is the length of a time step (the time to expiration divided by the number of time steps), j is the number of up movements and n is the number of time steps. The risk free rate and the dividend yield do not affect the tree.
+Where S is the stock price, $$\sigma$$ is the volatility, $$\Delta t$$ is the length of a time step (the time to expiration divided by the number of time steps), j is the number of up movements and n is the number of time steps. The risk free rate and the dividend yield do not affect the tree.
 
 The resulting output is a DataFrame containing the tickers and movements as the index and the time to expiration as the columns. The movements index contains the number of up movements and the number of down movements. The output is the binomial tree displayed in a table. E.g. when using 10 time steps, the table from each company will contain the actual binomial tree's stock prices as also depicted in the image found here: [https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method](https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method){:target="_blank"}
 
@@ -850,7 +850,7 @@ Which returns:
 ## get_put_call_parity
 Calculate the Put-Call Parity gap, the amount by which Black-Scholes call and put prices deviate from the no-arbitrage relationship between them.
 
-Put-Call Parity states that, for European options sharing the same strike price and time to expiration, the following relationship must hold in order to prevent arbitrage: C - P = S * e^(-q * t) - K * e^(-r * t).
+Put-Call Parity states that, for European options sharing the same strike price and time to expiration, the following relationship must hold in order to prevent arbitrage: $$C - P = S \cdot e^{- q \cdot t} - K \cdot e^{- r \cdot t}$$.
 
 The formula is as follows:
 
@@ -860,7 +860,7 @@ $$
 
 Where C is the Black-Scholes call option price, P is the Black-Scholes put option price, S is the stock price, K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)) and t is the time to expiration in years (days / 365).
 
-This method computes the Black-Scholes call and put price for each ticker, strike price and time to expiration and then calculates the parity gap, i.e. the amount by which (C - P) deviates from S * e^(-qt) - K * e^(-rt). Because both prices come from the same Black-Scholes model and inputs, the gap is (up to floating point precision) always zero - this is a useful diagnostic to confirm that a set of option prices is internally consistent, or, when plugging in externally observed call and put prices, to detect potential arbitrage.
+This method computes the Black-Scholes call and put price for each ticker, strike price and time to expiration and then calculates the parity gap, i.e. the amount by which (C - P) deviates from $$S \cdot e^{- qt} - K \cdot e^{- rt}$$. Because both prices come from the same Black-Scholes model and inputs, the gap is (up to floating point precision) always zero - this is a useful diagnostic to confirm that a set of option prices is internally consistent, or, when plugging in externally observed call and put prices, to detect potential arbitrage.
 
 **Also known as:** Put-Call Parity, PCP, the no-arbitrage relationship between calls and puts.
 
@@ -956,7 +956,7 @@ $$
 \text{Put Option Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{- r_{f} \cdot t} \cdot N(- d_{1})
 $$
 
-Where S is the spot exchange rate, K is the strike price, r is the domestic risk-free rate, r_f is the foreign risk-free rate, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the cumulative normal distribution of d2.
+Where S is the spot exchange rate, K is the strike price, r is the domestic risk-free rate, $$r_{f}$$ is the foreign risk-free rate, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the cumulative normal distribution of d2.
 
 **Also known as:** the Black-Scholes model for currency options, FX option pricing model.
 
@@ -1066,7 +1066,7 @@ $$
 \text{Asset-or-Nothing Put} = S \cdot e ^{- q \cdot t} \cdot N(- d_{1})
 $$
 
-Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), σ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), t is the time to expiration in years (days / 365) and N is the cumulative standard normal distribution.
+Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), t is the time to expiration in years (days / 365) and N is the cumulative standard normal distribution.
 
 **Also known as:** digital option, all-or-nothing option, cash-or-nothing option, asset-or-nothing option.
 
@@ -1153,9 +1153,9 @@ Which returns:
 ## get_bjerksund_stensland
 Calculate American option prices using the Bjerksund-Stensland (2002) closed-form analytical approximation.
 
-Unlike European options, American options can be exercised at any time up to and including expiration, which normally requires a numerical approach such as the Binomial Tree model (see ``get_binomial_model``). The Bjerksund-Stensland model instead derives a closed-form approximation by assuming the early-exercise boundary is flat in steps: once the stock price crosses the trigger price, immediate exercise is assumed optimal. The option's life is split at t1 = ½(√5 - 1) * T into two periods, each with its own flat trigger price, which brings the price closer to the exact American value than a single flat trigger.
+Unlike European options, American options can be exercised at any time up to and including expiration, which normally requires a numerical approach such as the Binomial Tree model (see ``get_binomial_model``). The Bjerksund-Stensland model instead derives a closed-form approximation by assuming the early-exercise boundary is flat in steps: once the stock price crosses the trigger price, immediate exercise is assumed optimal. The option's life is split at $$t_{1} = \tfrac{1}{2} (\sqrt{5} - 1) \cdot T$$ into two periods, each with its own flat trigger price, which brings the price closer to the exact American value than a single flat trigger.
 
-The formula is as follows (for a call, with cost of carry b = r - q smaller than r):
+The formula is as follows (for a call, with cost of carry $$b = r - q$$ smaller than r):
 
 $$
 \beta = (0.5 - b / \sigma ^{2}) + \sqrt{(b / \sigma ^{2} - 0.5) ^{2} + 2r / \sigma ^{2}}
@@ -1185,9 +1185,9 @@ $$
 \text{Put} (S,\; K,\; T,\; r,\; b,\; \sigma) = \text{Call} (K,\; S,\; T,\; r - b,\; - b,\; \sigma),\;\; \text{the put-call transformation}
 $$
 
-Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), σ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252) and T is the time to expiration in years (days / 365).
+Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252) and T is the time to expiration in years (days / 365).
 
-When b ≥ r early exercise of a call is not optimal and the value is the Black-Scholes price (floored at the exercise value). Where the boundary I2 falls to or below the strike, a 1,000-step binomial tree prices the option instead. At zero days to expiration the value is the exercise value.
+When $$b \geq r$$ early exercise of a call is not optimal and the value is the Black-Scholes price (floored at the exercise value). Where the boundary I2 falls to or below the strike, a 1,000-step binomial tree prices the option instead. At zero days to expiration the value is the exercise value.
 
 See: Bjerksund, P., & Stensland, G. (2002), "Closed Form Valuation of American Options", Working paper, NHH, as presented in Haug, E. G. (2007), "The Complete Guide to Option Pricing Formulas" (2nd ed.), section 3.1.4.
 
@@ -1295,7 +1295,7 @@ $$
 \text{Standard Error} = \text{Sample Standard Deviation} (\text{ddof} = 1) \text{of the Discounted Payoffs} / \sqrt{\text{Simulations}}
 $$
 
-Where S(t) is the stock price at time t (starting from the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), σ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365) and Z is a standard normal random variable.
+Where S(t) is the stock price at time t (starting from the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365) and Z is a standard normal random variable.
 
 All strike prices of an expiry are priced on the same simulated paths (common random numbers), which keeps the prices consistent across strikes and means the paths are simulated once per expiry rather than once per strike.
 
@@ -1472,7 +1472,7 @@ $$
 \text{Up-and-In Put} = A - B + D + E \;\text{if}\; K > H,\;\; \text{else C + E}
 $$
 
-Where S is the stock price (the traded close on the pricing date), K is the strike price, H is the barrier, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), σ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365), N is the cumulative standard normal distribution and the Rebate defaults to 0.
+Where S is the stock price (the traded close on the pricing date), K is the strike price, H is the barrier, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365), N is the cumulative standard normal distribution and the Rebate defaults to 0.
 
 A useful identity is in-out parity: without a rebate, a knock-in option plus its corresponding knock-out option (same direction and barrier) equals the price of the equivalent vanilla Black-Scholes option, since the underlying either does or does not touch the barrier. With a rebate, both legs pay it in the scenario where they do not exist, so the sum exceeds the vanilla price by the value of those rebates.
 
@@ -1600,7 +1600,7 @@ $$
 \text{Put Price} = K \cdot e ^{- r \cdot t} \cdot N(- d_{2}) - S \cdot e ^{(b_{A} - r) \cdot t} \cdot N(- d_{1})
 $$
 
-Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), σ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), t is the time to expiration in years (days / 365) and N is the cumulative standard normal distribution.
+Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), t is the time to expiration in years (days / 365) and N is the cumulative standard normal distribution.
 
 **Also known as:** geometric Asian option, average rate option, average price option.
 
@@ -2042,14 +2042,14 @@ $$
 \text{Put Option}\; \Delta = - e ^{- q \cdot t} \cdot N(- d_{1})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 The Delta can be interpreted as follows:
 
 - For call options, Delta is positive, indicating that the option price tends to move in the same direction as the underlying asset's price.
 - For put options, Delta is negative, indicating that the option price tends to move in the opposite direction to the underlying asset's price.
 
-Note that the delta of a call option is always between 0 and e^(-q * t), while the delta of a put option is always between -e^(-q * t) and 0. Without a dividend yield those bounds collapse to the familiar 0 to 1 and -1 to 0.
+Note that the delta of a call option is always between 0 and $$e^{- q \cdot t}$$, while the delta of a put option is always between $$- e^{- q \cdot t}$$ and 0. Without a dividend yield those bounds collapse to the familiar 0 to 1 and -1 to 0.
 
 Delta is read as the hedge ratio: a call with a delta of 0.6 moves about $0.60 for a $1 move in the stock, so a market maker that is short calls on 100 shares buys 60 shares to stay neutral. It is often used as a quick gauge of how far in or out of the money an option is (traders talk of "25-delta" puts), and loosely as the chance of finishing in the money, although that (risk-neutral) probability is N(d2), which `get_dual_delta` gives up to discounting and sign. Delta changes with the stock price and with time (see gamma and charm), so a delta hedge has to be rebalanced.
 
@@ -2153,7 +2153,7 @@ $$
 \text{Put Dual}\; \Delta = e ^{- r \cdot t} \cdot N(- d_{2})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 The Dual Delta is the sensitivity of the option value to the strike price rather than to the underlying price. Up to the discount factor and a sign it is the risk-neutral probability that the option finishes in the money: a call Dual Delta of -0.5 corresponds to a roughly 50% chance of finishing in the money. It is negative for a call, since raising the strike lowers the call's value, and positive for a put.
 
@@ -2254,7 +2254,7 @@ $$
 \text{Vega} = S \cdot e ^{- q \cdot t} \cdot N'(d_{1}) \cdot \sqrt{t} / 100
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
 The division by 100 expresses Vega per 1 percentage point change in volatility, the usual market quote. The higher order volatility Greeks (Vanna, Vomma, Zomma, Vera, Ultima) are reported unscaled, per 1.00 of volatility; only Vega and Veta carry this factor.
 
@@ -2369,7 +2369,7 @@ $$
 q \cdot S \cdot e ^{- q \cdot t} \cdot N(- d_{1}) \text{]} / 365
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
 Theta is the derivative with respect to calendar time elapsed, not with respect to the remaining time to maturity, and the division by 365 expresses it per calendar day rather than per year. Charm, Veta and Color measure the same passage of time in the same direction.
 
@@ -2477,7 +2477,7 @@ $$
 \text{Put Rho} = - K \cdot t \cdot e ^{- r \cdot t} \cdot N(- d_{2})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 The Rho can be interpreted as follows:
 
@@ -2577,7 +2577,7 @@ $$
 \text{Put Epsilon} = S \cdot t \cdot e ^{- q \cdot t} \cdot N(- d_{1})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 Epsilon is reported unscaled, per 1.00 change in the dividend yield, matching Rho and Vera.
 
@@ -2690,7 +2690,7 @@ $$
 \text{Lambda} = \Delta \cdot (\text{Stock Price} / \text{Call Option Price or Put Option Price})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 The Lambda can be interpreted as follows:
 
@@ -2873,7 +2873,7 @@ $$
 \text{Gamma} = e ^{- q \cdot t} \cdot N'(d_{1}) / (S \cdot \sigma \cdot \sqrt{t})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
 The Gamma can be interpreted as follows:
 
@@ -2882,7 +2882,7 @@ The Gamma can be interpreted as follows:
 
 Note that the gamma of a call option and put option are equal to each other.
 
-Gamma is largest for at-the-money options close to expiry, which is where a delta hedge needs the most frequent rebalancing and where a short option position can lose money fastest on a sharp move. Because it is per $1 move in the underlying, it is not comparable across stocks with different prices; risk reports therefore use dollar gamma (Gamma x S^2 / 100, the change in the dollar delta for a 1% move) when they add up gamma across underlyings.
+Gamma is largest for at-the-money options close to expiry, which is where a delta hedge needs the most frequent rebalancing and where a short option position can lose money fastest on a sharp move. Because it is per $1 move in the underlying, it is not comparable across stocks with different prices; risk reports therefore use dollar gamma (Gamma x $$S^{2} / 100$$, the change in the dollar delta for a 1% move) when they add up gamma across underlyings.
 
 **Also known as:** rate of change of delta, option convexity.
 
@@ -2973,7 +2973,7 @@ $$
 \text{Dual Gamma} = e ^{- r \cdot t} \cdot N'(d_{2}) / (K \cdot \sigma \cdot \sqrt{t})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d2) is the standard normal probability density at d2 and N(d1) is the cumulative normal distribution of d1. Note that Dual Gamma is a second derivative with respect to the strike price, so it is the strike and not the stock price that appears in the denominator.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N'(d2) is the standard normal probability density at d2 and N(d1) is the cumulative normal distribution of d1. Note that Dual Gamma is a second derivative with respect to the strike price, so it is the strike and not the stock price that appears in the denominator.
 
 Note that the dual gamma of a call option and put option are equal to each other.
 
@@ -3066,7 +3066,7 @@ $$
 \text{Vanna} = - e ^{- q \cdot t} \cdot N'(d_{1}) \cdot (d_{2} / \sigma)
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 The Vanna can be interpreted as follows:
 
@@ -3175,7 +3175,7 @@ $$
 \text{Put Charm} = - q \cdot e ^{- q \cdot t} \cdot N(- d_{1}) - e ^{- q \cdot t} \cdot N'(d_{1}) \cdot (2 \cdot (r - q) \cdot t - d_{2} \cdot \sigma \cdot \sqrt{t}) / (2 \cdot t \cdot \sigma \cdot \sqrt{t})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d1) is the cumulative normal distribution of d1.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d1) is the cumulative normal distribution of d1.
 
 Charm is the derivative with respect to calendar time elapsed, in the same direction as Theta, but it is reported per year rather than per day. Divide by 365 for delta decay per calendar day. Color follows the same per-year convention.
 
@@ -3286,7 +3286,7 @@ $$
 \text{Vomma} = S \cdot e ^{- q \cdot t} \cdot N'(d_{1}) \cdot \sqrt{t} \cdot (d_{1} \cdot d_{2}) / \sigma
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N(d1) is the cumulative normal distribution of d1 and N(d2) is the the cumulative normal distribution of d2.
 
 The vomma can be interpreted as follows:
 
@@ -3392,7 +3392,7 @@ $$
 \text{Vera} = - K \cdot t \cdot e ^{- r \cdot t} \cdot N'(d_{2}) \cdot (d_{1} / \sigma)
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d2) is the standard normal probability density at d2 and N(d1) is the cumulative normal distribution of d1.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N'(d2) is the standard normal probability density at d2 and N(d1) is the cumulative normal distribution of d1.
 
 Vera is reported unscaled, per 1.00 of volatility and per 1.00 of the risk free rate, matching Rho.
 
@@ -3498,7 +3498,7 @@ $$
 \text{Veta} = S \cdot e ^{- q \cdot t} \cdot N'(d_{1}) \cdot \sqrt{t} \cdot (q + ((r - q) \cdot d_{1}) / (\sigma \cdot \sqrt{t}) - (1 + d_{1} \cdot d_{2}) / (2 \cdot t)) / (100 \cdot 365)
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration, N'(d1) is the standard normal probability density at d1 and N(d2) is the cumulative normal distribution of d2.
 
 This expression equals dVega/dt, the change in Vega as calendar time passes (the negative of the derivative with respect to the remaining time to maturity t), and is used as is, without a change of sign. Veta thus, like Theta, Charm and Color, measures the change per unit of time that passes: an option close to the money loses Vega as expiry approaches, so its Veta is typically negative.
 
@@ -3594,7 +3594,7 @@ $$
 \text{Partial Derivative} (\text{PD}) = e ^{- r \cdot t} \cdot (1 / K) \cdot (1 / \sqrt{2 \cdot \pi \cdot \sigma ^{2} \cdot t}) \cdot e ^{- (1 / (2 \cdot \sigma ^{2} \cdot t)) \cdot (\ln(K / S) - ((r - q) - (0.5 \cdot \sigma ^{2})) \cdot t) ^{2}}
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility and t is the time to expiration. This expression is algebraically identical to e^(-r * t) * N'(d2) / (K * σ * sqrt(t)), i.e. to the Dual Gamma, since both are the second derivative of the option price with respect to the strike price.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility and t is the time to expiration. This expression is algebraically identical to $$e^{- r \cdot t} \cdot N' (d_{2}) / (K \cdot \sigma \cdot \sqrt{t})$$, i.e. to the Dual Gamma, since both are the second derivative of the option price with respect to the strike price.
 
 **Also known as:** second strike derivative, lognormal risk-neutral density.
 
@@ -3789,7 +3789,7 @@ $$
 \text{Speed} = - e ^{- q \cdot t} \cdot ((N'(d_{1}) / (S ^{2} \cdot \sigma \cdot \sqrt{t}))) \cdot ((d_{1} / (\sigma \cdot \sqrt{t})) + 1)
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1.
 
 The Speed can be interpreted as follows:
 
@@ -3884,7 +3884,7 @@ $$
 \text{Zomma} = e ^{- q \cdot t} \cdot (N'(d_{1}) \cdot (d_{1} \cdot d_{2} - 1)) / (S \cdot \sigma ^{2} \cdot \sqrt{t})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1. This is equivalently Gamma * (d1 * d2 - 1) / σ, and it is reported unscaled, per 1.00 of volatility.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1. This is equivalently Gamma * $$(d_{1} \cdot d_{2} - 1) / \sigma$$, and it is reported unscaled, per 1.00 of volatility.
 
 The Zomma can be interpreted as follows:
 
@@ -3984,7 +3984,7 @@ $$
 \text{Color} = e ^{- q \cdot t} \cdot (N'(d_{1}) / (2 \cdot S \cdot t \cdot \sigma \cdot \sqrt{t})) \cdot (2 \cdot q \cdot t + 1 + ((2 \cdot (r - q) \cdot t - d_{2} \cdot \sigma \cdot \sqrt{t}) / (\sigma \cdot \sqrt{t})) \cdot d_{1})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration and N'(d1) is the standard normal probability density at d1.
 
 This expression equals dGamma/dt, the change in Gamma as calendar time passes (the negative of the derivative with respect to the remaining time to maturity t), so Color, like Theta, Charm and Veta, measures the change per unit of time that passes. Tables that print the expression with a leading minus sign give the derivative with respect to the time to maturity instead. The result is per year, matching Charm; divide by 365 for gamma decay per calendar day.
 
@@ -4083,7 +4083,7 @@ $$
 \text{Ultima} = (- \text{vega} / \sigma ^{2}) \cdot (d_{1} \cdot d_{2} \cdot (1 - d_{1} \cdot d_{2}) + d_{1} ^{2} + d_{2} ^{2})
 $$
 
-Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, σ is the volatility, t is the time to expiration and vega is the unscaled S * e^(-q * t) * N'(d1) * sqrt(t), i.e. the Vega before the division by 100 that `get_vega` applies. Ultima itself is likewise reported unscaled, per 1.00 of volatility.
+Where S is the stock price, K is the strike price, r is the risk free rate, q is the dividend yield, $$\sigma$$ is the volatility, t is the time to expiration and vega is the unscaled $$S \cdot e^{- q \cdot t} \cdot N' (d_{1}) \cdot \sqrt{t}$$, i.e. the Vega before the division by 100 that `get_vega` applies. Ultima itself is likewise reported unscaled, per 1.00 of volatility.
 
 The Ultima can be interpreted as follows:
 
@@ -4517,7 +4517,7 @@ Which returns:
 ---
 
 ## get_model_free_implied_volatility
-Calculate the model-free implied volatility with the Cboe VIX methodology, for any ticker with listed options. Rather than inverting a pricing model, it reads the expected variance directly from the prices of out-of-the-money options across all strikes, weighted by 1/K², for the two expiries around the target maturity, and interpolates their variances to a constant maturity:
+Calculate the model-free implied volatility with the Cboe VIX methodology, for any ticker with listed options. Rather than inverting a pricing model, it reads the expected variance directly from the prices of out-of-the-money options across all strikes, weighted by $$1 / K^{2}$$, for the two expiries around the target maturity, and interpolates their variances to a constant maturity:
 
 $$
 \sigma ^{2} = (2 / T) \text{Σ} (\Delta K_{i} / K_{i} ^{2}) e ^{\text{RT}} Q(K_{i}) - (1 / T) (F / K_{0} - 1) ^{2}

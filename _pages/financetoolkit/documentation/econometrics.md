@@ -610,7 +610,7 @@ $$
 Z_{t} = \sqrt{\text{γ₀} / \lambda ^{2}} \cdot t_{\rho} - (\lambda ^{2} - \text{γ₀}) / (2 \cdot \lambda \cdot s) \cdot n \cdot \operatorname{SE}(\text{rhô})
 $$
 
-- The unit root is rejected at 5% when Z_t is below the MacKinnon (1996) asymptotic critical value (-2.86 for "c", -3.41 for "ct"); no p-value is reported
+- The unit root is rejected at 5% when $$Z_{t}$$ is below the MacKinnon (1996) asymptotic critical value (-2.86 for "c", -3.41 for "ct"); no p-value is reported
 
 For more information about the method, see the following paper:
 
@@ -640,7 +640,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The Phillips-Perron Z_t statistic, its MacKinnon (1994) p-value, truncation
+pd.DataFrame: The Phillips-Perron $$Z_{t}$$ statistic, its MacKinnon (1994) p-value, truncation
 lag used, observations used, the finite-sample MacKinnon (2010) 1%/5%/10% critical values,
 and whether the unit root is rejected at the 5% level, per asset.
 
@@ -872,7 +872,7 @@ $$
 \Delta \text{Yₜ} = \text{Π} \cdot \text{Yₜ₋₁} + \operatorname{Σ}(i = 1..k) \text{Γᵢ} \cdot \Delta \text{Yₜ₋ᵢ} + \mu + \text{epsilonₜ},\;\; \text{with Yₜ the vector of column levels (Adj Close by default)},\;\; k = \text{k\_ar\_diff} (1 \;\text{by default}) \text{and the deterministic term}\; \mu \;\text{set by}\; \text{det\_order:} \;\text{none} (- 1,\; \text{Johansen's case}\; 1),\;\; \text{an unrestricted constant mu₀ (0, the default, case 3) or a linear trend (1: the levels are linearly detrended before the test, evaluated against the case 5 critical values)}
 $$
 
-- λ₁ ≥ ... ≥ λ_N: the eigenvalues of the reduced-rank regression of ΔYₜ on Yₜ₋₁, both corrected for the lagged differences and μ
+- $$\lambda_{1} \geq \ldots \geq \lambda_{N}$$: the eigenvalues of the reduced-rank regression of $$\Delta Y_{t}$$ on $$Y_{t - 1}$$, both corrected for the lagged differences and $$\mu$$
 
 $$
 \operatorname{Trace}(r) = - T \cdot \operatorname{Σ}(i = r + 1..N) \ln(1 - \text{lambdaᵢ})
@@ -1047,7 +1047,7 @@ The squared return is a noisy stand-in for the true Variance. Patton (2011) show
 
 The formula is as follows:
 
-- Realized Variance: rₜ²
+- Realized Variance: $$r_{t}^{2}$$
 
 $$
 \text{EWMA forecast ("ewma"):}\;\; \text{sigmaₜ} ^{2} = \lambda \cdot \text{sigmaₜ₋₁} ^{2} + (1 - \lambda) \cdot \text{rₜ₋₁} ^{2},\;\; \text{with}\; \lambda = \text{lambda}_{`} (0.94 \;\text{by default}),\;\; \text{so the forecast for t uses returns up to t - 1}
@@ -1346,7 +1346,7 @@ $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant (add_constant=True)
 
-Under a correctly specified `Omega` this is the most efficient linear unbiased estimator. By default (omega="ar1") `Omega` is estimated from the regression itself as an AR(1) error structure, eₜ = ρ·eₜ₋₁ + uₜ: ρ is the slope of the OLS residuals on their own lag and Ωᵢⱼ = ρ^&#124;i - j&#124;, which makes this the Prais-Winsten estimator. Any other structure can be supplied as `omega`. `get_durbin_watson_test` helps establish whether the residuals are autocorrelated in the first place.
+Under a correctly specified `Omega` this is the most efficient linear unbiased estimator. By default (omega="ar1") `Omega` is estimated from the regression itself as an AR(1) error structure, $$e_{t} = \rho \cdot e_{t - 1} + u_{t}$$: $$\rho$$ is the slope of the OLS residuals on their own lag and $$\Omega_{ij} = \rho^{\vert i - j \vert}$$, which makes this the Prais-Winsten estimator. Any other structure can be supplied as `omega`. `get_durbin_watson_test` helps establish whether the residuals are autocorrelated in the first place.
 
 For more information about the method, see the following paper:
 
@@ -1605,7 +1605,7 @@ $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant (add_constant=True)
 
-- SE(β̂): statsmodels' kernel sandwich estimator (Epanechnikov kernel, Hall-Sheather bandwidth), or, when `n_bootstrap` > 0, the standard deviation (ddof=1) of β̂ over `n_bootstrap` resampled-pairs fits
+- $$\text{SE} (\hat{\beta})$$: statsmodels' kernel sandwich estimator (Epanechnikov kernel, Hall-Sheather bandwidth), or, when `n_bootstrap` > 0, the standard deviation (ddof=1) of $$\hat{\beta}$$ over `n_bootstrap` resampled-pairs fits
 
 With `tau = 0.5` this is the median regression, which is far less sensitive to outliers than OLS. Fitting at several quantiles (e.g. 0.05, 0.5 and 0.95) shows how the whole distribution of returns responds to the independent tickers, for example whether an asset's sensitivity to the market is larger in sell-offs (low quantiles) than in normal periods, which is directly relevant for downside risk.
 
@@ -2271,14 +2271,14 @@ A more general version of `get_breusch_pagan_test`. Instead of regressing the sq
 The formula is as follows:
 
 $$
-e_{t} ^{2} = a_{0} + \text{SUM}_{i}(a_{i} \cdot x_{it}) + \text{SUM}_{i}(b_{i} \cdot x_{it} ^{2}) + \text{SUM\_\{i} < \operatorname{j\}}(c_{ij} \cdot x_{it} \cdot x_{jt}) + v_{t}
+e_{t} ^{2} = a_{0} + \sum_{i}(a_{i} \cdot x_{it}) + \sum_{i}(b_{i} \cdot x_{it} ^{2}) + \sum_{i<j}(c_{ij} \cdot x_{it} \cdot x_{jt}) + v_{t}
 $$
 
 $$
 \text{LM} = n \cdot R ^{\text{2\_auxiliary}},\;\; \text{chi-squared with as many degrees of freedom as the auxiliary regression has terms besides a\_0}
 $$
 
-- e_t are the OLS residuals and x_it the independent tickers' `column` (Return by default)
+- $$e_{t}$$ are the OLS residuals and $$x_{it}$$ the independent tickers' `column` (Return by default)
 
 The null hypothesis is homoskedasticity (constant residual variance). A low p-value means the regression's standard errors are unreliable and a robust `cov_type` should be used. Because it also detects non-linear patterns in the residual variance, White's test makes fewer assumptions than Breusch-Pagan, at the cost of power when there are many independent tickers, since the number of auxiliary terms grows quadratically.
 
@@ -2349,12 +2349,12 @@ OLS standard errors assume that the residuals of consecutive periods are uncorre
 The formula is as follows:
 
 $$
-\text{DW} = \text{SUM\_\{t} = \text{2\}} ^{\text{\{n\}}} ((e_{t} - e_{t-1}) ^{2}) / \text{SUM\_\{t} = \text{1\}} ^{\text{\{n\}}} (e_{t} ^{2})
+\text{DW} = \sum_{t=2}^{n}((e_{t} - e_{t-1}) ^{2}) / \sum_{t=1}^{n}(e_{t} ^{2})
 $$
 
-- e_t are the residuals of the OLS regression of the dependent ticker's `column` (Return by default) on the independent tickers' `column`
+- $$e_{t}$$ are the residuals of the OLS regression of the dependent ticker's `column` (Return by default) on the independent tickers' `column`
 
-- Interpretation: DW < 1.5 positive autocorrelation likely, DW > 2.5 negative autocorrelation likely, otherwise no strong evidence
+- Interpretation: $$\text{DW} < 1.5$$ positive autocorrelation likely, $$\text{DW} > 2.5$$ negative autocorrelation likely, otherwise no strong evidence
 
 The statistic ranges from 0 to 4. A value near 2 means no first-order autocorrelation; values below 2 point to positive autocorrelation (consecutive residuals tend to share the same sign, often a sign of an omitted trend or lagged effect) and values above 2 to negative autocorrelation (residuals tend to alternate in sign). Like heteroskedasticity, autocorrelation leaves the coefficients unbiased but makes the standard errors unreliable; a "HAC" `cov_type` in `get_ols`, or `get_gls` with an AR(1) `omega`, are common remedies. There is no exact p-value: the returned interpretation is a rule of thumb (below 1.5 is likely positive, above 2.5 likely negative autocorrelation).
 
@@ -2496,14 +2496,14 @@ If the true relationship is non-linear, or a relevant transformation or variable
 The formula is as follows:
 
 $$
-\text{Augmented model:}\;\; y_{t} = \text{x\_t'} \cdot \beta + \text{SUM\_\{j} = \text{2\}} ^{\text{\{power\}}} (\gamma_{j} \cdot \text{yhat}_{t} ^{j}) + u_{t},\;\; \text{with}\; \text{yhat}_{t} \;\text{the fitted values of the original OLS regression and}\; \text{power} = 3 \;\text{by default}
+\text{Augmented model:}\;\; y_{t} = \text{x\_t'} \cdot \beta + \sum_{j=2}^{\text{power}}(\gamma_{j} \cdot \text{yhat}_{t} ^{j}) + u_{t},\;\; \text{with}\; \text{yhat}_{t} \;\text{the fitted values of the original OLS regression and}\; \text{power} = 3 \;\text{by default}
 $$
 
 $$
 F = ((\text{RSS}_{r} - \text{RSS}_{u}) / q) / (\text{RSS}_{u} / (n - k_{u}))
 $$
 
-Where `RSS_r` and `RSS_u` are the residual sums of squares of both models, `q` is the number of added terms (`power - 1`), `n` the number of observations and `k_u` the number of parameters of the augmented model. Under the null hypothesis that the linear form is correct, `F` follows an F(q, n - k_u) distribution. A low p-value suggests the model is missing something, for example a squared or interaction term or a log transformation, without saying what; it is a signal to reconsider the specification, not a prescription.
+Where `RSS_r` and `RSS_u` are the residual sums of squares of both models, `q` is the number of added terms (`power - 1`), `n` the number of observations and `k_u` the number of parameters of the augmented model. Under the null hypothesis that the linear form is correct, `F` follows an $$F (q , n - k_{u})$$ distribution. A low p-value suggests the model is missing something, for example a squared or interaction term or a log transformation, without saying what; it is a signal to reconsider the specification, not a prescription.
 
 For more information about the method, see the following paper:
 
@@ -3133,7 +3133,7 @@ $$
 \text{Entity Effect:}\;\; \text{alphaᵢ} = \text{mean}_{t}(\text{yᵢₜ} - \text{xᵢₜ'betâ\_FE}) \text{;} \;\text{Time}\; \text{Effect:} \text{lambdaₜ} = \text{mean}_{i}(\text{yᵢₜ} - \text{xᵢₜ'betâ\_FE})
 $$
 
-- yᵢₜ is each dependent ticker's `column` (Return by default)
+- $$y_{it}$$ is each dependent ticker's `column` (Return by default)
 
 **Args:**
 
@@ -3309,7 +3309,7 @@ $$
 
 - H is chi-squared with k degrees of freedom; Random Effects is rejected when the p-value is below 0.05
 
-- β̂_FE comes from `get_fixed_effects` with entity effects only and β̂_RE from `get_random_effects`
+- $$\hat{\beta}_{\text{FE}}$$ comes from `get_fixed_effects` with entity effects only and $$\hat{\beta}_{\text{RE}}$$ from `get_random_effects`
 
 **Args:**
 
@@ -3476,13 +3476,13 @@ A VAR models several series jointly: each ticker's value is regressed on `lags` 
 The formula is as follows:
 
 $$
-Y_{t} = c + \text{SUM\_\{l} = \text{1\}} ^{\text{\{lags\}}} (\Phi_{l} \cdot Y_{\text{t-l}}) + e_{t},\;\; \text{with}\; Y_{t} \;\text{every ticker's}\; \text{column} (\text{Return by default}) \text{and}\; \text{lags} = 1 \;\text{by default}
+Y_{t} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot Y_{\text{t-l}}) + e_{t},\;\; \text{with}\; Y_{t} \;\text{every ticker's}\; \text{column} (\text{Return by default}) \text{and}\; \text{lags} = 1 \;\text{by default}
 $$
 
 - Each equation is an OLS regression on a constant and the `lags` lagged values of all tickers
 
 $$
-\text{Forecast:}\;\; \text{Yhat}_{T + h} = c + \text{SUM\_\{l} = \text{1\}} ^{\text{\{lags\}}} (\Phi_{l} \cdot \text{Yhat}_{T + \text{h-l}}),\;\; \text{with Yhat}_{s} = Y_{s} \;\text{for}\; s \leq T
+\text{Forecast:}\;\; \text{Yhat}_{T + h} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot \text{Yhat}_{T + \text{h-l}}),\;\; \text{with Yhat}_{s} = Y_{s} \;\text{for}\; s \leq T
 $$
 
 Where `Y_t` holds the values of all tickers at time `t` and each `Phi_l` is a matrix of coefficients. Because every equation has the same regressors, the model is estimated exactly by a separate OLS regression per ticker. Forecasts are produced by running the fitted equations forward one step at a time, feeding each forecast back in as the most recent lag. The coefficients show how shocks spread between assets; `get_impulse_response_function` and `get_variance_decomposition` summarise that, and `get_granger_causality` tests whether one ticker helps predict another. A VAR assumes stationary series, so returns are generally more suitable than prices (see `get_augmented_dickey_fuller`).
@@ -3982,7 +3982,7 @@ The formula is as follows:
 
 - Training sample: the first int(`train_fraction`·n) observations (80% by default) of the `column` level (Adj Close by default); the remaining H observations are the holdout
 
-- Ŷₜ: the H-step forecast of the model fitted on the training sample only, an ARIMA(p, d, q) (model="arima", ARIMA(1, 1, 1) by default) or a VAR(`lags`) on the ticker and `other_tickers` (model="var")
+- $$\hat{Y}_{t}$$: the H-step forecast of the model fitted on the training sample only, an ARIMA(p, d, q) (model="arima", ARIMA(1, 1, 1) by default) or a VAR(`lags`) on the ticker and `other_tickers` (model="var")
 
 $$
 \text{RMSE} = \sqrt{(1 / H) \cdot \operatorname{Σ}(\text{Yₜ} - \text{Ŷₜ}) ^{2}} \text{and MAE} = (1 / H) \cdot \text{Σ} | \text{Yₜ} - \text{Ŷₜ} |,\;\; \text{over the holdout}
@@ -4164,7 +4164,7 @@ $$
 P(\text{Sₜ} = j | \text{Sₜ₋₁} = i) = \text{pᵢⱼ},\;\; \text{a first-order Markov chain with constant transition probabilities}
 $$
 
-- μ, σ and pᵢⱼ are fitted by Maximum Likelihood with the Hamilton filter (statsmodels MarkovRegression), keeping the best of the default start and 20 random perturbations
+- $$\mu$$, $$\sigma$$ and $$p_{ij}$$ are fitted by Maximum Likelihood with the Hamilton filter (statsmodels MarkovRegression), keeping the best of the default start and 20 random perturbations
 
 $$
 \text{Smoothed probabilities}\; P (\text{Sₜ} = j | \text{y₁..y}_{T}) \text{per}\; \text{date;} \;\text{Expected Duration} = 1 / (1 - \text{pⱼⱼ}) \text{periods;} \;\text{Share} = \text{the fraction of dates where regime}\; j \;\text{has the highest smoothed}\; \text{probability;} \;\text{Current Regime} = \text{that regime on the last date},\;\; \text{with its smoothed probability}
@@ -4256,7 +4256,7 @@ $$
 \operatorname{BIC}(m) = T \cdot \ln(\operatorname{SSR}(m) / T) + (2m + 1) \cdot \ln(T),\;\; \text{for} \;\; m = 0,\;\; \text{...},\;\; \text{max\_breaks (5 by default); the m with the lowest BIC is chosen unless breaks is given}
 $$
 
-- Per segment: its Start, End, Observations, Mean ȳⱼ and Standard Deviation (ddof=1)
+- Per segment: its Start, End, Observations, Mean $$\bar{y}_{j}$$ and Standard Deviation (ddof=1)
 
 For more information, see the following papers:
 
@@ -4316,7 +4316,7 @@ Which returns:
 ---
 
 ## get_time_varying_beta
-Estimate the alpha and beta of every asset as they change over time, with the Kalman filter. The regression y_t = α_t + β_t x_t + ε_t lets both coefficients take a random step every period; how large those steps are, and how much noise surrounds the regression, is estimated by maximum likelihood. A beta that drifts, such as a stock becoming more sensitive to the market, shows up without choosing the window of a rolling regression, while a beta that is constant stays flat.
+Estimate the alpha and beta of every asset as they change over time, with the Kalman filter. The regression $$y_{t} = \alpha_{t} + \beta_{t} x_{t} + \epsilon_{t}$$ lets both coefficients take a random step every period; how large those steps are, and how much noise surrounds the regression, is estimated by maximum likelihood. A beta that drifts, such as a stock becoming more sensitive to the market, shows up without choosing the window of a rolling regression, while a beta that is constant stays flat.
 
 Every alpha and beta is the filtered estimate, updated with the observations up to its date only. The three variances that set how fast the estimates adapt are estimated on the whole sample, however, so the path is not entirely what would have been known at the time. The filter starts without prior knowledge of the coefficients, so the first date (or the first few, when the independent series starts with zeros) cannot separate the alpha from the beta and is NaN.
 
@@ -4332,9 +4332,9 @@ $$
 \text{alphaₜ} = \text{alphaₜ₋₁} + \text{ηₜ} \;\text{and}\; \text{betaₜ} = \text{betaₜ₋₁} + \text{ζₜ},\;\; \text{ηₜ} \sim N(0,\; \sigma ^{\text{2\_alpha}}) \text{and}\; \text{ζₜ} \sim N(0,\; \sigma ^{\text{2\_beta}}) \text{:} \;\text{random walks}
 $$
 
-- σ²_ε, σ²_α and σ²_β are fitted by Maximum Likelihood with the Kalman filter (diffusely initialized) on the series divided by their standard deviations, and scaled back
+- $$\sigma_{\epsilon}^{2}$$, $$\sigma_{\alpha}^{2}$$ and $$\sigma_{\beta}^{2}$$ are fitted by Maximum Likelihood with the Kalman filter (diffusely initialized) on the series divided by their standard deviations, and scaled back
 
-- Alpha and Beta are the filtered states E[αₜ, βₜ &#124; y₁..yₜ]; the Beta Standard Error is the square root of the filtered variance of βₜ
+- Alpha and Beta are the filtered states $$E [\alpha_{t} , \beta_{t} \vert y_{1} \ldots y_{t}]$$; the Beta Standard Error is the square root of the filtered variance of $$\beta_{t}$$
 
 For more information, see the following book:
 
@@ -4409,7 +4409,7 @@ $$
 \text{Rₜ} = \operatorname{diag}(\text{Qₜ}) ^{- 1 / 2} \cdot \text{Qₜ} \cdot \operatorname{diag}(\text{Qₜ}) ^{- 1 / 2},\;\; \text{the conditional correlations}
 $$
 
-- a and b maximize the correlation log-likelihood -½·Σₜ (ln&#124;Rₜ&#124; + zₜ'·Rₜ⁻¹·zₜ), with a, b ≥ 0 and a + b < 1
+- a and b maximize the correlation log-likelihood $$- \tfrac{1}{2} \cdot \sum_{t} (\ln \vert R_{t} \vert + z_{t}' \cdot R_{t}^{- 1} \cdot z_{t})$$, with a, $$b \geq 0$$ and $$a + b < 1$$
 
 For more information, see the following paper:
 
@@ -4494,7 +4494,7 @@ $$
 \text{Half-Life} = - \ln(2) / \ln(1 + \lambda),\;\; \text{with}\; \lambda \;\text{from}\; \Delta \text{sₜ} = a + \lambda \cdot \text{sₜ₋₁} + \text{epsilonₜ} (\text{infinite when}\; \lambda \;\text{is} (\text{nearly}) \text{zero or positive})
 $$
 
-- Cointegration P-Value: the Engle-Granger test of yₜ on xₜ
+- Cointegration P-Value: the Engle-Granger test of $$y_{t}$$ on $$x_{t}$$
 
 For more information, see the following papers:
 
@@ -4738,7 +4738,7 @@ $$
 \text{Largest Since} (t) = \max(s < t \text{:} \;\text{Change} (s) \geq \operatorname{Change}(t)) \text{if Change} (t) > 0
 $$
 
-The Change is the series' change as `changes` defines it: a percentage change by default, the difference with `changes="difference"` and the series itself with `changes="none"`. The volatility σ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly. Each measure only uses the changes before the period itself (no look-ahead), and Largest Since compares falls with falls and rises with rises, as a headline does.
+The Change is the series' change as `changes` defines it: a percentage change by default, the difference with `changes="difference"` and the series itself with `changes="none"`. The volatility $$\sigma$$ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly. Each measure only uses the changes before the period itself (no look-ahead), and Largest Since compares falls with falls and rises with rises, as a headline does.
 
 **Also known as:** sigma move, largest move since, biggest daily rise since, standardized change, yield move significance.
 

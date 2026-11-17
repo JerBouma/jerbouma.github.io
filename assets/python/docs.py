@@ -8,6 +8,7 @@ import base64
 import os
 import re
 import sys
+import unicodedata
 
 import requests
 
@@ -17,8 +18,14 @@ _RE_ARG_LABEL = re.compile(r"\w+ \([^)]+\):")
 _RE_MULTI_SPACE = re.compile(r" +")
 _RE_BLANK_LINE = re.compile(r"\n[ \t]*\n")
 # A method without arguments starts its argument block at "Returns:".
-_RE_DESCRIPTION = re.compile(r"([\s\S]*?)(?:Args:|Returns:|As an example:|$)", re.DOTALL)
-_RE_ARGUMENTS = re.compile(r"((?:Args:|Returns:)[\s\S]*?)(```python|$)", re.DOTALL)
+# Section headers sit alone on their line, so a wrapped reference such as
+# "... in Asset\n Returns: A New Approach." is not read as the Returns section.
+_RE_DESCRIPTION = re.compile(
+    r"([\s\S]*?)(?:^[ \t]*(?:Args|Returns):[ \t]*$|As an example:|\Z)", re.MULTILINE
+)
+_RE_ARGUMENTS = re.compile(
+    r"((?:^[ \t]*(?:Args|Returns):[ \t]*$)[\s\S]*?)(```python|\Z)", re.MULTILINE
+)
 _RE_CODE = re.compile(r"```python([\s\S]*?)```", re.DOTALL)
 _RE_RESULT = re.compile(r"Which returns:[\s\S]*$", re.DOTALL)
 _RE_NUMBERED = re.compile(r"^\d+\. ")
@@ -109,6 +116,8 @@ def _format_word(word: str) -> str:
     """Render one identifier token as LaTeX math."""
     if word.startswith("⟦") and word.endswith("⟧"):
         return r"\text{" + _text_escape(word[1:-1]) + "}"
+    if word.startswith("⟪") and word.endswith("⟫"):  # LaTeX made before tokenizing (sums)
+        return word[1:-1]
     if word in _GREEK:
         return _GREEK[word]
     if word.startswith("d") and word[1:] in _GREEK:  # a differential such as dchi
@@ -207,8 +216,8 @@ def _tokenize_formula(text: str, pos: int = 0, closer: str = "") -> tuple[list, 
         if char == closer:
             flush()
             return tokens, pos + 1
-        if char == "⟦":
-            end = text.find("⟧", pos)
+        if char in "⟦⟪":
+            end = text.find("⟧" if char == "⟦" else "⟫", pos)
             word += text[pos:end + 1]
             pos = end + 1
             continue
@@ -308,6 +317,22 @@ def _render_tokens(tokens: list) -> str:
     return " ".join(parts).replace(" ,\\;", ",\\;")
 
 
+def _sum_limit(text: str) -> str:
+    """Render a summation limit such as "t=2", "i<j" or "min(n, lags)"."""
+    text = re.sub(r"\s+", "", text).replace("<=", r" \leq ").replace("inf", r"\infty")
+    text = re.sub(r"\b(min|max)\(", lambda m: "\\" + m.group(1) + "(", text)
+    return re.sub(r"\b(lags|power)\b", r"\\text{\1}", text)
+
+
+def _sum_to_latex(match: re.Match) -> str:
+    low = match.group(1) or match.group(2)
+    high = match.group(3) or match.group(4) or match.group(5)
+    latex = r"\sum_{" + _sum_limit(low) + "}"
+    if high:
+        latex += "^{" + _sum_limit(high) + "}"
+    return "⟪" + latex + "⟫"
+
+
 def _formula_to_latex(line: str) -> str:
     """Convert one plain-text formula bullet into a $$ display-math block."""
     formula = line.lstrip("- ").rstrip().rstrip(".")
@@ -319,6 +344,12 @@ def _formula_to_latex(line: str) -> str:
     for literal, sentinel in _SUB_SENTINELS.items():
         formula = formula.replace(literal, sentinel)
     formula = re.sub(r"√\s*([A-Za-z0-9.]+)", r"sqrt(\1)", formula)
+    # SUM_{t=2}^{n}, SUM_{i<j} and SUM_i become a summation sign with its limits.
+    formula = re.sub(
+        r"\bSUM_(?:\{([^{}]*)\}|([A-Za-z0-9]+))(?:\^(?:\{([^{}]*)\}|\(([^()]*)\)|([A-Za-z0-9]+)))?",
+        _sum_to_latex,
+        formula,
+    )
 
     # A leading "Label: formula" keeps the label as one prose chunk.
     label = ""
@@ -357,7 +388,7 @@ def _formula_to_latex(line: str) -> str:
             tokens, _ = _tokenize_formula(segment)
             latex = _render_tokens(tokens)
             # "u_(t-1)": the bracket is the subscript, not an argument
-            latex = re.sub(r"_\{\}\(([^()]*)\)", lambda m: "_{" + m.group(1) + "}", latex)
+            latex = re.sub(r"_\{\}\s*\(([^()]*)\)", lambda m: "_{" + m.group(1) + "}", latex)
             rendered.append(prefix + latex)
         else:
             rendered.append(r"\text{" + _text_escape(segment) + "}")
@@ -366,6 +397,477 @@ def _formula_to_latex(line: str) -> str:
 
 def _looks_like_formula(line: str) -> bool:
     return _RE_MATHY.search(line) is not None
+
+
+# ── Inline formulas ───────────────────────────────────────────────────────────
+# A formula inside a sentence ("found by minimizing 1/2 w'Σw - Σ b_i ln(w_i)")
+# becomes inline math: $$...$$ inside a paragraph, which kramdown turns into
+# \(...\). The docstrings keep plain Unicode, which reads better in help(), IDEs
+# and the MCP server, so the conversion happens here. A span is a run of
+# symbolic words joined by operators, and it is only converted when it holds a
+# real math signal: words, numbers, code and worked numeric examples stay text.
+
+_GREEK_CHARS = {
+    "α": "alpha", "β": "beta", "γ": "gamma", "δ": "delta", "ε": "epsilon", "ζ": "zeta",
+    "η": "eta", "θ": "theta", "κ": "kappa", "λ": "lambda", "μ": "mu", "ν": "nu", "ξ": "xi",
+    "π": "pi", "ρ": "rho", "σ": "sigma", "τ": "tau", "φ": "phi", "χ": "chi", "ψ": "psi",
+    "ω": "omega", "Γ": "Gamma", "Δ": "Delta", "Θ": "Theta", "Λ": "Lambda", "Π": "Pi",
+    "Σ": "Sigma", "Φ": "Phi", "Ψ": "Psi", "Ω": "Omega",
+}
+_GREEK_NAMES = {name for name in _GREEK_CHARS.values() if name.islower()} | {"iota"}
+
+# Unicode sub- and superscripts, rewritten as _{...} and ^{...} before rendering.
+_SUBSCRIPT_CHARS = dict(zip("₀₁₂₃₄₅₆₇₈₉₊₋ₜᵢⱼₖₙₘₐₑₒₓₕₗₚₛᵣᵤᵥ", "0123456789+-tijknmaeoxhlpsruv"))
+_SUPERSCRIPT_CHARS = dict(zip("⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ⁿᵀⁱ", "0123456789-+nTi"))
+
+_INLINE_OPS = {
+    "=": "=", "≈": r"\approx", "≤": r"\leq", "≥": r"\geq", "<=": r"\leq", ">=": r"\geq",
+    "≠": r"\neq", "!=": r"\neq", "<": "<", ">": ">", "+": "+", "-": "-", "−": "-",
+    "×": r"\times", "*": r"\cdot", "·": r"\cdot", "/": "/", "÷": r"\div", "~": r"\sim",
+    "|": r"\vert", "→": r"\to",
+}
+# Operators that are a math signal on their own (an = needs symbols on both sides).
+_SIGNAL_OPS = {"≈", "≤", "≥", "≠", "×", "÷"}
+_INLINE_NAMES = {"sign": r"\operatorname{sign}", "Var": r"\operatorname{Var}",
+                 "Cov": r"\operatorname{Cov}", "Std": r"\operatorname{Std}"}
+
+_GREEK_ALT = "|".join(sorted(_GREEK_NAMES, key=len, reverse=True))
+# x_t, σ_p, sigma_(n+1), RSS_r, w0_i, z_alpha: a short symbol with a short subscript.
+# Lowercase snake_case names (end_date, is_etf, beta_lower) are not symbols.
+_RE_INLINE_SUB = re.compile(
+    r"(?<![A-Za-z0-9_])(?:[A-Za-z]\d?|[A-Z][A-Za-z]{1,2}|" + _GREEK_ALT + r"|[α-ωΓ-Ω])"
+    r"[\u0302\u0304']*_(?:[({]|(?:\d+|[A-Za-z]{1,4}|" + _GREEK_ALT + r"|[α-ω])(?![A-Za-z0-9_]))"
+)
+_RE_INLINE_SIGNAL = re.compile(
+    r"[α-ωΓΘΛΠΣΦΨΩ√∑∂\u0302\u0304≈×≤≥≠÷·" + "".join(_SUBSCRIPT_CHARS) + "".join(_SUPERSCRIPT_CHARS)
+    + r"]|Δ(?:[A-Za-z](?![A-Za-z])|\d)|\w\^"
+)
+# A long word squared ("Implied Volatility²", "Price²") is a word formula, not a symbol.
+_RE_WORD_POWER = re.compile(r"[A-Za-z]{4,}[²³]")
+_RE_SYMBOL_ATOM = re.compile(
+    r"-?\d+(\.\d+)?(e-?\d+)?%?|-?[A-Za-z]'*\*?|[A-Za-z]\d{1,2}'*|\d[a-z]{1,2}|d[A-Za-z]"
+    r"|[A-Z][A-Za-z]{0,5}\*?|\.\.\.|ln|exp|max|min|log|sqrt|sign|" + _GREEK_ALT
+)
+# One-letter English words and spelled Greek names ("sigma (σ)") are only symbols
+# next to an operator ("a + b < 1").
+_AMBIGUOUS = {"a", "A", "I", "x"}
+# Markdown and text that are never part of a formula.
+_RE_INLINE_PROTECTED = re.compile(
+    r"`[^`\n]*`|\[[^\]\n]*\]\((?:[^()\s]|\([^()\s]*\))*\)(?:\{:[^}\n]*\})?|https?://\S+"
+    r"|<u>.*?</u>|\*\*[^*\n]+\*\*|^\s*(?:[-*]|\d+\.)\s+"
+)
+
+_INLINE_CONTEXT = {"page": "", "function": ""}
+_INLINE_LOG: list[dict] = []  # every converted span, written out with DOCS_INLINE_MATH_LOG
+
+
+def _inline_word_class(core: str) -> str:
+    """O(perator), M(ath signal), S(ymbol), A(mbiguous letter), C(apitalized name) or W(ord)."""
+    if core in _INLINE_OPS:
+        return "O"
+    # a word applied to a symbol ("Spot Rate(τ)") is a word formula, ln(Backcast) a name;
+    # sigma_2 is how the GARCH docstrings write σ², so it stays as written
+    call = re.match(r"([A-Za-z]{3,})\(", core)
+    name = call.group(1) if call else ""
+    if call and name not in _FUNC_MAP and name not in _INLINE_NAMES and name != "sqrt" \
+            and sum(c.isupper() for c in name) < 2 or core == "sigma_2":
+        return "W"
+    if "@" in core or re.search(r"[A-Z]{2,}_[A-Z]{2,}", core):  # dataset codes: DSD_HSL@DF_HSL
+        return "W"
+    if re.fullmatch(r"(?:ln|log|exp)\([A-Z][a-z]+\)", core):
+        return "C"
+    if _RE_INLINE_SIGNAL.search(_RE_WORD_POWER.sub("", core)) or _RE_INLINE_SUB.search(core):
+        return "M"
+    atoms = [a for a in re.split(r"[()\[\]{},|/]+", core) if a]
+    if all(_RE_SYMBOL_ATOM.fullmatch(a) for a in atoms):
+        if core.strip("()[],") in _AMBIGUOUS or core.strip("()[],") in _GREEK_NAMES:
+            return "A"
+        # capitalized words such as "The" or "Std" are no symbols, and neither are longer
+        # acronyms (GARCH, LPFD); short ones are (IR, VaR, SR*)
+        if all(not re.fullmatch(r"[A-Z][a-z]{1,5}|[A-Z]{3,}", a) or a in _INLINE_NAMES for a in atoms):
+            return "S"
+    if re.fullmatch(r"[A-Z][a-z]+|[A-Z]{3,}(\([^)]*\))?", core.strip("()")):
+        return "C"
+    return "W"
+
+
+class _Inline:
+    """Render one plain-text formula span as LaTeX."""
+
+    def __init__(self, text: str):
+        # Ŷ and ȳ come apart into a letter and a combining hat or bar
+        text = unicodedata.normalize("NFD", text)
+        text = text.replace("&#124;", "|").replace("−", "-").replace("…", "...")
+        text = re.sub("[" + "".join(_SUBSCRIPT_CHARS) + "]+",
+                      lambda m: "_{" + "".join(_SUBSCRIPT_CHARS[c] for c in m.group(0)) + "}", text)
+        text = re.sub("[" + "".join(_SUPERSCRIPT_CHARS) + "]+",
+                      lambda m: "^{" + "".join(_SUPERSCRIPT_CHARS[c] for c in m.group(0)) + "}", text)
+        self.s = text
+        self.pos = 0
+        self.pending_sub = ""  # digits glued to the last symbol, its subscript
+
+    def render(self) -> str:
+        return self.sequence("")
+
+    def sequence(self, closer: str) -> str:
+        parts: list[str] = []
+        while self.pos < len(self.s):
+            char = self.s[self.pos]
+            if closer and char == closer:
+                self.pos += 1
+                break
+            if char == " ":
+                self.pos += 1
+                continue
+            parts.append(self.item())
+        return " ".join(p for p in parts if p)
+
+    def item(self) -> str:
+        s, char = self.s, self.s[self.pos]
+        if s.startswith("...", self.pos) or s.startswith("..", self.pos):
+            self.pos += 3 if s.startswith("...", self.pos) else 2
+            return r"\ldots"
+        two = s[self.pos:self.pos + 2]
+        if two in ("<=", ">=", "!="):
+            self.pos += 2
+            return _INLINE_OPS[two]
+        if char == "*" and self.pos > 0 and s[self.pos - 1] != " ":
+            self.pos += 1  # a star glued to its symbol: SR*, σ*
+            return "^{*}"
+        if char in _INLINE_OPS:
+            self.pos += 1
+            return _INLINE_OPS[char]
+        if char in ",;":
+            self.pos += 1
+            return char
+        if char == "%":
+            self.pos += 1
+            return r"\%"
+        return self.postfix(self.atom())
+
+    def atom(self) -> str:
+        s, char = self.s, self.s[self.pos]
+        if char in "([{":
+            self.pos += 1
+            inner = self.sequence({"(": ")", "[": "]", "{": "}"}[char])
+            return {"(": f"({inner})", "[": f"[{inner}]", "{": rf"\{{{inner}\}}"}[char]
+        if char == "√":
+            self.pos += 1
+            if self.pos < len(s) and s[self.pos] == "(":
+                self.pos += 1
+                return r"\sqrt{" + self.sequence(")") + "}"
+            inner = self.postfix(self.atom())
+            if self.pos < len(s) and s[self.pos] == "(":  # √Var(...)
+                inner += " " + self.atom()
+            return r"\sqrt{" + inner + "}"
+        if char == "½":
+            self.pos += 1
+            return r"\tfrac{1}{2}"
+        if char == "∂":
+            self.pos += 1
+            return r"\partial"
+        if char in _GREEK_CHARS:
+            self.pos += 1
+            name = _GREEK_CHARS[char]
+            if char == "Σ":
+                # Σ is a sum before an index or a term ("Σ w_i", "Σ_(s≤t)", "Σ(1/σ_j)"),
+                # and the covariance matrix when glued to a symbol ("w'Σw", "τΣ", "Σ_AA") or
+                # followed by an operator ("Σ + M"). After a division it is a sum ("y / Σy").
+                before = s[self.pos - 2] if self.pos >= 2 else " "
+                nxt = s[self.pos:self.pos + 1]
+                after = s[self.pos:].lstrip(" ")
+                glued = before.isalnum() or before in "'" or before in _GREEK_CHARS
+                if s[:self.pos - 1].rstrip().endswith("/") or not glued and (
+                        nxt in (" ", "(", "[") and after and (after[0] == "|" or after[0] not in _INLINE_OPS)
+                        and after[0] not in ",)" or nxt == "_" and not s[self.pos + 1:self.pos + 2].isupper()):
+                    return r"\sum"
+            return "\\" + name + self.digits()
+        match = re.compile(r"[A-Za-z]+").match(s, self.pos)
+        if match:
+            word = match.group(0)
+            self.pos = match.end()
+            if word == "sqrt" and s[self.pos:self.pos + 1] == "(":
+                self.pos += 1
+                return r"\sqrt{" + self.sequence(")") + "}"
+            if word in _FUNC_MAP:
+                return _FUNC_MAP[word]
+            if word in _INLINE_NAMES:
+                return _INLINE_NAMES[word]
+            if word in _GREEK_NAMES:
+                return "\\" + word + self.digits()
+            if len(word) == 1 or (len(word) == 2 and word.islower()) or re.fullmatch(r"d[A-Z]", word):
+                return word + self.digits()
+            return r"\text{" + _text_escape(word) + "}" + self.digits()
+        match = re.compile(r"(\d+)/(\d+)(?![\d.])").match(s, self.pos)
+        if match:  # 1/2 w'Σw
+            self.pos = match.end()
+            return r"\tfrac{" + match.group(1) + "}{" + match.group(2) + "}"
+        match = re.compile(r"\d+(\.\d+)?").match(s, self.pos)
+        if match:
+            self.pos = match.end()
+            return match.group(0)
+        self.pos += 1
+        return r"\text{" + _text_escape(char) + "}"
+
+    def digits(self) -> str:
+        """Digits glued to a symbol are its subscript: d1, β0, τ1."""
+        match = re.compile(r"\d+").match(self.s, self.pos)
+        if not match:
+            return ""
+        self.pos = match.end()
+        self.pending_sub = match.group(0)
+        return ""
+
+    def postfix(self, atom: str) -> str:
+        s = self.s
+        sub, sup, primes = self.pending_sub, "", ""
+        self.pending_sub = ""
+        while self.pos < len(s):
+            char = s[self.pos]
+            if char in "\u0302\u0304":
+                command = r"\hat" if char == "\u0302" else r"\bar"
+                if atom.startswith(r"\text"):
+                    command = r"\widehat" if char == "\u0302" else r"\overline"
+                atom = command + "{" + atom + "}"
+                self.pos += 1
+            elif char == "'":
+                if sub or sup:
+                    primes += "'"  # r_t'w: the transpose of r_t
+                else:
+                    atom += "'"
+                self.pos += 1
+            elif char == "*" and (self.pos + 1 == len(s) or s[self.pos + 1] in " ),^]"):
+                sup += "*"
+                self.pos += 1
+            elif char == "_":
+                self.pos += 1
+                sub = (sub + "," if sub else "") + self.script(subscript=True)
+            elif char == "^":
+                self.pos += 1
+                sup += self.script(subscript=False)
+            else:
+                break
+        if sub:
+            atom += "_{" + sub + "}"
+        if sup:
+            atom += "^{" + sup + "}"
+        return atom + primes
+
+    def script(self, subscript: bool) -> str:
+        s = self.s
+        if self.pos >= len(s):
+            return ""
+        char = s[self.pos]
+        if char in "({":
+            self.pos += 1
+            return self.sequence(")" if char == "(" else "}")
+        if char == "|":
+            end = s.find("|", self.pos + 1)
+            if end != -1:
+                inner = _Inline(s[self.pos + 1:end]).render()
+                self.pos = end + 1
+                return r"\vert " + inner + r" \vert"
+        if char == "-":
+            self.pos += 1
+            return "-" + self.script(subscript)
+        if char in _GREEK_CHARS:
+            self.pos += 1
+            return "\\" + _GREEK_CHARS[char]
+        pattern = r"[A-Za-z0-9]+(?:,[A-Za-z0-9]+)*" if subscript else r"[A-Za-z0-9]+|\d+(\.\d+)?"
+        match = re.compile(pattern).match(s, self.pos)
+        if not match:
+            return ""
+        self.pos = match.end()
+        pieces = []
+        for piece in match.group(0).split(","):
+            if piece in _GREEK_NAMES:
+                pieces.append("\\" + piece)
+            elif piece.isdigit() or len(piece) == 1 or re.fullmatch(r"[ijklmnpqst]{2}", piece):
+                pieces.append(piece)
+            else:
+                pieces.append(r"\text{" + _text_escape(piece) + "}")
+        return ",".join(pieces)
+
+
+def _inline_to_latex(span: str) -> str:
+    return _Inline(span).render()
+
+
+def _balance(span: str) -> tuple[str, str, str] | None:
+    """Move unmatched brackets at either end, and a pair wrapping the whole span,
+    out of the formula: "(σ)" keeps its parentheses as text. None when the
+    brackets don't match inside the span."""
+    lead = trail = ""
+    pairs = {")": "(", "]": "[", "}": "{"}
+    for _ in range(len(span)):
+        stack, unmatched = [], []
+        for i, char in enumerate(span):
+            if char in "([{":
+                stack.append(i)
+            elif char in pairs:
+                if stack and span[stack[-1]] == pairs[char]:
+                    opened = stack.pop()
+                    if opened == 0 and i == len(span) - 1:
+                        unmatched = [0, i]
+                else:
+                    unmatched.append(i)
+        unmatched = sorted(set(unmatched + stack))
+        if not unmatched:
+            return lead, span, trail
+        if unmatched[0] == 0:
+            lead += span[0]
+            span = span[1:].lstrip()
+        elif unmatched[-1] == len(span) - 1:
+            trail = span[-1] + trail
+            span = span[:-1].rstrip()
+        else:
+            return None
+        if not span:
+            return None
+    return None
+
+
+def _inline_spans(text: str) -> list[tuple[int, int, str]]:
+    """Find the formula spans of a stretch of prose: (start, end, latex)."""
+    words = [(m.start(), m.end(), m.group(0)) for m in re.finditer(r"\S+", text)]
+    cores, classes = [], []
+    for start, end, word in words:
+        lead = len(word) - len(word.lstrip("\"'“‘"))
+        core = word[lead:]
+        if not re.fullmatch(r"\.{2,}[,;:]?", core):
+            core = core.rstrip(".,;:!?\"”’")
+        cores.append((start + lead, start + lead + len(core), core, word[lead + len(core):]))
+        classes.append(_inline_word_class(core) if core else "W")
+
+    def op(i):
+        return 0 <= i < len(classes) and classes[i] == "O"
+
+    keep = []
+    for i, cls in enumerate(classes):
+        if cls == "A":
+            keep.append(op(i - 1) or op(i + 1))
+        elif cls == "C":
+            # a name between operators ("= Omega + Alpha *"), or ending the formula
+            keep.append(op(i - 1) and (op(i + 1) or bool(cores[i][3]) or i == len(classes) - 1
+                                       or cores[i][2].endswith(")")))
+        else:
+            keep.append(cls in "MSO")
+
+    # runs of kept words, broken at sentence and clause punctuation outside brackets
+    runs, run, depth = [], [], 0
+    for i, kept in enumerate(keep):
+        if not kept or (run and words[i][2][:1] in "\"'“‘"):
+            if run:
+                runs.append(run)
+            run, depth = [], 0
+            if not kept:
+                continue
+        run.append(i)
+        core = cores[i][2]
+        depth += sum(core.count(c) for c in "([{") - sum(core.count(c) for c in ")]}")
+        if cores[i][3] and depth <= 0:
+            runs.append(run)
+            run, depth = [], 0
+    if run:
+        runs.append(run)
+
+    spans = []
+    for run in runs:
+        while run and classes[run[0]] == "O":
+            run = run[1:]
+        while run and classes[run[-1]] == "O":
+            run = run[:-1]
+        if not run:
+            continue
+        # brackets that don't match inside the span ("β2 (a hump"): drop words from the end
+        balanced = None
+        while run and not balanced:
+            start, end = cores[run[0]][0], cores[run[-1]][1]
+            balanced = _balance(text[start:end])
+            if not balanced:
+                run = run[:-1]
+        if not balanced:
+            continue
+        lead, span, trail = balanced
+        start = text.index(span, start + len(lead))
+        end = start + len(span)
+        # an operator left dangling once a bracket is moved out ("(t_i ≥ w_i, ... Σ t_i ≤")
+        while span and span.split(" ")[-1] in _INLINE_OPS:
+            span = span.rsplit(" ", 1)[0].rstrip() if " " in span else ""
+            end = start + len(span)
+        if not span:
+            continue
+
+        inside = [i for i in run if cores[i][1] > start and cores[i][0] < end]
+        run_classes = [classes[i] for i in inside]
+        run_words = [cores[i][2].strip("()[]") for i in inside]
+        signal = "M" in run_classes or any(w in _SIGNAL_OPS for w in run_words)
+        if "C" in run_classes:  # "1 × Strong Buy + 2 × Buy" is a sum in words
+            signal = "M" in run_classes
+        for k, word in enumerate(run_words):
+            # an (in)equation between symbols ("h = 1", "H < 0.5"), not between numbers ("2015 = 100")
+            if word in ("=", "<", ">", "<=", ">=") and 0 < k < len(run_words) - 1 \
+                    and run_classes[k - 1] in "MSA" and run_classes[k + 1] in "MSA" \
+                    and re.search(r"[A-Za-z]", run_words[k - 1] + run_words[k + 1]):
+                signal = True
+        # a comparison cut out of a bracket ("Count(|x| < |y|, s < t)") is part of a word formula
+        if "M" not in run_classes and lead + trail and not (lead in "([" and trail in ")]" and lead and trail):
+            continue
+        if not signal or not re.search(r"[^\W\d_]", span):
+            continue
+        # a lone Σ is the covariance matrix ("where Σ is", "with Σ the"), but "the sum of"
+        # before a noun ("Σ contribution / Σ start weight")
+        nxt = run[-1] + 1
+        if span == "Σ" and nxt < len(classes) and classes[nxt] in "WC" \
+                and cores[nxt][2] not in ("is", "the", "their", "itself", "and", "as"):
+            continue
+        spans.append((start, end, _inline_to_latex(span)))
+    return spans
+
+
+def _inline_math(text: str) -> str:
+    """Wrap the formula spans of prose lines in $$...$$ (inline math). Lines in
+    display-math blocks and code blocks, table rows, headings and the "Also known
+    as" names are left alone; links, code and argument labels are skipped."""
+    out, in_math, in_code = [], False, False
+    lines = text.split("\n")
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code = not in_code
+        if stripped == "$$":
+            in_math = not in_math
+        if in_code or in_math or stripped in ("$$", "") or stripped.startswith(("|", "#", "**Also known as:**")):
+            out.append(line)
+            continue
+        pieces, last = [], 0
+        for protected in list(_RE_INLINE_PROTECTED.finditer(line)) + [None]:
+            stop = protected.start() if protected else len(line)
+            # a pipe is &#124; in the Markdown (_escape_pipes) and \vert in the math
+            free = line[last:stop].replace("&#124;", "|")
+            cursor = 0
+            for start, end, latex in _inline_spans(free):
+                # glued to code or a link ("int(`train_fraction`·n)"): part of that, not a formula
+                if (start == 0 and last > 0 and not line[last - 1].isspace()) \
+                        or (end == len(free) and protected):
+                    continue
+                pieces.append(free[cursor:start].replace("|", "&#124;") + "$$" + latex + "$$")
+                _INLINE_LOG.append({**_INLINE_CONTEXT, "text": free[start:end], "latex": latex})
+                cursor = end
+            pieces.append(free[cursor:].replace("|", "&#124;"))
+            if protected:
+                pieces.append(protected.group(0))
+                last = protected.end()
+        line = "".join(pieces)
+        # a paragraph that is nothing but formulas ("λ = s / (1 - R), P(t_n) = ...")
+        # is a display formula
+        alone = (index == 0 or not lines[index - 1].strip()) \
+            and (index == len(lines) - 1 or not lines[index + 1].strip())
+        formulas = re.findall(r"\$\$(.+?)\$\$", line)
+        if alone and formulas and not re.sub(r"\$\$.+?\$\$", "", line).strip(" ,.;"):
+            line = "$$\n" + r",\quad ".join(formulas) + "\n$$"
+        out.append(line)
+    return "\n".join(out)
 
 _GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 _REQUEST_TIMEOUT = 30
@@ -623,7 +1125,9 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
 
         # Description
         desc_m = _RE_DESCRIPTION.match(docstring)
+        _INLINE_CONTEXT.update(page=os.path.basename(location), function=function_name)
         description = _clean_description(desc_m.group(1)) if desc_m else ""
+        description = _inline_math(description)
         description = _linkify(description)
 
         # Arguments (also covers Returns / Raises / Notes, which follow Args:)
@@ -635,6 +1139,7 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
         arguments = "\n".join(
             _RE_MULTI_SPACE.sub(" ", line).strip() for line in arguments.split("\n")
         )
+        arguments = _inline_math(arguments)
 
         # Example code block
         code_m = _RE_CODE.search(docstring)
@@ -670,12 +1175,12 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
 
         if fn["arguments"]:
             arguments = (
-                fn["arguments"]
-                .replace("Args:", "**Args:**")
-                .replace("Raises:", "**Raises:**")
-                .replace("Returns:", "**Returns:**")
-                .replace("Notes:", "**Notes:**")
-                .replace("As an example:", "**As an example:**")
+                re.sub(
+                    r"^([ \t]*)(Args|Raises|Returns|Notes):[ \t]*$",
+                    r"\1**\2:**",
+                    fn["arguments"],
+                    flags=re.MULTILINE,
+                ).replace("As an example:", "**As an example:**")
             )
             # Ensure a blank line follows each bolded header so a directly
             # adjacent bullet list (e.g. "**Notes:**\n- ...") renders as a list.
@@ -1018,3 +1523,8 @@ if __name__ == "__main__":
         print(f"Local mode: reading controllers from {_LOCAL_PATH}\n")
     for page in PAGES:
         create_markdown_file(page["url"], page["header"], page["location"])
+    # DOCS_INLINE_MATH_LOG=<file> lists every inline formula, to review the conversion
+    if os.environ.get("DOCS_INLINE_MATH_LOG"):
+        with open(os.environ["DOCS_INLINE_MATH_LOG"], "w", encoding="utf-8") as f:
+            for entry in _INLINE_LOG:
+                f.write(f"{entry['page']}\t{entry['function']}\t{entry['text']}\t{entry['latex']}\n")

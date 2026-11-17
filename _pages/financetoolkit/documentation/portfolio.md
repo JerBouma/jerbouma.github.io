@@ -239,23 +239,15 @@ The following columns are included:
 - Close: the closing price for the benchmark over time.
 - Adj Close: the adjusted closing price for the benchmark over time.
 - Volume: the volume of the benchmark over time.
-- Dividends: the dividends of the benchmark over time. -
-
-**Returns:** the returns of the benchmark over time.
+- Dividends: the dividends of the benchmark over time.
+- Returns: the returns of the benchmark over time.
 - Cumulative Return: the cumulative return of the benchmark over time.
 
-Volatility, Excess Return and Excess Volatility are not included here. These are
-available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance
-module (e.g. toolkit.performance.get_excess_return) instead.
+Volatility, Excess Return and Excess Volatility are not included here. These are available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance module (e.g. toolkit.performance.get_excess_return) instead.
 
-This method retrieves historical benchmark data (daily and weekly)
-for the portfolio, based on a specified benchmark ticker or a mapping of portfolio tickers to
-their corresponding benchmark tickers. The retrieved benchmark data is then aligned with the
-portfolio's historical data, ensuring that the dates of the benchmark data match the dates of
-the portfolio's transactions.
+This method retrieves historical benchmark data (daily and weekly) for the portfolio, based on a specified benchmark ticker or a mapping of portfolio tickers to their corresponding benchmark tickers. The retrieved benchmark data is then aligned with the portfolio's historical data, ensuring that the dates of the benchmark data match the dates of the portfolio's transactions.
 
-The method can retrieve data for a single benchmark ticker or for multiple benchmarks depending
-on the portfolio tickers. The resulting benchmark data is returned in a structured DataFrame.
+The method can retrieve data for a single benchmark ticker or for multiple benchmarks depending on the portfolio tickers. The resulting benchmark data is returned in a structured DataFrame.
 
 **Args:**
 
@@ -335,23 +327,15 @@ The following columns are included:
 - Close: the closing price of each asset over time.
 - Adj Close: the adjusted closing price of each asset over time.
 - Volume: the volume of each asset over time.
-- Dividends: the dividends of each asset over time. -
-
-**Returns:** the returns of each asset over time.
+- Dividends: the dividends of each asset over time.
+- Returns: the returns of each asset over time.
 - Cumulative Return: the cumulative return of each asset over time.
 
-Volatility, Excess Return and Excess Volatility are not included here. These are
-available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance
-module (e.g. toolkit.performance.get_excess_return) instead.
+Volatility, Excess Return and Excess Volatility are not included here. These are available via the Risk module (e.g. toolkit.risk.get_volatility) and the Performance module (e.g. toolkit.performance.get_excess_return) instead.
 
-This method retrieves historical price data (daily and weekly)
-for the portfolio's tickers and adjusts for any currency mismatches if necessary. It fetches
-data from a specified data source, applies currency conversion where applicable, and stores the
-adjusted data in separate DataFrames for the daily and weekly periods.
+This method retrieves historical price data (daily and weekly) for the portfolio's tickers and adjusts for any currency mismatches if necessary. It fetches data from a specified data source, applies currency conversion where applicable, and stores the adjusted data in separate DataFrames for the daily and weekly periods.
 
-The method uses the Toolkit class to fetch historical price data and the Currency Toolkit to
-handle currency conversions if the portfolio’s transaction currency does not match the historical
-data's currency.
+The method uses the Toolkit class to fetch historical price data and the Currency Toolkit to handle currency conversions if the portfolio’s transaction currency does not match the historical data's currency.
 
 **Args:**
 
@@ -500,7 +484,7 @@ The following columns are included:
 - Return: The total return on the capital deployed, i.e. Return Value divided by Invested. This covers realized and unrealized results and the dividends together and is NaN when nothing was invested. The "Portfolio" row divides by the capital contributed to the portfolio instead: the peak of the cumulative net contribution, i.e. every buy plus the costs minus the sale proceeds and the dividends received up to that date, summed over the assets per date. The buys of a rebalancing are paid for by the sells and dividends of the portfolio itself, so a portfolio that invests 10,000 once has 10,000 of capital however often it is rebalanced, while its "Invested" adds up every rebalancing buy. A portfolio of buys has its "Invested" as its capital, less the part of a later buy that a dividend received before it paid for.
 - Return Value: The absolute profit or loss, i.e. Latest Value plus all sale proceeds plus Dividends minus Invested. This equals realized PnL plus unrealized PnL plus dividends minus the transaction costs, where the realized PnL is the figure reported by get_transactions_overview.
 - Benchmark Return: The return the identical cash flows would have produced in the benchmark. Every transaction buys or sells benchmark units at the benchmark's closing price for the exact cash amount of that transaction on that date, so the comparison is matched in money rather than in share count, and the benchmark's dividends are received as cash as well. The "Portfolio" row divides by the same capital as its Return, so its Alpha compares like with like.
-- Volatility: The annualized volatility of the asset's daily returns over the most recent 252 trading days. For the aggregated "Portfolio" row, this is derived from the full covariance matrix of the underlying asset returns over the same days (Var_p = w^T * Cov * w, Markowitz, 1952) rather than a weighted average of individual volatilities, since the latter ignores diversification from imperfectly correlated assets.
+- Volatility: The annualized volatility of the asset's daily returns over the most recent 252 trading days. For the aggregated "Portfolio" row, this is derived from the full covariance matrix of the underlying asset returns over the same days ($$\operatorname{Var}_{p} = w^{T} \cdot \operatorname{Cov} \cdot w$$, Markowitz, 1952) rather than a weighted average of individual volatilities, since the latter ignores diversification from imperfectly correlated assets.
 - Benchmark Volatility: The annualized volatility of the benchmark's daily returns over the most recent 252 trading days.
 - Alpha: The alpha is based on the difference between the asset's return and the benchmark return.
 - Beta: The beta of the asset's daily returns against the benchmark's over the most recent 252 trading days, the window of the Volatility column. A beta >1 indicates that the asset is more volatile than the benchmark and a beta <1 indicates that the asset is less volatile than the benchmark.

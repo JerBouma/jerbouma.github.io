@@ -308,7 +308,7 @@ CAPM, or the Capital Asset Pricing Model, is a financial model used to estimate 
 
 - Risk-Free Rate (Rf): This is the theoretical return an investor could earn from an investment with no risk of financial loss. It is typically based on the yield of a government bond.
 - Market Risk Premium (Rm - Rf): This represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset. It is calculated as the difference between the expected return of the market (Rm) and the risk-free rate (Rf).
-- Beta (β): Beta is a measure of an asset's or portfolio's sensitivity to market movements. It quantifies how much an asset's returns are expected to move in relation to changes in the overall market. A beta of 1 indicates that the asset moves in line with the market, while a beta greater than 1 suggests higher volatility, and a beta less than 1 indicates lower volatility.
+- Beta ($$\beta$$): Beta is a measure of an asset's or portfolio's sensitivity to market movements. It quantifies how much an asset's returns are expected to move in relation to changes in the overall market. A beta of 1 indicates that the asset moves in line with the market, while a beta greater than 1 suggests higher volatility, and a beta less than 1 indicates lower volatility.
 
 The Capital Asset Pricing Model (CAPM) is a widely used financial model that helps in determining the expected return of an asset or portfolio based on its systematic risk and the prevailing risk-free rate in the market. CAPM provides insights into how an asset or investment should be priced in order to offer an appropriate rate of return, given its level of risk compared to the overall market.
 
@@ -389,7 +389,7 @@ Calculates factor exposures for each asset.
 
 The major difference between the Fama and French Model here is that the correlation is taken as opposed to a Linear Regression in which the R-squared or Slope can be used to understand the exposure to each factor.
 
-For assessing the exposure or influence of a stock to external factors, it's often preferable to use R-squared (R²) or Beta because it explicitly measures how well the factors explain the stock's returns. A higher R² indicates that the stock's returns are more closely related to the factors, and thus, the factors have a greater influence on the stock's performance.
+For assessing the exposure or influence of a stock to external factors, it's often preferable to use R-squared ($$R^{2}$$) or Beta because it explicitly measures how well the factors explain the stock's returns. A higher $$R^{2}$$ indicates that the stock's returns are more closely related to the factors, and thus, the factors have a greater influence on the stock's performance.
 
 However, since the results are closely related and tend to point into the same direction it could be fine to use correlations as well depending on the level of accuracy required.
 
@@ -1047,7 +1047,7 @@ $$
 \operatorname{SR}(q) = \operatorname{η}(q) \cdot \text{SR},\;\; \operatorname{η}(q) = q / \sqrt{q + 2 \cdot \text{Σ\_\{k} = \text{1\}} ^{\text{\{q-1\}}} (q - k) \cdot \rho_{k}}
 $$
 
-where q is the number of observations in a year and ρ_k the sample autocorrelation of the excess returns at lag k. Positive autocorrelation lowers the annualized ratio below SQRT(q) * SR, negative autocorrelation raises it. Sample autocorrelations at lags close to the sample size rest on a handful of pairs, so the sum runs over `lags` lags and takes the autocorrelations beyond them as 0. Each ρ_k is corrected for its small-sample bias −(n − k) / (n · (n − 1)) (Moran, 1948), which the (q − k) weights would otherwise turn into an overstated ratio on short samples, and fewer than 30 observations give NaN: a week or a month of daily returns, or a rolling window below 30, so use quarterly or yearly periods or a longer window. The result is always annualized.
+where q is the number of observations in a year and $$\rho_{k}$$ the sample autocorrelation of the excess returns at lag k. Positive autocorrelation lowers the annualized ratio below SQRT(q) * SR, negative autocorrelation raises it. Sample autocorrelations at lags close to the sample size rest on a handful of pairs, so the sum runs over `lags` lags and takes the autocorrelations beyond them as 0. Each $$\rho_{k}$$ is corrected for its small-sample bias −(n − k) / (n · (n − 1)) (Moran, 1948), which the (q − k) weights would otherwise turn into an overstated ratio on short samples, and fewer than 30 observations give NaN: a week or a month of daily returns, or a rolling window below 30, so use quarterly or yearly periods or a longer window. The result is always annualized.
 
 - `"adjusted"` - the Adjusted Sharpe Ratio (ASR, Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically:
 
@@ -1067,7 +1067,7 @@ $$
 \text{SR} \cdot = \sqrt{\text{Var} \left[\text{SR\_trials}\right]} \cdot \left[(1 - \text{γ}) \cdot \operatorname{Phi⁻¹}(1 - 1 / N) + \text{γ} \cdot \operatorname{Phi⁻¹}(1 - 1 / (N \cdot e))\right]
 $$
 
-Where SR̂ is the observed Sharpe ratio, S (γ₃) is the skewness and K (γ₄) the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, γ ≈ 0.5772 is the Euler-Mascheroni constant and Φ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
+Where $$\widehat{\text{SR}}$$ is the observed Sharpe ratio, $$S (\gamma_{3})$$ is the skewness and $$K (\gamma_{4})$$ the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, $$\gamma \approx 0.5772$$ is the Euler-Mascheroni constant and $$\Phi$$ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
 
 This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of valid (non-NaN) values in that same rolling series. That series is built from the same returns as the Sharpe ratio being deflated, so both are on the same scale: the daily excess returns (the observations within each period) for the Sharpe ratio per period, and the excess returns of `period` itself for a rolling Sharpe ratio. This treats each rolling window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
 
@@ -1100,7 +1100,7 @@ arriving at the reported Sharpe ratio. Only used when method="deflated". Default
 None, which falls back to the number of valid values in the auxiliary rolling Sharpe
 ratio series described above. Pass this explicitly whenever the actual number of trials
 is known.
-- <u>lags (int, optional):</u> The number of autocorrelation lags in Lo's η(q). Only used when
+- <u>lags (int, optional):</u> The number of autocorrelation lags in Lo's $$\eta (q)$$. Only used when
 method="lo". Defaults to None, which uses the Newey and West (1994) rule
 floor(4 * (n / 100)^(2/9)) on the n observations (4 for a year of daily returns),
 capped at q − 1.
@@ -1709,9 +1709,9 @@ Which returns:
 ## get_information_ratio
 The Information Ratio (IR) is a financial metric that assesses the risk-adjusted performance of a portfolio or investment strategy relative to a benchmark index. It quantifies how much active return (the return above the benchmark) the portfolio generates per unit of tracking error, the volatility of that active return. The Information Ratio is commonly used by portfolio managers, financial analysts, and investors to evaluate the skill of a portfolio manager in generating returns beyond what would be expected based on the risk taken.
 
-- IR > 0: A positive Information Ratio indicates that the portfolio has generated excess returns compared to the benchmark, suggesting that the portfolio manager has added value.
-- IR = 0: An Information Ratio of zero implies that the portfolio's excess return is in line with the benchmark, meaning the portfolio manager has not added or lost value relative to the benchmark.
-- IR < 0: A negative Information Ratio suggests that the portfolio has underperformed the benchmark, potentially indicating that the portfolio manager has detracted value.
+- $$\text{IR} > 0$$: A positive Information Ratio indicates that the portfolio has generated excess returns compared to the benchmark, suggesting that the portfolio manager has added value.
+- $$\text{IR} = 0$$: An Information Ratio of zero implies that the portfolio's excess return is in line with the benchmark, meaning the portfolio manager has not added or lost value relative to the benchmark.
+- $$\text{IR} < 0$$: A negative Information Ratio suggests that the portfolio has underperformed the benchmark, potentially indicating that the portfolio manager has detracted value.
 
 The formula is as follows:
 
@@ -3398,7 +3398,7 @@ Which returns:
 ---
 
 ## get_factor_analysis
-Factor analysis (predictive power) of the performance metrics, or of a factor of your own: whether the tickers that score high on a metric go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the metric of the tickers in the period and their return over the following horizon: 1 means the metric ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, IR ≈ IC × √breadth: a small but consistent IC across many tickers and periods gives a high information ratio.
+Factor analysis (predictive power) of the performance metrics, or of a factor of your own: whether the tickers that score high on a metric go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the metric of the tickers in the period and their return over the following horizon: 1 means the metric ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
 The summary has a row per metric and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the metric from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single metric.
 
@@ -3548,7 +3548,7 @@ pd.DataFrame: The standard error of the Sharpe ratio per period.
 intraday_period).
 - The "non_normal" error uses the bias-corrected sample skewness and kurtosis, as
 `get_sharpe_ratio(method="probabilistic")` does; the "gmm" error uses the moments of
-GMM (σ² with 1 / n).
+GMM ($$\sigma^{2}$$ with 1 / n).
 - If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
 
 **As an example:**
@@ -3588,7 +3588,7 @@ $$
 \text{MinTRL} = 1 + (1 - \text{γ₃} \cdot \text{SR} + ((\text{γ₄} - 1) / 4) \cdot \text{SR} ^{2}) \cdot (Z_{\alpha} / (\text{SR} - \text{SR} \cdot)) ^{2}
 $$
 
-Where SR is the Sharpe ratio of one observation (not annualized), SR* the benchmark Sharpe ratio on the same scale, γ₃ the skewness and γ₄ the non-excess (raw) kurtosis of the excess returns (3 for a normal distribution) and Z_α the standard normal quantile at `confidence_level` (1.645 for 95%). With n = MinTRL observations, the Probabilistic Sharpe Ratio, `get_sharpe_ratio(method="probabilistic")`, equals `confidence_level`. Negative skewness and fat tails lengthen the record needed. When SR does not exceed SR*, no track record is long enough and the value is left out (NaN).
+Where SR is the Sharpe ratio of one observation (not annualized), SR* the benchmark Sharpe ratio on the same scale, $$\gamma_{3}$$ the skewness and $$\gamma_{4}$$ the non-excess (raw) kurtosis of the excess returns (3 for a normal distribution) and $$Z_{\alpha}$$ the standard normal quantile at `confidence_level` (1.645 for 95%). With $$n = \text{MinTRL}$$ observations, the Probabilistic Sharpe Ratio, `get_sharpe_ratio(method="probabilistic")`, equals `confidence_level`. Negative skewness and fat tails lengthen the record needed. When SR does not exceed SR*, no track record is long enough and the value is left out (NaN).
 
 By default one MinTRL is reported per `period`, computed from the daily excess returns within that period, so it counts trading days (divide by 252 for years). For a rolling period, `period` sets the frequency of the returns and the measure is computed over a rolling window of `rolling` such returns, so it counts periods (e.g. months).
 
@@ -3672,9 +3672,9 @@ $$
 \text{"residual":}\;\; \beta_{SKD} = E \left[\epsilon_{i} \cdot \epsilon_{m} ^{2}\right] / (\sqrt{E \left[\epsilon_{i} ^{2}\right]} \cdot E \left[\epsilon_{m} ^{2}\right]) (\text{Harvey and Siddique},\; 2000)
 $$
 
-Where r_i is the asset return, r_m the benchmark return, ε_m = r_m − μ_m and ε_i the residual of the regression r_i = α + β·r_m + ε_i. The residual version only looks at the part of the asset's return the market does not explain, so the market's own skewness does not enter through the beta. For the benchmark itself the standardized co-skewness is the benchmark's skewness.
+Where $$r_{i}$$ is the asset return, $$r_{m}$$ the benchmark return, $$\epsilon_{m} = r_{m} - \mu_{m}$$ and $$\epsilon_{i}$$ the residual of the regression $$r_{i} = \alpha + \beta \cdot r_{m} + \epsilon_{i}$$. The residual version only looks at the part of the asset's return the market does not explain, so the market's own skewness does not enter through the beta. For the benchmark itself the standardized co-skewness is the benchmark's skewness.
 
-By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so σ_i and σ_m use 1 / n as well and the measure does not depend on the scale of the returns.
+By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so $$\sigma_{i}$$ and $$\sigma_{m}$$ use 1 / n as well and the measure does not depend on the scale of the returns.
 
 For more information about the method, see the following papers:
 
@@ -3752,9 +3752,9 @@ $$
 \text{"residual":}\;\; E \left[\epsilon_{i} \cdot \epsilon_{m} ^{3}\right] / (\sqrt{E \left[\epsilon_{i} ^{2}\right]} \cdot E \left[\epsilon_{m} ^{2}\right] ^{3 / 2})
 $$
 
-Where r_i is the asset return, r_m the benchmark return, ε_m = r_m − μ_m and ε_i the residual of the regression r_i = α + β·r_m + ε_i, the residual form Harvey and Siddique (2000) use for co-skewness. For the benchmark itself the standardized co-kurtosis is the benchmark's non-excess kurtosis (3 for normal returns); for an asset with a correlation ρ to normally distributed market returns it is 3ρ.
+Where $$r_{i}$$ is the asset return, $$r_{m}$$ the benchmark return, $$\epsilon_{m} = r_{m} - \mu_{m}$$ and $$\epsilon_{i}$$ the residual of the regression $$r_{i} = \alpha + \beta \cdot r_{m} + \epsilon_{i}$$, the residual form Harvey and Siddique (2000) use for co-skewness. For the benchmark itself the standardized co-kurtosis is the benchmark's non-excess kurtosis (3 for normal returns); for an asset with a correlation $$\rho$$ to normally distributed market returns it is $$3 \rho$$.
 
-By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so σ_i and σ_m use 1 / n as well.
+By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so $$\sigma_{i}$$ and $$\sigma_{m}$$ use 1 / n as well.
 
 For more information about the method, see the following papers:
 

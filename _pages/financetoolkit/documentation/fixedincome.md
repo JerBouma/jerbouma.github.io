@@ -530,7 +530,7 @@ $$
 \text{Key Rate Duration} = - (\text{Dirty Price} (\text{Key Rate} + \Delta y) - \text{Dirty Price} (\text{Key Rate} - \Delta y)) / (2 \cdot \text{Dirty Price} \cdot \Delta y)
 $$
 
-Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates, Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding and interpolated linearly between its maturities, and Δy is the shock applied to the key rate only (1 basis point by default).
+Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates, Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding and interpolated linearly between its maturities, and $$\Delta y$$ is the shock applied to the key rate only (1 basis point by default).
 
 The bonds are selected as in `collect_bond_statistics`; TIPS have no key rate durations on the nominal curve. For terms or a curve of your own, use `bond_model.get_key_rate_duration`.
 
@@ -614,7 +614,7 @@ $$
 \%\Delta \;\text{Price} \approx - \text{Modified Duration} \cdot \Delta y + 0.5 \cdot \text{Convexity} \cdot \Delta y ^{2}
 $$
 
-Where YTM is the bond's yield to maturity at its market price, compounded twice a year (see `get_yield_to_maturity`), Δy is the yield change (0.01 by default) and %ΔPrice is the change of the full (dirty) price as a decimal. The bonds are selected as in `collect_bond_statistics`. For terms of your own, use `bond_model.get_taylor_price_change`.
+Where YTM is the bond's yield to maturity at its market price, compounded twice a year (see `get_yield_to_maturity`), $$\Delta y$$ is the yield change (0.01 by default) and %ΔPrice is the change of the full (dirty) price as a decimal. The bonds are selected as in `collect_bond_statistics`. For terms of your own, use `bond_model.get_taylor_price_change`.
 
 With a from_date, the Treasuries are selected on from_date (so the benchmark Treasuries are those that already traded then) and priced again on the price date (`date`):
 
@@ -883,7 +883,7 @@ $$
 \text{Par Yield} = \text{Frequency} \cdot (1 - \operatorname{DF}(t_{n})) / (\operatorname{SUM}(\operatorname{DF}(t_{i})) - a),\;\; \text{over} \;\; \text{the remaining coupons}\; i = 1,\;\; \text{...},\;\; \text{n}
 $$
 
-where Spot Rate(τ) is the zero-coupon rate of `get_zero_coupon_curve` at τ years, restated from annual compounding to the country's coupon frequency (twice a year, once for Sweden and Norway) and interpolated linearly, a is the elapsed fraction of the current coupon period (0 on a coupon date) and t_i = i - a is the time of the i-th coupon in periods. The par yield is a nominal annual coupon rate paid at the coupon frequency, like the government bond yield curve. For a curve of your own, use `yieldcurve_model.get_par_yield`.
+where Spot Rate(τ) is the zero-coupon rate of `get_zero_coupon_curve` at $$\tau$$ years, restated from annual compounding to the country's coupon frequency (twice a year, once for Sweden and Norway) and interpolated linearly, a is the elapsed fraction of the current coupon period (0 on a coupon date) and $$t_{i} = i - a$$ is the time of the i-th coupon in periods. The par yield is a nominal annual coupon rate paid at the coupon frequency, like the government bond yield curve. For a curve of your own, use `yieldcurve_model.get_par_yield`.
 
 **Also known as:** par rate, par coupon rate.
 
@@ -1256,9 +1256,11 @@ Calculates the zero-coupon (spot) yield curve of a country by bootstrapping its 
 
 Maturities up to one year are treasury bills, which pay no coupon, so their yield only needs converting to annual compounding: US bill yields are bond-equivalent yields (simple interest up to half a year), Canadian bill yields simple interest on a 365-day year and Swedish bill yields simple interest on a 360-day year. Beyond that the par yields are interpolated linearly to every coupon date and each discount factor follows from the earlier ones:
 
-P(t_n) = (1 - c/f Σ_{i<n} P(t_i)) / (1 + c/f)
+$$
+P (t_{n}) = (1 - c / f \sum_{i < n} P (t_{i})) / (1 + c / f)
+$$
 
-with c the par yield of maturity t_n and f the coupons per year (two, and one for Sweden and Norway). The curves of the Euro Area and Germany are estimated as zero-coupon curves by the ECB and the Bundesbank, which publish them continuously compounded; they are converted to annual compounding like the others. A curve needs a maturity of a year or less to start from, so the United Kingdom, Norway and Australia (and Canada before its bill yields start) are not covered.
+with c the par yield of maturity $$t_{n}$$ and f the coupons per year (two, and one for Sweden and Norway). The curves of the Euro Area and Germany are estimated as zero-coupon curves by the ECB and the Bundesbank, which publish them continuously compounded; they are converted to annual compounding like the others. A curve needs a maturity of a year or less to start from, so the United Kingdom, Norway and Australia (and Canada before its bill yields start) are not covered.
 
 **Also known as:** spot curve, zero curve, bootstrapped curve, discount curve.
 
@@ -1306,11 +1308,13 @@ Which returns:
 ## get_nelson_siegel_svensson
 Fits the Nelson-Siegel-Svensson model to the zero-coupon yield curve of a country on every date. The model describes a whole curve with a few parameters, which smooths out the noise of individual maturities, gives a yield for any maturity in between and turns the history of curves into a history of a handful of factors. It is the model central banks such as the ECB, the Bundesbank and the Federal Reserve (Gürkaynak, Sack and Wright) publish their curves with.
 
-The Nelson-Siegel model has a level β0 (the yield at an infinite maturity), a slope β1 (the short end minus the long end) and a curvature β2 (a hump that peaks at about 1.8 τ1 years):
+The Nelson-Siegel model has a level $$\beta_{0}$$ (the yield at an infinite maturity), a slope $$\beta_{1}$$ (the short end minus the long end) and a curvature $$\beta_{2}$$ (a hump that peaks at about $$1.8 \tau_{1}$$ years):
 
-y(m) = β0 + β1 (1 - e^(-m/τ1)) / (m/τ1) + β2 [(1 - e^(-m/τ1)) / (m/τ1) - e^(-m/τ1)]
+$$
+y (m) = \beta_{0} + \beta_{1} (1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) + \beta_{2} [(1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) - e^{- m / \tau_{1}}]
+$$
 
-Svensson adds a second curvature β3 with its own decay τ2, which fits the long end better. With the dozen maturities a government curve has, the six Svensson parameters are weakly identified, as the level and the second curvature can offset each other; set svensson=False for the three factors to read as level, slope and curvature (Diebold and Li, 2006).
+Svensson adds a second curvature $$\beta_{3}$$ with its own decay $$\tau_{2}$$, which fits the long end better. With the dozen maturities a government curve has, the six Svensson parameters are weakly identified, as the level and the second curvature can offset each other; set svensson=False for the three factors to read as level, slope and curvature (Diebold and Li, 2006).
 
 Given the decays the betas follow exactly from least squares, so the decays are searched on a grid and refined for every date. The second decay is kept at least 1.5 times the first and the first at least a third of the shortest maturity, and the level at or above the lower of zero and the longest yield (as Gürkaynak, Sack and Wright keep it at or above zero), so that the curve extrapolates sensibly beyond the maturities it is fitted to. The curve is the zero-coupon curve of `get_zero_coupon_curve`, so the countries are those it covers that have at least as many maturities as the model has parameters. The model is fitted to the continuously compounded rates, as the ECB, the Bundesbank and the Federal Reserve fit it, so the parameters compare with theirs; the yields at `maturities` are annually compounded, like those of `get_zero_coupon_curve`.
 
@@ -1433,7 +1437,7 @@ Which returns:
 ---
 
 ## get_short_rate_model
-Calibrates the Vasicek and Cox-Ingersoll-Ross (CIR) short-rate models to the history of a country's short-term government bond yield and compares the zero-coupon curve each model implies with today's. Short-rate models describe how the interest rate moves, pulled back to a long-run mean b at a speed a with a volatility σ:
+Calibrates the Vasicek and Cox-Ingersoll-Ross (CIR) short-rate models to the history of a country's short-term government bond yield and compares the zero-coupon curve each model implies with today's. Short-rate models describe how the interest rate moves, pulled back to a long-run mean b at a speed a with a volatility $$\sigma$$:
 
 $$
 \text{Vasicek (1977):}\;\; \text{dr} = a (b - r) \text{dt} + \sigma \;\text{dW}
@@ -1443,7 +1447,7 @@ $$
 \text{CIR (1985):}\;\; \text{dr} = a (b - r) \text{dt} + \sigma \;\text{sqrt} (r) \text{dW}
 $$
 
-In CIR the volatility shrinks as the rate approaches zero, so the rate stays positive when 2ab ≥ σ² (the Feller condition) and can otherwise touch zero; in Vasicek it can turn negative. The models describe a continuously compounded short rate, so the yields are converted to continuous compounding first (US bill yields from their bond-equivalent quote). Both give bond prices, and so a full zero-coupon curve, in closed form. The parameters are estimated by regressing the change of the rate on its level over the period (CIR on the changes scaled by the square root of the rate, which needs a rate above zero throughout). The half-life is the time it takes to close half the gap to the long-run mean, ln(2) / a.
+In CIR the volatility shrinks as the rate approaches zero, so the rate stays positive when $$2 ab \geq \sigma^{2}$$ (the Feller condition) and can otherwise touch zero; in Vasicek it can turn negative. The models describe a continuously compounded short rate, so the yields are converted to continuous compounding first (US bill yields from their bond-equivalent quote). Both give bond prices, and so a full zero-coupon curve, in closed form. The parameters are estimated by regressing the change of the rate on its level over the period (CIR on the changes scaled by the square root of the rate, which needs a rate above zero throughout). The half-life is the time it takes to close half the gap to the long-run mean, ln(2) / a.
 
 A model calibrated to the history does not reproduce today's curve, which is what the comparison with the market shows; the Hull-White model of `get_short_rate_simulation` adds a time-varying mean that does.
 
@@ -1514,9 +1518,11 @@ Which returns:
 ## get_short_rate_simulation
 Simulates the future path of a country's short-term interest rate with the Hull-White, Vasicek or Cox-Ingersoll-Ross model and summarizes the distribution of the paths per step: the mean and the 5th, 25th, 50th, 75th and 95th percentiles. Simulated rate paths value interest rate derivatives and path-dependent products (such as mortgages with prepayment), and stress the interest income of a balance sheet.
 
-The speed of mean reversion and the volatility are calibrated to the history of the rate, see `get_short_rate_model`. In the Vasicek and CIR models the rate is pulled to the long-run mean of that history. The Hull-White (1990) model replaces it with a mean that varies over time and follows from today's zero-coupon curve, so that the model reproduces the discount factors of that curve (its expected short rate lies above the forward rate by the convexity term σ² (1 - e^(-at))² / (2a²)):
+The speed of mean reversion and the volatility are calibrated to the history of the rate, see `get_short_rate_model`. In the Vasicek and CIR models the rate is pulled to the long-run mean of that history. The Hull-White (1990) model replaces it with a mean that varies over time and follows from today's zero-coupon curve, so that the model reproduces the discount factors of that curve (its expected short rate lies above the forward rate by the convexity term $$\sigma^{2} (1 - e^{- at})^{2} / (2 a^{2})$$):
 
-dr = [θ(t) - a r] dt + σ dW, θ(t) = ∂f/∂t + a f(t) + σ² (1 - e^(-2at)) / (2a)
+$$
+dr = [\theta (t) - a r] dt + \sigma dW,\quad \theta (t) = \partial f / \partial t + a f (t) + \sigma^{2} (1 - e^{- 2 at}) / (2 a)
+$$
 
 with f the instantaneous forward rate. The paths are simulated with an Euler scheme starting at today's rate (CIR's are kept at or above zero).
 
@@ -2450,9 +2456,9 @@ Which returns:
 ---
 
 ## get_implied_default_probability
-Calculates the default probabilities that credit spreads imply. Investors in a corporate bond are compensated for the loss they expect from a default, so with a constant default intensity (hazard rate) λ and a share R recovered on default the spread s is about λ (1 - R), the "credit triangle":
+Calculates the default probabilities that credit spreads imply. Investors in a corporate bond are compensated for the loss they expect from a default, so with a constant default intensity (hazard rate) $$\lambda$$ and a share R recovered on default the spread s is about $$\lambda (1 - R)$$, the "credit triangle":
 
-λ = s / (1 - R), P(default within t years) = 1 - e^(-λt)
+$$\lambda = s / (1 - R)$$, P(default within t years) = $$1 - e^{- \lambda t}$$
 
 The spreads are the latest ICE BofA option-adjusted spreads of the US corporate bond indices per rating (AAA to CCC) up to the end date, which need a FRED API key. For a spread of your own, use `short_rate_model.get_implied_default_probability`. Spreads also pay for liquidity and for the uncertainty of the losses, so these risk-neutral probabilities are higher than the default rates that are observed historically (see `get_default_rates`); the gap is the credit risk premium.
 
