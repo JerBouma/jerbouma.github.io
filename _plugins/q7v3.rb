@@ -157,6 +157,8 @@ module Q7v3
 
   def medium(page, site, url)
     text = page.content.dup
+    # the code behind a chart (captured for its Python button) stays on the site
+    text.gsub!(/\{%-?\s*capture\s+\w+\s*-?%\}.*?\{%-?\s*endcapture\s*-?%\}\n*/m, "")
     notes = []
     notes << "Formulas (MathJax) don't render on Medium; turn them into images or plain text." if text.include?("$$") || text.include?("\\(")
     notes << "The Mermaid diagram doesn't render on Medium; replace it with a screenshot." if text.include?("mermaid")

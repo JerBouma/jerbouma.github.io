@@ -16,17 +16,13 @@ share: true
 
 In 1348, England had about 4.81 million people. Three years later, after the Black Death had passed through, it had 2.60 million. That is a fall of 46%, the largest three-year drop in population in the Bank of England's record of the English and British economy, which starts in 1086. Over the next century, the real wage of an ordinary worker roughly doubled.
 
-The economic effects of the Black Death are one of the clearest natural experiments in economic history. Labour suddenly became scarce while the land, the buildings and the tools were all still there. What happens to wages, prices and output when nearly half of the workforce disappears? And how long does it last? This is the first article in a weekly series on events from economic history, and in it I follow England from the decades before the plague to the 1600s, when the population had come back. The data is the Bank of England's "[A millennium of macroeconomic data](https://www.bankofengland.co.uk/statistics/research-datasets){:target="_blank"}" (version 3.1), around eighty annual series on the English and UK economy. **All data comes from the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}, and the same questions can be asked in plain English through the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
+The economic effects of the Black Death are one of the clearest natural experiments in economic history. Labour suddenly became scarce while the land, the buildings and the tools were all still there. What happens to wages, prices and output when nearly half of the workforce disappears? And how long does it last? This is the first article in a weekly series on events from economic history, and in it I follow England from the decades before the plague to the 1600s, when the population had come back. The data is the Bank of England's "[A millennium of macroeconomic data](https://www.bankofengland.co.uk/statistics/research-datasets){:target="_blank"}" (version 3.1), around eighty annual series on the English and UK economy, which I read with the [Finance Toolkit](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. Every chart has a Python button with the code behind it and an MCP button with a question that gets the same data in plain English.
 
 ## Almost Half of England Gone in Three Years
 
 The population of England from 1300 to 1500, in millions:
 
-{% include ft-chart.html id="bd-population" src="/assets/data/article-charts.json" label="Population of England, 1300 to 1500" %}
-
-<details class="chart-code" markdown="block">
-<summary><i class="fas fa-code" aria-hidden="true"></i> <span class="chart-code__show">Show the code</span><span class="chart-code__hide">Hide the code</span></summary>
-
+{% capture code_population %}
 ```python
 # pip install financetoolkit
 from financetoolkit import Economics
@@ -36,8 +32,8 @@ economics = Economics(start_date="1086-01-01")
 population = economics.get_millennium_of_macroeconomic_data(series="Population (England)")
 population = population.loc["1300":"1500"] / 1000  # in millions
 ```
-
-</details>
+{% endcapture %}
+{% include ft-chart.html id="bd-population" src="/assets/data/article-charts.json" label="Population of England, 1300 to 1500" code=code_population mcp="How did the population of England change between 1300 and 1500, according to the Bank of England's millennium of macroeconomic data?" %}
 
 The population was already under pressure before the plague. The Great Famine of 1315 to 1317 is visible as a decline from 4.69 million in 1315 to 4.12 million in 1325, after which it grew again to 4.81 million in 1348, the highest level in the record until then. Then it collapsed to 2.60 million by 1351.
 
@@ -49,11 +45,7 @@ A note of caution is due here. Nobody counted the people of England in 1348, so 
 
 The real consumption wage is the nominal wage divided by the price of a basket of the things workers bought, mostly food, fuel and clothing. It says how much a day's work could buy. From 1300 to 1550 it moved as follows:
 
-{% include ft-chart.html id="bd-wages" src="/assets/data/article-charts.json" label="Real consumption wages in England, 1300 to 1550" %}
-
-<details class="chart-code" markdown="block">
-<summary><i class="fas fa-code" aria-hidden="true"></i> <span class="chart-code__show">Show the code</span><span class="chart-code__hide">Hide the code</span></summary>
-
+{% capture code_wages %}
 ```python
 # pip install financetoolkit
 from financetoolkit import Economics
@@ -63,8 +55,8 @@ economics = Economics(start_date="1086-01-01")
 wages = economics.get_millennium_of_macroeconomic_data(series="Real consumption wages")
 wages = wages.loc["1300":"1550"]
 ```
-
-</details>
+{% endcapture %}
+{% include ft-chart.html id="bd-wages" src="/assets/data/article-charts.json" label="Real consumption wages in England, 1300 to 1550" code=code_wages mcp="What happened to real consumption wages in England between 1300 and 1550, using the Bank of England's millennium of macroeconomic data, and in which year did they peak?" %}
 
 Wages jumped from one year to the next with the harvest, by around 11% on average in the decades before 1348, so single years say little. Taking the average of 1340 to 1347 as the starting point (100), the real wage was 136 in the 1350s, 162 between 1360 and 1399 and 193 in the first half of the 15th century. Between 1450 and 1499 it averaged 201, double the level before the plague, and it peaked in 1464.
 
@@ -74,11 +66,7 @@ Wages jumped from one year to the next with the harvest, by around 11% on averag
 
 A higher real wage can come from higher pay or from lower prices. To see which, I put nominal earnings per head and the consumer price index side by side, both as an index with the average of 1340 to 1347 at 100:
 
-{% include ft-chart.html id="bd-pay-prices" src="/assets/data/article-charts.json" label="Earnings per head and consumer prices in England, 1330 to 1450" %}
-
-<details class="chart-code" markdown="block">
-<summary><i class="fas fa-code" aria-hidden="true"></i> <span class="chart-code__show">Show the code</span><span class="chart-code__hide">Hide the code</span></summary>
-
+{% capture code_pay_prices %}
 ```python
 # pip install financetoolkit
 from financetoolkit import Economics
@@ -93,8 +81,8 @@ data = economics.get_millennium_of_macroeconomic_data(
 data = data / data.loc["1340":"1347"].mean() * 100
 data = data.loc["1330":"1450"]
 ```
-
-</details>
+{% endcapture %}
+{% include ft-chart.html id="bd-pay-prices" src="/assets/data/article-charts.json" label="Earnings per head and consumer prices in England, 1330 to 1450" code=code_pay_prices mcp="Compare earnings per head and the consumer price index of England from 1330 to 1450 in the Bank of England's millennium of macroeconomic data, both as an index with the average of 1340 to 1347 at 100." %}
 
 In the first years after the plague both went up: prices rose by 19.6% in 1350 and 19.1% in 1351, and by 1351 they were at 134 while earnings per head were at 190. After that the two lines separate. Prices drifted back down to an average of 116 between 1400 and 1449, while earnings kept rising to an average of 223.
 
@@ -104,11 +92,7 @@ In the first years after the plague both went up: prices rose by 19.6% in 1350 a
 
 Fewer people produce less. The question for living standards is what happened to output per person. Real GDP and real GDP per head, again with 1340 to 1347 at 100:
 
-{% include ft-chart.html id="bd-output" src="/assets/data/article-charts.json" label="Real GDP and real GDP per head of England, 1330 to 1450" %}
-
-<details class="chart-code" markdown="block">
-<summary><i class="fas fa-code" aria-hidden="true"></i> <span class="chart-code__show">Show the code</span><span class="chart-code__hide">Hide the code</span></summary>
-
+{% capture code_output %}
 ```python
 # pip install financetoolkit
 from financetoolkit import Economics
@@ -125,8 +109,8 @@ data = data[["Real GDP of England at market prices", "Real GDP per head"]]
 data = data / data.loc["1340":"1347"].mean() * 100
 data = data.loc["1330":"1450"]
 ```
-
-</details>
+{% endcapture %}
+{% include ft-chart.html id="bd-output" src="/assets/data/article-charts.json" label="Real GDP and real GDP per head of England, 1330 to 1450" code=code_output mcp="How did real GDP and real GDP per head of England change from 1330 to 1450 in the Bank of England's millennium of macroeconomic data, compared to the average of 1340 to 1347?" %}
 
 Real GDP fell to 69 in 1351 and averaged 59 between 1400 and 1449. The economy as a whole shrank by about 40%, close to the loss of people. Real GDP per head moved the other way: 125 in 1351 and 138 on average between 1400 and 1449.
 
@@ -136,11 +120,7 @@ Real GDP fell to 69 in 1351 and averaged 59 between 1400 and 1449. The economy a
 
 The last chart puts population and real wages on the same scale from 1250 to 1700, both with 1340 to 1347 at 100:
 
-{% include ft-chart.html id="bd-long-run" src="/assets/data/article-charts.json" label="Population and real wages in England, 1250 to 1700" %}
-
-<details class="chart-code" markdown="block">
-<summary><i class="fas fa-code" aria-hidden="true"></i> <span class="chart-code__show">Show the code</span><span class="chart-code__hide">Hide the code</span></summary>
-
+{% capture code_long_run %}
 ```python
 # pip install financetoolkit
 from financetoolkit import Economics
@@ -155,8 +135,8 @@ data = economics.get_millennium_of_macroeconomic_data(
 data = data / data.loc["1340":"1347"].mean() * 100
 data = data.loc["1250":"1700"]
 ```
-
-</details>
+{% endcapture %}
+{% include ft-chart.html id="bd-long-run" src="/assets/data/article-charts.json" label="Population and real wages in England, 1250 to 1700" code=code_long_run mcp="Compare the population of England and the real consumption wage from 1250 to 1700 in the Bank of England's millennium of macroeconomic data. When were both back at their levels from before the Black Death?" %}
 
 The two lines are close to mirror images. While the population stayed low, between 1.90 and 2.20 million throughout the 15th century, real wages stayed high. Once the population started growing again in the 1500s, from 2.20 million in 1500 to 4.11 million in 1600, the real wage fell: from 201 between 1450 and 1499 to 167 in the first half of the 16th century, 129 in the second half and 102 between 1600 and 1649. That is back to where it was before the plague. Prices did most of the work this time: between the second half of the 15th century and the first half of the 17th, consumer prices rose more than fourfold, while earnings per head little more than doubled.
 
@@ -171,7 +151,5 @@ For a professional today, the closest modern relatives are labour supply shocks:
 There are clear limits to this. The figures are reconstructions, especially before 1500, and the population is interpolated between benchmark years. The real wage tracks a particular group of workers and a particular basket of goods. And the data covers England only, while the plague hit all of Europe, with different results in different places. Even so, every series in the dataset points the same way after 1348.
 
 The next article in the series looks at a much more recent shock: the oil price crash of 2014 to 2016.
-
-> **Try this with the Finance Toolkit MCP:** *"Using the Bank of England's millennium of macroeconomic data, compare the population of England and the real consumption wage from 1300 to 1650. How much did the population fall during the Black Death, how far did real wages rise afterwards, and when were both back at their pre-plague levels?"*
 
 {% include ft-charts-script.html %}
