@@ -65,6 +65,9 @@ module Q7v3
   # Markdown that survives pasting into Medium: lists, bold, quotes and links.
   def components_to_md(text)
     text = text.gsub(%r{<div class="ca-nav[^"]*">.*?</div>}m, "")
+    # the code behind a chart sits behind a button on the site; Medium has no
+    # buttons, so the article there is the prose and the charts
+    text = text.gsub(%r{<details class="chart-code"[^>]*>.*?</details>\n?}m, "")
     text = text.gsub(%r{<div class="ca-strip">(.*?)\n</div>}m) do
       Regexp.last_match(1).scan(%r{<strong>(.*?)</strong>\s*<span>(.*?)</span>}m)
                           .map { |a, b| "- **#{inline_md(a)}** · #{inline_md(b)}" }.join("\n") + "\n"
