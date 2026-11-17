@@ -40,7 +40,7 @@ maintained:
       - { icon: "fa-download", value: "600,000+", label: "downloads" }
       - { icon: "fa-code-fork", value: "950+", label: "forks" }
     links:
-      - { label: "Getting started", url: /projects/financedatabase/getting-started }
+      - { label: "Documentation", url: /projects/financedatabase/docs }
     companion:
       name: "Finance Database MCP"
       url: /projects/financedatabase/mcp

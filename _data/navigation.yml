@@ -61,8 +61,19 @@ financedatabase:
     url: /projects/financedatabase#site-nav
   - title: "Installation"
     url: /projects/financedatabase#installation
-  - title: <font color="#d67f05">Getting Started Notebook</font>
-    url: /projects/financedatabase/getting-started
+  - title: <font color="#d67f05">Documentation</font>
+    url: /projects/financedatabase/docs
+    children:
+      - title: Equities
+        url: /projects/financedatabase/docs/equities
+      - title: ETFs
+        url: /projects/financedatabase/docs/etfs
+      - title: Indices
+        url: /projects/financedatabase/docs/indices
+      - title: Currencies
+        url: /projects/financedatabase/docs/currencies
+      - title: Cryptocurrencies
+        url: /projects/financedatabase/docs/cryptos
   - title: <font color="#8b5cf6">Database Explorer</font>
     url: /projects/financedatabase/explorer
   - title: "Functionality"

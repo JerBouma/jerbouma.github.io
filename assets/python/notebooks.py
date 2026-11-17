@@ -30,11 +30,6 @@ _SSL_CTX = _make_ssl_context()
 
 
 NOTEBOOKS = [
-    # ── Finance Database ──────────────────────────────────────
-    (
-        "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/examples/FInance%20Database%20-%201.%20Getting%20Started.ipynb",
-        "assets/notebooks/financedatabase/getting-started.ipynb",
-    ),
     # ── Personal Finance ──────────────────────────────────────
     (
         "https://raw.githubusercontent.com/JerBouma/PersonalFinance/refs/heads/main/examples/Personal%20Finance%20-%202.%20Using%20Your%20Files.ipynb",
