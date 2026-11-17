@@ -1,0 +1,38 @@
+# Drafts for "The Black Death's Economic Effects on English Wages". Starting points, edited before posting.
+article: /articles/black-death-economic-effects
+written: 2026-11-17
+linkedin:
+  text: |
+    In 1348, England had about 4.81 million people. By 1351, after the Black Death, it had 2.60 million: a fall of 46% in three years, the largest in the Bank of England's record of the English economy, which goes back to 1086.
+
+    Over the next century, the real wage of an ordinary worker roughly doubled. Taking 1340 to 1347 as 100, it averaged 193 in the first half of the 15th century and 201 in the second half.
+
+    The land and the tools were still there, with far fewer people to work them, so each worker produced more: real GDP per head rose to 138 while the economy as a whole shrank by about 40%. The Crown tried to cap wages at their pre-plague level with the Statute of Labourers in 1351. Earnings per head still more than doubled, while prices ended only slightly higher.
+
+    What I find most interesting is how long it lasted, and how it ended. Wages stayed high for as long as the population stayed low. Once it grew again in the 1500s, the real wage fell back to its pre-plague level by the early 1600s, and did not reach its late 15th century level again until 1865.
+
+    This is the first article in a weekly series on events from economic history, all charted with data from the Finance Toolkit, which I built and maintain.
+
+    https://www.jeroenbouma.com/articles/black-death-economic-effects
+
+    #EconomicHistory #Macroeconomics #LabourMarkets
+reddit:
+  - subreddit: r/EconomicHistory
+    title: "The Black Death in the Bank of England's data: England lost 46% of its population in three years and real wages roughly doubled"
+    body: |
+      I went through the Bank of England's "A millennium of macroeconomic data" (version 3.1, annual series for England and the UK, some from 1086) to see what the Black Death looks like in the numbers. A short summary, with 1340 to 1347 as the base (100):
+
+      - **Population:** 4.81 million in 1348, 2.60 million in 1351 (-46%), the largest three-year fall in the dataset. It kept falling to 1.90 million in 1450 and was not back at its 1348 level until 1622.
+      - **Real consumption wages:** 136 in the 1350s, 193 in 1400-1449 and 201 in 1450-1499, peaking in 1464.
+      - **Pay versus prices:** earnings per head averaged 223 in 1400-1449 while consumer prices averaged 116. The rise in real wages came from higher pay, despite the Ordinance (1349) and Statute (1351) of Labourers.
+      - **Output:** real GDP fell to 59 on average in 1400-1449, while real GDP per head rose to 138.
+      - **Reversal:** once the population recovered in the 1500s, the real wage fell to 167 (1500-1549), 129 (1550-1599) and 102 (1600-1649), back to its pre-plague level. It only reached its late 15th century level again in 1865. GDP per head stayed around 135-145 over the same period, so the fall in wages did not come from lower output per person.
+
+      Caveats: these are reconstructions, the annual population is interpolated between benchmark years (which is why it falls by the same 18.5% in 1349, 1350 and 1351), and the real wage tracks one group of workers and one basket of goods. I mostly looked at decade averages for that reason.
+
+      I'd be curious whether people here would read the gap between GDP per head and wages after 1500 mainly as higher land rents, or whether there's a better explanation.
+
+      Disclosure: I wrote the article and maintain the Python library (Finance Toolkit) used to pull the data. Charts and the code: https://www.jeroenbouma.com/articles/black-death-economic-effects
+medium:
+  subtitle: "England lost 46% of its population in three years. Real wages roughly doubled, then fell back as the population recovered."
+  tags: [Economics, Economic History, History, Data Science, Python]
