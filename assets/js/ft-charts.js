@@ -194,8 +194,9 @@
         boundaryGap: isBar,
         axisLine: { lineStyle: { color: grid } },
         axisTick: { show: false },
-        // many bars (the portfolio tickers): show every label, slanted
-        axisLabel: isBar && (spec.x.length > 10 || Math.max.apply(null, spec.x.map(function (v) { return String(v).length; })) > 8) ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
+        // many bars (the portfolio tickers): show every label, slanted; a long run of
+        // years as bars (more than 60) labels only every few years, like a line
+        axisLabel: isBar && !many && (spec.x.length > 10 || Math.max.apply(null, spec.x.map(function (v) { return String(v).length; })) > 8) ? { color: muted, interval: 0, rotate: 45, fontSize: 11 } : { color: muted, hideOverlap: true, fontSize: 12.5 }
       },
       yAxis: [{
         // log: a log scale, for growth over a long stretch (cumulative returns)
