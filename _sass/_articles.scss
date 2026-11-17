@@ -240,3 +240,11 @@
 }
 
 @media (max-width: 800px) { .lit .lit-grid { grid-template-columns: 1fr; } }
+
+// "Functions Used in This Article" at the end of an article
+// (_plugins/article_function_links.rb)
+.article-functions {
+  margin-top: 2.5em;
+
+  .docs-related { margin-top: 0.8em; }
+}
