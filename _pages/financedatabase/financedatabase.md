@@ -367,14 +367,6 @@ And below these and other profitability ratios of ASR Nederland, each with its l
 
 This works for the other asset classes too. For example, Ethereum quoted in BTC, CAD, EUR, GBP and USD can be loaded with `fd.Cryptos().select(cryptocurrency="ETH").to_toolkit(api_key="FINANCIAL_MODELING_PREP_KEY")`, after which `get_historical_data(period="quarterly")` returns its quarterly returns in each currency. **This is just a small snippet of what is available within the Finance Toolkit. For more information, see [the Finance Toolkit page](/projects/financetoolkit) or [the example Notebook](/projects/financetoolkit/getting-started).**
 
-## MCP Server
-{: .heading-as-h1}
-The Finance Database MCP Server gives any AI assistant that supports the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP), such as Claude, Copilot, Cursor or Windsurf, direct access to the equities, ETFs, indices, currencies and cryptocurrencies in the database. Ask in plain English for, say, every mid cap semiconductor company in Taiwan or the bond ETFs of a given issuer, and the assistant queries the database on your behalf. Filter values ignore accents and accept common synonyms, so 'Holland', 'Tech' or 'megacap' work just as well as 'Netherlands', 'Information Technology' or 'Mega Cap'. No API key is needed.
-
-Connect to the hosted server at `https://financedatabase.jeroenbouma.com/mcp` with nothing to install, or run it locally with `uvx --from "financedatabase[mcp]" financedatabase-mcp-setup`, which adds the server to your client's configuration automatically. Combine it with the [Finance Toolkit MCP Server](/projects/financetoolkit/mcp) to go from a list of symbols to their financial statements, ratios and prices.
-
-[Explore the Finance Database MCP Server](/projects/financedatabase/mcp){: .btn .btn--warning .btn--large .align-center}
-
 ## Questions & Answers
 {: .heading-as-h1}
 This section includes frequently asked questions. If you have any questions that are not answered here, consider creating an [Issue](https://github.com/JerBouma/FinanceDatabase/issues){:target="_blank"} or reach out to me via the contact details below.
