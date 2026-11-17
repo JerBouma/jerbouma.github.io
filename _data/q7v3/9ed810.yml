@@ -33,6 +33,3 @@ reddit:
       I'd be curious whether people here would read the gap between GDP per head and wages after 1500 mainly as higher land rents, or whether there's a better explanation.
 
       Disclosure: I wrote the article and maintain the Python library (Finance Toolkit) used to pull the data. Charts and the code: https://www.jeroenbouma.com/articles/black-death-economic-effects
-medium:
-  subtitle: "England lost 46% of its population in three years. Real wages roughly doubled, then fell back as the population recovered."
-  tags: [Economics, Economic History, History, Data Science, Python]

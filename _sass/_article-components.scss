@@ -211,8 +211,6 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
     // its card, so side-by-side charts line up whatever their type or title length
     .mcp-show__cell { min-width: 0; display: flex; flex-direction: column; }
     .mcp-show__cell--wide { grid-column: 1 / -1; }
-    // a chart only for the Medium image of the grid, which is always an even 2 by n
-    .mcp-show__cell--medium { display: none; }
     .ft-chart { margin: 0; flex: 1 1 auto; display: flex; flex-direction: column; }
     .ft-chart__canvas, .ft-chart__loading { height: 320px; flex: 1 1 auto; }
     @media (max-width: 900px) { grid-template-columns: 1fr; }
@@ -231,12 +229,6 @@ $ca-gradient: linear-gradient(120deg, #38bdf8, #818cf8 60%, #c084fc);
       table:not(.highlight) td:first-child { display: block !important; margin-bottom: 2px; color: var(--text-primary); font-weight: 600; }
       table:not(.highlight) td + td:not(:nth-child(2))::before { content: " · "; color: var(--text-muted); }
     }
-  }
-  // the Medium export (export_images.js sets window.mediumExport and .medium-export): every chart half
-  // width, plus the charts kept for Medium only
-  .medium-export & .mcp-show__grid {
-    .mcp-show__cell--wide { grid-column: auto; }
-    .mcp-show__cell--medium { display: flex; }
   }
   .mcp-show__verdict {
     margin: 14px 0 0;

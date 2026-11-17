@@ -105,6 +105,3 @@ reddit:
 
       I maintain the Finance Toolkit (open source, MIT), which this uses. The full write-up with the trees drawn out, plus an example on real Apple and Microsoft data compared with Black-Scholes and market prices:
       https://www.jeroenbouma.com/articles/binomial-trees
-medium:
-  subtitle: "How binomial trees price European and American options, step by step, and how they compare with Black-Scholes."
-  tags: [Options, Derivatives, Quantitative Finance, Python, Finance]

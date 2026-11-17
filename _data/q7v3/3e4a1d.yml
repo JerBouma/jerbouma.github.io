@@ -123,6 +123,3 @@ reddit:
       Disclosure: I'm the author of Finance Toolkit, the open-source (MIT) library used here. Full article with the output tables and the reasoning behind each step: https://www.jeroenbouma.com/articles/screening-undervalued-stocks-finance-toolkit
 
       Not investment advice.
-medium:
-  subtitle: "A systematic screen from valuation multiples to a quality check, producing a watchlist rather than a buy list."
-  tags: [Value Investing, Stock Screening, Fundamental Analysis, Investing, Finance]

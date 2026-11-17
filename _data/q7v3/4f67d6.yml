@@ -64,6 +64,3 @@ reddit:
       Disclosure: I wrote the article this comes from. It's mainly about the process (I did the data pulls through an AI assistant connected to FMP), and I maintain the open-source Finance Toolkit. Not investment advice; I have no view to sell on AXON.
 
       Full write-up with screenshots of each step: https://www.jeroenbouma.com/articles/equity-research-family-offices-fmp-mcp
-medium:
-  subtitle: "How a small investment team can compress the mechanical part of equity diligence into one AI conversation."
-  tags: [Equity Research, AI, Family Office, Due Diligence, Investing]

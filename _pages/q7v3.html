@@ -10,9 +10,9 @@ search: false
 share: false
 ---
 {%- comment -%}
-  Unlisted page: starting points for sharing each article on LinkedIn, Reddit
-  and Medium. Filled by _plugins/q7v3.rb (article list and the Medium
-  conversion) and _data/q7v3/<id>.yml (LinkedIn and Reddit drafts).
+  Unlisted page: starting points for sharing each article on LinkedIn and
+  Reddit. Filled by _plugins/q7v3.rb (the article list) and
+  _data/q7v3/<id>.yml (the LinkedIn and Reddit drafts).
 {%- endcomment -%}
 <div class="q7">
 
@@ -29,7 +29,6 @@ share: false
   <div class="q7-tabs" role="tablist">
     <button type="button" role="tab" class="q7-tab is-active" data-tab="linkedin"><i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn</button>
     <button type="button" role="tab" class="q7-tab" data-tab="reddit"><i class="fab fa-reddit" aria-hidden="true"></i> Reddit</button>
-    <button type="button" role="tab" class="q7-tab" data-tab="medium"><i class="fab fa-medium" aria-hidden="true"></i> Medium</button>
   </div>
 </div>
 
@@ -66,23 +65,6 @@ share: false
     <p class="q7-empty">No Reddit draft yet.</p>
     {%- endfor %}
   </div>
-
-  <div class="q7-panel" data-panel="medium" hidden>
-    <p class="q7-note">The full article, converted for Medium. Copy it as rich text and paste it into a new story, then set the canonical link under <em>Story settings → Advanced settings</em> so search engines credit the original.</p>
-    {%- for n in a.medium_notes %}<p class="q7-warn"><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> {{ n }}</p>{% endfor %}
-    <div class="q7-fields">
-      <div class="q7-block"><div class="q7-block__head"><span>Title</span><span class="q7-count" data-max="100"></span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{{ a.title | escape }}</pre></div>
-      <div class="q7-block"><div class="q7-block__head"><span>Subtitle</span><span class="q7-count" data-max="140"></span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{{ a.drafts.medium.subtitle | default: a.excerpt | strip | escape }}</pre></div>
-      <div class="q7-block"><div class="q7-block__head"><span>Canonical link</span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{{ a.url }}</pre></div>
-      <div class="q7-block"><div class="q7-block__head"><span>Tags (max 5)</span><button type="button" class="q7-copy">Copy</button></div><pre class="q7-text">{% if a.drafts.medium.tags %}{{ a.drafts.medium.tags | join: ", " }}{% else %}{{ a.tags | join: ", " }}, Finance, Investing{% endif %}</pre></div>
-    </div>
-    <div class="q7-block">
-      <div class="q7-block__head"><span>Story</span><button type="button" class="q7-copy" data-rich>Copy as rich text</button></div>
-      <div class="q7-medium">{{ a.medium_html }}</div>
-      {%- comment -%} the copy source: the preview above gets the site's code-block decorations {%- endcomment %}
-      <template class="q7-medium-src">{{ a.medium_html }}</template>
-    </div>
-  </div>
 </section>
 {%- endfor %}
 
@@ -112,8 +94,6 @@ share: false
 .q7-block__head span:first-child + .q7-copy { margin-left: auto; }
 .q7-copy:hover { color: var(--accent-color); }
 .page__content .q7-text { margin: 0 !important; padding: 12px 14px !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; color: var(--text-primary) !important; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: 0.92rem; line-height: 1.6; }
-.q7-medium { padding: 4px 18px 12px; max-height: 640px; overflow: auto; font-size: 0.95rem; }
-.q7-medium img { max-width: 100%; height: auto; }
 @media (max-width: 760px) { .q7-fields { grid-template-columns: 1fr; } }
 </style>
 
@@ -148,24 +128,14 @@ share: false
   document.querySelectorAll('.q7-copy').forEach(function (b) {
     b.addEventListener('click', function () {
       var block = b.closest('.q7-block');
-      var rich = b.hasAttribute('data-rich');
-      var el = rich ? block.querySelector('.q7-medium-src').content : block.querySelector('.q7-text');
-      var html = '';
-      if (rich) { var box = document.createElement('div'); box.appendChild(el.cloneNode(true)); html = box.innerHTML; el = box; }
+      var el = block.querySelector('.q7-text');
       var done = function () { var t = b.textContent; b.textContent = 'Copied'; setTimeout(function () { b.textContent = t; }, 1400); };
-      if (rich && window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
-        navigator.clipboard.write([new ClipboardItem({
-          'text/html': new Blob([html], { type: 'text/html' }),
-          'text/plain': new Blob([el.textContent], { type: 'text/plain' })
-        })]).then(done);
-      } else if (!rich && navigator.clipboard) {
+      if (navigator.clipboard) {
         navigator.clipboard.writeText(el.textContent).then(done);
       } else {
-        if (rich) { el.style.position = 'fixed'; el.style.left = '-9999px'; document.body.appendChild(el); }
         var range = document.createRange(); range.selectNodeContents(el);
         var sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
         document.execCommand('copy'); sel.removeAllRanges();
-        if (rich) el.remove();
         done();
       }
     });
