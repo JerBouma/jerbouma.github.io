@@ -1,0 +1,18 @@
+{%- comment -%}
+  Sets series_info (the _data/series.yml entry), series_pages (its published articles,
+  oldest first), series_part (this article's number), series_prev and series_next.
+  Scheduled articles are not in site.pages until they publish, so they never show.
+{%- endcomment -%}
+{%- assign series_info = nil %}{% assign series_prev = nil %}{% assign series_next = nil %}{% assign series_part = nil -%}
+{%- if page.series and site.data.series[page.series] -%}
+  {%- assign series_info = site.data.series[page.series] -%}
+  {%- assign series_pages = site.pages | where: "collection", "article" | where: "series", page.series | sort: "date" -%}
+  {%- for p in series_pages -%}
+    {%- if p.url == page.url -%}
+      {%- assign series_part = forloop.index -%}
+      {%- assign i0 = forloop.index0 | minus: 1 %}{% assign i1 = forloop.index0 | plus: 1 -%}
+      {%- if forloop.first == false %}{% assign series_prev = series_pages[i0] %}{% endif -%}
+      {%- if forloop.last == false %}{% assign series_next = series_pages[i1] %}{% endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

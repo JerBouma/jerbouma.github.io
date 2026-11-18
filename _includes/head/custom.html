@@ -123,7 +123,9 @@
   "headline": {{ page.title | jsonify }},
   "description": {{ page.description | default: page.excerpt | strip_html | strip_newlines | jsonify }},
   "url": {{ page.url | absolute_url | jsonify }},
-  "mainEntityOfPage": {{ page.url | absolute_url | jsonify }},
+  "mainEntityOfPage": {{ page.url | absolute_url | jsonify }},{% include article__series.html %}{% if series_info %}
+  "isPartOf": { "@type": "CreativeWorkSeries", "name": {{ series_info.name | jsonify }}, "url": {{ series_info.url | absolute_url | jsonify }} },
+  "position": {{ series_part }},{% endif %}
   "inLanguage": "en",{% if page.tags.size > 0 %}
   "keywords": {{ page.tags | join: ", " | jsonify }},{% endif %}
   "datePublished": "{{ page.date | date_to_xmlschema }}",

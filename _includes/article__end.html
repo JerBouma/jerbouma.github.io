@@ -12,6 +12,17 @@
     </ul>
   </section>
   {% endif %}
+  {%- include article__series.html %}
+  {%- if series_info %}
+  <nav class="article-series" aria-label="{{ series_info.name }} series">
+    <p class="article-series__label"><a href="{{ series_info.url | relative_url }}">{{ series_info.name }}</a> · part {{ series_part }} of {{ series_pages.size }}</p>
+    <div class="article-series__links">
+      {%- if series_prev %}<a class="article-series__prev" href="{{ series_prev.url | relative_url }}"><span>Previous part</span>{{ series_prev.title }}</a>{% endif -%}
+      {%- if series_next %}<a class="article-series__next" href="{{ series_next.url | relative_url }}"><span>Next part</span>{{ series_next.title }}</a>{% endif -%}
+    </div>
+    {%- unless series_next %}<p class="article-series__note">{{ series_info.note }}</p>{% endunless %}
+  </nav>
+  {%- endif %}
   {% assign _title = page.title | markdownify | strip_html | strip %}
   <section class="article-cite" aria-label="Cite this article">
     <p class="article-cite__label">Cite this article</p>
