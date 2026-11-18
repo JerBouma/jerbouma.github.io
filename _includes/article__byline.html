@@ -25,8 +25,3 @@
     </span>
   </div>
 </div>
-{% if page.tags.size > 0 %}
-  <div class="article-byline__tags">
-    {% for tag in page.tags %}<a class="lit-tag" href="{{ '/insights' | relative_url }}?tag={{ tag | slugify }}" title="All insights tagged {{ tag }}">{{ tag }}</a>{% endfor %}
-  </div>
-{% endif %}

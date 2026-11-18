@@ -1,0 +1,23 @@
+{% comment %}
+  The end of an article: the dated updates note (front matter updates: a list of
+  {date, note}) and a short author box.
+{% endcomment %}
+<div class="article-end">
+  {% if page.updates.size > 0 %}
+  <section class="article-updates" aria-label="Updates">
+    <p class="article-updates__label">Updates</p>
+    <ul>
+      {% for update in page.updates %}<li><time datetime="{{ update.date | date_to_xmlschema }}">{{ update.date | date: "%B %-d, %Y" }}</time>: {{ update.note | markdownify | remove: "<p>" | remove: "</p>" | strip }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <section class="article-author" aria-label="About the author">
+    <img src="{{ '/assets/images/default/bio-photo-128.jpg' | relative_url }}" alt="" class="article-author__photo" width="56" height="56" loading="lazy">
+    <div class="article-author__text">
+      <p class="article-author__name"><a href="{{ '/resume' | relative_url }}" rel="author">{{ site.author.name }}</a></p>
+      <p class="article-author__bio">Quantitative investment strategist working on asset allocation and asset-liability management, and the author of the open-source <a href="{{ '/projects/financetoolkit' | relative_url }}">Finance Toolkit</a> and <a href="{{ '/projects/financedatabase' | relative_url }}">Finance Database</a>. These articles are analysis, not investment advice.</p>
+      <p class="article-author__links"><a href="{{ '/resume' | relative_url }}">Resume</a><a href="https://www.linkedin.com/in/boumajeroen/" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/JerBouma" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </section>
+</div>
