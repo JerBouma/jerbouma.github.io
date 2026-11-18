@@ -13,15 +13,7 @@
         {% endif %}
         <span class="article-byline__sep">&middot;</span>
       {% endif %}
-      {% assign words_per_minute = site.words_per_minute | default: 200 %}
-      {% assign words = content | strip_html | number_of_words %}
-      {% if words < words_per_minute %}
-        {{ site.data.ui-text[site.locale].less_than | default: "less than" }} 1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
-      {% elsif words == words_per_minute %}
-        1 {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
-      {% else %}
-        {{ words | divided_by: words_per_minute }} {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
-      {% endif %}
+      {{ page.reading_minutes | default: 1 }} {{ site.data.ui-text[site.locale].minute_read | default: "minute read" }}
     </span>
   </div>
 </div>
