@@ -325,7 +325,7 @@ def black_death_charts() -> dict:
     pay = data.loc[1330:1450]
     # an area from zero, so the fall of almost half in three years shows as the drop it was
     charts["bd-population"]["series"][0]["area"] = True
-    charts["bd-population"]["note"] = ["Nobody counted the people of England in the fourteenth century. The series is an estimate for benchmark years, reconstructed from manor records, tax returns, prices and wages, with the years in between interpolated.", "That is why it falls by the same share, about 18.5%, in each year from 1349 to 1351: the data knows the level before and after the Black Death, not the path in between.", "Read the level of a single year loosely. The change over a decade is far more reliable."]
+    charts["bd-population"]["note"] = ["Nobody counted the people of England in the fourteenth century. The series is an estimate for benchmark years, reconstructed from manor records, tax returns, prices and wages, with the years in between interpolated.", "That is why it falls by the same share, about 18.5%, in each year from 1349 to 1351: the data knows the level before and after the Black Death, not the path in between.", "Read the level of a single year loosely. The change over a decade is far more reliable, which is why the article mostly compares averages over several years."]
 
     charts["bd-pay-prices"] = line(
         "Earnings and consumer prices in England (1340-1347 = 100)",
