@@ -52,6 +52,10 @@ def years(frame: pd.DataFrame) -> list:
 
 SCREEN = ["AAPL", "MSFT", "INTC", "IBM", "JNJ", "PFE", "MRK", "KO", "WMT", "JPM", "BAC", "XOM", "CVX", "META", "GOOGL"]
 YEAR = "2025"
+# last day the fiscal 2025 data covers: Walmart's year ends in January 2026,
+# the five candidates' years in December 2025
+DATA_TO_ALL = "31 January 2026"
+DATA_TO_CANDIDATES = "31 December 2025"
 # label positions for points that sit on top of each other
 POS_VALUATION = {"PFE": "bottom"}
 POS_FINAL = {"XOM": "top", "CVX": "bottom"}
@@ -87,7 +91,8 @@ def screen_charts() -> dict:
             "type": "scatter",
             "title": "P/E against EV/EBITDA",
             "subtitle": "14 large caps, fiscal 2025, in times; Intel left out (negative earnings); dashed lines at 20x and 18x",
-            "source": source,
+            "source": f"{source}, data to {DATA_TO_ALL}",
+            "note": "Share prices of 31 December 2025 over each company's fiscal 2025 figures, whose years end between June 2025 and January 2026",
             "legend": "Orange: below 20x earnings and 18x EBITDA",
             "xname": "P/E",
             "yname": "EV/EBITDA",
@@ -101,7 +106,8 @@ def screen_charts() -> dict:
             "type": "tabs",
             "title": "Return on equity, ROIC and gross margin of the five value candidates",
             "subtitle": "Percent; fiscal 2025, and ROIC for each fiscal year from 2022 to 2025",
-            "source": source,
+            "source": f"{source}, data to {DATA_TO_CANDIDATES}",
+            "note": "ROIC is after-tax operating profit over average debt plus equity",
             "tabs": [
                 {
                     "label": "Fiscal 2025",
@@ -129,7 +135,7 @@ def screen_charts() -> dict:
             "type": "scatter",
             "title": "ROIC against EV/EBITDA",
             "subtitle": "All 15 stocks, fiscal 2025; ROIC in percent, EV/EBITDA in times; dashed line at 10% ROIC",
-            "source": source,
+            "source": f"{source}, data to {DATA_TO_ALL}",
             "legend": "Orange: passes the valuation filter and earns more than 10% on invested capital",
             "xname": "ROIC",
             "yname": "EV/EBITDA",
@@ -319,6 +325,8 @@ def black_death_charts() -> dict:
     pay = data.loc[1330:1450]
     # an area from zero, so the fall of almost half in three years shows as the drop it was
     charts["bd-population"]["series"][0]["area"] = True
+    charts["bd-population"]["note"] = (
+        "Estimated for benchmark years and interpolated between them, so it falls by the same share in each year from 1349 to 1351")
 
     charts["bd-pay-prices"] = line(
         "Earnings and consumer prices in England (1340-1347 = 100)",

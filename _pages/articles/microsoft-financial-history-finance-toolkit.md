@@ -1,7 +1,7 @@
 ---
 title: How Microsoft Has Changed Since Its IPO
 date: 2026-06-14
-last_modified_at: 2026-11-17
+last_modified_at: 2026-11-18
 permalink: /articles/microsoft-financial-history-finance-toolkit
 excerpt: "Microsoft's revenue went from $198 million in 1986 to $282 billion in 2025. Under Steve Ballmer it nearly quadrupled while shareholders lost money, and forty years of financials show three different companies under one name."
 description: "Microsoft's financial history from its 1986 IPO to 2025: revenue growth by CEO era, margins, the balance sheet, free cash flow, ROE versus ROIC and valuation."
@@ -26,12 +26,36 @@ Revenue and net income per fiscal year, on a log scale:
 {% capture code_revenue %}
 ```python
 # pip install financetoolkit
-from financetoolkit import Toolkit
+import pandas as pd
+from financetoolkit import Economics, Toolkit
 
 toolkit = Toolkit(tickers=["MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="1986-01-01")
 
 income_statement = toolkit.get_income_statement()
 income_statement = income_statement.loc[["Revenue", "Net Income"], "1986":"2025"]
+
+# Revenue growth per CEO era, nominal and in 2025 dollars (US CPI averaged over each July to June fiscal year)
+economics = Economics(start_date="1985-07-01")
+
+cpi = economics.get_consumer_price_index(countries="United States", period="monthly")
+cpi = cpi["United States"]
+cpi_fiscal_year = cpi.groupby(cpi.index.year + (cpi.index.month >= 7)).mean()
+
+revenue = income_statement.loc["Revenue"]
+revenue.index = revenue.index.year
+real_revenue = revenue / cpi_fiscal_year.loc[1986:2025] * cpi_fiscal_year.loc[2025]
+
+eras = {"Bill Gates": (1986, 2000), "Steve Ballmer": (2000, 2014), "Satya Nadella": (2014, 2025), "1986 to 2025": (1986, 2025)}
+growth = pd.DataFrame(
+    {
+        era: {
+            "Nominal": (revenue[end] / revenue[start]) ** (1 / (end - start)) - 1,
+            "Real": (real_revenue[end] / real_revenue[start]) ** (1 / (end - start)) - 1,
+            "Real, times as much": real_revenue[end] / real_revenue[start],
+        }
+        for era, (start, end) in eras.items()
+    }
+)
 ```
 {% endcapture %}
 {% include ft-chart.html id="msft-revenue" src="/assets/data/article-charts.json" label="Microsoft revenue and net income" code=code_revenue mcp="What were Microsoft's revenue and net income in every fiscal year from 1986 to 2025?" %}
@@ -63,13 +87,17 @@ toolkit = Toolkit(tickers=["MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY", start
 
 profitability_ratios = toolkit.ratios.collect_profitability_ratios()
 margins = profitability_ratios.loc[["Gross Margin", "Net Profit Margin"], "1986":"2025"]
+
+# The 2018 tax charge: the net margin of 2018 at the effective tax rate of 2017, and the low tax rate of 2019
+tax = profitability_ratios.loc[["Income Before Tax Profit Margin", "Effective Tax Rate"], "2017":"2019"]
+net_margin_2018_at_2017_tax_rate = tax.loc["Income Before Tax Profit Margin", "2018"] * (1 - tax.loc["Effective Tax Rate", "2017"])
 ```
 {% endcapture %}
 {% include ft-chart.html id="msft-margins" src="/assets/data/article-charts.json" label="Microsoft gross and net margins" code=code_margins mcp="What were Microsoft's gross margin and net profit margin in every fiscal year from 1986 to 2025?" %}
 
 Gross margin peaked at 92% in 1996, which is what pure software economics look like. The move into hardware (Xbox, Surface), services and cloud infrastructure brought real direct costs with it, such as data centres and the power to run them. The gross margin bottomed at 64% in 2016 and has stayed below 70% since, so the cloud company runs on a structurally lower gross margin than the licensing company did.
 
-Net margin reached 41% in 2000, sat lower for most of the next two decades and was back at 36% in 2025. The two sharp dips are one-off charges: the $7.6 billion write-down of the Nokia phone business in 2015 ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft){:target="_blank"}), and in 2018 a tax charge from the US tax reform of late 2017. Leaving those aside, the recovery comes from operating leverage. Revenue tripled between 2015 and 2025 while operating expenses grew much more slowly, so more of each extra dollar of cloud and subscription revenue was left as profit.
+Net margin reached 41% in 2000, sat lower for most of the next two decades and was back at 36% in 2025. The two sharp dips are one-off charges: the $7.5 billion impairment of the phone business bought from Nokia in 2015 (as the 2015 Annual Report states it), and in 2018 a tax charge from the US tax reform of late 2017. Leaving those aside, the recovery comes from operating leverage. Revenue tripled between 2015 and 2025 while operating expenses grew much more slowly, so more of each extra dollar of cloud and subscription revenue was left as profit.
 
 ## Goodwill Went From Zero to $120 Billion
 
@@ -113,15 +141,15 @@ cash_flow = cash_flow.loc[["Operating Cash Flow", "Capital Expenditure", "Free C
 {% endcapture %}
 {% include ft-chart.html id="msft-fcf" src="/assets/data/article-charts.json" label="Microsoft free cash flow" code=code_fcf mcp="What were Microsoft's operating cash flow, capital expenditure and free cash flow in 1995, 2000, 2005, 2010, 2015, 2020 and 2025?" %}
 
-Microsoft generated $72 billion in free cash flow in fiscal 2025. It comes from subscription and consumption revenue that grows without a matching rise in costs, and from customers who rarely leave once their work runs on Microsoft's software.
+Microsoft generated $72 billion in free cash flow in fiscal 2025. It comes from subscription and consumption revenue that grows without a matching rise in costs, and from customers who rarely leave once their work runs on Microsoft's software. That is my reading of it, as the cash flow statement shows how much cash came in but says nothing about why.
 
 However, capital expenditure rose more than tenfold between 2015 and 2025, most of it on data centres for Azure and AI services, and went from 6% of revenue to 23%.
 
 Operating cash flow has grown fast enough to absorb it, but in 2015 about 80% of operating cash flow was left as free cash flow, and in 2025 only 53%. Whether this spending earns a return close to the old software business is the main capital allocation question for Microsoft, and the free cash flow line is where it shows first.
 
-## Financing Lifted ROE Far Above ROIC
+## Financing Lifted ROE and Inflation Lifted Growth
 
-Return on equity (ROE) and return on assets (ROA) divide net income by shareholders' equity and by total assets. Return on invested capital (ROIC) divides operating income after tax by all the capital in the business, debt plus equity. The gap between ROE and ROIC gives a rough idea of how much of the return to shareholders comes from the way the company is financed.
+A forty-year record of one company has a few traps of its own, and the return on equity is the first. Return on equity (ROE) and return on assets (ROA) divide net income by shareholders' equity and by total assets. Return on invested capital (ROIC) divides operating income after tax by all the capital in the business, debt plus equity. The gap between ROE and ROIC gives a rough idea of how much of the return to shareholders comes from the way the company is financed.
 
 Return on equity, assets and invested capital per fiscal year:
 
@@ -144,6 +172,14 @@ In the early years the three lines sit close together. With no debt, an ROE of 3
 
 That leaves an ROIC of 26% in 2025, which is high for a company of this size but below the 35% or more of 1990 to 1992. Return on assets says the same: it fell from 31% in 1990 to 18% in 2025, as data centres and acquisitions made the asset base much heavier than that of a software company.
 
+Single years with a one-off charge are the second trap. In fiscal 2018 Microsoft paid 55% of its pre-tax profit in tax, against 15% the year before, because of the charge from the US tax reform. At the 2017 tax rate its net margin would have been 28% instead of 15%.
+
+The charge also reaches ratios that look unrelated. ROIC taxes operating income at that same 55% rate, so it drops to 9% in 2018, and the price-to-earnings ratio in the next chart jumps to 48 at the end of that year because the earnings fell. The Nokia write-down does the same to 2015, and any average or median over these years carries both. Fiscal 2019 errs the other way, as its tax rate of 10% flatters both ROE and ROIC in the year their gap was widest.
+
+The third trap is inflation, as a dollar of revenue in 1986 bought far more than one in 2025. Deflated by the US consumer price index, the 1,400-fold rise in revenue becomes about 490-fold in 2025 dollars, and the 40% a year under Gates becomes 36%.
+
+Rerun in real terms, the finding of the first section holds. In real terms revenue grew 7.4% a year under Ballmer and 8.3% under Nadella, against 10% and 11% in nominal terms, so the two eras stay about a point apart. Inflation was a little higher under Nadella, which takes slightly more off his figure.
+
 ## Looking Ahead
 
 Next to the financial history, the valuation shows what the market expects from Microsoft, and the company's own past gives a useful scale for it.
@@ -163,7 +199,7 @@ valuation = valuation_ratios.loc[["Price-to-Earnings", "Price-to-Free-Cash-Flow"
 {% endcapture %}
 {% include ft-chart.html id="msft-valuation" src="/assets/data/article-charts.json" label="Microsoft price-to-earnings and price-to-free-cash-flow ratios" code=code_valuation mcp="What were Microsoft's price-to-earnings and price-to-free-cash-flow ratios in every year from 1989 to 2025?" %}
 
-At the end of 2025 the shares traded at 35.5 times earnings, close to their median of 33 since 1989. The price-to-free-cash-flow ratio of 50 is far above its median of 28 and the highest since 1999. The gap between the two ratios is the capital spending of the previous section: free cash flow has fallen behind earnings. The ratio can come down in two ways: free cash flow catches up as the spending starts to pay off, or the share price falls.
+At the end of 2025 the shares traded at 35.5 times earnings, close to their median of 33 since 1989. The price-to-free-cash-flow ratio of 50 is far above its median of 28 and the highest since 1999. The gap between the two ratios is the capital spending shown earlier: free cash flow has fallen behind earnings. The ratio can come down in two ways: free cash flow catches up as the spending starts to pay off, or the share price falls.
 
 Beta measures how much the stock moves with the S&P 500 (1 means in line). The return versus the S&P 500 is the stock's return in the year minus that of the index, in percentage points:
 
@@ -178,10 +214,11 @@ What I would watch from here are three ratios from the charts above: capital exp
 
 ### Data and method
 
-- **Source:** Microsoft's annual income statements, balance sheets and cash flow statements for fiscal 1986 to 2025, and daily share prices of Microsoft and the S&P 500 ETF (SPY) to the end of 2025, all from [FinancialModelingPrep](/fmp){:target="_blank"}. The IPO date and offer price, the Nokia write-down and the acquisition prices are from Wikipedia.
+- **Source:** Microsoft's annual income statements, balance sheets and cash flow statements for fiscal 1986 to 2025, and daily share prices of Microsoft and the S&P 500 ETF (SPY) to the end of 2025, all from [FinancialModelingPrep](/fmp){:target="_blank"}. The US consumer price index is the Bureau of Labor Statistics' CPI-U, monthly, as published by the Bank for International Settlements. The IPO date and offer price, the Nokia write-down and the acquisition prices are from Wikipedia.
 - **How the series is built:** Microsoft's fiscal year ends on June 30, so "2025" is July 2024 to June 2025. The valuation ratios divide the share price at the end of the calendar year by the earnings or free cash flow per share of the fiscal year that ended that June.
-- **What I did to it:** growth per year in the table is the compound annual rate between the first and last fiscal year of each era. The total return of the shares uses year-end prices adjusted for splits and dividends, from the end of 1986 (the first year-end after the IPO), 1999 and 2013 (the year-ends before Ballmer and Nadella took over) to the end of the era. ROE and ROA use average equity and assets. ROIC is operating income taxed at the effective tax rate, divided by average debt plus equity, without deducting cash. The medians of the two valuation ratios are taken over 1989 to 2025. Beta is calculated each calendar year from daily returns against SPY.
+- **What I did to it:** growth per year in the table is the compound annual rate between the first and last fiscal year of each era. For the real figures I averaged the monthly consumer price index over each July to June fiscal year and restated revenue in fiscal 2025 dollars. The 2018 net margin at the 2017 tax rate is the pre-tax margin of 2018 times one minus the effective tax rate of 2017. The cash flow chart shows capital expenditure as negative values, as the cash flow statement reports it, and keeps every fifth year. The ROE, ROA and ROIC chart starts in 1987 because the averages need the balance sheet of the year before. The total return of the shares uses year-end prices adjusted for splits and dividends, from the end of 1986 (the first year-end after the IPO), 1999 and 2013 (the year-ends before Ballmer and Nadella took over) to the end of the era. ROE and ROA use average equity and assets. ROIC is operating income taxed at the effective tax rate, divided by average debt plus equity, without deducting cash. The medians of the two valuation ratios are taken over 1989 to 2025. Beta is calculated each calendar year from daily returns against SPY.
 - **Limits:** the 2015 and 2018 figures carry large one-off charges, so single years can mislead. The IPO comparison uses the $21 offer price adjusted for later stock splits. The full 40 years need a paid FinancialModelingPrep plan, as the free plan covers five years.
 - **Reproduce it:** the charts are made with the [Finance Toolkit](/projects/financetoolkit), my open-source Python library, using its [financial statements](/projects/financetoolkit/docs), [ratios](/projects/financetoolkit/docs/ratios) and, for beta and the returns in the tables, [performance](/projects/financetoolkit/docs/performance) modules. The Python button on each chart shows the code and its MCP button a question that returns the same data.
+- **Further reading:** Aswath Damodaran, [Return on Capital (ROC), Return on Invested Capital (ROIC) and Return on Equity (ROE): Measurement and Implications](https://pages.stern.nyu.edu/~adamodar/pdfiles/papers/returnmeasures.pdf){:target="_blank"} (2007), on how these returns are measured and why dividends and buybacks lift the return on equity. Microsoft's [2015 Annual Report](https://www.microsoft.com/investor/reports/ar15/index.html){:target="_blank"} and [2018 Annual Report](https://www.microsoft.com/investor/reports/ar18/index.html){:target="_blank"}, which set out the impairment charges on the phone business and the $13.7 billion net charge from the US tax reform.
 
 {% include ft-charts-script.html %}
