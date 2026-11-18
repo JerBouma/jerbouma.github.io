@@ -19,6 +19,8 @@
     var setOption = inst.setOption.bind(inst);
     inst.setOption = function (option, a, b) {
       if (option && typeof option === 'object' && !option.aria) option.aria = { enabled: true };
+      // printing: draw the final state at once, there is no time for an animation
+      if (option && typeof option === 'object' && window.__ftPrinting) option.animation = false;
       return setOption(option, a, b);
     };
     return inst;
@@ -1235,4 +1237,21 @@
   new MutationObserver(function () {
     instances.forEach(function (c) { c.draw(); });
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // printing (or saving as PDF): paper is white, so the page and its charts switch to
+  // the light theme, charts are drawn without animation, and the theme comes back after
+  var themeBeforePrint = null;
+  window.addEventListener('beforeprint', function () {
+    window.__ftPrinting = true;
+    var root = document.documentElement;
+    themeBeforePrint = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', 'light');
+    instances.forEach(function (c) { c.draw(); });
+  });
+  window.addEventListener('afterprint', function () {
+    window.__ftPrinting = false;
+    var root = document.documentElement;
+    if (themeBeforePrint === null) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', themeBeforePrint);
+    instances.forEach(function (c) { c.draw(); });
+  });
 })();

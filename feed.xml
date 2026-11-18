@@ -9,7 +9,7 @@ first, using the same fields the articles index and the SEO tags already use.
 {%- endcomment -%}
 {%- assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse -%}
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.locale | default: 'en' }}">
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="{{ site.locale | default: 'en' }}">
   <generator uri="https://jekyllrb.com/" version="{{ jekyll.version }}">Jekyll</generator>
   <id>{{ page.url | absolute_url | xml_escape }}</id>
   <link href="{{ page.url | absolute_url | xml_escape }}" rel="self" type="application/atom+xml" />
@@ -35,6 +35,18 @@ first, using the same fields the articles index and the SEO tags already use.
     <category term="{{ tag | xml_escape }}" />
     {%- endfor %}
     <summary type="text">{{ article.description | default: article.excerpt | strip_html | normalize_whitespace | xml_escape }}</summary>
+    {%- if article.cover.image %}
+    <media:thumbnail url="{{ article.cover.image | absolute_url | xml_escape }}" width="1600" height="900" />
+    <media:content url="{{ article.cover.image | absolute_url | xml_escape }}" medium="image" type="image/jpeg" width="1600" height="900" />
+    {%- endif %}
+    {%- capture entry_html -%}
+      {%- if article.cover.image %}<p><img src="{{ article.cover.image | absolute_url }}" alt="{{ article.cover.alt | escape }}" width="1600" height="900"></p>{% endif -%}
+      {%- if article.standfirst %}<p><em>{{ article.standfirst | strip_html }}</em></p>{% endif -%}
+      {%- if article.key_points.size > 0 %}<ul>{% for point in article.key_points %}<li>{{ point | markdownify | strip_html | strip }}</li>{% endfor %}</ul>{% endif -%}
+      <p>{{ article.excerpt | strip_html | normalize_whitespace }}</p>
+      <p><a href="{{ article.url | absolute_url }}">Read the full article, with its interactive charts</a></p>
+    {%- endcapture %}
+    <content type="html">{{ entry_html | xml_escape }}</content>
   </entry>
 {%- endfor %}
 </feed>
