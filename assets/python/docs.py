@@ -52,8 +52,9 @@ _GREEK = {
     "Delta": r"\Delta", "sigma": r"\sigma", "Sigma": r"\Sigma", "theta": r"\theta",
     "Theta": r"\Theta", "rho": r"\rho", "epsilon": r"\epsilon", "lambda": r"\lambda",
     "mu": r"\mu", "pi": r"\pi", "Phi": r"\Phi", "phi": r"\phi", "tau": r"\tau",
-    "omega": r"\omega", "kappa": r"\kappa", "nu": r"\nu",
+    "omega": r"\omega", "kappa": r"\kappa", "nu": r"\nu", "ell": r"\ell",
     "chi": r"\chi", "xi": r"\xi", "eta": r"\eta", "zeta": r"\zeta", "psi": r"\psi",
+    "Gamma": r"\Gamma", "Lambda": r"\Lambda", "Pi": r"\Pi", "Psi": r"\Psi", "Omega": r"\Omega", "Xi": r"\Xi",
 }
 
 # Subscripts that contain an operator, protected from the tokenizer as one word.
@@ -65,12 +66,13 @@ _UNICODE_MATH = {
     "σ": "sigma", "β": "beta", "α": "alpha", "Δ": "Delta ", "θ": "theta",
     "ρ": "rho", "ε": "epsilon", "π": "pi", "Φ": "Phi", "μ": "mu", "λ": "lambda",
     "²": "^2", "³": "^3", "−": "-", "×": "*", "·": "*", "≈": " ≈ ",
-    "≤": " <= ", "≥": " >= ",
+    "≤": " <= ", "≥": " >= ", "∈": " ⟪\\in⟫ ", "±": " ⟪\\pm⟫ ",
 }
 
 # Function-style names that get a proper LaTeX operator instead of \operatorname.
 _FUNC_MAP = {
-    "log10": r"\log_{10}", "log": r"\log", "ln": r"\ln", "exp": r"\exp",
+    "log10": r"\log_{10}", "log": r"\log", "ln": r"\ln", "exp": r"\exp", "sin": r"\sin", "cos": r"\cos",
+    "sup": r"\sup", "SUM": r"\sum", "argmin": r"\operatorname*{arg\,min}", "argmax": r"\operatorname*{arg\,max}",
     "max": r"\max", "Max": r"\max", "MAX": r"\max",
     "min": r"\min", "Min": r"\min", "MIN": r"\min",
 }
@@ -90,7 +92,8 @@ def _text_escape(text: str) -> str:
     return text
 
 
-_BIG_OPERATORS = {"sum": r"\sum", "Sum": r"\sum", "prod": r"\prod", "Prod": r"\prod"}
+_BIG_OPERATORS = {"sum": r"\sum", "Sum": r"\sum", "prod": r"\prod", "Prod": r"\prod",
+                  "argmin": r"\operatorname*{arg\,min}", "argmax": r"\operatorname*{arg\,max}"}
 
 
 def _greek_sub(sub: str) -> str | None:
@@ -118,17 +121,39 @@ def _format_word(word: str) -> str:
         return r"\text{" + _text_escape(word[1:-1]) + "}"
     if word.startswith("⟪") and word.endswith("⟫"):  # LaTeX made before tokenizing (sums)
         return word[1:-1]
+    if word[:1] in "ⓗⓑⓣ" and len(word) > 1:  # β̂, ȳ_j, x̃: a hat, bar or tilde on the symbol
+        base, sep, rest = word[1:].partition("_")
+        primes = re.search(r"'*$", base).group(0)
+        base = base[:len(base) - len(primes)]
+        command = {"ⓗ": r"\hat", "ⓑ": r"\bar", "ⓣ": r"\tilde"}[word[0]]
+        inner = _format_word(base)
+        if inner.startswith(r"\text"):
+            command = {"ⓗ": r"\widehat", "ⓑ": r"\overline", "ⓣ": r"\widetilde"}[word[0]]
+        return command + "{" + inner + "}" + primes + (_format_word("x_" + rest)[1:] if sep else "")
+    match = re.fullmatch(r"([A-Za-z]|" + "|".join(_GREEK) + r")_hat", word)
+    if match:  # beta_hat
+        return r"\hat{" + _format_word(match.group(1)) + "}"
     if word in _GREEK:
         return _GREEK[word]
+    if word.rstrip("'") in _GREEK:
+        return _GREEK[word.rstrip("'")] + word[len(word.rstrip("'")):]
+    match = re.fullmatch(r"([a-zA-Z]|" + "|".join(_GREEK) + r")hat", word)
+    if match and word not in ("that", "What", "what", "chat"):  # yhat
+        return r"\hat{" + _format_word(match.group(1)) + "}"
     if word.startswith("d") and word[1:] in _GREEK:  # a differential such as dchi
         return "d" + _GREEK[word[1:]]
     base, sep, sub = word.partition("_")
     if sep and base in _BIG_OPERATORS and "_" not in sub:
         # sum_i, prod_t: the operator with its index underneath
         return _BIG_OPERATORS[base] + "_{" + (_GREEK.get(sub) or _SUB_RESTORE.get(sub, sub)) + "}"
-    if sep and len(sub) > 2 and sub[0] == "{" and sub[-1] == "}":
-        # an explicit subscript: x_{t-1}
-        return f"{_format_word(base)}_{{{sub[1:-1]}}}"
+    match = re.fullmatch(r"\{(.*)\}('*)", sub) if sep else None
+    if sep and not match:
+        match = re.fullmatch(r"(\w)('+)", sub)  # x_t': a transpose
+    if match:
+        # an explicit subscript: x_{t-1}, x_{t}' (with a transpose)
+        sub_latex = re.sub(r"(?<![\\A-Za-z])(" + "|".join(sorted(_GREEK, key=len, reverse=True)) + r")(?![A-Za-z])",
+                           lambda g: _GREEK[g.group(1)], match.group(1))
+        return f"{_format_word(base)}_{{{sub_latex}}}{match.group(2)}"
     if sep and re.fullmatch(r"\d+(\.\d+)?", sub):
         # a numeric subscript: VaR_0.995, P_10
         return f"{_format_word(base)}_{{{sub}}}"
@@ -145,13 +170,26 @@ def _format_word(word: str) -> str:
         greek = _greek_sub(sub) if short_base and "_" not in sub and sub not in _GREEK else None
         if greek:
             return f"{_format_word(base)}_{{{greek}}}"
+        if short_base and re.fullmatch(r"[A-Z]{2,}", sub):
+            return f"{_format_word(base)}_{{\\text{{{sub}}}}}"
         if short_base and (head in _GREEK or re.match(r"^[A-Za-z0-9]{1,3}$", head)):
             inner = _format_word(sub) if "_" in sub else (_GREEK.get(sub) or sub)
             return f"{_format_word(base)}_{{{inner}}}"
         if re.match(r"^[A-Za-z]$", base) and re.match(r"^[A-Za-z]+$", sub):
             # one letter with a word label: f_anchor, C_next
             return f"{base}_{{\\text{{{sub}}}}}"
+        if (base in _GREEK or re.fullmatch(r"[A-Z][A-Za-z]{1,4}", base)) and re.fullmatch(r"[A-Za-z]+", sub):
+            # a Greek symbol or a short name with a word label: ell_treated, RSS_restricted;
+            # Sigma_Portfolio is the volatility sigma
+            head = r"\sigma" if base == "Sigma" else _format_word(base)
+            return head + r"_{\text{" + sub + "}}"
         return r"\text{" + _text_escape(word) + "}"
+    if re.fullmatch(r"d[a-zA-Z]", word) and word != "df":  # dK, dt: a differential
+        return r"\,\mathrm{d}" + word[1:]
+    if re.fullmatch(r"[a-z][A-Z]", word):  # rT: r times T
+        return word
+    if word in _FUNC_MAP and word.islower():
+        return _FUNC_MAP[word]
     match = re.match(r"^([A-Za-z])(\d+)$", word)
     if match:
         return f"{match.group(1)}_{{{match.group(2)}}}"
@@ -167,9 +205,11 @@ def _format_word(word: str) -> str:
 def _format_word_run(words: list[str]) -> str:
     """Render a run of space-separated words, merging adjacent prose into \\text."""
     def is_prose(word: str) -> bool:
-        return (word not in _GREEK and len(word) > 1 and not word.startswith("⟦")
+        return (word.rstrip("'") not in _GREEK and word not in _FUNC_MAP and len(word) > 1 and not word.startswith("⟦")
+                and (not re.fullmatch(r"[a-z][A-Z]|d[a-zA-Z]", word) or word == "df")
                 and not (word[:1] == "d" and word[1:] in _GREEK)
-                and re.match(r"^[A-Za-z][A-Za-z'\-]*$", word) is not None
+                and re.match(r"^[A-Za-z][A-Za-z'&\-]*,?$", word) is not None
+                and (re.fullmatch(r"([a-zA-Z]|" + "|".join(_GREEK) + r")hat", word) is None or word in ("that", "what"))
                 and re.match(r"^[A-Za-z]'+$", word) is None)
 
     # A subscript on the final word applies to the whole phrase before it,
@@ -184,8 +224,15 @@ def _format_word_run(words: list[str]) -> str:
 
     parts: list[str] = []
     prose_run: list[str] = []
-    for word in words:
-        if is_prose(word):
+    for k, word in enumerate(words):
+        before = words[k - 1] if k else ""
+        after = words[k + 1] if k + 1 < len(words) else ""
+        # inside a phrase, "a", a number ("S&P 500 Return") or a name such as "Omega Ratio",
+        # "M2 Ratio" or "Max Consecutive Wins" is text too
+        phrase = word == "a" and is_prose(after) or is_prose(before) and is_prose(after) and word.isdigit() \
+            or (is_prose(after) and after[:1].isupper() or is_prose(before) and before[:1].isupper()) \
+            and re.fullmatch(r"[A-Z][a-z]+|[A-Z]\d", word) is not None
+        if is_prose(word) or phrase:
             prose_run.append(word)
             continue
         if prose_run:
@@ -218,6 +265,47 @@ def _tokenize_formula(text: str, pos: int = 0, closer: str = "") -> tuple[list, 
             return tokens, pos + 1
         if char in "⟦⟪":
             end = text.find("⟧" if char == "⟦" else "⟫", pos)
+            # a word of its own: y_1⟪ldots⟫y_T is three
+            flush()
+            word = text[pos:end + 1]
+            pos = end + 1
+            if text[pos:pos + 1] == " ":
+                word += " "
+                pos += 1
+            flush()
+            continue
+        if char == "|" and closer != "|" and not _has_partner(text, pos):  # P(y | x): given
+            flush()
+            tokens.append(("op", "∣"))
+            pos += 1
+            continue
+        if char in "|‖" and closer != char:  # |x|: an absolute value, ‖x‖ a norm
+            flush()
+            group, pos = _tokenize_formula(text, pos + 1, char)
+            tokens.append(("group", char, group))
+            continue
+        if char == "{" and not (word and word[-1] in "_^"):  # {1, ..., K}: a set
+            flush()
+            group, pos = _tokenize_formula(text, pos + 1, "}")
+            tokens.append(("group", "{", group))
+            continue
+        if char == "," and (not closer or re.match(r" [A-Z][a-z]+ and [A-Z]", text[pos + 1:])) and re.search(r"[A-Z][a-z]+$", word) and re.match(r" [A-Z][a-z]", text[pos + 1:pos + 4]) \
+                and "=" not in text[pos:].split(",")[0]:
+            word += char
+            pos += 1
+            continue
+        if char == "," and word[-1:].isdigit() and re.match(r"\d{3}(?!\d)", text[pos + 1:pos + 5]):
+            word += char  # 1,000,000
+            pos += 1
+            continue
+        if char == "{" and word and word[-1] in "_^":  # x_{t-1}: the subscript is part of the word
+            end, depth = pos, 0
+            while end < len(text):
+                depth += text[end] == "{"
+                depth -= text[end] == "}"
+                if depth == 0:
+                    break
+                end += 1
             word += text[pos:end + 1]
             pos = end + 1
             continue
@@ -231,6 +319,11 @@ def _tokenize_formula(text: str, pos: int = 0, closer: str = "") -> tuple[list, 
             flush()
             tokens.append(("op", text[pos:pos + 2]))
             pos += 2
+            continue
+        if char == "@":
+            flush()
+            tokens.append(("op", "@"))
+            pos += 1
             continue
         if char in "=+-*/^,|<>≈~":
             # A hyphen glued between word characters is part of the name, not a minus.
@@ -258,37 +351,130 @@ def _tokenize_formula(text: str, pos: int = 0, closer: str = "") -> tuple[list, 
     return tokens, pos
 
 
+def _has_partner(text: str, pos: int) -> bool:
+    """True when the | at pos has a closing | before its bracket closes."""
+    depth = 0
+    for char in text[pos + 1:]:
+        if char in "([{":
+            depth += 1
+        elif char in ")]}":
+            depth -= 1
+            if depth < 0:
+                return False
+        elif char == "|" and depth == 0:
+            return True
+    return False
+
+
 def _render_tokens(tokens: list) -> str:
     """Render a token list to LaTeX, handling word runs, functions and exponents."""
     parts: list[str] = []
+
+    def previous_is_spaced_word(index: int) -> bool:
+        return index > 0 and tokens[index - 1][0] == "word" and tokens[index - 1][1].endswith(" ")
     i = 0
     while i < len(tokens):
         token = tokens[i]
         if token[0] == "word":
-            words = [w for w in token[1].split(" ") if w]
+            words = re.findall(r"⟪[^⟫]*⟫\S*|⟦[^⟧]*⟧\S*|\S+", token[1])
             trailing_space = token[1].endswith(" ")
-            # A single word glued to a following group is a function call.
-            if (len(words) == 1 and not trailing_space and i + 1 < len(tokens)
-                    and tokens[i + 1][0] == "group" and tokens[i + 1][1] == "("):
-                name = words[0]
+            # The last word glued to a following group is a function call ("2 sigma sqrt(T)"
+            # is 2, sigma and the root of T); a number or # before a bracket multiplies or counts.
+            if (words and not trailing_space and i + 1 < len(tokens)
+                    and tokens[i + 1][0] == "group" and tokens[i + 1][1] == "("
+                    and (len(words) == 1 or _is_math_word(words[-1]))):
+                if len(words) > 1:
+                    parts.append(_format_word_run(words[:-1]))
+                name = words[-1]
                 group = _render_tokens(tokens[i + 1][2])
-                if name in ("sqrt", "SQRT", "√"):
+                if re.fullmatch(r"[0-9.]+", name):
+                    parts.append(name + "(" + group + ")")
+                elif name == "#":
+                    parts.append(r"\#(" + group + ")")
+                elif name in ("floor", "ceil"):
+                    side = "floor" if name == "floor" else "ceil"
+                    parts.append(r"\left\l" + side + " " + group + r" \right\r" + side)
+                elif name in ("sqrt", "SQRT", "√"):
                     parts.append(r"\sqrt{" + group + "}")
                 elif name in _FUNC_MAP:
-                    parts.append(_FUNC_MAP[name] + "(" + group + ")")
-                elif name in _GREEK or re.match(r"^[A-Za-z]'*$", name) \
+                    parts.append(_FUNC_MAP[name] + _bracket(group))
+                elif name[:1] in "⟪ⓗⓑⓣ" or name in _GREEK or re.match(r"^[A-Za-z]'*$", name) \
                         or ("_" in name and _format_word(name) != r"\text{" + _text_escape(name) + "}"):
-                    parts.append(_format_word(name) + "(" + group + ")")
+                    parts.append(_format_word(name) + _bracket(group))
+                elif re.fullmatch(r"[A-Za-z]{2,}_[A-Za-z]+", name) and name.split("_")[1] in _GREEK:
+                    # Quantile_alpha(A | B): the function with its subscript
+                    head, sub = name.split("_")
+                    parts.append(r"\operatorname{" + head + "}_{" + _GREEK[sub] + "}" + _bracket(group))
                 else:
-                    parts.append(r"\operatorname{" + _text_escape(name) + "}(" + group + ")")
+                    parts.append(r"\operatorname{" + _text_escape(name) + "}" + _bracket(group))
                 i += 2
                 continue
-            parts.append(_format_word_run(words))
+            if words == ["'"] and parts and parts[-1] not in _OPERATOR_PARTS:
+                parts[-1] += "'"  # (R b - r)': the transpose of the group
+            else:
+                # a connecting word ("1 if Revenue / Assets") splits the run, so the
+                # fraction next to it takes only the symbols
+                connecting = [k for k, w in enumerate(words) if _RE_PROSE_WORD.match(w)]
+                start, stop = 0, len(words)
+                if connecting and i > 0 and tokens[i - 1] == ("op", "/"):
+                    start = connecting[0]
+                if connecting and i + 1 < len(tokens) and tokens[i + 1] == ("op", "/"):
+                    stop = connecting[-1] + 1
+                    if all(re.fullmatch(r"[a-z]+", w) for w in words[stop:]):
+                        stop = len(words)  # "Dividends per Share paid over the window"
+                if i > 0 and tokens[i - 1] == ("op", "/") and len(words) > 1 \
+                        and re.fullmatch(r"[0-9.]+|[A-Za-z]", words[0]) and re.fullmatch(r"[a-z]{2,}", words[1]):
+                    start = 1  # "/ 2 per 100 of par"
+                if i + 1 < len(tokens) and tokens[i + 1] == ("op", "/"):
+                    base = stop if stop < len(words) else start
+                    tail = words[base:]
+                    lower = [k for k, w in enumerate(tail) if re.fullmatch(r"[a-z]{2,}", w) and w not in _FUNC_MAP]
+                    if lower and lower[-1] + 1 < len(tail):
+                        rest = tail[lower[-1] + 1:]
+                        # "coupons of Coupon": prose before a name; "over T_B of α̂": before symbols
+                        symbols = all(not re.fullmatch(r"[A-Z][a-z]+", w) for w in rest)
+                        if re.fullmatch(r"[a-z]{2,}", tail[0]) or symbols:
+                            stop = base + lower[-1] + 1
+                chunks = [words[:start], words[start:stop], words[stop:]]
+                rendered = [_format_word_run(chunk) for chunk in chunks if chunk]
+                for k, latex in enumerate(rendered):
+                    parts.append(latex)
             i += 1
             continue
         if token[0] == "group":
             inner = _render_tokens(token[2])
-            parts.append(f"({inner})" if token[1] == "(" else r"\left[" + inner + r"\right]")
+            exponent_next = i + 1 < len(tokens) and (tokens[i + 1] == ("op", "^") or tokens[i + 1][0] == "group")
+            after_operator = i == 0 or tokens[i - 1][0] == "op" and tokens[i - 1][1] != "/"
+            if token[1] == "(" and _is_lone_fraction(inner) and not exponent_next and after_operator:
+                group = inner  # (1 / n) is the fraction itself
+            elif token[1] == "|":
+                group = r"\left|" + inner + r"\right|"
+            elif token[1] == "‖":
+                group = r"\left\|" + inner + r"\right\|"
+            elif token[1] == "{":
+                group = r"\{" + inner + r"\}"
+            elif token[1] == "(":
+                group = (r"\left(" + inner + r"\right)") if r"\frac" in inner else f"({inner})"
+            else:
+                group = r"\left[" + inner + r"\right]"
+            if token[1] == "(" and parts and i > 0 and tokens[i - 1][0] == "word" \
+                    and not tokens[i - 1][1].endswith(" ") and re.search(r"\\text\{[^{}]*\}$", parts[-1]):
+                parts[-1] += group
+                i += 1
+                continue
+            # a word, then a space, then a bracket: "Total Assets (X1)"
+            if previous_is_spaced_word(i) and parts and re.search(r"\\text\{[^{}]*\}$", parts[-1]):
+                group = r"\;" + group
+            # σ²(q), Σ(...), Θ_n[i, j]: a bracket right after a power, a sum or an
+            # indexed symbol belongs to it
+            previous = tokens[i - 1] if i else None
+            if parts and previous is not None and parts[-1] not in _OPERATOR_PARTS and (
+                    previous[0] == "group" and parts[-1].endswith("}") and "^{" in parts[-1]
+                    or parts[-1].startswith((r"\sum", r"\prod")) or token[1] == "["
+                    and previous[0] == "word" and not previous[1].endswith(" ")):
+                parts[-1] += group
+            else:
+                parts.append(group)
             i += 1
             continue
         op = token[1]
@@ -303,18 +489,203 @@ def _render_tokens(tokens: list) -> str:
                 j += 1
             elif j < len(tokens) and tokens[j][0] == "word":
                 first_word = tokens[j][1].split(" ")[0]
-                exponent += _format_word(first_word)
+                power, sep, label = first_word.partition("_")
+                run = re.match(r"(?:[A-Z][a-z]+ ?)+", tokens[j][1])
+                if run and " " in run.group(0).strip() and not sep:
+                    first_word = run.group(0).rstrip()  # ^High Growth Periods
+                    exponent += r"\text{" + first_word + "}"
+                elif sep and (power.isdigit() or re.fullmatch(r"[a-z]", power)):
+                    exponent += power + "}_{" + (_format_word(label) if len(label) == 1 else r"\text{" + _text_escape(label) + "}")
+                elif re.fullmatch(r"[A-Za-z]{2}", first_word):
+                    exponent += first_word
+                else:
+                    exponent += _format_word(first_word)
                 remainder = tokens[j][1][len(first_word):].strip()
                 tokens[j] = ("word", remainder)
                 if not remainder:
                     j += 1
-            parts.append("^{" + exponent + "}")
+                    # e^h(t): the bracket glued to the exponent belongs to it
+                    if j < len(tokens) and tokens[j][0] == "group" and tokens[j][1] == "(" \
+                            and not tokens[j - 1][1].endswith(" ") and len(first_word) == 1 and not first_word.isdigit():
+                        exponent += "(" + _render_tokens(tokens[j][2]) + ")"
+                        j += 1
+            # The exponent belongs to its base, so a fraction takes both.
+            if parts and parts[-1] != _DIVIDE:
+                parts[-1] += "^{" + exponent + "}"
+            else:
+                parts.append("^{" + exponent + "}")
             i = j
             continue
-        parts.append({"*": r"\cdot", "≈": r"\approx", ",": ",\\;", "!=": r"\neq", "<=": r"\leq",
+        if op == "/":
+            parts.append(_DIVIDE)
+            i += 1
+            continue
+        if op == "-" and parts and parts[-1] not in _OPERATOR_PARTS and not _is_operand(parts[-1]) \
+                and re.search(r"[A-Za-z]\}$", parts[-1]):
+            parts.append(r"\mathord{-}")  # "for a call and -1": a sign, not a subtraction
+            i += 1
+            continue
+        parts.append({"*": r"\cdot", "@": r"\,", "∣": r"\mid", "≈": r"\approx", ",": ",\\;", "!=": r"\neq", "<=": r"\leq",
                       ">=": r"\geq", "~": r"\sim"}.get(op, op))
         i += 1
-    return " ".join(parts).replace(" ,\\;", ",\\;")
+    folded = _space_parts(_fold_fractions(parts))
+    return " ".join(folded).replace(" ,\\;", ",\\;")
+
+
+def _space_parts(folded: list[str]) -> list[str]:
+    """Math mode drops spaces: text next to a bracket, a symbol or more text needs one
+    ("Total Assets (X1)", "S_t ∈ {1, ..., K} the regime", "if \\frac")."""
+    folded = list(folded)
+    for k in range(1, len(folded)):
+        previous, current = folded[k - 1], folded[k]
+        if previous in _OPERATOR_PARTS or current in _OPERATOR_PARTS or current.startswith(r"\;") \
+                or previous.endswith(r"\;") or current.startswith(("^", "_", "'", ",")):
+            continue
+        if current.startswith((r"\text{", r"\operatorname")) or re.search(r"\\text\{[^{}]*\}$", previous) \
+                or _is_remark(current) \
+                or previous.endswith(")") and current.startswith(r"\text"):
+            folded[k] = r"\;" + current
+        elif re.search(r"[\w)}]$", previous) and current.startswith("(") and _is_remark(current):
+            folded[k] = r"\;" + current
+    return folded
+
+
+_DIVIDE = "\x00/"
+
+
+def _bracket(inner: str) -> str:
+    """Round brackets that grow with a fraction inside them."""
+    return (r"\left(" + inner + r"\right)") if r"\frac" in inner or r"\begin" in inner else "(" + inner + ")"
+
+
+def _is_math_word(word: str) -> bool:
+    """A word that applies to the bracket after it even inside a run: 2 sigma sqrt(T)."""
+    return (word in ("sqrt", "SQRT", "floor", "ceil", "#") or word in _FUNC_MAP or word in _GREEK
+            or word[:1] in "⟪ⓗⓑⓣ" or re.fullmatch(r"[0-9.]+|[A-Za-z]'*|[A-Za-z]_\{?\w+\}?", word) is not None)
+
+
+def _strip_brackets(latex: str) -> str:
+    """Drop the outer brackets of a fraction's numerator or denominator."""
+    for left, right in (("(", ")"), (r"\left(", r"\right)"), (r"\left[", r"\right]")):
+        if latex.startswith(left) and latex.endswith(right):
+            inner = latex[len(left):-len(right)]
+            depth = 0
+            for char in inner:
+                depth += char in "([{"
+                depth -= char in ")]}"
+                if depth < 0:
+                    return latex
+            return inner.strip()
+    return latex
+
+
+_OPERATOR_PARTS = {"=", "+", "-", r"\mid", r"\cdot", r"\,", r"\approx", ",\\;", r"\neq", r"\leq", r"\geq",
+                   r"\sim", "<", ">", "|", _DIVIDE}
+
+
+_PROSE_WORDS = r"(?:if|else|over|for|when|with|where|is|are|otherwise|which|solves|using)(?=[ }])"
+_RE_PROSE_WORD = re.compile(_PROSE_WORDS.replace("(?=[ }])", "") + "$")
+
+
+def _top_level(latex: str) -> str:
+    """latex without what sits inside round or square brackets: the outer level."""
+    out, depth = [], 0
+    for char in latex:
+        depth += char in "(["
+        if depth == 0:
+            out.append(char)
+        depth -= char in ")]"
+    return "".join(out)
+
+
+def _is_operand(part: str) -> bool:
+    """A part a fraction can take: not an operator and no prose ("and", "over") outside
+    its brackets."""
+    return part not in _OPERATOR_PARTS and not re.search(r"\\text\{(?:[^{}]*\s)?" + _PROSE_WORDS, _top_level(part)) \
+        and not re.fullmatch(r"(\\;)?\\text\{(?:and|or|of|the|a|an|to|in|by|at)\}", part) \
+        and not re.fullmatch(r"\d+(st|nd|rd|th)|\\text\{\d+(st|nd|rd|th)[^{}]*\}", part)
+
+
+def _is_remark(part: str) -> bool:
+    """A bracket that only holds words, such as (McFadden) or (0.05 by default)."""
+    if re.fullmatch(r"(?:\\;)?\(\\text\{(?:[A-Z&/]+|or [^{}]*)\}\)", part):
+        return False
+    if re.match(r"(?:\\;)?\(", part) and part.endswith(")") and r'\text{"' in part:
+        return True
+    return re.fullmatch(r"(?:\\;)?\((?:\\text\{[^{}]*\}|[0-9.]+|\s|\\;|,)+\)", part) is not None
+
+
+def _is_lone_fraction(latex: str) -> bool:
+    """True when the whole of latex is one \\frac{...}{...}."""
+    if not latex.startswith(r"\frac{"):
+        return False
+    depth, groups, i = 0, 0, len(r"\frac")
+    while i < len(latex):
+        depth += latex[i] == "{"
+        depth -= latex[i] == "}"
+        if depth == 0:
+            groups += 1
+            if groups == 2:
+                return i == len(latex) - 1
+            if i + 1 < len(latex) and latex[i + 1] != "{":
+                return False
+        i += 1
+    return False
+
+
+def _is_bare_operator(part: str) -> bool:
+    """A sum or product sign with only its limits: what follows is its summand."""
+    return re.fullmatch(r"\\(sum|prod)(_\{[^{}]*(\{[^{}]*\}[^{}]*)*\})?(\^\{[^{}]*(\{[^{}]*\}[^{}]*)*\})?", part) is not None
+
+
+def _fold_fractions(parts: list[str]) -> list[str]:
+    """Turn "a / b" into \\frac{a}{b}. Juxtaposed symbols multiply and bind tighter
+    than the slash, so σ²(q) / σ²(1) and Σ(...)² / (n - 1) keep their whole operands."""
+    out: list[str] = []
+    i = 0
+    while i < len(parts):
+        if parts[i] == _DIVIDE and out and _is_operand(out[-1]) and not re.fullmatch(r"\\(sum|prod)", out[-1]) \
+                and i + 1 < len(parts) and _is_operand(parts[i + 1]):
+            numerator = [out.pop()]
+            derivative = r"\mathrm{d}" in parts[i + 1]
+
+            def outside(part: str) -> bool:
+                index = re.match(r"\\(?:sum|prod)_\{([a-z])", part)
+                return _is_bare_operator(part) and (
+                    index is not None and re.search(r"(?<![\\\w])" + index.group(1) + r"(?!\w)", parts[i + 1]) is not None
+                    and r"\sum" not in parts[i + 1])
+            while out and (_is_operand(out[-1]) or out[-1] in (r"\cdot", r"\,") and not derivative) \
+                    and not outside(out[-1]):
+                numerator.insert(0, out.pop())
+            while numerator and numerator[0] in (r"\cdot", r"\,"):
+                out.append(numerator.pop(0))
+            j = i + 1
+            denominator = [parts[j]]
+            while j + 1 < len(parts) and _is_operand(parts[j + 1]):
+                # a remark at the end, "/ ln L_0 (McFadden)", stays outside the fraction
+                if _is_remark(parts[j + 1]) and (j + 2 >= len(parts) or not _is_operand(parts[j + 2])):
+                    break
+                # a unit after a bracket, "1 / (1 - p_jj) periods", is not in the denominator
+                if re.fullmatch(r"\\text\{[a-z]+\}", parts[j + 1]) and parts[j].endswith(")"):
+                    break
+                j += 1
+                denominator.append(parts[j])
+            top = re.sub(r"^(\\;\s*)+|(\s*\\;)+$", "", " ".join(_space_parts(numerator)))
+            bottom = re.sub(r"^(\\;\s*)+|(\s*\\;)+$", "", " ".join(_space_parts(denominator)))
+            if len(numerator) == 1:
+                top = _strip_brackets(top)
+            if len(denominator) == 1:
+                bottom = _strip_brackets(bottom)
+            total = re.fullmatch(r"\\text\{Sum of ([^{}]+)\}_\{(\w)\}", top)
+            if total:
+                out.append(r"\sum_{" + total.group(2) + r"} \frac{\text{" + total.group(1) + "}_{" + total.group(2) + "}}{" + bottom + "}")
+            else:
+                out.append(r"\frac{" + top + "}{" + bottom + "}")
+            i = j + 1
+            continue
+        out.append("/" if parts[i] == _DIVIDE else parts[i])
+        i += 1
+    return out
 
 
 def _sum_limit(text: str) -> str:
@@ -333,66 +704,215 @@ def _sum_to_latex(match: re.Match) -> str:
     return "⟪" + latex + "⟫"
 
 
+def _normalize_unicode(formula: str) -> str:
+    """Rewrite the Unicode of a display formula (εₜ₋ᵢ, φ¹², Σ, √, ∞, β̂) in the ASCII the
+    tokenizer reads: epsilon_{t-i}, phi^(12), sums, sqrt(...) and products of symbols."""
+    formula = unicodedata.normalize("NFD", formula).replace("…", "...").replace("−", "-")
+    formula = re.sub(r"`([^`]+)`", lambda m: "⟦" + m.group(1) + "⟧", formula)  # a code name: text
+    formula = formula.replace("||", "‖")  # ||x||: a norm
+    formula = re.sub(r"\b([A-Z])('+)-([A-Z]{2,})\b", lambda m: "⟪" + m.group(1) + m.group(2) + "_{\\text{" + m.group(3) + "}}⟫", formula)
+    formula = re.sub(r"(?<=[A-Za-z)\d]) x (?=[A-Z(\d])", " * ", formula)  # Operating Income x (1 - Tax)
+    formula = re.sub(r"Δ ?(?=[A-Z][a-z])", "⟪\\\\Delta⟫ ", formula)  # ΔReceivables
+    formula = re.sub(r"\bd\^2 ", "⟪\\\\mathrm{d}^{2}⟫ ", formula)  # d^2 C(K) / dK^2
+    formula = re.sub(r"(?<![\w])([A-Z]{2,})([+-])(?=[\s,)=]|$)", lambda m: "⟪\\text{" + m.group(1) + "}^{" + m.group(2) + "}⟫", formula)
+    formula = re.sub(r"Δ([a-z])(?![\w\u0302\u0303\u0304])", lambda m: "⟪\\Delta " + m.group(1) + "⟫", formula)
+    formula = re.sub(r"\[\[([^\[\]]+)\], \[([^\[\]]+)\]\]", lambda m: "⟪\\begin{pmatrix} " + " \\\\ ".join(
+        " & ".join(_format_word(c.strip()) for c in row.split(",")) for row in m.groups()) + " \\end{pmatrix}⟫", formula)
+    formula = re.sub("[" + "".join(_SUBSCRIPT_CHARS) + "]+",
+                     lambda m: "_{" + "".join(_SUBSCRIPT_CHARS[c] for c in m.group(0)) + "}", formula)
+    formula = re.sub("[" + "".join(_SUPERSCRIPT_CHARS) + "]+",
+                     lambda m: "^(" + "".join(_SUPERSCRIPT_CHARS[c] for c in m.group(0)) + ")", formula)
+    formula = re.sub(r"_\{([^{}]*[-+])\}([a-z])_\{([^{}]*)\}", r"_{\1\2\3}", formula)
+    formula = re.sub(r"_\{([^{}]*)\},_\{([^{}]*)\}", r"_{\1,\2}", formula)  # zᵢ,ₜ
+    formula = re.sub(r"_([A-Za-z0-9]+),_\{([^{}]*)\}", r"_{\1,\2}", formula)  # f_a,ₜ
+    formula = re.sub(r"\bX_\(([^()]*)\)", lambda m: "X_{(" + m.group(1).replace(" ", "") + ")}", formula)  # order statistic
+    formula = re.sub(r"_\(([^()]*)\)", lambda m: "_{" + m.group(1).replace(" ", "") + "}", formula)  # Y_(t-l)
+    formula = re.sub(r"_([A-Za-z0-9]+),([A-Za-z0-9]+)\b", lambda m: "_{" + ",".join(
+        x if len(x) == 1 else "\\text{" + x + "}" for x in m.groups()) + "}", formula)  # R_i,t
+    formula = re.sub(r"∂(\w)\s*/\s*∂(\w)('?)", lambda m: "⟪\\frac{\\partial " + m.group(1) + "}{\\partial " + (
+        "\\" + _GREEK_CHARS[m.group(2)] if m.group(2) in _GREEK_CHARS else m.group(2)) + "}" + m.group(3) + "⟫", formula)
+    formula = re.sub(r"_([a-z])-([a-z]{2,})\b", lambda m: "_{" + m.group(1) + "-\\text{" + m.group(2) + "}}", formula)
+    formula = re.sub(r"_([A-Za-z])([-+])([a-z])\b", r"_{\1\2\3}", formula)  # Y_T+h, Y_t-l
+    formula = formula.replace("ℓ", "ell")
+    # a hat, tilde or bar on a symbol: ⓗ, ⓣ or ⓑ in front of it, read by _format_word
+    marks = {"\u0302": "ⓗ", "\u0303": "ⓣ", "\u0304": "ⓑ"}
+    formula = re.sub(r"\b([A-Z]{2,3})\u0302", lambda m: "⟪\\widehat{\\text{" + m.group(1) + "}}⟫", formula)
+    formula = re.sub(r"(\w)([\u0302\u0303\u0304])", lambda m: marks[m.group(2)] + m.group(1), formula)
+    # (n - 5) // 3: floor division
+    formula = re.sub(r"(\([^()]*\)|\w+)\s*//\s*(\w+)", r"floor(\1 / \2)", formula)
+    formula = re.sub(r"([A-Za-z])∞", lambda m: m.group(1) + "_{\\infty}", formula).replace("∞", "⟪\\infty⟫")
+    formula = formula.replace("⌊", "⟪\\lfloor⟫ ").replace("⌋", " ⟪\\rfloor⟫")
+    # Σ(i = 1..q) and Σ_{j} are sums with their limits. Σ alone is a sum unless it is glued
+    # to a symbol before it (w'Σw, the covariance matrix) or followed by an operator.
+    formula = re.sub(r"Σ\((\w+)\s*=\s*([^().]+?)\s*\.\.\s*((?:[^()]|\([^()]*\))+?)\)",
+                     lambda m: "⟪\\sum_{" + m.group(1) + "=" + _sum_limit(m.group(2)) + "}^{" + _sum_limit(m.group(3)) + "}⟫ ", formula)
+    formula = re.sub(r"Σ\(([a-z]) in ([^()]+)\)", lambda m: "⟪\\sum_{" + m.group(1) + " \\in \\text{" + m.group(2) + "}}⟫ ", formula)
+    formula = re.sub(r"Σ_\{([^}]*)\}(?!\s*=)", lambda m: "⟪\\sum_{" + m.group(1) + "}⟫ ", formula)
+    formula = re.sub(r"(?<![\w'])Π(?=[\s(])", lambda m: "⟪\\prod⟫ ", formula)
+    formula = re.sub(r"(?<![\w'])Σ(?![\s]*[-+=*,)/·×_])", lambda m: "⟪\\sum⟫ ", formula)
+    formula = re.sub(r"\.\.\.?", lambda m: "⟪\\ldots⟫", formula)
+    # √ binds to the next symbol or bracket; glued symbols around it multiply
+    formula = re.sub(r"(?<=[\w)])√", " √", formula)
+    formula = re.sub(r"√\s*\(", "sqrt(", formula)
+    formula = re.sub(r"∂(\w)", lambda m: "⟪\\partial⟫ " + m.group(1), formula)
+    for char, name in _GREEK_CHARS.items():
+        formula = re.sub(r"(?<=[A-Za-z0-9)])" + char, " " + char, formula)
+        formula = re.sub(char + r"(?=[A-Za-z0-9√ⓗⓑⓣ])", name + " ", formula)
+        formula = formula.replace(char, name)
+    formula = re.sub(r"√\s*(⟪[^⟫]*⟫|[ⓗⓑⓣ]?[A-Za-z0-9.]+(?:_\{[^}]*\})?(?:\([^()]*\))?)", r"sqrt(\1)", formula)
+    # σ²_ε: the subscript before the power
+    formula = re.sub(r"\b(\w+)\^\((\w+)\)_(\{[^{}]*\}|[A-Za-z]+)", r"\1_\3^(\2)", formula)
+    # P/E and Advance/Decline are names; V/D in ln(V/D) is a fraction
+    formula = re.sub(r"\b([A-Z][a-z]+)/([A-Z][a-z]+)\b", lambda m: "⟦" + m.group(1) + "/" + m.group(2) + "⟧", formula)
+    formula = re.sub(r"(?:(?<=[A-Za-z] )|^)([A-Z])/([A-Z])\b|\b([A-Z])/([A-Z])(?= [A-Z][a-z])",
+                     lambda m: "⟦" + (m.group(1) or m.group(3)) + "/" + (m.group(2) or m.group(4)) + "⟧", formula)
+    # z*(q), SR*: a starred symbol; e'e, X'X: a transpose times a symbol
+    formula = re.sub(r"(?<![\w*])([A-Za-z])\*_(\{[^{}]*\}|\w+)",
+                     lambda m: "⟪" + m.group(1) + "^{*}_{" + m.group(2).strip("{}") + "}⟫", formula)
+    formula = re.sub(r"(?<![\w*])([A-Za-z]|[A-Z]{2,3})\*(?=[()\s,]|$)",
+                     lambda m: "⟪" + (m.group(1) if len(m.group(1)) == 1 else "\\text{" + m.group(1) + "}") + "^{*}⟫", formula)
+    formula = re.sub(r"((?<![A-Za-z])[A-Za-z]|\}|\b(?:" + "|".join(_GREEK) + r"))'(?!s\b)(?=[A-Za-zⓗⓑⓣ])", r"\1' ", formula)
+    formula = re.sub(r";(?=\s)", lambda m: "⟪;⟫", formula)
+    formula = re.sub(r"(?<=' )([A-Z])([A-Z]|[a-z])\b", r"\1 \2", formula)  # X'WX, X'Wy: products
+    return unicodedata.normalize("NFC", formula)
+
+
+def _split_clauses(formula: str) -> list[tuple[str, str]]:
+    """Split a formula line into (joiner, clause) pairs at top-level commas (not the
+    thousands in 1,000), at sentence ends and at an "and" between two equations."""
+    clauses: list[tuple[str, str]] = []
+    depth, current, joiner = 0, "", ""
+    i = 0
+    while i < len(formula):
+        char = formula[i]
+        depth += char in "([{"
+        depth -= char in ")]}"
+        ellipsis = formula[i + 1:].lstrip().startswith(("...", "…")) or formula[:i].rstrip().endswith(("...", "…"))
+        subscript = formula[i + 1:i + 2] in _SUBSCRIPT_CHARS  # zᵢ,ₜ
+        # "Property, Plant and Equipment" and "1, 2, 2, 1" are no clause ends
+        name = re.match(r" [A-Z][a-z]", formula[i + 1:i + 4]) is not None and re.search(r"[A-Z][a-z]+$", current) is not None \
+            and "=" not in formula[i:].split(",")[0]
+        numbers = formula[i - 1:i].isdigit() and re.match(r" \d", formula[i + 1:i + 3]) is not None
+        pair = re.search(r"_[A-Za-z0-9]+$", formula[:i]) is not None and formula[i + 1:i + 2].isalnum()  # R_i,t
+        subscript = subscript or name or numbers or pair
+        if depth == 0 and char == "," and not ellipsis and not subscript \
+                and not (formula[i - 1:i].isdigit() and formula[i + 1:i + 4].isdigit()):
+            clauses.append((joiner, current))
+            current, joiner = "", r",\;\; "
+            i += 1
+            continue
+        if depth == 0 and formula.startswith("; ", i):
+            clauses.append((joiner, current))
+            current, joiner = "", r";\;\; "
+            i += 2
+            continue
+        if depth == 0 and formula.startswith(". ", i) and formula[i + 2:i + 3].isupper():
+            clauses.append((joiner, current))
+            current, joiner = "", r".\;\; "
+            i += 2
+            continue
+        current += char
+        i += 1
+    clauses.append((joiner, current))
+    # "S = a / b and K = c / d": two equations
+    out: list[tuple[str, str]] = []
+    for joiner, clause in clauses:
+        pieces = re.split(r" and (?=[^()]*(?:\(|$))", clause)
+        if len(pieces) > 1 and all(" = " in piece for piece in pieces):
+            out.append((joiner, pieces[0]))
+            out.extend((r"\;\;\text{and}\;\; ", piece) for piece in pieces[1:])
+        else:
+            out.append((joiner, clause))
+    return [(joiner, clause.strip()) for joiner, clause in out if clause.strip()]
+
+
+def _prose_to_latex(text: str) -> str:
+    """A prose clause inside a display formula: text, with its symbols as math."""
+    def words(piece: str) -> str:
+        out = []
+        for k, chunk in enumerate(re.split(r"(?<![\w'.\"-])([b-zB-HJ-Z]|[a-z]\d|[a-z]_\{?\w+\}?)(?![\w'.\"-])", piece)):
+            if k % 2:
+                out.append(_format_word(chunk.replace("{", "").replace("}", "")))
+            elif chunk:
+                out.append(r"\text{" + _text_escape(chunk) + "}")
+        return " ".join(out)
+
+    parts, cursor = [], 0
+    for start, stop, latex in _inline_spans(text):
+        if text[cursor:start]:
+            parts.append(words(text[cursor:start]))
+        parts.append(latex)
+        cursor = stop
+    if text[cursor:]:
+        parts.append(words(text[cursor:]))
+    return " ".join(parts)
+
+
+def _math_to_latex(segment: str) -> str:
+    """Render one clause that holds an equation or expression."""
+    for literal in _LITERAL_ATOMS:
+        segment = segment.replace(literal, f"⟦{literal}⟧")
+    segment = _normalize_unicode(segment)
+    for char, replacement in _UNICODE_MATH.items():
+        segment = segment.replace(char, replacement)
+    for literal, sentinel in _SUB_SENTINELS.items():
+        segment = segment.replace(literal, sentinel)
+    segment = re.sub(r"√\s*([A-Za-z0-9.]+)", r"sqrt(\1)", segment)
+    # SUM_{t=2}^{n}, SUM_{i<j} and SUM_i become a summation sign with its limits.
+    segment = re.sub(
+        r"\bSUM_(?:\{([^{}]*)\}|([A-Za-z0-9]+))(?:\^(?:\{([^{}]*)\}|\(([^()]*)\)|([A-Za-z0-9]+)))?",
+        _sum_to_latex,
+        segment,
+    )
+    tokens, _ = _tokenize_formula(segment)
+    latex = _render_tokens(tokens)
+    # "u_(t-1)": the bracket is the subscript, not an argument
+    return re.sub(r"_\{\}\s*\(([^()]*)\)", lambda m: "_{" + m.group(1) + "}", latex)
+
+
+def _is_math_clause(clause: str) -> bool:
+    return _RE_MATHY.search(clause) is not None or " = " in f" {clause} " \
+        or re.search(r"\s[-+<>≥≤∈]\s", clause) is not None \
+        or (re.search(r"[=·×√Σ∂]", clause) is not None and _RE_INLINE_SIGNAL.search(clause) is not None
+            and not re.search(r"\b[a-z]{3,}\s+[a-z]{3,}\s+[a-z]{3,}\b", clause))
+
+
 def _formula_to_latex(line: str) -> str:
     """Convert one plain-text formula bullet into a $$ display-math block."""
     formula = line.lstrip("- ").rstrip().rstrip(".")
     formula = formula.replace("&#124;", "|")
-    for literal in _LITERAL_ATOMS:
-        formula = formula.replace(literal, f"⟦{literal}⟧")
-    for char, replacement in _UNICODE_MATH.items():
-        formula = formula.replace(char, replacement)
-    for literal, sentinel in _SUB_SENTINELS.items():
-        formula = formula.replace(literal, sentinel)
-    formula = re.sub(r"√\s*([A-Za-z0-9.]+)", r"sqrt(\1)", formula)
-    # SUM_{t=2}^{n}, SUM_{i<j} and SUM_i become a summation sign with its limits.
-    formula = re.sub(
-        r"\bSUM_(?:\{([^{}]*)\}|([A-Za-z0-9]+))(?:\^(?:\{([^{}]*)\}|\(([^()]*)\)|([A-Za-z0-9]+)))?",
-        _sum_to_latex,
-        formula,
-    )
 
     # A leading "Label: formula" keeps the label as one prose chunk.
     label = ""
     match = re.match(r"^([^=^]+?):\s+(.*)$", formula)
     if match and _RE_MATHY.search(match.group(2)):
-        label = r"\text{" + _text_escape(match.group(1)) + r":}\;\; "
+        label = _prose_to_latex(match.group(1) + ":") + r"\;\; "
         formula = match.group(2)
 
-    # Split into top-level comma segments so trailing prose clauses stay prose.
-    segments: list[str] = []
-    depth = 0
-    current = ""
-    for char in formula:
-        if char in "([":
-            depth += 1
-        elif char in ")]":
-            depth -= 1
-        if char == "," and depth == 0:
-            segments.append(current)
-            current = ""
+    rendered = ""
+    clauses: list[tuple[str, str]] = []
+    for joiner, clause in _split_clauses(formula):
+        # consecutive prose clauses are one sentence: "or, by default, the Hobijn, Franses"
+        if clauses and joiner.startswith(",") and not _is_math_clause(clause) and not _is_math_clause(clauses[-1][1]):
+            clauses[-1] = (clauses[-1][0], clauses[-1][1] + ", " + clause)
         else:
-            current += char
-    segments.append(current)
-
-    rendered: list[str] = []
-    for segment in segments:
-        segment = segment.strip()
-        if not segment:
-            continue
+            clauses.append((joiner, clause))
+    for joiner, clause in clauses:
         prefix = ""
-        match = re.match(r"^(where|over|for)\s+(.*)$", segment)
-        if match and _RE_MATHY.search(match.group(2)):
-            prefix = r"\text{" + match.group(1) + r"} \;\; "
-            segment = match.group(2)
-        if _RE_MATHY.search(segment) or " = " in f" {segment} ":
-            tokens, _ = _tokenize_formula(segment)
-            latex = _render_tokens(tokens)
-            # "u_(t-1)": the bracket is the subscript, not an argument
-            latex = re.sub(r"_\{\}\s*\(([^()]*)\)", lambda m: "_{" + m.group(1) + "}", latex)
-            rendered.append(prefix + latex)
+        match = re.match(r"^(where|with|over|for|and|else|otherwise|or)\s+(.*)$", clause)
+        if match and _is_math_clause(match.group(2)) and (" = " in match.group(2) or match.group(1) in ("else", "otherwise", "or")):
+            prefix = r"\text{" + match.group(1) + r"}\;\; "
+            clause = match.group(2)
+        lead = re.match(r"^([^=:()]+?):\s+(.*)$", clause)
+        if lead and not _is_math_clause(lead.group(1)) and _is_math_clause(lead.group(2)):
+            prefix += _prose_to_latex(lead.group(1) + ":") + r"\;\; "
+            clause = lead.group(2)
+        if _is_math_clause(clause):
+            rendered += joiner + prefix + _math_to_latex(clause)
         else:
-            rendered.append(r"\text{" + _text_escape(segment) + "}")
-    return "$$\n" + label + ",\\;\\; ".join(rendered) + "\n$$"
+            rendered += joiner + prefix + _prose_to_latex(clause)
+    latex = (label + rendered).replace("{{", "{ {").replace("{%", "{ %")
+    return "$$\n" + latex + "\n$$"
 
 
 def _looks_like_formula(line: str) -> bool:
@@ -418,7 +938,7 @@ _GREEK_NAMES = {name for name in _GREEK_CHARS.values() if name.islower()} | {"io
 
 # Unicode sub- and superscripts, rewritten as _{...} and ^{...} before rendering.
 _SUBSCRIPT_CHARS = dict(zip("₀₁₂₃₄₅₆₇₈₉₊₋ₜᵢⱼₖₙₘₐₑₒₓₕₗₚₛᵣᵤᵥ", "0123456789+-tijknmaeoxhlpsruv"))
-_SUPERSCRIPT_CHARS = dict(zip("⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ⁿᵀⁱ", "0123456789-+nTi"))
+_SUPERSCRIPT_CHARS = dict(zip("⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ⁿᵀⁱᵏᵐʲᵗᵖᵈˣ", "0123456789-+nTikmjtpdx"))
 
 _INLINE_OPS = {
     "=": "=", "≈": r"\approx", "≤": r"\leq", "≥": r"\geq", "<=": r"\leq", ">=": r"\geq",
@@ -577,6 +1097,8 @@ class _Inline:
                 nxt = s[self.pos:self.pos + 1]
                 after = s[self.pos:].lstrip(" ")
                 glued = before.isalnum() or before in "'" or before in _GREEK_CHARS
+                if re.match(r"(is|are|the|and)\b", after):
+                    return r"\Sigma"
                 if s[:self.pos - 1].rstrip().endswith("/") or not glued and (
                         nxt in (" ", "(", "[") and after and (after[0] == "|" or after[0] not in _INLINE_OPS)
                         and after[0] not in ",)" or nxt == "_" and not s[self.pos + 1:self.pos + 2].isupper()):
@@ -624,10 +1146,10 @@ class _Inline:
         self.pending_sub = ""
         while self.pos < len(s):
             char = s[self.pos]
-            if char in "\u0302\u0304":
-                command = r"\hat" if char == "\u0302" else r"\bar"
+            if char in "\u0302\u0303\u0304":
+                command = {"\u0302": r"\hat", "\u0303": r"\tilde", "\u0304": r"\bar"}[char]
                 if atom.startswith(r"\text"):
-                    command = r"\widehat" if char == "\u0302" else r"\overline"
+                    command = {"\u0302": r"\widehat", "\u0303": r"\widetilde", "\u0304": r"\overline"}[char]
                 atom = command + "{" + atom + "}"
                 self.pos += 1
             elif char == "'":

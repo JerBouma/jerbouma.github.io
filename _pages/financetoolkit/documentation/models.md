@@ -35,15 +35,15 @@ The Dupont analysis is a method used to dissect and understand the factors that 
 The formula is as follows:
 
 $$
-\text{Net Profit Margin} = \text{Net Income} / \text{Revenue}
+\text{Net Profit Margin} = \frac{\text{Net Income}}{\text{Revenue}}
 $$
 
 $$
-\text{Asset Turnover} = \text{Revenue} / \text{Average Total Assets}
+\text{Asset Turnover} = \frac{\text{Revenue}}{\text{Average Total Assets}}
 $$
 
 $$
-\text{Equity Multiplier} = \text{Average Total Assets} / \text{Average Total Equity}
+\text{Equity Multiplier} = \frac{\text{Average Total Assets}}{\text{Average Total Equity}}
 $$
 
 $$
@@ -117,23 +117,23 @@ The Extended Dupont analysis splits the three-factor decomposition's Net Profit 
 The formula is as follows:
 
 $$
-\text{Interest Burden Ratio} = \text{Income Before Tax} / \text{Operating Income}
+\text{Interest Burden Ratio} = \frac{\text{Income Before Tax}}{\text{Operating Income}}
 $$
 
 $$
-\text{Tax Burden Ratio} = \text{Net Income} / \text{Income Before Tax}
+\text{Tax Burden Ratio} = \frac{\text{Net Income}}{\text{Income Before Tax}}
 $$
 
 $$
-\text{Operating Profit Margin} = \text{Operating Income} / \text{Revenue}
+\text{Operating Profit Margin} = \frac{\text{Operating Income}}{\text{Revenue}}
 $$
 
 $$
-\text{Asset Turnover} = \text{Revenue} / \text{Average Total Assets}
+\text{Asset Turnover} = \frac{\text{Revenue}}{\text{Average Total Assets}}
 $$
 
 $$
-\text{Equity Multiplier} = \text{Average Total Assets} / \text{Average Total Equity}
+\text{Equity Multiplier} = \frac{\text{Average Total Assets}}{\text{Average Total Equity}}
 $$
 
 $$
@@ -225,7 +225,7 @@ Cash and marketable securities are deducted together (Damodaran), the same Enter
 The formula is as follows:
 
 $$
-\text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average Shares Diluted} (\text{Weighted Average Shares when diluted} = \text{False}),\;\; \text{with the share price the traded close at the end of each quarter or year}
+\text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average Shares Diluted} \;(\text{Weighted Average Shares when diluted} = \text{False}),\;\; \text{with the share price the traded close at the end of each quarter or year}
 $$
 
 $$
@@ -308,7 +308,7 @@ $$
 $$
 
 $$
-\text{Tobin's}\; Q \;\text{Ratio} = (\text{Market Value of Equity} + \text{Total Liabilities}) / \text{Total Assets}
+\text{Tobin's}\; Q \;\text{Ratio} = \frac{\text{Market Value of Equity} + \text{Total Liabilities}}{\text{Total Assets}}
 $$
 
 Tobin's Q Ratio can be interpreted as follows:
@@ -398,11 +398,11 @@ $$
 $$
 
 $$
-\text{Cost of Debt} = \text{Interest Expense} / \text{Total Debt}
+\text{Cost of Debt} = \frac{\text{Interest Expense}}{\text{Total Debt}}
 $$
 
 $$
-\text{WACC} = (\text{Market Value of Equity} / \text{Total Market Value}) \cdot \text{Cost of Equity} + (\text{Market Value of Debt} / \text{Total Market Value}) \cdot \text{Cost of Debt} \cdot (1 - \text{Corporate Tax Rate})
+\text{WACC} = \frac{\text{Market Value of Equity}}{\text{Total Market Value}} \cdot \text{Cost of Equity} + \frac{\text{Market Value of Debt}}{\text{Total Market Value}} \cdot \text{Cost of Debt} \cdot (1 - \text{Corporate Tax Rate})
 $$
 
 Cost of Equity (Re): The cost of equity represents the return required by the company's shareholders or equity investors. It is the cost of raising funds by selling equity (such as common stock). The cost of equity is often estimated using methods like the Capital Asset Pricing Model (CAPM) or the Dividend Discount Model (DDM).
@@ -677,11 +677,11 @@ $$
 $$
 
 $$
-\text{Terminal Value} = \text{Last Cash Flow Projection} \cdot (1 + \text{Perpetual Growth Rate}) / (\text{Weighted Average Cost of Capital} - \text{Perpetual Growth Rate})
+\text{Terminal Value} = \frac{\text{Last Cash Flow Projection} \cdot (1 + \text{Perpetual Growth Rate})}{\text{Weighted Average Cost of Capital} - \text{Perpetual Growth Rate}}
 $$
 
 $$
-\text{Enterprise Value} = \text{Sum of Present Value of Cash Flow Projections} + \text{Terminal Value} / (1 + \text{Weighted Average Cost of Capital}) ^{\text{Periods}}
+\text{Enterprise Value} = \text{Sum of Present Value of Cash Flow Projections} + \frac{\text{Terminal Value}}{(1 + \text{Weighted Average Cost of Capital})^{\text{Periods}}}
 $$
 
 $$
@@ -689,7 +689,7 @@ $$
 $$
 
 $$
-\text{Intrinsic Value} = \text{Equity Value} / \text{Weighted Average Shares Diluted}
+\text{Intrinsic Value} = \frac{\text{Equity Value}}{\text{Weighted Average Shares Diluted}}
 $$
 
 The base cash flow is by default the Free Cash Flow to the Firm (see `get_free_cash_flow_to_firm`), the cash flow available to both debt and equity holders. That is the cash flow the Weighted Average Cost of Capital discounts into an Enterprise Value, from which the debt is then subtracted.
@@ -942,7 +942,7 @@ The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Co
 The formula is as follows:
 
 $$
-\text{Intrinsic Value} = (\text{Dividends Per Share} \cdot (1 + \text{Growth Rate})) / (\text{Rate of Return} - \text{Growth Rate})
+\text{Intrinsic Value} = \frac{\text{Dividends Per Share} \cdot (1 + \text{Growth Rate})}{\text{Rate of Return} - \text{Growth Rate}}
 $$
 
 The formula essentially discounts the future expected dividends to their present value, taking into account the required rate of return and the growth rate. The numerator represents the expected dividend in the next period. The denominator represents the required rate of return minus the growth rate.
@@ -1034,19 +1034,19 @@ The Two-Stage Dividend Discount Model extends the (single-stage) Gordon Growth M
 The formula is as follows:
 
 $$
-\text{Dividend Projection}_{t} = \text{Dividends Per Share} \cdot (1 + \text{High Growth Rate}) ^{t}
+\text{Dividend Projection}_{t} = \text{Dividends Per Share} \cdot (1 + \text{High Growth Rate})^{t}
 $$
 
 $$
-\text{High-Growth Phase Present Value} = \text{Sum of Dividend Projection}_{t} / (1 + \text{Rate of Return}) ^{t},\;\; \text{for} \;\; t = 1,\;\; \text{...},\;\; \text{High Growth Periods}
+\text{High-Growth Phase Present Value} = \sum_{t} \frac{\text{Dividend Projection}_{t}}{(1 + \text{Rate of Return})^{t}},\;\; \text{for}\;\; t = 1,\; \ldots,\; \text{High Growth Periods}
 $$
 
 $$
-\text{Terminal Value} = \text{Last Dividend Projection} \cdot (1 + \text{Stable Growth Rate}) / (\text{Rate of Return} - \text{Stable Growth Rate})
+\text{Terminal Value} = \frac{\text{Last Dividend Projection} \cdot (1 + \text{Stable Growth Rate})}{\text{Rate of Return} - \text{Stable Growth Rate}}
 $$
 
 $$
-\text{Intrinsic Value} = \text{High-Growth Phase Present Value} + (\text{Terminal Value} / (1 + \text{Rate of Return}) ^{\text{High}} \text{Growth Periods})
+\text{Intrinsic Value} = \text{High-Growth Phase Present Value} + \frac{\text{Terminal Value}}{(1 + \text{Rate of Return})^{\text{High Growth Periods}}}
 $$
 
 With transition periods it becomes the Three-Stage Dividend Discount Model: between the high-growth and the stable phase, the growth rate declines in equal steps from the high to the stable rate, and those dividends are discounted explicitly as well. In transition period k (of n), dividends grow at High Growth Rate - (High Growth Rate - Stable Growth Rate) * k / (n + 1), and the Terminal Value is taken at the end of the transition phase.
@@ -1136,11 +1136,11 @@ The H-Model of Fuller and Hsia (1984) values a stock whose dividend growth start
 The formula is as follows:
 
 $$
-H = \text{High Growth Periods} / 2
+H = \frac{\text{High Growth Periods}}{2}
 $$
 
 $$
-\text{Intrinsic Value} = \text{Dividends Per Share} \cdot (1 + \text{Stable Growth Rate}) / (\text{Rate of Return} - \text{Stable Growth Rate}) + \text{Dividends Per Share} \cdot H \cdot (\text{High Growth Rate} - \text{Stable Growth Rate}) / (\text{Rate of Return} - \text{Stable Growth Rate})
+\text{Intrinsic Value} = \frac{\text{Dividends Per Share} \cdot (1 + \text{Stable Growth Rate})}{\text{Rate of Return} - \text{Stable Growth Rate}} + \frac{\text{Dividends Per Share} \cdot H \cdot (\text{High Growth Rate} - \text{Stable Growth Rate})}{\text{Rate of Return} - \text{Stable Growth Rate}}
 $$
 
 Like the Gordon Growth Model, each period is valued off that period's actual annual Dividends per Share, which gives the intrinsic value over time.
@@ -1228,23 +1228,23 @@ $$
 $$
 
 $$
-\text{Justified Trailing}\; P / E = \text{Payout Ratio} \cdot (1 + \text{Growth Rate}) / (\text{Rate of Return} - \text{Growth Rate})
+\text{Justified Trailing} \;\text{P/E} = \frac{\text{Payout Ratio} \cdot (1 + \text{Growth Rate})}{\text{Rate of Return} - \text{Growth Rate}}
 $$
 
 $$
-\text{Justified Leading}\; P / E = \text{Payout Ratio} / (\text{Rate of Return} - \text{Growth Rate})
+\text{Justified Leading} \;\text{P/E} = \frac{\text{Payout Ratio}}{\text{Rate of Return} - \text{Growth Rate}}
 $$
 
 $$
-\text{Justified}\; P / B = (\text{Return on Equity} - \text{Growth Rate}) / (\text{Rate of Return} - \text{Growth Rate})
+\text{Justified} \;\text{P/B} = \frac{\text{Return on Equity} - \text{Growth Rate}}{\text{Rate of Return} - \text{Growth Rate}}
 $$
 
 $$
-\text{Price-to-Earnings Ratio} = \text{Share Price} / (\text{Net Income} / \text{Weighted Average Shares})
+\text{Price-to-Earnings Ratio} = \frac{\text{Share Price}}{\frac{\text{Net Income}}{\text{Weighted Average Shares}}}
 $$
 
 $$
-\text{Price-to-Book Ratio} = \text{Share Price} / (\text{Total Shareholder Equity} / \text{Weighted Average Shares})
+\text{Price-to-Book Ratio} = \frac{\text{Share Price}}{\frac{\text{Total Shareholder Equity}}{\text{Weighted Average Shares}}}
 $$
 
 The Growth Rate is the sustainable growth rate above unless a growth rate is given.
@@ -1410,27 +1410,27 @@ Calculates the Altman Z-Score, a financial metric used to predict the likelihood
 The formula is as follows:
 
 $$
-\text{Working Capital to Total Assets} (X_{1}) = \text{Working Capital} / \text{Total Assets}
+\text{Working Capital to Total Assets} \;(X_{1}) = \frac{\text{Working Capital}}{\text{Total Assets}}
 $$
 
 $$
-\text{Retained Earnings to Total Assets} (X_{2}) = \text{Retained Earnings} / \text{Total Assets}
+\text{Retained Earnings to Total Assets} \;(X_{2}) = \frac{\text{Retained Earnings}}{\text{Total Assets}}
 $$
 
 $$
-\text{EBIT to Total Assets} (X_{3}) = \text{EBIT} / \text{Total Assets}
+\text{EBIT to Total Assets} \;(X_{3}) = \frac{\text{EBIT}}{\text{Total Assets}}
 $$
 
 $$
-\text{Market Value to Total Liabilities} (X_{4},\; \text{"original"}) = \text{Market Value of Equity} / \text{Total Liabilities}
+\text{Market Value to Total Liabilities} \;(X_{4},\; \text{"original"}) = \frac{\text{Market Value of Equity}}{\text{Total Liabilities}}
 $$
 
 $$
-\text{Book Value to Total Liabilities} (X_{4},\; \text{the other models}) = \text{Total Shareholder Equity} / \text{Total Liabilities}
+\text{Book Value to Total Liabilities} \;(X_{4},\; \text{the other models}) = \frac{\text{Total Shareholder Equity}}{\text{Total Liabilities}}
 $$
 
 $$
-\text{Sales to Total Assets} (X_{5},\; \text{"original"} \;\text{and}\; \text{"private"}) = \text{Sales} / \text{Total Assets}
+\text{Sales to Total Assets} \;(X_{5},\; \text{"original"} \;\text{and}\; \text{"private"}) = \frac{\text{Sales}}{\text{Total Assets}}
 $$
 
 $$
@@ -1446,7 +1446,7 @@ $$
 $$
 
 $$
-\text{Emerging (Altman 2005):}\;\; Z'' - \text{EM} = 3.25 + 6.56 X_{1} + 3.26 X_{2} + 6.72 X_{3} + 1.05 X_{4}
+\text{Emerging (Altman 2005):}\;\; Z''_{\text{EM}} = 3.25 + 6.56 X_{1} + 3.26 X_{2} + 6.72 X_{3} + 1.05 X_{4}
 $$
 
 The Altman Z-Score can be interpreted with the zones of each model (distress below the lower cut-off, grey zone in between, safe above the upper one):
@@ -1565,7 +1565,7 @@ Following Piotroski (2000), the Return on Assets, the Operating Cash Flow in the
 The formula is as follows, where (t-1) is the same period a year earlier (the previous column on yearly data, four quarters back on quarterly data, so quarterly comparisons are year over year) and Beginning Total Assets are the total assets at the end of the previous period (`trailing` periods back when set, one year earlier with trailing=4 on quarterly data):
 
 $$
-\text{Return on Assets} (\text{ROA}) = \text{Net Income} / \text{Beginning Total Assets}
+\text{Return on Assets} \;(\text{ROA}) = \frac{\text{Net Income}}{\text{Beginning Total Assets}}
 $$
 
 $$
@@ -1577,23 +1577,23 @@ $$
 $$
 
 $$
-\text{Change in Return on Assets Criteria} = 1 \;\text{if ROA} (t) > \text{ROA} (t-1),\;\; \text{else 0}
+\text{Change in Return on Assets Criteria} = 1 \;\text{if ROA} \;(t) > \text{ROA} \;(t-1),\;\; \text{else 0}
 $$
 
 $$
-\text{Accruals Criteria} = 1 \;\text{if Operating Cash Flow} / \text{Beginning Total Assets} > \text{ROA},\;\; \text{else 0}
+\text{Accruals Criteria} = 1 \;\text{if} \;\frac{\text{Operating Cash Flow}}{\text{Beginning Total Assets}} > \text{ROA},\;\; \text{else 0}
 $$
 
 $$
-\text{Average Total Assets} = (\text{Beginning Total Assets} + \text{Total Assets}) / 2
+\text{Average Total Assets} = \frac{\text{Beginning Total Assets} + \text{Total Assets}}{2}
 $$
 
 $$
-\text{Change in Leverage Criteria} = 1 \;\text{if Long Term Debt} / \text{Average Total Assets is lower than in} (t-1),\;\; \text{else 0}
+\text{Change in Leverage Criteria} = 1 \;\text{if} \;\frac{\text{Long Term Debt}}{\text{Average Total Assets}} \;\text{is lower than in} \;(t-1),\;\; \text{else 0}
 $$
 
 $$
-\text{Change in Current Ratio Criteria} = 1 \;\text{if Total Current Assets} / \text{Total Current Liabilities is higher than in} (t-1),\;\; \text{else 0}
+\text{Change in Current Ratio Criteria} = 1 \;\text{if} \;\frac{\text{Total Current Assets}}{\text{Total Current Liabilities}} \;\text{is higher than in} \;(t-1),\;\; \text{else 0}
 $$
 
 $$
@@ -1601,15 +1601,15 @@ $$
 $$
 
 $$
-\text{Gross Margin Criteria} = 1 \;\text{if} (\text{Revenue} - \text{Cost of Goods Sold}) / \text{Revenue is higher than in} (t-1),\;\; \text{else 0}
+\text{Gross Margin Criteria} = 1 \;\text{if} \;\frac{\text{Revenue} - \text{Cost of Goods Sold}}{\text{Revenue}} \;\text{is higher than in} \;(t-1),\;\; \text{else 0}
 $$
 
 $$
-\text{Asset Turnover Criteria} = 1 \;\text{if Revenue} / \text{Beginning Total Assets is higher than in} (t-1),\;\; \text{else 0}
+\text{Asset Turnover Criteria} = 1 \;\text{if} \;\frac{\text{Revenue}}{\text{Beginning Total Assets}} \;\text{is higher than in} \;(t-1),\;\; \text{else 0}
 $$
 
 $$
-\text{Piotroski Score} = \text{SUM of the nine criteria} (0 \;\text{to}\; 9)
+\text{Piotroski Score} = \text{SUM} \;\text{of the nine criteria} \;(0 \;\text{to}\; 9)
 $$
 
 With `trailing`, the flows (net income, operating cash flow, revenue, cost of goods sold and common stock issued) are summed over the trailing periods, while the balance sheet items (total assets, long term debt, current assets and current liabilities) are taken at the end of each period.
@@ -1666,35 +1666,35 @@ The Beneish M-Score is a probabilistic model, developed by Messod Beneish, that 
 The formula is as follows, where (t-1) is the same period a year earlier (the previous column on yearly data, four quarters back on quarterly data, so quarterly comparisons are year over year):
 
 $$
-\text{DSRI} (\text{Days Sales in Receivables Index}) = (\text{Net Receivables} / \text{Revenue}) (t) / (\text{Net Receivables} / \text{Revenue}) (t-1)
+\text{DSRI} \;(\text{Days Sales in Receivables Index}) = \frac{\left(\frac{\text{Net Receivables}}{\text{Revenue}}\right) (t)}{\left(\frac{\text{Net Receivables}}{\text{Revenue}}\right) (t-1)}
 $$
 
 $$
-\text{GMI} (\text{Gross Margin Index}) = \text{Gross Margin} (t-1) / \text{Gross Margin} (t),\;\; \text{with Gross Margin} = (\text{Revenue} - \text{Cost of Goods Sold}) / \text{Revenue}
+\text{GMI} \;(\text{Gross Margin Index}) = \frac{\text{Gross Margin} \;(t-1)}{\text{Gross Margin} \;(t)},\;\; \text{with}\;\; \text{Gross Margin} = \frac{\text{Revenue} - \text{Cost of Goods Sold}}{\text{Revenue}}
 $$
 
 $$
-\text{AQI} (\text{Asset Quality Index}) = \text{Asset Quality} (t) / \text{Asset Quality} (t-1),\;\; \text{with Asset Quality} = 1 - (\text{Total Current Assets} + \text{Property},\; \text{Plant and Equipment}) / \text{Total Assets}
+\text{AQI} \;(\text{Asset Quality Index}) = \frac{\text{Asset Quality} \;(t)}{\text{Asset Quality} \;(t-1)},\;\; \text{with}\;\; \text{Asset Quality} = 1 - \frac{\text{Total Current Assets} + \text{Property, Plant and Equipment}}{\text{Total Assets}}
 $$
 
 $$
-\text{SGI} (\text{Sales Growth Index}) = \text{Revenue} (t) / \text{Revenue} (t-1)
+\text{SGI} \;(\text{Sales Growth Index}) = \frac{\text{Revenue} \;(t)}{\text{Revenue} \;(t-1)}
 $$
 
 $$
-\text{DEPI} (\text{Depreciation Index}) = \text{Depreciation Rate} (t-1) / \text{Depreciation Rate} (t),\;\; \text{with Depreciation Rate} = \text{Depreciation and Amortization} / (\text{Depreciation and Amortization} + \text{Property},\; \text{Plant and Equipment})
+\text{DEPI} \;(\text{Depreciation Index}) = \frac{\text{Depreciation Rate} \;(t-1)}{\text{Depreciation Rate} \;(t)},\;\; \text{with}\;\; \text{Depreciation Rate} = \frac{\text{Depreciation and Amortization}}{\text{Depreciation and Amortization} + \text{Property, Plant and Equipment}}
 $$
 
 $$
-\text{SGAI} (\text{SG\&A} \;\text{Expenses Index}) = (\text{SG\&A} \;\text{Expenses} / \text{Revenue}) (t) / (\text{SG\&A} \;\text{Expenses} / \text{Revenue}) (t-1)
+\text{SGAI} \;(\text{SG\&A Expenses Index}) = \frac{\left(\frac{\text{SG\&A Expenses}}{\text{Revenue}}\right) (t)}{\left(\frac{\text{SG\&A Expenses}}{\text{Revenue}}\right) (t-1)}
 $$
 
 $$
-\text{LVGI} (\text{Leverage Index}) = \text{Leverage} (t) / \text{Leverage} (t-1),\;\; \text{with Leverage} = (\text{Total Current Liabilities} + \text{Long Term Debt}) / \text{Total Assets}
+\text{LVGI} \;(\text{Leverage Index}) = \frac{\text{Leverage} \;(t)}{\text{Leverage} \;(t-1)},\;\; \text{with}\;\; \text{Leverage} = \frac{\text{Total Current Liabilities} + \text{Long Term Debt}}{\text{Total Assets}}
 $$
 
 $$
-\text{TATA} (\text{Total Accruals to Total Assets}) = (\text{Net Income} - \text{Operating Cash Flow}) / \text{Total Assets}
+\text{TATA} \;(\text{Total Accruals to Total Assets}) = \frac{\text{Net Income} - \text{Operating Cash Flow}}{\text{Total Assets}}
 $$
 
 $$
@@ -1781,15 +1781,15 @@ $$
 $$
 
 $$
-\text{TLTA} = \text{Total Liabilities} / \text{Total Assets}
+\text{TLTA} = \frac{\text{Total Liabilities}}{\text{Total Assets}}
 $$
 
 $$
-\text{WCTA} = \text{Working Capital} / \text{Total Assets}
+\text{WCTA} = \frac{\text{Working Capital}}{\text{Total Assets}}
 $$
 
 $$
-\text{CLCA} = \text{Current Liabilities} / \text{Current Assets}
+\text{CLCA} = \frac{\text{Current Liabilities}}{\text{Current Assets}}
 $$
 
 $$
@@ -1797,11 +1797,11 @@ $$
 $$
 
 $$
-\text{NITA} = \text{Net Income} / \text{Total Assets}
+\text{NITA} = \frac{\text{Net Income}}{\text{Total Assets}}
 $$
 
 $$
-\text{FUTL} = \text{Operating Cash Flow} / \text{Total Liabilities}
+\text{FUTL} = \frac{\text{Operating Cash Flow}}{\text{Total Liabilities}}
 $$
 
 $$
@@ -1809,7 +1809,7 @@ $$
 $$
 
 $$
-\text{CHIN} = (\text{Net Income} (t) - \text{Net Income} (t-1)) / (| \text{Net Income} (t) | + | \text{Net Income} (t-1) |)
+\text{CHIN} = \frac{\text{Net Income} \;(t) - \text{Net Income} \;(t-1)}{\left|\text{Net Income} \;(t)\right| + \left|\text{Net Income} \;(t-1)\right|}
 $$
 
 $$
@@ -1821,7 +1821,7 @@ $$
 $$
 
 $$
-\text{Bankruptcy Probability} = 1 / (1 + e ^{- \text{O-Score}})
+\text{Bankruptcy Probability} = \frac{1}{1 + e^{- \text{O-Score}}}
 $$
 
 The Ohlson O-Score can be interpreted as follows:
@@ -1911,15 +1911,15 @@ Calculates the Zmijewski Score, a financial metric used to predict the likelihoo
 The formula is as follows:
 
 $$
-\text{Net Income to Total Assets} = \text{Net Income} / \text{Total Assets}
+\text{Net Income to Total Assets} = \frac{\text{Net Income}}{\text{Total Assets}}
 $$
 
 $$
-\text{Total Liabilities to Total Assets} = \text{Total Liabilities} / \text{Total Assets}
+\text{Total Liabilities to Total Assets} = \frac{\text{Total Liabilities}}{\text{Total Assets}}
 $$
 
 $$
-\text{Current Assets to Current Liabilities} = \text{Current Assets} / \text{Current Liabilities}
+\text{Current Assets to Current Liabilities} = \frac{\text{Current Assets}}{\text{Current Liabilities}}
 $$
 
 $$
@@ -2008,19 +2008,19 @@ Calculates the Springate Score, a financial metric used to predict the likelihoo
 The formula is as follows:
 
 $$
-\text{Working Capital to Total Assets} = \text{Working Capital} / \text{Total Assets}
+\text{Working Capital to Total Assets} = \frac{\text{Working Capital}}{\text{Total Assets}}
 $$
 
 $$
-\text{EBIT to Total Assets} = \text{EBIT} / \text{Total Assets}
+\text{EBIT to Total Assets} = \frac{\text{EBIT}}{\text{Total Assets}}
 $$
 
 $$
-\text{EBT to Current Liabilities} = \text{Earnings Before Taxes} / \text{Total Current Liabilities}
+\text{EBT to Current Liabilities} = \frac{\text{Earnings Before Taxes}}{\text{Total Current Liabilities}}
 $$
 
 $$
-\text{Sales to Total Assets} = \text{Sales} / \text{Total Assets}
+\text{Sales to Total Assets} = \frac{\text{Sales}}{\text{Total Assets}}
 $$
 
 $$
@@ -2099,15 +2099,15 @@ Calculates the Grover Score, a financial metric used to predict the likelihood o
 The formula is as follows:
 
 $$
-\text{Working Capital to Total Assets} = \text{Working Capital} / \text{Total Assets}
+\text{Working Capital to Total Assets} = \frac{\text{Working Capital}}{\text{Total Assets}}
 $$
 
 $$
-\text{EBIT to Total Assets} = \text{EBIT} / \text{Total Assets}
+\text{EBIT to Total Assets} = \frac{\text{EBIT}}{\text{Total Assets}}
 $$
 
 $$
-\text{Return on Assets} = \text{Net Income} / \text{Total Assets}
+\text{Return on Assets} = \frac{\text{Net Income}}{\text{Total Assets}}
 $$
 
 $$
@@ -2186,27 +2186,27 @@ Calculates the Fulmer H-Score, a financial metric used to predict the likelihood
 The formula is as follows:
 
 $$
-V_{1} = \text{Retained Earnings} / \text{Total Assets}
+V_{1} = \frac{\text{Retained Earnings}}{\text{Total Assets}}
 $$
 
 $$
-V_{2} = \text{Revenue} / \text{Total Assets}
+V_{2} = \frac{\text{Revenue}}{\text{Total Assets}}
 $$
 
 $$
-V_{3} = \text{Income Before Tax} (\text{EBT}) / \text{Total Equity}
+V_{3} = \frac{\text{Income Before Tax} \;(\text{EBT})}{\text{Total Equity}}
 $$
 
 $$
-V_{4} = \text{Operating Cash Flow} / \text{Total Liabilities}
+V_{4} = \frac{\text{Operating Cash Flow}}{\text{Total Liabilities}}
 $$
 
 $$
-V_{5} = \text{Total Debt} / \text{Total Assets}
+V_{5} = \frac{\text{Total Debt}}{\text{Total Assets}}
 $$
 
 $$
-V_{6} = \text{Total Current Liabilities} / \text{Total Assets}
+V_{6} = \frac{\text{Total Current Liabilities}}{\text{Total Assets}}
 $$
 
 $$
@@ -2214,11 +2214,11 @@ V_{7} = \ln(\text{Total Assets} - \text{Goodwill and Intangible Assets})
 $$
 
 $$
-V_{8} = (\text{Total Current Assets} - \text{Total Current Liabilities}) / \text{Total Liabilities}
+V_{8} = \frac{\text{Total Current Assets} - \text{Total Current Liabilities}}{\text{Total Liabilities}}
 $$
 
 $$
-V_{9} = \ln(\text{EBIT} / \text{Interest Expense}),\;\; \text{with EBIT the reported Operating Income}
+V_{9} = \ln\left(\frac{\text{EBIT}}{\text{Interest Expense}}\right),\;\; \text{with EBIT the reported Operating Income}
 $$
 
 $$
@@ -2308,23 +2308,23 @@ Calculates the Taffler z-score, a discriminant model of financial distress estim
 The formula is as follows:
 
 $$
-\text{Profit Before Tax to Current Liabilities} (X_{1}) = \text{Income Before Tax} / \text{Total Current Liabilities}
+\text{Profit Before Tax to Current Liabilities} \;(X_{1}) = \frac{\text{Income Before Tax}}{\text{Total Current Liabilities}}
 $$
 
 $$
-\text{Current Assets to Total Liabilities} (X_{2}) = \text{Total Current Assets} / \text{Total Liabilities}
+\text{Current Assets to Total Liabilities} \;(X_{2}) = \frac{\text{Total Current Assets}}{\text{Total Liabilities}}
 $$
 
 $$
-\text{Current Liabilities to Total Assets} (X_{3}) = \text{Total Current Liabilities} / \text{Total Assets}
+\text{Current Liabilities to Total Assets} \;(X_{3}) = \frac{\text{Total Current Liabilities}}{\text{Total Assets}}
 $$
 
 $$
-\text{Daily Operating Expenses} = (\text{Revenue} - \text{Income Before Tax} - \text{Depreciation and Amortization}) / \text{Days}
+\text{Daily Operating Expenses} = \frac{\text{Revenue} - \text{Income Before Tax} - \text{Depreciation and Amortization}}{\text{Days}}
 $$
 
 $$
-\text{No-Credit Interval} (X_{4}) = (\text{Total Current Assets} - \text{Inventory} - \text{Total Current Liabilities}) / \text{Daily Operating Expenses}
+\text{No-Credit Interval} \;(X_{4}) = \frac{\text{Total Current Assets} - \text{Inventory} - \text{Total Current Liabilities}}{\text{Daily Operating Expenses}}
 $$
 
 $$
@@ -2409,7 +2409,7 @@ The Present Value of Growth Opportunities (PVGO) is a financial metric that repr
 The formula is as follows:
 
 $$
-\text{PVGO} = \text{Stock Price} - \text{Earnings Per Share} / \text{Cost of Equity}
+\text{PVGO} = \text{Stock Price} - \frac{\text{Earnings Per Share}}{\text{Cost of Equity}}
 $$
 
 **Also known as:** PVGO, growth value.
@@ -2488,19 +2488,19 @@ Since the share price equals the Earnings per Share times the P/E ratio, the pri
 The formula is as follows:
 
 $$
-1 + \text{Price Return} = (1 + \text{EPS Growth}) \cdot (1 + P / E \;\text{Change})
+1 + \text{Price Return} = (1 + \text{EPS Growth}) \cdot (1 + \text{P/E} \;\text{Change})
 $$
 
 $$
-\text{EPS Growth} = \text{EPS}_{t} / \text{EPS\_t-lag} - 1
+\text{EPS Growth} = \frac{\text{EPS}_{t}}{\text{EPS}_{t-\text{lag}}} - 1
 $$
 
 $$
-P / E \;\text{Change} = (\text{Price}_{t} / \text{EPS}_{t}) / (\text{Price\_t-lag} / \text{EPS\_t-lag}) - 1
+\text{P/E} \;\text{Change} = \frac{\frac{\text{Price}_{t}}{\text{EPS}_{t}}}{\frac{\text{Price}_{t-\text{lag}}}{\text{EPS}_{t-\text{lag}}}} - 1
 $$
 
 $$
-\text{Dividend Return} = \text{Dividends per Share paid over the window} / \text{Price\_t-lag}
+\text{Dividend Return} = \text{Dividends per Share paid over the window} \;/ \;\text{Price}_{t-\text{lag}}
 $$
 
 $$
@@ -2589,7 +2589,7 @@ The Sustainable Growth Rate (SGR) is the maximum rate at which a company can gro
 The formula is as follows:
 
 $$
-\text{Return on Equity} = \text{Net Income} / \text{Total Equity at the beginning of the period}
+\text{Return on Equity} = \frac{\text{Net Income}}{\text{Total Equity at the beginning of the period}}
 $$
 
 $$
@@ -2665,7 +2665,7 @@ The Internal Growth Rate (IGR) is the maximum rate at which a company can grow i
 The formula is as follows:
 
 $$
-\text{Return on Assets} = \text{Net Income} / \text{Total Assets at the end of the period}
+\text{Return on Assets} = \frac{\text{Net Income}}{\text{Total Assets at the end of the period}}
 $$
 
 $$
@@ -2673,7 +2673,7 @@ $$
 $$
 
 $$
-\text{IGR} = (\text{Return on Assets} \cdot \text{Retention Ratio}) / (1 - (\text{Return on Assets} \cdot \text{Retention Ratio}))
+\text{IGR} = \frac{\text{Return on Assets} \cdot \text{Retention Ratio}}{1 - (\text{Return on Assets} \cdot \text{Retention Ratio})}
 $$
 
 **Also known as:** IGR.
@@ -2741,7 +2741,7 @@ The Graham Number is intended as an upper bound on the price a defensive investo
 The formula is as follows:
 
 $$
-\text{Graham Number} = \sqrt{22.5 x \;\text{Earnings per Share}\; x \;\text{Book Value per Share}}
+\text{Graham Number} = \sqrt{22.5 \cdot \text{Earnings per Share} \cdot \text{Book Value per Share}}
 $$
 
 The constant 22.5 is Graham's limit of a price-to-earnings ratio of 15 times a price-to-book ratio of 1.5, so the Graham Number is the price at which the product of the two ratios reaches that limit. For companies whose value lies mostly in intangibles, or that buy back many shares, book value is small and the Graham Number sits far below the market price.
@@ -2816,7 +2816,7 @@ $$
 $$
 
 $$
-\text{Terminal Value} = \text{Last Projection} \cdot (1 + \text{Perpetual Growth Rate}) / (\text{WACC} - \text{Perpetual Growth Rate})
+\text{Terminal Value} = \frac{\text{Last Projection} \cdot (1 + \text{Perpetual Growth Rate})}{\text{WACC} - \text{Perpetual Growth Rate}}
 $$
 
 $$
@@ -2824,7 +2824,7 @@ $$
 $$
 
 $$
-\text{Implied Growth Rate solves Equity Value} / \text{Shares Outstanding} = \text{Share Price}
+\text{Implied Growth Rate solves} \;\frac{\text{Equity Value}}{\text{Shares Outstanding}} = \text{Share Price}
 $$
 
 For more information, see the following book:
@@ -3068,7 +3068,7 @@ Which returns:
 Calculate the distance to default and probability of default with the Merton (1974) structural credit model. Equity is seen as a call option on the company's assets with its debt as strike price: shareholders receive what is left after the debt is repaid. The market value and volatility of the assets, which cannot be observed, are solved from the market value and volatility of the equity:
 
 $$
-E = V N (d_{1}) - D e ^{- \text{rT}} N(d_{2})
+E = V N(d_{1}) - D e^{- rT} N(d_{2})
 $$
 
 $$
@@ -3076,7 +3076,7 @@ $$
 $$
 
 $$
-\text{Distance to Default} = (\ln(V / D) + (r - \sigma_{V} ^{2} / 2) T) / (\sigma_{V} \;\text{sqrt} (T))
+\text{Distance to Default} = \frac{\ln\left(\frac{V}{D}\right) + \left(r - \frac{\sigma_{V}^{2}}{2}\right) T}{\sigma_{V} \sqrt{T}}
 $$
 
 $$
@@ -3161,35 +3161,35 @@ The model is the 12-month-ahead logit of Table IV, column (3), of the paper:
 with:
 
 $$
-\text{MTA} = \text{Market Value of Equity} + \text{Total Liabilities} (\text{the market value of total assets})
+\text{MTA} = \text{Market Value of Equity} + \text{Total Liabilities} \;(\text{the market value of total assets})
 $$
 
 $$
-\text{NIMTA} = \text{Quarterly Net Income} / \text{MTA},\;\; \text{and NIMTAAVG its average over four quarters with weights that halve every}\; \text{quarter:} (1 - \text{φ} ^{3}) / (1 - \text{φ¹} ^{2}) \cdot (\operatorname{NIMTA}(t) + \text{φ} ^{3} \operatorname{NIMTA}(t-1) + \text{φ⁶} \;\text{NIMTA} (t-2) + \text{φ⁹} \;\text{NIMTA} (t-3)),\;\; \text{φ} = 2 ^{- 1 / 3}
+\text{NIMTA} = \frac{\text{Quarterly Net Income}}{\text{MTA}},\;\; \text{and NIMTAAVG its average over four quarters with weights that halve every quarter:}\;\; \frac{1 - \phi^{3}}{1 - \phi^{12}} \cdot (\operatorname{NIMTA}(t) + \phi^{3} \;\operatorname{NIMTA}(t-1) + \phi^{6} \;\operatorname{NIMTA}(t-2) + \phi^{9} \;\operatorname{NIMTA}(t-3)),\;\; \phi = 2^{- \frac{1}{3}}
 $$
 
 $$
-\text{EXRET} = \ln(1 + \text{Return}) - \ln(1 + \text{S\&P} 500 \;\text{Return}) \text{per month},\;\; \text{and EXRETAVG its average over twelve}\; \text{months:} (1 - \text{φ}) / (1 - \text{φ¹} ^{2}) \cdot (\operatorname{EXRET}(t) + \text{φ} \;\text{EXRET} (t-1) + ... + \text{φ¹¹} \;\text{EXRET} (t-11))
+\text{EXRET} = \ln(1 + \text{Return}) - \ln(1 + \text{S\&P 500 Return}) \;\text{per month},\;\; \text{and EXRETAVG its average over twelve months:}\;\; \frac{1 - \phi}{1 - \phi^{12}} \cdot (\operatorname{EXRET}(t) + \phi \;\text{EXRET}(t-1) + \ldots + \phi^{11} \;\operatorname{EXRET}(t-11))
 $$
 
 $$
-\text{TLMTA} = \text{Total Liabilities} / \text{MTA}
+\text{TLMTA} = \frac{\text{Total Liabilities}}{\text{MTA}}
 $$
 
 $$
-\text{CASHMTA} = \text{Cash and Short Term Investments} / \text{MTA}
+\text{CASHMTA} = \frac{\text{Cash and Short Term Investments}}{\text{MTA}}
 $$
 
 $$
-\text{MB} = \text{Market Value of Equity} / \text{Adjusted Book Equity},\;\; \text{where} \;\; \text{Adjusted Book Equity} = \text{Book Equity} + 0.1 \cdot (\text{Market Value of Equity} - \text{Book Equity}) (\text{Cohen},\; \text{Polk and Vuolteenaho},\; 2003),\;\; \text{and a value that is still not positive becomes 1}
+\text{MB} = \frac{\text{Market Value of Equity}}{\text{Adjusted Book Equity}},\;\; \text{where}\;\; \text{Adjusted Book Equity} = \text{Book Equity} + 0.1 \cdot (\text{Market Value of Equity} - \text{Book Equity}) \;(\text{Cohen, Polk and Vuolteenaho},\; 2003),\;\; \text{and a value that is still not positive becomes 1}
 $$
 
 $$
-\text{SIGMA} = \sqrt{252 / (N - 1) \cdot \text{Σ} r ^{2}},\;\; \text{the annualized volatility around zero of the N daily returns of the three months before},\;\; \text{NaN with fewer than five non-zero returns}
+\text{SIGMA} = \sqrt{\frac{252}{N - 1} \cdot \sum r^{2}},\;\; \text{the annualized volatility around zero of the } N \text{ daily returns of the three months before, NaN with fewer than five non-zero returns}
 $$
 
 $$
-\text{RSIZE} = \ln(\text{Market Value of Equity} / \text{Total Market Value of the}\; \text{S\&P} 500)
+\text{RSIZE} = \ln\left(\frac{\text{Market Value of Equity}}{\text{Total Market Value of the S\&P}\; 500}\right)
 $$
 
 $$
@@ -3451,11 +3451,11 @@ Which returns:
 Calculate Joel Greenblatt's Magic Formula ranking. Companies are ranked on two measures and the ranks are added; the lowest total combines a good business with a low price:
 
 $$
-\text{Earnings Yield} = \text{EBIT} / \text{Enterprise Value} (\text{how cheap the company is})
+\text{Earnings Yield} = \frac{\text{EBIT}}{\text{Enterprise Value}} \;(\text{how cheap the company is})
 $$
 
 $$
-\text{Return on Capital} = \text{EBIT} / (\text{Net Working Capital} + \text{Net Fixed Assets}) (\text{how good the business is})
+\text{Return on Capital} = \frac{\text{EBIT}}{\text{Net Working Capital} + \text{Net Fixed Assets}} \;(\text{how good the business is})
 $$
 
 Net working capital excludes cash and short-term debt, so the return on capital measures the operating business. The ranking is across the Toolkit's tickers, so pass the universe to choose from.
@@ -3755,17 +3755,17 @@ The Quality Score follows the Quality Minus Junk (QMJ) score of Asness, Frazzini
 The measures are as follows (a higher value is a higher quality, so the measures marked "low" enter with a minus sign):
 
 $$
-\text{Profitability:}\;\; \text{Gross Profits to Assets} ((\text{Revenue} - \text{Cost of Goods Sold}) / \text{Total Assets},\; \text{Novy-Marx}\; 2013),\;\; \text{Return on Equity},\;\; \text{Return on Assets},\;\; \text{Cash Flow to Assets} ((\text{Operating Cash Flow} - \text{Capital Expenditure}) / \text{Total Assets}),\;\; \text{Gross Margin and low accruals} ((\text{Operating Cash Flow} - \text{Net Income}) / \text{Total Assets})
+\text{Profitability:}\;\; \text{Gross Profits to Assets} \;\left(\frac{\text{Revenue} - \text{Cost of Goods Sold}}{\text{Total Assets}},\; \text{Novy-Marx}\; 2013\right),\;\; \text{Return on Equity, Return on Assets, Cash Flow to Assets} \;\left(\frac{\text{Operating Cash Flow} - \text{Capital Expenditure}}{\text{Total Assets}}\right),\;\; \text{Gross Margin and low accruals} \;\left(\frac{\text{Operating Cash Flow} - \text{Net Income}}{\text{Total Assets}}\right)
 $$
 
 - Growth: the change in Gross Profits to Assets, Return on Equity, Return on Assets, Cash Flow to Assets and Gross Margin over `growth_years`
 
 $$
-\text{Safety:}\;\; \text{low Beta (of the period's returns against the benchmark)},\;\; \text{low leverage} (\text{Total Debt} / \text{Total Assets}),\;\; \text{low Ohlson O-Score},\;\; \text{high Altman Z-Score and low earnings volatility (the standard deviation of the Return on Equity over growth\_years)}
+\text{Safety:}\;\; \text{low Beta (of the period's returns against the benchmark)},\;\; \text{low leverage} \;\left(\frac{\text{Total Debt}}{\text{Total Assets}}\right),\;\; \text{low Ohlson O-Score, high Altman Z-Score and low earnings volatility (the standard deviation of the Return on Equity over growth\_years)}
 $$
 
 $$
-\text{Payout:}\;\; \text{low equity issuance (-ln of the change in the diluted shares over a year)},\;\; \text{low debt issuance} (- \text{ln of the change in Total Debt over}\; a \;\text{year}) \text{and the net payout ratio} ((\text{Dividends} + \text{Share Repurchases} - \text{Shares Issued}) / \text{Net Income})
+\text{Payout:}\;\; \text{low equity issuance (-ln of the change in the diluted shares over a year)},\;\; \text{low debt issuance} \;(- \ln \;\text{of the change in Total Debt over a year}) \;\text{and the net payout ratio} \;\left(\frac{\text{Dividends} + \text{Share Repurchases} - \text{Shares Issued}}{\text{Net Income}}\right)
 $$
 
 **Also known as:** QMJ, Quality Minus Junk, quality factor, quality composite.

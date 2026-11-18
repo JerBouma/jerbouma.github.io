@@ -445,7 +445,7 @@ Measure how much each fund's holdings differ from every other fund's: half the s
 The formula is as follows:
 
 $$
-\text{Active Share} = 1 / 2 \cdot \operatorname{SUM}(| \text{Weight Fund}\; i - \text{Weight Other Fund}\; i |)
+\text{Active Share} = \frac{1}{2} \cdot \sum(\left|\text{Weight Fund}\; i - \text{Weight Other Fund}\; i\right|)
 $$
 
 For more information, see the following paper:

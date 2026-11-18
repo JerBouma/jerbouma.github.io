@@ -107,11 +107,11 @@ The growth is the source's own figure, published in percent and divided by 100 h
 The formula is as follows:
 
 $$
-\text{GDP Growth} (\text{quarter on quarter}) = \text{Real GDP} (t) / \text{Real GDP} (t-1) - 1
+\text{GDP Growth} \;(\text{quarter on quarter}) = \frac{\text{Real GDP} \;(t)}{\text{Real GDP} \;(t-1)} - 1
 $$
 
 $$
-\text{GDP Growth} (\text{year over year}) = \text{Real GDP} (t) / \text{Real GDP} (t-4) - 1
+\text{GDP Growth} \;(\text{year over year}) = \frac{\text{Real GDP} \;(t)}{\text{Real GDP} \;(t-4)} - 1
 $$
 
 Where Real GDP is the seasonally and calendar adjusted GDP in chain-linked volumes.
@@ -238,7 +238,7 @@ This uses the Global Macro Database's own precomputed per-capita series (the sou
 The formula is as follows:
 
 $$
-\text{Real GDP per Capita} = \text{Real Gross Domestic Product} / \text{Population},\;\; \text{in national currency at constant prices},\;\; \text{or in US dollars as converted by the Global Macro Database when usd=True}
+\text{Real GDP per Capita} = \frac{\text{Real Gross Domestic Product}}{\text{Population}},\;\; \text{in national currency at constant prices, or in US dollars as converted by the Global Macro Database when usd=True}
 $$
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
@@ -308,7 +308,7 @@ The output gap is the OECD's own estimate (the source's figure, divided by 100 h
 The formula is as follows:
 
 $$
-\text{Output Gap} = (\text{Actual GDP} - \text{Potential GDP}) / \text{Potential GDP},\;\; \text{with both GDP measures in real terms}
+\text{Output Gap} = \frac{\text{Actual GDP} - \text{Potential GDP}}{\text{Potential GDP}},\;\; \text{with both GDP measures in real terms}
 $$
 
 This data is only available on a yearly basis, since the OECD Economic Outlook is published as a set of annual projections and estimates.
@@ -439,7 +439,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Consumption to GDP Ratio} = \text{Final Consumption Expenditure} / \text{Nominal GDP},\;\; \text{with the total (households, the non-profit institutions serving them and the government)},\;\; \text{household or government part selected with component ("total" by default)}
+\text{Consumption to GDP Ratio} = \frac{\text{Final Consumption Expenditure}}{\text{Nominal GDP}},\;\; \text{with the total (households, the non-profit institutions serving them and the government), household or government part selected with component ("total" by default)}
 $$
 
 **Also known as:** consumption share of GDP.
@@ -573,7 +573,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Investment to GDP Ratio} = \text{Gross Capital Formation} / \text{Nominal GDP},\;\; \text{with Gross Capital Formation} = \text{Gross Fixed Capital Formation} + \text{Change in Inventories}
+\text{Investment to GDP Ratio} = \frac{\text{Gross Capital Formation}}{\text{Nominal GDP}},\;\; \text{with}\;\; \text{Gross Capital Formation} = \text{Gross Fixed Capital Formation} + \text{Change in Inventories}
 $$
 
 **Also known as:** investment rate.
@@ -699,7 +699,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Fixed Investment to GDP Ratio} = \text{Gross Fixed Capital Formation} / \text{Nominal GDP}
+\text{Fixed Investment to GDP Ratio} = \frac{\text{Gross Fixed Capital Formation}}{\text{Nominal GDP}}
 $$
 
 **Also known as:** investment to GDP ratio.
@@ -831,7 +831,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Exports to GDP Ratio} = \text{Exports of Goods and Services} / \text{Nominal GDP}
+\text{Exports to GDP Ratio} = \frac{\text{Exports of Goods and Services}}{\text{Nominal GDP}}
 $$
 
 **Also known as:** exports to GDP ratio, trade openness.
@@ -967,7 +967,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Imports to GDP Ratio} = \text{Imports of Goods and Services} / \text{Nominal GDP}
+\text{Imports to GDP Ratio} = \frac{\text{Imports of Goods and Services}}{\text{Nominal GDP}}
 $$
 
 **Also known as:** imports to GDP ratio.
@@ -1166,7 +1166,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Current Account Balance to GDP Ratio} = (\text{Exports} - \text{Imports of Goods and Services} + \text{Net Primary Income} + \text{Net Secondary Income}) / \text{Nominal GDP}
+\text{Current Account Balance to GDP Ratio} = \frac{\text{Exports} - \text{Imports of Goods and Services} + \text{Net Primary Income} + \text{Net Secondary Income}}{\text{Nominal GDP}}
 $$
 
 **Also known as:** current account to GDP.
@@ -1300,7 +1300,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Debt to GDP Ratio} = \text{Gross Government Debt} / \text{Nominal GDP},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Debt to GDP Ratio} = \frac{\text{Gross Government Debt}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
 $$
 
 **Also known as:** debt-to-GDP ratio, fiscal sustainability.
@@ -1428,7 +1428,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Revenue to GDP Ratio} = \text{Government Revenue} / \text{Nominal GDP},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Revenue to GDP Ratio} = \frac{\text{Government Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
 $$
 
 **Also known as:** revenue to GDP ratio.
@@ -1560,7 +1560,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Tax Revenue to GDP Ratio} = \text{Government Tax Revenue} / \text{Nominal GDP},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Tax Revenue to GDP Ratio} = \frac{\text{Government Tax Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
 $$
 
 **Also known as:** tax burden, tax to GDP ratio.
@@ -1693,7 +1693,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Expenditure to GDP Ratio} = \text{Government Expenditure} / \text{Nominal GDP},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Expenditure to GDP Ratio} = \frac{\text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
 $$
 
 **Also known as:** government spending to GDP.
@@ -1828,7 +1828,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Deficit to GDP Ratio} = (\text{Government Revenue} - \text{Government Expenditure}) / \text{Nominal GDP},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Deficit to GDP Ratio} = \frac{\text{Government Revenue} - \text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
 $$
 
 **Also known as:** deficit-to-GDP, fiscal balance.
@@ -1962,7 +1962,7 @@ The ratio is expressed as a decimal fraction (0.0402 for 4.02% of GDP).
 The formula is as follows:
 
 $$
-\text{Government Interest Expenditure to GDP Ratio} = \text{Interest Payable} / \text{Nominal GDP},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without seasonal swings) or over the year for period="yearly"}
+\text{Government Interest Expenditure to GDP Ratio} = \frac{\text{Interest Payable}}{\text{Nominal GDP}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without seasonal swings) or over the year for period="yearly"}
 $$
 
 **Also known as:** interest burden, interest to GDP, debt service to GDP.
@@ -2029,7 +2029,7 @@ The ratio is expressed as a decimal fraction (0.1351 for 13.51% of revenue).
 The formula is as follows:
 
 $$
-\text{Government Interest Expenditure to Revenue Ratio} = \text{Interest Payable} / \text{Government Revenue},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without the seasonal swings of tax receipts) or over the year for period="yearly"}
+\text{Government Interest Expenditure to Revenue Ratio} = \frac{\text{Interest Payable}}{\text{Government Revenue}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without the seasonal swings of tax receipts) or over the year for period="yearly"}
 $$
 
 **Also known as:** interest to revenue, interest burden on revenue, debt affordability.
@@ -2159,7 +2159,7 @@ The data is yearly, for around 180 countries; the most recent year is usually on
 The formula is as follows:
 
 $$
-\text{Government Expenditure by Function to GDP Ratio} = \text{Expenditure on the Function} / \text{Nominal GDP}
+\text{Government Expenditure by Function to GDP Ratio} = \frac{\text{Expenditure on the Function}}{\text{Nominal GDP}}
 $$
 
 **Also known as:** defence spending to GDP, military spending to GDP, health spending to GDP, education spending to GDP, social spending to GDP, COFOG to GDP.
@@ -2393,11 +2393,11 @@ The rates are the sources' own figures (published in percent and divided by 100 
 The formula is as follows:
 
 $$
-\text{Monthly Inflation Rate} (t) = \text{CPI} (t) / \text{CPI} (t-12 \;\text{months}) - 1,\;\; \text{the annual rate of change for every month}
+\text{Monthly Inflation Rate} \;(t) = \frac{\text{CPI} \;(t)}{\text{CPI} \;(t-12 \;\text{months})} - 1,\;\; \text{the annual rate of change for every month}
 $$
 
 $$
-\text{Yearly Inflation Rate} (t) = \text{CPI} (t) / \text{CPI} (t-1 \;\text{year}) - 1,\;\; \text{the Global Macro Database's annual figure}
+\text{Yearly Inflation Rate} \;(t) = \frac{\text{CPI} \;(t)}{\text{CPI} \;(t-1 \;\text{year})} - 1,\;\; \text{the Global Macro Database's annual figure}
 $$
 
 Headline inflation is what most central banks target, usually at 2% a year, but they read it together with core inflation, which excludes energy and food, to see past temporary price shocks. Year-on-year rates react to base effects: a large price jump a year earlier lowers today's rate once it drops out of the comparison. The Eurostat figures are the harmonised index (HICP), which differs from national CPIs, for example in leaving out the costs of owner-occupied housing.
@@ -2465,11 +2465,11 @@ With overnight_rate=True, the 100 is not held as banknotes but deposited at the 
 The formula is as follows:
 
 $$
-\text{Purchasing Power} (t) = 100 \cdot \text{CPI} (\text{start}) / \text{CPI} (t)
+\text{Purchasing Power} \;(t) = \frac{100 \cdot \text{CPI} \;(\text{start})}{\text{CPI} \;(t)}
 $$
 
 $$
-\text{Purchasing Power of Cash} (t) = 100 \cdot \text{Overnight Rate Growth} (t) \cdot \text{CPI} (\text{start}) / \text{CPI} (t)
+\text{Purchasing Power of Cash} \;(t) = \frac{100 \cdot \text{Overnight Rate Growth} \;(t) \cdot \text{CPI} \;(\text{start})}{\text{CPI} \;(t)}
 $$
 
 CPI (start) is each country's index in the first period of the date range (its own first period when it starts later). The cash growth starts at 1 on the first day of the range and every month takes it on the last day of the month, next to the index of that same month (the reference month). The index of a month is published some weeks after it ends, so the latest months of the cash growth are left out until their index is published rather than paired with older prices.
@@ -2535,7 +2535,7 @@ $$
 $$
 
 $$
-\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the PPI for final demand},\;\; \text{November}\; 2009 = 100. \;\text{The BLS API returns about the last three}\; \text{years;} \;\text{with}\; a \;\text{FRED API key the full history comes from FRED},\;\; \text{which republishes it}
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the PPI for final demand},\;\; \text{November}\; 2009 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED, which republishes it}
 $$
 
 $$
@@ -2613,11 +2613,11 @@ Get the Export Price Index for a variety of countries over time. The index measu
 Each country's index comes monthly from its official publisher:
 
 $$
-\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the non-domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100. \;\text{For the euro area these include sales to other members}
+\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the non-domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100.\;\; \text{For the euro area these include sales to other members}
 $$
 
 $$
-\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the export price index of all commodities},\;\; 2000 = 100. \;\text{The BLS API returns about the last three}\; \text{years;} \;\text{with}\; a \;\text{FRED API key the full history comes from FRED}
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the export price index of all commodities},\;\; 2000 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED}
 $$
 
 $$
@@ -2693,11 +2693,11 @@ Get the Import Price Index for a variety of countries over time. The index measu
 Each country's index comes monthly from its official publisher:
 
 $$
-\text{Eurostat for the euro area, the European Union and around 20 European countries:}\;\; \text{the import prices of industrial products (mining, manufacturing and energy supply)},\;\; 2021 = 100. \;\text{For the euro area these include imports from other members}
+\text{Eurostat for the euro area, the European Union and around 20 European countries:}\;\; \text{the import prices of industrial products (mining, manufacturing and energy supply)},\;\; 2021 = 100.\;\; \text{For the euro area these include imports from other members}
 $$
 
 $$
-\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the import price index of all commodities},\;\; 2000 = 100. \;\text{The BLS API returns about the last three}\; \text{years;} \;\text{with}\; a \;\text{FRED API key the full history comes from FRED}
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the import price index of all commodities},\;\; 2000 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED}
 $$
 
 $$
@@ -3681,7 +3681,7 @@ The rates are returned as decimal fractions per annum (0.0244 for 2.44%). Weekly
 With cumulative=True, the rates are compounded day by day into the growth of 1 deposited on the first day of the date range, the method of the compounded €STR index of the European Central Bank and the SOFR Index of the New York Fed:
 
 $$
-\text{Growth} (t) = \text{Growth} (t-1) \cdot (1 + \text{Overnight Rate} (t-1) \cdot \text{Days} (t-1) / \text{Day Count})
+\text{Growth} \;(t) = \text{Growth} \;(t-1) \cdot \left(1 + \frac{\text{Overnight Rate} \;(t-1) \cdot \text{Days} \;(t-1)}{\text{Day Count}}\right)
 $$
 
 Days (t-1) is the number of calendar days the previous rate applies to (three over a weekend) and the Day Count is that of each money market: 360 for €STR and SOFR (ACT/360) and 365 for SONIA and TONA (ACT/365). The value on a day includes the interest up to that day, so the first day is 1, and weekly and monthly periods take the value on the last day of each period. It is the cash return of money deposited at the overnight rate, before costs and taxes.
@@ -3827,7 +3827,7 @@ Get the Yield Curve Slope for a variety of countries over time. The Yield Curve 
 The formula is as follows:
 
 $$
-\text{Yield Curve Slope} (t) = \text{Long Term Interest Rate} (t) - \text{Short Term Interest Rate} (t),\;\; \text{both from the OECD at the requested frequency (monthly by default)},\;\; \text{or both annual from the Global Macro Database}
+\text{Yield Curve Slope} \;(t) = \text{Long Term Interest Rate} \;(t) - \text{Short Term Interest Rate} \;(t),\;\; \text{both from the OECD at the requested frequency (monthly by default), or both annual from the Global Macro Database}
 $$
 
 A positive (upward-sloping) yield curve is the historical norm and reflects investors demanding a premium for locking up money for longer. A negative (inverted) yield curve, where short-term rates exceed long-term rates, has historically been one of the more reliable leading indicators of an upcoming recession, as it signals that markets expect the central bank to cut rates in response to a weakening economy.
@@ -4096,7 +4096,7 @@ Get the Misery Index for a variety of countries over time. The Misery Index is a
 The formula is as follows:
 
 $$
-\text{Misery Index} (\text{year}) = \text{Unemployment Rate} (\text{year}) + \text{Inflation Rate} (\text{year}),\;\; \text{with the annual unemployment rate from the Global Macro Database (or the OECD with gmdb\_source=False) and the Global Macro Database's annual CPI inflation}
+\text{Misery Index} \;(\text{year}) = \text{Unemployment Rate} \;(\text{year}) + \text{Inflation Rate} \;(\text{year}),\;\; \text{with the annual unemployment rate from the Global Macro Database (or the OECD with gmdb\_source=False) and the Global Macro Database's annual CPI inflation}
 $$
 
 The Unemployment Rate and Inflation Rate are both retrieved as annual decimal fractions (0.05 for 5%) whichever source is used, so they line up directly for the addition and the result is itself a decimal fraction (0.0774 for a Misery Index of 7.74).
@@ -4169,7 +4169,7 @@ The level is the OECD's own figure (the source's calculation).
 The formula is as follows:
 
 $$
-\text{Labour Productivity} = \text{Real GDP} (\text{constant prices},\; \text{PPP-converted US dollars}) / \text{Total Hours Worked by all persons engaged in production}
+\text{Labour Productivity} = \frac{\text{Real GDP} \;(\text{constant prices},\; \text{PPP-converted US dollars})}{\text{Total Hours Worked by all persons engaged in production}}
 $$
 
 **See definition:** [https://data.oecd.org/lprdty/gdp-per-hour-worked.htm](https://data.oecd.org/lprdty/gdp-per-hour-worked.htm){:target="_blank"}
@@ -6392,7 +6392,7 @@ With deflate_with, the prices are in real terms: in the money of the latest mont
 The formula is as follows:
 
 $$
-\text{Real Price} (t) = \text{Price} (t) \cdot \text{CPI} (\text{latest month}) / \text{CPI} (t)
+\text{Real Price} \;(t) = \frac{\text{Price} \;(t) \cdot \text{CPI} \;(\text{latest month})}{\text{CPI} \;(t)}
 $$
 
 The units are those of the World Bank: US dollars per barrel ($/bbl) for crude oil, per million British thermal units ($/mmbtu) for natural gas, per troy ounce ($/troy oz) for gold, silver and platinum, per metric ton ($/mt) for coal, base metals, grains, oils and fertilizers, per kilogram ($/kg) for cocoa, coffee, tea, sugar, meat, fruit, cotton and rubber, per dry metric ton unit ($/dmtu) for iron ore, per cubic meter for logs and sawnwood and cents per sheet for plywood. The Natural gas index is an index (2010=100).

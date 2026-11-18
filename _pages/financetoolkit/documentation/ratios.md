@@ -269,7 +269,7 @@ The asset turnover ratio is calculated by dividing the company's net sales (reve
 The formula is as follows:
 
 $$
-\text{Asset Turnover Ratio} = \text{Net Sales} / \text{Average Total Assets}
+\text{Asset Turnover Ratio} = \frac{\text{Net Sales}}{\text{Average Total Assets}}
 $$
 
 **Also known as:** asset efficiency, revenue per asset.
@@ -339,7 +339,7 @@ The inventory turnover ratio is calculated by dividing the cost of goods sold (C
 The formula is as follows:
 
 $$
-\text{Inventory Turnover Ratio} = \text{Cost of Goods Sold} / \text{Average Inventory}
+\text{Inventory Turnover Ratio} = \frac{\text{Cost of Goods Sold}}{\text{Average Inventory}}
 $$
 
 Inventory turnover is only comparable within an industry: a grocer turns its stock many times a year, a maker of aircraft or luxury goods a few times at most. Analysts watch the trend and the gap with peers, since a falling ratio often comes before markdowns or write-downs. Because the ratio divides cost of goods sold by inventory, the inventory valuation method (LIFO or FIFO) and year-end stock building for a peak season both move it; quarterly data with trailing=4 smooths the seasonal effect.
@@ -411,7 +411,7 @@ The days sales in inventory ratio (DSI) is calculated by dividing the average in
 The formula is as follows:
 
 $$
-\text{Days Sales in Inventory Ratio} = (\text{Average Inventory} / \text{Cost of Goods Sold}) \cdot \text{Days}
+\text{Days Sales in Inventory Ratio} = \frac{\text{Average Inventory}}{\text{Cost of Goods Sold}} \cdot \text{Days}
 $$
 
 **Also known as:** DIO, days inventory outstanding.
@@ -484,7 +484,7 @@ The days of sales outstanding (DSO) ratio is calculated by dividing the average 
 The formula is as follows:
 
 $$
-\text{Days of Sales Outstanding Ratio} = (\text{Average Accounts Receivable} / \text{Revenue}) \cdot \text{Days}
+\text{Days of Sales Outstanding Ratio} = \frac{\text{Average Accounts Receivable}}{\text{Revenue}} \cdot \text{Days}
 $$
 
 DSO is read against the payment terms a company offers and against its own history: a rising DSO, with receivables growing faster than revenue, often points to looser credit terms, slower-paying customers or revenue booked ahead of collection. Compare it within an industry, since terms differ widely between retailers, who collect within days, and industrial or software suppliers.
@@ -632,7 +632,7 @@ The accounts payable turnover ratio indicates how many times, on average, a comp
 The formula is as follows:
 
 $$
-\text{Accounts Payable Turnover Ratio} = \text{Cost of Goods Sold} / \text{Average Accounts Payable}
+\text{Accounts Payable Turnover Ratio} = \frac{\text{Cost of Goods Sold}}{\text{Average Accounts Payable}}
 $$
 
 **Also known as:** payables efficiency, AP turnover.
@@ -702,7 +702,7 @@ The days payables outstanding (DPO) ratio is used to assess how efficiently a co
 The formula is as follows:
 
 $$
-\text{Days Payables Outstanding} = (\text{Average Accounts Payable} / \text{Cost of Goods Sold}) \cdot \text{Days}
+\text{Days Payables Outstanding} = \frac{\text{Average Accounts Payable}}{\text{Cost of Goods Sold}} \cdot \text{Days}
 $$
 
 **Also known as:** DPO, days payable outstanding.
@@ -848,7 +848,7 @@ The cash conversion efficiency ratio is calculated by dividing the operating cas
 The formula is as follows:
 
 $$
-\text{Cash Conversion Efficiency Ratio} = \text{Operating Cash Flow} / \text{Revenue}
+\text{Cash Conversion Efficiency Ratio} = \frac{\text{Operating Cash Flow}}{\text{Revenue}}
 $$
 
 **Also known as:** CCE, cash efficiency ratio.
@@ -919,7 +919,7 @@ The receivables turnover ratio is an important measure of how well a company man
 The formula is as follows:
 
 $$
-\text{Receivables Turnover Ratio} = \text{Revenue} / \text{Average Accounts Receivable}
+\text{Receivables Turnover Ratio} = \frac{\text{Revenue}}{\text{Average Accounts Receivable}}
 $$
 
 **Also known as:** receivables efficiency, accounts receivable turnover.
@@ -988,7 +988,7 @@ The SG&A to revenue ratio is calculated by dividing the total SG&A expenses by t
 The formula is as follows:
 
 $$
-\text{SG\&A} \;\text{to Revenue Ratio} = \text{SG\&A} \;\text{Expenses} / \text{Revenue}
+\text{SG\&A to Revenue Ratio} = \frac{\text{SG\&A Expenses}}{\text{Revenue}}
 $$
 
 **Also known as:** SG&A ratio, selling general administrative ratio.
@@ -1058,7 +1058,7 @@ The Fixed Asset Turnover ratio is calculated by dividing the company's revenue b
 The formula is as follows:
 
 $$
-\text{Fixed Asset Turnover Ratio} = \text{Revenue} / \text{Average Net Property},\;\; \text{Plant and Equipment}
+\text{Fixed Asset Turnover Ratio} = \frac{\text{Revenue}}{\text{Average Net Property, Plant and Equipment}}
 $$
 
 **Also known as:** PP&E turnover, fixed asset utilization.
@@ -1128,7 +1128,7 @@ A high working capital turnover ratio indicates that a company is generating a l
 The formula is as follows:
 
 $$
-\text{Working Capital Turnover Ratio} = \text{Revenue} / \text{Average Working Capital}
+\text{Working Capital Turnover Ratio} = \frac{\text{Revenue}}{\text{Average Working Capital}}
 $$
 
 The ratio only reads well when working capital is clearly positive. When current assets and current liabilities are close, a small change in either swings the ratio to very large or negative values, which says little about efficiency, so check `get_working_capital` alongside it. Companies that run on negative working capital, such as retailers paid by their customers before they pay their suppliers, show a negative ratio that reflects their business model rather than weak efficiency.
@@ -1198,7 +1198,7 @@ The operating ratio is calculated by dividing the sum of the cost of goods sold 
 The formula is as follows:
 
 $$
-\text{Operating Ratio} = (\text{Operating Expenses} + \text{Cost of Goods Sold}) / \text{Revenue}
+\text{Operating Ratio} = \frac{\text{Operating Expenses} + \text{Cost of Goods Sold}}{\text{Revenue}}
 $$
 
 Railroads and trucking companies report the operating ratio as their headline efficiency measure, and lower is better. Because cost of goods sold and operating expenses are added together, the ratio does not depend on how a company splits its costs between those two lines, which makes it easier to compare than the expense lines on their own. It leaves out interest and taxes, so it says nothing about leverage.
@@ -1270,7 +1270,7 @@ This ratio is particularly relevant for comparing companies in technology, pharm
 The formula is as follows:
 
 $$
-\text{R\&D} \;\text{Intensity Ratio} = \text{Research and Development Expenses} / \text{Revenue}
+\text{R\&D Intensity Ratio} = \frac{\text{Research and Development Expenses}}{\text{Revenue}}
 $$
 
 R&D intensity is compared within an industry and over time: a falling ratio can mean revenue is growing faster than the research budget, not that research is being cut. Accounting matters across borders, since IFRS requires development costs to be capitalized once a project meets certain criteria while US GAAP expenses nearly all of them, so a company reporting under IFRS can show a lower ratio for the same spending.
@@ -1342,7 +1342,7 @@ This ratio isolates the selling and marketing component of the combined SG&A exp
 The formula is as follows:
 
 $$
-\text{S\&M} \;\text{to Revenue Ratio} = \text{Selling and Marketing Expenses} / \text{Revenue}
+\text{S\&M to Revenue Ratio} = \frac{\text{Selling and Marketing Expenses}}{\text{Revenue}}
 $$
 
 **Also known as:** S&M ratio, sales and marketing intensity.
@@ -1416,7 +1416,7 @@ This ratio isolates the administrative component of the combined SG&A expense li
 The formula is as follows:
 
 $$
-\text{G\&A} \;\text{to Revenue Ratio} = \text{General and Administrative Expenses} / \text{Revenue}
+\text{G\&A to Revenue Ratio} = \frac{\text{General and Administrative Expenses}}{\text{Revenue}}
 $$
 
 **Also known as:** G&A ratio, overhead ratio.
@@ -1491,7 +1491,7 @@ A high or rising SBC-to-revenue ratio is a common quality-of-earnings flag, part
 The formula is as follows:
 
 $$
-\text{SBC to Revenue Ratio} = \text{Stock Based Compensation} / \text{Revenue}
+\text{SBC to Revenue Ratio} = \frac{\text{Stock Based Compensation}}{\text{Revenue}}
 $$
 
 **Also known as:** SBC intensity, equity compensation ratio.
@@ -1561,7 +1561,7 @@ This ratio is a common leading indicator for subscription and SaaS businesses, w
 The formula is as follows:
 
 $$
-\text{Deferred Revenue Ratio} = \text{Deferred Revenue} / \text{Revenue}
+\text{Deferred Revenue Ratio} = \frac{\text{Deferred Revenue}}{\text{Revenue}}
 $$
 
 Without trailing, the deferred revenue balance at the end of the period is used, so the ratio shows the backlog of prepaid revenue at that date. With trailing, the balance is averaged over the `trailing` period ends to match the summed revenue.
@@ -1635,7 +1635,7 @@ Capex intensity shows how capital-heavy a business is: utilities, telecoms, semi
 The formula is as follows:
 
 $$
-\text{Capex Intensity} = | \text{Capital Expenditure} | / \text{Revenue}
+\text{Capex Intensity} = \frac{\left|\text{Capital Expenditure}\right|}{\text{Revenue}}
 $$
 
 Capital expenditure is reported as a negative cash outflow, so its magnitude is used. A revenue of zero or less gives NaN.
@@ -1706,7 +1706,7 @@ Depreciation and amortization approximate the investment needed to keep the asse
 The formula is as follows:
 
 $$
-\text{Capex to Depreciation} = | \text{Capital Expenditure} | / \text{Depreciation and Amortization}
+\text{Capex to Depreciation} = \frac{\left|\text{Capital Expenditure}\right|}{\text{Depreciation and Amortization}}
 $$
 
 Capital expenditure is reported as a negative cash outflow, so its magnitude is used. Depreciation and amortization of zero or less gives NaN.
@@ -1780,7 +1780,7 @@ Depreciation and amortization approximate the investment needed to keep the asse
 The formula is as follows:
 
 $$
-\text{Net Capital Expenditure} = | \text{Capital Expenditure} | - \text{Depreciation and Amortization}
+\text{Net Capital Expenditure} = \left|\text{Capital Expenditure}\right| - \text{Depreciation and Amortization}
 $$
 
 Capital expenditure is reported as a negative cash outflow, so its magnitude is used.
@@ -1857,7 +1857,7 @@ Cooper, Gulen and Schill find that the growth of a company's total assets predic
 The formula is as follows:
 
 $$
-\text{Asset Growth} = (\text{Total Assets} - \text{Beginning Total Assets}) / \text{Beginning Total Assets}
+\text{Asset Growth} = \frac{\text{Total Assets} - \text{Beginning Total Assets}}{\text{Beginning Total Assets}}
 $$
 
 The total assets are those at the end of the period and the beginning total assets those a year earlier: the end of the year before with annual data and four quarters back with quarterly data, so quarterly values are year over year. Beginning total assets of zero or less give NaN.
@@ -1941,7 +1941,7 @@ $$
 $$
 
 $$
-\text{Net Operating Assets} = (\text{Operating Assets} - \text{Operating Liabilities}) / \text{Beginning Total Assets}
+\text{Net Operating Assets} = \frac{\text{Operating Assets} - \text{Operating Liabilities}}{\text{Beginning Total Assets}}
 $$
 
 The paper deducts the debt in current liabilities, the long term debt, the minority interest, the preferred stock and the common equity from the total assets for the operating liabilities; the total equity here holds the last three. The debt is the short and long term debt rows of the statements, without separately reported lease liabilities. The cash is the cash and cash equivalents plus the short term investments. The balances are those at the end of the period and the beginning total assets those at the end of the period before (the year before with annual data, the quarter before with quarterly data, as in the quarterly version of Hou, Xue and Zhang). Beginning total assets of zero or less give NaN.
@@ -2079,7 +2079,7 @@ The current ratio is calculated by dividing a company's current assets by its cu
 The formula is as follows:
 
 $$
-\text{Current Ratio} = \text{Current Assets} / \text{Current Liabilities}
+\text{Current Ratio} = \frac{\text{Current Assets}}{\text{Current Liabilities}}
 $$
 
 A current ratio above 1 is the textbook comfort level, but the right level depends on the business: companies that collect from customers before paying suppliers, such as large retailers and restaurant chains, run below 1 without strain, while manufacturers with long production cycles need more. Lenders read it together with the quick ratio (`get_quick_ratio`), since inventory can be hard to sell at book value, and with the trend, since the year-end balance sheet can be managed to look better than the average day.
@@ -2153,7 +2153,7 @@ The quick ratio is calculated by adding cash and cash equivalents, short-term in
 The formula is as follows:
 
 $$
-\text{Quick Ratio} = (\text{Cash and Cash Equivalents} + \text{Short Term Investments} + \text{Accounts Receivable}) / \text{Current Liabilities}
+\text{Quick Ratio} = \frac{\text{Cash and Cash Equivalents} + \text{Short Term Investments} + \text{Accounts Receivable}}{\text{Current Liabilities}}
 $$
 
 **Also known as:** acid-test ratio, liquid ratio.
@@ -2223,7 +2223,7 @@ The cash ratio is calculated by dividing the sum of cash and cash equivalents an
 The formula is as follows:
 
 $$
-\text{Cash Ratio} = (\text{Cash and Cash Equivalents} + \text{Short Term Investments}) / \text{Current Liabilities}
+\text{Cash Ratio} = \frac{\text{Cash and Cash Equivalents} + \text{Short Term Investments}}{\text{Current Liabilities}}
 $$
 
 **Also known as:** most conservative liquidity ratio.
@@ -2363,7 +2363,7 @@ The operating cash flow ratio is calculated by dividing operating cash flow by c
 The formula is as follows:
 
 $$
-\text{Operating Cash Flow Ratio} = \text{Cash Flow from Operations} / \text{Current Liabilities}
+\text{Operating Cash Flow Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Current Liabilities}}
 $$
 
 **Also known as:** OCF ratio, cash liquidity.
@@ -2433,7 +2433,7 @@ The operating cash flow to sales ratio is calculated by dividing operating cash 
 The formula is as follows:
 
 $$
-\text{Operating Cash Flow to Sales Ratio} = \text{Cash Flow from Operations} / \text{Revenue}
+\text{Operating Cash Flow to Sales Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Revenue}}
 $$
 
 **Also known as:** cash flow to sales ratio.
@@ -2503,7 +2503,7 @@ The short-term coverage ratio is calculated by dividing operating cash flow by s
 The formula is as follows:
 
 $$
-\text{Short Term Coverage Ratio} = \text{Cash Flow from Operations} / \text{Short Term Debt}
+\text{Short Term Coverage Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Short Term Debt}}
 $$
 
 **Also known as:** short-term debt coverage.
@@ -2566,7 +2566,7 @@ Unlike the current, quick, and cash ratios, which express liquidity relative to 
 The formula is as follows:
 
 $$
-\text{Defensive Interval Ratio} = (\text{Cash and Cash Equivalents} + \text{Short Term Investments} + \text{Accounts Receivable}) / \text{Daily Operating Expenses}
+\text{Defensive Interval Ratio} = \frac{\text{Cash and Cash Equivalents} + \text{Short Term Investments} + \text{Accounts Receivable}}{\text{Daily Operating Expenses}}
 $$
 
 Where Daily Operating Expenses = (Cost of Goods Sold + Operating Expenses - Depreciation and Amortization) / Days, the daily cash expenditures (AccountingTools, Wall Street Prep). The cost of goods sold is included because the depreciation and amortization from the cash flow statement also covers the part charged to it, and because paying suppliers and production staff is the largest cash cost for most companies. Days is the length of the window the expenses cover: 365 for annual data, 365 / 4 for quarterly data, times `trailing` when the expenses are summed over several periods, so the ratio is in calendar days for any frequency.
@@ -2726,7 +2726,7 @@ The gross margin ratio is calculated by subtracting the cost of goods sold (COGS
 The formula is as follows:
 
 $$
-\text{Gross Margin Ratio} = (\text{Revenue} - \text{Cost of Goods Sold}) / \text{Revenue}
+\text{Gross Margin Ratio} = \frac{\text{Revenue} - \text{Cost of Goods Sold}}{\text{Revenue}}
 $$
 
 Gross margin shows pricing power and production cost before overheads, and is best compared within an industry and over time. What sits in cost of goods sold differs between companies (some include depreciation, freight or warehousing, others report them lower down), so small gaps between peers can be accounting rather than economics. The trend matters most: a steady decline points to rising input costs that cannot be passed on, or to a shift in the sales mix.
@@ -2798,7 +2798,7 @@ The operating margin ratio is calculated by dividing operating income (revenue m
 The formula is as follows:
 
 $$
-\text{Operating Margin Ratio} = \text{Operating Income} / \text{Revenue}
+\text{Operating Margin Ratio} = \frac{\text{Operating Income}}{\text{Revenue}}
 $$
 
 Operating margin is the usual yardstick for the profitability of the core business, before financing and taxes. Companies with high fixed costs show operating leverage: their margin rises quickly when revenue grows and falls quickly when it shrinks. Restructuring charges and impairments are included, so a single weak year should be checked for one-off items before comparing with peers.
@@ -2870,7 +2870,7 @@ The net profit margin ratio is calculated by dividing the net income by the tota
 The formula is as follows:
 
 $$
-\text{Net Profit Margin Ratio} = \text{Net Income} / \text{Revenue}
+\text{Net Profit Margin Ratio} = \frac{\text{Net Income}}{\text{Revenue}}
 $$
 
 **Also known as:** net margin, bottom line margin, net income margin.
@@ -2940,7 +2940,7 @@ EBITDA margin approximates a company's core operating profitability before the e
 The formula is as follows:
 
 $$
-\text{EBITDA Margin} = (\text{Operating Income} + \text{Depreciation and Amortization}) / \text{Revenue}
+\text{EBITDA Margin} = \frac{\text{Operating Income} + \text{Depreciation and Amortization}}{\text{Revenue}}
 $$
 
 **Also known as:** EBITDA-to-revenue ratio.
@@ -3011,7 +3011,7 @@ Note that this is related to, but not the same as, the Interest Coverage Ratio (
 The formula is as follows:
 
 $$
-\text{Interest Burden Ratio} = \text{Income Before Tax} / \text{Operating Income}
+\text{Interest Burden Ratio} = \frac{\text{Income Before Tax}}{\text{Operating Income}}
 $$
 
 **Also known as:** EBT to EBIT ratio, interest burden.
@@ -3081,7 +3081,7 @@ The Pretax Profit Margin is calculated by dividing the pre-tax profit by the rev
 The formula is as follows:
 
 $$
-\text{Pretax Profit Margin} = \text{Income Before Tax} / \text{Revenue}
+\text{Pretax Profit Margin} = \frac{\text{Income Before Tax}}{\text{Revenue}}
 $$
 
 **Also known as:** pretax margin, EBT margin.
@@ -3151,7 +3151,7 @@ The effective tax rate is calculated by dividing the income tax expense by the p
 The formula is as follows:
 
 $$
-\text{Effective Tax Rate} = \text{Income Tax Expense} / \text{Income Before Tax}
+\text{Effective Tax Rate} = \frac{\text{Income Tax Expense}}{\text{Income Before Tax}}
 $$
 
 Analysts compare the effective tax rate with the statutory rates of the countries a company earns its profits in; a rate well below them usually comes from profits booked in lower-tax countries, research credits or one-off benefits. Single years can be far from the trend because of settlements, law changes or the release of a valuation allowance, which can even make the rate negative, so forecasts usually start from a normalized rate. `get_cash_tax_rate` shows what was actually paid. A period with zero or negative income before tax has no meaningful tax rate and is NaN.
@@ -3223,7 +3223,7 @@ The return on assets is calculated by dividing the net income by the average tot
 The formula is as follows:
 
 $$
-\text{Return on Assets} = \text{Net Income} / \text{Average Total Assets}
+\text{Return on Assets} = \frac{\text{Net Income}}{\text{Average Total Assets}}
 $$
 
 Return on assets is the natural measure for banks and insurers, whose assets are mostly loans and investments, and where a return of about 1% is the usual benchmark for a bank. Outside finance it is best compared within an industry, since asset-light businesses such as software and services earn far higher returns on assets than utilities or manufacturers. Because net income is after interest, two companies with the same operations but different leverage show different returns on assets.
@@ -3296,7 +3296,7 @@ Unlike the return on assets, which uses accrual-based net income, the cash retur
 The formula is as follows:
 
 $$
-\text{Cash Return on Assets} = \text{Cash Flow from Operations} / \text{Average Total Assets}
+\text{Cash Return on Assets} = \frac{\text{Cash Flow from Operations}}{\text{Average Total Assets}}
 $$
 
 **Also known as:** cash ROA.
@@ -3367,7 +3367,7 @@ ROE provides insight into the company's ability to generate profits from the inv
 The formula is as follows:
 
 $$
-\text{Return on Equity} = \text{Net Income} / \text{Average Shareholders' Equity} (\text{or Total Equity})
+\text{Return on Equity} = \frac{\text{Net Income}}{\text{Average Shareholders' Equity} \;(\text{or Total Equity})}
 $$
 
 ROE is usually read through the DuPont analysis (`Toolkit.models.get_dupont_analysis`), which splits it into net margin, asset turnover and the equity multiplier, because the same ROE can come from high margins or from a thin equity base. Large buybacks and accumulated losses shrink equity and can push ROE to extreme or negative values (well above 1 for heavy buyers of their own shares), in which case ROIC or ROA says more. For banks and insurers ROE is set against the cost of equity, and together with the price-to-book ratio it explains much of their valuation.
@@ -3437,7 +3437,7 @@ The return on invested capital is calculated by dividing the net operating profi
 The formula is as follows:
 
 $$
-\text{Return on Invested Capital} = \text{Operating Income}\; x (1 - \text{Effective Tax Rate}) / (\text{Average Total Equity} + \text{Average Total Debt})
+\text{Return on Invested Capital} = \frac{\text{Operating Income} \cdot (1 - \text{Effective Tax Rate})}{\text{Average Total Equity} + \text{Average Total Debt}}
 $$
 
 ROIC is compared with the weighted average cost of capital (`Toolkit.models.get_weighted_average_cost_of_capital`): a company that earns more than its cost of capital creates value as it invests and grows, one that earns less destroys it. It is less distorted by buybacks and leverage than ROE.
@@ -3507,7 +3507,7 @@ The income quality ratio provides insights into the quality of a company's repor
 The formula is as follows:
 
 $$
-\text{Income Quality Ratio} = \text{Cash Flow from Operations} / \text{Net Income}
+\text{Income Quality Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Net Income}}
 $$
 
 A ratio above 1 means reported earnings are backed by at least as much operating cash flow, which is typical for companies with large depreciation charges. A ratio that stays below 1 for several years, for example because receivables or capitalized costs keep growing, is a common warning sign in earnings-quality screens. The ratio loses meaning, and can flip sign, when net income is close to zero or negative.
@@ -3577,7 +3577,7 @@ The return on tangible assets (ROTA) provides insights into the efficiency with 
 The formula is as follows:
 
 $$
-\text{Return on Tangible Assets} = \text{Net Income} / (\text{Average Total Assets} - \text{Average Goodwill and Intangible Assets})
+\text{Return on Tangible Assets} = \frac{\text{Net Income}}{\text{Average Total Assets} - \text{Average Goodwill and Intangible Assets}}
 $$
 
 **Also known as:** ROTA, tangible asset return.
@@ -3645,7 +3645,7 @@ Return on capital employed (ROCE) is a crucial financial metric that evaluates t
 The formula is as follows:
 
 $$
-\text{Return on Capital Employed} = \text{EBIT} / (\text{Total Assets} - \text{Current Liabilities})
+\text{Return on Capital Employed} = \frac{\text{EBIT}}{\text{Total Assets} - \text{Current Liabilities}}
 $$
 
 EBIT is taken as operating income, so non-operating gains and losses such as interest income or investment results do not enter the return.
@@ -3718,7 +3718,7 @@ The net income per earnings before taxes (EBT) ratio helps evaluate the extent t
 The formula is as follows:
 
 $$
-\text{Net Income per EBT} = \text{Net Income} / (\text{Net Income} + \text{Income Tax Expense})
+\text{Net Income per EBT} = \frac{\text{Net Income}}{\text{Net Income} + \text{Income Tax Expense}}
 $$
 
 Earnings before tax is reconstructed from the income statement as Net Income plus Income Tax Expense rather than read from the reported Income Before Tax line, so this can differ slightly from `get_tax_burden_ratio` when a company reports minority interests or discontinued operations below the tax line.
@@ -3790,7 +3790,7 @@ The free cash flow to operating cash flow ratio helps assess how well a company'
 The formula is as follows:
 
 $$
-\text{Free Cash Flow to Operating Cash Flow Ratio} = \text{Free Cash Flow} / \text{Cash Flow from Operations}
+\text{Free Cash Flow to Operating Cash Flow Ratio} = \frac{\text{Free Cash Flow}}{\text{Cash Flow from Operations}}
 $$
 
 **Also known as:** FCF to OCF ratio.
@@ -3859,7 +3859,7 @@ Unlike the net profit margin, which can be distorted by non-cash accounting item
 The formula is as follows:
 
 $$
-\text{Free Cash Flow Margin} = \text{Free Cash Flow} / \text{Revenue}
+\text{Free Cash Flow Margin} = \frac{\text{Free Cash Flow}}{\text{Revenue}}
 $$
 
 **Args:**
@@ -3927,7 +3927,7 @@ The tax burden ratio measures the portion of a company's pretax earnings that it
 The formula is as follows:
 
 $$
-\text{Tax Burden Ratio} = \text{Net Income} / \text{Income Before Tax}
+\text{Tax Burden Ratio} = \frac{\text{Net Income}}{\text{Income Before Tax}}
 $$
 
 **Also known as:** tax efficiency ratio.
@@ -3995,7 +3995,7 @@ A ratio close to 1 means interest takes little of the operating profit; a lower 
 The formula is as follows:
 
 $$
-\text{EBT to EBIT} = (\text{Net Income} + \text{Income Tax Expense}) / (\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense})
+\text{EBT to EBIT} = \frac{\text{Net Income} + \text{Income Tax Expense}}{\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense}}
 $$
 
 **Also known as:** EBT to EBIT, interest burden.
@@ -4063,7 +4063,7 @@ The EBIT to Revenue ratio measures the company's ability to generate profit befo
 The formula is as follows:
 
 $$
-\text{EBIT to Revenue} = (\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense}) / \text{Revenue}
+\text{EBIT to Revenue} = \frac{\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense}}{\text{Revenue}}
 $$
 
 **Also known as:** EBIT margin.
@@ -4129,7 +4129,7 @@ Calculate the cash tax rate, which measures the percentage of pretax income that
 The formula is as follows:
 
 $$
-\text{Cash Tax Rate} = \text{Income Taxes Paid} / \text{Income Before Tax}
+\text{Cash Tax Rate} = \frac{\text{Income Taxes Paid}}{\text{Income Before Tax}}
 $$
 
 The cash tax rate shows the taxes a company actually paid, which can differ for years from the tax expense in the income statement because of deferred taxes, prepayments and settlements of earlier years. Analysts compare it with the effective tax rate to see whether reported earnings rely on taxes that are deferred rather than saved. When the data has no income taxes paid for a year, the rate shows as 0, which should be read as missing, not as a company that paid no tax. A period with zero or negative income before tax has no meaningful tax rate and is NaN.
@@ -4273,7 +4273,7 @@ Novy-Marx shows that gross profit is the cleanest accounting measure of economic
 The formula is as follows:
 
 $$
-\text{Gross Profitability} = (\text{Revenue} - \text{Cost of Goods Sold}) / \text{Total Assets}
+\text{Gross Profitability} = \frac{\text{Revenue} - \text{Cost of Goods Sold}}{\text{Total Assets}}
 $$
 
 The total assets are those at the end of the fiscal year, the same date as the gross profit, as in the paper (a point in time, not averaged). Gross profitability is an annual measure, so with quarterly data the gross profit is that of the trailing twelve months by default.
@@ -4347,7 +4347,7 @@ Fama and French find that companies with a robust operating profitability earn h
 The formula is as follows:
 
 $$
-\text{Operating Profitability} = (\text{Revenue} - \text{Cost of Goods Sold} - \text{Selling},\; \text{General and Administrative Expenses} - \text{Research and Development Expenses} - \text{Interest Expense}) / \text{Book Equity}
+\text{Operating Profitability} = \frac{\text{Revenue} - \text{Cost of Goods Sold} - \text{Selling, General and Administrative Expenses} - \text{Research and Development Expenses} - \text{Interest Expense}}{\text{Book Equity}}
 $$
 
 $$
@@ -4426,7 +4426,7 @@ Ball et al. show that cash-based operating profitability predicts stock returns 
 The formula is as follows:
 
 $$
-\text{Cash-Based Operating Profitability} = (\text{Revenue} - \text{Cost of Goods Sold} - \text{Selling},\; \text{General and Administrative Expenses} - \Delta \;\text{Receivables} - \Delta \;\text{Inventory} - \Delta \;\text{Prepaids} + \Delta \;\text{Deferred Revenue} + \Delta \;\text{Accounts Payable} + \Delta \;\text{Accrued Expenses}) / \text{Beginning Total Assets}
+\text{Cash-Based Operating Profitability} = \frac{\text{Revenue} - \text{Cost of Goods Sold} - \text{Selling, General and Administrative Expenses} - \Delta \;\text{Receivables} - \Delta \;\text{Inventory} - \Delta \;\text{Prepaids} + \Delta \;\text{Deferred Revenue} + \Delta \;\text{Accounts Payable} + \Delta \;\text{Accrued Expenses}}{\text{Beginning Total Assets}}
 $$
 
 The selling, general and administrative expenses are without research and development (Compustat XSGA - XRD in the paper), the receivables are the total (trade and other) receivables and the deferred revenue the current and non-current deferred revenue. Each change is that of the balance over the window of the flows (a year with annual data, the year before the quarter with quarterly data), and the total assets are those at the start of the window: the end of the year before with annual data, the quarter four quarters back with quarterly data. Ball et al. (2016) scale by these lagged total assets, unlike the end-of-year assets of Ball et al. (2015) and Novy-Marx (2013); Chen and Zimmermann note this in their replication and Wang (2020) defines the measure on lagged total assets as well. It is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default.
@@ -4507,7 +4507,7 @@ Where the return on invested capital measures the after-tax operating profit, CR
 The formula is as follows:
 
 $$
-\text{Cash Return on Invested Capital} = \text{Free Cash Flow} / (\text{Average Total Equity} + \text{Average Total Debt})
+\text{Cash Return on Invested Capital} = \frac{\text{Free Cash Flow}}{\text{Average Total Equity} + \text{Average Total Debt}}
 $$
 
 **Also known as:** CROIC, cash ROIC, FCF ROIC, free cash flow return on invested capital.
@@ -4580,7 +4580,7 @@ A conversion around or above 1 means the reported earnings are backed by cash, a
 The formula is as follows:
 
 $$
-\text{Free Cash Flow Conversion} = \text{Free Cash Flow} / \text{Net Income}
+\text{Free Cash Flow Conversion} = \frac{\text{Free Cash Flow}}{\text{Net Income}}
 $$
 
 With a loss the ratio flips sign and has no meaning, so a net income of zero or less gives NaN.
@@ -4651,7 +4651,7 @@ EBITDA is often used as a proxy for cash flow (in leverage ratios such as net de
 The formula is as follows:
 
 $$
-\text{Free Cash Flow to EBITDA} = \text{Free Cash Flow} / (\text{Operating Income} + \text{Depreciation and Amortization})
+\text{Free Cash Flow to EBITDA} = \frac{\text{Free Cash Flow}}{\text{Operating Income} + \text{Depreciation and Amortization}}
 $$
 
 An EBITDA of zero or less gives NaN, as the ratio flips sign.
@@ -4722,7 +4722,7 @@ Sloan (1996) scaled the accruals by total assets, which mostly sorts companies b
 The formula is as follows:
 
 $$
-\text{Percent Accruals} = (\text{Net Income} - \text{Cash Flow from Operations}) / | \text{Net Income} |
+\text{Percent Accruals} = \frac{\text{Net Income} - \text{Cash Flow from Operations}}{\left|\text{Net Income}\right|}
 $$
 
 The paper takes the income before extraordinary items, which is the net income here. A net income of zero gives NaN. It is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default.
@@ -4877,7 +4877,7 @@ This ratio, also known as the Debt Ratio, indicates the percentage of a company'
 The formula is as follows:
 
 $$
-\text{Debt to Assets Ratio} = \text{Total Debt} / \text{Total Assets}
+\text{Debt to Assets Ratio} = \frac{\text{Total Debt}}{\text{Total Assets}}
 $$
 
 **Also known as:** asset leverage, debt ratio.
@@ -4945,7 +4945,7 @@ This ratio is commonly used by lenders and bondholders to assess the extent to w
 The formula is as follows:
 
 $$
-\text{Asset Coverage Ratio} = \left[(\text{Total Assets} - \text{Goodwill} - \text{Intangible Assets}) - (\text{Total Current Liabilities} - \text{Short Term Debt})\right] / \text{Total Debt}
+\text{Asset Coverage Ratio} = \frac{(\text{Total Assets} - \text{Goodwill} - \text{Intangible Assets}) - (\text{Total Current Liabilities} - \text{Short Term Debt})}{\text{Total Debt}}
 $$
 
 **Args:**
@@ -5011,7 +5011,7 @@ The debt to equity ratio, for short the D/E ratio, indicates the relative contri
 The formula is as follows:
 
 $$
-\text{Debt to Equity Ratio} = \text{Total Debt} / \text{Total Equity}
+\text{Debt to Equity Ratio} = \frac{\text{Total Debt}}{\text{Total Equity}}
 $$
 
 The debt to equity ratio is compared within an industry, since utilities, real estate and companies with a financing arm (car makers, machinery makers) carry far more debt than software companies. Equity is a book value, so large buybacks or accumulated losses can make it small or negative, and the ratio then becomes extreme or negative without saying anything about the debt load; the debt to capital ratio (`get_debt_to_capital_ratio`) and net debt to EBITDA (`get_net_debt_to_ebitda_ratio`) are more robust in those cases.
@@ -5081,7 +5081,7 @@ The interest coverage ratio evaluates a company's ability to meet its interest o
 The formula is as follows:
 
 $$
-\text{Interest Coverage Ratio} = \text{EBIT} / \text{Interest Expense}
+\text{Interest Coverage Ratio} = \frac{\text{EBIT}}{\text{Interest Expense}}
 $$
 
 Lenders and rating agencies use interest coverage to judge how much room a company has before its earnings no longer cover its interest bill, and loan covenants often set a minimum. Some covenants use EBITDA instead of EBIT, which gives a higher ratio, most of all for capital-intensive companies. The ratio is NaN when no interest expense is reported, which is often a gap in the reported data rather than an absence of debt.
@@ -5151,7 +5151,7 @@ The equity multiplier helps assess the financial leverage of a company by indica
 The formula is as follows:
 
 $$
-\text{Equity Multiplier} = \text{Average Total Assets} / \text{Average Total Equity}
+\text{Equity Multiplier} = \frac{\text{Average Total Assets}}{\text{Average Total Equity}}
 $$
 
 The equity multiplier is the leverage component of the DuPont analysis: return on equity equals return on assets times the equity multiplier. Banks run multipliers of around 10 or more, which is why their small returns on assets translate into returns on equity in the teens. For other companies a rising multiplier can come from new debt but also from buybacks that shrink equity.
@@ -5221,7 +5221,7 @@ The debt service coverage ratio compares EBITDA (operating income plus depreciat
 The formula is as follows:
 
 $$
-\text{Debt Service Coverage Ratio} = (\text{Operating Income} + \text{Depreciation and Amortization}) / (\text{Interest Expense} + \text{Short Term Debt}\; x \;\text{Window Years})
+\text{Debt Service Coverage Ratio} = \frac{\text{Operating Income} + \text{Depreciation and Amortization}}{\text{Interest Expense} + \text{Short Term Debt} \cdot \text{Window Years}}
 $$
 
 The short-term debt is the principal due over the next year, so it is scaled to the length of the window the earnings and interest cover: a quarter (0.25) with quarterly data, a year with yearly data and the trailing multiple of either with trailing (e.g. trailing=4 on quarterly data compares a year of earnings with a year of principal).
@@ -5291,7 +5291,7 @@ The free cash flow yield ratio is a measure of how efficiently a company generat
 The formula is as follows:
 
 $$
-\text{Free Cash Flow Yield Ratio} = \text{Free Cash Flow} / \text{Market Capitalization}
+\text{Free Cash Flow Yield Ratio} = \frac{\text{Free Cash Flow}}{\text{Market Capitalization}}
 $$
 
 The free cash flow yield is the cash a company generates for its shareholders as a share of what the market pays for them, and is often set against bond yields or the dividend yield to judge how much room there is for dividends and buybacks. Free cash flow swings with capital expenditure and working capital, so a single year can mislead, and a high yield can also mean the market expects free cash flow to fall.
@@ -5367,7 +5367,7 @@ The net debt to EBITDA ratio is a measure of a company's ability to manage its d
 The formula is as follows:
 
 $$
-\text{Net Debt to EBITDA Ratio} = \text{Net Debt} / \text{EBITDA}
+\text{Net Debt to EBITDA Ratio} = \frac{\text{Net Debt}}{\text{EBITDA}}
 $$
 
 Net debt to EBITDA is the leverage measure lenders, rating agencies and loan covenants use most: it reads as the number of years of EBITDA needed to repay the debt net of cash. What counts as high depends on how stable the earnings are, so utilities and telecoms carry more than cyclical companies. A negative value means the company holds more cash than debt, and the ratio becomes meaningless when EBITDA is close to zero or negative.
@@ -5435,7 +5435,7 @@ This differs from the Net-Debt to EBITDA Ratio in that it uses total (gross) deb
 The formula is as follows:
 
 $$
-\text{Gross Debt to EBITDA Ratio} = \text{Total Debt} / \text{EBITDA}
+\text{Gross Debt to EBITDA Ratio} = \frac{\text{Total Debt}}{\text{EBITDA}}
 $$
 
 **Args:**
@@ -5501,7 +5501,7 @@ The cash flow coverage ratio assesses a company's ability to meet its debt oblig
 The formula is as follows:
 
 $$
-\text{Cash Flow Coverage Ratio} = \text{Cash Flow from Operations} / \text{Total Debt}
+\text{Cash Flow Coverage Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Total Debt}}
 $$
 
 **Args:**
@@ -5567,7 +5567,7 @@ The capex coverage ratio evaluates a company's ability to fund its capital expen
 The formula is as follows:
 
 $$
-\text{Capital Expenditure Coverage Ratio} = \text{Cash Flow from Operations} / \text{Capital Expenditure}
+\text{Capital Expenditure Coverage Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Capital Expenditure}}
 $$
 
 **Also known as:** capital expenditure coverage.
@@ -5635,7 +5635,7 @@ The capex dividend coverage ratio assesses whether a company's cash flow from op
 The formula is as follows:
 
 $$
-\text{Dividend Paid and Capital Expenditure Coverage Ratio} = \text{Cash Flow from Operations} / (\text{Capital Expenditure} + \text{Dividends Paid})
+\text{Dividend Paid and Capital Expenditure Coverage Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Capital Expenditure} + \text{Dividends Paid}}
 $$
 
 **Also known as:** capex dividend coverage.
@@ -5703,7 +5703,7 @@ Unlike the debt to equity ratio, which can theoretically exceed one or become ne
 The formula is as follows:
 
 $$
-\text{Debt to Capital Ratio} = \text{Total Debt} / (\text{Total Debt} + \text{Total Equity})
+\text{Debt to Capital Ratio} = \frac{\text{Total Debt}}{\text{Total Debt} + \text{Total Equity}}
 $$
 
 **Also known as:** capitalization ratio.
@@ -5769,7 +5769,7 @@ Calculate the preferred dividend coverage ratio, a solvency ratio that measures 
 The formula is as follows:
 
 $$
-\text{Preferred Dividend Coverage Ratio} = \text{Net Income} / | \text{Preferred Dividends Paid} |
+\text{Preferred Dividend Coverage Ratio} = \frac{\text{Net Income}}{\left|\text{Preferred Dividends Paid}\right|}
 $$
 
 **Also known as:** preferred dividend cover.
@@ -5840,7 +5840,7 @@ A ratio consistently below one can indicate that interest is being accrued (e.g.
 The formula is as follows:
 
 $$
-\text{Interest Paid to Expense Ratio} = \text{Interest Paid} / \text{Interest Expense}
+\text{Interest Paid to Expense Ratio} = \frac{\text{Interest Paid}}{\text{Interest Expense}}
 $$
 
 A common reason for interest paid to exceed the interest expense is capitalized interest: companies building plants, fabs or networks add part of their interest to the cost of the asset, so the income statement shows less interest than was paid. When the data has no interest paid for a year, the ratio shows as 0, which means the figure is missing, not that no interest was paid.
@@ -5910,7 +5910,7 @@ EBITDA to interest is one of the supplementary ratios of S&P Global Ratings and 
 The formula is as follows:
 
 $$
-\text{EBITDA Interest Coverage} = (\text{Operating Income} + \text{Depreciation and Amortization}) / \text{Interest Expense}
+\text{EBITDA Interest Coverage} = \frac{\text{Operating Income} + \text{Depreciation and Amortization}}{\text{Interest Expense}}
 $$
 
 The interest expense is the gross expense, as S&P Global Ratings does not net the interest income. A zero interest expense gives NaN, which is often a gap in the reported data rather than an absence of debt.
@@ -5981,7 +5981,7 @@ Moody's uses this coverage in its rating methodologies for capital-intensive sec
 The formula is as follows:
 
 $$
-(\text{EBITDA} - \text{CapEx}) \text{Interest Coverage} = (\text{Operating Income} + \text{Depreciation and Amortization} - | \text{Capital Expenditure} |) / \text{Interest Expense}
+(\text{EBITDA} - \text{CapEx}) \;\text{Interest Coverage} = \frac{\text{Operating Income} + \text{Depreciation and Amortization} - \left|\text{Capital Expenditure}\right|}{\text{Interest Expense}}
 $$
 
 Capital expenditure is reported as a negative cash outflow, so its magnitude is deducted. A zero interest expense gives NaN.
@@ -6052,7 +6052,7 @@ Where the interest coverage compares accrual figures (earnings with the interest
 The formula is as follows:
 
 $$
-\text{Cash Interest Coverage} = (\text{Cash Flow from Operations} + \text{Interest Paid} + \text{Income Taxes Paid}) / \text{Interest Paid}
+\text{Cash Interest Coverage} = \frac{\text{Cash Flow from Operations} + \text{Interest Paid} + \text{Income Taxes Paid}}{\text{Interest Paid}}
 $$
 
 Under US GAAP the interest and taxes paid are part of the cash flow from operations, so they are added back. IFRS lets companies report the interest paid under financing activities instead, in which case adding it back overstates the coverage by one. A zero or unreported interest paid gives NaN.
@@ -6127,7 +6127,7 @@ $$
 $$
 
 $$
-\text{FFO to Debt} = \text{FFO} / \text{Total Debt}
+\text{FFO to Debt} = \frac{\text{FFO}}{\text{Total Debt}}
 $$
 
 S&P's EBITDA excludes share-based compensation payable in shares, so it is added back, and impairments, which the operating income here includes. The debt is the reported total debt at the end of the period; S&P's adjusted debt also adds leases, pension deficits and other debt-like items and deducts surplus cash, which the statements do not allow to repeat. FFO to debt is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default. A total debt of zero or less gives NaN. So does an interest paid of zero: a company with debt pays interest, so zero means the interest paid is not reported, and counting it as zero would overstate the FFO by the whole interest bill.
@@ -6199,11 +6199,11 @@ Where FFO to debt (`get_funds_from_operations_to_debt_ratio`) measures the cash 
 The formula is as follows:
 
 $$
-\text{DCF} = \text{Cash Flow from Operations} - | \text{Capital Expenditure} | - | \text{Dividends Paid} | - | \text{Common Stock Purchased} |
+\text{DCF} = \text{Cash Flow from Operations} - \left|\text{Capital Expenditure}\right| - \left|\text{Dividends Paid}\right| - \left|\text{Common Stock Purchased}\right|
 $$
 
 $$
-\text{DCF to Debt} = \text{DCF} / \text{Total Debt}
+\text{DCF to Debt} = \frac{\text{DCF}}{\text{Total Debt}}
 $$
 
 Capital expenditure, dividends and buybacks are reported as negative cash outflows, so their magnitudes are deducted. The dividends are those on common and preferred stock; S&P also deducts dividends to minority shareholders, which the statements do not separate. The debt is the reported total debt at the end of the period. DCF to debt is an annual measure, so with quarterly data the flows are those of the trailing twelve months by default. A total debt of zero or less gives NaN.
@@ -6275,7 +6275,7 @@ Operating leverage comes from fixed operating costs: when revenue rises, the fix
 The formula is as follows:
 
 $$
-\text{DOL} = \%\Delta \;\text{Operating Income} / \%\Delta \;\text{Revenue}
+\text{DOL} = \frac{\% \Delta \;\text{Operating Income}}{\% \Delta \;\text{Revenue}}
 $$
 
 The changes are period over period with annual data and year over year with quarterly data (a quarter against the same quarter a year earlier), so seasonality does not enter. Each change is (Value - Previous Value) / &#124;Previous Value&#124;, so a change from a negative base keeps its sign. The ratio is unstable when the denominator barely changes: a small change in it gives a very large degree, and no change gives NaN.
@@ -6345,7 +6345,7 @@ Financial leverage comes from fixed financing costs, mostly interest: when opera
 The formula is as follows:
 
 $$
-\text{DFL} = \%\Delta \;\text{Net Income} / \%\Delta \;\text{Operating Income}
+\text{DFL} = \frac{\% \Delta \;\text{Net Income}}{\% \Delta \;\text{Operating Income}}
 $$
 
 The changes are period over period with annual data and year over year with quarterly data (a quarter against the same quarter a year earlier), so seasonality does not enter. Each change is (Value - Previous Value) / &#124;Previous Value&#124;, so a change from a negative base keeps its sign. The ratio is unstable when the denominator barely changes: a small change in it gives a very large degree, and no change gives NaN.
@@ -6417,7 +6417,7 @@ The DTL is the product of the degree of operating leverage (`get_degree_of_opera
 The formula is as follows:
 
 $$
-\text{DTL} = \%\Delta \;\text{Net Income} / \%\Delta \;\text{Revenue} = \text{DOL}\; x \;\text{DFL}
+\text{DTL} = \frac{\% \Delta \;\text{Net Income}}{\% \Delta \;\text{Revenue}} = \text{DOL} \cdot \text{DFL}
 $$
 
 The changes are period over period with annual data and year over year with quarterly data (a quarter against the same quarter a year earlier), so seasonality does not enter. Each change is (Value - Previous Value) / &#124;Previous Value&#124;, so a change from a negative base keeps its sign. The ratio is unstable when the denominator barely changes: a small change in it gives a very large degree, and no change gives NaN.
@@ -6578,7 +6578,7 @@ The earnings per share (EPS) is a widely used financial metric that helps invest
 The formula is as follows:
 
 $$
-\text{Earnings per Share} (\text{EPS}) = (\text{Net Income} - | \text{Preferred Dividends Paid} |) / \text{Weighted Average} (\text{Diluted}) \text{Shares}
+\text{Earnings per Share} \;(\text{EPS}) = \frac{\text{Net Income} - \left|\text{Preferred Dividends Paid}\right|}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
 $$
 
 The preferred dividends are only deducted when include_dividends is True; with the default, EPS is net income divided by the weighted average (diluted) shares.
@@ -6651,7 +6651,7 @@ The revenue per share is an important metric that provides insight into a compan
 The formula is as follows:
 
 $$
-\text{Revenue per Share} = \text{Revenue} / \text{Weighted Average} (\text{Diluted}) \text{Shares}
+\text{Revenue per Share} = \frac{\text{Revenue}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
 $$
 
 **Also known as:** sales per share.
@@ -6722,7 +6722,7 @@ The price earnings ratio is a widely used valuation metric that helps investors 
 The formula is as follows:
 
 $$
-\text{Price to Earnings Ratio} (P / E) = \text{Share Price} / \text{Earnings per Share} (\text{EPS})
+\text{Price to Earnings Ratio} \;\left(\frac{P}{E}\right) = \frac{\text{Share Price}}{\text{Earnings per Share} \;(\text{EPS})}
 $$
 
 The P/E is compared with the company's own history, its peers and the market, and is read together with growth: a high P/E is the market paying for expected growth. For cyclical companies it is misleading at the extremes, lowest at peak earnings and highest in a downturn, so analysts often use normalized or forward earnings (`get_forward_price_earnings_ratio`). A negative or tiny EPS gives a negative or extreme P/E that should be left out of averages.
@@ -6800,7 +6800,7 @@ The price-to-earnings growth (PEG) ratio provides a more comprehensive valuation
 The formula is as follows:
 
 $$
-\text{Price Earnings to Growth Ratio} (\text{PEG}) = \text{Price Earnings Ratio} (P / E) / (\text{EPS Growth Rate} \cdot 100)
+\text{Price Earnings to Growth Ratio} \;(\text{PEG}) = \frac{\text{Price Earnings Ratio} \;\left(\frac{P}{E}\right)}{\text{EPS Growth Rate} \cdot 100}
 $$
 
 The growth rate is the growth of the (diluted) earnings per share on the previous year, or of EBITDA when use_ebitda_growth_rate is True, multiplied by 100 so that it enters in percent. With quarterly data both the P/E and the growth use trailing twelve month figures, and the growth compares them with those of four quarters earlier.
@@ -6870,7 +6870,7 @@ Calculate the forward price earnings ratio (forward P/E), a valuation ratio that
 The formula is as follows:
 
 $$
-\text{Forward}\; P / E = \text{Latest Stock Price} / \text{Estimated EPS Average}
+\text{Forward} \;\text{P/E} = \frac{\text{Latest Stock Price}}{\text{Estimated EPS Average}}
 $$
 
 Where the latest stock price is the most recent traded close, used for every estimate period. On quarterly data the estimated EPS of a period is the sum of the estimates of that quarter and the next three, so the ratio compares the price with a year of estimated earnings, as it does with yearly data.
@@ -6939,11 +6939,11 @@ Calculate the forward price earnings to growth (forward PEG) ratio, a valuation 
 The formula is as follows:
 
 $$
-\text{Estimated EPS Growth Rate} = (\text{Estimated EPS} / \text{Trailing EPS}) ^{1 / \text{Years}} - 1
+\text{Estimated EPS Growth Rate} = \left(\frac{\text{Estimated EPS}}{\text{Trailing EPS}}\right)^{\frac{1}{\text{Years}}} - 1
 $$
 
 $$
-\text{Forward PEG} = \text{Forward}\; P / E / (\text{Estimated EPS Growth Rate} \cdot 100)
+\text{Forward PEG} = \frac{\text{Forward} \;\text{P/E}}{\text{Estimated EPS Growth Rate} \cdot 100}
 $$
 
 The growth rate is the annualized growth from the most recently reported EPS to the estimate of each period, with Years the number of years between the two, so the PEG of every estimate period is based on a yearly growth rate. Periods up to the latest reported period, and periods where either EPS is zero or negative, have no compound growth rate and are NaN. The trailing EPS is the reported diluted EPS, while consensus estimates are usually on an adjusted basis, which inflates the implied growth for companies with large non-cash charges.
@@ -7011,7 +7011,7 @@ The book value per share is a fundamental valuation metric that reflects the net
 The formula is as follows:
 
 $$
-\text{Book Value per Share} = (\text{Total Shareholder Equity} - \text{Preferred Stock}) / \text{Weighted Average} (\text{Diluted}) \text{Shares}
+\text{Book Value per Share} = \frac{\text{Total Shareholder Equity} - \text{Preferred Stock}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
 $$
 
 **Also known as:** BVPS, net asset value per share.
@@ -7082,7 +7082,7 @@ The price to book ratio is a key valuation metric that helps investors assess wh
 The formula is as follows:
 
 $$
-\text{Price to Book Ratio} = \text{Share Price} / \text{Book Value per Share}
+\text{Price to Book Ratio} = \frac{\text{Share Price}}{\text{Book Value per Share}}
 $$
 
 The price to book ratio matters most for banks and insurers, whose balance sheets consist mostly of financial assets and liabilities, so that book value is a fair measure of what shareholders own. It is read together with return on equity: a bank that earns more than its cost of equity can justify trading above book value, one that earns less trades below it. For companies whose value lies in brands, software or people, book value says little, and buybacks can shrink it until the ratio becomes extreme.
@@ -7160,7 +7160,7 @@ The interest debt per share ratio shows how much debt, with its interest, ranks 
 The formula is as follows:
 
 $$
-\text{Interest Debt per Share} = (\text{Interest Expense} + \text{Total Debt}) / \text{Weighted Average} (\text{Diluted}) \text{Shares}
+\text{Interest Debt per Share} = \frac{\text{Interest Expense} + \text{Total Debt}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
 $$
 
 **Args:**
@@ -7229,7 +7229,7 @@ The capex per share ratio provides insight into how much capital a company inves
 The formula is as follows:
 
 $$
-\text{CAPEX per Share} = \text{Capital Expenditure} / \text{Weighted Average} (\text{Diluted}) \text{Shares}
+\text{CAPEX per Share} = \frac{\text{Capital Expenditure}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
 $$
 
 The values are negative because capital expenditure is reported as a cash outflow in the cash flow statement; take the magnitude when comparing with sources that quote capex per share as a positive amount. Capex per share is usually compared with operating cash flow or depreciation per share: capex well above depreciation for years points to expansion, capex below it to an ageing asset base.
@@ -7302,7 +7302,7 @@ The dividend yield ratio is used by investors to assess the income potential of 
 The formula is as follows:
 
 $$
-\text{Dividend Yield} = \text{Dividends per Share} / \text{Share Price}
+\text{Dividend Yield} = \frac{\text{Dividends per Share}}{\text{Share Price}}
 $$
 
 The dividends per share are those paid over a year: the trailing four quarters with quarterly data, each year with annual data and, with show_daily, the 365 calendar days up to each day. The share price is the close at the end of the period (or day).
@@ -7380,7 +7380,7 @@ This dividend yield ratio takes into account the (diluted) weighted average shar
 The formula is as follows:
 
 $$
-\text{Weighted Dividend Yield} = (| \text{Dividends Paid} | / \text{Weighted Average} (\text{Diluted}) \text{Shares}) / \text{Share Price}
+\text{Weighted Dividend Yield} = \frac{\frac{\left|\text{Dividends Paid}\right|}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}}{\text{Share Price}}
 $$
 
 **Also known as:** blended dividend yield.
@@ -7456,7 +7456,7 @@ The price to cash flow ratio is a key valuation metric that helps investors asse
 The formula is as follows:
 
 $$
-\text{Price to Cash Flow Ratio} = \text{Share Price} / \text{Cash Flow from Operations per Share}
+\text{Price to Cash Flow Ratio} = \frac{\text{Share Price}}{\text{Cash Flow from Operations per Share}}
 $$
 
 **Also known as:** P/CF ratio.
@@ -7532,7 +7532,7 @@ This ratio provides insight into how the market values a company's ability to ge
 The formula is as follows:
 
 $$
-\text{Price to Free Cash Flow Ratio} = \text{Market Cap} / \text{Free Cash Flow}
+\text{Price to Free Cash Flow Ratio} = \frac{\text{Market Cap}}{\text{Free Cash Flow}}
 $$
 
 **Also known as:** P/FCF ratio.
@@ -7608,7 +7608,7 @@ The price to sales ratio is particularly useful for valuing companies that are n
 The formula is as follows:
 
 $$
-\text{Price to Sales Ratio} = \text{Market Cap} / \text{Revenue}
+\text{Price to Sales Ratio} = \frac{\text{Market Cap}}{\text{Revenue}}
 $$
 
 **Also known as:** P/S ratio, sales multiple.
@@ -7684,7 +7684,7 @@ Market capitalization, often referred to as "market cap," is the total value of 
 The formula is as follows:
 
 $$
-\text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average} (\text{Diluted}) \text{Shares}
+\text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}
 $$
 
 Market cap is a point-in-time value, so the price is the close on the last trading day of each calendar period (or of each day with show_daily) and never an average. The periods follow the calendar, so for a company whose fiscal year ends in, for example, September, the price of the year is the December close while the shares come from the fiscal year. With show_daily, each day uses the shares of the latest period that has ended.
@@ -7758,7 +7758,7 @@ This is the Buffett indicator, which Warren Buffett called "probably the best si
 The formula is as follows:
 
 $$
-\text{Market Cap to GDP} = \text{Basket Market Capitalization} / \text{Nominal GDP} (\text{last complete year})
+\text{Market Cap to GDP} = \frac{\text{Basket Market Capitalization}}{\text{Nominal GDP}} \;(\text{last complete year})
 $$
 
 The basket market cap is the sum of the market caps of the tickers, as get_market_cap returns it for a basket Toolkit (the traded close times the weighted average diluted shares), so the tickers must be listed in US dollars. The GDP is the nominal GDP in current US dollars of the Global Macro Database. GDP is annual and comes without publication dates, so each date (or period) is divided by the GDP of the calendar year before the year it falls in, the last complete year: the close of 9 November 2026 by the GDP of 2025, the 2025 value by the GDP of 2024. The first estimate of a year is published in the first months of the next year, so in those months the ratio uses a GDP that was about to be published.
@@ -7892,7 +7892,7 @@ This ratio compares the enterprise value (EV) to the total revenue generated by 
 The formula is as follows:
 
 $$
-\text{Enterprise Value to Sales Ratio} = \text{Enterprise Value} / \text{Total Revenue}
+\text{Enterprise Value to Sales Ratio} = \frac{\text{Enterprise Value}}{\text{Total Revenue}}
 $$
 
 **Also known as:** EV/Sales.
@@ -7961,7 +7961,7 @@ This ratio helps investors understand how many times the enterprise value exceed
 The formula is as follows:
 
 $$
-\text{Enterprise Value to EBITDA Ratio} = \text{Enterprise Value} / \text{EBITDA}
+\text{Enterprise Value to EBITDA Ratio} = \frac{\text{Enterprise Value}}{\text{EBITDA}}
 $$
 
 EV to EBITDA is the most common multiple in sector comparisons and takeover pricing because it is not affected by capital structure, tax rates or depreciation policy. That is also its limit: it ignores the capital expenditure needed to sustain EBITDA, so capital-intensive companies look cheaper than they are, and EV to EBIT (`get_ev_to_ebit`) or EV to free cash flow (`get_ev_to_free_cash_flow_ratio`) is a useful cross-check.
@@ -8032,7 +8032,7 @@ The ratio is a valuation metric that helps investors assess the company's valuat
 The formula is as follows:
 
 $$
-\text{Enterprise Value to Operating Cash Flow Ratio} = \text{Enterprise Value} / \text{Operating Cash Flow}
+\text{Enterprise Value to Operating Cash Flow Ratio} = \frac{\text{Enterprise Value}}{\text{Operating Cash Flow}}
 $$
 
 **Args:**
@@ -8099,7 +8099,7 @@ The earnings yield ratio is a valuation metric that provides insights into how m
 The formula is as follows:
 
 $$
-\text{Earnings Yield Ratio} = \text{Earnings per Share} / \text{Share Price}
+\text{Earnings Yield Ratio} = \frac{\text{Earnings per Share}}{\text{Share Price}}
 $$
 
 **Also known as:** E/P ratio, inverse PE ratio.
@@ -8170,7 +8170,7 @@ The payout ratio is a financial metric that helps investors assess the portion o
 The formula is as follows:
 
 $$
-\text{Dividend Payout Ratio} = \text{Dividends Paid} / \text{Net Income}
+\text{Dividend Payout Ratio} = \frac{\text{Dividends Paid}}{\text{Net Income}}
 $$
 
 The payout ratio shows how much room a company has to keep or raise its dividend. A ratio above 1 means the dividend is paid partly from reserves or borrowing, which cannot last unless profits were depressed by one-off charges. Because it uses net income, it is often checked against free cash flow, and for real estate investment trusts, whose net income is reduced by depreciation, it is not a useful measure.
@@ -8418,7 +8418,7 @@ Calculate the enterprise value over earnings before interest and taxes (EBIT) ra
 The formula is as follows:
 
 $$
-\text{Enterprise Value to EBIT Ratio} = \text{Enterprise Value} / \text{EBIT}
+\text{Enterprise Value to EBIT Ratio} = \frac{\text{Enterprise Value}}{\text{EBIT}}
 $$
 
 EBIT is the reported operating income, the same operating profit that EV to EBITDA (`get_ev_to_ebitda_ratio`) adds depreciation and amortization to (Damodaran), so the two multiples differ only by the depreciation and amortization. The enterprise value is taken at the end of each period (or on each day with show_daily), while EBIT is summed over the trailing periods.
@@ -8487,7 +8487,7 @@ Unlike EV to Operating Cash Flow, this ratio nets out capital expenditures, givi
 The formula is as follows:
 
 $$
-\text{EV to Free Cash Flow Ratio} = \text{Enterprise Value} / \text{Free Cash Flow}
+\text{EV to Free Cash Flow Ratio} = \frac{\text{Enterprise Value}}{\text{Free Cash Flow}}
 $$
 
 **Also known as:** EV/FCF.
@@ -8555,7 +8555,7 @@ A positive buyback yield means the company is a net repurchaser of its own stock
 The formula is as follows:
 
 $$
-\text{Buyback Yield} = - (\text{Common Stock Purchased} + \text{Common Stock Issued}) / \text{Market Capitalization}
+\text{Buyback Yield} = - \frac{\text{Common Stock Purchased} + \text{Common Stock Issued}}{\text{Market Capitalization}}
 $$
 
 The buyback yield is net of shares issued, which matters for companies that pay much of their staff in shares: their gross buybacks can be large while the net yield is small, because the buybacks mainly offset the dilution from stock-based compensation. Buybacks are more flexible than dividends and vary with the share price and the cash available, so the yield is best read over several years and added to the dividend yield (`get_shareholder_yield`).
@@ -8773,7 +8773,7 @@ The dividend payout ratio (`get_dividend_payout_ratio`) compares the dividends w
 The formula is as follows:
 
 $$
-\text{Free Cash Flow Payout Ratio} = | \text{Dividends Paid} | / \text{Free Cash Flow}
+\text{Free Cash Flow Payout Ratio} = \frac{\left|\text{Dividends Paid}\right|}{\text{Free Cash Flow}}
 $$
 
 Dividends are reported as a negative cash outflow, so their magnitude is used. A free cash flow of zero or less gives NaN.
@@ -8848,7 +8848,7 @@ $$
 $$
 
 $$
-\text{EV to Invested Capital} = \text{Enterprise Value} / \text{Invested Capital}
+\text{EV to Invested Capital} = \frac{\text{Enterprise Value}}{\text{Invested Capital}}
 $$
 
 The invested capital is measured from the financing side, with the same items as the enterprise value (`get_enterprise_value`): the equity includes minority interest and preferred stock, and the cash and short-term investments are deducted from both. It is a point in time at the end of each period, as the enterprise value is. An invested capital of zero or less gives NaN.
@@ -8928,7 +8928,7 @@ $$
 $$
 
 $$
-\text{Price to Tangible Book} = \text{Market Capitalization} / \text{Tangible Book Value}
+\text{Price to Tangible Book} = \frac{\text{Market Capitalization}}{\text{Tangible Book Value}}
 $$
 
 The market capitalization uses the same close and shares as the price to book ratio (`get_price_to_book_ratio`), so both differ only by the goodwill and intangibles. A tangible book value of zero or less (common after large acquisitions or buybacks) gives NaN.
@@ -9003,7 +9003,7 @@ Pontiff and Woodgate show that companies that issue shares earn lower returns ov
 The formula is as follows:
 
 $$
-\text{Net Share Issuance} = \ln(\text{Shares} / \text{Shares}\; a \;\text{Year Earlier})
+\text{Net Share Issuance} = \ln\left(\frac{\text{Shares}}{\text{Shares a Year Earlier}}\right)
 $$
 
 The shares are the weighted average shares of the period, which the statements report adjusted for later stock splits, so only issuance and repurchases change them. The paper takes the shares outstanding at a date; the weighted average moves with them but spreads a change over the period it occurs in. The shares a year earlier are those of the year before with annual data and four quarters back with quarterly data. Shares of zero or less give NaN.
@@ -9079,7 +9079,7 @@ A company's market capitalization grows with its stock return and with the equit
 The formula is as follows:
 
 $$
-\text{Composite Equity Issuance} = \ln(\text{Market Cap} / \text{Market Cap Five Years Earlier})
+\text{Composite Equity Issuance} = \ln\left(\frac{\text{Market Cap}}{\text{Market Cap Five Years Earlier}}\right)
 $$
 
 - ln(Total Return over the Five Years)
@@ -9157,7 +9157,7 @@ Bradshaw, Richardson and Sloan show that the net external financing predicts ret
 The formula is as follows:
 
 $$
-\text{Net External Financing} = (\text{Net Equity Financing} + \text{Net Debt Financing}) / \text{Average Total Assets}
+\text{Net External Financing} = \frac{\text{Net Equity Financing} + \text{Net Debt Financing}}{\text{Average Total Assets}}
 $$
 
 $$
