@@ -1,11 +1,16 @@
 <div class="article-byline">
-  <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" class="article-byline__avatar">
+  <img src="{{ '/assets/images/default/bio-photo-128.jpg' | relative_url }}" alt="{{ site.author.name }}" class="article-byline__avatar" width="40" height="40">
   <div class="article-byline__info">
-    <span class="article-byline__name">{{ site.author.name }}</span>
+    <span class="article-byline__name"><a href="{{ '/resume' | relative_url }}" rel="author" class="p-author h-card">{{ site.author.name }}</a><span class="article-byline__role">Quantitative Investment Strategist · creator of the Finance Toolkit</span></span>
     <span class="article-byline__meta">
       {% if page.date %}
         {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
         <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: date_format }}</time>
+        {% assign _published = page.date | date: "%Y-%m-%d" %}{% assign _updated = page.last_modified_at | date: "%Y-%m-%d" %}
+        {% if page.last_modified_at and page.last_modified_at_from_git != true and _updated > _published %}
+        <span class="article-byline__sep">&middot;</span>
+        <span class="article-byline__updated">Updated <time class="dt-updated" datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: date_format }}</time></span>
+        {% endif %}
         <span class="article-byline__sep">&middot;</span>
       {% endif %}
       {% assign words_per_minute = site.words_per_minute | default: 200 %}

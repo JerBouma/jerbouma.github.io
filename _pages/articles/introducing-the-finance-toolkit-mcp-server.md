@@ -16,6 +16,8 @@ cover:
   alt: "A nineteenth-century brass arithmometer in a wooden case, with rows of setting slides and result dials."
   credit: "Arithmometer for the Prudential Assurance company, about 1885, Science Museum London, Daderot, CC0"
   link: "https://commons.wikimedia.org/wiki/File:Arithmometer_custom-designed_for_the_Prudential_Assurance_company,_about_1885_-_Science_Museum,_London_-_DSC05537.jpg"
+  creator: "Daderot"
+  license: "https://creativecommons.org/publicdomain/zero/1.0/"
 ---
 On the 6th of May, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.93 by Stockopedia, 32.05 by Morningstar, 32.66 by Macrotrends, 33.67 by the Wall Street Journal, and 34.4 by Companies Market Cap. Every one of those numbers is "correct." They just use different definitions of earnings, different share counts and different rounding. None of the providers publish the formula, so there is no way to know which one matches the calculation you actually want. Ask an AI assistant for the same number and it inherits the problem: it picks one of those figures from a web search, or recalls one from its training data, and when it finds nothing it may produce a plausible-looking number of its own.
 

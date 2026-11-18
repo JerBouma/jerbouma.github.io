@@ -84,6 +84,8 @@
 <meta name="description" content="{{ seo_description }}">
 {% if page.noindex %}
   <meta name="robots" content="noindex, nofollow">
+{% else %}
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 {% endif %}
 
 {% if author.name %}
@@ -166,6 +168,7 @@
       "logo": {{ site_og_image | jsonify }}{% endif %}
     {% else %}
       "@type": "Person",
+      "@id": {{ "/#person" | absolute_url | jsonify }},
       "name": {{ site.social.name | default: site.name | jsonify }},
       "url": {{ '/' | absolute_url |jsonify }}{% if site.social.links %},
       "sameAs": {{ site.social.links | jsonify }}{% endif %}
@@ -213,8 +216,8 @@
       "position": {{ forloop.index | plus: 1 }},
       {%- assign crumb_path = crumb_path | append: '/' | append: crumb -%}
       {%- assign crumb_page = site.pages | where: "url", crumb_path | first -%}
-      "name": {% if forloop.last %}{{ page.title | default: crumb | replace: '-', ' ' | capitalize | jsonify }}{% elsif crumb_page.title %}{{ crumb_page.title | jsonify }}{% else %}{{ crumb | replace: '-', ' ' | capitalize | jsonify }}{% endif %},
-      "item": {% if crumb_page.redirect.to %}{{ crumb_page.redirect.to | jsonify }}{% else %}{{ crumb_path | absolute_url | jsonify }}{% endif %}
+      "name": {% if forloop.last and page.title %}{{ page.title | jsonify }}{% elsif site.data.breadcrumbs[crumb] %}{{ site.data.breadcrumbs[crumb] | jsonify }}{% elsif crumb_page.title %}{{ crumb_page.title | jsonify }}{% else %}{{ crumb | replace: '-', ' ' | capitalize | jsonify }}{% endif %},
+      "item": {% if crumb_path == "/articles" %}{{ "/insights" | absolute_url | jsonify }}{% elsif crumb_page.redirect.to %}{{ crumb_page.redirect.to | jsonify }}{% else %}{{ crumb_path | absolute_url | jsonify }}{% endif %}
     }{% endfor %}
   ]
 }

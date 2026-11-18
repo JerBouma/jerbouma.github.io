@@ -4221,6 +4221,16 @@ body.article-document {
     font-weight: 600;
     color: var(--text-primary);
     font-size: 0.92rem;
+
+    a, a:visited { color: inherit !important; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  }
+
+  &__role {
+    display: block;
+    font-weight: 400;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
   }
 
   &__meta {
