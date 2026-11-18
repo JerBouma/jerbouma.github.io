@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [Risk & Derivatives]
 share: true
+cover:
+  image: /assets/images/articles/binomial-trees/cover.jpg
+  alt: "Traders on the floor of the Chicago Board of Trade in 1949, watching the price boards."
+  credit: "Chicago Board of Trade traders, 1949, Stanley Kubrick for LOOK, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:Chicago_Board_of_Trade_traders_cph.3d02368.jpg"
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 {% include mermaid.html %}

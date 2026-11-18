@@ -13,6 +13,11 @@ collection: article
 tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceToolkitMCP.jpg
+cover:
+  image: /assets/images/articles/connect-claude-to-financial-data/cover.jpg
+  alt: "A brass Edison stock ticker, the machine that printed live prices onto paper tape."
+  credit: "Edison stock telegraph ticker, H. Zimmer, CC BY 3.0"
+  link: "https://commons.wikimedia.org/wiki/File:Edison_Stock_Telegraph_Ticker.jpg"
 ---
 Ask Claude *"what is Apple's operating margin this year?"* and you get one of two answers: a polite explanation that it has no access to live data, or a confident number from its training data that may be a year or more out of date. Language models are good at reasoning about numbers, but they are not a data source, and asked to compute a return on invested capital from memory they tend to produce plausible-sounding mistakes.
 

@@ -4241,6 +4241,37 @@ body.article-document {
   margin-top: 14px;
 }
 
+// The opening image under the byline: wide, cropped to 21:9, a small credit line under it
+.article-cover {
+  margin: 1.6rem 0 0;
+  padding: 0;
+
+  &__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+    background: var(--bg-secondary, rgba(127, 127, 127, 0.12));
+  }
+
+  &__credit {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    text-align: right;
+
+    a, a:visited { color: var(--text-secondary) !important; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  }
+
+  @media (max-width: 600px) {
+    margin-top: 1.2rem;
+    &__image { aspect-ratio: 16 / 9; border-radius: 8px; }
+  }
+}
+
 // The article sidebar: "On this page" and "More insights", styled like the
 // Finance Toolkit docs sidebar (quiet group headings with a count, links on a
 // thin guide line, an accent bar for the section being read)

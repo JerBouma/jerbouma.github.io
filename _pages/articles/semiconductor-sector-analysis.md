@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [Fundamental Analysis]
 share: true
+cover:
+  image: /assets/images/articles/semiconductor-sector-analysis/cover.jpg
+  alt: "A microscope photograph of a processor die, a dense grid of cache blocks and logic."
+  credit: "Pentium II die shot, Martijn Boer, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:Intel-pentium-ii-dixon-die-shot-high-resolution-stitched.jpg"
 ---
 
 In 2010, Intel earned 54% of the combined revenue of six large US chipmakers: Intel, AMD, NVIDIA, Qualcomm, Broadcom and Texas Instruments. NVIDIA, then best known for gaming graphics cards, earned 4%. By 2025 the order had flipped, with NVIDIA earning half of the group's revenue and Intel 12%.

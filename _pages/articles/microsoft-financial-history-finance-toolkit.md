@@ -11,6 +11,11 @@ author_profile: false
 collection: article
 tags: [Fundamental Analysis]
 share: true
+cover:
+  image: /assets/images/articles/microsoft-financial-history-finance-toolkit/cover.jpg
+  alt: "A 1980s computer room with terminals, tape drives and staff at work."
+  credit: "US Census Bureau computer room, 1980s, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:US_Census_Bureau_computer_room_1980s.jpg"
 ---
 
 Microsoft went public on March 13, 1986 ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft){:target="_blank"}). In the fiscal year that ended that June, its revenue was $198 million. In fiscal 2025 it was $282 billion, about 1,400 times as much, and a share bought at the IPO had risen more than 5,000-fold by the end of 2025.
