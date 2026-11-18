@@ -2,7 +2,7 @@
 title: "The Black Death's Economic Effects on English Wages"
 seo_title: "The Black Death's Economic Effects on Wages"
 date: 2026-11-17
-last_modified_at: 2026-11-17
+last_modified_at: 2026-11-18
 permalink: /articles/black-death-economic-effects
 excerpt: "England lost 46% of its population between 1348 and 1351. Real wages roughly doubled over the next century and stayed high until the population came back."
 description: "Economic effects of the Black Death in England: population fell 46% in three years and real wages doubled, from the Bank of England's data since 1086."
@@ -54,6 +54,20 @@ economics = Economics(start_date="1086-01-01")
 
 wages = economics.get_millennium_of_macroeconomic_data(series="Real consumption wages")
 
+# the plague waves: the average real wage of the years after the first plague
+# year compared to the same number of years before, in %
+real_wage = wages["Real consumption wages"]
+
+
+def wave_change(year, window=10):
+    before = real_wage.loc[str(year - window) : str(year - 1)].mean()
+    after = real_wage.loc[str(year + 1) : str(year + window)].mean()
+    return (after / before - 1) * 100
+
+
+waves = {year: wave_change(year) for year in [1348, 1361, 1369, 1375]}
+all_years = [wave_change(year) for year in range(1260, 1691)]
+
 # as an index with the average of 1340 to 1347 at 100
 wages = wages / wages.loc["1340":"1347"].mean() * 100
 wages = wages.loc["1300":"1550"]
@@ -74,6 +88,21 @@ Wages jumped from one year to the next with the harvest, by around 11% on averag
 | 1600-1649 | 102 |
 
 **Between 1450 and 1499 the real wage averaged 201, double its level before the plague.** The rise took decades, partly because in 1349 the Crown issued the Ordinance of Labourers, followed by the Statute of Labourers in 1351, which tried to hold wages at their pre-plague levels and made it an offence to ask for more.
+
+After 1348 to 1349, plague returned across England in 1361 to 1362, 1369 and 1375, which makes it possible to compare each wave with the years around it. The table sets the average real wage of the ten years after the first plague year against the ten years before, and the last row does the same for every year from 1260 to 1690:
+
+| Plague wave | Real wage, ten years after vs ten years before |
+|---|---|
+| 1348-1349 | +28.3% |
+| 1361-1362 | +2.9% |
+| 1369 | +9.5% |
+| 1375 | +22.5% |
+| Average | +15.8% |
+| Median | +16.0% |
+| Share rising | 4 of 4 |
+| All years, 1260-1690 | +0.8% on average, median +0.5%, rising in 53% |
+
+The real wage was higher after each of the four waves, with a median gain of 16%, while in an ordinary decade it barely moved. The second wave of 1361 to 1362 left the smallest mark, even though the historian Philip Slavin argues it did more lasting demographic damage than the Black Death itself. That each wave pushed wages up by thinning the workforce again is my reading. The population series is interpolated between benchmark years and doesn't show the later waves, so the data shows the timing, not the cause.
 
 ## Pay Rose While Prices Did Not
 
@@ -245,10 +274,12 @@ The next article in the series looks at a more recent shock, the oil price crash
 
 **How the series is built:** population is estimated for benchmark years and interpolated between them. Earnings and the real wage are based on daily wage rates of English labourers, and hours before 1770 on Humphries and Weisdorf (2016). Exports are mostly wool and woollen cloth, in 2013 prices, and coin is an end-of-year estimate in pounds of the time.
 
-**What I did to it:** I indexed most series to the average of 1340 to 1347, averaged the noisy ones over periods and divided GDP, coin and exports by population.
+**What I did to it:** I indexed most series to the average of 1340 to 1347 and averaged the noisy ones over periods. Real pay per hour is earnings per head divided by weekly hours and by the consumer price index. Real GDP and exports are divided by population, and for coin per person I converted coin from millions of pounds and population from thousands before dividing. For the plague waves I compared the average real wage of the ten years after the first plague year with the ten years before, and the baseline does this for every year from 1260 to 1690. The windows overlap: the ten years after 1361 include the wave of 1369.
 
-**Limits:** the figures are reconstructions, and the hours series is tentative. The real wage tracks particular groups of workers and one basket of goods. The data covers England only, while the plague hit all of Europe.
+**Limits:** the figures are reconstructions, and the hours series is tentative. The real wage tracks particular groups of workers and one basket of goods. The data covers England only, while the plague hit all of Europe. The plague table rests on four waves, and with five-year windows instead of ten the 1369 wave shows a fall of 3.1%.
 
-**Reproduce it:** the charts are made with the [Finance Toolkit](/projects/financetoolkit), my open-source Python library, which reads this dataset directly ([Economics docs](/projects/financetoolkit/docs/economics)). The Python button on each chart shows the code and the MCP button a question that returns the same data.
+**Reproduce it:** the charts are made with the [Finance Toolkit](/projects/financetoolkit), my open-source Python library, which reads this dataset directly ([Economics docs](/projects/financetoolkit/docs/economics)). The Python button on each chart shows the code and the MCP button a question that returns the same data. The code for the plague table sits under the real wage chart.
+
+**Further reading:** Stephen Broadberry, Bruce Campbell, Alexander Klein, Mark Overton and Bas van Leeuwen, "[British Economic Growth, 1270-1870](https://kar.kent.ac.uk/45320/){:target="_blank"}" (Cambridge University Press, 2015), the reconstruction of output and population that the dataset's early figures draw on. Jane Humphries and Jacob Weisdorf, "[Unreal Wages? Real Income and Economic Growth in England, 1260-1850](https://researchonline.lse.ac.uk/id/eprint/90328/){:target="_blank"}" (The Economic Journal, 2019), on why day wages overstate medieval incomes. Philip Slavin, "[Plague Strikes Back: The Pestis Secunda of 1361-62 and Its Demographic Consequences in England and Wales](https://www.stir.ac.uk/research/hub/publication/2233876){:target="_blank"}" (Journal of Medieval and Early Modern Studies, 2024), on the second wave.
 
 {% include ft-charts-script.html %}

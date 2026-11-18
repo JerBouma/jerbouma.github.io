@@ -169,7 +169,7 @@
    ],
    "format": "percent",
    "subtitle": "Yearly change in consumer prices, percent, 2019 to 2025",
-   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), data to 31 December 2025"
   },
   "macro-rates": {
    "type": "line",
@@ -247,13 +247,14 @@
    ],
    "format": "percent",
    "subtitle": "Policy rate at the end of each year, percent, 2019 to 2025 (Germany: euro area rate)",
-   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), data to 31 December 2025",
+   "note": "Germany's rate in the database runs below the ECB's year-end rate in 2022 and 2023"
   },
   "macro-real-rates": {
    "type": "line",
    "title": "Real central bank policy rates",
    "subtitle": "Year-end policy rate minus the year's consumer price inflation, percent, 2019 to 2025",
-   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), own calculation",
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), own calculation, data to 31 December 2025",
    "x": [
     "2019",
     "2020",
@@ -403,7 +404,7 @@
    ],
    "format": "percent",
    "subtitle": "Unemployed as a share of the labour force, percent, 2019 to 2025",
-   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), data to 31 December 2025"
   },
   "macro-debt": {
    "type": "line",
@@ -475,14 +476,15 @@
    ],
    "format": "percent",
    "subtitle": "Consolidated government debt, percent of GDP, 2019 to 2024",
-   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025)"
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), data to 31 December 2024"
   },
   "msft-revenue": {
    "type": "line",
    "log": true,
    "title": "Microsoft revenue and net income",
    "subtitle": "Fiscal years 1986 to 2025 (ending in June), billions of US dollars, log scale",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 30 June 2025",
+   "note": "Nominal dollars, not adjusted for inflation",
    "x": [
     "1986",
     "1987",
@@ -623,7 +625,7 @@
    "type": "line",
    "title": "Microsoft gross and net margins",
    "subtitle": "Gross profit and net income as a share of revenue, fiscal years 1986 to 2025",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 30 June 2025",
    "x": [
     "1986",
     "1987",
@@ -764,7 +766,7 @@
    "type": "line",
    "title": "Microsoft cash, long-term debt and goodwill",
    "subtitle": "End of fiscal years 1995 to 2025, billions of US dollars",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 30 June 2025",
    "x": [
     "1995",
     "1996",
@@ -914,7 +916,7 @@
    "type": "bar",
    "title": "Microsoft operating cash flow, capital expenditures and free cash flow",
    "subtitle": "Fiscal years 1995 to 2025 at five-year intervals, billions of US dollars, capital expenditures as negative values",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 30 June 2025",
    "x": [
     "1995",
     "2000",
@@ -968,7 +970,7 @@
    "type": "line",
    "title": "Microsoft return on equity, assets and invested capital",
    "subtitle": "Fiscal years 1987 to 2025; ROE and ROA on average equity and assets, ROIC as after-tax operating income over average debt plus equity",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 30 June 2025",
    "x": [
     "1987",
     "1988",
@@ -1150,7 +1152,7 @@
    "type": "tabs",
    "title": "Normal and historical Value at Risk and CVaR",
    "subtitle": "Daily returns at 95% confidence within each calendar year, 2019 to 2025, where normal uses that year's mean and volatility",
-   "source": "Daily prices via FinancialModelingPrep",
+   "source": "Daily prices via FinancialModelingPrep, data to 31 December 2025",
    "tabs": [
     {
      "type": "bar",
@@ -1572,7 +1574,7 @@
    "type": "heatmap",
    "title": "Maximum drawdown by index",
    "subtitle": "Largest peak-to-trough fall in daily prices within each calendar year, 2019 to 2025",
-   "source": "Daily prices via FinancialModelingPrep",
+   "source": "Daily prices via FinancialModelingPrep, data to 31 December 2025",
    "x": [
     "SPY",
     "QQQ",
@@ -1652,13 +1654,14 @@
    "scale": "sequential",
    "reverse": true,
    "min": -0.42,
-   "max": 0
+   "max": 0,
+   "note": "A fall that spans two years is split at 31 December, so each cell shows only the part within that year"
   },
   "risk-skew": {
    "type": "heatmap",
    "title": "Skewness of daily returns by index",
    "subtitle": "Within each calendar year, 2019 to 2025, where 0 is symmetric and below 0 means a longer left tail",
-   "source": "Daily prices via FinancialModelingPrep",
+   "source": "Daily prices via FinancialModelingPrep, data to 31 December 2025",
    "x": [
     "SPY",
     "QQQ",
@@ -1742,7 +1745,7 @@
    "type": "heatmap",
    "title": "Kurtosis of daily returns by index",
    "subtitle": "Within each calendar year, 2019 to 2025, where a normal distribution has a kurtosis of 3",
-   "source": "Daily prices via FinancialModelingPrep",
+   "source": "Daily prices via FinancialModelingPrep, data to 31 December 2025",
    "x": [
     "SPY",
     "QQQ",
@@ -1827,7 +1830,8 @@
    "type": "bar",
    "title": "Semiconductor revenue",
    "subtitle": "Annual revenue in US$ billions, fiscal years 2010, 2014, 2018, 2022 and 2025",
-   "source": "Company filings via FinancialModelingPrep",
+   "note": "NVIDIA's fiscal 2025 ends on 25 January 2026, Broadcom's on 2 November 2025 and Qualcomm's on 28 September 2025",
+   "source": "Company filings via FinancialModelingPrep, data to 25 January 2026",
    "x": [
     "2010",
     "2014",
@@ -1903,7 +1907,7 @@
    "type": "line",
    "title": "Semiconductor gross margins",
    "subtitle": "Gross profit as a share of revenue, fiscal years 2010, 2014, 2018, 2022 and 2025",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 25 January 2026",
    "x": [
     "2010",
     "2014",
@@ -1979,7 +1983,7 @@
    "type": "tabs",
    "title": "Intel versus AMD",
    "subtitle": "Revenue in US$ billions, gross margin and return on invested capital, selected fiscal years from 2010 to 2025",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 27 December 2025",
    "tabs": [
     {
      "type": "bar",
@@ -2110,7 +2114,7 @@
    "type": "tabs",
    "title": "NVIDIA versus AMD",
    "subtitle": "Revenue in US$ billions, gross margin and return on invested capital, selected fiscal years from 2010 to 2025",
-   "source": "Company filings via FinancialModelingPrep",
+   "source": "Company filings via FinancialModelingPrep, data to 25 January 2026",
    "tabs": [
     {
      "type": "bar",
@@ -2241,7 +2245,7 @@
    "type": "bar",
    "title": "Semiconductor valuation multiples",
    "subtitle": "Price-to-earnings and EV-to-EBITDA ratios at the end of fiscal 2025, Intel's negative P/E left out",
-   "source": "Company filings and share prices via FinancialModelingPrep",
+   "source": "Company filings and share prices via FinancialModelingPrep, data to 25 January 2026",
    "x": [
     "QCOM",
     "INTC",
@@ -16954,7 +16958,8 @@
    "type": "scatter",
    "title": "P/E against EV/EBITDA",
    "subtitle": "14 large caps, fiscal 2025, in times; Intel left out (negative earnings); dashed lines at 20x and 18x",
-   "source": "Company filings and share prices via FinancialModelingPrep",
+   "source": "Company filings and share prices via FinancialModelingPrep, data to 31 January 2026",
+   "note": "Share prices of 31 December 2025 over each company's fiscal 2025 figures, whose years end between June 2025 and January 2026",
    "legend": "Orange: below 20x earnings and 18x EBITDA",
    "xname": "P/E",
    "yname": "EV/EBITDA",
@@ -17057,7 +17062,8 @@
    "type": "tabs",
    "title": "Return on equity, ROIC and gross margin of the five value candidates",
    "subtitle": "Percent; fiscal 2025, and ROIC for each fiscal year from 2022 to 2025",
-   "source": "Company filings and share prices via FinancialModelingPrep",
+   "source": "Company filings and share prices via FinancialModelingPrep, data to 31 December 2025",
+   "note": "ROIC is after-tax operating profit over average debt plus equity",
    "tabs": [
     {
      "label": "Fiscal 2025",
@@ -17169,7 +17175,7 @@
    "type": "scatter",
    "title": "ROIC against EV/EBITDA",
    "subtitle": "All 15 stocks, fiscal 2025; ROIC in percent, EV/EBITDA in times; dashed line at 10% ROIC",
-   "source": "Company filings and share prices via FinancialModelingPrep",
+   "source": "Company filings and share prices via FinancialModelingPrep, data to 31 January 2026",
    "legend": "Orange: passes the valuation filter and earns more than 10% on invested capital",
    "xname": "ROIC",
    "yname": "EV/EBITDA",
@@ -17843,6 +17849,7 @@
    "type": "line",
    "title": "Population of England",
    "subtitle": "England, 1300 to 1500, millions of people",
+   "note": "Estimated for benchmark years and interpolated between them, so it falls by the same share in each year from 1349 to 1351",
    "source": "Bank of England, A millennium of macroeconomic data (v3.1)",
    "x": [
     "1300",
@@ -21317,6 +21324,7 @@
    "type": "tabs",
    "title": "Hours worked and pay per hour in England",
    "subtitle": "England, weekly hours from 1300 to 1650, and real pay per hour against the real wage from 1330 to 1450 with the average of 1340 to 1347 = 100",
+   "note": "Real pay per hour is weekly earnings divided by weekly hours and by consumer prices, with hours a tentative estimate",
    "source": "Bank of England, A millennium of macroeconomic data (v3.1)",
    "tabs": [
     {
@@ -23449,7 +23457,7 @@
    "type": "line",
    "title": "Microsoft price-to-earnings and price-to-free-cash-flow ratios",
    "subtitle": "Share price at the end of each calendar year over earnings and free cash flow per share of the fiscal year ending that June, 1989 to 2025",
-   "source": "Company filings and daily prices via FinancialModelingPrep",
+   "source": "Company filings and daily prices via FinancialModelingPrep, data to 31 December 2025",
    "x": [
     "1989",
     "1990",
@@ -23576,6 +23584,319 @@
     }
    ],
    "format": "number"
+  },
+  "macro-real-rates-check": {
+   "type": "bar",
+   "title": "Average real central bank policy rates",
+   "subtitle": "Average from 2021 to 2025, percent: yearly figures, yearly figures without 2022, and monthly figures",
+   "note": "Monthly: the policy rate at each month's end minus inflation over the previous twelve months, with the euro area in place of Germany",
+   "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025); BIS policy rates; consumer prices from Eurostat, the ONS, the Statistics Bureau of Japan and the BIS; own calculation, data to 31 December 2025",
+   "x": [
+    "Brazil",
+    "United States",
+    "United Kingdom",
+    "Germany / euro area",
+    "Japan"
+   ],
+   "series": [
+    {
+     "name": "Yearly, 2021 to 2025",
+     "data": [
+      0.0609,
+      -0.0092,
+      -0.0147,
+      -0.0268,
+      -0.0215
+     ]
+    },
+    {
+     "name": "Yearly, without 2022",
+     "data": [
+      0.0649,
+      -0.0024,
+      -0.0045,
+      -0.0129,
+      -0.0203
+     ]
+    },
+    {
+     "name": "Monthly, 2021 to 2025",
+     "data": [
+      0.0492,
+      -0.0124,
+      -0.0184,
+      -0.0202,
+      -0.0223
+     ]
+    }
+   ],
+   "format": "percent"
+  },
+  "risk-tail": {
+   "type": "tabs",
+   "title": "Historical CVaR beyond the normal CVaR by confidence level",
+   "subtitle": "Historical CVaR relative to normal CVaR, where 0 means equal and above 0 the worst days were worse than volatility implied, daily returns within each calendar year, 2019 to 2025",
+   "source": "Daily prices via FinancialModelingPrep, data to 31 December 2025",
+   "tabs": [
+    {
+     "type": "bar",
+     "title": "",
+     "x": [
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "series": [
+      {
+       "name": "95% confidence",
+       "data": [
+        0.289,
+        0.282,
+        0.158,
+        0.04,
+        -0.019,
+        0.227,
+        0.118
+       ],
+       "color": "#c4b5fd"
+      },
+      {
+       "name": "99% confidence",
+       "data": [
+        0.427,
+        0.71,
+        0.135,
+        -0.019,
+        -0.119,
+        0.347,
+        0.578
+       ],
+       "color": "#7c3aed"
+      }
+     ],
+     "format": "percent",
+     "label": "SPY"
+    },
+    {
+     "type": "bar",
+     "title": "",
+     "x": [
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "series": [
+      {
+       "name": "95% confidence",
+       "data": [
+        0.228,
+        0.243,
+        0.173,
+        -0.009,
+        -0.056,
+        0.192,
+        0.144
+       ],
+       "color": "#c4b5fd"
+      },
+      {
+       "name": "99% confidence",
+       "data": [
+        0.32,
+        0.614,
+        0.064,
+        -0.071,
+        -0.16,
+        0.164,
+        0.358
+       ],
+       "color": "#7c3aed"
+      }
+     ],
+     "format": "percent",
+     "label": "QQQ"
+    },
+    {
+     "type": "bar",
+     "title": "",
+     "x": [
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "series": [
+      {
+       "name": "95% confidence",
+       "data": [
+        0.292,
+        0.274,
+        0.191,
+        0.069,
+        0.0,
+        0.077,
+        0.114
+       ],
+       "color": "#c4b5fd"
+      },
+      {
+       "name": "99% confidence",
+       "data": [
+        0.455,
+        0.683,
+        0.101,
+        0.054,
+        0.016,
+        0.211,
+        0.456
+       ],
+       "color": "#7c3aed"
+      }
+     ],
+     "format": "percent",
+     "label": "DIA"
+    },
+    {
+     "type": "bar",
+     "title": "",
+     "x": [
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "series": [
+      {
+       "name": "95% confidence",
+       "data": [
+        0.166,
+        0.274,
+        0.022,
+        -0.029,
+        -0.075,
+        0.083,
+        0.079
+       ],
+       "color": "#c4b5fd"
+      },
+      {
+       "name": "99% confidence",
+       "data": [
+        0.269,
+        0.697,
+        0.022,
+        -0.058,
+        -0.124,
+        0.175,
+        0.331
+       ],
+       "color": "#7c3aed"
+      }
+     ],
+     "format": "percent",
+     "label": "IWM"
+    },
+    {
+     "type": "bar",
+     "title": "",
+     "x": [
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "series": [
+      {
+       "name": "95% confidence",
+       "data": [
+        0.225,
+        0.312,
+        0.167,
+        -0.034,
+        0.006,
+        0.11,
+        0.025
+       ],
+       "color": "#c4b5fd"
+      },
+      {
+       "name": "99% confidence",
+       "data": [
+        0.392,
+        0.871,
+        0.138,
+        -0.128,
+        0.014,
+        0.141,
+        0.43
+       ],
+       "color": "#7c3aed"
+      }
+     ],
+     "format": "percent",
+     "label": "EFA"
+    },
+    {
+     "type": "bar",
+     "title": "",
+     "x": [
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "series": [
+      {
+       "name": "95% confidence",
+       "data": [
+        0.179,
+        0.314,
+        0.077,
+        -0.063,
+        -0.025,
+        0.086,
+        0.115
+       ],
+       "color": "#c4b5fd"
+      },
+      {
+       "name": "99% confidence",
+       "data": [
+        0.339,
+        0.847,
+        0.003,
+        -0.077,
+        -0.109,
+        0.008,
+        0.521
+       ],
+       "color": "#7c3aed"
+      }
+     ],
+     "format": "percent",
+     "label": "EEM"
+    }
+   ]
   }
  }
 }
