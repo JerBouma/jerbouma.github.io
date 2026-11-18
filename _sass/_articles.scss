@@ -411,3 +411,57 @@
   font-size: 0.74rem !important;
   line-height: 1.4;
 }
+
+// the "Data and method" note at the end of an article, folded until clicked
+// (_plugins/article_method_note.rb)
+.article-method {
+  margin: 2.2em 0 1.5em;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: rgba(128, 128, 128, 0.04);
+
+  > .article-method__summary {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-color);
+    &::-webkit-details-marker { display: none; }
+    &::after {
+      content: "\f078";
+      font-family: "Font Awesome 6 Free", "Font Awesome 5 Free";
+      font-weight: 900;
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+    &:hover::after { color: var(--accent-color); }
+  }
+
+  .article-method__hint {
+    font-weight: 400;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  &[open] > .article-method__summary {
+    border-bottom: 1px solid var(--card-border);
+    &::after { transform: rotate(180deg); }
+  }
+
+  > p {
+    margin: 0.9em 18px !important;
+    font-size: 0.92rem;
+  }
+  > p:last-child { margin-bottom: 1.1em !important; }
+}
+
+@media (max-width: 600px) {
+  .article-method .article-method__hint { display: none; }
+}
