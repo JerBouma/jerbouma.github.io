@@ -2,7 +2,7 @@
 title: Binomial Trees in the Finance Toolkit
 seo_title: "Binomial Option Pricing in Python"
 date: 2024-02-09
-last_modified_at: 2026-10-02
+last_modified_at: 2026-11-18
 permalink: /articles/binomial-trees
 excerpt: "Binomial trees are a popular method for pricing options and other derivatives. The Finance Toolkit includes a function for binomial trees, which can price European and American options. This article provides an overview of the binomial tree module and demonstrates its use in option pricing."
 description: "How binomial trees price European and American options, step by step, with worked examples and Python code from the Finance Toolkit."
@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [Risk & Derivatives]
 share: true
+standfirst: "A binomial tree can value an option that may be exercised early, which the Black-Scholes formula can't. How much does early exercise add, and how close do the model prices come to the market?"
+key_points:
+  - "A three-step tree values a one-year European call with a $90 strike on a $100 stock at $16.03, and the put at $4.75."
+  - "Early exercise lifts the American put to $4.88 from $4.75, while the American call stays at $16.03 with a dividend yield of only 0.5%."
+  - "For an Apple $190 call, the binomial tree ($4.32) and Black-Scholes ($4.33) agree, but both sit well above the market's $2.67 and share the same 28.26% historical volatility."
 cover:
   image: /assets/images/articles/binomial-trees/cover.jpg
   alt: "Traders on the floor of the Chicago Board of Trade in 1949, watching the price boards."
@@ -23,7 +28,7 @@ cover:
 {% include mermaid.html %}
 
 
-Binomial trees are a widely used method for pricing options and other derivatives. The Finance Toolkit features a function for binomial trees capable of pricing both European and American options. This article outlines the binomial tree module and shows how to apply it to option pricing.
+A three-step binomial tree values a one-year call with a $90 strike on a $100 stock at $16.03. Allowing early exercise lifts the matching put to $4.88 from $4.75, while the call doesn't change. I built a binomial tree function into the Finance Toolkit that prices both European and American options. This article explains how the tree is built, how it values each type of option, and how the results for Apple compare with the market.
 
 The binomial tree model is based on potential up and down movements in the underlying asset's price, determined by its volatility. The formulas for these movements are:
 
@@ -106,7 +111,7 @@ Where:
 
 ## European Options
 
-European options can only be exercised at expiration. Therefore, the option price at each node is calculated by discounting the expected future value back one time step. This leads to the following formulas for the Call option price at a given node:
+A European option can only be exercised at expiration, so its price at each node is the expected value one step later, discounted back one time step. This leads to the following formulas for the Call option price at a given node:
 
 <div style="display: flex; justify-content: space-between;margin-bottom:10px" markdown="1">
 
@@ -131,7 +136,7 @@ Where:
 - $$ P_u $$ is the Put option price at the next up node.
 - $$ P_d $$ is the Put option price at the next down node.
 
-This results in the following binomial trees for Call and Put options, assuming a risk-free rate of 2%, dividend yield of 0.5%, volatility of 25%, time to expiration of 1 year, 3 time steps, and a strike price of $90:
+With a risk-free rate of 2%, a dividend yield of 0.5%, volatility of 25%, 1 year to expiration, 3 time steps and a strike price of $90, the root nodes give a call worth $16.03 today and a put worth $4.75:
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -215,7 +220,7 @@ Where:
 - $$ K $$ is the strike price.
 - Other variables ($$r, y, \Delta t, p, q, C_u, C_d, P_u, P_d$$) are as defined previously.
 
-This results in the following binomial trees for American Call and Put options, using the same parameters as before (risk-free rate 2%, dividend yield 0.5%, volatility 25%, 1 year to expiration, 3 time steps and a strike price of $90):
+With the same parameters as before (risk-free rate 2%, dividend yield 0.5%, volatility 25%, 1 year to expiration, 3 time steps and a strike price of $90), the American trees differ only where exercising early pays more than holding:
 
 <div class="row">
 <div markdown="1" class="fifty-column-left mobile-max-column-width">
@@ -271,7 +276,7 @@ Step5["$15.07"] -- D --> Step9["$25.14"]:::boxfont
 </div>
 </div>
 
-Because the American option can be exercised early, its fair value can be higher than that of an equivalent European option, especially when the option is deep in the money. This occurs because the holder can capture the intrinsic value immediately rather than waiting. The nodes highlighted in <span style="color:#d67f05; font-weight:bold;">orange</span> in the binomial trees show where the American option's value (due to potential early exercise) exceeds the calculated European value at that node.
+Because the American option can be exercised early, its fair value can be higher than that of an equivalent European option, especially when the option is deep in the money. The holder can take the intrinsic value straight away instead of waiting for expiration. The nodes highlighted in <span style="color:#d67f05; font-weight:bold;">orange</span> in the binomial trees show where the American option's value (due to potential early exercise) exceeds the calculated European value at that node.
 
 In this example that only happens for the put. After two down moves the stock is at $74.93, and exercising the put there pays $15.07 straight away, more than the $14.60 that holding it is worth. That early-exercise value carries back through the tree, so the American put is worth $4.88 today against $4.75 for the European put. The American call is worth exactly the same as the European call, $16.03: with a dividend yield of only 0.5%, exercising a call early never beats holding it.
 
@@ -283,7 +288,7 @@ The Finance Toolkit provides a function to calculate the binomial tree for both 
 pip install financetoolkit -U
 ```
 
-Let's first demonstrate the core model function, which requires manual input of all parameters. Later, we'll show how to use it with real company data.
+The core model function takes every parameter by hand, which makes it easy to reproduce the four trees above before moving on to real company data:
 
 ```python
 from financetoolkit.options import binomial_trees_model
@@ -379,9 +384,7 @@ This code generates DataFrames representing the binomial trees for European Call
 | DDU | nan | nan | 15.0744 | 3.4404 |
 | DDD | nan | nan | nan | 25.1448 |
 
-These are the same values as in the trees above.
-
-Now, let's apply this using actual company data. We'll use Apple Inc. (AAPL) and Microsoft Corporation (MSFT). The toolkit automatically fetches necessary inputs like the current stock price, risk-free rate, dividend yield, and calculates historical volatility.
+The same function runs on real company data, here for Apple Inc. (AAPL) and Microsoft Corporation (MSFT). The Finance Toolkit fetches the current stock price, the risk-free rate and the dividend yield itself, and calculates historical volatility from past prices:
 
 ```python
 from financetoolkit import Toolkit
@@ -413,7 +416,7 @@ Risk Free Rate: 4.11%
 Time Step (Delta t): 0.00438 years (16 days / 365 / 10 steps)
 ```
 
-The model calculates the binomial tree for a range of strike prices relative to the current stock price (by default, 75% to 125% in 5-unit increments). Here's a sample output for an Apple European Call option with a $190 strike price and 10 time steps expiring on Feb 23, 2024:
+The model calculates the binomial tree for a range of strike prices relative to the current stock price (by default, 75% to 125% in 5-unit increments). For an Apple European Call option with a $190 strike price and 10 time steps, expiring on February 23, 2024, the root node in blue is the model's fair value today:
 
 | Movement   |   2024-02-07 |   2024-02-08 |   2024-02-10 |   2024-02-11 |   2024-02-13 |   2024-02-15 |   2024-02-16 |   2024-02-18 |   2024-02-19 |   2024-02-21 |   2024-02-23 |
 |:-----------|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
@@ -429,9 +432,7 @@ The model calculates the binomial tree for a range of strike prices relative to 
 | UDDDDDDDDD |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |       0.00 |       0.00 |
 | DDDDDDDDDD |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |     nan      |       0.00 |
 
-This table represents the binomial tree for a European Call Option on Apple (AAPL) with a $190 strike price, expiring on February 23, 2024 (16 days from Feb 7), using 10 time steps. The calculated fair value of this option today (at the root node) is $4.32.
-
-With this calculated fair value, we can compare it to the actual market price of the option using the `get_option_chains` method. We specify the same expiration date (`2024-02-23`) to match the binomial model's timeframe.
+That fair value is $4.32, for a call that expires 16 days after February 7, 2024. The `get_option_chains` method returns what the market charged for the same contract, with the same expiration date (`2024-02-23`) as the binomial model:
 
 ```python
 # Get option chain data for the specific expiration date
@@ -441,7 +442,7 @@ option_chains = companies.options.get_option_chains(expiration_date="2024-02-23"
 # print(option_chains['AAPL'][option_chains['AAPL']['Strike Price'] == 190])
 ```
 
-Selecting the Apple data reveals the following market prices (showing relevant rows around the $190 strike):
+For Apple, the $190 call last traded at $2.67, below the model's value (rows around the $190 strike):
 
 |   Strike Price | Contract Symbol     | Currency   |   Last Price |   Change |   Percent Change |   Open Interest |   Bid |   Ask | Expiration   | Last Trade Date   |   Implied Volatility | In The Money   |   Volume |
 |---------------:|:--------------------|:-----------|-------------:|---------:|-----------------:|----------------:|------:|------:|:-------------|:------------------|---------------------:|:---------------|---------:|
@@ -453,9 +454,9 @@ Selecting the Apple data reveals the following market prices (showing relevant r
 
 *Note: Bid/Ask and other market data added for context if available from the source*
 
-The binomial tree model calculated a fair value of $4.32 for the $190 strike call, while the market's last traded price was $2.67 (with a bid-ask spread around that). This suggests the option might be undervalued according to the model. Such discrepancies could indicate potential trading opportunities if an investor believes the price will converge towards the theoretical fair value.
+The model's $4.32 is well above the $2.67 the market paid, with the bid and ask close to that last price. On the model's terms the call looks cheap. But the model takes Apple's [historical volatility](/articles/risk-exposure-major-indices-finance-toolkit) from prices between 2013 and 2024 (28.26%), while the option chain shows an implied volatility of 0.2383 for this strike. The market prices in less movement over the next 16 days than Apple's last 11 years would suggest.
 
-As an alternative pricing model, the Black-Scholes formula can also be used. The Finance Toolkit provides this via the `get_black_scholes_model` method. Here, we calculate prices for options expiring within the next 20 days.
+The Black-Scholes formula is a second check, through the `get_black_scholes_model` method, here for options expiring within the next 20 days:
 
 ```python
 # Calculate Black-Scholes prices for options expiring within 20 days
@@ -465,7 +466,7 @@ black_scholes_results = companies.options.get_black_scholes_model(expiration_tim
 # print(black_scholes_results['AAPL']['Call'][['Strike Price', '2024-02-23']])
 ```
 
-Selecting the results for Apple Inc. (AAPL) Call options expiring on Feb 23, 2024, shows the following (relevant rows):
+For Apple's call options expiring on February 23, 2024, Black-Scholes lands within a cent of the binomial tree at the $190 strike:
 
 |   Strike Price |   2024-02-20 |   2024-02-21 |   2024-02-22 |   2024-02-23 |   2024-02-24 |   2024-02-25 |   2024-02-26 |
 |---------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|
@@ -475,8 +476,8 @@ Selecting the results for Apple Inc. (AAPL) Call options expiring on Feb 23, 202
 |            195 |         1.96 |         2.10 |         2.24 |         2.37 |         2.50 |         2.63 |         2.76 |
 |            200 |         0.87 |         0.97 |         1.07 |         1.17 |         1.27 |         1.37 |         1.47 |
 
-Interestingly, both the Binomial Tree ($4.32) and the Black-Scholes model ($4.33) yield very similar fair values for the $190 strike call option expiring on Feb 23, 2024. This consistency strengthens the observation that the market price ($2.67) appears low compared to theoretical models.
+The binomial tree ($4.32) and Black-Scholes ($4.33) give almost the same fair value for the $190 call expiring on February 23, 2024. That agreement is expected: with 10 steps the tree comes close to Black-Scholes, and both use the same 28.26% historical volatility. It doesn't confirm that the market's $2.67 is too low. My reading is that part of the gap comes from that one volatility input, which is why I would compare it with the implied volatility in the option chain before calling any contract mispriced.
 
 {: .notice--info}
 **Statistical Option Arbitrage**<br>
-Comparing theoretical option prices (from models like Binomial Trees or Black-Scholes) with actual market prices to identify and trade on discrepancies is a strategy used in finance, sometimes referred to as "Statistical Option Arbitrage." While pure risk-free arbitrage is rare, statistical arbitrage aims to exploit persistent deviations based on historical patterns and model assumptions. For academic context, see articles like "*Statistical Arbitrage in the Black-Scholes Framework*" in the Journal of Financial and Quantitative Analysis ([researchgate.net](https://www.researchgate.net/publication/263352435_Statistical_Arbitrage_in_the_Black-Scholes_Framework){:target="_blank"}), which explores theoretical possibilities for such strategies.
+Comparing theoretical option prices (from models like Binomial Trees or Black-Scholes) with actual market prices to identify and trade on discrepancies is a strategy used in finance, sometimes referred to as "Statistical Option Arbitrage." While pure risk-free arbitrage is rare, statistical arbitrage aims to exploit persistent deviations based on historical patterns and model assumptions. For academic context, see Ahmet Göncü, "*Statistical Arbitrage in the Black-Scholes Framework*" (Quantitative Finance, 2015) ([researchgate.net](https://www.researchgate.net/publication/263352435_Statistical_Arbitrage_in_the_Black-Scholes_Framework){:target="_blank"}), which explores theoretical possibilities for such strategies.

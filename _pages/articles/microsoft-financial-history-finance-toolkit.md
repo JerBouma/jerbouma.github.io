@@ -11,6 +11,11 @@ author_profile: false
 collection: article
 tags: [Fundamental Analysis]
 share: true
+standfirst: "Revenue grew under every chief executive, yet shareholders lost money for 14 years. Microsoft's own statements show why the same growth paid off so differently, and what the AI build-out now costs."
+key_points:
+  - "Revenue grew at about 10% to 11% a year under both Steve Ballmer and Satya Nadella, while the shares returned -1% a year in one era and 26% a year in the other."
+  - "Capital expenditure went from 6% of revenue in 2015 to 23% in 2025, and the share of operating cash flow left as free cash flow fell from about 80% to 53%."
+  - "At the end of 2025 the price-to-free-cash-flow ratio of 50 was far above its median of 28 and the highest since 1999, so the price assumes the spending pays off."
 cover:
   image: /assets/images/articles/microsoft-financial-history-finance-toolkit/cover.jpg
   alt: "A 1980s computer room with terminals, tape drives and staff at work."
@@ -28,7 +33,7 @@ How did the company underneath that record change? The financials show a differe
 
 The three eras line up with the three CEOs: Gates until 2000, Ballmer from 2000 to 2014 and Nadella since. On a log scale the slope of a line is its growth rate, so a company growing at a steady pace draws a straight line.
 
-Revenue and net income per fiscal year, on a log scale:
+Revenue and net income per fiscal year, on a log scale, where the slope flattens after 2000 and then hardly changes:
 
 {% capture code_revenue %}
 ```python
@@ -69,7 +74,7 @@ growth = pd.DataFrame(
 
 The steep part of the line is the Gates era, when Windows and Office rode the spread of the PC. Microsoft was a licensing business: once the software was written, another copy cost next to nothing. After 2000 the line flattens, and from then on revenue grew at about 10% to 11% a year under both of his successors.
 
-Growth per year in each CEO era:
+Growth per year in each CEO era, where the shareholder return breaks away from revenue:
 
 | CEO | Fiscal years | Revenue | Net income | Shareholder return, with dividends |
 |---|---|---|---|---|
@@ -81,9 +86,9 @@ Growth per year in each CEO era:
 
 ## Net Margin Recovered While Gross Margin Did Not
 
-Gross margin is the share of revenue left after the direct cost of what is sold. Net margin is the share left after every cost, including tax. The two measure different things for Microsoft: the first shows what kind of business it runs, the second how well it covers its overheads.
+Microsoft's net margin has come back close to its level of 2000, and its gross margin has not. Gross margin is the share of revenue left after the direct cost of what is sold, and net margin the share left after every cost, including tax, so the first shows what kind of business Microsoft runs and the second how well it covers its overheads.
 
-Gross and net margin per fiscal year:
+Gross and net margin per fiscal year, with the gross margin stepping down after the 1990s and two sharp dips in the net margin:
 
 {% capture code_margins %}
 ```python
@@ -108,9 +113,9 @@ Net margin reached 41% in 2000, sat lower for most of the next two decades and w
 
 ## Goodwill Went From Zero to $120 Billion
 
-Goodwill is the part of an acquisition's price above the value of the assets bought, so it grows when a company buys rather than builds.
+Microsoft's balance sheet went from a pile of cash to one carrying debt and the cost of its acquisitions. Goodwill, the part of an acquisition's price above the value of the assets bought, shows the buying, since it grows when a company buys instead of builds.
 
-Cash and short-term investments, long-term debt and goodwill at the end of each fiscal year:
+Cash and short-term investments, long-term debt and goodwill at the end of each fiscal year, with debt appearing from 2009 and goodwill climbing in steps:
 
 {% capture code_balance %}
 ```python
@@ -131,9 +136,9 @@ For its first two decades Microsoft built rather than bought, and it carried no 
 
 ## Capital Spending Rose From 6% to 23% of Revenue
 
-Free cash flow is the cash from operations minus capital expenditure, the money left after maintaining and expanding the asset base. It is harder to flatter than earnings, and it is what pays for dividends and buybacks.
+Microsoft's free cash flow is still growing, but a much smaller share of its operating cash is now left over. Free cash flow is the cash from operations minus capital expenditure, the money left after maintaining and expanding the asset base. It is harder to flatter than earnings, and it is what pays for dividends and buybacks.
 
-Operating cash flow, capital expenditure and free cash flow at five-year intervals:
+Operating cash flow, capital expenditure and free cash flow at five-year intervals, where capital expenditure grows fastest after 2015:
 
 {% capture code_fcf %}
 ```python
@@ -148,17 +153,15 @@ cash_flow = cash_flow.loc[["Operating Cash Flow", "Capital Expenditure", "Free C
 {% endcapture %}
 {% include ft-chart.html id="msft-fcf" src="/assets/data/article-charts.json" label="Microsoft free cash flow" code=code_fcf mcp="What were Microsoft's operating cash flow, capital expenditure and free cash flow in 1995, 2000, 2005, 2010, 2015, 2020 and 2025?" %}
 
-Microsoft generated $72 billion in free cash flow in fiscal 2025. It comes from subscription and consumption revenue that grows without a matching rise in costs, and from customers who rarely leave once their work runs on Microsoft's software. That is my reading of it, as the cash flow statement shows how much cash came in but says nothing about why.
+Microsoft generated $72 billion in free cash flow in fiscal 2025. It comes from subscription and consumption revenue that grows without a matching rise in costs, and from customers who rarely leave once their work runs on Microsoft's software. That is my reading of it, since the cash flow statement shows how much cash came in and says nothing about why.
 
-However, capital expenditure rose more than tenfold between 2015 and 2025, most of it on data centres for Azure and AI services, and went from 6% of revenue to 23%.
-
-Operating cash flow has grown fast enough to absorb it, but in 2015 about 80% of operating cash flow was left as free cash flow, and in 2025 only 53%. Whether this spending earns a return close to the old software business is the main capital allocation question for Microsoft, and the free cash flow line is where it shows first.
+The spending changed more than the cash coming in. Capital expenditure rose more than tenfold between 2015 and 2025, most of it on data centres for Azure and AI services, the same demand that [let NVIDIA overtake Intel among the large US chipmakers](/articles/semiconductor-sector-analysis-finance-toolkit), and went from 6% of revenue to 23%. Operating cash flow has grown fast enough to absorb it, but in 2015 about 80% of operating cash flow was left as free cash flow, and in 2025 only 53%. Whether this spending earns a return close to the old software business is the main capital allocation question for Microsoft, and the free cash flow line is where it shows first.
 
 ## Financing Lifted ROE and Inflation Lifted Growth
 
 A forty-year record of one company has a few traps of its own, and the return on equity is the first. Return on equity (ROE) and return on assets (ROA) divide net income by shareholders' equity and by total assets. Return on invested capital (ROIC) divides operating income after tax by all the capital in the business, debt plus equity. The gap between ROE and ROIC gives a rough idea of how much of the return to shareholders comes from the way the company is financed.
 
-Return on equity, assets and invested capital per fiscal year:
+Return on equity, assets and invested capital per fiscal year, with ROE pulling away from the other two after 2014:
 
 {% capture code_returns %}
 ```python
@@ -175,23 +178,23 @@ returns = profitability_ratios.loc[["Return on Equity", "Return on Assets", "Ret
 
 In the early years the three lines sit close together. With no debt, an ROE of 38% in 1990 meant the business itself was that profitable, and ROIC was 35%. That changed after 2014. Debt more than tripled between 2014 and 2019 while buybacks and dividends kept the equity base from growing much, and ROE pulled away from ROIC.
 
-**In 2019 ROE was 42% and ROIC 22%, a gap of 21 points that came from the way Microsoft was financed.** Since then Microsoft has paid down debt and its equity has grown with retained earnings, and by 2025 the gap had narrowed to 7.5 points.
+**In 2019 ROE was 42% and ROIC 22%, a gap of 21 percentage points that came from the way Microsoft was financed.** Since then Microsoft has paid down debt and its equity has grown with retained earnings, and by 2025 the gap had narrowed to 7.5 percentage points.
 
-That leaves an ROIC of 26% in 2025, which is high for a company of this size but below the 35% or more of 1990 to 1992. Return on assets says the same: it fell from 31% in 1990 to 18% in 2025, as data centres and acquisitions made the asset base much heavier than that of a software company.
+That leaves an ROIC of 26% in 2025, which is high for a company of this size but below the 35% or more of 1990 to 1992. Return on assets says the same: it fell from 31% in 1990 to 18% in 2025, because data centres and acquisitions made the asset base much heavier than that of a software company.
 
 Single years with a one-off charge are the second trap. In fiscal 2018 Microsoft paid 55% of its pre-tax profit in tax, against 15% the year before, because of the charge from the US tax reform. At the 2017 tax rate its net margin would have been 28% instead of 15%.
 
-The charge also reaches ratios that look unrelated. ROIC taxes operating income at that same 55% rate, so it drops to 9% in 2018, and the price-to-earnings ratio in the next chart jumps to 48 at the end of that year because the earnings fell. The Nokia write-down does the same to 2015, and any average or median over these years carries both. Fiscal 2019 errs the other way, as its tax rate of 10% flatters both ROE and ROIC in the year their gap was widest.
+The charge also reaches ratios that look unrelated. ROIC taxes operating income at that same 55% rate, so it drops to 9% in 2018, and the price-to-earnings ratio in the next chart jumps to 48 at the end of that year because the earnings fell. The Nokia write-down does the same to 2015, and any average or median over these years carries both. Fiscal 2019 errs the other way, since its tax rate of 10% flatters both ROE and ROIC in the year their gap was widest.
 
-The third trap is inflation, as a dollar of revenue in 1986 bought far more than one in 2025. Deflated by the US consumer price index, the 1,400-fold rise in revenue becomes about 490-fold in 2025 dollars, and the 40% a year under Gates becomes 36%.
+The third trap is inflation: a dollar of revenue in 1986 bought far more than one in 2025. Deflated by the US consumer price index, the 1,400-fold rise in revenue becomes about 490-fold in 2025 dollars, and the 40% a year under Gates becomes 36%.
 
-Rerun in real terms, the finding of the first section holds. In real terms revenue grew 7.4% a year under Ballmer and 8.3% under Nadella, against 10% and 11% in nominal terms, so the two eras stay about a point apart. Inflation was a little higher under Nadella, which takes slightly more off his figure.
+Rerun in real terms, the finding of the first section holds: revenue grew 7.4% a year under Ballmer and 8.3% under Nadella, against 10% and 11% in nominal terms, so the two eras stay about a point apart. Inflation was a little higher under Nadella, which takes slightly more off his figure.
 
 ## Looking Ahead
 
 Next to the financial history, the valuation shows what the market expects from Microsoft, and the company's own past gives a useful scale for it.
 
-The price-to-earnings and price-to-free-cash-flow ratios, measured at the end of each year:
+The price-to-earnings and price-to-free-cash-flow ratios at the end of each year, where the price-to-free-cash-flow ratio pulls away in the last few years:
 
 {% capture code_valuation %}
 ```python
@@ -217,7 +220,7 @@ Beta measures how much the stock moves with the S&P 500 (1 means in line). The r
 
 For most of the Nadella era the stock moved slightly more than the market. In 2025 its beta fell to 0.88, so the market treated it more like a defensive holding than before. Microsoft beat the index in three of these six years, by the most in 2023 (32 points), and lagged it in 2022 and 2024 while the business kept growing.
 
-What I would watch from here are three ratios from the charts above: capital expenditure as a share of revenue, the share of operating cash flow left as free cash flow, and ROIC. As the Ballmer years show, a long record of growth says little on its own about the return to shareholders, which also depends on the price paid at the start. Like any company history, these ratios describe what has happened and what the price assumes, and they are no forecast of the share price.
+What I would watch from here are three ratios from the charts above: capital expenditure as a share of revenue, the share of operating cash flow left as free cash flow, and ROIC. Like any company history, these ratios describe what has happened and what the price assumes, and they are no forecast of the share price. As the Ballmer years show, a long record of growth says little on its own about the return to shareholders, which also depends on the price paid at the start, and at 50 times free cash flow that price is high by Microsoft's own standards.
 
 ### Data and method
 

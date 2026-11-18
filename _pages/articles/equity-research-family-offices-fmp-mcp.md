@@ -2,7 +2,7 @@
 title: "Equity Research for Family Offices with the FMP MCP Server"
 seo_title: "Equity Research for Family Offices with AI"
 date: 2026-07-23
-last_modified_at: 2026-10-14
+last_modified_at: 2026-11-18
 permalink: /articles/equity-research-family-offices-fmp-mcp
 excerpt: "On July 17, 2026, Axon closed at $510.28, analysts averaged $658.56 and a DCF said $94.30. A full diligence pass for a concentrated portfolio, from returns to insider sales and 13F flows, run question by question through the FMP MCP server."
 description: "How family offices can run equity research diligence, from financial health to insider activity and ownership, with the FMP MCP server in Claude Desktop."
@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [MCP Server, Fundamental Analysis]
 share: true
+standfirst: "A concentrated portfolio needs a full diligence file on every name, often without a research desk. I ran Axon through one, question by question, to see how much of it an MCP server can build."
+key_points:
+  - "Six questions to the FMP MCP server cover returns, analyst estimates, a DCF, the latest earnings call, insider transactions and 13F flows, with nothing to install and a free tier of 250 requests a day."
+  - "Adding the Finance Toolkit MCP server on the same API key turns those raw pulls into computed ratios, with one question running eight tools across seven areas of Axon's health."
+  - "The answers are snapshots, and the template DCF put Axon at $94.30 against a share price of $510.28 on July 17, 2026, so it can't price the growth on its own."
 cover:
   image: /assets/images/articles/equity-research-family-offices-fmp-mcp/cover.jpg
   alt: "A sixteenth-century tax collector and his wife at a table with coins and an open account book, checking the figures."
@@ -23,9 +28,9 @@ cover:
 
 On July 17, 2026, Axon Enterprise closed at $510.28. The analysts covering it put their average price target at $658.56, a standard levered discounted cash flow model put the shares at $94.30, and the company's return on invested capital for 2025 was negative. Three readings of the same stock, the highest price seven times the lowest, and each one comes from a different part of the diligence file.
 
-A family office running $150 million usually doesn't have a five-person research desk to build that file, and neither does a small fund with eight names in the book. The diligence bar doesn't drop with the headcount, though. If anything it goes up: in a concentrated portfolio every position carries real weight, and there's no long tail of other holdings to average out a mistake. The FMP MCP server doesn't replace judgment, but it compresses the mechanical part of diligence (pulling statements, estimates, insider filings and institutional flow) into a conversation in Claude Desktop. The alternative is a terminal subscription that costs more than a junior analyst's salary and still needs someone to operate it.
+A family office running $150 million usually doesn't have a five-person research desk to build that file, and neither does a small fund with eight names in the book. The diligence bar doesn't drop with the headcount, though. If anything it goes up: in a concentrated portfolio every position carries real weight, and there's no long tail of other holdings to average out a mistake. The FMP MCP server takes over the mechanical part of diligence (pulling statements, estimates, insider filings and institutional flow) and turns it into a conversation in Claude Desktop, while the judgment stays with the analyst. The usual alternative is a data terminal subscription, which still needs someone to operate it.
 
-Below I walk through an equity research pass on Axon Enterprise (AXON), the maker of Tasers and body cameras for law enforcement, question by question. Every answer shown is what the server returned on July 17, 2026; the Finance Toolkit dashboard at the end uses prices up to the same day.
+Below I walk through an equity research pass on Axon Enterprise (AXON), the maker of Tasers and body cameras for law enforcement, question by question. Every answer shown is what the server returned on July 17, 2026. The Finance Toolkit dashboard at the end uses prices up to the same day.
 
 **For more information on the FMP MCP server, see [FMP's documentation](https://site.financialmodelingprep.com/developer/docs/mcp-server){:target="_blank"}. To see what it adds on top of FMP, have a look at the [Finance Toolkit MCP server](/projects/financetoolkit/mcp).**
 
@@ -43,7 +48,7 @@ Get an API key at [jeroenbouma.com/fmp](/fmp){:target="_blank"}. The free tier c
 
 ## Financial Health: Returns Fell While the Multiple Doubled
 
-Any investment story first needs the numbers to support it. FMP's key metrics bundle return on equity, return on invested capital and EV/EBITDA into a single answer, the kind of thing that normally means pulling three statements and building the ratios by hand.
+Axon's returns on capital fell while its valuation multiple doubled. FMP's key metrics bundle return on equity, return on invested capital and EV/EBITDA into a single answer, the kind of thing that normally means pulling three statements and building the ratios by hand.
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Pull Axon Enterprise's (AXON) key financial metrics for the last five fiscal years and show me how ROE, ROIC, and EV/EBITDA have moved.<span class="ca-q__tool">FMP MCP · key metrics</span></p></div>
@@ -54,7 +59,7 @@ Any investment story first needs the numbers to support it. FMP's key metrics bu
 <div class="ca-nums"><span><b>6.0% → −1.1%</b>ROIC, 2023 to 2025</span><span><b>105.1x → 236.1x</b>EV/EBITDA, 2023 to 2025</span><span><b>$2.78B</b>revenue 2025, from $0.86B in 2021</span></div>
 </div>
 
-This is uncomfortable on its own: ROIC peaked in 2023 at 6.0% and has since gone negative, while the EV/EBITDA multiple more than doubled over the same stretch, to 236.1 by 2025 (the 2021 multiple is negative because EBITDA was a loss that year). Revenue more than tripled in four years, but EBITDA fell from $437 million in 2024 to $196 million in 2025. **The multiple is expanding faster than the returns funding it**, and that tension is worth flagging before sizing a position.
+ROIC peaked in 2023 at 6.0% and has since gone negative, while the EV/EBITDA multiple more than doubled over the same stretch, to 236.1 by 2025 (the 2021 multiple is negative because EBITDA was a loss that year). Revenue more than tripled in four years, but EBITDA fell from $437 million in 2024 to $196 million in 2025. **The multiple is expanding faster than the returns funding it**, and that tension is worth flagging before sizing a position.
 
 ## Analyst Estimates: Agreement on Revenue, Not on Margins
 
@@ -78,7 +83,7 @@ A small fund without in-house sell-side coverage can still use consensus, as lon
 <div class="ca-nums"><span><b>$658.56</b>average target, +29%</span><span><b>$440 to $820</b>target range</span><span><b>$510.28</b>share price</span></div>
 </div>
 
-The price targets show a consensus of $658.56 against a share price of $510.28 that day: the shares traded about 22.5% below where analysts collectively see them heading, or roughly 29% upside. The estimates further out are more revealing. By 2028, the analysts covering AXON put net income anywhere from $573 million to $1.81 billion, a range wider than the company's entire 2025 net income of $124.9 million. **They agree on the revenue trajectory and disagree sharply on what margin structure survives three years out**, and that disagreement says more than the consensus price target does.
+Against the share price of $510.28 that day, the average target of $658.56 implies roughly 29% upside. The estimates further out say more. By 2028, the analysts covering AXON put net income anywhere from $573 million to $1.81 billion, a range wider than the company's entire 2025 net income of $124.9 million. **They agree on the revenue trajectory and disagree sharply on what margin structure survives three years out**, and that disagreement says more than the consensus price target does.
 
 ## A DCF That Can't Price the Growth
 
@@ -92,11 +97,11 @@ A DCF is a pressure test: does the current price only make sense under aggressiv
 <div class="ca-nums"><span><b>$94.30</b>levered DCF value</span><span><b>$510.28</b>share price</span><span><b>5.4x</b>price over model value</span></div>
 </div>
 
-The number that comes back looks alarming at first: a DCF value of $94.30 against a share price of $510.28, so the shares trade at 5.4 times the model's value. The model isn't really saying the market is wrong. A standard WACC-and-terminal-growth template can't capture a company compounding revenue in the 30%+ range, so the entire bull case for AXON has to be carried by assumptions the template doesn't make for you. Running it doesn't answer the valuation question, but it does show how much of the investment case rests on judgment rather than arithmetic, which is worth knowing before writing the position up.
+The model values the shares at $94.30 against a price of $510.28, so they trade at 5.4 times the model's value. A standard WACC-and-terminal-growth model can't capture a company compounding revenue in the 30%+ range, so the whole bull case for AXON has to rest on assumptions the template doesn't make for you. Running it leaves the valuation question open, and it shows how much of the investment case rests on judgment, which is worth knowing before writing the position up.
 
 ## What Management Said: "We Passed the Inflection Point"
 
-Ratios describe what already happened, while earnings calls are often the only source for what management believes is coming. Tracking how the language shifts from quarter to quarter is a real edge for a team that can't sit in on every call live.
+Ratios describe what already happened, while earnings calls are often the only source for what management believes is coming. Tracking how the language shifts from quarter to quarter is useful for a team that can't sit in on every call live.
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Pull the transcript from AXON's most recent earnings call and tell me what the CEO said about growth.<span class="ca-q__tool">FMP MCP · earnings call transcript</span></p></div>
@@ -119,11 +124,11 @@ Ratios describe what already happened, while earnings calls are often the only s
 </div>
 </div>
 
-Claude pulls the full transcript of the call on May 6, 2026, and picks out the key line along with the numbers management used to back it. "Passed the inflection point" is the kind of phrase worth tracking against what the same person said the quarter before and the quarter after. Done manually across a dozen transcripts, that is not a two-minute exercise, which is why most small teams don't do it and why it's worth automating.
+Claude pulls the full transcript of the call on May 6, 2026, and picks out the main line along with the numbers management used to back it. "Passed the inflection point" is the kind of phrase worth tracking against what the same person said the quarter before and the quarter after. Doing that by hand across a dozen transcripts is far more than a two-minute exercise, which makes it a good step to automate.
 
 ## Insider Sales: Routine, Not a Signal
 
-Insider selling is often read as a bad signal by reflex, but most of it is small, scheduled and meaningless. The actual job is telling routine activity apart from something that changes the picture.
+Insider selling is often read as a bad sign by reflex, while much of it is small and scheduled in advance. The job is to tell routine activity apart from something that changes the picture.
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Show me the most recent insider transactions for AXON, including who traded, how much, and at what price.<span class="ca-q__tool">FMP MCP · insider trading</span></p></div>
@@ -146,11 +151,11 @@ Insider selling is often read as a bad signal by reflex, but most of it is small
 </div>
 </div>
 
-The transactions that come back show Patrick Smith selling in two blocks of about 20,000 shares a month apart, other executives and directors selling smaller amounts between late May and early June, and two newly appointed directors receiving stock awards of 600 shares each. None of it looks conviction-driven; the pattern is consistent with scheduled 10b5-1 plans doing what they're built to do. Being able to rule something out with confidence is worth as much here as spotting a real signal.
+The transactions that come back show Patrick Smith selling in two blocks of about 20,000 shares a month apart, other executives and directors selling smaller amounts between late May and early June, and two newly appointed directors receiving stock awards of 600 shares each. My reading is that none of it is conviction-driven: the pattern fits scheduled 10b5-1 trading plans, the kind executives set up in advance so their sales run on a timetable.
 
 ## Institutional Flow: Fewer Holders, Same Ownership
 
-Before taking a meaningful position, it helps to know whether a fund is early or late relative to institutional flow. A stock where ownership just climbed from 80% to 83% of the float in one quarter is a different setup than one where the same institutions are quietly leaving.
+Before taking a meaningful position, it helps to know whether a fund is early or late relative to institutional flow. A stock where ownership just climbed from 80% to 83% of the float in one quarter is a different setup than one where the same institutions are selling out.
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Show me institutional ownership trends for AXON from the latest 13F filings, including how many holders opened new positions versus closed them.<span class="ca-q__tool">FMP MCP · institutional ownership</span></p></div>
@@ -161,13 +166,13 @@ Before taking a meaningful position, it helps to know whether a fund is early or
 <div class="ca-nums"><span><b>1,250 → 1,101</b>institutional holders</span><span><b>+142 → −95</b>positions opened minus closed</span><span><b>82.7% → 83.3%</b>share of the float held</span></div>
 </div>
 
-The result is more mixed than a single snapshot would suggest. Total institutional holders slipped from 1,250 in Q2 2025 to 1,101 by Q1 2026, and the balance between new positions opened and positions closed has flipped, from a net of +142 in Q2 2025 to -95 in the latest filing. Ownership of the float has held up, at 83.3% against 82.7% in Q2 2025, which means existing holders are largely staying put even as fewer new funds step in and more trim out. That points to interest cooling off rather than a rush for the exit. Keep in mind that 13F counts for the latest quarter still move as late filings come in.
+The result is more mixed than a single snapshot would suggest. Total institutional holders slipped from 1,250 in Q2 2025 to 1,101 by Q1 2026, and the balance between new positions opened and positions closed has flipped, from a net of +142 in Q2 2025 to -95 in the latest filing. Ownership of the float has held up, at 83.3% against 82.7% in Q2 2025, which means existing holders are largely staying put even as fewer new funds step in and more trim out. I read that as interest cooling off, with no sign of a rush for the exit. Keep in mind that 13F counts for the latest quarter still move as late filings come in.
 
 ## Where FMP Stops and the Finance Toolkit MCP Picks Up
 
-Everything above comes straight out of FMP's raw endpoints, and for pulling a specific number, filing or quarter, that's the right tool. What it does only to a more limited extent is combine those raw numbers into the computed research output an analyst would also like to see, such as a Piotroski score, a Sharpe ratio against a benchmark, a five-factor Fama-French regression or a DuPont breakdown of what's actually driving ROE.
+Everything above comes straight out of FMP's raw endpoints, and for pulling a specific number, filing or quarter, that's the right tool. FMP does less of the next step, which is to combine those raw numbers into the computed output an analyst would also like to see, such as a Piotroski score, a Sharpe ratio against a benchmark, a five-factor Fama-French regression or a DuPont breakdown of what drives ROE.
 
-The [Finance Toolkit MCP](/projects/financetoolkit/mcp) extends FMP's endpoints in that direction. It's built directly on top of FMP's data, using the same API key, so there's no second account or separate integration to manage. Asked for a health check across seven areas, it works through each of them in turn:
+The [Finance Toolkit MCP](/projects/financetoolkit/mcp) extends FMP's endpoints in that direction. It's built directly on top of FMP's data, using the same API key, so there's no second account or separate integration to manage, and [connecting Claude to the Finance Toolkit MCP server](/articles/connect-claude-to-financial-data) takes about a minute. Asked for a health check across seven areas, it works through each of them in turn:
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Explore the areas of efficiency, liquidity, profitability, solvency, valuation, performance and risk for AXON. How healthy is the company?</p></div>
@@ -189,7 +194,7 @@ There is little friction between the two: ask for a ratio the Finance Toolkit co
 
 For Axon, the file now holds a coherent picture: a company growing revenue above 30% a year with a strong balance sheet, a GAAP income statement that doesn't yet show it, a valuation that needs that growth to continue for years, insiders selling on schedule and institutions holding rather than adding. None of that is a decision, and none of it is investment advice. It is the groundwork a decision needs, assembled in an afternoon rather than a week.
 
-The limits are worth stating. The FMP answers are snapshots: estimates, price targets and 13F counts change from week to week, and what's shown here is what the server returned on July 17, 2026. A template DCF can't value a company like this, and consensus can't tell you which analyst is right about margins. For a family office or small fund already running the prompts above, adding the Finance Toolkit MCP as a second connector puts computed analysis on top of the raw data pulls, without turning a two-person team into a data engineering project.
+The FMP answers are snapshots: estimates, price targets and 13F counts change from week to week, and what's shown here is what the server returned on July 17, 2026. A template DCF can't value a company like this, and consensus can't tell you which analyst is right about margins, so those two questions stay with the analyst. For a family office or small fund already running the prompts above, adding the Finance Toolkit MCP as a second connector puts computed analysis on top of the raw data pulls, without turning a two-person team into a data engineering project.
 
 > **Try this with the Finance Toolkit MCP:** *"For AXON, compare the gross margin, operating margin and ROIC since 2021 with its EV/sales, and show its yearly return and maximum drawdown against the S&P 500. Is the valuation supported by the profitability?"*
 

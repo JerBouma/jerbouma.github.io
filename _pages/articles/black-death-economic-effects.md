@@ -32,7 +32,7 @@ What happens to wages, prices and output when nearly half of the workforce disap
 
 ## Almost Half of England Gone in Three Years
 
-The population of England from 1300 to 1500, in millions:
+The population of England, in millions, recovered from the famine of the 1310s and then fell by almost half in three years:
 
 {% capture code_population %}
 ```python
@@ -53,7 +53,7 @@ The Great Famine of 1315 to 1317 shows up as a fall from 4.69 million in 1315 to
 
 ## Real Wages Roughly Doubled
 
-The real consumption wage is the nominal day wage divided by the price of a basket of what workers bought, mostly food, fuel and clothing. It says how much a day's work could buy. With the average of 1340 to 1347, the eight years before the plague, at 100:
+The workers who survived could buy far more with a day's work. The real consumption wage measures that: the nominal day wage divided by the price of a basket of what workers bought, mostly food, fuel and clothing. With the average of 1340 to 1347, the eight years before the plague, at 100:
 
 {% capture code_wages %}
 ```python
@@ -182,7 +182,7 @@ Exports, mostly wool and woollen cloth, held up far better than the population. 
 
 ## More Than Four Times as Much Coin per Person
 
-Coin in circulation is the silver and gold money in use, in pounds of the time. Coin per person and, in the second tab, the total in millions of pounds:
+Money became more plentiful per person as well. Coin in circulation is the silver and gold money in use, in pounds of the time. Coin per person and, in the second tab, the total in millions of pounds:
 
 {% capture code_coin %}
 ```python
@@ -208,7 +208,7 @@ Coin per person rose from about £0.14 in 1348 to £0.63 in 1380. Part of that i
 
 ## The Gains Lasted Until the Population Came Back
 
-Population and the real wage from 1250 to 1700, both with 1340 to 1347 at 100:
+The real wage fell back as the population came back. Both from 1250 to 1700, with 1340 to 1347 at 100:
 
 {% capture code_long_run %}
 ```python

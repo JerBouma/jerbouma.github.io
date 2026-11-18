@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [Fundamental Analysis]
 share: true
+standfirst: "In 2010 Intel made its own chips and earned more than half of the revenue of six large US chipmakers. Fifteen years of filings show how it lost that lead, and what moved before revenue did."
+key_points:
+  - "NVIDIA went from 4% of six large US chipmakers' combined revenue in 2010 to half of it in 2025, while Intel went from 54% to 12%."
+  - "Intel's gross margin fell from 66% in 2010 to 35% in 2025, while NVIDIA earned 86% on its invested capital in 2025 against 6% for AMD."
+  - "Counting NVIDIA's four quarters to October 2025 lowers its 2025 share from 50.3% to 46.7%, and counting later takeovers in the 2010 base lowers Intel's 2010 share from 54.0% to 48.5%."
 cover:
   image: /assets/images/articles/semiconductor-sector-analysis/cover.jpg
   alt: "A microscope photograph of a processor die, a dense grid of cache blocks and logic."
@@ -23,13 +28,13 @@ cover:
 
 In 2010, Intel earned 54% of the combined revenue of six large US chipmakers: Intel, AMD, NVIDIA, Qualcomm, Broadcom and Texas Instruments. NVIDIA, then best known for gaming graphics cards, earned 4%. By 2025 the order had flipped, with NVIDIA earning half of the group's revenue and Intel 12%.
 
-How does a sector change hands that quickly? The financial statements show it happened in two steps. First, Intel's gross margin nearly halved as its own factories fell behind the contract manufacturers that AMD, NVIDIA and the other chip designers use. Then, from 2023, demand for AI training hardware gave NVIDIA a return on invested capital that no other company in the group came close to. For Intel and AMD the margin moved before the revenue did, which is why gross margin and return on capital are the first numbers I would check when competition in an industry starts to shift. I follow the six companies through the annual statements in their filings from 2010 to 2025.
+How does a sector change hands that quickly? The financial statements show it happened in two steps. First, Intel's gross margin nearly halved because its own factories fell behind the contract manufacturers that AMD, NVIDIA and the other chip designers use. Then, from 2023, demand for AI training hardware gave NVIDIA a return on invested capital that no other company in the group came close to. For Intel and AMD the margin moved before the revenue did, which is why gross margin and return on capital are the first numbers I would check when competition in an industry starts to shift. I follow the six companies through the annual statements in their filings from 2010 to 2025.
 
 ## NVIDIA Went From 4% to Half of the Group's Revenue
 
-Revenue is the simplest way to see who matters in a sector. NVIDIA's fiscal year ends in late January, so its 2025 runs to January 2026.
+NVIDIA's part of the shift came late, with revenue that grew from $27.0 billion in 2022 to $215.9 billion in 2025. Its fiscal year ends in late January, so its 2025 runs to January 2026.
 
-Revenue per company in 2010, 2014, 2018, 2022 and 2025, in billions of dollars:
+Revenue per company in 2010, 2014, 2018, 2022 and 2025, in billions of dollars, where NVIDIA only pulls away from the others in 2025:
 
 {% capture code_revenue %}
 ```python
@@ -64,9 +69,9 @@ broadcom_growth = revenue.loc["AVGO", "2025"] / (revenue.loc["AVGO", "2010"] + a
 {% endcapture %}
 {% include ft-chart.html id="semis-revenue" src="/assets/data/article-charts.json" label="Semiconductor revenue" code=code_revenue mcp="What was the annual revenue of Intel, AMD, NVIDIA, Qualcomm, Broadcom and Texas Instruments since 2010, and what share of their combined revenue did each company have in 2010 and in 2025?" %}
 
-Intel's revenue peaked around 2020 and had shrunk by about a third by 2025. NVIDIA grew from $27.0 billion in 2022 to $215.9 billion in 2025, about 2.7 times what all six companies earned together in 2010. Broadcom's jump between 2014 and 2018 came mostly from acquisitions, as Avago Technologies bought LSI, Broadcom Corporation, whose name it took, and Brocade.
+Intel's revenue peaked around 2020 and had shrunk by about a third by 2025. By 2025 NVIDIA alone earned about 2.7 times what all six companies earned together in 2010. Broadcom's jump between 2014 and 2018 came mostly from acquisitions: Avago Technologies bought LSI, Broadcom Corporation, whose name it took, and Brocade.
 
-Each company's share of the group's combined revenue:
+Each company's share of the group's combined revenue, where Intel and NVIDIA almost swap places:
 
 | Company | 2010 | 2025 |
 |---|---|---|
@@ -82,9 +87,9 @@ Each company's share of the group's combined revenue:
 
 ## Intel's Gross Margin Fell From 66% to 35%
 
-Gross margin is the share of revenue left after the direct cost of making the chips, so it shows both pricing power and how cheaply a company can produce. Here the sector splits in two: integrated device manufacturers such as Intel and Texas Instruments design and make their own chips, while fabless companies such as NVIDIA, AMD and Qualcomm design them and pay a foundry like TSMC to make them.
+Intel's gross margin fell further than any other in the group, and making its own chips is a large part of why. Gross margin is the share of revenue left after the direct cost of making the chips, so it shows both pricing power and how cheaply a company can produce. On production the sector splits in two: integrated device manufacturers such as Intel and Texas Instruments design and make their own chips, while fabless companies such as NVIDIA, AMD and Qualcomm design them and pay a foundry like TSMC to make them.
 
-The gross margin of each company over the same years:
+The gross margin of each company over the same years, with Intel and NVIDIA crossing in opposite directions:
 
 {% capture code_margins %}
 ```python
@@ -107,7 +112,7 @@ last_five = gross_margin.loc[:, "2021":"2025"].mean(axis=1)
 
 NVIDIA went the other way, from 40% in 2010 to 71% in 2025, after a peak of 75% in 2024. With almost no competition in AI training hardware, it could charge what customers would pay.
 
-Single years are noisy, as write-downs and product cycles move a margin by several points, so the table compares the averages of the first and the last five years:
+Single years are noisy, since write-downs and product cycles move a margin by several percentage points, so the table compares the averages of the first and the last five years, where only Intel and Qualcomm lost ground:
 
 | Company | Makes its own chips | 2010 to 2014 | 2021 to 2025 |
 |---|---|---|---|
@@ -118,15 +123,15 @@ Single years are noisy, as write-downs and product cycles move a margin by sever
 | AMD | No | 36.8% | 47.6% |
 | Qualcomm | No | 63.7% | 56.5% |
 
-Texas Instruments makes its own chips too, and its average margin rose by more than ten points, as analog chips don't need the most advanced processes. Next to that, Qualcomm, which is fabless, saw its average margin fall. Intel's problem was being behind at the leading edge, where each new process costs the most, and owning the factories meant it carried that cost itself.
+Texas Instruments makes its own chips too, and its average margin rose by more than 10 percentage points, because analog chips don't need the most advanced processes. Next to that, Qualcomm, which is fabless, saw its average margin fall. Intel's problem was being behind at the leading edge, where each new process costs the most, and owning the factories meant it carried that cost itself.
 
 ## AMD Caught Intel, but NVIDIA Earned 86% on Its Capital
 
-Not every company here competes with every other, as Texas Instruments, Qualcomm and Broadcom mostly sell analog, phone and networking chips. The real contests are Intel against AMD in x86 processors, which run most PCs and servers, and AMD against NVIDIA in graphics chips, a market AMD entered when it bought ATI Technologies in 2006.
+Not every company here competes with every other: Texas Instruments, Qualcomm and Broadcom mostly sell analog, phone and networking chips. The real contests are Intel against AMD in x86 processors, which run most PCs and servers, and AMD against NVIDIA in graphics chips, a market AMD entered when it bought ATI Technologies in 2006.
 
-Return on invested capital (ROIC) is after-tax operating profit divided by the equity and debt invested in the business, so it shows how much a company earns on the money tied up in it.
+Return on invested capital (ROIC) is after-tax operating profit divided by the equity and debt invested in the business, so it shows how much a company earns on the money tied up in it. Because debt is part of that capital, ROIC doesn't rise when a company borrows more, which is how [Microsoft's return on equity pulled away from its ROIC](/articles/microsoft-financial-history-finance-toolkit) after 2014.
 
-Revenue, gross margin and ROIC of Intel and AMD, each in its own tab:
+Revenue, gross margin and ROIC of Intel and AMD, each in its own tab, where AMD's margin turns before its revenue does:
 
 {% capture code_intc_amd %}
 ```python
@@ -151,7 +156,7 @@ Intel's gross margin was already sliding, from 62% in 2018 to 56% in 2020, while
 
 AMD's ROIC is low too, but for another reason. It fell from 27.6% in 2020 to 3.8% in 2022, the year AMD closed its all-stock purchase of Xilinx, announced at $35 billion. Paying in shares added tens of billions of dollars to AMD's equity, which is part of the capital ROIC divides by, and the amortisation of Xilinx's intangible assets lowers its operating profit every year.
 
-The same three measures for NVIDIA and AMD:
+The same three measures for NVIDIA and AMD, which move together until 2022 and split from 2023:
 
 {% capture code_nvda_amd %}
 ```python
@@ -172,13 +177,13 @@ roic = toolkit.ratios.get_return_on_invested_capital()[years]
 
 Until 2022 the two moved roughly in parallel. NVIDIA overtook AMD on revenue between 2014 and 2018, and in 2020 AMD even had the higher ROIC, 27.6% against 22.6%, because its capital base was still small before the Xilinx deal. The split came from 2023, when NVIDIA's H100 and later Blackwell GPUs became the default hardware for training large language models. Most of that software is written for CUDA, NVIDIA's programming platform since 2007, and AMD's own platform, ROCm, had not caught up by 2025.
 
-**NVIDIA earned 86% on its invested capital in 2025, after 98% in 2024, against 6% for AMD.** Both companies sell GPUs, so I would put most of that gap down to the software and the customers built around NVIDIA's chips. That is my reading, as the statements show how large the gap is and when it opened, but not what caused it.
+**NVIDIA earned 86% on its invested capital in 2025, after 98% in 2024, against 6% for AMD.** Both companies sell GPUs, so I would put most of that gap down to the software and the customers built around NVIDIA's chips. That is my reading: the statements show how large the gap is and when it opened, but not what caused it.
 
 ## AMD Traded at Twice NVIDIA's P/E in 2025
 
-The price-to-earnings ratio (P/E) is the share price divided by earnings per share. EV/EBITDA compares the value of the whole company, debt included, with its operating profit before depreciation and amortisation, so it depends less on how a company is financed and on acquisition accounting. Both are snapshots at the end of each company's 2025 fiscal year and move with the share price.
+The market paid more for AMD's earnings than for NVIDIA's at the end of 2025. Next to the price-to-earnings ratio (P/E), I use EV/EBITDA, which compares the value of the whole company, debt included, with its operating profit before depreciation and amortisation, so it depends less on how a company is financed and on acquisition accounting. Both are trailing snapshots at the end of each company's 2025 fiscal year and move with the share price.
 
-The P/E and EV/EBITDA ratios of the six companies for 2025:
+The P/E and EV/EBITDA ratios of the six companies for 2025, where NVIDIA is far from the most expensive:
 
 {% capture code_valuation %}
 ```python
@@ -212,9 +217,9 @@ Adding the two to the 2010 total lowers Intel's share that year from 54.0% to 48
 
 ## What This Means for Sector Analysis
 
-The six companies share a label, but only two pairs compete head to head, so comparing each company with its real rival says more than comparing it with the sector. In both pairs the gross margin and ROIC showed the direction before revenue did.
+The six companies share a label, but only two pairs compete head to head, so comparing each company with its real rival says more than comparing it with the sector. In both pairs the gross margin and ROIC showed the direction before revenue did. The multiples only show what the market priced in at the end of 2025, and nothing in the statements says whether that will prove right.
 
-When I look at this group again, I would start with Intel's gross margin next to AMD's, which shows whether Intel's foundry spending is closing the cost gap. Next to that, NVIDIA's gross margin and ROIC are where pressure from competitors, or from customers designing their own AI chips, would show up first. For AMD, ROIC is the number to follow as the Xilinx amortisation runs off. The multiples only show what the market priced in at the end of 2025, and nothing in the statements says whether that will prove right.
+When I look at this group again, I would start with Intel's gross margin next to AMD's, which shows whether Intel's foundry spending is closing the cost gap. Next to that, NVIDIA's gross margin and ROIC are where pressure from competitors, or from customers designing their own AI chips, would show up first. For AMD, ROIC is the number to follow as the Xilinx amortisation runs off.
 
 ### Data and method
 
