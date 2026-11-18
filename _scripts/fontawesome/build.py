@@ -12,6 +12,7 @@ Needs fonttools and brotli. Rerun it after using an icon the site did not use
 before: an icon that is missing here shows as an empty square.
 """
 import glob
+import hashlib
 import os
 import re
 import subprocess
@@ -62,15 +63,21 @@ for rule in rules:
         icons |= set(names)
 
 os.makedirs(OUT, exist_ok=True)
-out_css = "\n\n".join(kept).replace("../webfonts/", "")
-# only woff2: every browser the site supports reads it, the .ttf fallbacks go
-out_css = re.sub(r',\s*url\("[^"]+\.ttf"\) format\("truetype"\)', "", out_css)
-open(os.path.join(OUT, "fa.css"), "w", encoding="utf-8").write(
-    "/* Font Awesome Free 6.7.2 (https://fontawesome.com/license/free), subset by _scripts/fontawesome/build.py */\n" + out_css + "\n")
 unicodes = ",".join(f"U+{c:04X}" for c in sorted(codepoints))
-for font in ["fa-solid-900", "fa-regular-400", "fa-brands-400", "fa-v4compatibility"]:
+FONTS = ["fa-solid-900", "fa-regular-400", "fa-brands-400", "fa-v4compatibility"]
+for font in FONTS:
     subprocess.run([os.path.join(os.path.dirname(sys.executable), "pyftsubset"),
                     os.path.join(FA, "webfonts", font + ".ttf"), "--unicodes=" + unicodes,
                     "--flavor=woff2", "--output-file=" + os.path.join(OUT, font + ".woff2"),
                     "--layout-features=*", "--no-hinting"], check=True)
+out_css = "\n\n".join(kept).replace("../webfonts/", "")
+# only woff2: every browser the site supports reads it, the .ttf fallbacks go
+out_css = re.sub(r',\s*url\("[^"]+\.ttf"\) format\("truetype"\)', "", out_css)
+# each font URL carries a hash of its file, so after a rebuild with new icons browsers and
+# Cloudflare fetch the new font instead of a cached one without them (an empty square)
+for font in FONTS:
+    digest = hashlib.sha1(open(os.path.join(OUT, font + ".woff2"), "rb").read()).hexdigest()[:10]
+    out_css = out_css.replace(f'url("{font}.woff2")', f'url("{font}.woff2?v={digest}")')
+open(os.path.join(OUT, "fa.css"), "w", encoding="utf-8").write(
+    "/* Font Awesome Free 6.7.2 (https://fontawesome.com/license/free), subset by _scripts/fontawesome/build.py */\n" + out_css + "\n")
 print(len(icons), "icons kept")

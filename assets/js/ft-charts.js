@@ -35,7 +35,9 @@
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'Python, MCP, notes and data');
     toggle.title = 'Python, MCP, notes and data';
-    toggle.innerHTML = '<i class="fas fa-bars" aria-hidden="true"></i>';
+    // drawn inline, so it shows even before (or without) the icon font
+    toggle.innerHTML = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">' +
+      '<path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>';
     actions.insertBefore(toggle, actions.firstChild);
     function menu(open) {
       actions.classList.toggle('is-menu', open);
