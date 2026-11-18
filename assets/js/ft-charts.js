@@ -25,8 +25,48 @@
         box.querySelector('.ft-chart-panel[data-panel="' + b.getAttribute('data-panel') + '"]').hidden = !on;
       });
       box.classList.toggle('is-open', !!button);
+      toggle.classList.toggle('is-on', !!button);
     }
+    var actions = box.querySelector('.ft-chart-actions');
+    // when the buttons don't leave the title enough room they fold into one menu button
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'ft-chart-actions__toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Python, MCP, notes and data');
+    toggle.title = 'Python, MCP, notes and data';
+    toggle.innerHTML = '<i class="fas fa-bars" aria-hidden="true"></i>';
+    actions.insertBefore(toggle, actions.firstChild);
+    function menu(open) {
+      actions.classList.toggle('is-menu', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    toggle.addEventListener('click', function () { menu(!actions.classList.contains('is-menu')); });
+    document.addEventListener('click', function (e) {
+      if (actions.classList.contains('is-menu') && !actions.contains(e.target)) menu(false);
+    });
+    box.ftFit = function () {
+      var head = box.querySelector('.ft-chart__title');
+      actions.classList.remove('is-collapsed');
+      var full = actions.offsetWidth;
+      // the title keeps at least 300px next to the buttons, or the buttons fold away; only the
+      // title shares a row with them, so the subtitle and tabs below use the full width
+      var collapse = box.clientWidth - full - 32 < 300;
+      actions.classList.toggle('is-collapsed', collapse);
+      if (!collapse) menu(false);
+      if (head) head.style.paddingRight = (actions.offsetWidth + 16) + 'px';
+    };
+    // refit when the box resizes and when the buttons themselves change width (fonts loading,
+    // the Notes and Data buttons arriving)
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(function () { if (!actions.classList.contains('is-menu')) box.ftFit(); });
+      ro.observe(box);
+      ro.observe(actions);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { box.ftFit(); });
+    box.ftFit();
     box.addEventListener('click', function (e) {
+      if (e.target.closest('.ft-chart-action')) menu(false);
       var button = e.target.closest('.ft-chart-action[data-panel]');
       if (button) return show(button.getAttribute('aria-expanded') === 'true' ? null : button);
       if (!box.classList.contains('is-open') || e.target.closest('.ft-chart-action')) return;
@@ -970,6 +1010,8 @@
     }
     addNotes(box, spec);
     addDataButton(box, spec);
+    var holder = box.closest('.ft-chart-box');
+    if (holder && holder.ftFit) holder.ftFit();
   }
 
   // A "Notes" button next to Python and MCP for the chart's `note`: how the data is built and

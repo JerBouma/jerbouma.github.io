@@ -252,8 +252,9 @@
   --ft-panel-bg: #0f172a;
 
   > .ft-chart { margin: 0; }
-  // room for the buttons next to the title (and the tabs of a tabbed chart)
-  .ft-chart__head { padding-right: 180px; }
+  // room for the buttons next to the title (and the tabs of a tabbed chart); ft-charts.js
+  // sets it to the buttons' real width once they are all there
+  .ft-chart__title { padding-right: 180px; }
 
   &::after {
     content: "";
@@ -395,17 +396,51 @@
   &:hover { color: var(--accent-color); border-color: var(--accent-color); }
 }
 
-// on a phone the buttons show only their icons
+// folded into one menu button when they would crowd the title (ft-charts.js measures it):
+// the button opens them as a small list with their labels
+.ft-chart-actions__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  &:hover { color: var(--text-primary); background: rgba(128, 128, 128, 0.12); }
+  &:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 1px; }
+  &.is-on { color: var(--accent-color); }
+}
+.ft-chart-actions.is-collapsed {
+  > .ft-chart-action { display: none; }
+  > .ft-chart-actions__toggle { display: inline-flex; }
+  &.is-menu {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    min-width: 150px;
+    padding: 4px;
+    border-radius: 12px;
+    // opaque, so the chart does not show through
+    background: linear-gradient(var(--card-bg), var(--card-bg)), var(--ft-panel-bg);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    > .ft-chart-actions__toggle { align-self: flex-end; }
+    > .ft-chart-action { display: flex; padding: 7px 12px; border-radius: 8px; font-size: 13px; }
+  }
+}
+
 @media (max-width: 600px) {
-  .ft-chart-box .ft-chart__head { padding-right: 150px; }
-  .ft-chart-action { padding: 5px 9px; }
-  .ft-chart-action span { display: none; }
   .ft-chart-panel { inset: 54px 10px 10px; }
   .ft-chart-panel__foot { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
 
 // a chart's subtitle (what is plotted: unit, base, period) and source line
 .page__content .ft-chart__subtitle {
+  flex-basis: 100%; // its own line under the title, never beside it under the buttons
   margin: 2px 0 0 !important;
   color: var(--text-muted);
   font-size: 0.82rem !important;

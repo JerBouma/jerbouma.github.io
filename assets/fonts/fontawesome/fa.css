@@ -358,6 +358,9 @@ readers do not read off random characters that represent icons */
 .fa-comments {
   --fa: "\f086"; }
 
+.fa-bars {
+  --fa: "\f0c9"; }
+
 .fa-lightbulb {
   --fa: "\f0eb"; }
 
