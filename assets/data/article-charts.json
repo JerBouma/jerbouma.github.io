@@ -329,7 +329,11 @@
      ]
     }
    ],
-   "format": "percent"
+   "format": "percent",
+   "note": [
+    "The real policy rate is the policy rate at the end of each year minus that year's inflation.",
+    "Germany's policy rate in the Global Macro Database runs below the ECB's year-end rate in 2022 and 2023, which makes its real rate look lower. At the ECB's year-end rate of 2.5%, Germany's 2022 real rate would still be about -6.2%, the lowest of the five."
+   ]
   },
   "macro-unemployment": {
    "type": "line",
@@ -17870,7 +17874,7 @@
    "note": [
     "Nobody counted the people of England in the fourteenth century. The series is an estimate for benchmark years, reconstructed from manor records, tax returns, prices and wages, with the years in between interpolated.",
     "That is why it falls by the same share, about 18.5%, in each year from 1349 to 1351: the data knows the level before and after the Black Death, not the path in between.",
-    "Read the level of a single year loosely. The change over a decade is far more reliable."
+    "Read the level of a single year loosely. The change over a decade is far more reliable, which is why the article mostly compares averages over several years."
    ],
    "source": "Bank of England, A millennium of macroeconomic data (v3.1)",
    "x": [
@@ -21347,7 +21351,7 @@
    "title": "Hours worked and pay per hour in England",
    "subtitle": "England, weekly hours from 1300 to 1650, and real pay per hour against the real wage from 1330 to 1450 with the average of 1340 to 1347 = 100",
    "note": [
-    "Weekly hours before 1770 are based on Humphries and Weisdorf (2016) and are a tentative estimate, so the first tab shows the direction better than the level.",
+    "For this period the Bank of England builds weekly hours from the number of days a casual labourer had to work to earn what a worker on a yearly contract earned, at ten hours a day, and marks the series as highly tentative. Read the first tab for its direction more than its level.",
     "Real pay per hour is weekly earnings divided by weekly hours and by the consumer price index, indexed to the average of 1340 to 1347.",
     "Because hours fell while earnings rose, pay per hour rose faster than the real wage, which is measured per day."
    ],

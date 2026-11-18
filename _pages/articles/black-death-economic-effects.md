@@ -37,8 +37,6 @@ population = population.loc["1300":"1500"] / 1000  # in millions
 
 The Great Famine of 1315 to 1317 shows up as a fall from 4.69 million in 1315 to 4.12 million in 1325, after which it grew again to its peak of 4.81 million in 1348.
 
-A note of caution is due here. Nobody counted the people of England in 1348, so these figures are reconstructions from manor records, tax returns, prices and wages. The population is estimated for benchmark years and filled in between them, which is why it falls by the same 18.5% in each of the years 1349, 1350 and 1351. The level of a single year is uncertain, while the direction over a decade is far more reliable, so I mostly use averages over a period.
-
 **England lost 46% of its people in three years and kept losing them: by 1450 it had 1.90 million, 60% fewer than in 1348.** Plague returned every decade or two, and the population did not pass its 1348 level again until 1622. For an economist, that is a lasting fall in labour compared to land.
 
 ## Real Wages Roughly Doubled
@@ -132,7 +130,7 @@ Both went up at first, and prices rose by almost 20% in both 1350 and 1351. Then
 
 ## Shorter Hours Made Each Hour Worth Even More
 
-The dataset also estimates average weekly hours. For this period it is built from the number of days a casual labourer had to work to earn what a worker on a yearly contract earned, at ten hours a day, and the Bank marks it as highly tentative. Dividing weekly earnings by those hours and by consumer prices gives real pay per hour. Weekly hours and, in the second tab, real pay per hour next to the real wage, with 1340 to 1347 at 100:
+The dataset also estimates average weekly hours. Dividing weekly earnings by those hours and by consumer prices gives real pay per hour. Weekly hours and, in the second tab, real pay per hour next to the real wage, with 1340 to 1347 at 100:
 
 {% capture code_hours %}
 ```python

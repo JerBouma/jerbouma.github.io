@@ -108,7 +108,7 @@ Brazil is the exception. Its real rate was positive in every year from 2021 and 
 | Japan | -2.2% | -3.4% |
 | Germany | -2.7% | -8.2% |
 
-A note of caution on Germany: its policy rate in this dataset runs below the ECB's year-end rate in 2022 and 2023, which makes its real rate look lower. At the ECB's year-end rate of 2.5%, Germany's 2022 real rate would still be about -6.2%, the lowest of the five. **In the yearly figures, Brazil's was the only one of the five central banks that kept its rate above inflation from 2021 onwards.**
+**In the yearly figures, Brazil's was the only one of the five central banks that kept its rate above inflation from 2021 onwards.**
 
 ## Higher Rates Cost Few Jobs
 
