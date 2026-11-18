@@ -172,6 +172,48 @@
   }
 }
 
+// covers on the cards: the article's opening image, full bleed at the top of a card,
+// and beside the text of the featured one
+.ar-card--cover { padding-top: 0; overflow: hidden; }
+.ar-card__img {
+  margin: 0 -22px 16px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--masthead-border);
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+}
+.ar-card--cover:hover .ar-card__img img { transform: scale(1.03); }
+
+.ar-feature--cover {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+
+  .ar-feature__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(24px, 3vw, 36px);
+  }
+  .ar-feature__img {
+    order: 2;
+    min-height: 100%;
+    background: var(--masthead-border);
+
+    picture, img { display: block; width: 100%; height: 100%; }
+    img { object-fit: cover; min-height: 280px; }
+  }
+  .ar-feature__text { font-size: 16.5px !important; }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    .ar-feature__img { order: 0; aspect-ratio: 16 / 9; img { min-height: 0; } }
+  }
+}
+
 .ar .hp-cta { margin-bottom: 16px; }
 
 @media (max-width: 1100px) { .ar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

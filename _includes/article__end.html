@@ -25,4 +25,17 @@
       <p class="article-author__links"><a href="{{ '/resume' | relative_url }}">Resume</a><a href="https://www.linkedin.com/in/boumajeroen/" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/JerBouma" target="_blank" rel="noopener">GitHub</a></p>
     </div>
   </section>
+  {%- include article__related.html %}
+  <section class="article-next" aria-label="Keep reading">
+    <p class="article-next__label">Keep reading</p>
+    <div class="article-next__grid">
+    {%- for article in related limit: 3 %}
+      <a class="article-next__card" href="{{ article.url | relative_url }}">
+        {%- if article.cover.image %}<div class="article-next__img">{% include article__thumb.html art=article sizes="(min-width: 700px) 280px, 100vw" %}</div>{% endif %}
+        <span class="article-next__tag">{{ article.tags | first }}</span>
+        <span class="article-next__title">{{ article.title }}</span>
+      </a>
+    {%- endfor %}
+    </div>
+  </section>
 </div>

@@ -1,0 +1,18 @@
+{%- comment -%}
+  Sets `related` (other articles: those sharing a tag with this one first, then the
+  newest) and `articles` (all of them, newest first), for the sidebar and the end of
+  an article. Variables assigned in an include stay set on the page.
+{%- endcomment -%}
+{%- assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
+{%- assign related = "" | split: "" %}{% assign used = "|" %}
+{%- for article in articles %}
+  {%- if article.url == page.url %}{% continue %}{% endif %}
+  {%- assign shares = false %}
+  {%- for tag in article.tags %}{% if page.tags contains tag %}{% assign shares = true %}{% endif %}{% endfor %}
+  {%- if shares %}{% assign related = related | push: article %}{% assign used = used | append: article.url | append: "|" %}{% endif %}
+{%- endfor %}
+{%- for article in articles %}
+  {%- assign key = "|" | append: article.url | append: "|" %}
+  {%- if article.url == page.url or used contains key %}{% continue %}{% endif %}
+  {%- assign related = related | push: article %}
+{%- endfor %}

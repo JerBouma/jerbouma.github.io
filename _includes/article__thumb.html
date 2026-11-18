@@ -1,0 +1,13 @@
+{%- comment -%}
+  An article's cover as a thumbnail (the /insights cards): the 800px or 1200px WebP
+  with the JPEG as fallback. include.art is the article, include.sizes the rendered
+  width, include.eager loads it right away (the featured card).
+{%- endcomment -%}
+{%- assign _c = include.art.cover -%}
+{%- if _c.image -%}
+{%- assign _base = _c.image | remove: ".jpg" -%}
+<picture>
+  <source type="image/webp" srcset="{{ _base | append: '-800.webp' | relative_url }} 800w, {{ _base | append: '-1200.webp' | relative_url }} 1200w" sizes="{{ include.sizes | default: '(min-width: 1100px) 400px, (min-width: 700px) 50vw, 100vw' }}">
+  <img src="{{ _c.image | relative_url }}" alt="" width="1600" height="900"{% if include.eager %} fetchpriority="high"{% else %} loading="lazy" decoding="async"{% endif %}{% if _c.position %} style="object-position: {{ _c.position }}"{% endif %}>
+</picture>
+{%- endif -%}

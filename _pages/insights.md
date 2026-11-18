@@ -27,13 +27,16 @@ I write about the economy, financial markets and how financial theory is applied
 
 <section class="pj-section ar-first">
   <p class="hp-kicker">Latest</p>
-  <a class="ar-feature" href="{{ latest.url | relative_url }}" data-reveal>
+  <a class="ar-feature{% if latest.cover.image %} ar-feature--cover{% endif %}" href="{{ latest.url | relative_url }}" data-reveal>
+    {%- if latest.cover.image %}<div class="ar-feature__img">{% include article__thumb.html art=latest sizes="(min-width: 1100px) 560px, 100vw" eager=true %}</div>{% endif %}
+    <div class="ar-feature__body">
     <p class="ar-meta">{{ latest.date | date: "%B %-d, %Y" }} · {{ latest_words | divided_by: 220 | at_least: 1 }} min read</p>
     <h2>{{ latest.title }}</h2>
     <p class="ar-feature__text">{{ latest.excerpt | strip_html }}</p>
     <div class="ar-feature__foot">
       <div class="ar-tags">{% for tag in latest.tags %}<span>{{ tag }}</span>{% endfor %}</div>
       <span class="ar-go">Read the article <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+    </div>
     </div>
   </a>
 </section>
@@ -73,7 +76,8 @@ I write about the economy, financial markets and how financial theory is applied
   {%- for article in articles %}
     {%- assign slugs = "" | split: "" %}{% for tag in article.tags %}{% assign s = tag | slugify %}{% assign slugs = slugs | push: s %}{% endfor %}
     {%- assign words = article.content | number_of_words %}
-    <a href="{{ article.url | relative_url }}" class="ar-card" data-tags="{{ slugs | join: ' ' }}">
+    <a href="{{ article.url | relative_url }}" class="ar-card{% if article.cover.image %} ar-card--cover{% endif %}" data-tags="{{ slugs | join: ' ' }}">
+      {%- if article.cover.image %}<div class="ar-card__img">{% include article__thumb.html art=article %}</div>{% endif %}
       <p class="ar-meta">{{ article.date | date: "%b %-d, %Y" }} · {{ words | divided_by: 220 | at_least: 1 }} min read</p>
       <h3>{{ article.title }}</h3>
       {%- if article.excerpt %}<p class="ar-card__text">{{ article.excerpt | strip_html }}</p>{% endif %}
