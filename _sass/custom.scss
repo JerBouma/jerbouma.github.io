@@ -7024,23 +7024,6 @@ body.article-document {
     }
   }
 
-  .article-author {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    max-width: var(--article-measure);
-    padding: 18px 20px;
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    background: var(--card-bg);
-
-    &__photo { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; }
-    &__text p { margin: 0 0 6px !important; }
-    &__name { font-weight: 700; font-size: 1rem; }
-    &__name a, &__name a:visited { color: var(--text-primary) !important; text-decoration: none; }
-    &__bio { font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary); }
-    &__links a { margin-right: 14px; font-size: 0.85rem; font-weight: 600; }
-  }
 
   .article-next {
     margin-top: 36px;
@@ -7137,7 +7120,6 @@ body.article-document {
     }
     .article-standfirst { font-size: 1.12rem; }
     .article-keypoints { padding: 14px 16px 4px; }
-    .article-author { padding: 14px; gap: 12px; }
   }
 }
 
@@ -7157,8 +7139,7 @@ body.article-document {
 
     .masthead, .breadcrumbs, .sidebar, .sidebar__right, .page__footer, footer.page__meta,
     .article-share, .pagination, .back-to-top, .article-progress, .article-next,
-    .ft-chart-actions, .ft-chart-panel, .site-search, #site-nav, .article-author__links,
-    .article-sidebar, .article-side { display: none !important; }
+    .ft-chart-actions, .ft-chart-panel, .site-search, #site-nav,     .article-sidebar, .article-side { display: none !important; }
 
     #main, .page, .page__inner-wrap, .page__content, header, .article-end {
       float: none !important;
@@ -7178,8 +7159,8 @@ body.article-document {
     }
     .page__title, h2, h3 { color: #000 !important; break-after: avoid; }
     .article-cover img { max-height: 9cm; }
-    .ft-chart-box, .ft-chart, figure, table, .article-keypoints, .article-author { break-inside: avoid; }
-    .ft-chart-box, .article-keypoints, .article-author { background: none !important; border-color: #ccc !important; }
+    .ft-chart-box, .ft-chart, figure, table, .article-keypoints { break-inside: avoid; }
+    .ft-chart-box, .article-keypoints { background: none !important; border-color: #ccc !important; }
     a { color: #000 !important; text-decoration: underline; }
     // the URL after a link only for sources in the text, not for the title, byline,
     // cover credit or author box
