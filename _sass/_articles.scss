@@ -405,6 +405,15 @@
   font-weight: 400;
   line-height: 1.4;
 }
+// an optional note between them: the one construction detail that changes the reading
+.page__content .ft-chart__note {
+  margin: 8px 2px 0 !important;
+  color: var(--text-muted);
+  font-size: 0.74rem !important;
+  font-style: italic;
+  line-height: 1.4;
+}
+.page__content .ft-chart__note + .ft-chart__source { margin-top: 2px !important; }
 .page__content .ft-chart__source {
   margin: 8px 2px 0 !important;
   color: var(--text-muted);

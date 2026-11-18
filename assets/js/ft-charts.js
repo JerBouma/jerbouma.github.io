@@ -965,12 +965,97 @@
       sub.textContent = spec.subtitle;
       title.insertAdjacentElement('afterend', sub);
     }
+    if (spec.note && !box.querySelector('.ft-chart__note')) {
+      var note = document.createElement('p');
+      note.className = 'ft-chart__note';
+      note.textContent = 'Note: ' + spec.note;
+      box.appendChild(note);
+    }
     if (spec.source && !box.querySelector('.ft-chart__source')) {
       var src = document.createElement('p');
       src.className = 'ft-chart__source';
       src.textContent = 'Source: ' + spec.source;
       box.appendChild(src);
     }
+    addDataButton(box, spec);
+  }
+
+  // The chart's data as CSV rows: one row per x value (or per point, or per heatmap row),
+  // one column per series; tabs and compare cards become one table with "View: Series" columns.
+  // Values are as stored, so percentages are fractions (0.25 is 25%).
+  function csvRows(spec) {
+    function table(views) {
+      var xs = [], cols = [];
+      views.forEach(function (v) {
+        (v.x || []).forEach(function (x) { if (xs.indexOf(x) < 0) xs.push(x); });
+        (v.series || []).forEach(function (se) {
+          var at = {};
+          (v.x || []).forEach(function (x, i) { at[x] = se.data[i]; });
+          cols.push({ name: !v.prefix ? se.name : v.series.length === 1 ? v.prefix : v.prefix + ': ' + se.name, at: at });
+        });
+      });
+      if (!xs.length || !cols.length) return null;
+      var rows = [[spec.xname || ''].concat(cols.map(function (c) { return c.name; }))];
+      xs.forEach(function (x) { rows.push([x].concat(cols.map(function (c) { return c.at[x]; }))); });
+      return rows;
+    }
+    if (spec.type === 'tabs') {
+      var views = spec.tabs.filter(function (t) { return t.x && t.series; })
+        .map(function (t) { return { x: t.x, series: t.series, prefix: spec.tabs.length > 1 ? t.label : '' }; });
+      return views.length === spec.tabs.length ? table(views) : null;
+    }
+    if (spec.type === 'compare') {
+      return table(spec.metrics.map(function (m) {
+        return { x: spec.x, prefix: m.name, series: m.series.map(function (se) {
+          return { name: (spec.names && spec.names[se.name]) || se.name, data: se.data };
+        }) };
+      }));
+    }
+    if (spec.type === 'scatter') {
+      return [['Name', spec.xname || 'x', spec.yname || 'y']].concat(spec.points.map(function (p) { return [p.name, p.x, p.y]; }));
+    }
+    if (spec.type === 'heatmap') {
+      return [[''].concat(spec.x)].concat(spec.y.map(function (y, i) { return [y].concat(spec.values[i]); }));
+    }
+    if (spec.x && spec.series) return table([{ x: spec.x, series: spec.series }]);
+    return null;
+  }
+
+  function csvText(rows) {
+    return rows.map(function (r) {
+      return r.map(function (v) {
+        if (v === null || v === undefined) return '';
+        var t = String(v);
+        return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+      }).join(',');
+    }).join('\n') + '\n';
+  }
+
+  // a "Data" button next to Python and MCP that downloads the plotted series
+  function addDataButton(box, spec) {
+    var holder = box.closest('.ft-chart-box');
+    var actions = holder && holder.querySelector('.ft-chart-actions');
+    if (!actions || actions.querySelector('[data-download]')) return;
+    var rows;
+    try { rows = csvRows(spec); } catch (e) { rows = null; }
+    if (!rows) return;
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'ft-chart-action';
+    button.setAttribute('data-download', '');
+    button.title = 'Download the data in this chart (CSV)';
+    button.innerHTML = '<i class="fas fa-download" aria-hidden="true"></i><span>Data</span>';
+    button.addEventListener('click', function () {
+      var url = URL.createObjectURL(new Blob([csvText(rows)], { type: 'text/csv' }));
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = box.getAttribute('data-chart') + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    });
+    actions.appendChild(button);
   }
 
   function show(box) {

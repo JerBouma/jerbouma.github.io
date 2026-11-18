@@ -1,7 +1,8 @@
 # The "Data and method" note at the end of an article is folded away by default: the reader who
 # wants the sources, the calculations and the limits opens it with one click. The article source
 # keeps a plain `### Data and method` heading; this wraps it and everything after it (up to the
-# charts script include) in a <details> block before the Markdown is converted.
+# charts script include) in a <details> block before the Markdown is converted, and adds a link to
+# the article's full script (article_script.rb).
 module ArticleMethodNote
   NOTE = /^### Data and method[ \t]*\n(.*?)(?=^\{%-?\s*include ft-charts-script\.html|\z)/m
 
@@ -10,6 +11,9 @@ module ArticleMethodNote
 
     page.content = page.content.sub(NOTE) do
       body = Regexp.last_match(1).rstrip
+      if (script = page.data["script_url"])
+        body += "\n\n**Full script:** [#{File.basename(script)}](#{script}){:download=\"\"} has the code of every chart in one file."
+      end
       <<~HTML
         <details class="article-method" markdown="1">
         <summary class="article-method__summary"><span>Data and method</span><span class="article-method__hint">Sources, calculations and limits</span></summary>
