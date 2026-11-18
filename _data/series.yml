@@ -1,0 +1,6 @@
+# Article series: an article joins one with `series: <key>` in its front matter. The part
+# number follows the publication date (_includes/article__series.html).
+history:
+  name: Economic history
+  url: /insights?tag=history
+  note: A weekly series on economic shocks, read from long historical data. A new part appears every Sunday.

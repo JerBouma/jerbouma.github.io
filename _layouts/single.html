@@ -26,7 +26,8 @@ layout: default
     <div class="page__inner-wrap">
       {% unless page.header.overlay_color or page.header.overlay_image %}
         <header>
-          {% if page.collection == "article" and page.tags.size > 0 %}<p class="article-kicker">{% for tag in page.tags %}<a href="{{ '/insights' | relative_url }}?tag={{ tag | slugify }}">{{ tag }}</a>{% endfor %}</p>{% endif %}
+          {% if page.collection == "article" %}{% include article__series.html %}{% endif %}
+          {% if series_info %}<p class="article-kicker"><a href="{{ series_info.url | relative_url }}">{{ series_info.name }}</a><span class="article-kicker__part">Part {{ series_part }}</span></p>{% else %}{% if page.collection == "article" and page.tags.size > 0 %}<p class="article-kicker">{% for tag in page.tags %}<a href="{{ '/insights' | relative_url }}?tag={{ tag | slugify }}">{{ tag }}</a>{% endfor %}</p>{% endif %}{% endif %}
           {% if page.title %}<h1 id="page-title" class="page__title p-name">
             <a href="{{ page.url | absolute_url }}" class="u-url">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</a>
           </h1>{% endif %}

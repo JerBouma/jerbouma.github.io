@@ -12,6 +12,7 @@ author_profile: false
 collection: article
 tags: [Macroeconomics, History]
 share: true
+series: history
 standfirst: "The plague of 1348 to 1351 killed almost half of England. The survivors could suddenly ask for more, and the Bank of England's millennium of data shows how much more they got and how long it lasted."
 key_points:
   - "England's population fell 46% between 1348 and 1351, and by 1450 it was 60% below its 1348 level."
