@@ -1,0 +1,19 @@
+<div class="article-progress" aria-hidden="true"><div class="article-progress__bar"></div></div>
+<script>
+  (function () {
+    var bar = document.querySelector('.article-progress__bar');
+    var body = document.querySelector('.page__content');
+    if (!bar || !body) return;
+    var ticking = false;
+    function update() {
+      var rect = body.getBoundingClientRect();
+      var total = rect.height - window.innerHeight;
+      var done = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 1;
+      bar.style.transform = 'scaleX(' + done + ')';
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>

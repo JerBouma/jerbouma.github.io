@@ -1,0 +1,13 @@
+{% comment %}
+  Three key points under the cover, from front matter (key_points: a list of short
+  sentences, each with its number and comparison). Written by hand, not generated.
+{% endcomment %}
+{% if page.key_points.size > 0 %}
+<aside class="article-keypoints" aria-label="Key points">
+  <p class="article-keypoints__label">Key points</p>
+  <ul>
+    {% for point in page.key_points %}<li>{{ point | markdownify | remove: "<p>" | remove: "</p>" | strip }}</li>
+    {% endfor %}
+  </ul>
+</aside>
+{% endif %}

@@ -6918,3 +6918,135 @@ body.ft-overview .page__content {
   thead th, tbody td { padding: 10px 14px !important; }
   @container fdx-table (max-width: 480px) { thead th, tbody td { padding: 8px 8px !important; } }
 }
+
+// ── Article reading layout (newsroom study, 18 November 2026) ─────────────────
+// Text at about 68 characters a line (FT, Reuters, Medium and Our World in Data sit at
+// 73 to 86; 99 before), at 18px with 1.65 line height; charts, tables, the cover and the
+// key points keep the full 880px column. Kicker, headline, standfirst, byline, cover,
+// key points, in the order FT, WSJ and Bloomberg use.
+body.article-document {
+  --article-measure: 680px;
+
+  .page__content {
+    > p, > ul, > ol, > blockquote, > h2, > h3, > h4, > details, > dl {
+      max-width: var(--article-measure);
+    }
+    > p, > ul > li, > ol > li {
+      font-size: 18px;
+      line-height: 1.65;
+    }
+    > p { margin-bottom: 1.15em; }
+  }
+
+  .article-kicker {
+    margin: 0 0 10px !important;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    a, a:visited { color: var(--accent-color) !important; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a + a::before { content: "·"; margin: 0 0.5em; color: var(--text-muted); }
+  }
+
+  .article-standfirst {
+    max-width: var(--article-measure);
+    margin: 0 0 22px !important;
+    font-size: 1.28rem;
+    line-height: 1.45;
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+
+  .article-keypoints {
+    margin: 26px 0 0;
+    padding: 16px 20px 6px;
+    border-left: 3px solid var(--accent-color);
+    background: var(--card-bg);
+    border-radius: 0 10px 10px 0;
+
+    &__label {
+      margin: 0 0 6px !important;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    ul { margin: 0 0 10px; padding-left: 1.1em; }
+    li { margin: 0 0 8px; font-size: 1rem; line-height: 1.5; color: var(--text-primary); }
+  }
+
+  .article-end {
+    max-width: min(100%, 880px);
+    margin: 40px auto 0;
+  }
+
+  .article-updates {
+    max-width: var(--article-measure);
+    margin-bottom: 28px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+
+    &__label {
+      margin: 0 0 4px !important;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    ul { margin: 0; padding-left: 1.1em; }
+    li { margin-bottom: 4px; }
+    time { font-weight: 600; color: var(--text-primary); }
+  }
+
+  .article-author {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    max-width: var(--article-measure);
+    padding: 18px 20px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+
+    &__photo { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; }
+    &__text p { margin: 0 0 6px !important; }
+    &__name { font-weight: 700; font-size: 1rem; }
+    &__name a, &__name a:visited { color: var(--text-primary) !important; text-decoration: none; }
+    &__bio { font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary); }
+    &__links a { margin-right: 14px; font-size: 0.85rem; font-weight: 600; }
+  }
+
+  .article-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 30;
+    pointer-events: none;
+
+    &__bar {
+      height: 100%;
+      background: var(--accent-color);
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .article-progress { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .page__content {
+      > p, > ul > li, > ol > li { font-size: 17px; line-height: 1.6; }
+    }
+    .article-standfirst { font-size: 1.12rem; }
+    .article-keypoints { padding: 14px 16px 4px; }
+    .article-author { padding: 14px; gap: 12px; }
+  }
+}

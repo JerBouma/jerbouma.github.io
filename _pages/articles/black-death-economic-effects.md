@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [Macroeconomics, History]
 share: true
+standfirst: "The plague of 1348 to 1351 killed almost half of England. The survivors could suddenly ask for more, and the Bank of England's millennium of data shows how much more they got and how long it lasted."
+key_points:
+  - "England's population fell 46% between 1348 and 1351, and by 1450 it was 60% below its 1348 level."
+  - "The real wage averaged 201 between 1450 and 1499, double its level before the plague (1340 to 1347 = 100)."
+  - "Pay rose while prices did not, and the gains lasted until the population came back in the sixteenth century."
 cover:
   image: /assets/images/articles/black-death-economic-effects/cover.jpg
   alt: "A scorched landscape in which an army of skeletons sweeps across the countryside and cuts down people of every rank."

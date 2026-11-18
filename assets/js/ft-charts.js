@@ -12,6 +12,18 @@
  * with the page.
  */
 (function () {
+  // Every chart gets ECharts' accessibility description (aria-label on the chart: its
+  // type, series and values), so screen readers get more than an unlabelled canvas.
+  function initChart(canvas) {
+    var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+    var setOption = inst.setOption.bind(inst);
+    inst.setOption = function (option, a, b) {
+      if (option && typeof option === 'object' && !option.aria) option.aria = { enabled: true };
+      return setOption(option, a, b);
+    };
+    return inst;
+  }
+
   // The Python and MCP buttons in an article chart's top right (_includes/ft-chart.html
   // with code= or mcp=) dim the chart and lay the code or the question over it, one at a
   // time; the same button, Escape or a click on the dimmed chart closes it
@@ -311,7 +323,7 @@
       canvas.className = 'ft-dupont__canvas';
       card.appendChild(canvas);
       strip.appendChild(card);
-      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      var inst = initChart(canvas);
       if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
       minis.push({ inst: inst, name: name, value: value, isResult: isResult });
     }
@@ -398,7 +410,7 @@
       canvas.className = 'ft-kpis__canvas';
       card.appendChild(canvas);
       grid.appendChild(card);
-      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      var inst = initChart(canvas);
       if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
       return { inst: inst, data: data, up: diff >= 0 };
     });
@@ -467,7 +479,7 @@
       canvas.className = 'ft-compare__canvas';
       card.appendChild(canvas);
       grid.appendChild(card);
-      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      var inst = initChart(canvas);
       if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
       return { inst: inst, m: m };
     });
@@ -593,7 +605,7 @@
       if (height) canvas.style.height = height + 'px';
       box.appendChild(head);
       box.appendChild(canvas);
-      var inst = window.echarts.init(canvas, null, { renderer: 'canvas' });
+      var inst = initChart(canvas);
       if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
       return inst;
     };
@@ -964,7 +976,7 @@
     box.appendChild(canvas);
     if (tabs) compactTabs(tabs);
 
-    var instance = window.echarts.init(canvas, null, { renderer: 'canvas' });
+    var instance = initChart(canvas);
     var current = 0;
     function draw() { instance.setOption(specs[current].type === 'fan' ? fanOption(specs[current]) : option(specs[current]), true); }
     draw();

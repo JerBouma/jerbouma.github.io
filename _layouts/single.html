@@ -26,12 +26,15 @@ layout: default
     <div class="page__inner-wrap">
       {% unless page.header.overlay_color or page.header.overlay_image %}
         <header>
+          {% if page.collection == "article" and page.tags.size > 0 %}<p class="article-kicker">{% for tag in page.tags %}<a href="{{ '/insights' | relative_url }}?tag={{ tag | slugify }}">{{ tag }}</a>{% endfor %}</p>{% endif %}
           {% if page.title %}<h1 id="page-title" class="page__title p-name">
             <a href="{{ page.url | absolute_url }}" class="u-url">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</a>
           </h1>{% endif %}
           {% if page.collection == "article" %}
+            {% if page.standfirst %}<p class="article-standfirst p-summary">{{ page.standfirst | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>{% endif %}
             {% include article__byline.html %}
             {% include article__cover.html %}
+            {% include article__keypoints.html %}
           {% else %}
             {% include page__meta.html %}
           {% endif %}
@@ -50,6 +53,7 @@ layout: default
         {{ content }}
         {% if page.link %}<div><a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[site.locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
       </section>
+      {% if page.collection == "article" %}{% include article__end.html %}{% include article__progress.html %}{% endif %}
 
       <footer class="page__meta">
         {% if site.data.ui-text[site.locale].meta_label %}
