@@ -1,6 +1,6 @@
 {% comment %}
   The end of an article: the dated updates note (front matter updates: a list of
-  {date, note}), a citation line and a short author box.
+  {date, note}) and a citation line, then the series box and three articles to keep reading.
 {% endcomment %}
 <div class="article-end">
   {% if page.updates.size > 0 %}
@@ -27,14 +27,6 @@
   <section class="article-cite" aria-label="Cite this article">
     <p class="article-cite__label">Cite this article</p>
     <p class="article-cite__text">Bouma, J. ({{ page.date | date: "%Y, %B %-d" }}). <em>{{ _title }}</em>. jeroenbouma.com. {{ page.url | absolute_url }}</p>
-  </section>
-  <section class="article-author" aria-label="About the author">
-    <img src="{{ '/assets/images/default/bio-photo-128.jpg' | relative_url }}" alt="" class="article-author__photo" width="56" height="56" loading="lazy">
-    <div class="article-author__text">
-      <p class="article-author__name"><a href="{{ '/resume' | relative_url }}" rel="author">{{ site.author.name }}</a></p>
-      <p class="article-author__bio">Quantitative investment strategist working on asset allocation and asset-liability management, and the author of the open-source <a href="{{ '/projects/financetoolkit' | relative_url }}">Finance Toolkit</a> and <a href="{{ '/projects/financedatabase' | relative_url }}">Finance Database</a>. These articles are analysis, not investment advice.</p>
-      <p class="article-author__links"><a href="{{ '/resume' | relative_url }}">Resume</a><a href="https://www.linkedin.com/in/boumajeroen/" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/JerBouma" target="_blank" rel="noopener">GitHub</a></p>
-    </div>
   </section>
   {%- include article__related.html %}
   <section class="article-next" aria-label="Keep reading">
