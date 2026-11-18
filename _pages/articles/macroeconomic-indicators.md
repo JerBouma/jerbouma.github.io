@@ -142,7 +142,7 @@ unemployment = economics.get_unemployment_rate(countries=["United States", "Unit
 
 The one large jump in the chart is the pandemic: US unemployment went to 8.1% in 2020 and was back at its 2019 level by 2022, the year the Fed started hiking. It stayed there in 2023 and only crept up to 4.3% by 2025, when the Fed was already cutting. **The Fed raised its rate by more than five percentage points and unemployment rose by less than one.** The real rate likely explains part of this, because US policy only became restrictive in real terms in 2023, and then only by a little. That is my reading: the yearly data shows the timing but cannot prove the cause.
 
-Germany's unemployment rose by about as much as the US's, and the UK's rose the most of the five, about one percentage point from 2022 to 2025. Brazil went the other way: with the highest policy rate of the five in every year, its unemployment still fell from 13.8% in 2020 to 6.0% in 2025. Japan's rate barely moved, and neither did its unemployment.
+Germany's unemployment rose by about as much as the US's, and the UK's rose the most of the five, about one percentage point from 2022 to 2025. Brazil went the other way: with the highest policy rate of the five in every year, its unemployment still fell from 13.8% in 2020 to 6.0% in 2025. Japan's rate barely moved, and neither did its unemployment. When workers are scarce, the price of work goes up, and history has an extreme case of it: [after the Black Death killed almost half of England, real wages doubled](/articles/black-death-economic-effects).
 
 ## US and UK Debt Stayed Well Above Pre-Pandemic Levels
 

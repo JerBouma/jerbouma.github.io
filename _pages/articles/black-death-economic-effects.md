@@ -254,7 +254,7 @@ data = data.loc["1905":"1925"]
 
 **Labour's share of income rose from 66.6% in 1913 to 74.3% in 1920.** After the war, workers again took part of the gain as time off, and weekly hours fell from 55.6 in 1918 to 48.3 in 1920.
 
-The scarcity ended in the slump of 1921, when unemployment jumped to 11%, yet hours stayed at about 46 a week through 1925 and the labour share stayed above 73%. Modern labour shocks are far smaller, and modern economies replace workers with machines more easily than a 14th-century farm. The mechanism is the same, though, and so are the series to watch for it: the working-age population, the unemployment rate, average hours and the labour share of income.
+The scarcity ended in the slump of 1921, when unemployment jumped to 11%, yet hours stayed at about 46 a week through 1925 and the labour share stayed above 73%. Modern labour shocks are far smaller, and modern economies replace workers with machines more easily than a 14th-century farm. The mechanism is the same, though, and so are the series to watch for it: the working-age population, the unemployment rate, average hours and the labour share of income. The same series show [how unemployment held up in five large economies while their central banks raised rates after 2022](/articles/macroeconomic-indicators-finance-toolkit).
 
 The next article in the series looks at a more recent shock, the oil price crash of 2014 to 2016.
 
