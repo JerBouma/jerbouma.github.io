@@ -1,6 +1,6 @@
 {% comment %}
   The end of an article: the dated updates note (front matter updates: a list of
-  {date, note}) and a short author box.
+  {date, note}), a citation line and a short author box.
 {% endcomment %}
 <div class="article-end">
   {% if page.updates.size > 0 %}
@@ -12,6 +12,11 @@
     </ul>
   </section>
   {% endif %}
+  {% assign _title = page.title | markdownify | strip_html | strip %}
+  <section class="article-cite" aria-label="Cite this article">
+    <p class="article-cite__label">Cite this article</p>
+    <p class="article-cite__text">Bouma, J. ({{ page.date | date: "%Y, %B %-d" }}). <em>{{ _title }}</em>. jeroenbouma.com. {{ page.url | absolute_url }}</p>
+  </section>
   <section class="article-author" aria-label="About the author">
     <img src="{{ '/assets/images/default/bio-photo-128.jpg' | relative_url }}" alt="" class="article-author__photo" width="56" height="56" loading="lazy">
     <div class="article-author__text">
