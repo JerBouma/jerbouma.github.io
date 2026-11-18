@@ -15,6 +15,11 @@ collection: article
 tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
+cover:
+  image: /assets/images/articles/find-stocks-and-etfs-with-claude/cover.jpg
+  alt: "Rows of oak card-catalogue drawers with brass handles."
+  credit: "Wooden card catalog furniture, MarkBuckawicki, CC0"
+  link: "https://commons.wikimedia.org/wiki/File:Wooden_Card_Catalog_Furniture.jpg"
 ---
 Ask an AI assistant for Europe's mid and small-cap drinks makers and you get a list that sounds about right. Look closer and it mixes things up: companies that still trade described as delisted, market caps off by a factor of five or more, micro caps presented as small caps. Language models answer from memory, and memory goes stale over time, which leaves them relying on internet searches instead.
 

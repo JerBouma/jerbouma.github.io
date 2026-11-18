@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [Risk & Derivatives]
 share: true
+cover:
+  image: /assets/images/articles/risk-exposure-major-indices/cover.jpg
+  alt: "A huge clawed wave curls over fishing boats, with Mount Fuji small in the distance."
+  credit: "Under the Wave off Kanagawa, Katsushika Hokusai, Art Institute of Chicago, CC0"
+  link: "https://commons.wikimedia.org/wiki/File:1952.343_-_Under_the_Wave_off_Kanagawa_(Kanagawa_oki_nami.jpg"
 ---
 
 On April 9, 2025, the day the US paused most of its new tariffs, the S&P 500 ETF (SPY) rose 10.5%, its largest daily gain between 2019 and 2025. Five days earlier it had fallen 5.85%. Those few days pushed the kurtosis of SPY's daily returns for 2025, a measure of how fat the tails are, to 26.6. That is about nine times its reading in 2023.

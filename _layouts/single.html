@@ -35,6 +35,7 @@ layout: default
           </h1>{% endif %}
           {% if page.collection == "article" %}
             {% include article__byline.html %}
+            {% include article__cover.html %}
           {% else %}
             {% include page__meta.html %}
           {% endif %}

@@ -13,6 +13,11 @@ collection: article
 tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceToolkitMCP.jpg
+cover:
+  image: /assets/images/articles/hosting-the-finance-toolkit-mcp-server/cover.jpg
+  alt: "A row of server racks in a data centre, with green status lights at the end of the aisle."
+  credit: "Server racks at NERSC, Derrick Coetzee, CC0"
+  link: "https://commons.wikimedia.org/wiki/File:Front_of_server_racks_at_NERSC.jpg"
 ---
 When people connect Claude, ChatGPT or Cursor to `https://financetoolkit.jeroenbouma.com/mcp`, they usually assume it runs on a cloud platform somewhere. It does not. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) runs on a Mini PC at my home, inside a Linux container managed by [Proxmox](https://www.proxmox.com/en/proxmox-virtual-environment/overview){:target="_blank"}, and [Cloudflare](https://www.cloudflare.com){:target="_blank"} handles everything between that container and the internet.
 

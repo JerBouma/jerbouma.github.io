@@ -1,0 +1,11 @@
+{% comment %}
+  An article's opening image, from front matter:
+  cover: {image: /assets/images/articles/<slug>/cover.jpg, alt: "...", credit: "...", link: "<source page>", position: "50% 40%"}
+  Not used as the share image: those are rendered per page (share-banner).
+{% endcomment %}
+{% if page.cover.image %}
+<figure class="article-cover">
+  <img src="{{ page.cover.image | relative_url }}" alt="{{ page.cover.alt | escape }}" class="article-cover__image"{% if page.cover.position %} style="object-position: {{ page.cover.position }}"{% endif %} fetchpriority="high" decoding="async">
+  {% if page.cover.credit %}<figcaption class="article-cover__credit">{% if page.cover.link %}<a href="{{ page.cover.link }}" target="_blank" rel="noopener">{{ page.cover.credit }}</a>{% else %}{{ page.cover.credit }}{% endif %}</figcaption>{% endif %}
+</figure>
+{% endif %}
