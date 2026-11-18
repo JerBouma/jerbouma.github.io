@@ -228,12 +228,31 @@
     }
     if (spec.cloud) series = cloudSeries(spec).concat(series);
     var legendNames = spec.series.map(function (s) { return s.name; });
+    // direct labels: a line chart of two to five series names each line at its end,
+    // in its colour, instead of a legend to match colours against (FT, Datawrapper).
+    // Phones keep the legend, where the names would take a third of the width.
+    var lines = spec.series.filter(function (s) { return !s.reference; });
+    var direct = !isBar && !spec.stack && !spec.cloud && spec.legend !== true && spec.directLabels !== false &&
+      lines.length >= 2 && lines.length <= 5 && window.innerWidth >= 700 && !lines.some(function (s) { return s.axis === 1; }) &&
+      lines.every(function (s) { return s.data.length && s.data[s.data.length - 1] !== null && s.data[s.data.length - 1] !== undefined; });
+    var labelRoom = 0;
+    if (direct) {
+      series.forEach(function (se, i) {
+        var src = spec.series[i];
+        if (!src || src.reference) return;
+        var color = src.color || PALETTE[i % PALETTE.length];
+        se.endLabel = { show: true, formatter: '{a}', color: color, fontSize: 12, fontWeight: 600, distance: 6 };
+        se.labelLayout = { moveOverlap: 'shiftY' };
+        se.emphasis = { focus: 'series', endLabel: { show: true } };
+      });
+      labelRoom = Math.min(170, 14 + 7 * Math.max.apply(null, lines.map(function (s) { return String(s.name).length; })));
+    }
     return {
       animationDuration: 600,
       color: PALETTE,
       textStyle: { fontFamily: 'inherit', color: text, fontSize: 13 },
-      grid: { left: 8, right: 28, top: 44, bottom: 12 + (spec.xname ? 26 : 0), containLabel: true },
-      legend: { data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
+      grid: { left: 8, right: direct ? labelRoom : 28, top: direct ? 16 : 44, bottom: 12 + (spec.xname ? 26 : 0), containLabel: true },
+      legend: { show: !direct, data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
       tooltip: {
         trigger: 'axis',
         backgroundColor: css('--masthead-bg', '#0f1115'),
