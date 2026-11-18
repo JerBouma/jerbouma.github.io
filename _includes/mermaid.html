@@ -128,6 +128,13 @@
   }
 
   function _initMermaid() {
+    // keep each diagram's source before anything draws it, and draw only from here:
+    // mermaid's own start-on-load could otherwise render first (MathJax delays
+    // document.fonts.ready), leaving an SVG where the source should be
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('.mermaid').forEach(function (el) {
+      if (el.dataset.source === undefined) el.dataset.source = el.innerHTML;
+    });
     // measure the labels with the page font, not the fallback it replaces
     // later (which cut the last letter off every label)
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(_renderMermaid);

@@ -17,6 +17,8 @@ cover:
   alt: "A bird's-eye watercolour of the Bank of England, drawn as if in ruins, its banking halls open to view."
   credit: "Aerial cutaway view of Soane's Bank of England, 1830, Joseph Gandy, public domain"
   link: "https://commons.wikimedia.org/wiki/File:Aerial_cutaway_view_of_Soane%27s_Bank_of_England_by_JM_Gandy_1830.jpg"
+  creator: "Joseph Gandy"
+  license: "https://creativecommons.org/publicdomain/mark/1.0/"
 ---
 
 At the end of 2022 the Bank of England's policy rate was 3.5%, while consumer prices in the United Kingdom had risen 9.1% over the year. In Brazil the central bank's rate stood at 13.75%, comfortably above the country's own inflation of 9.3%.

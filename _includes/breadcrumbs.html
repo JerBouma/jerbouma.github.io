@@ -13,7 +13,7 @@
 {% endif %}
 
 <nav class="breadcrumbs">
-  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+  <ol>
     {% assign crumbs = page.url | split: '/' %}
     {% assign i = 1 %}
     {% assign crumb_url = '' %}
@@ -25,10 +25,8 @@
         {% assign crumb_url = crumb_url | append: '/' | append: crumb %}
       {% endif %}
       {% if forloop.first %}
-        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <a href="{{ '/' | relative_url }}" itemprop="item"><span itemprop="name">{{ site.data.ui-text[site.locale].breadcrumb_home_label | default: "Home" }}</span></a>
-
-          <meta itemprop="position" content="{{ i }}" />
+        <li>
+          <a href="{{ '/' | relative_url }}"><span>{{ site.data.ui-text[site.locale].breadcrumb_home_label | default: "Home" }}</span></a>
         </li>
         <li class="sep" aria-hidden="true">{{ site.data.ui-text[site.locale].breadcrumb_separator | default: "/" }}</li>
       {% endif %}
@@ -36,9 +34,8 @@
         <li class="current">{{ page.title }}</li>
       {% else %}
         {% assign i = i | plus: 1 %}
-        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          {% assign crumb_href = crumb_url %}{% if crumb_url == "/articles" %}{% assign crumb_href = "/insights" %}{% endif %}<a href="{{ crumb_href | relative_url }}" itemprop="item">{% assign crumb_name = site.data.breadcrumbs[crumb] %}{% unless crumb_name %}{% assign crumb_name = crumb | replace: '-', ' ' | replace: '%20', ' ' | capitalize %}{% endunless %}<span itemprop="name">{{ crumb_name }}</span></a>
-          <meta itemprop="position" content="{{ i }}" />
+        <li>
+          {% assign crumb_href = crumb_url %}{% if crumb_url == "/articles" %}{% assign crumb_href = "/insights" %}{% endif %}<a href="{{ crumb_href | relative_url }}">{% assign crumb_name = site.data.breadcrumbs[crumb] %}{% unless crumb_name %}{% assign crumb_name = crumb | replace: '-', ' ' | replace: '%20', ' ' | capitalize %}{% endunless %}<span>{{ crumb_name }}</span></a>
         </li>
         <li class="sep" aria-hidden="true">{{ site.data.ui-text[site.locale].breadcrumb_separator | default: "/" }}</li>
       {% endif %}

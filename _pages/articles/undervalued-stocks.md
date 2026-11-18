@@ -17,6 +17,8 @@ cover:
   alt: "Three prospectors pan for gold beside a wooden sluice in a creek bed, 1889."
   credit: "Washing and panning gold, Rockerville, 1889, John Grabill, public domain"
   link: "https://commons.wikimedia.org/wiki/File:Grabill_-_Washing_and_panning_gold.jpg"
+  creator: "John Grabill"
+  license: "https://creativecommons.org/publicdomain/mark/1.0/"
 ---
 
 At the end of 2025, Merck traded at 14.5 times its fiscal 2025 earnings and Walmart at 40.8 times, which makes Merck the bargain on the multiple alone. Yet Merck also earned more on its capital, with a return on invested capital (ROIC) of 21.7% against 13.6% for Walmart.

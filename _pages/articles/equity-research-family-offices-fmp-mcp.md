@@ -17,6 +17,8 @@ cover:
   alt: "A sixteenth-century tax collector and his wife at a table with coins and an open account book, checking the figures."
   credit: "The Tax Collector and His Wife, 1538, Marinus van Reymerswaele, public domain"
   link: "https://commons.wikimedia.org/wiki/File:Marinus_van_Reymerswaele_-_A_Moneychanger_and_His_Wife.jpg"
+  creator: "Marinus van Reymerswaele"
+  license: "https://creativecommons.org/publicdomain/mark/1.0/"
 ---
 
 On July 17, 2026, Axon Enterprise closed at $510.28. The analysts covering it put their average price target at $658.56, a standard levered discounted cash flow model put the shares at $94.30, and the company's return on invested capital for 2025 was negative. Three readings of the same stock, the highest price seven times the lowest, and each one comes from a different part of the diligence file.

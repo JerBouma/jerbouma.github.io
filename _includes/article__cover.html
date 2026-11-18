@@ -5,7 +5,9 @@
 {% endcomment %}
 {% if page.cover.image %}
 <figure class="article-cover">
-  <img src="{{ page.cover.image | relative_url }}" alt="{{ page.cover.alt | escape }}" class="article-cover__image"{% if page.cover.position %} style="object-position: {{ page.cover.position }}"{% endif %} fetchpriority="high" decoding="async">
+  {% assign _cover_base = page.cover.image | remove: ".jpg" %}<picture>
+  <source type="image/webp" srcset="{{ _cover_base | append: '-800.webp' | relative_url }} 800w, {{ _cover_base | append: '-1200.webp' | relative_url }} 1200w, {{ _cover_base | append: '-1600.webp' | relative_url }} 1600w" sizes="(min-width: 64em) 880px, 100vw">
+  <img src="{{ page.cover.image | relative_url }}" alt="{{ page.cover.alt | escape }}" class="article-cover__image"{% if page.cover.position %} style="object-position: {{ page.cover.position }}"{% endif %} fetchpriority="high" decoding="async"></picture>
   {% if page.cover.credit %}<figcaption class="article-cover__credit">{% if page.cover.link %}<a href="{{ page.cover.link }}" target="_blank" rel="noopener">{{ page.cover.credit }}</a>{% else %}{{ page.cover.credit }}{% endif %}</figcaption>{% endif %}
 </figure>
 {% endif %}

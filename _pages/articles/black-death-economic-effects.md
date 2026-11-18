@@ -17,6 +17,8 @@ cover:
   alt: "A scorched landscape in which an army of skeletons sweeps across the countryside and cuts down people of every rank."
   credit: "The Triumph of Death, c. 1562, Pieter Bruegel the Elder, Museo del Prado, public domain"
   link: "https://commons.wikimedia.org/wiki/File:The_Triumph_of_Death_by_Pieter_Bruegel_the_Elder.jpg"
+  creator: "Pieter Bruegel the Elder"
+  license: "https://creativecommons.org/publicdomain/mark/1.0/"
 ---
 
 In 1348, England had 4.81 million people. Three years later, after the Black Death had passed through, it had 2.60 million. That is a fall of 46%, the largest three-year drop in population in the Bank of England's record of the English economy, which starts in 1086.

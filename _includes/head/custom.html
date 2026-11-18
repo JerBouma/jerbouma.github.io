@@ -15,9 +15,9 @@
   }
 </script>
 
-<!-- MathJax: only on documentation pages that contain a formula (\[...\] or \(...\) blocks) -->
+<!-- MathJax: only on documentation pages and articles that contain a formula (\[...\] or \(...\) blocks) -->
 {%- assign has_math = false -%}
-{%- if page.permalink contains "financetoolkit/docs" or page.permalink contains "financescenarios/docs" -%}
+{%- if page.permalink contains "financetoolkit/docs" or page.permalink contains "financescenarios/docs" or page.collection == "article" -%}
   {%- if content contains "\[" or content contains "\(" -%}{%- assign has_math = true -%}{%- endif -%}
 {%- endif -%}
 {% if has_math %}
@@ -50,12 +50,14 @@
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": {{ site.title | jsonify }},
-  "url": {{ site.url | jsonify }},
+  "url": {{ "/" | absolute_url | jsonify }},
+  "alternateName": "jeroenbouma.com",
   "description": {{ site.description | jsonify }},
   "author": {
     "@type": "Person",
+    "@id": {{ "/#person" | absolute_url | jsonify }},
     "name": {{ site.name | jsonify }},
-    "url": {{ site.url | jsonify }},
+    "url": {{ "/" | absolute_url | jsonify }},
     "jobTitle": "Quantitative Investment Strategist",
     "sameAs": [
       "https://www.linkedin.com/in/boumajeroen/",
@@ -76,8 +78,9 @@
   "dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",{% endif %}
   "mainEntity": {
     "@type": "Person",
+    "@id": {{ "/#person" | absolute_url | jsonify }},
     "name": {{ site.name | jsonify }},
-    "url": {{ site.url | jsonify }},
+    "url": {{ "/" | absolute_url | jsonify }},
     "image": {{ "/assets/images/default/bio-photo.jpg" | absolute_url | jsonify }},
     "jobTitle": "Quantitative Investment Strategist",
     "description": {{ site.description | jsonify }},
@@ -127,8 +130,9 @@
   {% if page.last_modified_at %}"dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",{% endif %}
   "author": {
     "@type": "Person",
+    "@id": {{ "/#person" | absolute_url | jsonify }},
     "name": {{ site.name | jsonify }},
-    "url": {{ site.url | jsonify }},
+    "url": {{ "/resume" | absolute_url | jsonify }},
     "jobTitle": "Quantitative Investment Strategist",
     "sameAs": [
       "https://www.linkedin.com/in/boumajeroen/",
@@ -137,9 +141,23 @@
   },
   "publisher": {
     "@type": "Person",
-    "name": {{ site.name | jsonify }}
-  }{% assign _article_img = page.header.og_image | default: page.image %}{% if _article_img %},
-  "image": {{ _article_img | absolute_url | jsonify }}{% endif %}
+    "@id": {{ "/#person" | absolute_url | jsonify }},
+    "name": {{ site.name | jsonify }},
+    "url": {{ "/" | absolute_url | jsonify }}
+  }{% if page.cover.image %},
+  "image": [{
+    "@type": "ImageObject",
+    "url": {{ page.cover.image | absolute_url | jsonify }},
+    "contentUrl": {{ page.cover.image | absolute_url | jsonify }},
+    "width": 1600,
+    "height": 900{% if page.cover.alt %},
+    "caption": {{ page.cover.alt | jsonify }}{% endif %}{% if page.cover.credit %},
+    "creditText": {{ page.cover.credit | jsonify }}{% endif %}{% if page.cover.creator %},
+    "creator": { "@type": "Person", "name": {{ page.cover.creator | jsonify }} }{% endif %}{% if page.cover.license %},
+    "license": {{ page.cover.license | jsonify }}{% endif %}{% if page.cover.link %},
+    "acquireLicensePage": {{ page.cover.link | jsonify }}{% endif %}
+  }]{% else %}{% assign _article_img = page.header.og_image | default: page.image %}{% if _article_img %},
+  "image": {{ _article_img | absolute_url | jsonify }}{% endif %}{% endif %}
 }
 </script>
 {% endif %}
