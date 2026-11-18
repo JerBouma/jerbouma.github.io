@@ -7140,3 +7140,56 @@ body.article-document {
     .article-author { padding: 14px; gap: 12px; }
   }
 }
+
+// ── Article tables and print ──────────────────────────────────────────────────
+// figures in tables use equal-width digits, and number columns (marked .is-num by
+// _includes/scripts.html) are right-aligned, so decimals line up down a column
+.page__content table td,
+.page__content table th { font-variant-numeric: tabular-nums; }
+.page__content table .is-num { text-align: right !important; }
+
+// An article printed or saved as PDF: the text, the charts as drawn and the method
+// note, without the site around it
+@media print {
+  body.article-document {
+    background: #fff !important;
+    color: #000 !important;
+
+    .masthead, .breadcrumbs, .sidebar, .sidebar__right, .page__footer, footer.page__meta,
+    .article-share, .pagination, .back-to-top, .article-progress, .article-next,
+    .ft-chart-actions, .ft-chart-panel, .site-search, #site-nav, .article-author__links,
+    .article-sidebar, .article-side { display: none !important; }
+
+    #main, .page, .page__inner-wrap, .page__content, header, .article-end {
+      float: none !important;
+      width: auto !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      background: none !important;
+    }
+    .page__content > p, .page__content > ul, .page__content > ol, .article-standfirst {
+      max-width: none !important;
+      font-size: 11pt !important;
+      line-height: 1.5 !important;
+      color: #000 !important;
+    }
+    .page__title, h2, h3 { color: #000 !important; break-after: avoid; }
+    .article-cover img { max-height: 9cm; }
+    .ft-chart-box, .ft-chart, figure, table, .article-keypoints, .article-author { break-inside: avoid; }
+    .ft-chart-box, .article-keypoints, .article-author { background: none !important; border-color: #ccc !important; }
+    a { color: #000 !important; text-decoration: underline; }
+    // the URL after a link only for sources in the text, not for the title, byline,
+    // cover credit or author box
+    a::after { content: none !important; }
+    .page__content > p a[href^="http"]::after,
+    .page__content .article-method p a[href^="http"]::after {
+      content: " (" attr(href) ")" !important;
+      font-size: 8pt;
+      word-break: break-all;
+    }
+    .article-kicker a, .article-byline a { text-decoration: none; }
+  }
+}

@@ -15,5 +15,12 @@
     window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     window.addEventListener('resize', update);
     update();
+    // printing: the folded Data and method note prints open
+    window.addEventListener('beforeprint', function () {
+      document.querySelectorAll('details.article-method').forEach(function (d) { d.dataset.wasOpen = d.open ? '1' : ''; d.open = true; });
+    });
+    window.addEventListener('afterprint', function () {
+      document.querySelectorAll('details.article-method').forEach(function (d) { d.open = d.dataset.wasOpen === '1'; });
+    });
   })();
 </script>

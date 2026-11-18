@@ -41,6 +41,23 @@
       table.parentNode.insertBefore(wrapper, table);
       wrapper.appendChild(table);
     });
+    // numbers line up: a column whose cells are all numbers (with %, x, $, signs,
+    // B/M/T) is right-aligned, its header too
+    var NUM = /^[−\-+]?[$€£]?[−\-+]?[\d.,]+\s?(%|x|bp|[BMTK])?$/;
+    document.querySelectorAll('.page__content table:not(.highlight)').forEach(function (table) {
+      var rows = table.querySelectorAll('tbody tr');
+      if (!rows.length) return;
+      var cols = rows[0].children.length;
+      for (var c = 1; c < cols; c++) {
+        var cells = [].map.call(rows, function (r) { return r.children[c]; }).filter(Boolean);
+        var filled = cells.filter(function (td) { return td.textContent.trim() && td.textContent.trim() !== 'nan'; });
+        if (filled.length && filled.every(function (td) { return NUM.test(td.textContent.trim().replace(/\*/g, '')); })) {
+          cells.forEach(function (td) { td.classList.add('is-num'); });
+          var th = table.querySelector('thead tr') && table.querySelector('thead tr').children[c];
+          if (th) th.classList.add('is-num');
+        }
+      }
+    });
     // a table wider than the screen scrolls sideways: make it reachable and
     // scrollable by keyboard, and name it for screen readers
     function scrollable() {
