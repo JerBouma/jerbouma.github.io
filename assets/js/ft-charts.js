@@ -15,10 +15,10 @@
   // The Python and MCP buttons in an article chart's top right (_includes/ft-chart.html
   // with code= or mcp=) dim the chart and lay the code or the question over it, one at a
   // time; the same button, Escape or a click on the dimmed chart closes it
+  // (the Notes button is added once the chart is drawn, so clicks are handled on the box)
   Array.prototype.forEach.call(document.querySelectorAll('.ft-chart-box'), function (box) {
-    var buttons = box.querySelectorAll('.ft-chart-action');
     function show(button) {
-      Array.prototype.forEach.call(buttons, function (b) {
+      Array.prototype.forEach.call(box.querySelectorAll('.ft-chart-action[data-panel]'), function (b) {
         var on = b === button;
         b.setAttribute('aria-expanded', on ? 'true' : 'false');
         b.classList.toggle('is-on', on);
@@ -26,12 +26,9 @@
       });
       box.classList.toggle('is-open', !!button);
     }
-    Array.prototype.forEach.call(buttons, function (button) {
-      button.addEventListener('click', function () {
-        show(button.getAttribute('aria-expanded') === 'true' ? null : button);
-      });
-    });
     box.addEventListener('click', function (e) {
+      var button = e.target.closest('.ft-chart-action[data-panel]');
+      if (button) return show(button.getAttribute('aria-expanded') === 'true' ? null : button);
       if (!box.classList.contains('is-open') || e.target.closest('.ft-chart-action')) return;
       var panel = e.target.closest('.ft-chart-panel');
       if (!panel || e.target === panel) show(null);
@@ -965,19 +962,51 @@
       sub.textContent = spec.subtitle;
       title.insertAdjacentElement('afterend', sub);
     }
-    if (spec.note && !box.querySelector('.ft-chart__note')) {
-      var note = document.createElement('p');
-      note.className = 'ft-chart__note';
-      note.textContent = 'Note: ' + spec.note;
-      box.appendChild(note);
-    }
     if (spec.source && !box.querySelector('.ft-chart__source')) {
       var src = document.createElement('p');
       src.className = 'ft-chart__source';
       src.textContent = 'Source: ' + spec.source;
       box.appendChild(src);
     }
+    addNotes(box, spec);
     addDataButton(box, spec);
+  }
+
+  // A "Notes" button next to Python and MCP for the chart's `note`: how the data is built and
+  // what to keep in mind when reading it, one paragraph per string, in a panel over the chart
+  function addNotes(box, spec) {
+    var holder = box.closest('.ft-chart-box');
+    var actions = holder && holder.querySelector('.ft-chart-actions');
+    if (!spec.note || !actions || actions.querySelector('[data-panel="notes"]')) return;
+    var panel = document.createElement('div');
+    panel.className = 'ft-chart-panel';
+    panel.setAttribute('data-panel', 'notes');
+    panel.hidden = true;
+    var card = document.createElement('div');
+    card.className = 'ft-chart-panel__card';
+    card.innerHTML = '<p class="ft-chart-panel__label"><i class="fas fa-circle-info" aria-hidden="true"></i> About this chart</p>';
+    [].concat(spec.note).forEach(function (text) {
+      var p = document.createElement('p');
+      p.className = 'ft-chart-panel__text';
+      p.textContent = text;
+      card.appendChild(p);
+    });
+    if (spec.source) {
+      var src = document.createElement('p');
+      src.className = 'ft-chart-panel__note';
+      src.textContent = 'Source: ' + spec.source;
+      card.appendChild(src);
+    }
+    panel.appendChild(card);
+    holder.appendChild(panel);
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'ft-chart-action';
+    button.setAttribute('data-panel', 'notes');
+    button.setAttribute('aria-expanded', 'false');
+    button.title = 'How this chart is built and what to keep in mind';
+    button.innerHTML = '<i class="fas fa-circle-info" aria-hidden="true"></i><span>Notes</span>';
+    actions.appendChild(button);
   }
 
   // The chart's data as CSV rows: one row per x value (or per point, or per heatmap row),

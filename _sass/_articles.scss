@@ -369,6 +369,13 @@
   border-top: 1px solid var(--card-border);
 }
 
+.page__content .ft-chart-panel__text {
+  margin: 0 0 10px !important;
+  color: var(--text-primary);
+  font-size: 0.92rem !important;
+  line-height: 1.55;
+}
+.page__content .ft-chart-panel__text + .ft-chart-panel__note { margin-top: 14px !important; padding-top: 10px; border-top: 1px solid var(--card-border); }
 .page__content .ft-chart-panel__note { flex: 1; margin: 0 !important; color: var(--text-muted); font-size: 0.8rem !important; line-height: 1.45; }
 
 .ft-chart-panel__copy {
@@ -390,7 +397,7 @@
 
 // on a phone the buttons show only their icons
 @media (max-width: 600px) {
-  .ft-chart-box .ft-chart__head { padding-right: 84px; }
+  .ft-chart-box .ft-chart__head { padding-right: 150px; }
   .ft-chart-action { padding: 5px 9px; }
   .ft-chart-action span { display: none; }
   .ft-chart-panel { inset: 54px 10px 10px; }
@@ -405,15 +412,6 @@
   font-weight: 400;
   line-height: 1.4;
 }
-// an optional note between them: the one construction detail that changes the reading
-.page__content .ft-chart__note {
-  margin: 8px 2px 0 !important;
-  color: var(--text-muted);
-  font-size: 0.74rem !important;
-  font-style: italic;
-  line-height: 1.4;
-}
-.page__content .ft-chart__note + .ft-chart__source { margin-top: 2px !important; }
 .page__content .ft-chart__source {
   margin: 8px 2px 0 !important;
   color: var(--text-muted);

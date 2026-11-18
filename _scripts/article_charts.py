@@ -92,7 +92,7 @@ def screen_charts() -> dict:
             "title": "P/E against EV/EBITDA",
             "subtitle": "14 large caps, fiscal 2025, in times; Intel left out (negative earnings); dashed lines at 20x and 18x",
             "source": f"{source}, data to {DATA_TO_ALL}",
-            "note": "Share prices of 31 December 2025 over each company's fiscal 2025 figures, whose years end between June 2025 and January 2026",
+            "note": ["Every multiple uses the share price of 31 December 2025 over each company's fiscal 2025 figures, whose years end between June 2025 and January 2026.", "Negative multiples are left out of the screen, which is why Intel, with negative earnings, is not on the chart."],
             "legend": "Orange: below 20x earnings and 18x EBITDA",
             "xname": "P/E",
             "yname": "EV/EBITDA",
@@ -107,7 +107,7 @@ def screen_charts() -> dict:
             "title": "Return on equity, ROIC and gross margin of the five value candidates",
             "subtitle": "Percent; fiscal 2025, and ROIC for each fiscal year from 2022 to 2025",
             "source": f"{source}, data to {DATA_TO_CANDIDATES}",
-            "note": "ROIC is after-tax operating profit over average debt plus equity",
+            "note": ["ROIC is operating income taxed at the effective tax rate (NOPAT), over the average of total debt plus total equity, so it measures the return on all the capital a business uses, however it is financed.", "ROE is net income over average equity, which borrowing and buybacks can lift without the business earning more."],
             "tabs": [
                 {
                     "label": "Fiscal 2025",
@@ -325,8 +325,7 @@ def black_death_charts() -> dict:
     pay = data.loc[1330:1450]
     # an area from zero, so the fall of almost half in three years shows as the drop it was
     charts["bd-population"]["series"][0]["area"] = True
-    charts["bd-population"]["note"] = (
-        "Estimated for benchmark years and interpolated between them, so it falls by the same share in each year from 1349 to 1351")
+    charts["bd-population"]["note"] = ["Nobody counted the people of England in the fourteenth century. The series is an estimate for benchmark years, reconstructed from manor records, tax returns, prices and wages, with the years in between interpolated.", "That is why it falls by the same share, about 18.5%, in each year from 1349 to 1351: the data knows the level before and after the Black Death, not the path in between.", "Read the level of a single year loosely. The change over a decade is far more reliable."]
 
     charts["bd-pay-prices"] = line(
         "Earnings and consumer prices in England (1340-1347 = 100)",
