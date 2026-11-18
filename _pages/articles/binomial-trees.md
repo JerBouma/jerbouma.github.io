@@ -15,8 +15,11 @@ share: true
 standfirst: "A binomial tree can value an option that may be exercised early, which the Black-Scholes formula can't. How much does early exercise add, and how close do the model prices come to the market?"
 key_points:
   - "A three-step tree values a one-year European call with a $90 strike on a $100 stock at $16.03, and the put at $4.75."
-  - "Early exercise lifts the American put to $4.88 from $4.75, while the American call stays at $16.03 with a dividend yield of only 0.5%."
+  - "Early exercise lifts the American put to $4.88 from $4.75 in a three-step tree, but with 200 steps it adds only about 6 cents."
   - "For an Apple $190 call, the binomial tree ($4.32) and Black-Scholes ($4.33) agree, but both sit well above the market's $2.67 and share the same 28.26% historical volatility."
+updates:
+  - date: 2026-11-18
+    note: "Added a section on how many steps the tree needs, with the early-exercise value of the put at up to 200 steps."
 cover:
   image: /assets/images/articles/binomial-trees/cover.jpg
   alt: "Traders on the floor of the Chicago Board of Trade in 1949, watching the price boards."
@@ -280,6 +283,36 @@ Because the American option can be exercised early, its fair value can be higher
 
 In this example that only happens for the put. After two down moves the stock is at $74.93, and exercising the put there pays $15.07 straight away, more than the $14.60 that holding it is worth. That early-exercise value carries back through the tree, so the American put is worth $4.88 today against $4.75 for the European put. The American call is worth exactly the same as the European call, $16.03: with a dividend yield of only 0.5%, exercising a call early never beats holding it.
 
+## How Many Steps Are Enough
+
+Three steps keep the trees readable, but three steps is a coarse picture of a year. A tree with more steps moves in smaller jumps, and its price converges to the Black-Scholes price for the European call, $16.03. The same call priced with 1 to 200 steps, with the early-exercise value of the put in the second tab:
+
+{% capture code_convergence %}
+```python
+# pip install financetoolkit
+from financetoolkit.options import binomial_trees_model, black_scholes_model
+
+inputs = dict(stock_price=100, strike_price=90, years=1, risk_free_rate=0.02,
+              volatility=0.25, dividend_yield=0.005)
+
+def price(steps, **kwargs):
+    tree = binomial_trees_model.get_option_payoffs(timesteps=steps, **inputs, **kwargs)
+    return tree.iloc[0, 0]  # the value today, at the root of the tree
+
+call = {n: price(n) for n in range(1, 201)}
+early_exercise = {
+    n: price(n, put_option=True, american_option=True) - price(n, put_option=True)
+    for n in range(1, 201)
+}
+black_scholes = black_scholes_model.get_black_scholes(100, 90, 0.02, 0.25, 1, 0.005)
+```
+{% endcapture %}
+{% include ft-chart.html id="binom-convergence" src="/assets/data/article-charts.json" label="Binomial tree price of the European call and the value of early exercise of the put, by number of steps from 1 to 200" code=code_convergence %}
+
+The price doesn't close in on Black-Scholes in a straight line. It zigzags from one number of steps to the next, because the strike sits at a different place between the final nodes each time. The three-step tree lands within a tenth of a cent of Black-Scholes by luck: with ten steps the tree is 16 cents off. The error only stays within 5 cents from 30 steps on, and within a cent from about 160 steps.
+
+**The early-exercise value is about half what the small tree suggests.** In the three-step tree the right to exercise the put early is worth $0.13. With more steps it settles at about $0.06, so the American put is worth around $4.80 rather than $4.88. For a put this far out of the money, a three-step tree overstates what early exercise adds.
+
 ## Using the Finance Toolkit
 
 The Finance Toolkit provides a function to calculate the binomial tree for both European and American options. Install the toolkit using pip:
@@ -481,3 +514,5 @@ The binomial tree ($4.32) and Black-Scholes ($4.33) give almost the same fair va
 {: .notice--info}
 **Statistical Option Arbitrage**<br>
 Comparing theoretical option prices (from models like Binomial Trees or Black-Scholes) with actual market prices to identify and trade on discrepancies is a strategy used in finance, sometimes referred to as "Statistical Option Arbitrage." While pure risk-free arbitrage is rare, statistical arbitrage aims to exploit persistent deviations based on historical patterns and model assumptions. For academic context, see Ahmet Göncü, "*Statistical Arbitrage in the Black-Scholes Framework*" (Quantitative Finance, 2015) ([researchgate.net](https://www.researchgate.net/publication/263352435_Statistical_Arbitrage_in_the_Black-Scholes_Framework){:target="_blank"}), which explores theoretical possibilities for such strategies.
+
+{% include ft-charts-script.html %}

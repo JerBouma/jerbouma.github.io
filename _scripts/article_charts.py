@@ -19,6 +19,8 @@ Articles covered:
   event from economic history per article, from the Finance Toolkit's
   historical datasets. These need no key and end at a fixed date, so a rerun
   gives the same charts. Run only these with `python _scripts/article_charts.py history`.
+- /articles/binomial-trees: the article's option priced with 1 to 200 steps,
+  against Black-Scholes. Pure calculation, no key or data needed.
 """
 
 import json
@@ -283,7 +285,13 @@ BOE = {
     "earnings": "Earnings per head",
     "prices": "Consumer price index",
     "gdp": "Real GDP of England at market prices",
+    "exports": "Export volumes",
+    "hours": "Average weekly hours worked",
+    "coin": "Coin in circulation outside the Bank of England",
+    "labour_share": "Labour share, whole economy excluding rents",
+    "unemployment": "Unemployment rate",
 }
+BOE_SOURCE = "Bank of England, A millennium of macroeconomic data (v3.1)"
 
 
 def millennium() -> pd.DataFrame:
@@ -300,69 +308,175 @@ def index_to(series: pd.Series, start: int, end: int) -> pd.Series:
     return series / series.loc[start:end].mean() * 100
 
 
-def black_death_charts() -> dict:
-    data = millennium()
-    data["gdp_per_head"] = data["gdp"] / data["population"]
+def line(title, frame, names, fmt, digits=1, area=False, **extra) -> dict:
+    """A line chart of the named columns of frame (column: legend name)."""
+    chart = {
+        "type": "line",
+        "title": title,
+        "x": [str(year) for year in frame.index],
+        "series": [{"name": name, "data": values(frame[column], digits)} for column, name in names.items()],
+        "format": fmt,
+    }
+    if area:
+        for series in chart["series"]:
+            series["area"] = True
+    chart.update(extra)
+    return chart
 
-    def line(title, frame, names, fmt, digits=2):
-        return {
-            "type": "line",
-            "title": title,
-            "x": [str(year) for year in frame.index],
-            "series": [{"name": name, "data": values(frame[column], digits)} for column, name in names.items()],
-            "format": fmt,
-        }
+
+def tab(label, chart) -> dict:
+    return {**chart, "label": label}
+
+
+def black_death_charts() -> dict:
+    """The charts of /articles/black-death-economic-effects."""
+    data = millennium()
+    base = (1340, 1347)
+    charts = {}
 
     span = data.loc[1300:1500]
-    charts = {
-        "bd-population": line(
-            "Population of England (millions)", span.assign(population=span["population"] / 1000),
-            {"population": "Population"}, "ratio"),
-        "bd-wages": line(
-            "Real consumption wages in England", data.loc[1300:1550], {"wages": "Real consumption wage"}, "number"),
-    }
+    charts["bd-population"] = line(
+        "Population of England", span[["population"]] / 1000, {"population": "Population"}, "ratio", 2, area=True,
+        subtitle="England, 1300 to 1500, millions of people",
+        note=[
+            "Nobody counted the people of England in the fourteenth century. The series is an estimate for benchmark years, reconstructed from manor records, tax returns, prices and wages, with the years in between interpolated.",
+            "That is why it falls by the same share, about 18.5%, in each year from 1349 to 1351: the data knows the level before and after the Black Death, not the path in between.",
+            "Read the level of a single year loosely. The change over a decade is far more reliable, which is why the article mostly compares averages over several years.",
+        ],
+        source=BOE_SOURCE)
+
+    wages = pd.DataFrame({"wages": index_to(data["wages"], *base)}).loc[1300:1550]
+    charts["bd-wages"] = line(
+        "Real consumption wage in England", wages, {"wages": "Real consumption wage"}, "number",
+        subtitle="Nominal day wage divided by consumer prices, England, 1300 to 1550, average of 1340 to 1347 = 100",
+        source=BOE_SOURCE)
 
     pay = data.loc[1330:1450]
-    # an area from zero, so the fall of almost half in three years shows as the drop it was
-    charts["bd-population"]["series"][0]["area"] = True
-    charts["bd-population"]["note"] = ["Nobody counted the people of England in the fourteenth century. The series is an estimate for benchmark years, reconstructed from manor records, tax returns, prices and wages, with the years in between interpolated.", "That is why it falls by the same share, about 18.5%, in each year from 1349 to 1351: the data knows the level before and after the Black Death, not the path in between.", "Read the level of a single year loosely. The change over a decade is far more reliable, which is why the article mostly compares averages over several years."]
-
     charts["bd-pay-prices"] = line(
-        "Earnings and consumer prices in England (1340-1347 = 100)",
-        pd.DataFrame({"earnings": index_to(pay["earnings"], 1340, 1347), "prices": index_to(pay["prices"], 1340, 1347)}),
-        {"earnings": "Earnings per head", "prices": "Consumer prices"}, "number", 1)
+        "Earnings per head and consumer prices in England",
+        pd.DataFrame({"earnings": index_to(pay["earnings"], *base), "prices": index_to(pay["prices"], *base)}),
+        {"earnings": "Earnings per head", "prices": "Consumer prices"}, "number",
+        subtitle="Nominal weekly earnings and the consumer price index, England, 1330 to 1450, average of 1340 to 1347 = 100",
+        source=BOE_SOURCE)
+
+    hours = data.loc[1300:1650]
+    per_hour = pay["earnings"] / pay["hours"] / pay["prices"]
+    charts["bd-hours"] = {
+        "type": "tabs",
+        "title": "Hours worked and pay per hour in England",
+        "subtitle": "England, weekly hours from 1300 to 1650, and real pay per hour against the real wage from 1330 to 1450 with the average of 1340 to 1347 = 100",
+        "note": [
+            "For this period the Bank of England builds weekly hours from the number of days a casual labourer had to work to earn what a worker on a yearly contract earned, at ten hours a day, and marks the series as highly tentative. Read the first tab for its direction more than its level.",
+            "Real pay per hour is weekly earnings divided by weekly hours and by the consumer price index, indexed to the average of 1340 to 1347.",
+            "Because hours fell while earnings rose, pay per hour rose faster than the real wage, which is measured per day.",
+        ],
+        "source": BOE_SOURCE,
+        "tabs": [
+            tab("Weekly hours", line("Average weekly hours worked", hours, {"hours": "Weekly hours"}, "number", area=True)),
+            tab("Pay per hour", line(
+                "Real pay per hour and real consumption wage",
+                pd.DataFrame({"per_hour": index_to(per_hour, *base), "wages": index_to(pay["wages"], *base)}),
+                {"per_hour": "Real pay per hour", "wages": "Real consumption wage"}, "number")),
+        ],
+    }
 
     output = pd.DataFrame({
-        "gdp": index_to(pay["gdp"], 1340, 1347),
-        "gdp_per_head": index_to(pay["gdp_per_head"], 1340, 1347),
+        "gdp": index_to(pay["gdp"], *base),
+        "gdp_per_head": index_to(pay["gdp"] / pay["population"], *base),
+        "exports": index_to(pay["exports"], *base),
     })
     charts["bd-output"] = {
         "type": "tabs",
-        "title": "Real GDP of England (1340-1347 = 100)",
+        "title": "Real GDP and exports of England",
+        "subtitle": "Real GDP, real GDP per head and export volumes, England, 1330 to 1450, average of 1340 to 1347 = 100",
+        "source": BOE_SOURCE,
         "tabs": [
-            {**line("Real GDP of England (1340-1347 = 100)", output, {"gdp": "Real GDP"}, "number", 1), "label": "Real GDP"},
-            {**line("Real GDP per head in England (1340-1347 = 100)", output, {"gdp_per_head": "Real GDP per head"}, "number", 1),
-             "label": "Real GDP per head"},
+            tab("Real GDP", line("Real GDP of England", output, {"gdp": "Real GDP"}, "number")),
+            tab("Real GDP per head", line("Real GDP per head in England", output, {"gdp_per_head": "Real GDP per head"}, "number")),
+            tab("Exports", line("English export volumes", output, {"exports": "Export volumes"}, "number")),
+        ],
+    }
+
+    # coin in £ million and population in thousands, so this is £ per person
+    coin = pd.DataFrame({"per_person": span["coin"] / span["population"] * 1000, "total": span["coin"]})
+    charts["bd-coin"] = {
+        "type": "tabs",
+        "title": "Coin in circulation in England",
+        "subtitle": "England, 1300 to 1500, pounds per person and millions of pounds, in pounds of the time",
+        "source": BOE_SOURCE,
+        "tabs": [
+            tab("Per person", line("Coin in circulation per person (£)", coin, {"per_person": "Coin per person"}, "ratio", 2, area=True)),
+            tab("Total", line("Coin in circulation (£ million)", coin, {"total": "Coin in circulation"}, "ratio", 2, area=True)),
         ],
     }
 
     long_run = data.loc[1250:1700]
     charts["bd-long-run"] = line(
-        "Population and real wages in England (1340-1347 = 100)",
-        pd.DataFrame({
-            "population": index_to(long_run["population"], 1340, 1347),
-            "wages": index_to(long_run["wages"], 1340, 1347),
-        }),
-        {"population": "Population", "wages": "Real consumption wage"}, "number", 1)
+        "Population and real wages in England",
+        pd.DataFrame({"population": index_to(long_run["population"], *base), "wages": index_to(long_run["wages"], *base)}),
+        {"population": "Population", "wages": "Real consumption wage"}, "number",
+        subtitle="England, 1250 to 1700, average of 1340 to 1347 = 100",
+        source=BOE_SOURCE)
+
+    war = data.loc[1905:1925]
+    charts["bd-then-now"] = {
+        "type": "tabs",
+        "title": "Labour share, unemployment and hours in the UK",
+        "subtitle": "United Kingdom, 1905 to 1925, labour share of income and unemployment rate in percent, and average weekly hours",
+        "source": BOE_SOURCE,
+        "tabs": [
+            tab("Labour share", line("Labour share of income", war, {"labour_share": "Labour share"}, "percent", 4)),
+            tab("Unemployment", line("Unemployment rate", war, {"unemployment": "Unemployment rate"}, "percent", 4)),
+            tab("Weekly hours", line("Average weekly hours worked", war, {"hours": "Weekly hours"}, "number")),
+        ],
+    }
     return charts
 
 
+# --- Binomial trees: how the tree price converges ----------------------------
+
+def binomial_charts() -> dict:
+    """The convergence chart of /articles/binomial-trees: the article's option priced
+    with 1 to 200 steps, against Black-Scholes, and the early-exercise value of the put."""
+    from financetoolkit.options import binomial_trees_model, black_scholes_model
+
+    inputs = {"stock_price": 100, "strike_price": 90, "years": 1, "risk_free_rate": 0.02,
+              "volatility": 0.25, "dividend_yield": 0.005}
+    steps = list(range(1, 201))
+
+    def price(n, **kwargs):
+        return float(binomial_trees_model.get_option_payoffs(timesteps=n, **inputs, **kwargs).iloc[0, 0])
+
+    call = [price(n) for n in steps]
+    put = [price(n, put_option=True) for n in steps]
+    american_put = [price(n, put_option=True, american_option=True) for n in steps]
+    black_scholes = float(black_scholes_model.get_black_scholes(100, 90, 0.02, 0.25, 1, 0.005))
+
+    x = [str(n) for n in steps]
+    return {"binom-convergence": {
+        "type": "tabs",
+        "title": "Binomial tree price by number of steps",
+        "subtitle": "$100 stock, $90 strike, one year, 2% rate, 0.5% dividend yield, 25% volatility; 1 to 200 steps",
+        "source": "Calculated with the Finance Toolkit's binomial tree and Black-Scholes models",
+        "tabs": [
+            {"type": "line", "label": "European call", "title": "European call: binomial tree and Black-Scholes", "x": x,
+             "xname": "Steps", "format": "price", "directLabels": False,
+             "series": [{"name": "Binomial tree", "data": [round(v, 4) for v in call]},
+                        {"name": "Black-Scholes", "data": [round(black_scholes, 4)] * len(steps), "reference": True}]},
+            {"type": "line", "label": "Early exercise", "title": "Value of early exercise: American put minus European put", "x": x,
+             "xname": "Steps", "format": "price",
+             "series": [{"name": "Early-exercise value", "data": [round(a - e, 4) for a, e in zip(american_put, put)]}]},
+        ],
+    }}
+
+
 HISTORY = [black_death_charts]
+NO_KEY = HISTORY + [binomial_charts]
 
 
 def main() -> None:
     payload = json.loads(OUTPUT.read_text())
-    for build in HISTORY:
+    for build in HISTORY if sys.argv[1:] == ["history"] else NO_KEY:
         payload["charts"].update(build())
     if sys.argv[1:] != ["history"]:
         if not API_KEY:
