@@ -26,7 +26,7 @@ cover:
   creator: "Derrick Coetzee"
   license: "https://creativecommons.org/publicdomain/zero/1.0/"
 ---
-When people connect Claude, ChatGPT or Cursor to `https://financetoolkit.jeroenbouma.com/mcp`, they usually assume it runs on a cloud platform somewhere. It does not. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) runs on a Mini PC at my home, inside a Linux container managed by [Proxmox](https://www.proxmox.com/en/proxmox-virtual-environment/overview){:target="_blank"}, and [Cloudflare](https://www.cloudflare.com){:target="_blank"} handles everything between that container and the internet.
+When people connect Claude, ChatGPT or Cursor to `https://financetoolkit.jeroenbouma.com/mcp`, they usually assume it runs on a cloud platform somewhere. It does not. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) runs on a Mini PC at my home, inside a Linux container managed by [Proxmox](https://www.proxmox.com/en/products/proxmox-virtual-environment/overview){:target="_blank"}, and [Cloudflare](https://www.cloudflare.com){:target="_blank"} handles everything between that container and the internet.
 
 That may sound like a hobby setup for a public service, but an MCP server is an unusually good fit for it. It needs little compute, it holds no user data, and the parts that matter for a public endpoint (TLS, protection against abuse, a stable address) are what Cloudflare already provides for free. This article explains how the pieces fit together and what to think about if you want to host an MCP server of your own.
 
@@ -107,7 +107,7 @@ curl http://localhost:8000/health
 
 ## Proxmox: One Container Per Service
 
-The MCP server has a container of its own on the Mini PC, and nothing else runs in it. [Proxmox VE](https://www.proxmox.com/en/proxmox-virtual-environment/overview){:target="_blank"} makes that cheap: it turns the Mini PC into a small server that runs many isolated machines at once, and it is free, open source and managed through a web interface.
+The MCP server has a container of its own on the Mini PC, and nothing else runs in it. [Proxmox VE](https://www.proxmox.com/en/products/proxmox-virtual-environment/overview){:target="_blank"} makes that cheap: it turns the Mini PC into a small server that runs many isolated machines at once, and it is free, open source and managed through a web interface.
 
 Proxmox offers two kinds of guests: full virtual machines and LXC containers. Containers share the host's kernel, so they start in seconds and use far less memory than a virtual machine, while still being isolated from each other with their own file system, network address and resource limits. For a Python web service that is the right trade-off.
 
@@ -133,7 +133,7 @@ cf-cache-status: DYNAMIC
 Putting Cloudflare in front does several jobs that would otherwise be my problem:
 
 - **TLS.** Cloudflare terminates HTTPS with a certificate it renews itself. MCP clients require HTTPS for remote servers and for OAuth, so without it nothing connects.
-- **No open ports at home.** With a [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/){:target="_blank"}, a small `cloudflared` agent next to the service opens an outbound connection to Cloudflare, and Cloudflare sends traffic back through it. Nothing on the home router needs to be forwarded, and the home IP address is never published.
+- **No open ports at home.** With a [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/){:target="_blank"}, a small `cloudflared` agent next to the service opens an outbound connection to Cloudflare, and Cloudflare sends traffic back through it. Nothing on the home router needs to be forwarded, and the home IP address is never published.
 - **Protection.** Cloudflare's firewall and rate limiting stop floods and obvious abuse before they reach the Mini PC, which has far less capacity than Cloudflare's edge.
 - **No caching of answers.** Every MCP call is personal (it runs with the caller's own API key), so nothing on `/mcp` may be cached. Cloudflare leaves these requests alone and passes them straight through, which is what the `cf-cache-status: DYNAMIC` header above confirms.
 

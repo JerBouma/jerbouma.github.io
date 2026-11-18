@@ -350,7 +350,7 @@ This code generates DataFrames representing the binomial trees for European Call
 
 **European Call Option (Strike $90)**
 
-|     |        0 |        1 |        2 |        3 |
+| Node |        0 |        1 |        2 |        3 |
 |:----|---------:|---------:|---------:|---------:|
 | UUU | 16.0335 | 27.2484 | 43.8416 | 64.1896 |
 | DUU | nan | 5.8347 | 12.2042 | 25.5274 |
@@ -359,7 +359,7 @@ This code generates DataFrames representing the binomial trees for European Call
 
 **European Put Option (Strike $90)**
 
-|     |        0 |        1 |        2 |        3 |
+| Node |        0 |        1 |        2 |        3 |
 |:----|---------:|---------:|---------:|---------:|
 | UUU | 4.7501 | 0.9135 | 0.0000 | 0.0000 |
 | DUU | nan | 8.3711 | 1.7728 | 0.0000 |
@@ -368,7 +368,7 @@ This code generates DataFrames representing the binomial trees for European Call
 
 **American Call Option (Strike $90)**
 
-|     |        0 |        1 |        2 |        3 |
+| Node |        0 |        1 |        2 |        3 |
 |:----|---------:|---------:|---------:|---------:|
 | UUU | 16.0335 | 27.2484 | 43.8416 | 64.1896 |
 | DUU | nan | 5.8347 | 12.2042 | 25.5274 |
@@ -377,7 +377,7 @@ This code generates DataFrames representing the binomial trees for European Call
 
 **American Put Option (Strike $90)**
 
-|     |        0 |        1 |        2 |        3 |
+| Node |        0 |        1 |        2 |        3 |
 |:----|---------:|---------:|---------:|---------:|
 | UUU | 4.8758 | 0.9135 | 0.0000 | 0.0000 |
 | DUU | nan | 8.6150 | 1.7728 | 0.0000 |
