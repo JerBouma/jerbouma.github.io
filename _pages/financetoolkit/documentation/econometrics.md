@@ -35,15 +35,15 @@ The test regresses squared, mean-demeaned returns on `lags` of themselves and te
 The formula is as follows:
 
 $$
-\text{epsilonₜ} = \text{rₜ} - \operatorname{mean}(r),\;\; \text{the returns of period demeaned by their sample mean}
+\epsilon_{t} = r_{t} - \operatorname{mean}(r),\;\; \text{the returns of period demeaned by their sample mean}
 $$
 
 $$
-\text{Auxiliary regression:}\;\; \text{epsilonₜ} ^{2} = \text{a₀} + \operatorname{Σ}(i = 1..q) \text{aᵢ} \cdot \text{epsilonₜ₋ᵢ} ^{2} + \text{uₜ},\;\; \text{with}\; q = \text{lags} (5 \;\text{by default})
+\text{Auxiliary regression:}\;\; \epsilon_{t}^{2} = a_{0} + \sum_{i=1}^{q} a_{i} \cdot \epsilon_{t-i}^{2} + u_{t},\;\; \text{with}\;\; q = \text{lags} \;(5 \;\text{by default})
 $$
 
 $$
-\text{ARCH-LM} = (T - q) \cdot R ^{2},\;\; \text{chi-squared with q degrees of freedom},\;\; \text{where T - q is the number of observations in the auxiliary regression}
+\text{ARCH-LM} = (T - q) \cdot R^{2},\;\; \text{chi-squared with } q \text{ degrees of freedom},\;\; \text{where}\; T - q \;\text{is the number of observations in the auxiliary regression}
 $$
 
 For more information about the method, see the following paper:
@@ -110,11 +110,11 @@ The test combines sample skewness and excess kurtosis into a single statistic th
 The formula is as follows:
 
 $$
-\text{JB} = (n / 6) \cdot (S ^{2} + (K - 3) ^{2} / 4),\;\; \text{chi-squared with 2 degrees of freedom}
+\text{JB} = \frac{n}{6} \cdot \left(S^{2} + \frac{(K - 3)^{2}}{4}\right),\;\; \text{chi-squared with 2 degrees of freedom}
 $$
 
 $$
-S = \text{m₃} / \text{m₂} ^{3 / 2} \text{and}\; K = \text{m₄} / \text{m₂} ^{2},\;\; \text{with}\; \text{mₖ} = (1 / n) \cdot \operatorname{Σ}(\text{rₜ} - \operatorname{mean}(r)) \text{ᵏ} \;\text{the} (\text{biased}) \text{central moments of the returns of}\; \text{period}
+S = \frac{m_{3}}{m_{2}^{\frac{3}{2}}}\;\;\text{and}\;\; K = \frac{m_{4}}{m_{2}^{2}},\;\; \text{with}\;\; m_{k} = \frac{1}{n} \cdot \sum(r_{t} - \operatorname{mean}(r))^{k} \;\text{the} \;(\text{biased}) \;\text{central moments of the returns of} \;\text{period}
 $$
 
 For more information about the method, see the following paper:
@@ -180,11 +180,11 @@ The test aggregates the squared Autocorrelation Function up to lag `h` into a si
 The formula is as follows:
 
 $$
-Q = n \cdot (n + 2) \cdot \operatorname{Σ}(k = 1..h) \text{rhoₖ} ^{2} / (n - k),\;\; \text{chi-squared with h degrees of freedom},\;\; h = \text{lags} (10 \;\text{by default})
+Q = n \cdot (n + 2) \cdot \sum_{k=1}^{h} \frac{\rho_{k}^{2}}{n - k},\;\; \text{chi-squared with } h \text{ degrees of freedom},\;\; h = \text{lags} \;(10 \;\text{by default})
 $$
 
 $$
-\text{rhoₖ} = \operatorname{Σ}(t = k + 1..n) (\text{rₜ} - \operatorname{mean}(r)) \cdot (\text{rₜ₋ₖ} - \operatorname{mean}(r)) / \operatorname{Σ}(t = 1..n) (\text{rₜ} - \operatorname{mean}(r)) ^{2},\;\; \text{the sample autocorrelation of the returns of period at lag k}
+\rho_{k} = \frac{\sum_{t=k+1}^{n}(r_{t} - \operatorname{mean}(r)) \cdot (r_{t-k} - \operatorname{mean}(r))}{\sum_{t=1}^{n}(r_{t} - \operatorname{mean}(r))^{2}},\;\; \text{the sample autocorrelation of the returns of period at lag } k
 $$
 
 For more information about the method, see the following paper:
@@ -253,19 +253,19 @@ The result holds two statistics. The homoskedastic z(q) assumes a constant volat
 The formula is as follows:
 
 $$
-\operatorname{VR}(q) = \sigma ^{2} (q) / \sigma ^{2} (1),\;\; \text{with}\; \sigma ^{2} (1) = \operatorname{Σ}(\text{rₜ} - \mu) ^{2} / (n - 1) \text{and}\; \sigma ^{2} (q) = \operatorname{Σ}(\text{rₜ} + ... + \text{rₜ₋q₊₁} - q \cdot \mu) ^{2} / m \;\text{over the overlapping q-period sums},\;\; m = q \cdot (n - q + 1) \cdot (1 - q / n) \text{and}\; \mu \;\text{the mean return} (\text{the unbiased estimators of Lo}\; \text{\&} \;\text{MacKinlay}),\;\; q = 2 \;\text{by default}
+\operatorname{VR}(q) = \frac{\sigma^{2}(q)}{\sigma^{2}(1)},\;\; \text{with}\;\; \sigma^{2}(1) = \frac{\sum(r_{t} - \mu)^{2}}{n - 1}\;\;\text{and}\;\; \sigma^{2}(q) = \frac{\sum(r_{t} + \ldots + r_{t-q+1} - q \cdot \mu)^{2}}{m} \;\text{over the overlapping q-period sums},\;\; m = q \cdot (n - q + 1) \cdot \left(1 - \frac{q}{n}\right) \;\text{and}\; \mu \;\text{the mean return} \;(\text{the unbiased estimators of Lo}\; \text{\&} \;\text{MacKinlay}),\;\; q = 2 \;\text{by default}
 $$
 
 $$
-z(q) = (\operatorname{VR}(q) - 1) / \operatorname{√φ}(q),\;\; \text{with}\; \text{φ} (q) = 2 \cdot (2q - 1) \cdot (q - 1) / (3q \cdot n)
+z(q) = \frac{\operatorname{VR}(q) - 1}{\sqrt{\phi(q)}},\;\; \text{with}\;\; \phi(q) = \frac{2 \cdot (2q - 1) \cdot (q - 1)}{3q \cdot n}
 $$
 
 $$
-z \cdot (q) = \sqrt{n} \cdot (\operatorname{VR}(q) - 1) / \sqrt{\theta} (q),\;\; \text{with}\; \theta (q) = \operatorname{Σ}(k = \text{1..q-1}) 4 \cdot (1 - k / q) ^{2} \cdot \operatorname{δ}(k) \text{and}\; \text{δ} (k) = n \cdot \operatorname{Σ}(t = k + 1..n) (\text{rₜ} - \mu) ^{2} \cdot (\text{rₜ₋ₖ} - \mu) ^{2} / (\operatorname{Σ}(t = 1..n) (\text{rₜ} - \mu) ^{2}) ^{2}
+z^{*}(q) = \frac{\sqrt{n} \cdot (\operatorname{VR}(q) - 1)}{\sqrt{\theta(q)}},\;\; \text{with}\;\; \theta(q) = \sum_{k=1}^{q-1} 4 \cdot \left(1 - \frac{k}{q}\right)^{2} \cdot \delta(k)\;\;\text{and}\;\; \delta(k) = \frac{n \cdot \sum_{t=k+1}^{n}(r_{t} - \mu)^{2} \cdot (r_{t-k} - \mu)^{2}}{(\sum_{t=1}^{n}(r_{t} - \mu)^{2})^{2}}
 $$
 
 $$
-\text{P-Value} = 2 \cdot (1 - \Phi(| z |)) \text{for both statistics},\;\; \text{with Phi the standard normal CDF}
+\text{P-Value} = 2 \cdot (1 - \Phi(\left|z\right|)) \;\text{for both statistics},\;\; \text{with } \Phi \text{ the standard normal CDF}
 $$
 
 For more information about the method, see the following paper:
@@ -336,15 +336,15 @@ The test fits a constant-mean model to the returns and cumulates the (scaled) OL
 The formula is as follows:
 
 $$
-\text{êₜ} = \text{rₜ} - \operatorname{mean}(r),\;\; \text{the OLS residuals of the constant-mean model}\; \text{rₜ} = \mu + \text{eₜ}
+\hat{e}_{t} = r_{t} - \operatorname{mean}(r),\;\; \text{the OLS residuals of the constant-mean model}\; r_{t} = \mu + e_{t}
 $$
 
 $$
-\text{CUSUM} = \text{max over}\; k \;\text{of} | \operatorname{Σ}(t = 1..k) \text{êₜ} | / (\text{sigmâ} \cdot \sqrt{n}),\;\; \text{with}\; \text{sigmâ} ^{2} = \text{Σêₜ} ^{2} / (n - 1)
+\text{CUSUM} = \max \;\text{over}\; k \;\text{of} \;\frac{\left|\sum_{t=1}^{k} \hat{e}_{t}\right|}{\hat{\sigma} \cdot \sqrt{n}},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum \hat{e}_{t}^{2}}{n - 1}
 $$
 
 $$
-\text{P-Value} = P(\text{sup} | B(s) | > \text{CUSUM}) \text{for}\; a \;\text{Brownian Bridge}\; B (\text{the Kolmogorov distribution}),\;\; \text{with stability rejected when the p-value is below 0.05}
+\text{P-Value} = P(\sup \left|B(s)\right| > \text{CUSUM}) \;\text{for a Brownian Bridge}\; B \;(\text{the Kolmogorov distribution}),\;\; \text{with stability rejected when the p-value is below 0.05}
 $$
 
 For more information about the method, see the following paper:
@@ -419,15 +419,15 @@ The test regresses the first difference of the series on its own lagged level an
 The formula is as follows:
 
 $$
-\Delta \text{Yₜ} = \alpha + \text{γ} \cdot \text{Yₜ₋₁} + \operatorname{Σ}(i = 1..p) \text{δᵢ} \cdot \Delta \text{Yₜ₋ᵢ} + \text{epsilonₜ},\;\; \text{with Yₜ the column level (Adj Close by default) and regression="c" (the default); "ct" adds a trend beta*t and "n" drops alpha}
+\Delta Y_{t} = \alpha + \gamma \cdot Y_{t-1} + \sum_{i=1}^{p} \delta_{i} \cdot \Delta Y_{t-i} + \epsilon_{t},\;\; \text{with}\; Y_{t} \;\text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{and regression} = \text{"c"} \;(\text{the default});\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t \;\text{and}\; \text{"n"} \;\text{drops}\; \alpha
 $$
 
 $$
-\text{ADF} = \text{γ̂} / \operatorname{SE}(\text{γ̂}),\;\; \text{compared with MacKinnon (1994, 2010) critical values and p-values}
+\text{ADF} = \frac{\hat{\gamma}}{\operatorname{SE}(\hat{\gamma})},\;\; \text{compared with MacKinnon (1994, 2010) critical values and p-values}
 $$
 
 $$
-p = \text{the number of lags that minimises the AIC},\;\; \text{searched from 0 up to max\_lag},\;\; \text{which defaults to min} (\operatorname{ceil}(12 \cdot (n / 100) ^{1 / 4}),\; (n - 5) / / 3)
+p = \text{the number of lags that minimises the AIC},\;\; \text{searched from 0 up to max\_lag},\;\; \text{which defaults to} \;\min\left(\left\lceil 12 \cdot \left(\frac{n}{100}\right)^{\frac{1}{4}} \right\rceil,\; \left\lfloor \frac{n - 5}{3} \right\rfloor\right)
 $$
 
 For more information about the method, see the following paper:
@@ -503,19 +503,19 @@ KPSS is the natural complement to the Augmented Dickey-Fuller test: where the AD
 The formula is as follows:
 
 $$
-\text{Yₜ} = \alpha + \text{eₜ} \;\text{fitted by OLS on the}\; \text{column} \;\text{level} (\text{Adj Close by default}),\;\; \text{with regression="c" (the default); "ct" adds a trend beta*t}
+Y_{t} = \alpha + e_{t} \;\text{fitted by OLS on the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}),\;\; \text{with regression="c" (the default)};\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t
 $$
 
 $$
-\text{Sₜ} = \operatorname{Σ}(i = 1..t) \text{êᵢ}
+S_{t} = \sum_{i=1}^{t} \hat{e}_{i}
 $$
 
 $$
-\text{KPSS} = \operatorname{Σ}(t = 1..n) \text{Sₜ} ^{2} / (n ^{2} \cdot \lambda ^{2})
+\text{KPSS} = \frac{\sum_{t=1}^{n} S_{t}^{2}}{n^{2} \cdot \lambda^{2}}
 $$
 
 $$
-\lambda ^{2} = (1 / n) \cdot \text{Σêₜ} ^{2} + (2 / n) \cdot \operatorname{Σ}(s = 1..l) (1 - s / (l + 1)) \cdot \operatorname{Σ}(t = s + 1..n) \text{êₜ} \cdot \text{êₜ₋ₛ},\;\; \text{with}\; l = \text{lags} \;\text{or},\;\; \text{by default},\;\; \text{the Hobijn},\;\; \text{Franses and Ooms (2004) automatic bandwidth}
+\lambda^{2} = \frac{1}{n} \cdot \sum \hat{e}_{t}^{2} + \frac{2}{n} \cdot \sum_{s=1}^{l}\left(1 - \frac{s}{l + 1}\right) \cdot \sum_{t=s+1}^{n} \hat{e}_{t} \cdot \hat{e}_{t-s},\;\; \text{with}\;\; l = \text{lags} \;\text{or},\;\; \text{by default, the Hobijn, Franses and Ooms (2004) automatic bandwidth}
 $$
 
 - The p-value is interpolated from the KPSS (1992) critical value table, so it is bounded between 0.01 and 0.10
@@ -595,19 +595,19 @@ Phillips-Perron tests the same null hypothesis as the Augmented Dickey-Fuller te
 The formula is as follows:
 
 $$
-\text{Yₜ} = \alpha + \rho \cdot \text{Yₜ₋₁} + \text{uₜ} \;\text{fitted by OLS on the}\; \text{column} \;\text{level} (\text{Adj Close by default}),\;\; \text{with regression="c" (the default); "ct" adds a trend beta*t}
+Y_{t} = \alpha + \rho \cdot Y_{t-1} + u_{t} \;\text{fitted by OLS on the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}),\;\; \text{with regression="c" (the default)};\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t
 $$
 
 $$
-t_{\rho} = (\text{rhô} - 1) / \operatorname{SE}(\text{rhô}),\;\; \text{γ₀} = \text{Σûₜ} ^{2} / n \;\text{and}\; s ^{2} = \text{Σûₜ} ^{2} / (n - k),\;\; \text{with k the number of coefficients}
+t_{\rho} = \frac{\hat{\rho} - 1}{\operatorname{SE}(\hat{\rho})},\;\; \gamma_{0} = \frac{\sum \hat{u}_{t}^{2}}{n}\;\;\text{and}\;\; s^{2} = \frac{\sum \hat{u}_{t}^{2}}{n - k},\;\; \text{with } k \text{ the number of coefficients}
 $$
 
 $$
-\lambda ^{2} = \text{γ₀} + 2 \cdot \operatorname{Σ}(j = 1..l) (1 - j / (l + 1)) \cdot \text{γⱼ},\;\; \text{with}\; \text{γⱼ} = (1 / n) \cdot \operatorname{Σ}(t = j + 1..n) \text{ûₜ} \cdot \text{ûₜ₋ⱼ} \;\text{and}\; l = \text{lags},\;\; \text{which defaults to int} (12 \cdot (n / 100) ^{1 / 4})
+\lambda^{2} = \gamma_{0} + 2 \cdot \sum_{j=1}^{l}\left(1 - \frac{j}{l + 1}\right) \cdot \gamma_{j},\;\; \text{with}\;\; \gamma_{j} = \frac{1}{n} \cdot \sum_{t=j+1}^{n} \hat{u}_{t} \cdot \hat{u}_{t-j}\;\;\text{and}\;\; l = \text{lags},\;\; \text{which defaults to int}\left(12 \cdot \left(\frac{n}{100}\right)^{\frac{1}{4}}\right)
 $$
 
 $$
-Z_{t} = \sqrt{\text{γ₀} / \lambda ^{2}} \cdot t_{\rho} - (\lambda ^{2} - \text{γ₀}) / (2 \cdot \lambda \cdot s) \cdot n \cdot \operatorname{SE}(\text{rhô})
+Z_{t} = \sqrt{\frac{\gamma_{0}}{\lambda^{2}}} \cdot t_{\rho} - \frac{\lambda^{2} - \gamma_{0}}{2 \cdot \lambda \cdot s} \cdot n \cdot \operatorname{SE}(\hat{\rho})
 $$
 
 - The unit root is rejected at 5% when $$Z_{t}$$ is below the MacKinnon (1996) asymptotic critical value (-2.86 for "c", -3.41 for "ct"); no p-value is reported
@@ -687,15 +687,15 @@ The (A)DF/KPSS/PP tests above all assume the deterministic component of the seri
 The formula is as follows:
 
 $$
-\Delta \text{Yₜ} = \mu + \theta \cdot \text{DUₜ} + \beta \cdot t + \alpha \cdot \text{Yₜ₋₁} + \operatorname{Σ}(i = 1..p) \text{cᵢ} \cdot \Delta \text{Yₜ₋ᵢ} + \text{epsilonₜ},\;\; \text{with}\; \text{Yₜ} \;\text{the}\; \text{column} \;\text{level} (\text{Adj Close by default}) \text{and}\; \text{DUₜ} = 1 \;\text{after the break date}\; T_{B} \;\text{and}\; 0 \;\text{before it} (\text{regression} = \text{"c"},\; \text{the default})
+\Delta Y_{t} = \mu + \theta \cdot \text{DU}_{t} + \beta \cdot t + \alpha \cdot Y_{t-1} + \sum_{i=1}^{p} c_{i} \cdot \Delta Y_{t-i} + \epsilon_{t},\;\; \text{with}\;\; Y_{t} \;\text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{and}\; \text{DU}_{t} = 1 \;\text{after the break date}\; T_{B} \;\text{and 0 before it} \;(\text{regression} = \text{"c"},\; \text{the default})
 $$
 
 $$
-\text{regression="t" replaces theta*DUₜ by a trend break γ*DTₜ},\;\; \text{with}\; \text{DTₜ} = t - T_{B} \;\text{after the break and}\; 0 \;\text{before it},\;\; \text{and regression="ct" includes both}
+\text{regression} = \text{"t"} \;\text{replaces}\; \theta \cdot \text{DU}_{t} \;\text{by a trend break}\; \gamma \cdot \text{DT}_{t},\;\; \text{with}\;\; \text{DT}_{t} = t - T_{B} \;\text{after the break and 0 before it},\;\; \text{and regression="ct" includes both}
 $$
 
 $$
-\text{ZA} = \text{min over}\; T_{B} \;\text{of}\; \text{alphâ} / \operatorname{SE}(\text{alphâ}),\;\; \text{searching every break date outside the first and last trim (15\% by default) of the sample}
+\text{ZA} = \min \;\text{over}\; T_{B} \;\text{of} \;\frac{\hat{\alpha}}{\operatorname{SE}(\hat{\alpha})},\;\; \text{searching every break date outside the first and last trim (15\% by default) of the sample}
 $$
 
 $$
@@ -783,15 +783,15 @@ In pairs trading the slope of the regression of the dependent on the independent
 The formula is as follows:
 
 $$
-\text{Step 1:}\;\; \text{Aₜ} = \alpha + \beta \cdot \text{Bₜ} + \text{uₜ},\;\; \text{the OLS regression of the dependent on the independent column level (Adj Close by default)}
+\text{Step 1:}\;\; A_{t} = \alpha + \beta \cdot B_{t} + u_{t},\;\; \text{the OLS regression of the dependent on the independent column level (Adj Close by default)}
 $$
 
 $$
-\text{Step 2:}\;\; \Delta \text{ûₜ} = \text{γ} \cdot \text{ûₜ₋₁} + \operatorname{Σ}(i = 1..p) \text{δᵢ} \cdot \Delta \text{ûₜ₋ᵢ} + \text{epsilonₜ},\;\; \text{an ADF regression without constant on the residuals}
+\text{Step 2:}\;\; \Delta \hat{u}_{t} = \gamma \cdot \hat{u}_{t-1} + \sum_{i=1}^{p} \delta_{i} \cdot \Delta \hat{u}_{t-i} + \epsilon_{t},\;\; \text{an ADF regression without constant on the residuals}
 $$
 
 $$
-\text{EG} = \text{γ̂} / \operatorname{SE}(\text{γ̂}),\;\; \text{compared with the MacKinnon (1994, 2010) cointegration critical values and p-values for two variables}
+\text{EG} = \frac{\hat{\gamma}}{\operatorname{SE}(\hat{\gamma})},\;\; \text{compared with the MacKinnon (1994, 2010) cointegration critical values and p-values for two variables}
 $$
 
 $$
@@ -869,17 +869,17 @@ The Engle-Granger test only handles two assets and imposes an arbitrary normaliz
 The formula is as follows:
 
 $$
-\Delta \text{Yₜ} = \text{Π} \cdot \text{Yₜ₋₁} + \operatorname{Σ}(i = 1..k) \text{Γᵢ} \cdot \Delta \text{Yₜ₋ᵢ} + \mu + \text{epsilonₜ},\;\; \text{with Yₜ the vector of column levels (Adj Close by default)},\;\; k = \text{k\_ar\_diff} (1 \;\text{by default}) \text{and the deterministic term}\; \mu \;\text{set by}\; \text{det\_order:} \;\text{none} (- 1,\; \text{Johansen's case}\; 1),\;\; \text{an unrestricted constant mu₀ (0, the default, case 3) or a linear trend (1: the levels are linearly detrended before the test, evaluated against the case 5 critical values)}
+\Delta Y_{t} = \Pi \cdot Y_{t-1} + \sum_{i=1}^{k} \Gamma_{i} \cdot \Delta Y_{t-i} + \mu + \epsilon_{t},\;\; \text{with } Y_{t} \text{ the vector of column levels (Adj Close by default)},\;\; k = \text{k\_ar\_diff} \;(1 \;\text{by default}) \;\text{and the deterministic term}\; \mu \;\text{set by} \;\text{det\_order} \;\text{:} \;\text{none} \;(- 1,\; \text{Johansen's case}\; 1),\;\; \text{an unrestricted constant } \mu_{0} \text{ (0, the default, case 3) or a linear trend (1: the levels are linearly detrended before the test, evaluated against the case 5 critical values)}
 $$
 
 - $$\lambda_{1} \geq \ldots \geq \lambda_{N}$$: the eigenvalues of the reduced-rank regression of $$\Delta Y_{t}$$ on $$Y_{t - 1}$$, both corrected for the lagged differences and $$\mu$$
 
 $$
-\operatorname{Trace}(r) = - T \cdot \operatorname{Σ}(i = r + 1..N) \ln(1 - \text{lambdaᵢ})
+\operatorname{Trace}(r) = - T \cdot \sum_{i=r+1}^{N} \ln(1 - \lambda_{i})
 $$
 
 $$
-\operatorname{Max-Eigenvalue}(r) = - T \cdot \ln(1 - \text{lambdaᵣ₊₁})
+\operatorname{Max-Eigenvalue}(r) = - T \cdot \ln(1 - \lambda_{r+1})
 $$
 
 - Each statistic rejects "rank ≤ r" at the 5% level when it exceeds its 95% critical value
@@ -963,19 +963,19 @@ On daily data a significant result can reflect trading hours rather than informa
 The formula is as follows:
 
 $$
-\text{Restricted:}\;\; \text{Aₜ} = c + \operatorname{Σ}(i = 1..p) \text{aᵢ} \cdot \text{Aₜ₋ᵢ} + \text{eₜ}
+\text{Restricted:}\;\; A_{t} = c + \sum_{i=1}^{p} a_{i} \cdot A_{t-i} + e_{t}
 $$
 
 $$
-\text{Unrestricted:}\;\; \text{Aₜ} = c + \operatorname{Σ}(i = 1..p) \text{aᵢ} \cdot \text{Aₜ₋ᵢ} + \operatorname{Σ}(i = 1..p) \text{bᵢ} \cdot \text{Bₜ₋ᵢ} + \text{uₜ}
+\text{Unrestricted:}\;\; A_{t} = c + \sum_{i=1}^{p} a_{i} \cdot A_{t-i} + \sum_{i=1}^{p} b_{i} \cdot B_{t-i} + u_{t}
 $$
 
 $$
-F = ((\text{RSS}_{r} - \text{RSS}_{u}) / p) / (\text{RSS}_{u} / (T - 2p - 1)),\;\; \text{F-distributed with (p, T - 2p - 1) degrees of freedom}
+F = \frac{\frac{\text{RSS}_{r} - \text{RSS}_{u}}{p}}{\frac{\text{RSS}_{u}}{T - 2p - 1}},\;\; \text{F-distributed with} \;(p,\; T - 2p - 1) \;\text{degrees of freedom}
 $$
 
 $$
-\text{A is the dependent and B the independent ticker's column (Return by default)},\;\; p = \text{max\_lag} (5 \;\text{by default}) \text{and}\; T \;\text{the number of observations after the lags}
+\text{A is the dependent and } B \text{ the independent ticker's column (Return by default)},\;\; p = \text{max\_lag} \;(5 \;\text{by default}) \;\text{and}\; T \;\text{the number of observations after the lags}
 $$
 
 For more information about the method, see the following paper:
@@ -1050,21 +1050,21 @@ The formula is as follows:
 - Realized Variance: $$r_{t}^{2}$$
 
 $$
-\text{EWMA forecast ("ewma"):}\;\; \text{sigmaₜ} ^{2} = \lambda \cdot \text{sigmaₜ₋₁} ^{2} + (1 - \lambda) \cdot \text{rₜ₋₁} ^{2},\;\; \text{with}\; \lambda = \text{lambda}_{`} (0.94 \;\text{by default}),\;\; \text{so the forecast for t uses returns up to t - 1}
+\text{EWMA forecast ("ewma"):}\;\; \sigma_{t}^{2} = \lambda \cdot \sigma_{t-1}^{2} + (1 - \lambda) \cdot r_{t-1}^{2},\;\; \text{with}\;\; \lambda = \text{lambda\_} \;(0.94 \;\text{by default}),\;\; \text{so the forecast for}\; t \;\text{uses returns up to}\; t - 1
 $$
 
 - Rolling forecast ("rolling"): the sample variance (ddof=1) of the `window_size` (22 by default) returns up to t - 1
 
 $$
-\text{dₜ} = L(\text{rₜ} ^{2} - f_{a},\; \text{ₜ}) - L(\text{rₜ} ^{2} - f_{b},\; \text{ₜ}),\;\; \text{with}\; L (e) = e ^{2} (\text{loss} = \text{"squared"}) \text{or} | e | (\text{loss} = \text{"absolute"})
+d_{t} = L(r_{t}^{2} - f_{a,t}) - L(r_{t}^{2} - f_{b,t}),\;\; \text{with}\;\; L(e) = e^{2}(\text{loss} = \text{"squared"}) \;\text{or} \;\left|e\right| \;(\text{loss} = \text{"absolute"})
 $$
 
 $$
-\text{DM} = \operatorname{mean}(d) / \sqrt{\text{γ₀} / n} \cdot \sqrt{(n - 1) / n},\;\; \text{with}\; \text{γ₀} = (1 / n) \cdot \operatorname{Σ}(\text{dₜ} - \operatorname{mean}(d)) ^{2} \text{and the Harvey},\;\; \text{Leybourne and Newbold (1997) correction for a one-step horizon}
+\text{DM} = \frac{\operatorname{mean}(d)}{\sqrt{\frac{\gamma_{0}}{n}}} \cdot \sqrt{\frac{n - 1}{n}},\;\; \text{with}\;\; \gamma_{0} = \frac{1}{n} \cdot \sum(d_{t} - \operatorname{mean}(d))^{2} \;\text{and the Harvey, Leybourne and Newbold} \;(1997) \;\text{correction for a one-step horizon}
 $$
 
 $$
-\text{P-Value} = 2 \cdot P(T > | \text{DM} |) \text{for}\; a \;\text{Student-t distribution with}\; n - 1 \;\text{degrees of freedom}
+\text{P-Value} = 2 \cdot P(T > \left|\text{DM}\right|) \;\text{for a Student-t distribution with}\; n - 1 \;\text{degrees of freedom}
 $$
 
 For more information about the method, see the following papers:
@@ -1146,19 +1146,19 @@ OLS estimates the coefficients that minimise the sum of squared residuals, i.e. 
 The formula is as follows:
 
 $$
-\text{betâ} = (\text{X'X}) \text{⁻¹X'y},\;\; \text{with y the dependent ticker's column (Return by default) and X the independent tickers' column plus a constant column (add\_constant=True)}
+\hat{\beta} = (X' X)^{- 1} X' y,\;\; \text{with } y \text{ the dependent ticker's column (Return by default) and } X \text{ the independent tickers' column plus a constant column (add\_constant=True)}
 $$
 
 $$
-\operatorname{Cov}(\text{betâ}) = \text{sigmâ} ^{2} \cdot (\text{X'X}) \text{⁻¹},\;\; \text{with}\; \text{sigmâ} ^{2} = \text{e'e} / (n - k) (\text{cov\_type} = \text{"nonrobust"}) \text{;} \text{"HC0"} \;\text{to}\; \text{"HC3"},\;\; \text{"cluster" and "HAC" (Newey-West with maxlags) use statsmodels' sandwich estimators}
+\operatorname{Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (X' X)^{- 1},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{e' e}{n - k} \;(\text{cov\_type} = \text{"nonrobust"});\;\; \text{"HC0" to "HC3", "cluster" and "HAC" (Newey-West with maxlags) use statsmodels' sandwich estimators}
 $$
 
 $$
-t = \text{betâⱼ} / \operatorname{SE}(\text{betâⱼ}),\;\; \text{with p-values from a Student-t distribution with n - k degrees of freedom}
+t = \frac{\hat{\beta}_{j}}{\operatorname{SE}(\hat{\beta}_{j})},\;\; \text{with p-values from a Student-t distribution with}\; n - k \;\text{degrees of freedom}
 $$
 
 $$
-R ^{2} = 1 - \text{e'e} / \operatorname{Σ}(\text{yₜ} - \operatorname{mean}(y)) ^{2}
+R^{2} = 1 - \frac{e' e}{\sum(y_{t} - \operatorname{mean}(y))^{2}}
 $$
 
 Each coefficient is the expected change in `dependent_ticker` for a one-unit change in that independent ticker, holding the others fixed, and the intercept is what remains when all of them are zero. With returns this is the familiar way to estimate how strongly one asset moves with others (e.g. a beta against an index).
@@ -1249,11 +1249,11 @@ When the error variance differs across observations (heteroskedasticity) with a 
 The formula is as follows:
 
 $$
-\text{betâ} = (\text{X'WX}) \text{⁻¹X'Wy},\;\; \text{with}\; W = \operatorname{diag}(\text{weights}),\;\; \text{the same as OLS of sqrt(w)ₜ*yₜ on sqrt(w)ₜ*xₜ}
+\hat{\beta} = (X' W X)^{- 1} X' W y,\;\; \text{with}\;\; W = \operatorname{diag}(\text{weights}),\;\; \text{the same as OLS of} \;\sqrt{w_{t}} \cdot y_{t} \;\text{on} \;\sqrt{w_{t}} \cdot x_{t}
 $$
 
 $$
-\operatorname{Cov}(\text{betâ}) = \text{sigmâ} ^{2} \cdot (\text{X'WX}) \text{⁻¹},\;\; \text{with}\; \text{sigmâ} ^{2} = \text{Σwₜ} \cdot \text{eₜ} ^{2} / (n - k) (\text{cov\_type} = \text{"nonrobust"})
+\operatorname{Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (X' W X)^{- 1},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum w_{t} \cdot e_{t}^{2}}{n - k} \;(\text{cov\_type} = \text{"nonrobust"})
 $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant, on the dates where the returns and `weights` all have data
@@ -1337,11 +1337,11 @@ GLS generalises WLS to an arbitrary error covariance matrix `Var(e) = sigma^2 * 
 The formula is as follows:
 
 $$
-\text{betâ} = (\text{X'Ω⁻¹X}) \text{⁻¹X'Ω⁻¹y}
+\hat{\beta} = (X' \Omega^{- 1} X)^{- 1} X' \Omega^{- 1} y
 $$
 
 $$
-\operatorname{Cov}(\text{betâ}) = \text{sigmâ} ^{2} \cdot (\text{X'Ω⁻¹X}) \text{⁻¹},\;\; \text{with}\; \text{sigmâ} ^{2} = \text{e'Ω⁻¹e} / (n - k)
+\operatorname{Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (X' \Omega^{- 1} X)^{- 1},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{e' \Omega^{- 1} e}{n - k}
 $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant (add_constant=True)
@@ -1418,19 +1418,19 @@ The dependent variable is turned into a binary outcome (1 when the return is pos
 The formula is as follows:
 
 $$
-\text{yₜ} = 1 \;\text{if the dependent ticker's}\; \text{column} (\text{Return by default}) \text{is above}\; 0,\;\; \text{else 0}
+y_{t} = 1 \;\text{if the dependent ticker's} \;\text{column} \;(\text{Return by default}) \;\text{is above}\; 0,\;\; \text{else 0}
 $$
 
 $$
-P(\text{yₜ} = 1 | \text{xₜ}) = 1 / (1 + \exp(- \text{xₜ'beta})),\;\; \text{with xₜ the independent tickers' column plus a constant}
+P(y_{t} = 1 \mid x_{t}) = \frac{1}{1 + \exp(- x_{t}' \beta)},\;\; \text{with } x_{t} \text{ the independent tickers' column plus a constant}
 $$
 
 $$
-\text{betâ} = \text{argmax}\; \text{Σ} \left[\text{yₜ} \cdot \ln(\text{pₜ}) + (1 - \text{yₜ}) \cdot \ln(1 - \text{pₜ})\right],\;\; \text{solved by Newton-Raphson (statsmodels Logit)}
+\hat{\beta} = \operatorname*{arg\,max} \sum\left[y_{t} \cdot \ln(p_{t}) + (1 - y_{t}) \cdot \ln(1 - p_{t})\right],\;\; \text{solved by Newton-Raphson (statsmodels Logit)}
 $$
 
 $$
-\text{Pseudo}\; R ^{2} = 1 - \text{ln}\; L (\text{betâ}) / \text{ln}\; \text{L₀} (\text{McFadden}),\;\; \text{with L₀ the likelihood of a constant-only model}
+\text{Pseudo}\; R^{2} = 1 - \frac{\ln L(\hat{\beta})}{\ln L_{0}} \;(\text{McFadden}),\;\; \text{with } L_{0} \text{ the likelihood of a constant-only model}
 $$
 
 The model is fitted by Maximum Likelihood. Coefficients are log-odds: a one-unit increase in an independent ticker changes the log-odds of a positive return by that coefficient, holding the others fixed, so a positive coefficient means a higher probability of a positive return. This answers "does this asset tend to be up when the others move this way" rather than "by how much", which is what `get_ols` estimates. `get_probit_regression` is the closely related alternative with a normal instead of a logistic link.
@@ -1510,19 +1510,19 @@ As with `get_logistic_regression`, the dependent variable is turned into a binar
 The formula is as follows:
 
 $$
-\text{yₜ} = 1 \;\text{if the dependent ticker's}\; \text{column} (\text{Return by default}) \text{is above}\; 0,\;\; \text{else 0}
+y_{t} = 1 \;\text{if the dependent ticker's} \;\text{column} \;(\text{Return by default}) \;\text{is above}\; 0,\;\; \text{else 0}
 $$
 
 $$
-P(\text{yₜ} = 1 | \text{xₜ}) = \Phi(\text{xₜ'beta}),\;\; \text{with xₜ the independent tickers' column plus a constant}
+P(y_{t} = 1 \mid x_{t}) = \Phi(x_{t}' \beta),\;\; \text{with } x_{t} \text{ the independent tickers' column plus a constant}
 $$
 
 $$
-\text{betâ} = \text{argmax}\; \text{Σ} \left[\text{yₜ} \cdot \ln(\text{pₜ}) + (1 - \text{yₜ}) \cdot \ln(1 - \text{pₜ})\right],\;\; \text{solved by Newton-Raphson (statsmodels Probit)}
+\hat{\beta} = \operatorname*{arg\,max} \sum\left[y_{t} \cdot \ln(p_{t}) + (1 - y_{t}) \cdot \ln(1 - p_{t})\right],\;\; \text{solved by Newton-Raphson (statsmodels Probit)}
 $$
 
 $$
-\text{Pseudo}\; R ^{2} = 1 - \text{ln}\; L (\text{betâ}) / \text{ln}\; \text{L₀} (\text{McFadden}),\;\; \text{with L₀ the likelihood of a constant-only model}
+\text{Pseudo}\; R^{2} = 1 - \frac{\ln L(\hat{\beta})}{\ln L_{0}} \;(\text{McFadden}),\;\; \text{with } L_{0} \text{ the likelihood of a constant-only model}
 $$
 
 Where `Phi` is the standard normal CDF. The model is fitted by Maximum Likelihood. A positive coefficient means a higher probability of a positive return, but the size of a coefficient is not a log-odds ratio as in the Logit model. In practice Probit and Logit give very similar fitted probabilities; Probit is the convention in parts of the econometrics literature and underlies two-step estimators such as the Heckman selection correction.
@@ -1600,7 +1600,7 @@ Where OLS estimates how the average (conditional mean) of the dependent ticker d
 The formula is as follows:
 
 $$
-\operatorname{betâ}(\text{τ}) = \text{argmin}\; \text{Σ} (\text{τ} \cdot \max(\text{uₜ},\; 0) + (1 - \text{τ}) \cdot \max(- \text{uₜ},\; 0)),\;\; \text{with}\; \text{uₜ} = \text{yₜ} - \text{xₜ'beta} \;\text{and}\; \text{τ} = \text{tau} (0.5 \;\text{by default})
+\hat{\beta}(\tau) = \operatorname*{arg\,min} \sum(\tau \cdot \max(u_{t},\; 0) + (1 - \tau) \cdot \max(- u_{t},\; 0)),\;\; \text{with}\;\; u_{t} = y_{t} - x_{t}' \beta\;\;\text{and}\;\; \tau = \text{tau} \;(0.5 \;\text{by default})
 $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant (add_constant=True)
@@ -1684,23 +1684,23 @@ The method runs in two passes:
 The formula is as follows:
 
 $$
-\text{First pass:}\;\; \text{R\_i},\;\; t = \alpha_{i} + \text{beta\_i'} \cdot F_{t} + e_{i},\;\; \text{t},\;\; \text{for each asset i},\;\; \text{over the full sample}
+\text{First pass:}\;\; R_{i,t} = \alpha_{i} + \beta_{i}' \cdot F_{t} + e_{i,t},\;\; \text{for each asset } i \text{, over the full sample}
 $$
 
 $$
-\text{Second pass:}\;\; \text{R\_i},\;\; t = \gamma_{0},\;\; t + \text{gamma\_t'} \cdot \beta_{i} + u_{i},\;\; \text{t},\;\; \text{for each period t (gamma\_0,t only with add\_constant=True)}
+\text{Second pass:}\;\; R_{i,t} = \gamma_{0,t} + \gamma_{t}' \cdot \beta_{i} + u_{i,t},\;\; \text{for each period } t \text{ (gamma\_0,} t \text{ only with add\_constant=True)}
 $$
 
 $$
-\text{Risk premium:}\;\; \gamma_{hat} = \text{mean}_{t}(\gamma_{t})
+\text{Risk premium:}\;\; \hat{\gamma} = \text{mean}_{t}(\gamma_{t})
 $$
 
 $$
-\text{Standard error:}\;\; \operatorname{SE}(\gamma_{hat}) = \text{std}_{t}(\gamma_{t}) / \sqrt{T},\;\; \text{with ddof=1}
+\text{Standard error:}\;\; \operatorname{SE}(\hat{\gamma}) = \frac{\text{std}_{t}(\gamma_{t})}{\sqrt{T}},\;\; \text{with ddof=1}
 $$
 
 $$
-t = \gamma_{hat} / \operatorname{SE}(\gamma_{hat}),\;\; \text{with p-values from a Student-t distribution with T - 1 degrees of freedom}
+t = \frac{\hat{\gamma}}{\operatorname{SE}(\hat{\gamma})},\;\; \text{with p-values from a Student-t distribution with}\; T - 1 \;\text{degrees of freedom}
 $$
 
 - R are the asset tickers' `column` (Return by default) and F the factor tickers' `column` (the Benchmark by default)
@@ -1785,19 +1785,19 @@ The test checks the null hypothesis that two samples come from distributions wit
 The formula is as follows:
 
 $$
-\text{Welch (the default):}\;\; t = (\text{mean}_{a} - \text{mean}_{b}) / \sqrt{s_{a} ^{2} / n_{a} + s_{b} ^{2} / n_{b}}
+\text{Welch (the default):}\;\; t = \frac{\text{mean}_{a} - \text{mean}_{b}}{\sqrt{\frac{s_{a}^{2}}{n_{a}} + \frac{s_{b}^{2}}{n_{b}}}}
 $$
 
 $$
-\text{Welch-Satterthwaite:}\;\; \text{df} = (s_{a} ^{2} / n_{a} + s_{b} ^{2} / n_{b}) ^{2} / ((s_{a} ^{2} / n_{a}) ^{2} / (n_{a} - 1) + (s_{b} ^{2} / n_{b}) ^{2} / (n_{b} - 1))
+\text{Welch-Satterthwaite:}\;\; \text{df} = \frac{\left(\frac{s_{a}^{2}}{n_{a}} + \frac{s_{b}^{2}}{n_{b}}\right)^{2}}{\frac{\left(\frac{s_{a}^{2}}{n_{a}}\right)^{2}}{n_{a} - 1} + \frac{\left(\frac{s_{b}^{2}}{n_{b}}\right)^{2}}{n_{b} - 1}}
 $$
 
 $$
-\text{Student} (\text{equal\_variance} = \text{True}) \text{:} t = (\text{mean}_{a} - \text{mean}_{b}) / (s_{p} \cdot \sqrt{1 / n_{a} + 1 / n_{b}}),\;\; \text{with}\; s_{p} ^{2} = ((n_{a} - 1) \cdot s_{a} ^{2} + (n_{b} - 1) \cdot s_{b} ^{2}) / (n_{a} + n_{b} - 2) \text{and df} = n_{a} + n_{b} - 2
+\text{Student} \;(\text{equal\_variance} = \text{True}) \;\text{:} t = \frac{\text{mean}_{a} - \text{mean}_{b}}{s_{p} \cdot \sqrt{\frac{1}{n_{a}} + \frac{1}{n_{b}}}},\;\; \text{with}\;\; s_{p}^{2} = \frac{(n_{a} - 1) \cdot s_{a}^{2} + (n_{b} - 1) \cdot s_{b}^{2}}{n_{a} + n_{b} - 2}\;\;\text{and}\;\; \text{df} = n_{a} + n_{b} - 2
 $$
 
 $$
-s_{a} ^{2} \text{and}\; s_{b} ^{2} \text{are sample variances} (\text{ddof} = 1) \text{of the two tickers'}\; \text{column} (\text{Return by default}),\;\; \text{with a two-sided p-value}
+s_{a}^{2} \;\text{and}\; s_{b}^{2} \;\text{are sample variances}(\text{ddof} = 1) \;\text{of the two tickers'} \;\text{column} \;(\text{Return by default}),\;\; \text{with a two-sided p-value}
 $$
 
 Setting `equal_variance=True` pools the two variances instead (Student's t-test), which is slightly more powerful but only valid when the variances are truly equal. Welch's version is the safer default since assets rarely share the same volatility. A low p-value (e.g. below 0.05) means the difference in means is statistically significant.
@@ -1870,7 +1870,7 @@ Two OLS regressions of `dependent_ticker` are fitted internally: a "restricted" 
 The formula is as follows:
 
 $$
-F = ((\text{RSS\_restricted} - \text{RSS\_unrestricted}) / q) / (\text{RSS\_unrestricted} / (n - k_{\text{unrestricted}}))
+F = \frac{\frac{\text{RSS}_{\text{restricted}} - \text{RSS}_{\text{unrestricted}}}{q}}{\frac{\text{RSS}_{\text{unrestricted}}}{n - k_{\text{unrestricted}}}}
 $$
 
 - Both models are OLS regressions of the dependent ticker's `column` (Return by default), with a constant when add_constant=True
@@ -1940,7 +1940,7 @@ As with `get_f_test`, a "restricted" and an "unrestricted" OLS regression of `de
 The formula is as follows:
 
 $$
-\text{LR} = - 2 \cdot (\text{ln}\; L_{\text{restricted}} - \text{ln}\; L_{\text{unrestricted}}) = n \cdot \ln(\text{RSS\_restricted} / \text{RSS\_unrestricted})
+\text{LR} = - 2 \cdot (\ln L_{\text{restricted}} - \ln L_{\text{unrestricted}}) = n \cdot \ln\left(\frac{\text{RSS}_{\text{restricted}}}{\text{RSS}_{\text{unrestricted}}}\right)
 $$
 
 - Both models are OLS regressions of the dependent ticker's `column` (Return by default), with a constant when add_constant=True
@@ -2013,15 +2013,15 @@ A single OLS regression is fitted internally and the test checks the null hypoth
 The formula is as follows:
 
 $$
-W = (R \text{@} \beta_{hat} - r) \text{'} \text{@} (R \text{@} \;\text{Cov} (\beta_{hat}) \text{@} R') ^{-1} \operatorname{@}(R \text{@} \beta_{hat} - r)
+W = (R \, \hat{\beta} - r)' \, (R \, \operatorname{Cov}(\hat{\beta}) \, R')^{-1} \, (R \, \hat{\beta} - r)
 $$
 
 $$
-F = W / q,\;\; \text{F-distributed with (q, n - k) degrees of freedom}
+F = \frac{W}{q},\;\; \text{F-distributed with} \;(q,\; n - k) \;\text{degrees of freedom}
 $$
 
 $$
-\beta_{hat} \;\text{and the classical Cov} (\beta_{hat}) = \text{sigmâ} ^{2} \cdot (\text{X'X}) \text{⁻¹} \;\text{come from the OLS regression of the dependent ticker's}\; \text{column} (\text{Return by default}),\;\; \text{with a constant when add\_constant=True}
+\hat{\beta} \;\text{and the classical Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (X' X)^{- 1} \;\text{come from the OLS regression of the dependent ticker's} \;\text{column} \;(\text{Return by default}),\;\; \text{with a constant when add\_constant=True}
 $$
 
 Which is asymptotically chi-squared distributed with `q` degrees of freedom. `W / q` is reported alongside it as an F-statistic for small samples; for a single restriction it equals the squared t-statistic of that coefficient. A low p-value means the data reject the restriction(s).
@@ -2113,15 +2113,15 @@ If `suspect_ticker` is exogenous the residuals add no information, so their coef
 The formula is as follows:
 
 $$
-\text{Stage 1:}\;\; \text{Xₜ} = \text{pi₀} + \text{pi'Zₜ} + \text{δ'Wₜ} + \text{vₜ},\;\; \text{the OLS regression of suspect\_ticker (X) on a constant},\;\; \text{the instruments (Z) and other\_independent\_tickers (W)},\;\; \text{keeping the residuals v̂ₜ}
+\text{Stage 1:}\;\; X_{t} = \pi_{0} + \pi' Z_{t} + \delta' W_{t} + v_{t},\;\; \text{the OLS regression of suspect\_ticker (} X \text{) on a constant, the instruments (} Z \text{) and other\_independent\_tickers (} W \text{), keeping the residuals } \hat{v}_{t}
 $$
 
 $$
-\text{Stage 2:}\;\; \text{yₜ} = \text{beta₀} + \text{beta₁} \cdot \text{Xₜ} + \rho \cdot \text{v̂ₜ} + \text{γ'Wₜ} + \text{epsilonₜ},\;\; \text{the OLS regression of dependent\_ticker (y)}
+\text{Stage 2:}\;\; y_{t} = \beta_{0} + \beta_{1} \cdot X_{t} + \rho \cdot \hat{v}_{t} + \gamma' W_{t} + \epsilon_{t},\;\; \text{the OLS regression of dependent\_ticker (} y \text{)}
 $$
 
 $$
-t = \text{rhô} / \operatorname{SE}(\text{rhô}),\;\; \text{with the classical OLS standard error and a Student-t distribution with n - k degrees of freedom; endogeneity is flagged when the p-value is below 0.05}
+t = \frac{\hat{\rho}}{\operatorname{SE}(\hat{\rho})},\;\; \text{with the classical OLS standard error and a Student-t distribution with}\; n - k \;\text{degrees of freedom};\;\; \text{endogeneity is flagged when the p-value is below 0.05}
 $$
 
 - All variables are the tickers' `column` (Return by default)
@@ -2194,11 +2194,11 @@ OLS standard errors assume that the residual variance is constant (homoskedastic
 The formula is as follows:
 
 $$
-\text{Auxiliary regression:}\;\; e_{t} ^{2} = a_{0} + a' \cdot x_{t} + v_{t},\;\; \text{with e\_t the OLS residuals and x\_t the independent tickers' column (Return by default)}
+\text{Auxiliary regression:}\;\; e_{t}^{2} = a_{0} + a' \cdot x_{t} + v_{t},\;\; \text{with } e_{t} \text{ the OLS residuals and } x_{t} \text{ the independent tickers' column (Return by default)}
 $$
 
 $$
-\text{LM} = n \cdot R ^{\text{2\_auxiliary}} (\text{Koenker's studentized form},\; \text{the statsmodels default})
+\text{LM} = n \cdot R^{2}_{\text{auxiliary}} \;(\text{Koenker's studentized form},\; \text{the statsmodels default})
 $$
 
 This is the studentized statistic of Koenker (1981), which does not assume normally distributed errors. It is asymptotically chi-squared distributed with `k - 1` degrees of freedom under the null hypothesis of homoskedasticity, where `k` is the number of parameters of the auxiliary regression. A low p-value means the residual variance moves with the independent tickers (for example, errors grow when the market moves more), so the regression's standard errors, t-statistics and p-values are unreliable even though the coefficients themselves remain unbiased. Remedies are a robust `cov_type` in `get_ols` or `get_wls`. `get_white_test` is a more general alternative that also catches non-linear forms of heteroskedasticity.
@@ -2271,11 +2271,11 @@ A more general version of `get_breusch_pagan_test`. Instead of regressing the sq
 The formula is as follows:
 
 $$
-e_{t} ^{2} = a_{0} + \sum_{i}(a_{i} \cdot x_{it}) + \sum_{i}(b_{i} \cdot x_{it} ^{2}) + \sum_{i<j}(c_{ij} \cdot x_{it} \cdot x_{jt}) + v_{t}
+e_{t}^{2} = a_{0} + \sum_{i}(a_{i} \cdot x_{it}) + \sum_{i}(b_{i} \cdot x_{it}^{2}) + \sum_{i<j}(c_{ij} \cdot x_{it} \cdot x_{jt}) + v_{t}
 $$
 
 $$
-\text{LM} = n \cdot R ^{\text{2\_auxiliary}},\;\; \text{chi-squared with as many degrees of freedom as the auxiliary regression has terms besides a\_0}
+\text{LM} = n \cdot R^{2}_{\text{auxiliary}},\;\; \text{chi-squared with as many degrees of freedom as the auxiliary regression has terms besides } a_{0}
 $$
 
 - $$e_{t}$$ are the OLS residuals and $$x_{it}$$ the independent tickers' `column` (Return by default)
@@ -2349,7 +2349,7 @@ OLS standard errors assume that the residuals of consecutive periods are uncorre
 The formula is as follows:
 
 $$
-\text{DW} = \sum_{t=2}^{n}((e_{t} - e_{t-1}) ^{2}) / \sum_{t=1}^{n}(e_{t} ^{2})
+\text{DW} = \frac{\sum_{t=2}^{n}((e_{t} - e_{t-1})^{2})}{\sum_{t=1}^{n}(e_{t}^{2})}
 $$
 
 - $$e_{t}$$ are the residuals of the OLS regression of the dependent ticker's `column` (Return by default) on the independent tickers' `column`
@@ -2428,11 +2428,11 @@ Multicollinearity, where one regressor can (nearly) be predicted from the others
 The formula is as follows:
 
 $$
-\text{VIF}_{i} = 1 / (1 - R ^{2_{i}})
+\text{VIF}_{i} = \frac{1}{1 - R^{2}_{i}}
 $$
 
 $$
-R ^{2_{i}} \text{is the R-squared of the OLS regression of ticker i's}\; \text{column} (\text{Return by default}) \text{on}\; a \;\text{constant and every other ticker's}\; \text{column}
+R^{2}_{i} \;\text{is the R-squared of the OLS regression of ticker i's} \;\text{column} \;(\text{Return by default}) \;\text{on a constant and every other ticker's} \;\text{column}
 $$
 
 Where `R^2_i` is the R-squared of regressing ticker `i` on all other tickers. A VIF of 1 means the ticker is uncorrelated with the others; a VIF of `V` means the variance of its coefficient is `V` times larger than it would be without multicollinearity. As a rule of thumb, a VIF above 10 (or above 5 for a stricter cutoff) signals problematic multicollinearity. This is common with assets that move closely together, such as several stocks from the same sector, and is worth checking before using them together as independent tickers in `get_ols` or the other regression methods.
@@ -2496,11 +2496,11 @@ If the true relationship is non-linear, or a relevant transformation or variable
 The formula is as follows:
 
 $$
-\text{Augmented model:}\;\; y_{t} = \text{x\_t'} \cdot \beta + \sum_{j=2}^{\text{power}}(\gamma_{j} \cdot \text{yhat}_{t} ^{j}) + u_{t},\;\; \text{with}\; \text{yhat}_{t} \;\text{the fitted values of the original OLS regression and}\; \text{power} = 3 \;\text{by default}
+\text{Augmented model:}\;\; y_{t} = x_{t}' \cdot \beta + \sum_{j=2}^{\text{power}}(\gamma_{j} \cdot \hat{y}_{t}^{j}) + u_{t},\;\; \text{with}\;\; \hat{y}_{t} \;\text{the fitted values of the original OLS regression and} \;\text{power} = 3 \;\text{by default}
 $$
 
 $$
-F = ((\text{RSS}_{r} - \text{RSS}_{u}) / q) / (\text{RSS}_{u} / (n - k_{u}))
+F = \frac{\frac{\text{RSS}_{r} - \text{RSS}_{u}}{q}}{\frac{\text{RSS}_{u}}{n - k_{u}}}
 $$
 
 Where `RSS_r` and `RSS_u` are the residual sums of squares of both models, `q` is the number of added terms (`power - 1`), `n` the number of observations and `k_u` the number of parameters of the augmented model. Under the null hypothesis that the linear form is correct, `F` follows an $$F (q , n - k_{u})$$ distribution. A low p-value suggests the model is missing something, for example a squared or interaction term or a log transformation, without saying what; it is a signal to reconsider the specification, not a prescription.
@@ -2573,7 +2573,7 @@ The sample is split at `break_date` into a "before" and "after" period, a regres
 The formula is as follows:
 
 $$
-F = ((\text{RSS\_pooled} - (\text{RSS}_{1} + \text{RSS}_{2})) / k) / ((\text{RSS}_{1} + \text{RSS}_{2}) / (n - 2k))
+F = \frac{\frac{\text{RSS}_{\text{pooled}} - (\text{RSS}_{1} + \text{RSS}_{2})}{k}}{\frac{\text{RSS}_{1} + \text{RSS}_{2}}{n - 2k}}
 $$
 
 - The second sub-period starts at the first date on or after `break_date`, and `k` includes the constant when add_constant=True
@@ -2659,19 +2659,19 @@ A natural use case in a multi-asset return panel: suppose `endogenous_ticker`'s 
 The formula is as follows:
 
 $$
-Z = \left[1,\; \text{exogenous tickers},\; \text{instruments}\right] \text{and}\; X = \left[1,\; \text{exogenous tickers},\; \text{endogenous tickers}\right],\;\; \text{all in column (Return by default)},\;\; \text{the constant only with add\_constant=True}
+Z = \left[1,\; \text{exogenous tickers},\; \text{instruments}\right]\;\;\text{and}\;\; X = \left[1,\; \text{exogenous tickers},\; \text{endogenous tickers}\right],\;\; \text{all in column (Return by default), the constant only with add\_constant=True}
 $$
 
 $$
-\text{Stage 1:}\;\; \text{X̂} = Z(\text{Z'Z}) \text{⁻¹Z'X},\;\; \text{the fitted values of each endogenous ticker regressed on Z}
+\text{Stage 1:}\;\; \hat{X} = Z(Z' Z)^{- 1} Z' X,\;\; \text{the fitted values of each endogenous ticker regressed on } Z
 $$
 
 $$
-\text{Stage 2:}\;\; \text{betâ} = (\text{X̂'X}) \text{⁻¹X̂'y}
+\text{Stage 2:}\;\; \hat{\beta} = (\hat{X}' X)^{- 1} \hat{X}' y
 $$
 
 $$
-\operatorname{Cov}(\text{betâ}) = \text{sigmâ} ^{2} \cdot (\text{X̂'X̂}) \text{⁻¹},\;\; \text{with}\; \text{sigmâ} ^{2} = \operatorname{Σ}(\text{yₜ} - \text{xₜ'betâ}) ^{2} / (n - k) (\text{linearmodels}\; \text{IV2SLS} \;\text{with}\; \text{cov\_type} = \text{"unadjusted"} \;\text{and debiased} = \text{True})
+\operatorname{Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (\hat{X}' \hat{X})^{- 1},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum(y_{t} - x_{t}' \hat{\beta})^{2}}{n - k} \;(\text{linearmodels}\; \text{IV2SLS} \;\text{with}\; \text{cov\_type} = \text{"unadjusted"} \;\text{and debiased} = \text{True})
 $$
 
 **Args:**
@@ -2743,15 +2743,15 @@ With returns as the outcome, the `Treated x Post` coefficient is the change in t
 The formula is as follows:
 
 $$
-\text{yᵢₜ} = \text{beta₀} + \text{beta₁} \cdot \text{Treatedᵢ} + \text{beta₂} \cdot \text{Postₜ} + \text{δ} \cdot (\text{Treatedᵢ} \cdot \text{Postₜ}) + \text{epsilonᵢₜ},\;\; \text{fitted by OLS with classical standard errors on the stacked (ticker, date) panel of column (Return by default)}
+y_{it} = \beta_{0} + \beta_{1} \cdot \text{Treated}_{i} + \beta_{2} \cdot \text{Post}_{t} + \delta \cdot (\text{Treated}_{i} \cdot \text{Post}_{t}) + \epsilon_{it},\;\; \text{fitted by OLS with classical standard errors on the stacked (ticker, date) panel of column (Return by default)}
 $$
 
 $$
-\text{Treatedᵢ} = 1 \;\text{for}\; \text{treated\_tickers},\;\; \text{Postₜ} = 1 \;\text{on or after}\; \text{treatment\_date}
+\text{Treated}_{i} = 1 \;\text{for} \;\text{treated\_tickers},\;\; \text{Post}_{t} = 1 \;\text{on or after} \;\text{treatment\_date}
 $$
 
 $$
-\text{δ̂} = (\operatorname{mean}(y_{\text{treated}},\; \text{post}) - \operatorname{mean}(y_{\text{treated}},\; \text{pre})) - (\operatorname{mean}(y_{\text{control}},\; \text{post}) - \operatorname{mean}(y_{\text{control}},\; \text{pre}))
+\hat{\delta} = (\operatorname{mean}(y_{\text{treated},\text{post}}) - \operatorname{mean}(y_{\text{treated},\text{pre}})) - (\operatorname{mean}(y_{\text{control},\text{post}}) - \operatorname{mean}(y_{\text{control},\text{pre}}))
 $$
 
 **Args:**
@@ -2824,19 +2824,19 @@ Treats `running_variable_ticker`'s value as the running variable that (hypotheti
 The formula is as follows:
 
 $$
-\text{x̃ₜ} = \text{xₜ} - \text{cutoff},\;\; \text{keeping the observations with |x̃ₜ| < h},\;\; \text{where} \;\; \text{xₜ} \;\text{is the running ticker's}\; \text{column} (\text{Return by default}) \text{and}\; h = \text{bandwidth},\;\; \text{or half the range of xₜ by default}
+\tilde{x}_{t} = x_{t} - \text{cutoff},\;\; \text{keeping the observations with} \;\left|\tilde{x}_{t}\right| < h,\;\; \text{where}\;\; x_{t} \;\text{is the running ticker's} \;\text{column} \;(\text{Return by default}) \;\text{and}\; h = \text{bandwidth},\;\; \text{or half the range of } x_{t} \text{ by default}
 $$
 
 $$
-\text{Each side} (\text{x̃ₜ} < 0 \;\text{and}\; \text{x̃ₜ} \geq 0) \text{:} \text{yₜ} = a + b \cdot \text{x̃ₜ} + \text{eₜ},\;\; \text{fitted by OLS} (\text{kernel} = \text{"uniform"},\; \text{the default}) \text{or by WLS with weights}\; 1 - | \text{x̃ₜ} | / h (\text{kernel} = \text{"triangular"})
+\text{Each side (} \tilde{x}_{t} < 0 \text{ and } \tilde{x}_{t} \geq 0 \text{):}\;\; y_{t} = a + b \cdot \tilde{x}_{t} + e_{t},\;\; \text{fitted by OLS} \;(\text{kernel} = \text{"uniform"},\; \text{the default}) \;\text{or by WLS with weights}\; 1 - \frac{\left|\tilde{x}_{t}\right|}{h} \;(\text{kernel} = \text{"triangular"})
 $$
 
 $$
-\text{Discontinuity} = a_{\text{right}} - a_{\text{left}},\;\; \text{with SE} = \sqrt{\operatorname{SE}(a_{\text{right}}) ^{2} + \operatorname{SE}(a_{\text{left}}) ^{2}}
+\text{Discontinuity} = a_{\text{right}} - a_{\text{left}},\;\; \text{with}\;\; \text{SE} = \sqrt{\operatorname{SE}(a_{\text{right}})^{2} + \operatorname{SE}(a_{\text{left}})^{2}}
 $$
 
 $$
-t = \text{Discontinuity} / \text{SE},\;\; \text{with a Student-t distribution on the two sides' residual degrees of freedom combined}
+t = \frac{\text{Discontinuity}}{\text{SE}},\;\; \text{with a Student-t distribution on the two sides' residual degrees of freedom combined}
 $$
 
 **Args:**
@@ -2913,23 +2913,23 @@ Derives a binary "treatment" indicator the same way `get_logistic_regression` de
 The formula is as follows:
 
 $$
-\text{Dₜ} = 1 \;\text{if the treatment ticker's}\; \text{column} (\text{Return by default}) \text{is above}\; \text{treatment\_threshold} (0 \;\text{by default}),\;\; \text{else 0}
+D_{t} = 1 \;\text{if the treatment ticker's} \;\text{column} \;(\text{Return by default}) \;\text{is above} \;\text{treatment\_threshold} \;(0 \;\text{by default}),\;\; \text{else 0}
 $$
 
 $$
-e(\text{xₜ}) = 1 / (1 + \exp(- \text{xₜ'beta})),\;\; \text{a logit of Dₜ on the covariate tickers (plus a constant)}
+e(x_{t}) = \frac{1}{1 + \exp(- x_{t}' \beta)},\;\; \text{a logit of } D_{t} \text{ on the covariate tickers (plus a constant)}
 $$
 
 $$
-\text{Matching on}\; \text{ℓₜ} = \ln(e / (1 - e)) \text{:} \;\text{each treated period},\;\; \text{in order},\;\; \text{takes the nearest unmatched control period} (\text{one-to-one},\; \text{without replacement}) \text{if} | \text{ℓ\_treated} - \text{ℓ\_control} | \leq \text{caliper},\;\; \text{which defaults to}\; 0.2 \cdot \text{the standard deviation} (\text{ddof} = 1) \text{of}\; \text{ℓ}
+\text{Matching on}\; \ell_{t} = \ln\left(\frac{e}{1 - e}\right) \;\text{:} \;\text{each treated period},\;\; \text{in order},\;\; \text{takes the nearest unmatched control period} \;(\text{one-to-one},\; \text{without replacement}) \;\text{if} \;\left|\ell_{\text{treated}} - \ell_{\text{control}}\right| \leq \text{caliper},\;\; \text{which defaults to 0.2 × the standard deviation (ddof=1) of ℓ}
 $$
 
 $$
-\text{ATT} = (1 / m) \cdot \operatorname{Σ}(y_{\text{treated}} - y_{\text{control}}) \text{over the}\; m \;\text{matched pairs}
+\text{ATT} = \frac{1}{m} \cdot \sum(y_{\text{treated}} - y_{\text{control}}) \;\text{over the}\; m \;\text{matched pairs}
 $$
 
 $$
-\text{SE} = \operatorname{std}(y_{\text{treated}} - y_{\text{control}},\; \text{ddof} = 1) / \sqrt{m},\;\; \text{with a Student-t distribution with m - 1 degrees of freedom}
+\text{SE} = \frac{\operatorname{std}(y_{\text{treated}} - y_{\text{control}},\; \text{ddof} = 1)}{\sqrt{m}},\;\; \text{with a Student-t distribution with}\; m - 1 \;\text{degrees of freedom}
 $$
 
 **Args:**
@@ -3005,15 +3005,15 @@ When a single company or market experiences an event (an acquisition, a regulato
 The formula is as follows:
 
 $$
-\text{Weights:}\;\; w \cdot = \text{argmin}_{w} | | \text{treated\_pre} - \text{donors\_pre} \text{@} w | | ^{2},\;\; \text{subject to}\; w \geq 0 \;\text{and sum} (w) = 1 (\text{SLSQP}),\;\; \text{with pre the dates before treatment\_period}
+\text{Weights:}\;\; w^{*} = \operatorname*{arg\,min}_{w} \left\|\text{treated\_pre} - \text{donors\_pre} \, w\right\|^{2},\;\; \text{subject to}\; w \geq 0 \;\text{and sum}(w) = 1 (\text{SLSQP}),\;\; \text{with pre the dates before treatment\_period}
 $$
 
 $$
-\text{Synthetic control:}\;\; \text{synthetic}_{t} = \text{donors}_{t} \text{@} w \cdot,\;\; \text{for every period t}
+\text{Synthetic control:}\;\; \text{synthetic}_{t} = \text{donors}_{t} \, w^{*},\;\; \text{for every period } t
 $$
 
 $$
-\text{Treatment effect:}\;\; \text{gap}_{t} = \text{treated}_{t} - \text{synthetic}_{t},\;\; \text{for every post-event period t}
+\text{Treatment effect:}\;\; \text{gap}_{t} = \text{treated}_{t} - \text{synthetic}_{t},\;\; \text{for every post-event period } t
 $$
 
 $$
@@ -3021,7 +3021,7 @@ $$
 $$
 
 $$
-\text{RMSPE ratio} = \sqrt{\operatorname{mean}(\text{gap\_post} ^{2})} / \sqrt{\operatorname{mean}(\text{gap\_pre} ^{2})}
+\text{RMSPE ratio} = \frac{\sqrt{\operatorname{mean}(\text{gap\_post}^{2})}}{\sqrt{\operatorname{mean}(\text{gap\_pre}^{2})}}
 $$
 
 $$
@@ -3122,15 +3122,15 @@ Fixed Effects removes any purely entity-specific, time-invariant characteristic 
 The formula is as follows:
 
 $$
-\text{ỹᵢₜ} = \text{yᵢₜ} - \text{mean}_{t}(\text{yᵢₜ}) \text{and}\; \text{x̃ᵢₜ} = \text{xᵢₜ} - \text{mean}_{t}(\text{xᵢₜ}) (\text{entity\_effects} = \text{True},\; \text{the default}) \text{;} \text{time\_effects} = \text{True also removes each date's mean} (\text{two-way fixed effects})
+\tilde{y}_{it} = y_{it} - \text{mean}_{t}(y_{it})\;\;\text{and}\;\; \tilde{x}_{it} = x_{it} - \text{mean}_{t}(x_{it}) (\text{entity\_effects} = \text{True},\; \text{the default});\;\; \text{time\_effects=True also removes each date's mean (two-way fixed effects)}
 $$
 
 $$
-\text{betâ\_FE} = (\text{X̃'X̃}) \text{⁻¹X̃'ỹ},\;\; \text{without a separate constant (linearmodels PanelOLS, unadjusted covariance)}
+\hat{\beta}_{\text{FE}} = (\tilde{X}' \tilde{X})^{- 1} \tilde{X}' \tilde{y},\;\; \text{without a separate constant (linearmodels PanelOLS, unadjusted covariance)}
 $$
 
 $$
-\text{Entity Effect:}\;\; \text{alphaᵢ} = \text{mean}_{t}(\text{yᵢₜ} - \text{xᵢₜ'betâ\_FE}) \text{;} \;\text{Time}\; \text{Effect:} \text{lambdaₜ} = \text{mean}_{i}(\text{yᵢₜ} - \text{xᵢₜ'betâ\_FE})
+\text{Entity Effect:}\;\; \alpha_{i} = \text{mean}_{t}(y_{it} - x_{it}' \hat{\beta}_{\text{FE}});\;\; \text{Time Effect:}\;\; \lambda_{t} = \text{mean}_{i}(y_{it} - x_{it}' \hat{\beta}_{\text{FE}})
 $$
 
 - $$y_{it}$$ is each dependent ticker's `column` (Return by default)
@@ -3217,15 +3217,15 @@ See `get_fixed_effects` for how `dependent_tickers`/`independent_tickers`/ `inde
 The formula is as follows:
 
 $$
-\text{thetaᵢ} = 1 - \sqrt{\sigma ^{\text{2\_epsilon}} / (\sigma ^{\text{2\_epsilon}} + \text{Tᵢ} \cdot \sigma ^{2_{u}})},\;\; \text{with the Swamy-Arora estimates of the idiosyncratic} (\sigma ^{\text{2\_epsilon}}) \text{and entity} (\sigma ^{2_{u}}) \text{variance components}
+\theta_{i} = 1 - \sqrt{\frac{\sigma_{\epsilon}^{2}}{\sigma_{\epsilon}^{2} + T_{i} \cdot \sigma_{u}^{2}}},\;\; \text{with the Swamy-Arora estimates of the idiosyncratic (} \sigma_{\epsilon}^{2} \text{) and entity (} \sigma_{u}^{2} \text{) variance components}
 $$
 
 $$
-y \cdot \text{ᵢₜ} = \text{yᵢₜ} - \text{thetaᵢ} \cdot \text{mean}_{t}(\text{yᵢₜ}) \text{and}\; x \cdot \text{ᵢₜ} = \text{xᵢₜ} - \text{thetaᵢ} \cdot \text{mean}_{t}(\text{xᵢₜ}),\;\; \text{the constant becoming 1 - thetaᵢ}
+y^{*}_{it} = y_{it} - \theta_{i} \cdot \text{mean}_{t}(y_{it})\;\;\text{and}\;\; x^{*}_{it} = x_{it} - \theta_{i} \cdot \text{mean}_{t}(x_{it}),\;\; \text{the constant becoming}\; 1 - \theta_{i}
 $$
 
 $$
-\text{betâ\_RE} = \text{OLS of}\; y \cdot \text{on}\; x \cdot (\text{linearmodels RandomEffects}),\;\; \text{with yᵢₜ each dependent ticker's column (Return by default)}
+\hat{\beta}_{\text{RE}} = \text{OLS of} \;y^{*} \;\text{on} \;x^{*} \;(\text{linearmodels RandomEffects}),\;\; \text{with } y_{it} \text{ each dependent ticker's column (Return by default)}
 $$
 
 **Args:**
@@ -3304,7 +3304,7 @@ Random Effects is more efficient than Fixed Effects but relies on entity effects
 The formula is as follows:
 
 $$
-H = (\text{betâ\_FE} - \text{betâ\_RE}) \text{'} \cdot \left[\operatorname{Var}(\text{betâ\_FE}) - \operatorname{Var}(\text{betâ\_RE})\right] \text{⁻¹} \cdot (\text{betâ\_FE} - \text{betâ\_RE}),\;\; \text{over the k slope coefficients the two models share (a pseudo-inverse when the difference is singular, and H floored at 0)}
+H = (\hat{\beta}_{\text{FE}} - \hat{\beta}_{\text{RE}})' \cdot \left[\operatorname{Var}(\hat{\beta}_{\text{FE}}) - \operatorname{Var}(\hat{\beta}_{\text{RE}})\right]^{- 1} \cdot (\hat{\beta}_{\text{FE}} - \hat{\beta}_{\text{RE}}),\;\; \text{over the } k \text{ slope coefficients the two models share (a pseudo-inverse when the difference is singular, and } H \text{ floored at 0)}
 $$
 
 - H is chi-squared with k degrees of freedom; Random Effects is rejected when the p-value is below 0.05
@@ -3385,17 +3385,17 @@ An ARIMA(p, d, q) model differences the series `d` times to remove a (stochastic
 The formula is as follows:
 
 $$
-\text{y'ₜ} = \Delta \text{ᵈYₜ},\;\; \text{the}\; \text{column} \;\text{level} (\text{Adj Close by default}) \text{differenced}\; d \;\text{times} (d = 1 \;\text{by default})
+y'_{t} = \Delta^{d} Y_{t},\;\; \text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{differenced}\; d \;\text{times} \;(d = 1 \;\text{by default})
 $$
 
 $$
-\text{y'ₜ} - \mu = \operatorname{Σ}(i = 1..p) \text{φᵢ} \cdot (\text{y'ₜ₋ᵢ} - \mu) + \text{epsilonₜ} + \operatorname{Σ}(j = 1..q) \text{thetaⱼ} \cdot \text{epsilonₜ₋ⱼ},\;\; \text{with}\; p = q = 1 \;\text{by default and}\; \mu \;\text{the mean} (d = 0) \text{or drift} (d \geq 1) \text{of}\; \text{y'ₜ} \;\text{when}\; \text{include\_constant} = \text{True},\;\; \text{and}\; \mu = 0 \;\text{otherwise}
+y'_{t} - \mu = \sum_{i=1}^{p} \phi_{i} \cdot (y'_{t-i} - \mu) + \epsilon_{t} + \sum_{j=1}^{q} \theta_{j} \cdot \epsilon_{t-j},\;\; \text{with}\;\; p = q = 1 \;\text{by default}\;\;\text{and}\;\; \mu \;\text{the mean} \;(d = 0) \;\text{or drift} \;(d \geq 1) \;\text{of}\; y'_{t} \;\text{when}\; \text{include\_constant} = \text{True},\;\; \text{and}\;\; \mu = 0 \;\text{otherwise}
 $$
 
 - Fitted by exact Maximum Likelihood via the Kalman filter (statsmodels ARIMA)
 
 $$
-\text{Forecast:}\;\; \text{the conditional mean}\; E \left[Y_{T} + h | \text{Y\_1..Y\_T}\right] \text{for}\; h = \text{1..forecast\_steps},\;\; \text{in levels}
+\text{Forecast:}\;\; \text{the conditional mean}\; E\left[Y_{T+h} \mid Y_{1} \ldots Y_{T}\right] \;\text{for}\; h = 1 \ldots \;\text{forecast\_steps},\;\; \text{in levels}
 $$
 
 **Args:**
@@ -3476,13 +3476,13 @@ A VAR models several series jointly: each ticker's value is regressed on `lags` 
 The formula is as follows:
 
 $$
-Y_{t} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot Y_{\text{t-l}}) + e_{t},\;\; \text{with}\; Y_{t} \;\text{every ticker's}\; \text{column} (\text{Return by default}) \text{and}\; \text{lags} = 1 \;\text{by default}
+Y_{t} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot Y_{t-l}) + e_{t},\;\; \text{with}\;\; Y_{t} \;\text{every ticker's} \;\text{column} \;(\text{Return by default}) \;\text{and} \;\text{lags} = 1 \;\text{by default}
 $$
 
 - Each equation is an OLS regression on a constant and the `lags` lagged values of all tickers
 
 $$
-\text{Forecast:}\;\; \text{Yhat}_{T + h} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot \text{Yhat}_{T + \text{h-l}}),\;\; \text{with Yhat}_{s} = Y_{s} \;\text{for}\; s \leq T
+\text{Forecast:}\;\; \hat{Y}_{T+h} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot \hat{Y}_{T+h-l}),\;\; \text{with}\;\; \hat{Y}_{s} = Y_{s} \;\text{for}\; s \leq T
 $$
 
 Where `Y_t` holds the values of all tickers at time `t` and each `Phi_l` is a matrix of coefficients. Because every equation has the same regressors, the model is estimated exactly by a separate OLS regression per ticker. Forecasts are produced by running the fitted equations forward one step at a time, feeding each forecast back in as the most recent lag. The coefficients show how shocks spread between assets; `get_impulse_response_function` and `get_variance_decomposition` summarise that, and `get_granger_causality` tests whether one ticker helps predict another. A VAR assumes stationary series, so returns are generally more suitable than prices (see `get_augmented_dickey_fuller`).
@@ -3578,19 +3578,19 @@ A natural companion to `get_var_forecast`: rather than forecasting the levels fo
 The formula is as follows:
 
 $$
-\text{Ψ₀} = I \;\text{and}\; \text{Ψₙ} = \operatorname{Σ}(l = \operatorname{1..min}(n,\; p)) \text{Phiₗ} \cdot \text{Ψₙ₋ₗ},\;\; \text{the moving-average matrices of the VAR(p) fitted on every ticker's column (Return by default)},\;\; p = \text{lags} (1 \;\text{by default})
+\Psi_{0} = I\;\;\text{and}\;\; \Psi_{n} = \sum_{l=1}^{\min(n,p)} \Phi_{l} \cdot \Psi_{n-l},\;\; \text{the moving-average matrices of the VAR(} p \text{) fitted on every ticker's column (Return by default)},\;\; p = \text{lags} \;(1 \;\text{by default})
 $$
 
 $$
-\text{Σᵤ} = \text{Û'Û} / (T - k \cdot p - 1) = P \cdot P',\;\; \text{with P the lower-triangular Cholesky factor}
+\Sigma_{u} = \frac{\hat{U}' \hat{U}}{T - k \cdot p - 1} = P \cdot P',\;\; \text{with } P \text{ the lower-triangular Cholesky factor}
 $$
 
 $$
-\text{Θₙ} = \text{Ψₙ} \cdot P (\text{orthogonalized} = \text{True},\; a \;\text{one-standard-deviation shock}) \text{or}\; \text{Θₙ} = \text{Ψₙ} (\text{orthogonalized} = \text{False},\; a \;\text{unit reduced-form shock})
+\Theta_{n} = \Psi_{n} \cdot P (\text{orthogonalized} = \text{True},\; \text{a one-standard-deviation shock}) \;\text{or}\; \Theta_{n} = \Psi_{n} (\text{orthogonalized} = \text{False},\; \text{a unit reduced-form shock})
 $$
 
 $$
-\text{Response of ticker i, n periods after a shock to ticker j:}\;\; \text{Θₙ[i, j]},\;\; \text{for} \;\; n = \text{0..periods}
+\text{Response of ticker } i \text{, } n \text{ periods after a shock to ticker } j \text{:}\;\; \Theta_{n} [i , j],\;\; \text{for}\;\; n = 0 \ldots \;\text{periods}
 $$
 
 **Args:**
@@ -3681,11 +3681,11 @@ The other natural companion to `get_var_forecast` (alongside `get_impulse_respon
 The formula is as follows:
 
 $$
-\text{Θₙ} = \text{Ψₙ} \cdot P,\;\; \text{the orthogonalized moving-average matrices of get\_impulse\_response\_function},\;\; \text{from a VAR(p) on every ticker's column (Return by default)},\;\; p = \text{lags} (1 \;\text{by default})
+\Theta_{n} = \Psi_{n} \cdot P,\;\; \text{the orthogonalized moving-average matrices of get\_impulse\_response\_function, from a VAR(} p \text{) on every ticker's column (Return by default)},\;\; p = \text{lags} \;(1 \;\text{by default})
 $$
 
 $$
-\text{Share of ticker j's shock in ticker i's h-step forecast error variance:}\;\; \operatorname{ωᵢⱼ}(h) = \operatorname{Σ}(n = \text{0..h-1}) \text{Θₙ} \left[i,\; j\right] ^{2} / \operatorname{Σ}(m = 1..k) \operatorname{Σ}(n = \text{0..h-1}) \text{Θₙ} \left[i,\; m\right] ^{2},\;\; \text{for} \;\; h = \text{1..periods}
+\text{Share of ticker j's shock in ticker i's h-step forecast error variance:}\;\; \omega_{ij}(h) = \frac{\sum_{n=0}^{h-1} \Theta_{n}\left[i,\; j\right]^{2}}{\sum_{m=1}^{k} \sum_{n=0}^{h-1} \Theta_{n}\left[i,\; m\right]^{2}},\;\; \text{for}\;\; h = 1 \ldots \;\text{periods}
 $$
 
 **Args:**
@@ -3769,11 +3769,11 @@ A VECM keeps a VAR's short-run dynamics while ALSO letting each asset's price ch
 The formula is as follows:
 
 $$
-\text{Rank}\; r = \text{the number of leading Johansen trace statistics} (\text{det\_order} = 0,\; \text{k\_ar\_diff} \;\text{lags}) \text{that exceed their critical value at}\; \text{significance} (5\% \;\text{by default}) \text{;} r = 0 \;\text{raises an error}
+\text{Rank}\; r = \text{the number of leading Johansen trace statistics} \;(\text{det\_order} = 0,\; \text{k\_ar\_diff} \;\text{lags}) \;\text{that exceed their critical value at} \;\text{significance} \;(5\% \;\text{by default});\;\; r = 0 \;\text{raises an error}
 $$
 
 $$
-\Delta \text{Yₜ} = \alpha \cdot \text{beta'} \cdot \text{Yₜ₋₁} + \operatorname{Σ}(i = 1..k) \text{Γᵢ} \cdot \Delta \text{Yₜ₋ᵢ} + c + \text{epsilonₜ},\;\; \text{with Yₜ every ticker's column level (Adj Close by default)},\;\; k = \text{k\_ar\_diff} (1 \;\text{by default}) \text{and}\; c a \;\text{constant outside the cointegrating relation} (\text{statsmodels VECM with deterministic} = \text{"co"}),\;\; \text{fitted by Maximum Likelihood}
+\Delta Y_{t} = \alpha \cdot \beta' \cdot Y_{t-1} + \sum_{i=1}^{k} \Gamma_{i} \cdot \Delta Y_{t-i} + c + \epsilon_{t},\;\; \text{with } Y_{t} \text{ every ticker's column level (Adj Close by default)},\;\; k = \text{k\_ar\_diff} \;(1 \;\text{by default}) \;\text{and}\; c \;\text{a constant outside the cointegrating relation} \;(\text{statsmodels VECM with deterministic} = \text{"co"}),\;\; \text{fitted by Maximum Likelihood}
 $$
 
 - Forecast: the fitted recursion run forward `forecast_steps` periods, in levels
@@ -3860,7 +3860,7 @@ For a fund against its index the RMSE comes close to the tracking error but is n
 The formula is as follows:
 
 $$
-\text{RMSE} = \sqrt{(1 / n) \cdot \operatorname{Σ}(\text{aₜ} - \text{bₜ}) ^{2}},\;\; \text{with aₜ and bₜ the two tickers' column (Return by default) on the n dates where both have data}
+\text{RMSE} = \sqrt{\frac{1}{n} \cdot \sum(a_{t} - b_{t})^{2}},\;\; \text{with } a_{t} \text{ and } b_{t} \text{ the two tickers' column (Return by default) on the } n \text{ dates where both have data}
 $$
 
 **Args:**
@@ -3915,7 +3915,7 @@ MAE is the average absolute difference between two series.
 The formula is as follows:
 
 $$
-\text{MAE} = (1 / n) \cdot \text{Σ} | \text{aₜ} - \text{bₜ} |,\;\; \text{with aₜ and bₜ the two tickers' column (Return by default) on the n dates where both have data}
+\text{MAE} = \frac{1}{n} \cdot \sum\left|a_{t} - b_{t}\right|,\;\; \text{with } a_{t} \text{ and } b_{t} \text{ the two tickers' column (Return by default) on the } n \text{ dates where both have data}
 $$
 
 It is expressed in the units of the series itself (e.g. a return difference) and answers "how far apart are the two series in a typical period". Every difference counts in proportion to its size, so unlike `get_rmse`, which squares the differences and is therefore dominated by a few large gaps, MAE is robust to occasional outliers. A lower value means the two tickers track each other more closely.
@@ -3985,7 +3985,7 @@ The formula is as follows:
 - $$\hat{Y}_{t}$$: the H-step forecast of the model fitted on the training sample only, an ARIMA(p, d, q) (model="arima", ARIMA(1, 1, 1) by default) or a VAR(`lags`) on the ticker and `other_tickers` (model="var")
 
 $$
-\text{RMSE} = \sqrt{(1 / H) \cdot \operatorname{Σ}(\text{Yₜ} - \text{Ŷₜ}) ^{2}} \text{and MAE} = (1 / H) \cdot \text{Σ} | \text{Yₜ} - \text{Ŷₜ} |,\;\; \text{over the holdout}
+\text{RMSE} = \sqrt{\frac{1}{H} \cdot \sum(Y_{t} - \hat{Y}_{t})^{2}}\;\;\text{and}\;\; \text{MAE} = \frac{1}{H} \cdot \sum\left|Y_{t} - \hat{Y}_{t}\right|,\;\; \text{over the holdout}
 $$
 
 **Args:**
@@ -4065,19 +4065,19 @@ The `event_date` is the first trading day on which the news can be priced, so fo
 The formula is as follows:
 
 $$
-\text{Market model:}\;\; \text{Rₜ} = \alpha + \beta \cdot R_{m},\;\; \text{t + epsilonₜ},\;\; \text{fitted by OLS on the daily column (Return by default) of the ticker and the Benchmark over the estimation\_window (250) trading days that end gap\_days (30) trading days before the event}
+\text{Market model:}\;\; R_{t} = \alpha + \beta \cdot R_{m,t} + \epsilon_{t},\;\; \text{fitted by OLS on the daily column (Return by default) of the ticker and the Benchmark over the estimation\_window (250) trading days that end gap\_days (30) trading days before the event}
 $$
 
 $$
-\text{ARₜ} = \text{Rₜ} - (\text{alphâ} + \text{betâ} \cdot R_{m},\; t),\;\; \text{for} \;\; t = - \text{pre\_event\_days} .. + \text{post\_event\_days} (10 \;\text{and}\; 10)
+\text{AR}_{t} = R_{t} - (\hat{\alpha} + \hat{\beta} \cdot R_{m,t}),\;\; \text{for}\;\; t = - \text{pre\_event\_days} \;\ldots + \text{post\_event\_days} \;(10 \;\text{and}\; 10)
 $$
 
 $$
-\text{CAR} = \text{Σ} \text{ARₜ} \;\text{over the}\; L = \text{pre\_event\_days} + \text{post\_event\_days} + 1 \;\text{event-window days}
+\text{CAR} = \sum \;\text{AR}_{t} \;\text{over the}\; L = \text{pre\_event\_days} + \text{post\_event\_days} + 1 \;\text{event-window days}
 $$
 
 $$
-t = \text{CAR} / \sqrt{L \cdot \text{sigmâ} ^{2}},\;\; \text{with}\; \text{sigmâ} ^{2} = \text{Σepsilon̂ₜ} ^{2} / (N - 2) \text{over the}\; N \;\text{estimation-window days and}\; a \;\text{Student-t distribution with}\; N - 2 \;\text{degrees of freedom}
+t = \frac{\text{CAR}}{\sqrt{L \cdot \hat{\sigma}^{2}}},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum \hat{\epsilon}_{t}^{2}}{N - 2} \;\text{over the}\; N \;\text{estimation-window days and a Student-t distribution with}\; N - 2 \;\text{degrees of freedom}
 $$
 
 **Also known as:** CAR analysis, abnormal returns analysis, market model event study.
@@ -4157,17 +4157,17 @@ The likelihood of a mixture of regimes has local optima, so the model is fitted 
 The formula is as follows:
 
 $$
-\text{yₜ} = \text{mu\_Sₜ} + \text{sigma\_Sₜ} \cdot \text{epsilonₜ},\;\; \text{with yₜ the column series (Return by default)},\;\; \text{epsilonₜ standard normal and Sₜ ∈ \{1},\;\; \text{...},\;\; \text{K\} the regime},\;\; K = \text{regimes} (2 \;\text{by default}) \text{;} \text{sigma\_Sₜ} = \sigma \;\text{for every regime when}\; \text{switching\_variance} = \text{False}
+y_{t} = \mu_{S_{t}} + \sigma_{S_{t}} \cdot \epsilon_{t},\;\; \text{with } y_{t} \text{ the column series (Return by default)},\;\; \epsilon_{t} \;\text{standard normal and}\; S_{t} \in \{1,\; \ldots,\; K\} \;\text{the regime},\;\; K = \text{regimes} \;(2 \;\text{by default});\;\; \sigma_{S_{t}} = \sigma \;\text{for every regime when}\; \text{switching\_variance} = \text{False}
 $$
 
 $$
-P(\text{Sₜ} = j | \text{Sₜ₋₁} = i) = \text{pᵢⱼ},\;\; \text{a first-order Markov chain with constant transition probabilities}
+P(S_{t} = j \mid S_{t-1} = i) = p_{ij},\;\; \text{a first-order Markov chain with constant transition probabilities}
 $$
 
 - $$\mu$$, $$\sigma$$ and $$p_{ij}$$ are fitted by Maximum Likelihood with the Hamilton filter (statsmodels MarkovRegression), keeping the best of the default start and 20 random perturbations
 
 $$
-\text{Smoothed probabilities}\; P (\text{Sₜ} = j | \text{y₁..y}_{T}) \text{per}\; \text{date;} \;\text{Expected Duration} = 1 / (1 - \text{pⱼⱼ}) \text{periods;} \;\text{Share} = \text{the fraction of dates where regime}\; j \;\text{has the highest smoothed}\; \text{probability;} \;\text{Current Regime} = \text{that regime on the last date},\;\; \text{with its smoothed probability}
+\text{Smoothed probabilities} \;P(S_{t} = j \mid y_{1} \ldots y_{T}) \;\text{per date};\;\; \text{Expected Duration} = \frac{1}{1 - p_{jj}} \;\text{periods};\;\; \text{Share} = \text{the fraction of dates where regime}\; j \;\text{has the highest smoothed probability};\;\; \text{Current Regime} = \text{that regime on the last date},\;\; \text{with its smoothed probability}
 $$
 
 For more information, see the following paper:
@@ -4245,15 +4245,15 @@ Breaks show when a series changed character, such as the regimes of inflation or
 The formula is as follows:
 
 $$
-\text{yₜ} = \text{muⱼ} + \text{epsilonₜ} \;\text{for the dates of segment}\; j = 1,\;\; \text{...},\;\; \text{m + 1},\;\; \text{with yₜ the column series (Return by default) and m breaks}
+y_{t} = \mu_{j} + \epsilon_{t} \;\text{for the dates of segment}\; j = 1,\; \ldots,\; m + 1,\;\; \text{with } y_{t} \text{ the column series (Return by default) and } m \text{ breaks}
 $$
 
 $$
-\operatorname{SSR}(m) = \text{min over the break dates of}\; \text{Σⱼ} \text{Σ} (t \;\text{in segment}\; j) (\text{yₜ} - \text{ȳⱼ}) ^{2},\;\; \text{found exactly by dynamic programming},\;\; \text{with every segment at least}\; h = \max(\text{⌊minimum\_segment} \cdot \text{T⌋},\; 2) \text{observations} (\text{minimum\_segment} = 0.15 \;\text{by default})
+\operatorname{SSR}(m) = \min \;\text{over the break dates of} \;\sum_{j} \sum_{t \in \text{segment j}}(y_{t} - \bar{y}_{j})^{2},\;\; \text{found exactly by dynamic programming},\;\; \text{with}\;\; \text{every segment at least}\; h = \max(\lfloor \;\text{minimum\_segment} \cdot T \rfloor,\; 2) \;\text{observations} \;(\text{minimum\_segment} = 0.15 \;\text{by default})
 $$
 
 $$
-\operatorname{BIC}(m) = T \cdot \ln(\operatorname{SSR}(m) / T) + (2m + 1) \cdot \ln(T),\;\; \text{for} \;\; m = 0,\;\; \text{...},\;\; \text{max\_breaks (5 by default); the m with the lowest BIC is chosen unless breaks is given}
+\operatorname{BIC}(m) = T \cdot \ln\left(\frac{\operatorname{SSR}(m)}{T}\right) + (2m + 1) \cdot \ln(T),\;\; \text{for}\;\; m = 0,\; \ldots,\; \text{max\_breaks} \;(5 \;\text{by default});\;\; \text{the } m \text{ with the lowest BIC is chosen unless breaks is given}
 $$
 
 - Per segment: its Start, End, Observations, Mean $$\bar{y}_{j}$$ and Standard Deviation (ddof=1)
@@ -4325,11 +4325,11 @@ By default every asset is regressed on the Benchmark of the Toolkit (or, with st
 The formula is as follows:
 
 $$
-\text{yₜ} = \text{alphaₜ} + \text{betaₜ} \cdot \text{xₜ} + \text{epsilonₜ},\;\; \text{epsilonₜ} \sim N(0,\; \sigma ^{\text{2\_epsilon}}),\;\; \text{with yₜ the asset's and xₜ the independent asset's column series (Return by default)},\;\; \text{on the dates both have}
+y_{t} = \alpha_{t} + \beta_{t} \cdot x_{t} + \epsilon_{t},\;\; \epsilon_{t} \sim N(0,\; \sigma_{\epsilon}^{2}),\;\; \text{with } y_{t} \text{ the asset's and } x_{t} \text{ the independent asset's column series (Return by default), on the dates both have}
 $$
 
 $$
-\text{alphaₜ} = \text{alphaₜ₋₁} + \text{ηₜ} \;\text{and}\; \text{betaₜ} = \text{betaₜ₋₁} + \text{ζₜ},\;\; \text{ηₜ} \sim N(0,\; \sigma ^{\text{2\_alpha}}) \text{and}\; \text{ζₜ} \sim N(0,\; \sigma ^{\text{2\_beta}}) \text{:} \;\text{random walks}
+\alpha_{t} = \alpha_{t-1} + \eta_{t}\;\;\text{and}\;\; \beta_{t} = \beta_{t-1} + \zeta_{t},\;\; \eta_{t} \sim N(0,\; \sigma_{\alpha}^{2}) \;\text{and}\; \zeta_{t} \sim N(0,\; \sigma_{\beta}^{2}) \;\text{:} \;\text{random walks}
 $$
 
 - $$\sigma_{\epsilon}^{2}$$, $$\sigma_{\alpha}^{2}$$ and $$\sigma_{\beta}^{2}$$ are fitted by Maximum Likelihood with the Kalman filter (diffusely initialized) on the series divided by their standard deviations, and scaled back
@@ -4398,15 +4398,15 @@ Estimate the correlation between every pair of assets as it changes over time, w
 The formula is as follows:
 
 $$
-\text{zᵢ},\;\; \text{ₜ} = (\text{rᵢ},\; \text{ₜ} - \operatorname{mean}(\text{rᵢ})) / \text{sigmaᵢ},\;\; \text{ₜ},\;\; \text{with rᵢ},\;\; \text{ₜ} \;\text{the}\; \text{column} \;\text{series} (\text{Return by default}) \text{on the dates all assets have and}\; \sigma ^{\text{2ᵢ}},\;\; \text{ₜ} = \text{ω} + \alpha \cdot \text{uᵢ},\;\; \text{ₜ₋₁} ^{2} + \beta \cdot \sigma ^{\text{2ᵢ}},\;\; \text{ₜ₋₁} \;\text{each asset's GARCH} (1,\; 1) \text{variance of the demeaned returns}\; u (\text{GARCH Persistence} = \alpha + \beta)
+z_{i,t} = \frac{r_{i,t} - \operatorname{mean}(r_{i})}{\sigma_{i,t}},\;\; \text{with}\;\; r_{i,t} \;\text{the} \;\text{column} \;\text{series} \;(\text{Return by default}) \;\text{on the dates all assets have and}\; \sigma_{i,t}^{2} = \omega + \alpha \cdot u_{i,t-1}^{2} + \beta \cdot \sigma_{i,t-1}^{2} \;\text{each asset's GARCH}(1,\; 1) \;\text{variance of the demeaned returns}\; u (\text{GARCH Persistence} = \alpha + \beta)
 $$
 
 $$
-\text{Qₜ} = (1 - a - b) \cdot \text{Q̄} + a \cdot \text{zₜ₋₁} \cdot \text{zₜ₋₁'} + b \cdot \text{Qₜ₋₁},\;\; \text{with}\; \text{Q̄} \;\text{the sample correlation of}\; z \;\text{and}\; \text{Q₀} = \text{Q̄}
+Q_{t} = (1 - a - b) \cdot \bar{Q} + a \cdot z_{t-1} \cdot z_{t-1}' + b \cdot Q_{t-1},\;\; \text{with}\;\; \bar{Q} \;\text{the sample correlation of}\; z \;\text{and}\; Q_{0} = \bar{Q}
 $$
 
 $$
-\text{Rₜ} = \operatorname{diag}(\text{Qₜ}) ^{- 1 / 2} \cdot \text{Qₜ} \cdot \operatorname{diag}(\text{Qₜ}) ^{- 1 / 2},\;\; \text{the conditional correlations}
+R_{t} = \operatorname{diag}(Q_{t})^{- \frac{1}{2}} \cdot Q_{t} \cdot \operatorname{diag}(Q_{t})^{- \frac{1}{2}},\;\; \text{the conditional correlations}
 $$
 
 - a and b maximize the correlation log-likelihood $$- \tfrac{1}{2} \cdot \sum_{t} (\ln \vert R_{t} \vert + z_{t}' \cdot R_{t}^{- 1} \cdot z_{t})$$, with a, $$b \geq 0$$ and $$a + b < 1$$
@@ -4481,17 +4481,17 @@ The hedge ratio and intercept are estimated on the whole period, so the spread, 
 The formula is as follows:
 
 $$
-\text{yₜ} = c + h \cdot \text{xₜ} + \text{sₜ},\;\; \text{fitted by OLS on the dates both have},\;\; \text{with yₜ and xₜ the (log, when log\_prices=True) column levels (Adj Close by default): h the Hedge Ratio},\;\; \text{c the Intercept and sₜ the Spread}
+y_{t} = c + h \cdot x_{t} + s_{t},\;\; \text{fitted by OLS on the dates both have},\;\; \text{with}\; y_{t} \;\text{and}\; x_{t} \;\text{the} \;(\log,\; \text{when}\; \text{log\_prices} = \text{True}) \;\text{column} \;\text{levels} \;(\text{Adj Close by default}) \;\text{:} h \;\text{the Hedge Ratio},\;\; c \text{ the Intercept and } s_{t} \text{ the Spread}
 $$
 
 $$
-\text{Z-Scoreₜ} = (\text{sₜ} - \operatorname{mean}(s)) / \operatorname{std}(s) (\text{ddof} = 1),\;\; \text{over the full sample or a rolling window}
+\text{Z-Score}_{t} = \frac{s_{t} - \operatorname{mean}(s)}{\operatorname{std}(s) (\text{ddof} = 1)},\;\; \text{over the full sample or a rolling window}
 $$
 
 - Signal: -1 from Z > `entry_z_score` until Z < `exit_z_score`, +1 from Z < -`entry_z_score` until Z > -`exit_z_score`, 0 otherwise (2.0 and 0.5 by default)
 
 $$
-\text{Half-Life} = - \ln(2) / \ln(1 + \lambda),\;\; \text{with}\; \lambda \;\text{from}\; \Delta \text{sₜ} = a + \lambda \cdot \text{sₜ₋₁} + \text{epsilonₜ} (\text{infinite when}\; \lambda \;\text{is} (\text{nearly}) \text{zero or positive})
+\text{Half-Life} = - \frac{\ln(2)}{\ln(1 + \lambda)},\;\; \text{with}\;\; \lambda \;\text{from}\; \Delta s_{t} = a + \lambda \cdot s_{t-1} + \epsilon_{t} (\text{infinite when}\; \lambda \;\text{is} \;(\text{nearly}) \;\text{zero or positive})
 $$
 
 - Cointegration P-Value: the Engle-Granger test of $$y_{t}$$ on $$x_{t}$$
@@ -4565,43 +4565,43 @@ Where `get_move_significance` (Risk) measures how unusual a move is, this measur
 The formula is as follows:
 
 $$
-\text{Percentile} = (\operatorname{Count}(x(s) < x(T)) + 0.5 \cdot \operatorname{Count}(x(s) = x(T))) / \operatorname{Count}(s),\;\; \text{over s < T}
+\text{Percentile} = \frac{\operatorname{Count}(x(s) < x(T)) + 0.5 \cdot \operatorname{Count}(x(s) = x(T))}{\operatorname{Count}(s)},\;\; \text{over}\; s < T
 $$
 
 $$
-\text{Rank} = 1 + \operatorname{Count}(x(s) > x(T)),\;\; \text{over s < T: 1 for the highest of the history}
+\text{Rank} = 1 + \operatorname{Count}(x(s) > x(T)),\;\; \text{over}\; s < \text{T:} 1 \;\text{for the highest of the history}
 $$
 
 $$
-\text{Highest Since} = \text{the last date}\; s < T \;\text{with}\; x (s) \geq x(T)
+\text{Highest Since} = \text{the last date}\; s < T \;\text{with} \;x(s) \geq x(T)
 $$
 
 $$
-\text{Lowest Since} = \text{the last date}\; s < T \;\text{with}\; x (s) \leq x(T)
+\text{Lowest Since} = \text{the last date}\; s < T \;\text{with} \;x(s) \leq x(T)
 $$
 
 $$
-\text{Change Since Start} = (x(T) - x(0)) / | x(0) |
+\text{Change Since Start} = \frac{x(T) - x(0)}{\left|x(0)\right|}
 $$
 
 $$
-\text{Change From Highest} = (x(T) - \max(x)) / | \max(x) |
+\text{Change From Highest} = \frac{x(T) - \max(x)}{\left|\max(x)\right|}
 $$
 
 $$
-\text{Change From Lowest} = (x(T) - \min(x)) / | \min(x) |
+\text{Change From Lowest} = \frac{x(T) - \min(x)}{\left|\min(x)\right|}
 $$
 
 $$
-\text{Multiple Since Start} = x(T) / x(0)
+\text{Multiple Since Start} = \frac{x(T)}{x(0)}
 $$
 
 $$
-\text{Annualised Change} = (x(T) / x(0)) ^{1 / \text{years}} - 1,\;\; \text{years between the two dates}
+\text{Annualised Change} = \left(\frac{x(T)}{x(0)}\right)^{\frac{1}{\text{years}}} - 1,\;\; \text{years between the two dates}
 $$
 
 $$
-\text{Largest Drawdown} = \text{min over}\; t \;\text{of} (x(t) - \max(x(s),\; s \leq t)) / | \max(x(s),\; s \leq t) |
+\text{Largest Drawdown} = \min \;\text{over}\; t \;\text{of} \;\frac{x(t) - \max(x(s),\; s \leq t)}{\left|\max(x(s),\; s \leq t)\right|}
 $$
 
 $$
@@ -4719,23 +4719,23 @@ This is `get_move_significance` (Risk) for any series rather than the returns of
 The formula is as follows:
 
 $$
-\text{Volatility Multiple} (t) = \operatorname{Change}(t) / \sigma(\operatorname{Change}(t - \text{window}),\; ...,\; \operatorname{Change}(t - 1))
+\text{Volatility Multiple}(t) = \frac{\operatorname{Change}(t)}{\sigma(\operatorname{Change}(t - \text{window}),\; \ldots,\; \operatorname{Change}(t - 1))}
 $$
 
 $$
-\text{VaR Multiple} (t) = \operatorname{Change}(t) / | \operatorname{Quantile}(\operatorname{Change}(t - \text{window}),\; ...,\; \operatorname{Change}(t - 1) \text{;} \alpha) |
+\text{VaR Multiple}(t) = \frac{\operatorname{Change}(t)}{\left|\operatorname{Quantile}(\operatorname{Change}(t - \text{window}),\; \ldots,\; \operatorname{Change}(t - 1) ; \alpha)\right|}
 $$
 
 $$
-\operatorname{Percentile}(t) = \operatorname{Count}(| \operatorname{Change}(s) | < | \operatorname{Change}(t) |,\; s < t) / \operatorname{Count}(s < t)
+\operatorname{Percentile}(t) = \frac{\operatorname{Count}(\left|\operatorname{Change}(s)\right| < \left|\operatorname{Change}(t)\right|,\; s < t)}{\operatorname{Count}(s < t)}
 $$
 
 $$
-\text{Largest Since} (t) = \max(s < t \text{:} \;\text{Change} (s) \leq \operatorname{Change}(t)) \text{if Change} (t) < 0
+\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Change}(s) \leq \operatorname{Change}(t)) \;\text{if Change}(t) < 0
 $$
 
 $$
-\text{Largest Since} (t) = \max(s < t \text{:} \;\text{Change} (s) \geq \operatorname{Change}(t)) \text{if Change} (t) > 0
+\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Change}(s) \geq \operatorname{Change}(t)) \;\text{if Change}(t) > 0
 $$
 
 The Change is the series' change as `changes` defines it: a percentage change by default, the difference with `changes="difference"` and the series itself with `changes="none"`. The volatility $$\sigma$$ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly. Each measure only uses the changes before the period itself (no look-ahead), and Largest Since compares falls with falls and rises with rises, as a headline does.
@@ -4811,15 +4811,15 @@ Where `get_level_significance` measures one window, from the start date to the l
 The formula is as follows:
 
 $$
-\text{Change} (y) = (x(\text{to\_month},\; y) - x(\text{from\_month},\; y)) / | x(\text{from\_month},\; y) |
+\text{Change} \;(y) = \frac{x(\text{to\_month},\; y) - x(\text{from\_month},\; y)}{\left|x(\text{from\_month},\; y)\right|}
 $$
 
 $$
-\text{Rank} (y) = \text{the position of Change} (y) \text{among the changes of every year},\;\; \text{1 for the largest}
+\text{Rank} \;(y) = \text{the position of Change} \;(y) \;\text{among the changes of every year},\;\; \text{1 for the largest}
 $$
 
 $$
-\text{Largest Since} (y) = \text{the last year}\; s < y \;\text{with Change} (s) \geq \text{Change} (y)
+\text{Largest Since} \;(y) = \text{the last year}\; s < y \;\text{with Change} \;(s) \geq \text{Change} \;(y)
 $$
 
 Where x(m, y) is the value of month m in year y, the last value of the month for a daily series. A window that ends in an earlier month than it starts (November to February) runs into the next year and is labelled by the year it ends; the same month for both gives the change over twelve months. A year without the value of either month has no change, so the current year is empty until its last month is published. Largest Since is NaN when no earlier year had a change as large. With `Econometrics(data=..., changes="difference")` the Change is x(to_month, y) - x(from_month, y), in percentage points for a rate.

@@ -94,13 +94,13 @@ Beta is a financial metric used to assess the systematic risk of a stock or inve
 The formula is as follows:
 
 $$
-\text{Beta} = \text{Covariance of Asset Returns and Benchmark Returns} / \text{Variance of Benchmark Returns}
+\text{Beta} = \frac{\text{Covariance of Asset Returns and Benchmark Returns}}{\text{Variance of Benchmark Returns}}
 $$
 
 For a given period, for example monthly, this translates into the following:
 
 $$
-\text{Beta} = \text{Monthly Covariance of Asset Returns and Benchmark Returns} / \text{Monthly Variance of Benchmark Returns}
+\text{Beta} = \frac{\text{Monthly Covariance of Asset Returns and Benchmark Returns}}{\text{Monthly Variance of Benchmark Returns}}
 $$
 
 Beta is read against 1, the benchmark's own beta: above 1 the asset tends to amplify market moves, below 1 to dampen them. Each period's Beta comes from the daily returns within that period, so a yearly figure rests on about 250 observations and can swing with a single turbulent month; a rolling window (for example period='monthly' with rolling=36) gives a steadier estimate for cost of capital work. A Beta close to zero can come from a low correlation with the market rather than from low volatility, so it is worth checking both before calling a stock defensive.
@@ -396,11 +396,11 @@ However, since the results are closely related and tend to point into the same d
 The formula is as follows:
 
 $$
-\text{Excess Return} = \text{Daily Asset Return} - \text{Daily Risk Free Rate} (\text{RF})
+\text{Excess Return} = \text{Daily Asset Return} - \text{Daily Risk Free Rate} \;(\text{RF})
 $$
 
 $$
-\text{Factor Asset Correlation} = \text{Pearson Correlation} (\text{Daily Excess Return},\; \text{Daily Factor Return}),\;\; \text{using the daily Fama and French 5 Factor returns within each period (e.g. each year)}
+\text{Factor Asset Correlation} = \text{Pearson Correlation} \;(\text{Daily Excess Return},\; \text{Daily Factor Return}),\;\; \text{using the daily Fama and French 5 Factor returns within each period (e.g. each year)}
 $$
 
 **Also known as:** factor exposure, asset correlations.
@@ -467,7 +467,7 @@ Optionally, it is also possible to see the correlation between the risk-free rat
 The formula is as follows:
 
 $$
-\text{Factor Correlation} = \text{Pearson Correlation} (\text{Daily Factor}\; A \;\text{Return},\; \text{Daily Factor}\; B \;\text{Return}),\;\; \text{using the daily Fama and French 5 Factor returns within each period (e.g. each year)}
+\text{Factor Correlation} = \text{Pearson Correlation} \;(\text{Daily Factor}\; A \;\text{Return},\; \text{Daily Factor}\; B \;\text{Return}),\;\; \text{using the daily Fama and French 5 Factor returns within each period (e.g. each year)}
 $$
 
 **Also known as:** factor model correlations.
@@ -649,7 +649,7 @@ The model performs a Multi Linear Regression (ordinary least squares) on all fou
 The formula is as follows:
 
 $$
-\text{Excess Return} = \text{Daily Asset Return} - \text{Daily Risk Free Rate} (\text{RF},\; \text{from the Fama and French dataset})
+\text{Excess Return} = \text{Daily Asset Return} - \text{Daily Risk Free Rate} \;(\text{RF},\; \text{from the Fama and French dataset})
 $$
 
 $$
@@ -945,7 +945,7 @@ The Treynor Ratio, also known as Treynor's Measure or the Reward-to-Volatility R
 The formula is as follows:
 
 $$
-\text{Treynor Ratio} = (\text{Portfolio's Return} - \text{Risk-Free Rate}) / \text{Portfolio Beta}
+\text{Treynor Ratio} = \frac{\text{Portfolio's Return} - \text{Risk-Free Rate}}{\text{Portfolio Beta}}
 $$
 
 **See definition:** [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikipedia.org/wiki/Treynor_ratio){:target="_blank"}
@@ -1020,19 +1020,19 @@ The Sharpe ratio is calculated as the difference between the expected return of 
 The formula is as follows:
 
 $$
-\text{Sharpe Ratio} = \text{Excess Return} / \text{Excess Standard Deviation}
+\text{Sharpe Ratio} = \frac{\text{Excess Return}}{\text{Excess Standard Deviation}}
 $$
 
 By default one Sharpe ratio is reported per `period`, computed from the **daily** excess returns falling inside that period. For a given period, for example monthly, this translates into the following:
 
 $$
-\text{Sharpe Ratio} = \text{Average Daily Excess Return within the Month} / \text{Standard Deviation of the Daily Excess Returns within the Month}
+\text{Sharpe Ratio} = \frac{\text{Average Daily Excess Return within the Month}}{\text{Standard Deviation of the Daily Excess Returns within the Month}}
 $$
 
 For a rolling period, `period` instead sets the frequency of the returns themselves and the ratio is computed over a rolling window of `rolling` such returns:
 
 $$
-\text{Sharpe Ratio} = \text{Average Rolling Excess Return} / \text{Standard Deviation of Rolling Excess Returns}
+\text{Sharpe Ratio} = \frac{\text{Average Rolling Excess Return}}{\text{Standard Deviation of Rolling Excess Returns}}
 $$
 
 Note that the Risk Free Rate is already subtracted from these returns. The Toolkit's risk free rate is the 10-year US Treasury yield by default, while Sharpe (1994) and the Ken French factor files use a short-term Treasury bill. Initialise the Toolkit with risk_free_rate="13w" (the 13-week Treasury bill; "5y", "10y" and "30y" are the other options) to use a short rate instead.
@@ -1044,7 +1044,7 @@ The plain Sharpe ratio only looks at the mean and standard deviation of returns,
 - `"lo"` - the annualized Sharpe ratio of Lo (2002), which corrects the annualization for serially correlated returns. SQRT(q) * SR assumes independent returns; with autocorrelated returns (smoothed prices of illiquid assets, hedge funds, momentum or mean reversion) the variance of a yearly return is no longer q times the variance of one return, and the yearly Sharpe ratio becomes:
 
 $$
-\operatorname{SR}(q) = \operatorname{η}(q) \cdot \text{SR},\;\; \operatorname{η}(q) = q / \sqrt{q + 2 \cdot \text{Σ\_\{k} = \text{1\}} ^{\text{\{q-1\}}} (q - k) \cdot \rho_{k}}
+\operatorname{SR}(q) = \eta(q) \cdot \text{SR},\;\; \eta(q) = \frac{q}{\sqrt{q + 2 \cdot \sum_{k=1}^{q-1}(q - k) \cdot \rho_{k}}}
 $$
 
 where q is the number of observations in a year and $$\rho_{k}$$ the sample autocorrelation of the excess returns at lag k. Positive autocorrelation lowers the annualized ratio below SQRT(q) * SR, negative autocorrelation raises it. Sample autocorrelations at lags close to the sample size rest on a handful of pairs, so the sum runs over `lags` lags and takes the autocorrelations beyond them as 0. Each $$\rho_{k}$$ is corrected for its small-sample bias −(n − k) / (n · (n − 1)) (Moran, 1948), which the (q − k) weights would otherwise turn into an overstated ratio on short samples, and fewer than 30 observations give NaN: a week or a month of daily returns, or a rolling window below 30, so use quarterly or yearly periods or a longer window. The result is always annualized.
@@ -1052,19 +1052,19 @@ where q is the number of observations in a year and $$\rho_{k}$$ the sample auto
 - `"adjusted"` - the Adjusted Sharpe Ratio (ASR, Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically:
 
 $$
-\text{ASR} = \text{SR} \cdot \left[1 + (S / 6) \cdot \text{SR} - ((K - 3) / 24) \cdot \text{SR} ^{2}\right]
+\text{ASR} = \text{SR} \cdot \left[1 + \frac{S}{6} \cdot \text{SR} - \frac{K - 3}{24} \cdot \text{SR}^{2}\right]
 $$
 
 - `"probabilistic"` - the Probabilistic Sharpe Ratio (PSR) is the probability that the true (population) Sharpe ratio exceeds `benchmark_sharpe_ratio`, folding the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio so that a short, lumpy sample no longer looks more convincing than it is:
 
 $$
-\operatorname{PSR}(\text{SR} \cdot) = \Phi((\text{SR̂} - \text{SR} \cdot) \cdot \sqrt{n - 1} / \sqrt{1 - \text{γ₃} \cdot \text{SR̂} + ((\text{γ₄} - 1) / 4) \cdot \text{SR̂} ^{2}})
+\operatorname{PSR}(\text{SR}^{*}) = \Phi\left(\frac{(\widehat{\text{SR}} - \text{SR}^{*}) \cdot \sqrt{n - 1}}{\sqrt{1 - \gamma_{3} \cdot \widehat{\text{SR}} + \frac{\gamma_{4} - 1}{4} \cdot \widehat{\text{SR}}^{2}}}\right)
 $$
 
 - `"deflated"` - the Deflated Sharpe Ratio (DSR) is the Probabilistic Sharpe Ratio corrected for the fact that a reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting"). It estimates the Sharpe ratio one would expect to observe purely by chance as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and uses that expected maximum as the benchmark SR* in the Probabilistic Sharpe Ratio formula instead of a naive benchmark such as 0:
 
 $$
-\text{SR} \cdot = \sqrt{\text{Var} \left[\text{SR\_trials}\right]} \cdot \left[(1 - \text{γ}) \cdot \operatorname{Phi⁻¹}(1 - 1 / N) + \text{γ} \cdot \operatorname{Phi⁻¹}(1 - 1 / (N \cdot e))\right]
+\text{SR}^{*} = \sqrt{\text{Var}\left[\text{SR}_{\text{trials}}\right]} \cdot \left[(1 - \gamma) \cdot \Phi^{- 1}\left(1 - \frac{1}{N}\right) + \gamma \cdot \Phi^{- 1}\left(1 - \frac{1}{N \cdot e}\right)\right]
 $$
 
 Where $$\widehat{\text{SR}}$$ is the observed Sharpe ratio, $$S (\gamma_{3})$$ is the skewness and $$K (\gamma_{4})$$ the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, $$\gamma \approx 0.5772$$ is the Euler-Mascheroni constant and $$\Phi$$ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
@@ -1177,23 +1177,23 @@ The Sortino Ratio is a financial metric used to assess the risk-adjusted perform
 The formula is as follows:
 
 $$
-\text{Sortino Ratio} = \text{Excess Return} / \text{Downside Deviation}
+\text{Sortino Ratio} = \frac{\text{Excess Return}}{\text{Downside Deviation}}
 $$
 
 $$
-\text{Downside Deviation} = \sqrt{(1 / N) \cdot \operatorname{SUM}(\min(\text{Excess Return},\; 0) ^{2})}
+\text{Downside Deviation} = \sqrt{\frac{1}{N} \cdot \sum(\min(\text{Excess Return},\; 0)^{2})}
 $$
 
 Where N is the *total* number of observations, not just the negative ones, following Sortino & Price (1994). By default one Sortino ratio is reported per `period`, computed from the **daily** excess returns falling inside that period. For a given period, for example monthly, this translates into the following:
 
 $$
-\text{Sortino Ratio} = \text{Average Daily Excess Return within the Month} / \text{Downside Deviation of the Daily Excess Returns within the Month}
+\text{Sortino Ratio} = \frac{\text{Average Daily Excess Return within the Month}}{\text{Downside Deviation of the Daily Excess Returns within the Month}}
 $$
 
 For a rolling period, `period` instead sets the frequency of the returns themselves and the ratio is computed over a rolling window of `rolling` such returns:
 
 $$
-\text{Sortino Ratio} = \text{Average Rolling Excess Return} / \text{Rolling Downside Deviation}
+\text{Sortino Ratio} = \frac{\text{Average Rolling Excess Return}}{\text{Rolling Downside Deviation}}
 $$
 
 Note that the Risk Free Rate is already subtracted from these returns. It is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default; initialise the Toolkit with risk_free_rate="13w" for a short-term Treasury bill rate instead.
@@ -1271,11 +1271,11 @@ Calculate the Ulcer Performance Index (UPI), alternatively called Martin ratio, 
 The formula is as follows:
 
 $$
-\text{Ulcer Performance Index} = (\text{Period Return} - \text{Risk-Free Rate}) / \text{Ulcer Index}
+\text{Ulcer Performance Index} = \frac{\text{Period Return} - \text{Risk-Free Rate}}{\text{Ulcer Index}}
 $$
 
 $$
-\text{Ulcer Index} = \sqrt{\operatorname{MEAN}(\text{Drawdown} ^{2})},\;\; \text{with each day's drawdown measured from the highest value of the trailing rolling days within the period}
+\text{Ulcer Index} = \sqrt{\operatorname{MEAN}(\text{Drawdown}^{2})},\;\; \text{with each day's drawdown measured from the highest value of the trailing rolling days within the period}
 $$
 
 It measures the excess return earned per unit of drawdown pain: the depth and the duration of the declines both weigh in, where the Sharpe Ratio treats upward and downward swings alike. Similar to the Sharpe Ratio, a higher UPI is better than a lower one (since investors prefer more return for less risk).
@@ -1346,7 +1346,7 @@ The Calmar Ratio is a risk-adjusted return metric that divides the return of an 
 The formula is as follows:
 
 $$
-\text{Calmar Ratio} = \text{Return} / | \text{Maximum Drawdown} |
+\text{Calmar Ratio} = \frac{\text{Return}}{\left|\text{Maximum Drawdown}\right|}
 $$
 
 **See definition:** [https://en.wikipedia.org/wiki/Calmar_ratio](https://en.wikipedia.org/wiki/Calmar_ratio){:target="_blank"}
@@ -1419,7 +1419,7 @@ The Sterling Ratio is a risk-adjusted return metric that divides the return of a
 The formula is as follows:
 
 $$
-\text{Sterling Ratio} = \text{Return} / (| \text{Average Drawdown} | + \text{Adjustment})
+\text{Sterling Ratio} = \frac{\text{Return}}{\left|\text{Average Drawdown}\right| + \text{Adjustment}}
 $$
 
 Where the Average Drawdown is the mean drawdown from the running peak over all observations on which the asset is below that peak (by default every such day within the period), not the average of the largest drawdowns.
@@ -1494,7 +1494,7 @@ The Burke Ratio is a risk-adjusted return metric that divides the excess return 
 The formula is as follows:
 
 $$
-\text{Burke Ratio} = (\text{Return} - \text{Risk-Free Rate}) / \sqrt{\operatorname{SUM}(\text{Drawdown}_{d} ^{2})}
+\text{Burke Ratio} = \frac{\text{Return} - \text{Risk-Free Rate}}{\sqrt{\sum(\text{Drawdown}_{d}^{2})}}
 $$
 
 Where Drawdown_d is the drawdown from the running peak at every observation d on which the asset is below that peak, which by default is every such day within the period. This weighs the time spent under water as well as the depth, so the ratio differs from the version that sums one drawdown per episode.
@@ -1565,7 +1565,7 @@ The M2 Ratio, also known as the Modigliani-Modigliani Measure, is a financial me
 The formula is as follows:
 
 $$
-M_{2} \;\text{Ratio} = \text{Risk-Free Rate} + \left[(\text{Portfolio's Return} - \text{Risk-Free Rate}) / \text{Portfolio Standard Deviation}\right] \cdot \text{Benchmark Standard Deviation}
+\text{M2 Ratio} = \text{Risk-Free Rate} + \left[\frac{\text{Portfolio's Return} - \text{Risk-Free Rate}}{\text{Portfolio Standard Deviation}}\right] \cdot \text{Benchmark Standard Deviation}
 $$
 
 This rescales the (dimensionless) Sharpe ratio back into return-space by asking what return the portfolio would have earned had it been leveraged or de-leveraged, via risk-free borrowing or lending, to match the benchmark's volatility exactly -- producing a number directly comparable to the benchmark's actual return. Requires a `benchmark_ticker` to be set on the Toolkit instance, since the benchmark's standard deviation is part of the formula.
@@ -1640,7 +1640,7 @@ Tracking Error is a financial metric that quantifies the volatility or dispersio
 The formula is as follows:
 
 $$
-\text{Tracking Error} (\text{TE}) = \text{Standard Deviation of} (\text{Portfolio Returns} - \text{Benchmark Returns})
+\text{Tracking Error} \;(\text{TE}) = \text{Standard Deviation of} \;(\text{Portfolio Returns} - \text{Benchmark Returns})
 $$
 
 By default one Tracking Error is reported per `period`, computed from the daily returns within that period, so it is a daily figure: multiply by SQRT(252) to compare it with the annualized tracking error funds report. With `rolling`, the returns of `period` itself are used instead.
@@ -1716,7 +1716,7 @@ The Information Ratio (IR) is a financial metric that assesses the risk-adjusted
 The formula is as follows:
 
 $$
-\text{Information Ratio} (\text{IR}) = \operatorname{Mean}(\text{Portfolio Return} - \text{Benchmark Return}) / \text{Tracking Error}
+\text{Information Ratio} \;(\text{IR}) = \frac{\operatorname{Mean}(\text{Portfolio Return} - \text{Benchmark Return})}{\text{Tracking Error}}
 $$
 
 By default it is computed from the daily returns within each period and is not annualized: multiply by SQRT(252) to compare it with the annualized figures in the literature, where an IR of 0.5 is considered good. With `rolling`, the returns of `period` itself are used instead.
@@ -1790,11 +1790,11 @@ The Upside Capture Ratio measures how well an investment portfolio or asset perf
 The formula is as follows:
 
 $$
-\text{Upside Capture Ratio} = \text{Geometric Average Return in Up Periods} / \text{Geometric Average Benchmark Return in Up Periods}
+\text{Upside Capture Ratio} = \frac{\text{Geometric Average Return in Up Periods}}{\text{Geometric Average Benchmark Return in Up Periods}}
 $$
 
 $$
-\text{Geometric Average Return} = (\operatorname{PRODUCT}(1 + \text{Return})) ^{1 / n} - 1
+\text{Geometric Average Return} = (\operatorname{PRODUCT}(1 + \text{Return}))^{\frac{1}{n}} - 1
 $$
 
 Where the up periods are the observations (days within each period) with a positive benchmark return and n is their number, following Morningstar's definition. Geometric rather than arithmetic averages make the ratio reflect the compounded return captured, so it does not depend on how volatile the returns within the up periods were.
@@ -1863,11 +1863,11 @@ The Downside Capture Ratio measures how well an investment portfolio or asset pe
 The formula is as follows:
 
 $$
-\text{Downside Capture Ratio} = \text{Geometric Average Return in Down Periods} / \text{Geometric Average Benchmark Return in Down Periods}
+\text{Downside Capture Ratio} = \frac{\text{Geometric Average Return in Down Periods}}{\text{Geometric Average Benchmark Return in Down Periods}}
 $$
 
 $$
-\text{Geometric Average Return} = (\operatorname{PRODUCT}(1 + \text{Return})) ^{1 / n} - 1
+\text{Geometric Average Return} = (\operatorname{PRODUCT}(1 + \text{Return}))^{\frac{1}{n}} - 1
 $$
 
 Where the down periods are the observations (days within each period) with a negative benchmark return and n is their number, following Morningstar's definition. As with the Upside Capture Ratio, both ratios are computed from the daily returns within each period, while fund factsheets usually use monthly returns over three to five years.
@@ -1934,7 +1934,7 @@ The Win Rate is the share of days within each period in which the asset's return
 The formula is as follows:
 
 $$
-\text{Win Rate} = \text{Number of Days with Asset Return} > \text{Benchmark Return} / \text{Number of Days with both an Asset and}\; a \;\text{Benchmark Return},\;\; \text{using the daily returns within each period (e.g. each year)},\;\; \text{as}\; a \;\text{decimal} (0.55 = 55\%)
+\text{Win Rate} = \text{Number of Days with Asset Return} > \frac{\text{Benchmark Return}}{\text{Number of Days}} \;\text{with both an Asset and a Benchmark Return},\;\; \text{using the daily returns within each period (e.g. each year)},\;\; \text{as a decimal} \;(0.55 = 55\%)
 $$
 
 Days on which the asset or the benchmark has no return are left out of both counts rather than counted as losses.
@@ -2005,15 +2005,15 @@ Note that this already subtracts the Risk Free Rate.
 The formula is as follows:
 
 $$
-\text{Daily Excess Return} = \text{Daily Return} - \text{Daily Risk Free Rate},\;\; \text{with Daily Risk Free Rate} = (1 + \text{Annual Risk Free Rate}) ^{1 / 252} - 1
+\text{Daily Excess Return} = \text{Daily Return} - \text{Daily Risk Free Rate},\;\; \text{with}\;\; \text{Daily Risk Free Rate} = (1 + \text{Annual Risk Free Rate})^{\frac{1}{252}} - 1
 $$
 
 $$
-\text{Lower Partial Moment} (\text{LPM}) = \operatorname{MEAN}(\max(- \text{Daily Excess Return},\; 0) ^{\text{Order}}),\;\; \text{averaged over all days in the period (days with a non-negative excess return count as 0)}
+\text{Lower Partial Moment} \;(\text{LPM}) = \operatorname{MEAN}(\max(- \text{Daily Excess Return},\; 0)^{\text{Order}}),\;\; \text{averaged over all days in the period (days with a non-negative excess return count as 0)}
 $$
 
 $$
-\text{Kappa Ratio} = \operatorname{MEAN}(\text{Daily Excess Return}) / \text{LPM} ^{1 / \text{Order}},\;\; \text{per period and not annualized},\;\; \text{with Order defaulting to 3}
+\text{Kappa Ratio} = \frac{\operatorname{MEAN}(\text{Daily Excess Return})}{\text{LPM}^{\frac{1}{\text{Order}}}},\;\; \text{per period and not annualized, with Order defaulting to 3}
 $$
 
 **Args:**
@@ -2085,7 +2085,7 @@ The Omega Ratio is a risk-return measure that divides the sum of gains above a m
 The formula is as follows:
 
 $$
-\text{Omega Ratio} = \operatorname{SUM}(\text{Gains above MAR}) / \operatorname{SUM}(\text{Losses below MAR})
+\text{Omega Ratio} = \frac{\sum(\text{Gains above MAR})}{\sum(\text{Losses below MAR})}
 $$
 
 **See definition:** [https://en.wikipedia.org/wiki/Omega_ratio](https://en.wikipedia.org/wiki/Omega_ratio){:target="_blank"}
@@ -2160,11 +2160,11 @@ MRAR is the annualized certainty equivalent of the monthly geometric excess retu
 The formula is as follows:
 
 $$
-\text{Geometric Excess Return} = (1 + \text{Monthly Total Return}) / (1 + \text{Monthly Risk Free Rate}) - 1
+\text{Geometric Excess Return} = \frac{1 + \text{Monthly Total Return}}{1 + \text{Monthly Risk Free Rate}} - 1
 $$
 
 $$
-\operatorname{MRAR}(\gamma) = \left[1 / T \cdot \operatorname{SUM}((1 + \text{Geometric Excess Return}\; t) ^{-\gamma})\right] ^{- 12 / \gamma} - 1
+\operatorname{MRAR}(\gamma) = \left[\frac{1}{T} \cdot \sum((1 + \text{Geometric Excess Return}\; t)^{-\gamma})\right]^{- \frac{12}{\gamma}} - 1
 $$
 
 with T the number of months. With a gamma of 0 it is the annualized geometric mean of the excess returns, Morningstar Return.
@@ -2332,7 +2332,7 @@ The Gain-to-Pain Ratio, popularized by Jack Schwager, divides the sum of all ret
 The formula is as follows:
 
 $$
-\text{Gain-to-Pain Ratio} = \operatorname{SUM}(\text{Returns}) / \operatorname{SUM}(| \text{Losses} |)
+\text{Gain-to-Pain Ratio} = \frac{\sum(\text{Returns})}{\sum(\left|\text{Losses}\right|)}
 $$
 
 **Args:**
@@ -2401,19 +2401,19 @@ The discrete form is Kelly's (1956) bet: a probability of winning and a ratio of
 The formulas are as follows:
 
 $$
-\text{Discrete:}\;\; \text{Kelly} = \text{Win Rate} - (1 - \text{Win Rate}) / \text{Payoff Ratio}
+\text{Discrete:}\;\; \text{Kelly} = \text{Win Rate} - \frac{1 - \text{Win Rate}}{\text{Payoff Ratio}}
 $$
 
 $$
-\text{Continuous:}\;\; \text{Kelly} = \text{Average Excess Return} / \text{Variance of the Excess Returns}
+\text{Continuous:}\;\; \text{Kelly} = \frac{\text{Average Excess Return}}{\text{Variance of the Excess Returns}}
 $$
 
 $$
-\text{Win Rate} = \text{Number of Positive Returns} / \text{Number of Non-Zero Returns}
+\text{Win Rate} = \frac{\text{Number of Positive Returns}}{\text{Number of Non-Zero Returns}}
 $$
 
 $$
-\text{Payoff Ratio} = \text{Average Positive Return} / | \text{Average Negative Return} |
+\text{Payoff Ratio} = \frac{\text{Average Positive Return}}{\left|\text{Average Negative Return}\right|}
 $$
 
 A value of 0.25 means putting a quarter of the capital at risk, a value above 1 means borrowing to invest and a negative value means the history shows a negative edge.
@@ -2498,7 +2498,7 @@ Unlike the Win Rate of `get_win_rate`, which counts the periods an asset beats i
 The formulas are as follows:
 
 $$
-\text{Win Rate} = \text{Number of Positive Returns} / \text{Number of Non-Zero Returns}
+\text{Win Rate} = \frac{\text{Number of Positive Returns}}{\text{Number of Non-Zero Returns}}
 $$
 
 $$
@@ -2510,27 +2510,27 @@ $$
 $$
 
 $$
-\text{Payoff Ratio} = \text{Average Win} / | \text{Average Loss} |
+\text{Payoff Ratio} = \frac{\text{Average Win}}{\left|\text{Average Loss}\right|}
 $$
 
 $$
-\text{Profit Factor} = \text{Sum of the Positive Returns} / | \text{Sum of the Negative Returns} |
+\text{Profit Factor} = \frac{\text{Sum of the Positive Returns}}{\left|\text{Sum of the Negative Returns}\right|}
 $$
 
 $$
-\text{Expectancy} = \text{Win Rate}\; x \;\text{Average Win} + (1 - \text{Win Rate}) x \;\text{Average Loss}
+\text{Expectancy} = \text{Win Rate} \cdot \text{Average Win} + (1 - \text{Win Rate}) \cdot \text{Average Loss}
 $$
 
 $$
-\text{Max Consecutive Wins} (\text{Losses}) = \text{The longest run of positive} (\text{negative}) \text{returns}
+\text{Max Consecutive Wins} \;(\text{Losses}) = \text{The longest run of positive} \;(\text{negative}) \;\text{returns}
 $$
 
 $$
-\text{Recovery Factor} = \text{Cumulative Return} / | \text{Maximum Drawdown} |
+\text{Recovery Factor} = \frac{\text{Cumulative Return}}{\left|\text{Maximum Drawdown}\right|}
 $$
 
 $$
-\text{Common Sense Ratio} = \text{Profit Factor}\; x \;\text{Tail Ratio} (\text{95th} / \text{5th} \;\text{percentile})
+\text{Common Sense Ratio} = \text{Profit Factor} \cdot \text{Tail Ratio} \;(\text{95th} \;/ \;\text{5th} \;\text{percentile})
 $$
 
 The Recovery Factor compounds the returns into the cumulative return and keeps its sign, so a history that lost money does not appear to recover.
@@ -2609,15 +2609,15 @@ The CGR is a measure that provides the mean growth rate of an investment over a 
 The formula is as follows:
 
 $$
-\text{Years} = (\text{Last Date} - \text{First Date}) / 365.25 \;\text{days}
+\text{Years} = \frac{\text{Last Date} - \text{First Date}}{365.25 \;\text{days}}
 $$
 
 $$
-\text{CAGR} = (\text{Final Value} / \text{Initial Value}) ^{1 / \text{Years}} - 1
+\text{CAGR} = \left(\frac{\text{Final Value}}{\text{Initial Value}}\right)^{\frac{1}{\text{Years}}} - 1
 $$
 
 $$
-\text{Period Rate} = (1 + \text{CAGR}) ^{1 / \text{Periods per Year}} - 1
+\text{Period Rate} = (1 + \text{CAGR})^{\frac{1}{\text{Periods per Year}}} - 1
 $$
 
 The CAGR is measured on calendar time: each asset from its own first to its own last close between the start and end date, with the years in between counted in calendar days. The rate thereby does not depend on how often an asset trades, so a stock (which trades on weekdays) and a cryptocurrency (which trades every day) in the same Toolkit are measured over the same years, and an asset without a close on the first or last date of the range is measured over the dates it has. The quarterly, monthly, weekly and daily rates follow from the CAGR with 4 quarters, 12 months, 52 weeks and 252 trading days to a year, so the rates are consistent with each other: (1 + CDGR) ^ 252 equals 1 + CAGR.
@@ -2679,11 +2679,11 @@ The period Return is obtained by compounding the daily returns within each perio
 The formula is as follows:
 
 $$
-\text{Period Return} = ((1 + \text{Daily Return}\; 1) \cdot (1 + \text{Daily Return}\; 2) \cdot ... \cdot (1 + \text{Daily Return}\; N)) - 1
+\text{Period Return} = ((1 + \text{Daily Return}\; 1) \cdot (1 + \text{Daily Return}\; 2) \cdot \ldots \cdot (1 + \text{Daily Return}\; N)) - 1
 $$
 
 $$
-\text{Cumulative Return} = (1 + \text{Period Return}\; 1) \cdot (1 + \text{Period Return}\; 2) \cdot ... \cdot (1 + \text{Period Return}\; N)
+\text{Cumulative Return} = (1 + \text{Period Return}\; 1) \cdot (1 + \text{Period Return}\; 2) \cdot \ldots \cdot (1 + \text{Period Return}\; N)
 $$
 
 The compounding starts at 1 at the beginning of the date range, so the first value is 1 plus the return of the first period.
@@ -2757,11 +2757,11 @@ The Excess Return is defined as the period Return minus the risk free rate earne
 The formula is as follows:
 
 $$
-\text{Period Return} = ((1 + \text{Daily Return}\; 1) \cdot (1 + \text{Daily Return}\; 2) \cdot ... \cdot (1 + \text{Daily Return}\; N)) - 1
+\text{Period Return} = ((1 + \text{Daily Return}\; 1) \cdot (1 + \text{Daily Return}\; 2) \cdot \ldots \cdot (1 + \text{Daily Return}\; N)) - 1
 $$
 
 $$
-\text{Period Risk Free Rate} = (1 + \text{Average Annual Risk Free Rate}) ^{1 / \text{Periods per Year}} - 1,\;\; \text{with the average taken over the daily Treasury yields within the period}
+\text{Period Risk Free Rate} = (1 + \text{Average Annual Risk Free Rate})^{\frac{1}{\text{Periods per Year}}} - 1,\;\; \text{with the average taken over the daily Treasury yields within the period}
 $$
 
 $$
@@ -2769,7 +2769,7 @@ $$
 $$
 
 $$
-\text{Cumulative Excess Return} = (1 + \text{Excess Return}\; 1) \cdot (1 + \text{Excess Return}\; 2) \cdot ... \cdot (1 + \text{Excess Return}\; N)
+\text{Cumulative Excess Return} = (1 + \text{Excess Return}\; 1) \cdot (1 + \text{Excess Return}\; 2) \cdot \ldots \cdot (1 + \text{Excess Return}\; N)
 $$
 
 The compounding starts at 1 at the beginning of the date range, so the first value is 1 plus the excess return of the first period.
@@ -2848,7 +2848,7 @@ The `period` sets the return frequency, and with it the number of observations: 
 The formula is as follows:
 
 $$
-\text{Correlation} (A,\; B) = \text{Covariance} (\text{Return}\; A,\; \text{Return}\; B) / (\text{Standard Deviation}\; A \cdot \text{Standard Deviation}\; B),\;\; \text{the Pearson correlation of the period returns (e.g. monthly) within the Toolkit's date range},\;\; \text{using the overlapping (pairwise complete) observations of each pair}
+\text{Correlation} \;(A,\; B) = \frac{\text{Covariance} \;(\text{Return}\; A,\; \text{Return}\; B)}{\text{Standard Deviation}\; A \cdot \text{Standard Deviation}\; B},\;\; \text{the Pearson correlation of the period returns (e.g. monthly) within the Toolkit's date range, using the overlapping (pairwise complete) observations of each pair}
 $$
 
 **Args:**
@@ -2902,7 +2902,7 @@ Unlike `get_covariance`, which relates a single asset to the benchmark, this com
 The formula is as follows:
 
 $$
-\text{Covariance} (A,\; B) = \operatorname{SUM}((\text{Return}\; A - \text{Mean Return}\; A) \cdot (\text{Return}\; B - \text{Mean Return}\; B)) / (N - 1),\;\; \text{the sample covariance (ddof=1) of the period returns (e.g. monthly) within the Toolkit's date range},\;\; \text{per period and not annualized},\;\; \text{using the overlapping (pairwise complete) observations of each pair}
+\text{Covariance} \;(A,\; B) = \frac{\sum((\text{Return}\; A - \text{Mean Return}\; A) \cdot (\text{Return}\; B - \text{Mean Return}\; B))}{N - 1},\;\; \text{the sample covariance (ddof=1) of the period returns (e.g. monthly) within the Toolkit's date range, per period and not annualized, using the overlapping (pairwise complete) observations of each pair}
 $$
 
 **Args:**
@@ -2956,7 +2956,7 @@ Jensen's Alpha (see `get_jensens_alpha`) measures how much return a manager gene
 The formula is as follows:
 
 $$
-\text{Appraisal Ratio} = \text{Jensen's Alpha} / \text{Residual Standard Deviation}
+\text{Appraisal Ratio} = \frac{\text{Jensen's Alpha}}{\text{Residual Standard Deviation}}
 $$
 
 Where the residual standard deviation is the standard deviation of the pointwise CAPM regression residuals (Asset Excess Return − Beta * Benchmark Excess Return), reusing the exact same CAPM regression formula as `get_jensens_alpha`.
@@ -3032,11 +3032,11 @@ Jensen's Alpha alone conflates two very different sources of excess return: genu
 The formulas are as follows:
 
 $$
-\text{Selectivity} = (\text{Asset Return} - \text{Risk-Free Rate}) - (\text{Sigma\_Portfolio} / \text{Sigma\_Market}) \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})
+\text{Selectivity} = (\text{Asset Return} - \text{Risk-Free Rate}) - \frac{\sigma_{\text{Portfolio}}}{\sigma_{\text{Market}}} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})
 $$
 
 $$
-\text{Diversification} = \left[\text{Risk-Free Rate} + (\text{Sigma\_Portfolio} / \text{Sigma\_Market}) \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right] - \left[\text{Risk-Free Rate} + \text{Beta} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right]
+\text{Diversification} = \left[\text{Risk-Free Rate} + \frac{\sigma_{\text{Portfolio}}}{\sigma_{\text{Market}}} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right] - \left[\text{Risk-Free Rate} + \text{Beta} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right]
 $$
 
 Selectivity is the return earned above what would be required for a fully diversified portfolio carrying the same total risk, i.e. genuine security selection or timing skill. Diversification is the extra return the manager left on the table (if positive, it is a cost) by taking on unsystematic risk that a fully diversified portfolio of the same total risk would not have. Selectivity plus Diversification equals Jensen's Alpha (see `get_jensens_alpha`).
@@ -3111,7 +3111,7 @@ The Sharpe ratio penalizes upside and downside volatility equally via the standa
 The formula is as follows:
 
 $$
-\text{STARR Ratio} = \text{Excess Return} / | \operatorname{CVaR}(\alpha) |
+\text{STARR Ratio} = \frac{\text{Excess Return}}{\left|\operatorname{CVaR}(\alpha)\right|}
 $$
 
 **See definition:** [https://en.wikipedia.org/wiki/Expected_shortfall](https://en.wikipedia.org/wiki/Expected_shortfall){:target="_blank"}
@@ -3190,7 +3190,7 @@ The Rachev ratio compares the "quality" of the best outcomes to the "quality" of
 The formula is as follows:
 
 $$
-\text{Rachev Ratio} = \operatorname{ES\_right}(\alpha) / \operatorname{ES\_left}(\alpha)
+\text{Rachev Ratio} = \frac{\text{ES}_{\text{right}}(\alpha)}{\text{ES}_{\text{left}}(\alpha)}
 $$
 
 **Also known as:** R-Ratio.
@@ -3263,7 +3263,7 @@ Jensen's Alpha and Beta from a plain CAPM regression cannot distinguish stock-pi
 The formula is as follows:
 
 $$
-\text{Excess Return} = \text{Alpha} + \text{Beta} \cdot \text{Benchmark Excess Return} + \text{Gamma} \cdot \text{Benchmark Excess Return} ^{2} + \text{Residuals}
+\text{Excess Return} = \text{Alpha} + \text{Beta} \cdot \text{Benchmark Excess Return} + \Gamma \cdot \text{Benchmark Excess Return}^{2} + \text{Residuals}
 $$
 
 Gamma > 0 indicates positive market-timing ability; Gamma <= 0 indicates no timing ability.
@@ -3494,15 +3494,15 @@ Calculate the standard error of the Sharpe ratio: how far the measured Sharpe ra
 The formulas are as follows, with SR the Sharpe ratio of one observation (the Sharpe ratio of `get_sharpe_ratio` without annualizing) and n the number of observations:
 
 $$
-\text{"iid":}\;\; \text{SE} = \sqrt{(1 + \text{SR} ^{2} / 2) / n},\;\; \text{for normally and independently distributed returns (Lo, 2002, equation 9)}
+\text{"iid":}\;\; \text{SE} = \sqrt{\frac{1 + \frac{\text{SR}^{2}}{2}}{n}},\;\; \text{for normally and independently distributed returns (Lo, 2002, equation 9)}
 $$
 
 $$
-\text{"non\_normal":}\;\; \text{SE} = \sqrt{(1 - \text{γ₃} \cdot \text{SR} + ((\text{γ₄} - 1) / 4) \cdot \text{SR} ^{2}) / (n - 1)},\;\; \text{for independent but skewed and fat-tailed returns},\;\; \text{with γ₃ the skewness and γ₄ the non-excess (raw) kurtosis (Mertens, 2002; the standard error inside the Probabilistic Sharpe Ratio of Bailey and López de Prado, 2012)}
+\text{"non\_normal":}\;\; \text{SE} = \sqrt{\frac{1 - \gamma_{3} \cdot \text{SR} + \frac{\gamma_{4} - 1}{4} \cdot \text{SR}^{2}}{n - 1}},\;\; \text{for independent but skewed and fat-tailed returns, with } \gamma_{3} \text{ the skewness and } \gamma_{4} \text{ the non-excess (raw) kurtosis (Mertens, 2002; the standard error inside the Probabilistic Sharpe Ratio of Bailey and López de Prado, 2012)}
 $$
 
 $$
-\text{"gmm":}\;\; \text{SE} = \sqrt{\text{∂g} / \text{∂theta} \cdot \text{Σ} \cdot \text{∂g} / \text{∂theta'} / n},\;\; \text{for} \;\; \text{returns that may also be serially correlated and heteroskedastic} (\text{Lo},\; 2002,\; \text{Appendix}) . \;\text{With}\; \theta = (\mu,\; \sigma ^{2}) \text{and}\; g (\theta) = \mu / \sigma,\;\; \text{∂g} / \text{∂theta} = (1 / \sigma,\; - \mu / (\text{2sigma} ^{3})) \text{and}\; \text{Σ} \;\text{is the Newey and West} (1987) \text{long-run covariance of the moment conditions} (r_{t} - \mu,\; (r_{t} - \mu) ^{2} - \sigma ^{2})
+\text{"gmm":}\;\; \text{SE} = \sqrt{\frac{\frac{\partial g}{\partial \theta} \cdot \Sigma \cdot \frac{\partial g}{\partial \theta}'}{n}},\;\; \text{for returns that may also be serially correlated and heteroskedastic (Lo, 2002, Appendix)}.\;\; \text{With}\; \theta = (\mu,\; \sigma^{2})\;\;\text{and}\;\; g(\theta) = \frac{\mu}{\sigma},\;\; \frac{\partial g}{\partial \theta} = \left(\frac{1}{\sigma},\; - \frac{\mu}{2 \sigma^{3}}\right) \;\text{and} \;\sum \;\text{is the Newey and West} \;(1987) \;\text{long-run covariance of the moment conditions} \;(r_{t} - \mu,\; (r_{t} - \mu)^{2} - \sigma^{2})
 $$
 
 Negative skewness, fat tails and positive autocorrelation all widen the standard error, so the same Sharpe ratio is then less certain. The standard error is on the scale of the Sharpe ratio of one observation; multiply by SQRT(252) to compare it with a Sharpe ratio annualized by SQRT(252) (exact for the "iid" and "non_normal" errors, a rescaling of the same estimate for "gmm").
@@ -3585,7 +3585,7 @@ Calculate the Minimum Track Record Length (MinTRL): how many return observations
 The formula is as follows:
 
 $$
-\text{MinTRL} = 1 + (1 - \text{γ₃} \cdot \text{SR} + ((\text{γ₄} - 1) / 4) \cdot \text{SR} ^{2}) \cdot (Z_{\alpha} / (\text{SR} - \text{SR} \cdot)) ^{2}
+\text{MinTRL} = 1 + \left(1 - \gamma_{3} \cdot \text{SR} + \frac{\gamma_{4} - 1}{4} \cdot \text{SR}^{2}\right) \cdot \left(\frac{Z_{\alpha}}{\text{SR} - \text{SR}^{*}}\right)^{2}
 $$
 
 Where SR is the Sharpe ratio of one observation (not annualized), SR* the benchmark Sharpe ratio on the same scale, $$\gamma_{3}$$ the skewness and $$\gamma_{4}$$ the non-excess (raw) kurtosis of the excess returns (3 for a normal distribution) and $$Z_{\alpha}$$ the standard normal quantile at `confidence_level` (1.645 for 95%). With $$n = \text{MinTRL}$$ observations, the Probabilistic Sharpe Ratio, `get_sharpe_ratio(method="probabilistic")`, equals `confidence_level`. Negative skewness and fat tails lengthen the record needed. When SR does not exceed SR*, no track record is long enough and the value is left out (NaN).
@@ -3665,11 +3665,11 @@ Calculate the co-skewness of each asset with the benchmark: how the asset's retu
 The formulas are as follows:
 
 $$
-\text{"standardized":}\;\; \text{Co-Skewness} = E \left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m}) ^{2}\right] / (\sigma_{i} \cdot \sigma_{m} ^{2})
+\text{"standardized":}\;\; \text{Co-Skewness} = \frac{E\left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m})^{2}\right]}{\sigma_{i} \cdot \sigma_{m}^{2}}
 $$
 
 $$
-\text{"residual":}\;\; \beta_{SKD} = E \left[\epsilon_{i} \cdot \epsilon_{m} ^{2}\right] / (\sqrt{E \left[\epsilon_{i} ^{2}\right]} \cdot E \left[\epsilon_{m} ^{2}\right]) (\text{Harvey and Siddique},\; 2000)
+\text{"residual":}\;\; \beta_{\text{SKD}} = \frac{E\left[\epsilon_{i} \cdot \epsilon_{m}^{2}\right]}{\sqrt{E\left[\epsilon_{i}^{2}\right]} \cdot E\left[\epsilon_{m}^{2}\right]} \;(\text{Harvey and Siddique},\; 2000)
 $$
 
 Where $$r_{i}$$ is the asset return, $$r_{m}$$ the benchmark return, $$\epsilon_{m} = r_{m} - \mu_{m}$$ and $$\epsilon_{i}$$ the residual of the regression $$r_{i} = \alpha + \beta \cdot r_{m} + \epsilon_{i}$$. The residual version only looks at the part of the asset's return the market does not explain, so the market's own skewness does not enter through the beta. For the benchmark itself the standardized co-skewness is the benchmark's skewness.
@@ -3745,11 +3745,11 @@ Calculate the co-kurtosis of each asset with the benchmark: how the asset's retu
 The formulas are as follows:
 
 $$
-\text{"standardized":}\;\; \text{Co-Kurtosis} = E \left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m}) ^{3}\right] / (\sigma_{i} \cdot \sigma_{m} ^{3})
+\text{"standardized":}\;\; \text{Co-Kurtosis} = \frac{E\left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m})^{3}\right]}{\sigma_{i} \cdot \sigma_{m}^{3}}
 $$
 
 $$
-\text{"residual":}\;\; E \left[\epsilon_{i} \cdot \epsilon_{m} ^{3}\right] / (\sqrt{E \left[\epsilon_{i} ^{2}\right]} \cdot E \left[\epsilon_{m} ^{2}\right] ^{3 / 2})
+\text{"residual":}\;\; \frac{E\left[\epsilon_{i} \cdot \epsilon_{m}^{3}\right]}{\sqrt{E\left[\epsilon_{i}^{2}\right]} \cdot E\left[\epsilon_{m}^{2}\right]^{\frac{3}{2}}}
 $$
 
 Where $$r_{i}$$ is the asset return, $$r_{m}$$ the benchmark return, $$\epsilon_{m} = r_{m} - \mu_{m}$$ and $$\epsilon_{i}$$ the residual of the regression $$r_{i} = \alpha + \beta \cdot r_{m} + \epsilon_{i}$$, the residual form Harvey and Siddique (2000) use for co-skewness. For the benchmark itself the standardized co-kurtosis is the benchmark's non-excess kurtosis (3 for normal returns); for an asset with a correlation $$\rho$$ to normally distributed market returns it is $$3 \rho$$.

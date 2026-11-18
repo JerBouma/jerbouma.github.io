@@ -2181,7 +2181,7 @@ Which returns:
 Calculate the return and risk of a portfolio with given weights over the Toolkit's date range, next to the benchmark. The portfolio's return in each period is the weighted return of its assets, $$r_{p,t} = \sum w_{i} r_{i,t}$$, which holds the weights constant by rebalancing to them every period. The measures use the formulas of the Performance and Risk modules:
 
 $$
-\text{Annualized Return:}\;\; \text{the geometric average},\;\; \operatorname{Π}(1 + r_{t}) ^{P / T} - 1,\;\; \text{with P the periods per year and T the number of periods}
+\text{Annualized Return:}\;\; \text{the geometric average},\;\; \prod(1 + r_{t})^{\frac{P}{T}} - 1,\;\; \text{with } P \text{ the periods per year and } T \text{ the number of periods}
 $$
 
 - Annualized Volatility: the standard deviation (ddof=1) times $$\sqrt{P}$$.

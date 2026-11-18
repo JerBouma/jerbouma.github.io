@@ -111,15 +111,15 @@ $$
 $$
 
 $$
-z_{cf} = z + (z ^{2} - 1) \cdot S / 6 + (z ^{3} - 3 \cdot z) \cdot K / 24 - (2 \cdot z ^{3} - 5 \cdot z) \cdot S ^{2} / 36
+z_{cf} = z + \frac{(z^{2} - 1) \cdot S}{6} + \frac{(z^{3} - 3 \cdot z) \cdot K}{24} - \frac{(2 \cdot z^{3} - 5 \cdot z) \cdot S^{2}}{36}
 $$
 
 $$
-\text{Student-T VaR} = \text{Location} + \text{Scale} \cdot t_{v} ^{-1} (\alpha)
+\text{Student-T VaR} = \text{Location} + \text{Scale} \cdot t_{v}^{-1} (\alpha)
 $$
 
 $$
-\text{EVT VaR} = - (u + (\text{Scale\_GPD} / \xi) \cdot ((\alpha / p) ^{- \xi} - 1))
+\text{EVT VaR} = - \left(u + \frac{\text{Scale}_{\text{GPD}}}{\xi} \cdot \left(\left(\frac{\alpha}{p}\right)^{- \xi} - 1\right)\right)
 $$
 
 Where z is the standard normal quantile at alpha, Std the sample standard deviation (ddof=1), S the sample skewness and K the sample excess kurtosis. The Student-T degrees of freedom v, Location and Scale are fitted by maximum likelihood. For "evt", u is the loss at `threshold_percentile`, xi and Scale_GPD the shape and scale of the Generalized Pareto Distribution fitted to the losses above it and p the fraction of losses above it.
@@ -211,7 +211,7 @@ The Conditional Value at Risk (expected shortfall) is the measure banks report f
 The formula is as follows (with the default distribution="historic" and alpha=0.05):
 
 $$
-\text{CVaR} = \operatorname{Mean}(\text{Returns} | \text{Returns} \leq \text{VaR})
+\text{CVaR} = \operatorname{Mean}(\text{Returns} \mid \text{Returns} \leq \text{VaR})
 $$
 
 $$
@@ -221,27 +221,27 @@ $$
 The quantile interpolates linearly and the CVaR is reported as a return (negative for a loss). The other distributions use closed forms, with Std the sample standard deviation (ddof=1) and $$z_{\alpha}$$ the standard normal quantile at alpha:
 
 $$
-\text{Gaussian CVaR} = \text{Mean} - \text{Std} \cdot \operatorname{pdf}(z_{\alpha}) / \alpha
+\text{Gaussian CVaR} = \text{Mean} - \frac{\text{Std} \cdot \operatorname{pdf}(z_{\alpha})}{\alpha}
 $$
 
 $$
-\text{Student-T CVaR} = \text{Location} - \text{Scale} \cdot (v + t ^{2}) / (v - 1) \cdot \text{pdf}_{v}(t) / \alpha,\;\; \text{with}\; t = t_{v} ^{-1} (1 - \alpha)
+\text{Student-T CVaR} = \text{Location} - \frac{\frac{\text{Scale} \cdot (v + t^{2})}{v - 1} \cdot \text{pdf}_{v}(t)}{\alpha},\;\; \text{with}\;\; t = t_{v}^{-1} (1 - \alpha)
 $$
 
 $$
-\text{Laplace CVaR} = \text{Mean} - b \cdot (1 - \ln(2 \cdot \alpha)),\;\; \text{with}\; b = \text{Std} / \sqrt{2}
+\text{Laplace CVaR} = \text{Mean} - b \cdot (1 - \ln(2 \cdot \alpha)),\;\; \text{with}\;\; b = \frac{\text{Std}}{\sqrt{2}}
 $$
 
 $$
-\text{Logistic CVaR} = \text{Mean} - s \cdot \ln((1 - \alpha) ^{1 - 1 / \alpha} / \alpha),\;\; \text{with}\; s = \text{Std} \cdot \sqrt{3} / \pi
+\text{Logistic CVaR} = \text{Mean} - s \cdot \ln\left(\frac{(1 - \alpha)^{1 - \frac{1}{\alpha}}}{\alpha}\right),\;\; \text{with}\;\; s = \frac{\text{Std} \cdot \sqrt{3}}{\pi}
 $$
 
 $$
-\text{Cornish-Fisher CVaR} = \text{Mean of} (\text{Mean} + z_{cf}(p) \cdot \text{Std}) \text{over}\; 1,\;\; \text{000 evenly spaced p in (0, alpha)}
+\text{Cornish-Fisher CVaR} = \text{Mean of} \;(\text{Mean} + z_{cf}(p) \cdot \text{Std}) \;\text{over}\; \text{1,000} \;\text{evenly spaced}\; p \;\text{in} \;(0,\; \alpha)
 $$
 
 $$
-\text{EVT CVaR} = - (\text{VaR\_loss} + \text{Scale\_GPD} - \xi \cdot u) / (1 - \xi)
+\text{EVT CVaR} = - \frac{\text{VaR}_{\text{loss}} + \text{Scale}_{\text{GPD}} - \xi \cdot u}{1 - \xi}
 $$
 
 Where the Student-T v, Location and Scale are fitted by maximum likelihood (NaN for v <= 1), $$z_{\text{cf}}$$ is the Cornish-Fisher quantile of `get_value_at_risk`, and u, xi, Scale_GPD and $$\text{VaR}_{\text{loss}}$$ are the loss threshold, the fitted Generalized Pareto shape and scale and the EVT VaR as a positive loss (NaN for xi >= 1).
@@ -405,11 +405,11 @@ Conditional Drawdown at Risk (CDaR) extends the concept of Value at Risk and Con
 The formula is as follows (with the default alpha=0.05):
 
 $$
-\operatorname{Wealth}(t) = \text{Π} (1 + \operatorname{Return}(s)) \text{for}\; s \leq t
+\operatorname{Wealth}(t) = \prod(1 + \operatorname{Return}(s)) \;\text{for}\; s \leq t
 $$
 
 $$
-\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t)) - 1
+\operatorname{Drawdown}(t) = \frac{\operatorname{Wealth}(t)}{\max(1,\; \max(\operatorname{Wealth}(s) \;\text{for}\; s \leq t))} - 1
 $$
 
 $$
@@ -417,7 +417,7 @@ $$
 $$
 
 $$
-\text{CDaR} = \operatorname{Mean}(\text{Drawdown} | \text{Drawdown} \leq \text{DaR})
+\text{CDaR} = \operatorname{Mean}(\text{Drawdown} \mid \text{Drawdown} \leq \text{DaR})
 $$
 
 Every period counts towards the drawdown distribution, including those at a high (a drawdown of 0), the quantile interpolates linearly, and Wealth starts at 1, so a decline from the start of the window counts.
@@ -494,7 +494,7 @@ The Tail Ratio compares the size of the right (gain) tail to the left (loss) tai
 The formula is as follows (with the default alpha=0.05):
 
 $$
-\text{Tail Ratio} = | \operatorname{Quantile}(\text{Returns},\; 1 - \alpha) | / | \operatorname{Quantile}(\text{Returns},\; \alpha) |
+\text{Tail Ratio} = \frac{\left|\operatorname{Quantile}(\text{Returns},\; 1 - \alpha)\right|}{\left|\operatorname{Quantile}(\text{Returns},\; \alpha)\right|}
 $$
 
 The quantiles interpolate linearly, and a left-tail quantile of 0 gives NaN.
@@ -575,11 +575,11 @@ The Maximum Drawdown is a single-path statistic: it depends entirely on the wind
 The formula is as follows:
 
 $$
-\operatorname{Wealth}(t) = \text{Π} (1 + \operatorname{Return}(s)) \text{for}\; s \leq t
+\operatorname{Wealth}(t) = \prod(1 + \operatorname{Return}(s)) \;\text{for}\; s \leq t
 $$
 
 $$
-\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t)) - 1
+\operatorname{Drawdown}(t) = \frac{\operatorname{Wealth}(t)}{\max(1,\; \max(\operatorname{Wealth}(s) \;\text{for}\; s \leq t))} - 1
 $$
 
 $$
@@ -813,23 +813,23 @@ With deepest_since=True every period below the peak also gets the last earlier d
 The formula is as follows:
 
 $$
-\operatorname{Wealth}(t) = \text{Π} (1 + \operatorname{Return}(s)) \text{for}\; s \leq t
+\operatorname{Wealth}(t) = \prod(1 + \operatorname{Return}(s)) \;\text{for}\; s \leq t
 $$
 
 $$
-\operatorname{Peak}(t) = \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t))
+\operatorname{Peak}(t) = \max(1,\; \max(\operatorname{Wealth}(s) \;\text{for}\; s \leq t))
 $$
 
 $$
-\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \operatorname{Peak}(t) - 1
+\operatorname{Drawdown}(t) = \frac{\operatorname{Wealth}(t)}{\operatorname{Peak}(t)} - 1
 $$
 
 $$
-\text{Recovery Needed} (t) = \operatorname{Peak}(t) / \operatorname{Wealth}(t) - 1 = - \operatorname{Drawdown}(t) / (1 + \operatorname{Drawdown}(t))
+\text{Recovery Needed}(t) = \frac{\operatorname{Peak}(t)}{\operatorname{Wealth}(t)} - 1 = - \frac{\operatorname{Drawdown}(t)}{1 + \operatorname{Drawdown}(t)}
 $$
 
 $$
-\text{Deepest Since} (t) = \text{the last date}\; s < t \;\text{with Drawdown} (s) \leq \operatorname{Drawdown}(t),\;\; \text{for Drawdown(t) < 0}
+\text{Deepest Since}(t) = \text{the last date}\; s < t \;\text{with Drawdown}(s) \leq \operatorname{Drawdown}(t),\;\; \text{for Drawdown}(t) < 0
 $$
 
 Returns are total returns (Adj Close). Wealth starts at 1 at the first close of the window, so a decline from the start of the window counts as well.
@@ -917,7 +917,7 @@ Where the Maximum Drawdown gives only the single worst decline, the drawdown tab
 The formula is as follows:
 
 $$
-\operatorname{Drawdown}(t) = \operatorname{Wealth}(t) / \max(1,\; \max(\operatorname{Wealth}(s) \text{for}\; s \leq t)) - 1
+\operatorname{Drawdown}(t) = \frac{\operatorname{Wealth}(t)}{\max(1,\; \max(\operatorname{Wealth}(s) \;\text{for}\; s \leq t))} - 1
 $$
 
 $$
@@ -933,15 +933,15 @@ $$
 $$
 
 $$
-\text{Recovery Needed} = - \text{Drawdown} / (1 + \text{Drawdown})
+\text{Recovery Needed} = - \frac{\text{Drawdown}}{1 + \text{Drawdown}}
 $$
 
 $$
-\text{To Trough} (\text{Days}) = \operatorname{date}(\text{trough}) - \operatorname{date}(\text{peak}),\;\; \text{likewise To Recovery (Days) and Length (Days)}
+\text{To Trough} \;(\text{Days}) = \operatorname{date}(\text{trough}) - \operatorname{date}(\text{peak}),\;\; \text{likewise To Recovery (Days) and Length (Days)}
 $$
 
 $$
-\text{Length} (\text{Years}) = \text{Length} (\text{Days}) / 365.25
+\text{Length} \;(\text{Years}) = \frac{\text{Length} \;(\text{Days})}{365.25}
 $$
 
 The Drawdown is the drawdown series of `get_drawdown_series`. A drawdown runs from the Peak (the last period at a high) to the Recovery (the first period back at that high), with its Trough at the lowest Drawdown in between. To Trough, To Recovery and Length count periods (trading days for daily data), the columns marked (Days) count calendar days between the same dates (the last day of each period for weekly or longer periods), and Length (Years) is Length (Days) in years of 365.25 days. Calendar time compares assets on exchanges with other holidays, and reads as the time an investor waited.
@@ -1019,7 +1019,7 @@ The Ulcer Index differs from traditional volatility measures like standard devia
 The formula is as follows (with the default rolling=14):
 
 $$
-\text{Ulcer Index} = \sqrt{\text{Σ} ((\operatorname{Wealth}(t) - \text{Highest High} (t)) / \text{Highest High} (t)) ^{2} / n}
+\text{Ulcer Index} = \sqrt{\frac{\sum\left(\frac{\operatorname{Wealth}(t) - \text{Highest High}(t)}{\text{Highest High}(t)}\right)^{2}}{n}}
 $$
 
 Where Wealth(t) compounds the daily returns within each period from a starting value of 1, Highest High(t) is the highest Wealth over the trailing 14 observations (the starting value of 1 included while fewer are available) and n is the number of daily returns in the period.
@@ -1096,11 +1096,11 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic 
 The formula is as follows:
 
 $$
-\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+\sigma_{t}^{2} = \Omega + \text{Alpha} \cdot r_{t-1}^{2} + \text{Beta} \cdot \sigma_{t-1}^{2}
 $$
 
 $$
-\sigma_{1} ^{2} = \text{Omega} + (\text{Alpha} + \text{Beta}) \cdot \text{Backcast}
+\sigma_{1}^{2} = \Omega + (\text{Alpha} + \text{Beta}) \cdot \text{Backcast}
 $$
 
 Where $$r_{t}$$ are the returns (not demeaned) and the Backcast is an exponentially weighted average (decay 0.94) of the first 75 squared returns. Omega, Alpha and Beta maximize the Gaussian log-likelihood, i.e. minimize $$\sum (\ln \sigma_{t}^{2} + r_{t}^{2} / \sigma_{t}^{2})$$, under Omega, Alpha, Beta > 0 and Alpha + Beta < 1 (see `get_garch_parameters`).
@@ -1177,11 +1177,11 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic 
 The formula is as follows:
 
 $$
-\sigma_{n + h} ^{2} = \sigma_{L} ^{2} + (\sigma_{n + 1} ^{2} - \sigma_{L} ^{2}) \cdot (\text{Alpha} + \text{Beta}) ^{h - 1}
+\sigma_{n+h}^{2} = \sigma_{L}^{2} + (\sigma_{n+1}^{2} - \sigma_{L}^{2}) \cdot (\text{Alpha} + \text{Beta})^{h - 1}
 $$
 
 $$
-\sigma_{L} ^{2} = \text{Omega} / (1 - \text{Alpha} - \text{Beta})
+\sigma_{L}^{2} = \frac{\Omega}{1 - \text{Alpha} - \text{Beta}}
 $$
 
 Where n is the last observation, $$h = 1$$, ..., `time_steps` (10 by default) the forecast step, $$\sigma_{n + 1}^{2}$$ the one-step-ahead variance of the fitted GARCH(1, 1) recursion (see `get_garch`) and $$\sigma_{L}^{2}$$ the long-run variance.
@@ -1265,11 +1265,11 @@ GARCH (Generalized autoregressive conditional heteroskedasticity) is a stochasti
 The formula is as follows:
 
 $$
-\sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+\sigma_{t}^{2} = \Omega + \text{Alpha} \cdot r_{t-1}^{2} + \text{Beta} \cdot \sigma_{t-1}^{2}
 $$
 
 $$
-\text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
+\text{Log-Likelihood} = - \sum\left(\ln \sigma_{t}^{2} + \frac{r_{t}^{2}}{\sigma_{t}^{2}}\right)(\text{up to constants})
 $$
 
 Where $$r_{t}$$ are the returns (not demeaned), with the constraints Omega, Alpha, Beta > 0 and Alpha + Beta < 1. The parameters are estimated by maximizing the Gaussian log-likelihood with L-BFGS-B, started from a domain-informed initial guess and from 32 points of a Sobol sequence, and the best fit is finished with Nelder-Mead. The search runs on the parameters scaled to their bounds, as Omega (of the order of a daily variance) and Alpha and Beta differ by orders of magnitude.
@@ -1346,11 +1346,11 @@ For more information about the method, see the following paper:
 The formula is as follows:
 
 $$
-\sigma_{t} ^{2} = \text{Omega} + (\text{Alpha} + \text{Gamma} \cdot I_{t-1}) \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+\sigma_{t}^{2} = \Omega + (\text{Alpha} + \Gamma \cdot I_{t-1}) \cdot r_{t-1}^{2} + \text{Beta} \cdot \sigma_{t-1}^{2}
 $$
 
 $$
-\sigma_{1} ^{2} = \text{Omega} + (\text{Alpha} + \text{Gamma} / 2 + \text{Beta}) \cdot \text{Backcast}
+\sigma_{1}^{2} = \Omega + \left(\text{Alpha} + \frac{\Gamma}{2} + \text{Beta}\right) \cdot \text{Backcast}
 $$
 
 Where $$r_{t}$$ are the returns (not demeaned), $$I_{t - 1}$$ is 1 when $$r_{t - 1} < 0$$ and 0 otherwise, and the Backcast is the same as in `get_garch`. The parameters maximize the Gaussian log-likelihood under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0 (see `get_gjr_garch_parameters`).
@@ -1426,11 +1426,11 @@ Calculates sigma_2 forecasts based on the GJR-GARCH model.
 The formula is as follows:
 
 $$
-\sigma_{n + h} ^{2} = \sigma_{L} ^{2} + (\sigma_{n + 1} ^{2} - \sigma_{L} ^{2}) \cdot (\text{Alpha} + \text{Gamma} / 2 + \text{Beta}) ^{h - 1}
+\sigma_{n+h}^{2} = \sigma_{L}^{2} + (\sigma_{n+1}^{2} - \sigma_{L}^{2}) \cdot \left(\text{Alpha} + \frac{\Gamma}{2} + \text{Beta}\right)^{h - 1}
 $$
 
 $$
-\sigma_{L} ^{2} = \text{Omega} / (1 - \text{Alpha} - \text{Gamma} / 2 - \text{Beta})
+\sigma_{L}^{2} = \frac{\Omega}{1 - \text{Alpha} - \frac{\Gamma}{2} - \text{Beta}}
 $$
 
 Where n is the last observation, $$h = 1$$, ..., `time_steps` (10 by default) the forecast step and $$\sigma_{n + 1}^{2}$$ the one-step-ahead variance of the fitted GJR-GARCH(1, 1, 1) recursion (see `get_gjr_garch`). The leverage term enters at its expectation, Gamma / 2, as a negative shock is as likely as a positive one.
@@ -1515,11 +1515,11 @@ A positive Gamma indicates the presence of a leverage effect (negative shocks ra
 The formula is as follows:
 
 $$
-\sigma_{t} ^{2} = \text{Omega} + (\text{Alpha} + \text{Gamma} \cdot I_{t-1}) \cdot r_{t-1} ^{2} + \text{Beta} \cdot \sigma_{t-1} ^{2}
+\sigma_{t}^{2} = \Omega + (\text{Alpha} + \Gamma \cdot I_{t-1}) \cdot r_{t-1}^{2} + \text{Beta} \cdot \sigma_{t-1}^{2}
 $$
 
 $$
-\text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
+\text{Log-Likelihood} = - \sum\left(\ln \sigma_{t}^{2} + \frac{r_{t}^{2}}{\sigma_{t}^{2}}\right)(\text{up to constants})
 $$
 
 Where $$r_{t}$$ are the returns (not demeaned) and $$I_{t - 1}$$ is 1 when $$r_{t - 1} < 0$$ and 0 otherwise. The log-likelihood is maximized under Alpha + Gamma / 2 + Beta < 1 and Alpha + Gamma >= 0.
@@ -1597,15 +1597,15 @@ For more information about the method, see the following paper:
 The formula is as follows:
 
 $$
-\text{ln}\; \sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot (| z_{t-1} | - \sqrt{2 / \pi}) + \text{Gamma} \cdot z_{t-1} + \text{Beta} \cdot \text{ln}\; \sigma_{t-1} ^{2}
+\ln \sigma_{t}^{2} = \Omega + \text{Alpha} \cdot \left(\left|z_{t-1}\right| - \sqrt{\frac{2}{\pi}}\right) + \Gamma \cdot z_{t-1} + \text{Beta} \cdot \ln \sigma_{t-1}^{2}
 $$
 
 $$
-z_{t} = r_{t} / \sigma_{t}
+z_{t} = \frac{r_{t}}{\sigma_{t}}
 $$
 
 $$
-\text{ln}\; \sigma_{1} ^{2} = \text{Omega} + \text{Beta} \cdot \ln(\text{Backcast})
+\ln \sigma_{1}^{2} = \Omega + \text{Beta} \cdot \ln(\text{Backcast})
 $$
 
 Where $$r_{t}$$ are the returns (not demeaned), $$\sqrt{2 / \pi}$$ is the expected &#124;z&#124; of a standard normal shock, the log variance is kept within [-20, 20] and the Backcast is the same as in `get_garch`. The parameters maximize the Gaussian log-likelihood with &#124;Beta&#124; < 1 (see `get_egarch_parameters`).
@@ -1695,15 +1695,15 @@ Calculates sigma_2 forecasts based on the EGARCH model.
 The formula is as follows:
 
 $$
-\text{ln}\; \sigma_{n + h} ^{2} = L + \text{Beta} ^{h - 1} \cdot (\text{ln}\; \sigma_{n + 1} ^{2} - L)
+\ln \sigma_{n+h}^{2} = L + \text{Beta}^{h - 1} \cdot (\ln \sigma_{n+1}^{2} - L)
 $$
 
 $$
-L = \text{Omega} / (1 - \text{Beta})
+L = \frac{\Omega}{1 - \text{Beta}}
 $$
 
 $$
-\sigma_{n + h} ^{2} = \exp(\text{ln}\; \sigma_{n + h} ^{2})
+\sigma_{n+h}^{2} = \exp(\ln \sigma_{n+h}^{2})
 $$
 
 Where n is the last observation, $$h = 1$$, ..., `time_steps` (10 by default) the forecast step and $$\sigma_{n + 1}^{2}$$ the one-step-ahead variance of the fitted EGARCH(1, 1) recursion (see `get_egarch`). The shock terms drop out at their expectation of zero, so the forecast is the exponential of the expected log variance.
@@ -1787,11 +1787,11 @@ A negative Gamma indicates the presence of a leverage effect (negative shocks ra
 The formula is as follows:
 
 $$
-\text{ln}\; \sigma_{t} ^{2} = \text{Omega} + \text{Alpha} \cdot (| z_{t-1} | - \sqrt{2 / \pi}) + \text{Gamma} \cdot z_{t-1} + \text{Beta} \cdot \text{ln}\; \sigma_{t-1} ^{2}
+\ln \sigma_{t}^{2} = \Omega + \text{Alpha} \cdot \left(\left|z_{t-1}\right| - \sqrt{\frac{2}{\pi}}\right) + \Gamma \cdot z_{t-1} + \text{Beta} \cdot \ln \sigma_{t-1}^{2}
 $$
 
 $$
-\text{Log-Likelihood} = - \text{Σ} (\text{ln}\; \sigma_{t} ^{2} + r_{t} ^{2} / \sigma_{t} ^{2}) (\text{up to constants})
+\text{Log-Likelihood} = - \sum\left(\ln \sigma_{t}^{2} + \frac{r_{t}^{2}}{\sigma_{t}^{2}}\right)(\text{up to constants})
 $$
 
 Where $$r_{t}$$ are the returns (not demeaned) and $$z_{t} = r_{t} / \sigma_{t}$$. The log-likelihood is maximized with Omega in [-15, 5], Alpha and Gamma in [-1, 1] and &#124;Beta&#124; < 1, starting the recursion from $$\ln \sigma_{1}^{2} = \text{Omega} + \text{Beta} \cdot \ln (\text{Backcast})$$, with the Backcast of `get_garch_parameters`.
@@ -1870,11 +1870,11 @@ For more information about the method, see the following papers:
 The formula is as follows (with the default method="empirical" and q=0.95):
 
 $$
-\text{Upper Tail Dependence} = \operatorname{\#}(A > Q_{A}(q) \text{and}\; B > Q_{B}(q)) / \operatorname{\#}(A > Q_{A}(q))
+\text{Upper Tail Dependence} = \frac{\#(A > Q_{A}(q) \;\text{and}\; B > Q_{B}(q))}{\#(A > Q_{A}(q))}
 $$
 
 $$
-\text{Lower Tail Dependence} = \operatorname{\#}(A \leq Q_{A}(1 - q) \text{and}\; B \leq Q_{B}(1 - q)) / \operatorname{\#}(A \leq Q_{A}(1 - q))
+\text{Lower Tail Dependence} = \frac{\#(A \leq Q_{A}(1 - q) \;\text{and}\; B \leq Q_{B}(1 - q))}{\#(A \leq Q_{A}(1 - q))}
 $$
 
 Where A and B are the values of `ticker_a` and `ticker_b` on their common dates and $$Q_{A}$$ and $$Q_{B}$$ their empirical quantiles. With method="gaussian" both coefficients are 0 (1 only for a correlation of exactly 1), and with method="student-t" both are $$2 \cdot t_{v + 1} (- \sqrt{(v + 1) \cdot (1 - \rho) / (1 + \rho)})$$, with v = `dof`, rho the Pearson correlation and $$t_{v + 1}$$ the Student-T distribution function.
@@ -1964,19 +1964,19 @@ See `get_best_fitting_copula` to compare all five by AIC on the same pair of ass
 The formula is as follows:
 
 $$
-u_{i} = \operatorname{Rank}(A_{i}) / (n + 1),\;\; v_{i} = \operatorname{Rank}(B_{i}) / (n + 1)
+u_{i} = \frac{\operatorname{Rank}(A_{i})}{n + 1},\;\; v_{i} = \frac{\operatorname{Rank}(B_{i})}{n + 1}
 $$
 
 $$
-\text{Gaussian Rho} = \operatorname{Correlation}(\Phi ^{-1} (u),\; \Phi ^{-1} (v))
+\text{Gaussian Rho} = \operatorname{Correlation}(\Phi^{-1} (u),\; \Phi^{-1} (v))
 $$
 
 $$
-\text{Student-T Rho} = \operatorname{sin}(\pi \cdot \text{Kendall's Tau} / 2)
+\text{Student-T Rho} = \sin\left(\frac{\pi \cdot \text{Kendall's Tau}}{2}\right)
 $$
 
 $$
-\Theta (\text{and the Student-T Degrees of Freedom}) = \text{argmax}\; \text{Σ} \;\text{ln}\; c (u_{i},\; v_{i})
+\Theta \;(\text{and the Student-T Degrees of Freedom}) = \operatorname*{arg\,max} \sum \ln c(u_{i},\; v_{i})
 $$
 
 $$
@@ -2069,7 +2069,7 @@ This is what a copula-based portfolio Monte Carlo simulation needs: draws that p
 The formula is as follows (with the default copula="gaussian" and empirical_margins=True):
 
 $$
-(Z_{1},\; Z_{2}) \sim N(0,\; \left[\left[1,\; \text{Rho}\right],\; \left[\text{Rho},\; 1\right]\right])
+(Z_{1},\; Z_{2}) \sim N\left(0,\; \begin{pmatrix} 1 & \text{Rho} \\ \text{Rho} & 1 \end{pmatrix}\right)
 $$
 
 $$
@@ -2248,7 +2248,7 @@ CoVaR was introduced to measure systemic risk: in its original application `tick
 The formula is as follows (with the default alpha=0.05):
 
 $$
-\operatorname{Quantile\_alpha}(A | B) = \text{Intercept} + \text{Slope} \cdot B
+\operatorname{Quantile}_{\alpha}(A \mid B) = \text{Intercept} + \text{Slope} \cdot B
 $$
 
 $$
@@ -2335,11 +2335,11 @@ Ordinary VaR (see `get_value_at_risk`) treats each asset in isolation. Marginal 
 The formula is as follows (with the default distribution="historic"):
 
 $$
-\text{Portfolio Return} = \operatorname{SUM}(\text{weight}_{i} \cdot \text{Return}_{i})
+\text{Portfolio Return} = \sum(\text{weight}_{i} \cdot \text{Return}_{i})
 $$
 
 $$
-\text{Beta}_{i} = \operatorname{Cov}(\text{Return}_{i},\; \text{Portfolio Return}) / \operatorname{Var}(\text{Portfolio Return})
+\text{Beta}_{i} = \frac{\operatorname{Cov}(\text{Return}_{i},\; \text{Portfolio Return})}{\operatorname{Var}(\text{Portfolio Return})}
 $$
 
 $$
@@ -2349,7 +2349,7 @@ $$
 Where the weights are normalized to sum to 1, the covariance and variance are sample estimates (ddof=1) on the dates all assets have a return, and Portfolio VaR is the VaR of the portfolio return under `distribution` (see `get_value_at_risk`). The beta-based sensitivity is exact for a zero-mean elliptical distribution and an approximation otherwise; distribution="gaussian" uses the exact derivative instead, with $$z_{\alpha}$$ the standard normal quantile at alpha:
 
 $$
-\text{Gaussian Marginal VaR}_{i} = \text{Mean}_{i} + z_{\alpha} \cdot \operatorname{Cov}(\text{Return}_{i},\; \text{Portfolio Return}) / \operatorname{Std}(\text{Portfolio Return})
+\text{Gaussian Marginal VaR}_{i} = \text{Mean}_{i} + \frac{z_{\alpha} \cdot \operatorname{Cov}(\text{Return}_{i},\; \text{Portfolio Return})}{\operatorname{Std}(\text{Portfolio Return})}
 $$
 
 An asset with Beta_i > 1 contributes disproportionately to portfolio risk, while Beta_i < 1 (and especially Beta_i < 0) indicates a diversifying holding.
@@ -2431,7 +2431,7 @@ $$
 $$
 
 $$
-\operatorname{SUM}(\text{Component VaR}_{i}) = \text{Portfolio VaR}
+\sum(\text{Component VaR}_{i}) = \text{Portfolio VaR}
 $$
 
 Where the weights are normalized to sum to 1 and Marginal $$\text{VaR}_{i}$$ is that of `get_marginal_value_at_risk`: Beta_i * Portfolio VaR by default, or the exact derivative with distribution="gaussian".
@@ -2520,7 +2520,7 @@ Regulators backtest VaR on the number of exceptions over the last 250 trading da
 The formula is as follows (with the default distribution="historic", alpha=0.05 and window_size=252):
 
 $$
-\text{VaR}_{t} = \operatorname{Quantile}(\text{Return}_{t-252},\; ...,\; \text{Return}_{t-1} \text{;} \alpha)
+\text{VaR}_{t} = \operatorname{Quantile}(\text{Return}_{t-252},\; \ldots,\; \text{Return}_{t-1} ; \alpha)
 $$
 
 $$
@@ -2528,11 +2528,11 @@ $$
 $$
 
 $$
-\text{Kupiec Statistic} = - 2 \cdot \text{ln} \left[(1 - \alpha) ^{n - x} \cdot \alpha ^{x} / ((1 - x / n) ^{n - x} \cdot (x / n) ^{x})\right]
+\text{Kupiec Statistic} = - 2 \cdot \ln\left[\frac{(1 - \alpha)^{n - x} \cdot \alpha^{x}}{\left(1 - \frac{x}{n}\right)^{n - x} \cdot \left(\frac{x}{n}\right)^{x}}\right]
 $$
 
 $$
-\text{Christoffersen Statistic} = - 2 \cdot \text{ln} \left[L(\pi) / L(\pi_{01},\; \pi_{11})\right]
+\text{Christoffersen Statistic} = - 2 \cdot \ln\left[\frac{L(\pi)}{L(\pi_{01},\; \pi_{11})}\right]
 $$
 
 Where n is the number of out-of-sample VaR estimates and x the number of breaches. L(pi) is the likelihood of the breach sequence with a single breach probability pi, and $$L (\pi_{01} , \pi_{11})$$ that of a first-order Markov chain in which the breach probability depends on whether the previous period was a breach. Both statistics are compared with a $$\chi^{2}$$ distribution with one degree of freedom for the p-value.
@@ -2610,11 +2610,11 @@ Backtest a Conditional Value at Risk (Expected Shortfall) model against realized
 The formula is as follows (with the default distribution="historic", alpha=0.05 and window_size=252):
 
 $$
-Z_{2} = \text{Σ} (\text{Return}_{t} \cdot \text{Breach}_{t} / \text{CVaR}_{t}) / (n \cdot \alpha) - 1
+Z_{2} = \frac{\sum\left(\frac{\text{Return}_{t} \cdot \text{Breach}_{t}}{\text{CVaR}_{t}}\right)}{n \cdot \alpha} - 1
 $$
 
 $$
-\text{P-Value} = 1 - \Phi(Z_{2} / \text{Standard Error})
+\text{P-Value} = 1 - \Phi\left(\frac{Z_{2}}{\text{Standard Error}}\right)
 $$
 
 Where $$\text{VaR}_{t}$$ and CVaR_t are estimated from the 252 returns before t (see `get_var_backtest`), Breach_t is 1 if Return_t < $$\text{VaR}_{t}$$ and 0 otherwise, n is the number of estimates and the Standard Error is the sample standard deviation (ddof=1) of Z2 over `n_bootstrap` paired bootstrap resamples. Returns and CVaR are both negative, so Z2 is about 0 for a well-calibrated model and positive when the realized tail losses exceed the CVaR (the opposite sign of the paper, which counts losses as positive).
@@ -2698,7 +2698,7 @@ Skewness is a statistical measure used in finance to assess the asymmetry in the
 The formula is as follows:
 
 $$
-\text{Skewness} = n / ((n - 1) \cdot (n - 2)) \cdot \text{Σ} ((\text{Return} - \text{Mean}) / \text{Std}) ^{3}
+\text{Skewness} = \frac{n}{(n - 1) \cdot (n - 2)} \cdot \sum\left(\frac{\text{Return} - \text{Mean}}{\text{Std}}\right)^{3}
 $$
 
 Where n is the number of returns and Std the sample standard deviation (ddof=1), which is the bias-adjusted sample skewness (G1) of pandas and Excel's SKEW.
@@ -2782,11 +2782,11 @@ $$
 $$
 
 $$
-\text{Excess Kurtosis} = n(n + 1) / ((n - 1) (n - 2) (n - 3)) \cdot \text{Σ} z ^{4} - \operatorname{3}(n - 1) ^{2} / ((n - 2) (n - 3))
+\text{Excess Kurtosis} = \frac{n(n + 1)}{(n - 1) (n - 2) (n - 3)} \cdot \sum z^{4} - \frac{3(n - 1)^{2}}{(n - 2) (n - 3)}
 $$
 
 $$
-z = (\text{Return} - \text{Mean}) / \text{Std}
+z = \frac{\text{Return} - \text{Mean}}{\text{Std}}
 $$
 
 Where n is the number of returns and Std the sample standard deviation (ddof=1), which is the bias-adjusted sample excess kurtosis (G2) of pandas and Excel's KURT. With fisher=True the Excess Kurtosis is returned.
@@ -2868,15 +2868,15 @@ For daily stock returns the tail index typically lies between about 2 and 5, whi
 The formula is as follows (with the default tail="left" and k=0.1):
 
 $$
-\text{Hill Shape} (\xi) = (1 / k) \cdot \text{Σ} (\text{ln}\; X_{i} - \text{ln}\; X_{k + 1}) \text{for}\; i = 1,\;\; \text{...},\;\; \text{k}
+\text{Hill Shape} \;(\xi) = \frac{1}{k} \cdot \sum(\ln X_{(i)} - \ln X_{(k+1)}) \;\text{for}\; i = 1,\; \ldots,\; k
 $$
 
 $$
-\text{Hill Tail Index} = 1 / \xi
+\text{Hill Tail Index} = \frac{1}{\xi}
 $$
 
 $$
-\text{Standard Error} = \text{Hill Tail Index} / \sqrt{k}
+\text{Standard Error} = \frac{\text{Hill Tail Index}}{\sqrt{k}}
 $$
 
 Where $$X_{1} \geq X_{2} \geq \ldots$$ are the strictly positive losses (the negated returns, or the returns themselves for tail="right") sorted from large to small, and k is the number of order statistics used: int(0.1 * the number of positive losses) by default, or `k` itself when it is an integer.
@@ -3036,23 +3036,23 @@ $$
 Where Std is the sample standard deviation (ddof=1) and the trading days per period are 252 / 52 (weekly), 252 / 12 (monthly), 252 / 4 (quarterly) or 252 (yearly). The range-based estimators take the square root of a daily variance and scale it the same way, with H, L, O and C the daily High, Low, Open and Close, $$C_{- 1}$$ the previous Close, Mean the average and Var the sample variance (ddof=1) over the days in the period:
 
 $$
-\text{Parkinson Variance} = \operatorname{Mean}(\ln(H / L) ^{2}) / (4 \cdot \text{ln}\; 2)
+\text{Parkinson Variance} = \frac{\operatorname{Mean}\left(\ln\left(\frac{H}{L}\right)^{2}\right)}{4 \cdot \ln 2}
 $$
 
 $$
-\text{Garman-Klass Variance} = \operatorname{Mean}(0.5 \cdot \ln(H / L) ^{2} - (2 \cdot \text{ln}\; 2 - 1) \cdot \ln(C / O) ^{2})
+\text{Garman-Klass Variance} = \operatorname{Mean}\left(0.5 \cdot \ln\left(\frac{H}{L}\right)^{2} - (2 \cdot \ln 2 - 1) \cdot \ln\left(\frac{C}{O}\right)^{2}\right)
 $$
 
 $$
-\text{Rogers-Satchell Variance} = \operatorname{Mean}(\ln(H / C) \cdot \ln(H / O) + \ln(L / C) \cdot \ln(L / O))
+\text{Rogers-Satchell Variance} = \operatorname{Mean}\left(\ln\left(\frac{H}{C}\right) \cdot \ln\left(\frac{H}{O}\right) + \ln\left(\frac{L}{C}\right) \cdot \ln\left(\frac{L}{O}\right)\right)
 $$
 
 $$
-\text{Yang-Zhang Variance} = \operatorname{Var}(\ln(O / C_{- 1})) + k \cdot \operatorname{Var}(\ln(C / O)) + (1 - k) \cdot \text{Rogers-Satchell Variance}
+\text{Yang-Zhang Variance} = \operatorname{Var}\left(\ln\left(\frac{O}{C_{-1}}\right)\right) + k \cdot \operatorname{Var}\left(\ln\left(\frac{C}{O}\right)\right) + (1 - k) \cdot \text{Rogers-Satchell Variance}
 $$
 
 $$
-k = 0.34 / (1.34 + (n + 1) / (n - 1)),\;\; \text{with n the number of days in the period}
+k = \frac{0.34}{1.34 + \frac{n + 1}{n - 1}},\;\; \text{with } n \text{ the number of days in the period}
 $$
 
 With `rolling`, the result is the sample standard deviation of the last `rolling` returns of the chosen period itself, without scaling.
@@ -3143,15 +3143,15 @@ Volatility clustering happens across multiple, overlapping time horizons at once
 The formula is as follows (with the default estimator="squared_return", weekly_window=5, monthly_window=22 and horizon=1):
 
 $$
-\text{RV}_{t} = \text{Return}_{t} ^{2}
+\text{RV}_{t} = \text{Return}_{t}^{2}
 $$
 
 $$
-\text{RV} ^{w_{t}} = \operatorname{Mean}(\text{RV}_{t-4},\; ...,\; \text{RV}_{t}) \text{and RV} ^{m_{t}} = \operatorname{Mean}(\text{RV}_{t-21},\; ...,\; \text{RV}_{t})
+\text{RV}^{w}_{t} = \operatorname{Mean}(\text{RV}_{t-4},\; \ldots,\; \text{RV}_{t})\;\;\text{and}\;\; \text{RV}^{m}_{t} = \operatorname{Mean}(\text{RV}_{t-21},\; \ldots,\; \text{RV}_{t})
 $$
 
 $$
-\text{Forecast of RV}_{t + 1} = b_{0} + b_{d} \cdot \text{RV}_{t} + b_{w} \cdot \text{RV} ^{w_{t}} + b_{m} \cdot \text{RV} ^{m_{t}}
+\text{Forecast of}\; \text{RV}_{t+1} = b_{0} + b_{d} \cdot \text{RV}_{t} + b_{w} \cdot \text{RV}^{w}_{t} + b_{m} \cdot \text{RV}^{m}_{t}
 $$
 
 Where $$b_{0}$$, $$b_{d}$$, $$b_{w}$$ and $$b_{m}$$ are estimated once by ordinary least squares over each asset's full history, and the forecast of $$\text{RV}_{t + 1}$$ is shown at date t. The range-based estimators replace $$\text{RV}_{t}$$ with the daily Parkinson, Garman-Klass or Rogers-Satchell variance term (see `get_volatility`).
@@ -3241,7 +3241,7 @@ For more information about the method, see the following paper:
 The formula is as follows (with the default scale of 1,000,000):
 
 $$
-\text{Amihud Illiquidity} = \operatorname{Mean}(| \text{Return}_{t} | / (\text{Close}_{t} \cdot \text{Volume}_{t})) \cdot 1,\;\; \text{000},\;\; \text{000}
+\text{Amihud Illiquidity} = \operatorname{Mean}\left(\frac{\left|\text{Return}_{t}\right|}{\text{Close}_{t} \cdot \text{Volume}_{t}}\right) \cdot \text{1,000,000}
 $$
 
 Where the mean runs over the periods of the chosen frequency (within each period with `within_period`), and periods without dollar volume are skipped.
@@ -3329,7 +3329,7 @@ $$
 $$
 
 $$
-\text{Relative Roll Spread} = \text{Roll Spread} / \operatorname{Mean}(P)
+\text{Relative Roll Spread} = \frac{\text{Roll Spread}}{\operatorname{Mean}(P)}
 $$
 
 Where P is the Close price, $$\Delta P_{t} = P_{t} - P_{t - 1}$$ and Cov the sample autocovariance (ddof=1) of consecutive price changes; a covariance of zero or above gives NaN.
@@ -3470,7 +3470,7 @@ The Downside Deviation, also known as semi-deviation, measures the dispersion of
 The formula is as follows (with the default minimum_acceptable_return of 0):
 
 $$
-\text{Downside Deviation} = \sqrt{\text{Σ} \;\text{min} (\text{Return}_{t} - \text{MAR},\; 0) ^{2} / n}
+\text{Downside Deviation} = \sqrt{\frac{\sum \min(\text{Return}_{t} - \text{MAR},\; 0)^{2}}{n}}
 $$
 
 Where n is the number of all returns, so returns above the MAR count as a shortfall of zero rather than being left out.
@@ -3549,7 +3549,7 @@ MAD measures the average absolute distance of each return from the mean return. 
 The formula is as follows:
 
 $$
-\text{Mean Absolute Deviation} = \text{Σ} | \text{Return}_{t} - \text{Mean} | / n
+\text{Mean Absolute Deviation} = \frac{\sum\left|\text{Return}_{t} - \text{Mean}\right|}{n}
 $$
 
 Where the returns are the n daily returns within each period, without scaling to the period length.
@@ -3617,7 +3617,7 @@ The Coefficient of Variation is only meaningful when the mean return is clearly 
 The formula is as follows:
 
 $$
-\text{Coefficient of Variation} = \operatorname{Std}(\text{Daily Returns}) / \operatorname{Mean}(\text{Daily Returns})
+\text{Coefficient of Variation} = \frac{\operatorname{Std}(\text{Daily Returns})}{\operatorname{Mean}(\text{Daily Returns})}
 $$
 
 Where both are taken over the daily returns within each period, with Std the sample standard deviation (ddof=1), without scaling to the period length.
@@ -3683,11 +3683,11 @@ Unlike a fixed-window rolling Volatility, EWMA Volatility weights recent observa
 The formula is as follows:
 
 $$
-\text{EWMA Variance} (t) = \lambda \cdot \text{EWMA Variance} (t-1) + (1 - \lambda) \cdot \operatorname{Return}(t-1) ^{2}
+\text{EWMA Variance}(t) = \lambda \cdot \text{EWMA Variance}(t-1) + (1 - \lambda) \cdot \operatorname{Return}(t-1)^{2}
 $$
 
 $$
-\text{EWMA Volatility} (t) = \sqrt{\text{EWMA Variance} (t)}
+\text{EWMA Volatility}(t) = \sqrt{\text{EWMA Variance}(t)}
 $$
 
 Where lambda is 0.94 by default and Return(t-1) the previous daily return, so the value on a day only uses the returns before it. The recursion starts from the first squared return.
@@ -3760,23 +3760,23 @@ A return only says how far a price moved, not whether that is a lot for the asse
 The formula is as follows:
 
 $$
-\text{Volatility Multiple} (t) = \operatorname{Return}(t) / \sigma(\operatorname{Return}(t - \text{window}),\; ...,\; \operatorname{Return}(t - 1))
+\text{Volatility Multiple}(t) = \frac{\operatorname{Return}(t)}{\sigma(\operatorname{Return}(t - \text{window}),\; \ldots,\; \operatorname{Return}(t - 1))}
 $$
 
 $$
-\text{VaR Multiple} (t) = \operatorname{Return}(t) / | \operatorname{Quantile}(\operatorname{Return}(t - \text{window}),\; ...,\; \operatorname{Return}(t - 1) \text{;} \alpha) |
+\text{VaR Multiple}(t) = \frac{\operatorname{Return}(t)}{\left|\operatorname{Quantile}(\operatorname{Return}(t - \text{window}),\; \ldots,\; \operatorname{Return}(t - 1) ; \alpha)\right|}
 $$
 
 $$
-\operatorname{Percentile}(t) = \operatorname{Count}(| \operatorname{Return}(s) | < | \operatorname{Return}(t) |,\; s < t) / \operatorname{Count}(s < t)
+\operatorname{Percentile}(t) = \frac{\operatorname{Count}(\left|\operatorname{Return}(s)\right| < \left|\operatorname{Return}(t)\right|,\; s < t)}{\operatorname{Count}(s < t)}
 $$
 
 $$
-\text{Largest Since} (t) = \max(s < t \text{:} \;\text{Return} (s) \leq \operatorname{Return}(t)) \text{if Return} (t) < 0
+\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Return}(s) \leq \operatorname{Return}(t)) \;\text{if Return}(t) < 0
 $$
 
 $$
-\text{Largest Since} (t) = \max(s < t \text{:} \;\text{Return} (s) \geq \operatorname{Return}(t)) \text{if Return} (t) > 0
+\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Return}(s) \geq \operatorname{Return}(t)) \;\text{if Return}(t) > 0
 $$
 
 The volatility $$\sigma$$ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly as in `get_value_at_risk`.
@@ -3855,7 +3855,7 @@ The ACF measures the correlation between a return series and a lagged version of
 The formula is as follows:
 
 $$
-\operatorname{ACF}(k) = \text{Σ} (r_{t} - \text{Mean}) \cdot (r_{t + k} - \text{Mean}) / \text{Σ} (r_{t} - \text{Mean}) ^{2}
+\operatorname{ACF}(k) = \frac{\sum(r_{t} - \text{Mean}) \cdot (r_{t+k} - \text{Mean})}{\sum(r_{t} - \text{Mean})^{2}}
 $$
 
 Where $$r_{t}$$ are the n daily returns (missing values dropped), the numerator runs over $$t = 1$$, ..., n - k, the denominator over all n returns, and $$k = 1$$, ..., `lags` (10 by default).
@@ -3921,11 +3921,11 @@ For liquid stocks the estimate is usually close to 0.5, and with lags of at most
 The formula is as follows (with the default max_lag=20):
 
 $$
-\sigma(\tau) = \operatorname{Std}(\text{ln}\; P_{t + \tau} - \text{ln}\; P_{t})
+\sigma(\tau) = \operatorname{Std}(\ln P_{t+\tau} - \ln P_{t})
 $$
 
 $$
-\text{ln}\; \sigma (\tau) = c + H \cdot \text{ln}\; \tau,\;\; \text{fitted by least squares over}\; \tau = 2,\;\; \text{...},\;\; \text{20}
+\ln \sigma(\tau) = c + H \cdot \ln \tau,\;\; \text{fitted by least squares over}\; \tau = 2,\; \ldots,\; 20
 $$
 
 Where P is the daily adjusted close, Std the population standard deviation (ddof=0) of the lagged log price differences and H, the slope, the Hurst Exponent.

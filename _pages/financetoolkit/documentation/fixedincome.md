@@ -50,47 +50,47 @@ The fields are:
 The formula is as follows:
 
 $$
-\operatorname{PV}(t) = \text{Cash Flow} (t) / (1 + \text{YTM} / 2) ^{2t},\;\; \text{with coupons of Coupon} / 2 \;\text{per}\; 100 \;\text{of par and the principal repaid with the last coupon}
+\operatorname{PV}(t) = \frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{YTM}}{2}\right)^{2t}},\;\; \text{with coupons of} \;\frac{\text{Coupon}}{2} \;\text{per 100 of par and the principal repaid with the last coupon}
 $$
 
 $$
-\text{Dirty Price} = \operatorname{SUM}(\operatorname{PV}(t)) = \text{Price} + \text{Accrued Interest},\;\; \text{over the remaining payment times t in years}
+\text{Dirty Price} = \sum(\operatorname{PV}(t)) = \text{Price} + \text{Accrued Interest},\;\; \text{over the remaining payment times } t \text{ in years}
 $$
 
 $$
-\text{Current Yield} = \text{Coupon} \cdot 100 / \text{Price}
+\text{Current Yield} = \frac{\text{Coupon} \cdot 100}{\text{Price}}
 $$
 
 $$
-\text{Macaulay's Duration} = \operatorname{SUM}(t \cdot \operatorname{PV}(t)) / \text{Dirty Price}
+\text{Macaulay's Duration} = \frac{\sum(t \cdot \operatorname{PV}(t))}{\text{Dirty Price}}
 $$
 
 $$
-\text{Modified Duration} = \text{Macaulay's Duration} / (1 + \text{YTM} / 2)
+\text{Modified Duration} = \frac{\text{Macaulay's Duration}}{1 + \frac{\text{YTM}}{2}}
 $$
 
 $$
-\text{Effective Duration} = (\text{Dirty Price} (\text{YTM} - 0.01) - \text{Dirty Price} (\text{YTM} + 0.01)) / (2 \cdot \text{Dirty Price} \cdot 0.01)
+\text{Effective Duration} = \frac{\text{Dirty Price}(\text{YTM} - 0.01) - \text{Dirty Price}(\text{YTM} + 0.01)}{2 \cdot \text{Dirty Price} \cdot 0.01}
 $$
 
 $$
-\text{Dollar Duration} = \text{Modified Duration} \cdot \text{Dirty Price} / 100
+\text{Dollar Duration} = \frac{\text{Modified Duration} \cdot \text{Dirty Price}}{100}
 $$
 
 $$
-\text{DV01} = (\operatorname{Price}(\text{YTM} - 0.0001) - \operatorname{Price}(\text{YTM} + 0.0001)) / 2
+\text{DV01} = \frac{\operatorname{Price}(\text{YTM} - 0.0001) - \operatorname{Price}(\text{YTM} + 0.0001)}{2}
 $$
 
 $$
-\text{Convexity} = (\text{Dirty Price} (\text{YTM} + 0.0001) + \text{Dirty Price} (\text{YTM} - 0.0001) - 2 \cdot \text{Dirty Price}) / (\text{Dirty Price} \cdot 0.0001 ^{2})
+\text{Convexity} = \frac{\text{Dirty Price}(\text{YTM} + 0.0001) + \text{Dirty Price}(\text{YTM} - 0.0001) - 2 \cdot \text{Dirty Price}}{\text{Dirty Price} \cdot 0.0001^{2}}
 $$
 
 $$
-\text{Present Value} = \operatorname{SUM}(\text{Cash Flow} (t) / (1 + \text{Spot Rate} (t) / 2) ^{2t}) - \text{Accrued Interest}
+\text{Present Value} = \sum\left(\frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{Spot Rate}(t)}{2}\right)^{2t}}\right) - \text{Accrued Interest}
 $$
 
 $$
-\text{Z-Spread solves Price} = \operatorname{SUM}(\text{Cash Flow} (t) / (1 + (\text{Spot Rate} (t) + \text{Z-Spread}) / 2) ^{2t}) - \text{Accrued Interest}
+\text{Z-Spread solves Price} = \sum\left(\frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{Spot Rate}(t) + \text{Z-Spread}}{2}\right)^{2t}}\right) - \text{Accrued Interest}
 $$
 
 Where Spot Rate(t) is the Treasury zero-coupon rate of `get_zero_coupon_curve`, restated from annual to semi-annual compounding, interpolated linearly between its maturities. Bills pay no coupon and their yield is the bond-equivalent yield (see `get_bond_equivalent_yield`). TIPS are priced on their inflation-adjusted principal, so their yield is a real yield and they have no present value or Z-spread on the nominal curve. Floating rate notes are left out.
@@ -168,7 +168,7 @@ Calculates the present value of individual bonds: their coupons and principal di
 The formula is as follows:
 
 $$
-\text{Dirty Price} = \operatorname{SUM}(C / (1 + s(t_{i}) / 2) ^{2 t_{i}}) + F / (1 + s(t_{n}) / 2) ^{2 t_{n}},\;\; \text{over} \;\; \text{the remaining coupons}\; i = 1,\;\; \text{...},\;\; \text{n}
+\text{Dirty Price} = \sum\left(\frac{C}{\left(1 + \frac{s(t_{i})}{2}\right)^{2 t_{i}}}\right) + \frac{F}{\left(1 + \frac{s(t_{n})}{2}\right)^{2 t_{n}}},\;\; \text{over}\;\; \text{the remaining coupons}\; i = 1,\; \ldots,\; n
 $$
 
 $$
@@ -182,11 +182,11 @@ $$
 where:
 
 $$
-C = \text{Coupon payment per half year},\;\; 100 \cdot \text{Coupon} / 2
+C = \text{Coupon payment per half year},\;\; \frac{100 \cdot \text{Coupon}}{2}
 $$
 
 $$
-s(t) = \text{Treasury zero-coupon rate at}\; t \;\text{years} (\text{get\_zero\_coupon\_curve}),\;\; \text{restated from annual to semi-annual compounding and interpolated linearly between its maturities}
+s(t) = \text{Treasury zero-coupon rate at}\; t \;\text{years} \;(\text{get\_zero\_coupon\_curve}),\;\; \text{restated from annual to semi-annual compounding and interpolated linearly between its maturities}
 $$
 
 $$
@@ -270,27 +270,27 @@ These duration measures can be used to estimate the sensitivity of a bond's pric
 The formula is as follows (the default is the modified duration):
 
 $$
-\operatorname{PV}(t) = \text{Cash Flow} (t) / (1 + \text{YTM} / 2) ^{2t},\;\; \text{with coupons of Coupon} / 2 \;\text{per}\; 100 \;\text{of par and the principal repaid with the last coupon}
+\operatorname{PV}(t) = \frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{YTM}}{2}\right)^{2t}},\;\; \text{with coupons of} \;\frac{\text{Coupon}}{2} \;\text{per 100 of par and the principal repaid with the last coupon}
 $$
 
 $$
-\text{Dirty Price} = \operatorname{SUM}(\operatorname{PV}(t)),\;\; \text{over the remaining payment times t in years on the actual coupon dates}
+\text{Dirty Price} = \sum(\operatorname{PV}(t)),\;\; \text{over the remaining payment times } t \text{ in years on the actual coupon dates}
 $$
 
 $$
-\text{Macaulay's Duration} = \operatorname{SUM}(t \cdot \operatorname{PV}(t)) / \text{Dirty Price}
+\text{Macaulay's Duration} = \frac{\sum(t \cdot \operatorname{PV}(t))}{\text{Dirty Price}}
 $$
 
 $$
-\text{Modified Duration} = \text{Macaulay's Duration} / (1 + \text{YTM} / 2)
+\text{Modified Duration} = \frac{\text{Macaulay's Duration}}{1 + \frac{\text{YTM}}{2}}
 $$
 
 $$
-\text{Effective Duration} = (\text{Dirty Price} (\text{YTM} - 0.01) - \text{Dirty Price} (\text{YTM} + 0.01)) / (2 \cdot \text{Dirty Price} \cdot 0.01)
+\text{Effective Duration} = \frac{\text{Dirty Price}(\text{YTM} - 0.01) - \text{Dirty Price}(\text{YTM} + 0.01)}{2 \cdot \text{Dirty Price} \cdot 0.01}
 $$
 
 $$
-\text{Dollar Duration} = \text{Modified Duration} \cdot \text{Dirty Price} / 100
+\text{Dollar Duration} = \frac{\text{Modified Duration} \cdot \text{Dirty Price}}{100}
 $$
 
 Where YTM is the bond's yield to maturity at its market price, compounded twice a year (see `get_yield_to_maturity`). The bonds are selected as in `collect_bond_statistics`.
@@ -360,17 +360,17 @@ Calculates the yield to maturity of individual bonds from their market price. Th
 The formula is as follows, solved for YTM:
 
 $$
-\text{Price} + C \cdot a = \operatorname{SUM}(C / (1 + \text{YTM} / 2) ^{2 t_{i}}) + F / (1 + \text{YTM} / 2) ^{2 t_{n}},\;\; \text{over} \;\; \text{the remaining coupons}\; i = 1,\;\; \text{...},\;\; \text{n}
+\text{Price} + C \cdot a = \sum\left(\frac{C}{\left(1 + \frac{\text{YTM}}{2}\right)^{2 t_{i}}}\right) + \frac{F}{\left(1 + \frac{\text{YTM}}{2}\right)^{2 t_{n}}},\;\; \text{over}\;\; \text{the remaining coupons}\; i = 1,\; \ldots,\; n
 $$
 
 where:
 
 $$
-C = \text{Coupon payment per half year},\;\; 100 \cdot \text{Coupon} / 2
+C = \text{Coupon payment per half year},\;\; \frac{100 \cdot \text{Coupon}}{2}
 $$
 
 $$
-a = \text{Elapsed fraction of the current coupon period},\;\; \text{in actual days (actual/actual)},\;\; \text{0 on a coupon date}
+a = \text{Elapsed fraction of the current coupon period},\;\; \text{in actual days (actual/actual), 0 on a coupon date}
 $$
 
 $$
@@ -447,7 +447,7 @@ Unlike a simple yield spread (the bond's yield to maturity minus a Treasury yiel
 The formula is as follows, solved for the Z-Spread with the secant method:
 
 $$
-\text{Price} = \operatorname{SUM}(\text{Cash Flow} (t) / (1 + (\text{Spot Rate} (t) + \text{Z-Spread}) / 2) ^{2t}) - \text{Accrued Interest}
+\text{Price} = \sum\left(\frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{Spot Rate}(t) + \text{Z-Spread}}{2}\right)^{2t}}\right) - \text{Accrued Interest}
 $$
 
 Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates and Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding, interpolated linearly between its maturities and held flat beyond its first and last maturity.
@@ -523,11 +523,11 @@ Summing the key rate durations across every maturity of the curve approximately 
 The formula is as follows:
 
 $$
-\text{Dirty Price} = \operatorname{SUM}(\text{Cash Flow} (t) / (1 + \text{Spot Rate} (t) / 2) ^{2t})
+\text{Dirty Price} = \sum\left(\frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{Spot Rate}(t)}{2}\right)^{2t}}\right)
 $$
 
 $$
-\text{Key Rate Duration} = - (\text{Dirty Price} (\text{Key Rate} + \Delta y) - \text{Dirty Price} (\text{Key Rate} - \Delta y)) / (2 \cdot \text{Dirty Price} \cdot \Delta y)
+\text{Key Rate Duration} = - \frac{\text{Dirty Price}(\text{Key Rate} + \Delta y) - \text{Dirty Price}(\text{Key Rate} - \Delta y)}{2 \cdot \text{Dirty Price} \cdot \Delta y}
 $$
 
 Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates, Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding and interpolated linearly between its maturities, and $$\Delta y$$ is the shock applied to the key rate only (1 basis point by default).
@@ -603,15 +603,15 @@ Modified duration alone only captures the first-order (linear) relationship betw
 The formula is as follows:
 
 $$
-\text{Modified Duration} = \operatorname{SUM}(t \cdot \operatorname{PV}(t)) / \text{Dirty Price} / (1 + \text{YTM} / 2),\;\; \text{see get\_duration}
+\text{Modified Duration} = \frac{\frac{\sum(t \cdot \operatorname{PV}(t))}{\text{Dirty Price}}}{1 + \frac{\text{YTM}}{2}},\;\; \text{see get\_duration}
 $$
 
 $$
-\text{Convexity} = (\text{Dirty Price} (\text{YTM} + 0.0001) + \text{Dirty Price} (\text{YTM} - 0.0001) - 2 \cdot \text{Dirty Price}) / (\text{Dirty Price} \cdot 0.0001 ^{2})
+\text{Convexity} = \frac{\text{Dirty Price}(\text{YTM} + 0.0001) + \text{Dirty Price}(\text{YTM} - 0.0001) - 2 \cdot \text{Dirty Price}}{\text{Dirty Price} \cdot 0.0001^{2}}
 $$
 
 $$
-\%\Delta \;\text{Price} \approx - \text{Modified Duration} \cdot \Delta y + 0.5 \cdot \text{Convexity} \cdot \Delta y ^{2}
+\% \Delta \;\text{Price} \approx - \text{Modified Duration} \cdot \Delta y + 0.5 \cdot \text{Convexity} \cdot \Delta y^{2}
 $$
 
 Where YTM is the bond's yield to maturity at its market price, compounded twice a year (see `get_yield_to_maturity`), $$\Delta y$$ is the yield change (0.01 by default) and %ΔPrice is the change of the full (dirty) price as a decimal. The bonds are selected as in `collect_bond_statistics`. For terms of your own, use `bond_model.get_taylor_price_change`.
@@ -623,11 +623,11 @@ $$
 $$
 
 $$
-\text{Price Change} = \text{the Taylor estimate above},\;\; \text{with the modified duration},\;\; \text{convexity and YTM of}\; \text{from\_date} \;\text{and}\; \Delta y = \text{Yield Change}
+\text{Price Change} = \text{the Taylor estimate above},\;\; \text{with the modified duration},\;\; \text{convexity and YTM of}\; \text{from\_date} \;\text{and} \;\Delta y = \text{Yield Change}
 $$
 
 $$
-\text{Realised Price Change} = \operatorname{Price}(\text{date}) / \operatorname{Price}(\text{from\_date}) - 1,\;\; \text{on the clean FedInvest prices}
+\text{Realised Price Change} = \frac{\operatorname{Price}(\text{date})}{\operatorname{Price}(\text{from\_date})} - 1,\;\; \text{on the clean FedInvest prices}
 $$
 
 The Taylor estimate holds the time to maturity fixed, while the realised change also includes the pull of the price towards par over the period and is measured on the clean price, so the two differ slightly even for a small yield change; over a few days the difference is mostly the approximation itself. Only Treasuries have prices on earlier days, so other bonds are left out.
@@ -725,15 +725,15 @@ Calculates the bond-equivalent yield (BEY) of every Treasury bill from its price
 The formula is as follows:
 
 $$
-\text{Discount Yield} = (100 - \text{Price}) / 100 \cdot 360 / \text{Days to Maturity}
+\text{Discount Yield} = \frac{\frac{100 - \text{Price}}{100} \cdot 360}{\text{Days to Maturity}}
 $$
 
 $$
-\text{BEY} = 365 \cdot \text{Discount Yield} / (360 - \text{Days to Maturity} \cdot \text{Discount Yield}),\;\; \text{for 182.5 days or less}
+\text{BEY} = \frac{365 \cdot \text{Discount Yield}}{360 - \text{Days to Maturity} \cdot \text{Discount Yield}},\;\; \text{for 182.5 days or less}
 $$
 
 $$
-\text{BEY} = (- 2t + 2 \cdot \sqrt{t ^{2} - (2t - 1) \cdot (1 - 100 / \text{Price})}) / (2t - 1),\;\; \text{with}\; t = \text{Days to Maturity} / 365,\;\; \text{for more than 182.5 days}
+\text{BEY} = \frac{- 2t + 2 \cdot \sqrt{t^{2} - (2t - 1) \cdot \left(1 - \frac{100}{\text{Price}}\right)}}{2t - 1},\;\; \text{with}\;\; t = \frac{\text{Days to Maturity}}{365},\;\; \text{for more than 182.5 days}
 $$
 
 A bill with half a year or less remaining takes the simple restatement onto the purchase price and a 365-day year. Beyond that an equivalent coupon-bearing note would have paid a coupon at the six month point, so the U.S. Treasury's semi-annually compounded solution (31 CFR 356, Appendix B) is used instead. Applying the simple formula to a 52-week bill instead overstates its yield by roughly seven basis points.
@@ -798,7 +798,7 @@ Calculates the implied forward rates between pairs of maturities of a country's 
 The formula is as follows:
 
 $$
-\text{Forward Rate} = ((1 + r_{2}) ^{t_{2}} / (1 + r_{1}) ^{t_{1}}) ^{1 / (t_{2} - t_{1})} - 1
+\text{Forward Rate} = \left(\frac{(1 + r_{2})^{t_{2}}}{(1 + r_{1})^{t_{1}}}\right)^{\frac{1}{t_{2} - t_{1}}} - 1
 $$
 
 where:
@@ -876,11 +876,11 @@ The government bond yield curve quotes par yields at its own maturities; this gi
 The formula is as follows:
 
 $$
-\operatorname{DF}(t) = 1 / (1 + \text{Spot Rate} (t / \text{Frequency}) / \text{Frequency}) ^{t},\;\; \text{the discount factor of a cash flow after t coupon periods}
+\operatorname{DF}(t) = \frac{1}{\left(1 + \frac{\text{Spot Rate}\left(\frac{t}{\text{Frequency}}\right)}{\text{Frequency}}\right)^{t}},\;\; \text{the discount factor of a cash flow after } t \text{ coupon periods}
 $$
 
 $$
-\text{Par Yield} = \text{Frequency} \cdot (1 - \operatorname{DF}(t_{n})) / (\operatorname{SUM}(\operatorname{DF}(t_{i})) - a),\;\; \text{over} \;\; \text{the remaining coupons}\; i = 1,\;\; \text{...},\;\; \text{n}
+\text{Par Yield} = \frac{\text{Frequency} \cdot (1 - \operatorname{DF}(t_{n}))}{\sum(\operatorname{DF}(t_{i})) - a},\;\; \text{over}\;\; \text{the remaining coupons}\; i = 1,\; \ldots,\; n
 $$
 
 where Spot Rate(τ) is the zero-coupon rate of `get_zero_coupon_curve` at $$\tau$$ years, restated from annual compounding to the country's coupon frequency (twice a year, once for Sweden and Norway) and interpolated linearly, a is the elapsed fraction of the current coupon period (0 on a coupon date) and $$t_{i} = i - a$$ is the time of the i-th coupon in periods. The par yield is a nominal annual coupon rate paid at the coupon frequency, like the government bond yield curve. For a curve of your own, use `yieldcurve_model.get_par_yield`.
@@ -1440,11 +1440,11 @@ Which returns:
 Calibrates the Vasicek and Cox-Ingersoll-Ross (CIR) short-rate models to the history of a country's short-term government bond yield and compares the zero-coupon curve each model implies with today's. Short-rate models describe how the interest rate moves, pulled back to a long-run mean b at a speed a with a volatility $$\sigma$$:
 
 $$
-\text{Vasicek (1977):}\;\; \text{dr} = a (b - r) \text{dt} + \sigma \;\text{dW}
+\text{Vasicek (1977):}\;\; \,\mathrm{d}r = a (b - r) \,\mathrm{d}t + \sigma \,\mathrm{d}W
 $$
 
 $$
-\text{CIR (1985):}\;\; \text{dr} = a (b - r) \text{dt} + \sigma \;\text{sqrt} (r) \text{dW}
+\text{CIR (1985):}\;\; \,\mathrm{d}r = a (b - r) \,\mathrm{d}t + \sigma \sqrt{r} \,\mathrm{d}W
 $$
 
 In CIR the volatility shrinks as the rate approaches zero, so the rate stays positive when $$2 ab \geq \sigma^{2}$$ (the Feller condition) and can otherwise touch zero; in Vasicek it can turn negative. The models describe a continuously compounded short rate, so the yields are converted to continuous compounding first (US bill yields from their bond-equivalent quote). Both give bond prices, and so a full zero-coupon curve, in closed form. The parameters are estimated by regressing the change of the rate on its level over the period (CIR on the changes scaled by the square root of the rate, which needs a rate above zero throughout). The half-life is the time it takes to close half the gap to the long-run mean, ln(2) / a.
@@ -1645,15 +1645,15 @@ Individual bond prices are not published for free, but bond ETFs publish their h
 The formula is as follows:
 
 $$
-\text{Price} = \text{Market Value} / \text{Par Amount} \cdot 100 (a \;\text{clean price per}\; 100 \;\text{of par})
+\text{Price} = \frac{\text{Market Value}}{\text{Par Amount}} \cdot 100 \;(\text{a clean price per 100 of par})
 $$
 
 $$
-\text{Yield to Maturity:}\;\; \text{the rate y at which the coupons and principal},\;\; \text{discounted at} (1 + y / 2) \text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
+\text{Yield to Maturity:}\;\; \text{the rate } y \text{ at which the coupons and principal},\;\; \text{discounted at} \;\left(1 + \frac{y}{2}\right) \;\text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
 $$
 
 $$
-\text{Modified Duration} = \text{Macaulay Duration} / (1 + y / 2) (\text{see}\; \text{get\_duration})
+\text{Modified Duration} = \frac{\text{Macaulay Duration}}{1 + \frac{y}{2}} \;(\text{see} \;\text{get\_duration})
 $$
 
 $$
@@ -1745,7 +1745,7 @@ Compares the credit spreads of bond issuers at the same maturities: the G-Spread
 The formula is as follows:
 
 $$
-\text{Spread} (\text{issuer},\; T) = s(a) + (s(b) - s(a)) \cdot (T - a) / (b - a)
+\text{Spread} \;(\text{issuer},\; T) = s(a) + \frac{(s(b) - s(a)) \cdot (T - a)}{b - a}
 $$
 
 Where a and b are the years to maturity of the issuer's bonds closest below and above T and s their G-Spreads (see `get_bond_universe`). Bonds of the same maturity count with their average spread, and a maturity outside the range of the issuer's bonds has no spread, as a spread curve is not extrapolated.
@@ -1813,15 +1813,15 @@ Where the Treasury par yield curve gives one yield per constant maturity, this l
 The formula is as follows:
 
 $$
-\text{Notes and bonds:}\;\; \text{Yield to Maturity is the rate y at which the coupons and principal},\;\; \text{discounted at} (1 + y / 2) \text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
+\text{Notes and bonds:}\;\; \text{Yield to Maturity is the rate } y \text{ at which the coupons and principal},\;\; \text{discounted at} \;\left(1 + \frac{y}{2}\right) \;\text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
 $$
 
 $$
-\text{Bills:}\;\; \text{Discount Yield} = (100 - \text{Price}) / 100 \cdot 360 / \text{Days},\;\; \text{restated as the bond-equivalent yield (see get\_bond\_equivalent\_yield)}
+\text{Bills:}\;\; \text{Discount Yield} = \frac{\frac{100 - \text{Price}}{100} \cdot 360}{\text{Days}},\;\; \text{restated as the bond-equivalent yield (see get\_bond\_equivalent\_yield)}
 $$
 
 $$
-\text{Modified Duration} = \text{Macaulay Duration} / (1 + y / 2) (\text{see}\; \text{get\_duration})
+\text{Modified Duration} = \frac{\text{Macaulay Duration}}{1 + \frac{y}{2}} \;(\text{see} \;\text{get\_duration})
 $$
 
 Coupons are semi-annual and fall on the actual coupon dates, counted back from maturity; the time in the current period is counted in actual days (actual/actual, the Treasury convention). Yields are nominal annual rates compounded twice a year (bond-equivalent), as the Treasury quotes them. For TIPS the price is per 100 of inflation-adjusted principal, so the yield is the real yield. Floating rate notes reset their coupon every week, so they have a price but no yield or duration.
@@ -2207,7 +2207,7 @@ Unlike the ICE BofA option-adjusted spreads (see `get_ice_bofa_option_adjusted_s
 The formula is as follows:
 
 $$
-\text{HQM Spread} (\text{maturity}) = \text{HQM Corporate Par Yield} (\text{maturity}) - \text{Treasury Constant Maturity Yield} (\text{maturity}),\;\; \text{both monthly averages},\;\; \text{for 2},\;\; \text{5},\;\; \text{10 and 30 years}
+\text{HQM Spread} \;(\text{maturity}) = \text{HQM Corporate Par Yield} \;(\text{maturity}) - \text{Treasury Constant Maturity Yield} \;(\text{maturity}),\;\; \text{both monthly averages, for 2, 5, 10 and 30 years}
 $$
 
 Without a FRED API key both legs come from the Treasury, the HQM par yields from its HQM files and the Treasury yields as the monthly averages of its daily par yield curve, rounded to two decimals in percent as the Federal Reserve's H.15 release publishes them. That curve starts in 1990 and has no 30-year yield from February 2002 to February 2006, so the spread without a FRED API key starts in 1990 and leaves those 30-year months empty. When a FRED API key is set (see the `fred_api_key` parameter of the `FixedIncome` class), the Treasury yields are FRED's constant maturity series, from 1984. The spreads are returned as decimal fractions (0.0079 for 0.79 percentage points).
@@ -2332,7 +2332,7 @@ By default the matrix is withdrawal-adjusted, the convention of the agencies' ow
 The formula is as follows (probabilities=True, the default):
 
 $$
-\text{Transition Probability} (\text{from},\; \text{to}) = \text{Count} (\text{from},\; \text{to}) / \operatorname{SUM}(\text{Count} (\text{from},\; \text{every end category})),\;\; \text{with the end categories the ratings and default},\;\; \text{plus "Withdrawals" only when include\_withdrawals=True}
+\text{Transition Probability} \;(\text{from},\; \text{to}) = \frac{\text{Count} \;(\text{from},\; \text{to})}{\sum(\text{Count} \;(\text{from},\; \text{every end category}))},\;\; \text{with the end categories the ratings and default, plus "Withdrawals" only when include\_withdrawals=True}
 $$
 
 A single year's matrix rests on few observations in the top and bottom rows: an AAA row with few issuers is often 100% stable one year and shows a downgrade the next. Credit models therefore use the average over many years, or a longer horizon, and check how far the latest year deviates from it, which also shows where in the credit cycle the year stands.
@@ -2762,11 +2762,11 @@ Retrieves the symmetric adjustment of the equity capital charge of Solvency II, 
 The formula is as follows:
 
 $$
-\text{Type}\; 1 \;\text{Equity Charge} = 0.39 + \text{Symmetric Adjustment},\;\; \text{for equities listed in the EEA or OECD}
+\text{Type 1 Equity Charge} = 0.39 + \text{Symmetric Adjustment},\;\; \text{for equities listed in the EEA or OECD}
 $$
 
 $$
-\text{Type}\; 2 \;\text{Equity Charge} = 0.49 + \text{Symmetric Adjustment},\;\; \text{for other equities Every value is a decimal fraction (0.0771 for 7.71\%). Weekly and monthly periods take the value on the last day of each period},\;\; \text{which is the value insurers apply at that reporting date}
+\text{Type 2 Equity Charge} = 0.49 + \text{Symmetric Adjustment},\;\; \text{for other equities Every value is a decimal fraction (0.0771 for 7.71\%)}.\;\; \text{Weekly and monthly periods take the value on the last day of each period, which is the value insurers apply at that reporting date}
 $$
 
 **See definition:** [https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en](https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en){:target="_blank"}
@@ -3198,7 +3198,7 @@ Calculates the monthly payment of a new 30-year fixed-rate mortgage at every wee
 The loan is an annuity, repaid in equal payments. The formula is as follows:
 
 $$
-\text{Payment} = L \cdot r / (1 - (1 + r) ^{-n}),\;\; \text{or}\; L / n \;\text{when}\; r \;\text{is zero}
+\text{Payment} = \frac{L \cdot r}{1 - (1 + r)^{-n}},\;\; \text{or}\;\; \frac{L}{n} \;\text{when}\; r \;\text{is zero}
 $$
 
 $$
@@ -3216,7 +3216,7 @@ L = \text{Principal},\;\; \text{the amount borrowed}
 $$
 
 $$
-r = \text{Rate} / \text{payments per year},\;\; \text{the rate per payment}
+r = \frac{\text{Rate}}{\text{payments per year}},\;\; \text{the rate per payment}
 $$
 
 $$
@@ -3271,11 +3271,11 @@ Calculates the loan a fixed monthly payment carries at every weekly US mortgage 
 The loan is an annuity, repaid in equal payments. The formula is as follows:
 
 $$
-\text{Affordable Loan} = P \cdot (1 - (1 + r) ^{-n}) / r,\;\; \text{or}\; P \cdot n \;\text{when}\; r \;\text{is zero}
+\text{Affordable Loan} = \frac{P \cdot (1 - (1 + r)^{-n})}{r},\;\; \text{or}\;\; P \cdot n \;\text{when}\; r \;\text{is zero}
 $$
 
 $$
-\text{Change} = \text{Affordable Loan} / \text{Affordable Loan} (\text{first date}) - 1
+\text{Change} = \frac{\text{Affordable Loan}}{\text{Affordable Loan}(\text{first date})} - 1
 $$
 
 Where:
@@ -3285,7 +3285,7 @@ P = \text{Payment per period}
 $$
 
 $$
-r = \text{Rate} / \text{payments per year},\;\; \text{the rate per payment}
+r = \frac{\text{Rate}}{\text{payments per year}},\;\; \text{the rate per payment}
 $$
 
 $$
@@ -3350,7 +3350,7 @@ $$
 $$
 
 $$
-\operatorname{Balance}(k) = \operatorname{Balance}(k - 1) - \operatorname{Principal}(k),\;\; \text{with Balance} (0) = L
+\operatorname{Balance}(k) = \operatorname{Balance}(k - 1) - \operatorname{Principal}(k),\;\; \text{with}\;\; \operatorname{Balance}(0) = L
 $$
 
 Where L is the principal, r = Rate / payments per year the rate per payment and Payment the annuity payment of `get_loan_payment`. US mortgage rates are quoted as a nominal annual rate compounded monthly. The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey on the date (the last survey on or before it), from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_amortization_schedule`.
