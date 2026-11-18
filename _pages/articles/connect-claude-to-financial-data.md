@@ -2,7 +2,7 @@
 title: How to Connect Claude to Live Financial Data for Stock Analysis
 seo_title: "Connect Claude to Live Financial Data"
 date: 2026-09-11
-last_modified_at: 2026-10-05
+last_modified_at: 2026-11-18
 permalink: /articles/connect-claude-to-financial-data
 excerpt: "Claude cannot see today's prices or the latest financial statements on its own. With the free, hosted Finance Toolkit MCP server you connect Claude Desktop, claude.ai or Claude Code to live financial data and 500+ analysis methods in about a minute, no installation required."
 description: "Connect Claude to live financial data in a minute with the free Finance Toolkit MCP server: stock analysis, ratios, technical indicators and macro data."
@@ -12,6 +12,11 @@ author_profile: false
 collection: article
 tags: [MCP Server]
 share: true
+standfirst: "Asked for a return on invested capital from memory, a language model tends to give a plausible-sounding mistake. What does it take to make Claude calculate the number instead?"
+key_points:
+  - "One URL connects Claude Desktop, claude.ai or Claude Code to 500+ financial methods in a minute, with nothing to install."
+  - "Ten worked questions show what comes back, such as Apple's return on invested capital of 70.38% in 2025 against 30.64% for Microsoft."
+  - "FMP's free plan allows 250 requests a day and five years of US data, so a broad screen can use it up quickly."
 image: /assets/images/projects/FinanceToolkitMCP.jpg
 cover:
   image: /assets/images/articles/connect-claude-to-financial-data/cover.jpg
@@ -77,7 +82,7 @@ Restart Claude Code and the tools are available; the first tool call triggers th
 
 ## What You Can Ask
 
-You never have to name a tool or an indicator: ask in plain English and Claude picks the right one. Below are ten real questions, each answered through the server with data up to October 2, 2026. **The question is what you type, the chart is what comes back.** Paste any of them into Claude as they are, or swap in your own tickers.
+You never have to name a tool or an indicator: ask in plain English and Claude picks the right one. Below are ten real questions, each answered through the server with data up to October 2, 2026. **The question is what you type, the chart is what comes back.** Paste any of them into Claude as they are, or swap in your own tickers (the guide to [finding stocks and ETFs with Claude](/articles/find-stocks-and-etfs-with-claude) shows how to get a list of them).
 
 <div class="ca-nav">
   <a href="#apple-or-microsoft"><i class="fas fa-building" aria-hidden="true"></i>Apple or Microsoft</a>
@@ -96,9 +101,11 @@ You never have to name a tool or an indicator: ask in plain English and Claude p
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compare the gross, operating and net margins of Apple and Microsoft over the last five years. Which one is more profitable?<span class="ca-q__tool">Finance Toolkit MCP · profitability</span></p></div>
 
+Microsoft's margins stay above Apple's by a wide and steady gap:
+
 {% include ft-chart.html id="claude-margins" src="/assets/data/article-charts.json" label="Margins of Apple and Microsoft" %}
 
-On margins the answer is Microsoft, by a wide and steady gap. Without being asked, Claude then checks capital efficiency, and that points the other way: Apple's return on invested capital was 70.38% in 2025 against 30.64% for Microsoft.
+So on margins the answer is Microsoft. Without being asked, Claude then checks capital efficiency, and that points the other way: Apple's return on invested capital was 70.38% in 2025 against 30.64% for Microsoft.
 
 <div class="ca-take"><p>Microsoft earns more per dollar of revenue; Apple earns more per dollar of capital. A single headline number would hide that.</p></div>
 
@@ -107,6 +114,8 @@ On margins the answer is Microsoft, by a wide and steady gap. Without being aske
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Run a DuPont analysis on Coca-Cola and PepsiCo and explain what drives the difference in return on equity.<span class="ca-q__tool">Finance Toolkit MCP · models · DuPont analysis</span></p></div>
 
 <div class="ca-nums"><span><b>43.2% vs 42.6%</b>ROE 2025</span><span><b>27% vs 9%</b>net margin</span><span><b>0.47 vs 0.91</b>asset turnover</span></div>
+
+Return on equity is almost the same for both, and the DuPont components behind it are far apart:
 
 {% include ft-chart.html id="claude-dupont" src="/assets/data/article-charts.json" label="DuPont analysis of Coca-Cola and PepsiCo" %}
 
@@ -122,7 +131,7 @@ A DCF is only as good as its growth assumption, so Claude runs it at four growth
 
 {% include ft-chart.html id="claude-dcf" src="/assets/data/article-charts.json" label="Nvidia DCF value per share at different growth rates" %}
 
-<div class="ca-take"><p>The share price of $233.95 only fits with roughly 40% annual cash flow growth for five years. The question is whether you believe that, not whether the stock is cheap.</p></div>
+<div class="ca-take"><p>The share price of $233.95 only fits with roughly 40% annual cash flow growth for five years. So the question is whether you believe that growth rate.</p></div>
 
 ### Which carmaker is in the weakest financial position? {#carmakers-financial-health}
 
@@ -130,9 +139,11 @@ A DCF is only as good as its growth assumption, so Claude runs it at four growth
 
 <div class="ca-nums"><span><b>0.79</b>Ford Z-Score</span><span><b>1.25</b>GM Z-Score</span><span><b>0.86</b>Stellantis Z-Score</span><span><b>2 / 9</b>Stellantis Piotroski</span></div>
 
+All three carmakers ended 2025 below 1.8, the classic distress threshold for the Z-Score:
+
 {% include ft-chart.html id="claude-distress" src="/assets/data/article-charts.json" label="Altman Z-Score and Piotroski F-Score of Ford, GM and Stellantis" %}
 
-All three ended 2025 below 1.8, the classic distress threshold. Stellantis moved the most, from 2.27 in 2023 as its operating result turned negative. A good answer adds the caveat: Ford and GM run large car-finance arms whose loan books inflate liabilities and push the score down structurally.
+Stellantis moved the most, from 2.27 in 2023, when its operating result turned negative. A good answer adds the caveat: Ford and GM run large car-finance arms whose loan books inflate liabilities and push the score down structurally.
 
 <div class="ca-take"><p>Read the trend within each company, not the gap between them. Stellantis is the one that deteriorated.</p></div>
 
@@ -142,9 +153,11 @@ All three ended 2025 below 1.8, the classic distress threshold. Stellantis moved
 
 <div class="ca-nums"><span><b>71.4</b>AMD</span><span><b>71.6</b>TSMC</span><span><b>61.3</b>Nvidia</span><span><b>62.6</b>ASML</span></div>
 
+Watch AMD's line, which stayed above the usual overbought line of 70 for most of April to July:
+
 {% include ft-chart.html id="claude-rsi" src="/assets/data/article-charts.json" label="Weekly RSI of NVDA, AMD, TSM and ASML in 2026" %}
 
-AMD was the outlier of the year, above 70 for most of April to July with a peak of 84.6 in May. Nvidia never reached overbought territory in 2026 and touched 38.3 in March.
+That made AMD the outlier of the year, with a peak of 84.6 in May. Nvidia never reached overbought territory in 2026 and touched 38.3 in March.
 
 <div class="ca-take"><p>AMD and TSMC are back above 70; Nvidia and ASML are not. An RSI above 70 says the move was strong, not that it must reverse.</p></div>
 
@@ -154,9 +167,11 @@ AMD was the outlier of the year, above 70 for most of April to July with a peak 
 
 <div class="ca-nums"><span><b>April 9</b>death cross</span><span><b>$347.58</b>50-day average</span><span><b>$393.18</b>200-day average</span></div>
 
+The crossing to look for is in April, when the short average fell below the long one:
+
 {% include ft-chart.html id="claude-tesla" src="/assets/data/article-charts.json" label="Tesla with its 10-week and 40-week moving averages" %}
 
-The 50-day average fell below the 200-day on April 9, 2026, and there has been no golden cross since. The gap kept widening after the July drop to around $311; the price has recovered to about $371, above the short average but still below the long one.
+That death cross came on April 9, 2026, and there has been no golden cross since. The gap kept widening after the July drop to around $311. The price has recovered to about $371, above the short average but still below the long one.
 
 <div class="ca-take"><p>A death cross in April, and the trend has not turned since.</p></div>
 
@@ -166,15 +181,19 @@ The 50-day average fell below the 200-day on April 9, 2026, and there has been n
 
 <div class="ca-nums"><span><b>+168%</b>Meta alpha 2023</span><span><b>+48%</b>Alphabet alpha 2025</span><span><b>1.03</b>Alphabet beta 2025</span></div>
 
+All three did badly on every measure in 2022, and the lead changed hands in the years after:
+
 {% include ft-chart.html id="claude-performance" src="/assets/data/article-charts.json" label="Sharpe ratio, Sortino ratio, beta and alpha of Amazon, Alphabet and Meta" %}
 
-2022 was bad for all three on every measure. 2023 belonged to Meta after its "year of efficiency", 2025 to Alphabet, with the market's best alpha of the three and the lowest beta. The Sharpe and Sortino ratios are calculated within each year, so compare them with each other rather than with annualised figures elsewhere.
+Meta led in 2023, after its "year of efficiency", and Alphabet in 2025, with the best alpha of the three and the lowest beta. The Sharpe and Sortino ratios are calculated within each year, so compare them with each other rather than with annualised figures elsewhere.
 
 <div class="ca-take"><p>No single winner: leadership rotated from Meta in 2023 to Alphabet in 2025.</p></div>
 
 ### How much downside risk do Berkshire Hathaway, Visa and Costco carry? {#downside-risk}
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>What is the 95% Value at Risk and the maximum drawdown of Berkshire Hathaway, Visa and Costco since 2020?<span class="ca-q__tool">Finance Toolkit MCP · risk · VaR, CVaR, maximum drawdown</span></p></div>
+
+Berkshire looks safest on daily risk, but not on the worst fall since 2020:
 
 {% include ft-chart.html id="claude-risk" src="/assets/data/article-charts.json" label="Value at Risk, CVaR and maximum drawdown of Berkshire Hathaway, Visa and Costco" %}
 
@@ -186,9 +205,11 @@ Berkshire has the calmest days, with a daily VaR of −1.83%, close to the S&P 5
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Show me the unemployment rate for the United States, Germany and Japan since 2010.<span class="ca-q__tool">Finance Toolkit MCP · jobs · unemployment rate</span></p></div>
 
+The US line swings the most, while Germany's barely moves, even in 2020:
+
 {% include ft-chart.html id="claude-unemployment" src="/assets/data/article-charts.json" label="Unemployment rate of the United States, Germany and Japan since 2010" %}
 
-The US went from 9.6% in 2010 to 3.7% in 2019, jumped to 8.1% in 2020 and was back at 3.6% two years later; it has loosened to 4.4% since. Japan has been flat at about 2.5% for years.
+US unemployment fell from 9.6% in 2010 to 3.7% in 2019, jumped to 8.1% in 2020 and was back at 3.6% two years later. It has risen to 4.4% since, while Japan has been flat at about 2.5% for years.
 
 <div class="ca-take"><p>Germany barely moved in 2020 (3.6%): its short-time work scheme kept people employed while hours were cut.</p></div>
 
@@ -198,9 +219,11 @@ The US went from 9.6% in 2010 to 3.7% in 2019, jumped to 8.1% in 2020 and was ba
 
 <div class="ca-nums"><span><b>8.0%</b>US inflation 2022</span><span><b>6.9%</b>Germany 2022</span><span><b>5.38%</b>Fed rate 2023 avg</span></div>
 
+The Federal Reserve raised rates earlier and further, which shows best in the third tab, the real policy rate:
+
 {% include ft-chart.html id="claude-rates" src="/assets/data/article-charts.json" label="Inflation, policy rates and real policy rates in the US and the Eurozone" %}
 
-The Federal Reserve raised rates earlier and further. The real policy rate, the policy rate minus inflation in the third tab, shows the difference best. Policy rates are annual averages.
+The real policy rate is the policy rate minus inflation, and the policy rates are annual averages.
 
 <div class="ca-take"><p>US policy was restrictive in real terms from 2023; the Eurozone only from 2024, after a real rate of −2.3% in 2023.</p></div>
 

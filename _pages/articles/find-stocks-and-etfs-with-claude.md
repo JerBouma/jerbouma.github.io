@@ -2,7 +2,7 @@
 title: How to Find and Analyze Stocks and ETFs with Claude
 seo_title: "Find and Analyze Stocks and ETFs with Claude"
 date: 2026-10-10
-last_modified_at: 2026-10-13
+last_modified_at: 2026-11-18
 permalink: /articles/find-stocks-and-etfs-with-claude
 redirect_from:
   - /articles/find-stocks-etfs-funds-with-claude
@@ -15,6 +15,11 @@ collection: article
 tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceDatabaseMCP.jpg
+standfirst: "A peer group that sounds right can still be wrong on who trades, how big they are and what they earn. Six questions show what changes when Claude searches a database before it answers."
+key_points:
+  - "The Finance Database MCP server searches 300,000+ stocks, ETFs and indices by name, ISIN, CUSIP or FIGI, with every company in one of 11 sectors, 25 industry groups and 75 industries."
+  - "With the Finance Toolkit server next to it, one question found 12 European drinks makers and showed that Kofola's 31.3% return on equity rests on 5.2 of assets for every unit of equity."
+  - "Claude's free plan allows one custom connector, so connecting both servers takes a paid plan, and the Finance Toolkit server also needs a Financial Modeling Prep key."
 cover:
   image: /assets/images/articles/find-stocks-and-etfs-with-claude/cover.jpg
   alt: "Rows of oak card-catalogue drawers with brass handles."
@@ -23,11 +28,11 @@ cover:
   creator: "MarkBuckawicki"
   license: "https://creativecommons.org/publicdomain/zero/1.0/"
 ---
-Ask an AI assistant for Europe's mid and small-cap drinks makers and you get a list that sounds about right. Look closer and it mixes things up: companies that still trade described as delisted, market caps off by a factor of five or more, micro caps presented as small caps. Language models answer from memory, and memory goes stale over time, which leaves them relying on internet searches instead.
+Ask an AI assistant for Europe's mid and small-cap drinks makers and you get a list that sounds about right. Look closer and it mixes things up: companies that still trade described as delisted, market caps off by a factor of five or more, micro caps presented as small caps. Language models answer from memory, and memory goes stale over time, which leaves them relying on internet searches.
 
 So I gave the assistant my own database instead. The [Finance Database MCP server](/projects/financedatabase/mcp) lets Claude, ChatGPT or Copilot search the [Finance Database](/projects/financedatabase), 300,000+ stocks, ETFs, indices and (crypto)currencies, by name or by ISIN, CUSIP or FIGI. It is free and hosted, and it needs no API key: add one URL as a connector and ask. What makes it useful is the classification. Every company sits in one of 11 sectors, 25 industry groups and 75 industries, and every ETF has a category and an issuer. That turns "Europe's mid and small-cap drinks makers" into one filter instead of a guess.
 
-It pairs well with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp): the Finance Database finds the peer group, the Finance Toolkit analyzes it, with ratios and what drives them, valuations, correlations, drawdowns and currency effects. For the drinks makers that turns a list into an answer: Kofola, a Czech soft drinks maker few investors outside Central Europe follow, earns the highest return on equity in the group, mostly with debt, while Rémy Cointreau lost 69% since 2021. This article connects both servers in a few minutes and works through six questions that do exactly that, search first and analysis second.
+It pairs well with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp): the Finance Database finds the peer group, the Finance Toolkit analyzes it, with ratios and what drives them, valuations, correlations, drawdowns and currency effects. For the drinks makers that turns a list into an answer: Kofola, a Czech soft drinks maker few investors outside Central Europe follow, earns the highest return on equity in the group, mostly with debt, and the shares of Rémy Cointreau have lost 69% since 2021. This article connects both servers in a few minutes and works through six questions that do exactly that, search first and analysis second.
 
 <div class="ca-strip">
   <div><strong>2 connectors</strong><span>one to find, one to analyze, in the same conversation</span></div>
@@ -77,7 +82,7 @@ The Finance Database server follows the database itself, which is updated every 
 
 ## What You Can Ask
 
-Below are six real questions, answered through both servers on October 12, 2026, with prices up to October 9. None of them is a lookup. Each starts with a search in the Finance Database that builds the group, and continues with several Finance Toolkit calculations on it. The insight comes from the combination: a model working from memory can name a few drinks makers, but it cannot tell you which one earns its return on equity with debt, or that long-dated Treasuries started moving with stocks in 2022. Paste any question into Claude as it is, or swap in your own country, sector or issuer.
+Below are six real questions, answered through both servers on October 12, 2026, with prices up to October 9. None of them is a lookup. Each starts with a search in the Finance Database that builds the group, and continues with several Finance Toolkit calculations on it. A model working from memory can name a few drinks makers, but it cannot tell you which one earns its return on equity with debt, or that long-dated Treasuries started moving with stocks in 2022. Paste any question into Claude as it is, or swap in your own country, sector or issuer.
 
 <div class="ca-nav">
   <a href="#drinks-makers"><i class="fas fa-wine-glass" aria-hidden="true"></i>Drinks makers</a>
@@ -101,7 +106,7 @@ Below are six real questions, answered through both servers on October 12, 2026,
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-drinks-value" src="/assets/data/article-charts.json" label="Operating margin against EV/EBITDA" %}</div>
 <div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-drinks-market" src="/assets/data/article-charts.json" label="Net debt to EBITDA, total return and maximum drawdown since 2021" %}</div>
 </div>
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Kofola, a Czech soft drinks maker, has the highest return on equity in the group at 31.3%, but it comes from its balance sheet, not its margins: it carries 5.2 of assets for every unit of equity, more than any other company here, on a net margin of only 6.3%. Without the leverage, the strongest businesses are Malteries Franco-Belges (a 27.9% net margin and net cash) and Laurent-Perrier (the best operating margin at 25.3%, at 8.2 times EBITDA, among the lowest valuations in the group). The famous names did worst for shareholders: since January 2021, Rémy Cointreau lost 69% and Fever-Tree 62%, dividends included, while Kofola returned 177%.</p></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Kofola, a Czech soft drinks maker, has the highest return on equity in the group at 31.3%, and most of it comes from its balance sheet: it carries 5.2 of assets for every unit of equity, more than any other company here, on a net margin of only 6.3%. Without the leverage, the strongest businesses are Malteries Franco-Belges (a 27.9% net margin and net cash) and Laurent-Perrier (the best operating margin at 25.3%, at 8.2 times EBITDA, among the lowest valuations in the group). The famous names did worst for shareholders: since January 2021, Rémy Cointreau lost 69% and Fever-Tree 62%, dividends included, while Kofola returned 177%.</p></div>
 <div class="ca-nums"><span><b>31.3%</b>Kofola return on equity</span><span><b>5.2x</b>Kofola equity multiplier, the highest</span><span><b>+177% vs −69%</b>Kofola vs Rémy Cointreau since 2021</span></div>
 </div>
 
@@ -135,7 +140,7 @@ Below are six real questions, answered through both servers on October 12, 2026,
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-treas-years" src="/assets/data/article-charts.json" label="Calendar-year returns of Vanguard's Treasury ETFs and VOO" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-treas-risk" src="/assets/data/article-charts.json" label="Annual return against volatility since 2020" %}</div>
 </div>
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Long Treasuries stopped working as a hedge. From 2014 to 2021, all four funds moved against the S&amp;P 500 in a typical week, with correlations between −0.20 and −0.38. Since 2022 they move with it, at +0.14 to +0.16. In 2022 the extended-duration EDV lost 39.2% in the same year the S&amp;P 500 lost 18.2%, and it has not come back: since 2020 it lost 8.5% a year, with more volatility (20.4%) than the S&amp;P 500 itself (18.8%). Only the short-term VGSH earned a real return since 2020, 1.8% a year; the intermediate VGIT made 0.5%.</p></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Long Treasuries stopped working as a hedge. From 2014 to 2021, all four funds moved against the S&amp;P 500 in a typical week, with correlations between −0.20 and −0.38. Since 2022 they move with it, at +0.14 to +0.16. In 2022 the extended-duration EDV lost 39.2% in the same year the S&amp;P 500 lost 18.2%, and it has not come back: since 2020 it lost 8.5% a year, with more volatility (20.4%) than the S&amp;P 500 itself (18.8%). Since 2020 the short-term VGSH earned 1.8% a year and the intermediate VGIT 0.5%, both before inflation.</p></div>
 <div class="ca-nums"><span><b>−0.38 → +0.14</b>VGSH correlation with stocks</span><span><b>−39.2%</b>EDV in 2022</span><span><b>20.4% vs 18.8%</b>volatility, EDV vs S&amp;P 500</span></div>
 </div>
 
@@ -151,7 +156,7 @@ Below are six real questions, answered through both servers on October 12, 2026,
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-uranium-years" src="/assets/data/article-charts.json" label="Calendar-year returns of uranium ETFs" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-uranium-risk" src="/assets/data/article-charts.json" label="Total return against maximum drawdown of uranium ETFs" %}</div>
 </div>
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>One label, two different bets. The broad funds URA and NLR, which also hold utilities and reactor builders, doubled since February 2023 (+100% and +96%). The pure miner funds lagged, URNM at +45% and the junior miners in URNJ at +15%, and fell further on the way: −51% and −59% at their worst. The gap opened in 2024, when NLR rose 14% and the miner funds lost 14% and 18%. The UCITS twin URNU moved with URA week by week (a correlation of 0.95) but ended ten points behind, at +90%. And Cameco, a single stock, returned 219%, more than any of the funds.</p></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>The label covers two different bets. The broad funds URA and NLR, which also hold utilities and reactor builders, doubled since February 2023 (+100% and +96%). The pure miner funds lagged, URNM at +45% and the junior miners in URNJ at +15%, and fell further on the way: −51% and −59% at their worst. The gap opened in 2024, when NLR rose 14% and the miner funds lost 14% and 18%. The UCITS twin URNU moved with URA week by week (a correlation of 0.95) but ended 10 percentage points behind, at +90%. And Cameco, a single stock, returned 219%, more than any of the funds.</p></div>
 <div class="ca-nums"><span><b>+100% vs +45%</b>URA vs miners fund URNM</span><span><b>0.95</b>URA and UCITS twin URNU</span><span><b>+219%</b>Cameco on its own</span></div>
 </div>
 
@@ -167,7 +172,7 @@ Below are six real questions, answered through both servers on October 12, 2026,
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-apple-dollar" src="/assets/data/article-charts.json" label="The dollar against five currencies since January 2025" %}</div>
 <div class="mcp-show__cell mcp-show__cell--wide">{% include ft-chart.html id="fdb-apple-fx" src="/assets/data/article-charts.json" label="Apple on Nasdaq, Xetra, Buenos Aires and São Paulo since January 2025" %}</div>
 </div>
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>One share, returns from 12% to 92%. In dollars, Apple rose 39.1% since January 2025. On Xetra in euros it rose 25.6%, because the dollar lost 8.0% against the euro; in São Paulo it rose 12.1%, as the dollar lost 19.5% against the real. In Buenos Aires it rose 91.9%, most of it the peso's fall: the dollar rose 47% against it. The two charts side by side explain each other: each listing is roughly Apple's dollar return plus the currency move.</p></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>One share, returns from 12% to 92%. In dollars, Apple rose 39.1% since January 2025. On Xetra in euros it rose 25.6%, because the dollar lost 8.0% against the euro; in São Paulo it rose 12.1%, because the dollar lost 19.5% against the real. In Buenos Aires it rose 91.9%, most of it the peso's fall: the dollar rose 47% against it. The two charts side by side explain each other: each listing is roughly Apple's dollar return plus the currency move.</p></div>
 <div class="ca-nums"><span><b>39.1%</b>in dollars</span><span><b>25.6%</b>in euros on Xetra</span><span><b>91.9%</b>in Argentine pesos</span></div>
 </div>
 
@@ -182,11 +187,11 @@ Below are six real questions, answered through both servers on October 12, 2026,
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-sp500-tr" src="/assets/data/article-charts.json" label="The S&P 500 price, total return and equal-weight versions since 2016" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="fdb-sp500-years" src="/assets/data/article-charts.json" label="Calendar-year returns of the S&P 500 versions" %}</div>
 </div>
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Since January 2016, 100 in the headline index became 388; with dividends reinvested, it became 466. The bigger choice was the weighting. The equal-weight index, which gives each of the 500 companies the same weight, reached 280, or 337 with dividends through the RSP fund. Equal weight beat the index in 2016, 2021 and 2022, then trailed the total return version by 7 to 13 points a year from 2023 to 2025, as a handful of large companies carried the index.</p></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Since January 2016, 100 in the headline index became 388; with dividends reinvested, it became 466. The bigger choice was the weighting. The equal-weight index, which gives each of the 500 companies the same weight, reached 280, or 337 with dividends through the RSP fund. Equal weight beat the index in 2016, 2021 and 2022, then trailed the total return version by 7 to 13 percentage points a year from 2023 to 2025, the years in which a handful of large companies carried the index.</p></div>
 <div class="ca-nums"><span><b>466 vs 388</b>with and without dividends</span><span><b>337</b>equal weight, with dividends</span><span><b>−12.6 points</b>equal weight vs index, 2023</span></div>
 </div>
 
-Every list comes from the open [Finance Database](/projects/financedatabase) and every number from a documented [Finance Toolkit](/projects/financetoolkit/docs) method, so you can check both. The Finance Toolkit server answers many more questions on its own, from valuation models to macro data, in [How to Connect Claude to Live Financial Data for Stock Analysis](/articles/connect-claude-to-financial-data).
+Every list comes from the open [Finance Database](/projects/financedatabase) and every number from a documented [Finance Toolkit](/projects/financetoolkit/docs) method, so you can check both. The US chipmakers get an article of their own in [how NVIDIA overtook Intel](/articles/semiconductor-sector-analysis-finance-toolkit), which follows six of them from 2010 to 2025. The Finance Toolkit server answers many more questions on its own, from valuation models to macro data, in [How to Connect Claude to Live Financial Data for Stock Analysis](/articles/connect-claude-to-financial-data).
 
 <div class="article-cta">
   <p class="article-cta__title">Ask your own questions</p>

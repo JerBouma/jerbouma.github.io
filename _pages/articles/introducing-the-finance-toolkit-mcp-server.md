@@ -1,7 +1,7 @@
 ---
 title: Introducing the Finance Toolkit MCP Server
 date: 2026-06-12
-last_modified_at: 2026-10-14
+last_modified_at: 2026-11-18
 permalink: /articles/introducing-the-finance-toolkit-mcp-server
 excerpt: "The Finance Toolkit MCP server gives Claude, ChatGPT and other AI assistants 500+ documented financial calculations at one hosted URL. Four worked questions show what comes back: semiconductor valuations, European sectors through the 2020 crash, Fama-French factors in South America and Asia's investment cycle."
 description: "The free, hosted Finance Toolkit MCP server gives Claude, ChatGPT and other AI assistants 500+ auditable methods: ratios, risk, factor models and macro data."
@@ -11,6 +11,11 @@ author_profile: false
 collection: article
 tags: [MCP Server]
 share: true
+standfirst: "Five data providers gave five different P/E ratios for Microsoft on the same day. What changes when an AI assistant calculates the number from documented code instead of recalling one?"
+key_points:
+  - "The hosted server puts 500+ Finance Toolkit methods behind 22 tools plus three search tools, at one URL with nothing to install."
+  - "Four worked questions cover nine chipmakers, seven European sector ETFs, 48 Fama-French regressions and six Asian economies, with every tool call listed."
+  - "The free FMP plan covers five years of history and 250 requests a day, so the 2015 start of the chip comparison needs a paid plan."
 cover:
   image: /assets/images/articles/introducing-the-finance-toolkit-mcp-server/cover.jpg
   alt: "A nineteenth-century brass arithmometer in a wooden case, with rows of setting slides and result dials."
@@ -19,7 +24,7 @@ cover:
   creator: "Daderot"
   license: "https://creativecommons.org/publicdomain/zero/1.0/"
 ---
-On the 6th of May, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.93 by Stockopedia, 32.05 by Morningstar, 32.66 by Macrotrends, 33.67 by the Wall Street Journal, and 34.4 by Companies Market Cap. Every one of those numbers is "correct." They just use different definitions of earnings, different share counts and different rounding. None of the providers publish the formula, so there is no way to know which one matches the calculation you actually want. Ask an AI assistant for the same number and it inherits the problem: it picks one of those figures from a web search, or recalls one from its training data, and when it finds nothing it may produce a plausible-looking number of its own.
+On May 6, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.93 by Stockopedia, 32.05 by Morningstar, 32.66 by Macrotrends, 33.67 by the Wall Street Journal, and 34.4 by Companies Market Cap. Every one of those numbers is "correct." They just use different definitions of earnings, different share counts and different rounding. None of the providers publish the formula, so there is no way to know which one matches the calculation you actually want. Ask an AI assistant for the same number and it inherits the problem: it picks one of those figures from a web search, or recalls one from its training data, and when it finds nothing it may produce a plausible-looking number of its own.
 
 That inconsistency is why I built the Finance Toolkit, an open-source Python library where every ratio, indicator and model is plain, readable code you can audit. The Finance Toolkit MCP server puts the same 500+ methods behind the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"}, so Claude, ChatGPT, Copilot, Cursor and other assistants calculate the number instead of recalling it. It is hosted at one URL, so there is nothing to install. This article shows how to connect it and works through four questions, from semiconductor valuations to Asia's investment cycle, with every tool call and result.
 
@@ -102,7 +107,7 @@ Below are four questions an analyst or portfolio manager might ask, each answere
 
 ### Which chipmakers are priced for their growth? {#semiconductors}
 
-Semiconductors are a good test for equity ratios, because growth rates differ wildly between companies that are nominally in the same business. EV/EBITDA compares the value of the whole company, debt included, with its operating cash earnings, which makes it less sensitive to leverage and one-off charges than the P/E.
+Semiconductors are a good test for equity ratios, because growth rates differ widely between companies that are nominally in the same business, as the [shift of revenue from Intel to NVIDIA](/articles/semiconductor-sector-analysis-finance-toolkit) shows. EV/EBITDA compares the value of the whole company, debt included, with its operating cash earnings, which makes it less sensitive to leverage and one-off charges than the P/E.
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compare NVDA, AMD, AVGO, TSM, ASML, AMAT, QCOM, TXN and INTC. How did the shares do since 2015, how fast did earnings grow last year, how profitable are they, and what does the market pay for them?</p></div>
@@ -139,7 +144,7 @@ operating_margin = chips.ratios.get_operating_margin()
 
 ### How did Europe's sectors move through the 2020 crash? {#europe-2020}
 
-Technical indicators work off price data, so they apply to ETFs as well as stocks. The Relative Strength Index (RSI) compares the size of recent gains with recent losses on a scale of 0 to 100: below 30 is conventionally oversold, above 70 overbought. A market shock is the clearest test, so this question looks at seven iShares STOXX Europe 600 sector ETFs listed in Germany: EXV9.DE (Travel & Leisure), EXV1.DE (Banks), EXV4.DE (Health Care), EXI5.DE (Real Estate), EXV3.DE (Technology), EXH9.DE (Utilities) and EXH1.DE (Oil & Gas).
+A market shock is the clearest test of a momentum indicator, so this question looks at seven iShares STOXX Europe 600 sector ETFs listed in Germany: EXV9.DE (Travel & Leisure), EXV1.DE (Banks), EXV4.DE (Health Care), EXI5.DE (Real Estate), EXV3.DE (Technology), EXH9.DE (Utilities) and EXH1.DE (Oil & Gas). The Relative Strength Index (RSI) compares the size of recent gains with recent losses on a scale of 0 to 100: below 30 is conventionally oversold, above 70 overbought. It works off price data only, so it applies to ETFs as well as stocks.
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>How did European sectors move through the 2020 crash and the recovery? Use the weekly RSI of the iShares STOXX Europe 600 sector ETFs, and add their drawdowns and annual returns for 2020 and 2021.</p></div>
@@ -155,7 +160,7 @@ Technical indicators work off price data, so they apply to ETFs as well as stock
 <div class="ca-nums"><span><b>15.4</b>Oil &amp; Gas RSI, March 2020</span><span><b>−55.3%</b>Travel &amp; Leisure maximum drawdown</span><span><b>−26.6% → +39.4%</b>Banks, 2020 to 2021</span></div>
 </div>
 
-A single RSI reading would miss all of this; the regime change only shows up in the full series. The returns are in euros, the currency the ETFs trade in. In Python:
+A single RSI reading would miss all of this, because the regime change only shows up in the full series. The returns are in euros, the currency the ETFs trade in. In Python:
 
 ```python
 from financetoolkit import Toolkit
@@ -213,7 +218,7 @@ fama_french = south_america.performance.get_fama_and_french_model(period="yearly
 
 ### Is Asia's investment boom fading? {#asia-investment}
 
-Macroeconomic data comes from the [Global Macro Database](https://www.globalmacrodata.com/){:target="_blank"} and the [OECD](https://www.oecd.org/en/data/indicators.html){:target="_blank"}, covers 60+ countries and goes back over a century. Investment as a share of GDP is one of the clearest measures of how an economy is building: a high ratio funds factories, housing and infrastructure, and a falling one usually means an economy is maturing or slowing its build-out.
+Investment as a share of GDP shows how much an economy is still building: a high ratio funds factories, housing and infrastructure, and a falling one usually means an economy is maturing or slowing its build-out. The macroeconomic data comes from the [Global Macro Database](https://www.globalmacrodata.com/){:target="_blank"} and the [OECD](https://www.oecd.org/en/data/indicators.html){:target="_blank"}, covers 60+ countries and goes back over a century.
 
 <div class="mcp-show">
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compare investment as a share of GDP in India, Vietnam, Indonesia, China, South Korea and Bangladesh since 2000. How fast are they growing now, and how much of that is inflation?</p></div>
@@ -245,7 +250,7 @@ inflation = economics.get_inflation_rate()
 
 Each of the four answers combines several calculations, and each would be hard to get right from a model's memory: a P/E for the right fiscal year, a weekly RSI through a crash, 48 factor regressions, and a ratio from a macro database. With the server, the assistant decides what to calculate and explains the result, but the numbers come from documented code. If you doubt a figure, the [documentation](/projects/financetoolkit/docs) gives the formula, and the Python lines above reproduce it.
 
-The limits are the usual ones. The data is only as good as the filings and the provider, and fiscal years, currencies and share classes need the care the server's notes point out. The 2015 start of the chip comparison needs a paid FMP plan, since the free plan covers five years. RSI readings, factor loadings and investment ratios describe what happened; they don't forecast it. None of this is investment advice.
+The limits are the usual ones. The data is only as good as the filings and the provider, and fiscal years, currencies and share classes need the care the server's notes point out. The 2015 start of the chip comparison needs a paid FMP plan, since the free plan covers five years. RSI readings, factor loadings and investment ratios describe what happened, and they don't forecast it. None of this is investment advice.
 
 The [MCP server page](/projects/financetoolkit/mcp#example-conversations) has four more worked conversations, and [How to Connect Claude to Live Financial Data](/articles/connect-claude-to-financial-data) has ten shorter questions to try. Problems or ideas for a new tool are welcome as an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}.
 

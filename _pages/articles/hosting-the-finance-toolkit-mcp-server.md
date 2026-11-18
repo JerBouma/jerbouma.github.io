@@ -2,7 +2,7 @@
 title: How I Host the Finance Toolkit MCP Server on a Mini PC
 seo_title: "Self-Hosting an MCP Server on a Mini PC"
 date: 2026-09-28
-last_modified_at: 2026-09-28
+last_modified_at: 2026-11-18
 permalink: /articles/hosting-the-finance-toolkit-mcp-server
 excerpt: "The hosted Finance Toolkit MCP server does not run in a cloud data center. It runs in a small Linux container on a Mini PC at home, managed by Proxmox, with Cloudflare as the only door to the outside world. This article walks through how that setup fits together and why it works well for an MCP server."
 description: "How the free Finance Toolkit MCP server is self-hosted on a Mini PC with Proxmox, an LXC container, Docker and Cloudflare, and what it takes to do the same."
@@ -13,6 +13,11 @@ collection: article
 tags: [MCP Server]
 share: true
 image: /assets/images/projects/FinanceToolkitMCP.jpg
+standfirst: "An MCP server needs little compute and stores no user data, which makes a Mini PC at home good enough. The harder questions are security and uptime on hardware that is not a data center."
+key_points:
+  - "A request passes through four layers, Cloudflare, Proxmox VE, an LXC container and the server on port 8000, and only Cloudflare talks to the internet."
+  - "A tool call takes a few hundred milliseconds of CPU, because the assistant on the user's side does the reasoning and the server only fetches data and runs pandas calculations."
+  - "A power cut or an internet outage at home takes the server down, and anyone who needs guaranteed availability can run the Docker image and have their own copy in a few minutes."
 cover:
   image: /assets/images/articles/hosting-the-finance-toolkit-mcp-server/cover.jpg
   alt: "A row of server racks in a data centre, with green status lights at the end of the aisle."
@@ -29,9 +34,9 @@ That may sound like a hobby setup for a public service, but an MCP server is an 
 
 ## Why Not a Cloud Platform?
 
-Cloud platforms are the obvious choice, and the server would run fine on any of them. For this particular workload, though, running it myself has a few advantages.
+For this workload, running it myself has four advantages over a cloud platform, even though the server would run fine on any of them.
 
-First, the workload is small. The server does not run a language model: the assistant on the user's side does the reasoning, and the server fetches data from [Financial Modeling Prep](/fmp){:target="_blank"} and the OECD and runs pandas calculations on it. That is a few hundred milliseconds of CPU per tool call, which any modern Mini PC handles without noticing.
+First, the workload is small. The server does not run a language model: the assistant on the user's side does the reasoning, and the server fetches data from [Financial Modeling Prep](/fmp){:target="_blank"} and the OECD and runs pandas calculations on it, like the [worked questions in Introducing the Finance Toolkit MCP Server](/articles/introducing-the-finance-toolkit-mcp-server). That is a few hundred milliseconds of CPU per tool call, which any modern Mini PC handles without noticing.
 
 The cost is also predictable. A Mini PC draws only a few watts when idle and already runs other services anyway, whereas a free tool that gets popular on a pay-per-use platform can turn into a bill you did not plan for.
 
@@ -43,7 +48,7 @@ The trade-off is that I am responsible for uptime and security myself. Most of t
 
 ## The Setup at a Glance
 
-A request from an assistant to the server passes through four layers:
+A request from an assistant to the server passes through four layers, and only the first one faces the internet:
 
 | Layer | What it does |
 |:---|:---|
@@ -102,19 +107,21 @@ curl http://localhost:8000/health
 
 ## Proxmox: One Container Per Service
 
-[Proxmox VE](https://www.proxmox.com/en/proxmox-virtual-environment/overview){:target="_blank"} turns the Mini PC into a small server that runs many isolated machines at once. It is free, open source and managed through a web interface, which makes it popular for home servers.
+The MCP server has a container of its own on the Mini PC, and nothing else runs in it. [Proxmox VE](https://www.proxmox.com/en/proxmox-virtual-environment/overview){:target="_blank"} makes that cheap: it turns the Mini PC into a small server that runs many isolated machines at once, and it is free, open source and managed through a web interface.
 
-Proxmox offers two kinds of guests: full virtual machines and LXC containers. Containers share the host's kernel, so they start in seconds and use far less memory than a virtual machine, while still being isolated from each other with their own file system, network address and resource limits. For a Python web service that is the right trade-off, and the MCP server has its own container that runs nothing else.
+Proxmox offers two kinds of guests: full virtual machines and LXC containers. Containers share the host's kernel, so they start in seconds and use far less memory than a virtual machine, while still being isolated from each other with their own file system, network address and resource limits. For a Python web service that is the right trade-off.
 
 That separation helps in a few ways. The MCP server is the only public-facing service in its container, and whatever happens inside it cannot touch the other containers on the machine. The container also gets a fixed share of CPU cores and memory, so a burst of heavy requests slows the MCP server down but cannot starve anything else on the host. And Proxmox can snapshot a container before an upgrade, so a version that misbehaves is rolled back in one click, with scheduled backups built in.
 
 ## Cloudflare: The Only Way In
 
-The container is never exposed to the internet directly. The DNS record for `financetoolkit.jeroenbouma.com` is proxied through Cloudflare, so every request lands on Cloudflare's network first and only then reaches the Mini PC. You can see this in the response headers of any request, for example the health check:
+The container is never exposed to the internet directly. The DNS record for `financetoolkit.jeroenbouma.com` is proxied through Cloudflare, so every request lands on Cloudflare's network first and only then reaches the Mini PC. The response headers of any request show it, for example those of the health check:
 
 ```bash
 curl -sI https://financetoolkit.jeroenbouma.com/health
 ```
+
+Which returns, with `server: cloudflare` as the sign that the request went through Cloudflare:
 
 ```
 HTTP/2 200
@@ -125,16 +132,16 @@ cf-cache-status: DYNAMIC
 
 Putting Cloudflare in front does several jobs that would otherwise be my problem:
 
-- **TLS.** Cloudflare terminates HTTPS with a certificate it renews itself. MCP clients require HTTPS for remote servers and for OAuth, so this matters.
+- **TLS.** Cloudflare terminates HTTPS with a certificate it renews itself. MCP clients require HTTPS for remote servers and for OAuth, so without it nothing connects.
 - **No open ports at home.** With a [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/){:target="_blank"}, a small `cloudflared` agent next to the service opens an outbound connection to Cloudflare, and Cloudflare sends traffic back through it. Nothing on the home router needs to be forwarded, and the home IP address is never published.
 - **Protection.** Cloudflare's firewall and rate limiting stop floods and obvious abuse before they reach the Mini PC, which has far less capacity than Cloudflare's edge.
 - **No caching of answers.** Every MCP call is personal (it runs with the caller's own API key), so nothing on `/mcp` may be cached. Cloudflare leaves these requests alone and passes them straight through, which is what the `cf-cache-status: DYNAMIC` header above confirms.
 
-One detail that is easy to miss: the MCP protocol with `streamable-http` keeps some responses open while the server streams results back. Cloudflare supports this, but an aggressive timeout or a buffering proxy rule in between would break long tool calls. The default Cloudflare settings work without changes.
+Long tool calls need one more thing. With `streamable-http`, the MCP protocol keeps some responses open while the server streams results back. Cloudflare supports this with its default settings, but an aggressive timeout or a buffering proxy rule in between would cut those calls off.
 
 ## How a Request Travels
 
-Putting it all together, this is what happens when someone asks Claude for Apple's operating margin:
+This is what happens when someone asks Claude for Apple's operating margin:
 
 1. Claude decides to call the `profitability` tool and sends an MCP request to `https://financetoolkit.jeroenbouma.com/mcp`, with the user's access token in the `Authorization` header.
 2. Cloudflare receives the request at its nearest data center, checks it against the firewall rules and forwards it to the Mini PC.
