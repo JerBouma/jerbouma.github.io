@@ -52,49 +52,11 @@ economics = Economics(start_date="1086-01-01")
 
 wages = economics.get_millennium_of_macroeconomic_data(series="Real consumption wages")
 
-# as an index with the average of 1340 to 1347 at 100
-wages = wages / wages.loc["1340":"1347"].mean() * 100
-wages = wages.loc["1300":"1550"]
-```
-{% endcapture %}
-{% include ft-chart.html id="bd-wages" src="/assets/data/article-charts.json" label="Real consumption wages in England, 1300 to 1550" code=code_wages mcp="What happened to real consumption wages in England between 1300 and 1550, using the Bank of England's millennium of macroeconomic data, and in which year did they peak?" %}
-
-Wages jumped from one year to the next with the harvest, by around 11% on average before 1348, so single years say little. Averaged over periods, the real wage climbed step by step and then slid back once the population grew again:
-
-{% capture code_wage_periods %}
-```python
-# pip install financetoolkit
-from financetoolkit import Economics
-
-economics = Economics(start_date="1086-01-01")
-
-wages = economics.get_millennium_of_macroeconomic_data(series="Real consumption wages")
-
-# as an index with the average of 1340 to 1347 at 100, averaged per period
-wages = wages / wages.loc["1340":"1347"].mean() * 100
-periods = [(1350, 1359), (1360, 1399), (1400, 1449), (1450, 1499), (1500, 1549), (1550, 1599), (1600, 1649)]
-averages = {f"{start}-{end}": wages.loc[str(start) : str(end)].mean() for start, end in periods}
-```
-{% endcapture %}
-{% include ft-chart.html id="bd-wage-periods" src="/assets/data/article-charts.json" label="Average real consumption wage in England by period, 1350 to 1649" code=code_wage_periods mcp="Using the Bank of England's millennium of macroeconomic data, what was the average real consumption wage in England in 1350-1359, 1360-1399, 1400-1449, 1450-1499, 1500-1549, 1550-1599 and 1600-1649, as an index with the average of 1340 to 1347 at 100?" %}
-
-**Between 1450 and 1499 the real wage averaged 201, double its level before the plague.** The rise took decades, partly because in 1349 the Crown issued the Ordinance of Labourers, followed by the Statute of Labourers in 1351, which tried to hold wages at their pre-plague levels and made it an offence to ask for more.
-
-After 1348 to 1349, plague returned across England in 1361 to 1362, 1369 and 1375, which makes it possible to compare each wave with the years around it. The chart sets the average real wage of the ten years after the first plague year against the ten years before, and the last bar does the same for every year from 1260 to 1690:
-
-{% capture code_waves %}
-```python
-# pip install financetoolkit
-from financetoolkit import Economics
-
-economics = Economics(start_date="1086-01-01")
-
-wages = economics.get_millennium_of_macroeconomic_data(series="Real consumption wages")
+# the plague waves: the average real wage of the ten years after the first plague
+# year compared to the ten years before, in %
 real_wage = wages["Real consumption wages"]
 
 
-# the average real wage of the ten years after the first plague year
-# compared to the ten years before, in %
 def wave_change(year, window=10):
     before = real_wage.loc[str(year - window) : str(year - 1)].mean()
     after = real_wage.loc[str(year + 1) : str(year + window)].mean()
@@ -103,11 +65,21 @@ def wave_change(year, window=10):
 
 waves = {year: wave_change(year) for year in [1348, 1361, 1369, 1375]}
 any_year = sum(wave_change(year) for year in range(1260, 1691)) / len(range(1260, 1691))
+
+# as an index with the average of 1340 to 1347 at 100
+wages = wages / wages.loc["1340":"1347"].mean() * 100
+wages = wages.loc["1300":"1550"]
 ```
 {% endcapture %}
-{% include ft-chart.html id="bd-waves" src="/assets/data/article-charts.json" label="Change in the real wage of England around the plague waves of 1348, 1361, 1369 and 1375" code=code_waves mcp="Using the Bank of England's millennium of macroeconomic data, compare the average real consumption wage of England in the ten years after 1348, 1361, 1369 and 1375 with the ten years before each, and do the same comparison for every year from 1260 to 1690 on average." %}
+{% include ft-chart.html id="bd-wages" src="/assets/data/article-charts.json" label="Real consumption wages in England, 1300 to 1550" code=code_wages mcp="What happened to real consumption wages in England between 1300 and 1550, using the Bank of England's millennium of macroeconomic data, and in which year did they peak?" %}
 
-The real wage was higher after each of the four waves, by 15.8% on average, while in an ordinary year the same comparison moved it by less than 1%. The second wave of 1361 to 1362 left the smallest mark, even though the historian Philip Slavin argues it did more lasting demographic damage than the Black Death itself. That each wave pushed wages up by thinning the workforce again is my reading. The population series is interpolated between benchmark years and doesn't show the later waves, so the data shows the timing, not the cause.
+Wages jumped from one year to the next with the harvest, by around 11% on average before 1348, so single years say little. Averaged over periods, the real wage climbed step by step, from 136 in the 1350s to 162 between 1360 and 1399 and 193 in the first half of the fifteenth century. It slid back once the population grew again: 167 between 1500 and 1549, 129 in the second half of the sixteenth century and 102 between 1600 and 1649, close to where it started.
+
+**Between 1450 and 1499 the real wage averaged 201, double its level before the plague.** The rise took decades, partly because in 1349 the Crown issued the Ordinance of Labourers, followed by the Statute of Labourers in 1351, which tried to hold wages at their pre-plague levels and made it an offence to ask for more.
+
+After 1348 to 1349, plague returned across England in 1361 to 1362, 1369 and 1375. Comparing the average real wage of the ten years after each first plague year with the ten years before, it rose by 28.3% around the Black Death, 2.9% around 1361 to 1362, 9.5% around 1369 and 22.5% around 1375, or 15.8% on average. The same comparison for every year from 1260 to 1690 comes to 0.8%, so in an ordinary decade the real wage barely moved.
+
+The second wave of 1361 to 1362 left the smallest mark, even though the historian Philip Slavin argues it did more lasting demographic damage than the Black Death itself. That each wave pushed wages up by thinning the workforce again is my reading. The population series is interpolated between benchmark years and doesn't show the later waves, so the data shows the timing, not the cause.
 
 ## Pay Rose While Prices Did Not
 
@@ -281,7 +253,7 @@ The next article in the series looks at a more recent shock, the oil price crash
 
 **What I did to it:** I indexed most series to the average of 1340 to 1347 and averaged the noisy ones over periods. Real pay per hour is earnings per head divided by weekly hours and by the consumer price index. Real GDP and exports are divided by population, and for coin per person I converted coin from millions of pounds and population from thousands before dividing. For the plague waves I compared the average real wage of the ten years after the first plague year with the ten years before, and the baseline does this for every year from 1260 to 1690. The windows overlap: the ten years after 1361 include the wave of 1369.
 
-**Limits:** the figures are reconstructions, and the hours series is tentative. The real wage tracks particular groups of workers and one basket of goods. The data covers England only, while the plague hit all of Europe. The plague-wave chart rests on four waves, and with five-year windows instead of ten the 1369 wave shows a fall of 3.1%.
+**Limits:** the figures are reconstructions, and the hours series is tentative. The real wage tracks particular groups of workers and one basket of goods. The data covers England only, while the plague hit all of Europe. The plague-wave comparison rests on four waves, and with five-year windows instead of ten the 1369 wave shows a fall of 3.1%.
 
 **Reproduce it:** the charts are made with the [Finance Toolkit](/projects/financetoolkit), my open-source Python library, which reads this dataset directly ([Economics docs](/projects/financetoolkit/docs/economics)). The Python button on each chart shows the code and the MCP button a question that returns the same data.
 

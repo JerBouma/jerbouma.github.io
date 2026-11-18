@@ -354,46 +354,7 @@ def black_death_charts() -> dict:
             "wages": index_to(long_run["wages"], 1340, 1347),
         }),
         {"population": "Population", "wages": "Real consumption wage"}, "number", 1)
-    charts.update(black_death_wage_bars(data))
     return charts
-
-
-def black_death_wage_bars(data: pd.DataFrame) -> dict:
-    """The real wage averaged over periods, and its change around each plague wave."""
-    source = "Bank of England, A millennium of macroeconomic data (v3.1)"
-    wages = index_to(data["wages"], 1340, 1347)
-    periods = [(1350, 1359), (1360, 1399), (1400, 1449), (1450, 1499), (1500, 1549), (1550, 1599), (1600, 1649)]
-
-    def wave_change(year, window=10):
-        before = data["wages"].loc[year - window:year - 1].mean()
-        after = data["wages"].loc[year + 1:year + window].mean()
-        return after / before - 1
-
-    waves = {"1348-1349": 1348, "1361-1362": 1361, "1369": 1369, "1375": 1375}
-    every_year = sum(wave_change(year) for year in range(1260, 1691)) / len(range(1260, 1691))
-    return {
-        "bd-wage-periods": {
-            "type": "bar",
-            "title": "Average real consumption wage by period",
-            "subtitle": "England, 1350 to 1649, average of 1340 to 1347 = 100",
-            "source": source,
-            "x": [f"{start}-{end}" for start, end in periods],
-            "series": [{"name": "Real consumption wage", "data": [round(wages.loc[start:end].mean(), 1) for start, end in periods]}],
-            "format": "number",
-        },
-        "bd-waves": {
-            "type": "bar",
-            "title": "Change in the real wage around each plague wave",
-            "subtitle": "Average of the ten years after the first plague year against the ten years before, England, in %",
-            "source": source,
-            "x": list(waves) + ["Any year, 1260-1690"],
-            "series": [{"name": "Change in the real wage",
-                        "data": [round(wave_change(year), 4) for year in waves.values()] + [round(every_year, 4)]}],
-            "format": "percent",
-            "highlight": 4,
-            "note": ["The last bar does the same comparison for every year from 1260 to 1690 and averages it: in an ordinary year the ten years after were 0.8% above the ten years before (median 0.5%, higher in 53% of the years)."],
-        },
-    }
 
 
 HISTORY = [black_death_charts]
