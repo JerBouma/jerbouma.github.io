@@ -3580,6 +3580,13 @@ body.wide-no-sidebar:not(.no-title) {
   background: transparent;
 }
 
+// an article's tags link to /insights filtered on that tag
+a.lit-tag {
+  text-decoration: none !important;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  &:hover { color: var(--accent-color) !important; border-color: var(--accent-color); }
+}
+
 .lit-empty {
   text-align: center;
   color: var(--text-secondary);

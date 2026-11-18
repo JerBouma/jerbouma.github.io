@@ -12,8 +12,8 @@
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].tags_label | default: "Tags:" }} </strong>
     <span itemprop="keywords">
     {% for tag_word in tags_sorted %}
-      {% if page.collection == "article" %}
-        <span class="page__taxonomy-item p-category">{{ tag_word }}</span>{% unless forloop.last %}<span class="sep">, </span>{% endunless %}
+      {% if page.collection == "article" %}{% comment %} an article's tags open /insights filtered on that tag {% endcomment %}
+        <a href="{{ '/insights' | relative_url }}?tag={{ tag_word | slugify }}" class="page__taxonomy-item p-category" rel="tag" title="All insights tagged {{ tag_word }}">{{ tag_word }}</a>{% unless forloop.last %}<span class="sep">, </span>{% endunless %}
       {% else %}
         <a href="{{ tag_word | slugify | prepend: path_type | prepend: site.tag_archive.path | relative_url }}" class="page__taxonomy-item p-category" rel="tag">{{ tag_word }}</a>{% unless forloop.last %}<span class="sep">, </span>{% endunless %}
       {% endif %}
