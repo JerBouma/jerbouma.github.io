@@ -41,6 +41,27 @@
       table.parentNode.insertBefore(wrapper, table);
       wrapper.appendChild(table);
     });
+    // a table wider than the screen scrolls sideways: make it reachable and
+    // scrollable by keyboard, and name it for screen readers
+    function scrollable() {
+      // wide code blocks scroll the same way
+      document.querySelectorAll('.page__content pre').forEach(function (pre) {
+        if (pre.scrollWidth > pre.clientWidth + 1) { pre.setAttribute('tabindex', '0'); } else { pre.removeAttribute('tabindex'); }
+      });
+      document.querySelectorAll('.table-scroll').forEach(function (w, i) {
+        if (w.scrollWidth > w.clientWidth + 1) {
+          w.setAttribute('tabindex', '0');
+          w.setAttribute('role', 'region');
+          if (!w.hasAttribute('aria-label')) { w.setAttribute('aria-label', 'Table ' + (i + 1) + ', scrolls sideways'); }
+        } else {
+          w.removeAttribute('tabindex');
+          w.removeAttribute('role');
+          w.removeAttribute('aria-label');
+        }
+      });
+    }
+    scrollable();
+    window.addEventListener('resize', scrollable);
   });
 </script>
 

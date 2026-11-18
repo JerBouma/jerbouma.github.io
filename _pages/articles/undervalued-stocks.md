@@ -191,7 +191,7 @@ The screen took 15 stocks down to three, and the reasons the others dropped out 
 
 A single year can't show whether a low multiple is new or normal for the company. Since 2022, Merck's multiple has fallen while its return held, and Pfizer's return fell while its multiple did not:
 
-| | 2022 | 2023 | 2024 | 2025 |
+| Company and metric | 2022 | 2023 | 2024 | 2025 |
 |---|---|---|---|---|
 | **Merck**, EV/EBITDA | 13.6x | 45.0x | 11.2x | 10.2x |
 | Merck, ROIC | 21.4% | 0.8% | 21.9% | 21.7% |

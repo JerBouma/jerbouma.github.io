@@ -1175,7 +1175,10 @@
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); show(e.target); } });
-    }, { rootMargin: '300px 0px' });
+    // well ahead of the viewport: a chart grows by its subtitle, source and tabs
+    // when it is drawn, and drawn out of sight that growth moves nothing the
+    // reader is looking at (no layout shift)
+    }, { rootMargin: '1500px 0px' });
     boxes.forEach(function (b) { io.observe(b); });
     // charts that are not reached by scrolling (a fast fling, a jump from the
     // table of contents) are drawn in the background once the page has settled,
