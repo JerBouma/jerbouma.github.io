@@ -248,7 +248,10 @@
    "format": "percent",
    "subtitle": "Policy rate at the end of each year, percent, 2019 to 2025 (Germany: euro area rate)",
    "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025), data to 31 December 2025",
-   "note": "Germany's rate in the database runs below the ECB's year-end rate in 2022 and 2023"
+   "note": [
+    "Policy rates at the end of each year from the Global Macro Database. For Germany it reports the euro area rate.",
+    "That rate runs below the ECB's year-end rate in 2022 and 2023: 0.44% against 2.5% at the end of 2022. The monthly comparison later in the article uses the ECB's rates instead."
+   ]
   },
   "macro-real-rates": {
    "type": "line",
@@ -484,7 +487,10 @@
    "title": "Microsoft revenue and net income",
    "subtitle": "Fiscal years 1986 to 2025 (ending in June), billions of US dollars, log scale",
    "source": "Company filings via FinancialModelingPrep, data to 30 June 2025",
-   "note": "Nominal dollars, not adjusted for inflation",
+   "note": [
+    "Nominal dollars, not adjusted for inflation. On a log scale an equal step is an equal growth rate, so the steep line of the 1980s and 1990s is faster growth than the larger dollar gains of later years.",
+    "In real terms revenue rose about 490-fold since 1986 instead of 1,400-fold. The section on what misleads shows the calculation."
+   ],
    "x": [
     "1986",
     "1987",
@@ -1655,7 +1661,10 @@
    "reverse": true,
    "min": -0.42,
    "max": 0,
-   "note": "A fall that spans two years is split at 31 December, so each cell shows only the part within that year"
+   "note": [
+    "Each cell is the largest fall from a peak to a later low within that calendar year, on daily prices.",
+    "A fall that spans two years is split at 31 December. EEM fell 39.8% from February 2021 to October 2022, which shows here as 16.6% in 2021 and 32.7% in 2022."
+   ]
   },
   "risk-skew": {
    "type": "heatmap",
@@ -1830,7 +1839,10 @@
    "type": "bar",
    "title": "Semiconductor revenue",
    "subtitle": "Annual revenue in US$ billions, fiscal years 2010, 2014, 2018, 2022 and 2025",
-   "note": "NVIDIA's fiscal 2025 ends on 25 January 2026, Broadcom's on 2 November 2025 and Qualcomm's on 28 September 2025",
+   "note": [
+    "Revenue per fiscal year as each company reports it. NVIDIA's fiscal 2025 ends on 25 January 2026, Broadcom's on 2 November 2025 and Qualcomm's on 28 September 2025, so the bars cover slightly different twelve months.",
+    "Counted over the four quarters to October 2025 instead, NVIDIA's share of the group's revenue falls from 50.3% to 46.7%."
+   ],
    "source": "Company filings via FinancialModelingPrep, data to 25 January 2026",
    "x": [
     "2010",
@@ -16959,7 +16971,10 @@
    "title": "P/E against EV/EBITDA",
    "subtitle": "14 large caps, fiscal 2025, in times; Intel left out (negative earnings); dashed lines at 20x and 18x",
    "source": "Company filings and share prices via FinancialModelingPrep, data to 31 January 2026",
-   "note": "Share prices of 31 December 2025 over each company's fiscal 2025 figures, whose years end between June 2025 and January 2026",
+   "note": [
+    "Every multiple uses the share price of 31 December 2025 over each company's fiscal 2025 figures, whose years end between June 2025 and January 2026.",
+    "Negative multiples are left out of the screen, which is why Intel, with negative earnings, is not on the chart."
+   ],
    "legend": "Orange: below 20x earnings and 18x EBITDA",
    "xname": "P/E",
    "yname": "EV/EBITDA",
@@ -17063,7 +17078,10 @@
    "title": "Return on equity, ROIC and gross margin of the five value candidates",
    "subtitle": "Percent; fiscal 2025, and ROIC for each fiscal year from 2022 to 2025",
    "source": "Company filings and share prices via FinancialModelingPrep, data to 31 December 2025",
-   "note": "ROIC is after-tax operating profit over average debt plus equity",
+   "note": [
+    "ROIC is operating income taxed at the effective tax rate (NOPAT), over the average of total debt plus total equity, so it measures the return on all the capital a business uses, however it is financed.",
+    "ROE is net income over average equity, which borrowing and buybacks can lift without the business earning more."
+   ],
    "tabs": [
     {
      "label": "Fiscal 2025",
@@ -17849,7 +17867,11 @@
    "type": "line",
    "title": "Population of England",
    "subtitle": "England, 1300 to 1500, millions of people",
-   "note": "Estimated for benchmark years and interpolated between them, so it falls by the same share in each year from 1349 to 1351",
+   "note": [
+    "Nobody counted the people of England in the fourteenth century. The series is an estimate for benchmark years, reconstructed from manor records, tax returns, prices and wages, with the years in between interpolated.",
+    "That is why it falls by the same share, about 18.5%, in each year from 1349 to 1351: the data knows the level before and after the Black Death, not the path in between.",
+    "Read the level of a single year loosely. The change over a decade is far more reliable."
+   ],
    "source": "Bank of England, A millennium of macroeconomic data (v3.1)",
    "x": [
     "1300",
@@ -21324,7 +21346,11 @@
    "type": "tabs",
    "title": "Hours worked and pay per hour in England",
    "subtitle": "England, weekly hours from 1300 to 1650, and real pay per hour against the real wage from 1330 to 1450 with the average of 1340 to 1347 = 100",
-   "note": "Real pay per hour is weekly earnings divided by weekly hours and by consumer prices, with hours a tentative estimate",
+   "note": [
+    "Weekly hours before 1770 are based on Humphries and Weisdorf (2016) and are a tentative estimate, so the first tab shows the direction better than the level.",
+    "Real pay per hour is weekly earnings divided by weekly hours and by the consumer price index, indexed to the average of 1340 to 1347.",
+    "Because hours fell while earnings rose, pay per hour rose faster than the real wage, which is measured per day."
+   ],
    "source": "Bank of England, A millennium of macroeconomic data (v3.1)",
    "tabs": [
     {
@@ -23589,7 +23615,10 @@
    "type": "bar",
    "title": "Average real central bank policy rates",
    "subtitle": "Average from 2021 to 2025, percent: yearly figures, yearly figures without 2022, and monthly figures",
-   "note": "Monthly: the policy rate at each month's end minus inflation over the previous twelve months, with the euro area in place of Germany",
+   "note": [
+    "Yearly: the policy rate at the end of each year minus that year's inflation, averaged over 2021 to 2025. Monthly: the policy rate at each month's end minus inflation over the previous twelve months, averaged over the same five years.",
+    "For Germany the monthly figures use the euro area rate. The US monthly average covers 59 months, because October 2025 has no figure."
+   ],
    "source": "Global Macro Database (M\u00fcller, Xu, Lehbib and Chen, 2025); BIS policy rates; consumer prices from Eurostat, the ONS, the Statistics Bureau of Japan and the BIS; own calculation, data to 31 December 2025",
    "x": [
     "Brazil",

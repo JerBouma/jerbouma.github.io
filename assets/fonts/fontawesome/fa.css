@@ -358,9 +358,6 @@ readers do not read off random characters that represent icons */
 .fa-comments {
   --fa: "\f086"; }
 
-.fa-pen-ruler {
-  --fa: "\f5ae"; }
-
 .fa-lightbulb {
   --fa: "\f0eb"; }
 
@@ -480,6 +477,9 @@ readers do not read off random characters that represent icons */
 
 .fa-envelope {
   --fa: "\f0e0"; }
+
+.fa-circle-info {
+  --fa: "\f05a"; }
 
 .fa-landmark {
   --fa: "\f66f"; }
@@ -609,9 +609,6 @@ readers do not read off random characters that represent icons */
 
 .fa-earth-europe {
   --fa: "\f7a2"; }
-
-.fa-triangle-exclamation {
-  --fa: "\f071"; }
 
 .fa-exclamation-triangle {
   --fa: "\f071"; }
@@ -828,9 +825,6 @@ readers do not read off random characters that represent icons */
 
 .fa-square-x-twitter {
   --fa: "\e61a"; }
-
-.fa-medium {
-  --fa: "\f23a"; }
 
 .fa-mastodon {
   --fa: "\f4f6"; }
