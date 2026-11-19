@@ -22,10 +22,10 @@ updates:
     note: "Added a section on how many steps the tree needs, with the early-exercise value of the put at up to 200 steps."
 cover:
   image: /assets/images/articles/binomial-trees/cover.jpg
-  alt: "Traders on the floor of the Chicago Board of Trade in 1949, watching the price boards."
-  credit: "Chicago Board of Trade traders, 1949, Stanley Kubrick for LOOK, public domain"
-  link: "https://commons.wikimedia.org/wiki/File:Chicago_Board_of_Trade_traders_cph.3d02368.jpg"
-  creator: "Stanley Kubrick"
+  alt: "A tree painted in greys and black, its branches splitting again and again across the canvas."
+  credit: "The Gray Tree, Piet Mondrian, 1911, Kunstmuseum Den Haag, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:Gray_Tree_1911.jpg"
+  creator: "Piet Mondrian"
   license: "https://creativecommons.org/publicdomain/mark/1.0/"
 ---
 {% include mermaid.html %}
