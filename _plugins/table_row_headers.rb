@@ -6,6 +6,7 @@
 # headers. The row headers are styled like ordinary cells (_sass/custom.scss).
 module TableRowHeaders
   TABLE = %r{<table>\s*<thead>\s*<tr>\s*<th[^>]*>[\s\u00A0]*(?:&nbsp;)?[\s\u00A0]*</th>.*?</table>}m
+  CORNER = %r{(<thead>\s*<tr>\s*)<th([^>]*)>[\s\u00A0]*(?:&nbsp;)?[\s\u00A0]*</th>}m
   FIRST_CELL = %r{(<tr>\s*)<td([^>]*)>(.*?)</td>}m
 
   def self.process(html)
@@ -13,6 +14,9 @@ module TableRowHeaders
     html.gsub(TABLE) do |table|
       head, body = table.split("<tbody>", 2)
       next table unless body
+      # the empty corner cell gets a label only screen readers hear: an empty <th>
+      # is a header without text (axe: empty-table-header); it keeps its styling
+      head = head.sub(CORNER) { "#{$1}<th#{$2}><span class=\"visually-hidden\">Item</span></th>" }
       head + "<tbody>" + body.gsub(FIRST_CELL) { "#{$1}<th scope=\"row\"#{$2}>#{$3}</th>" }
     end
   end
