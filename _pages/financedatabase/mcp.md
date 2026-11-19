@@ -42,7 +42,7 @@ Language models are good at reasoning about companies and poor at listing them. 
 
 <div class="mcp-compare">
 <table>
-<thead><tr><th></th><th>The model's memory</th><th>Finance Database MCP</th></tr></thead>
+<thead><tr><th><span class="visually-hidden">Aspect</span></th><th>The model's memory</th><th>Finance Database MCP</th></tr></thead>
 <tbody>
 <tr><th scope="row">Where the list comes from</th><td data-label="The model's memory">Whatever the model remembers</td><td data-label="Finance Database MCP">300,000+ categorized symbols</td></tr>
 <tr><th scope="row">Completeness</th><td data-label="The model's memory">The well-known names</td><td data-label="Finance Database MCP">Every match, with the total count</td></tr>
