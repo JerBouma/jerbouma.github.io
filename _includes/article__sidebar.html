@@ -1,9 +1,9 @@
-{%- comment -%} Three other articles, those sharing a tag with this one first, then the newest; plus a link to all of them {%- endcomment -%}
+{%- comment -%} Three more articles: the end of the article shows the first three of `related` (those sharing a tag with this one first, then the newest), the sidebar the next three; plus a link to all of them {%- endcomment -%}
 {%- include article__related.html %}
 <details class="article-side" open>
 <summary class="article-sidebar__title">Keep reading <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
 <nav class="article-sidebar__list article-sidebar__list--cards">
-  {%- for article in related limit: 3 %}
+  {%- for article in related offset: 3 limit: 3 %}
     <a href="{{ article.url | relative_url }}" class="article-sidebar__item">
       <span class="article-sidebar__item-tag">{{ article.tags | first }}</span>
       <span class="article-sidebar__item-title">{{ article.title }}</span>
