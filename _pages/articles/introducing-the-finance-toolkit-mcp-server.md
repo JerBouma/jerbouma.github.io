@@ -18,11 +18,11 @@ key_points:
   - "The free FMP plan covers five years of history and 250 requests a day, so the 2015 start of the chip comparison needs a paid plan."
 cover:
   image: /assets/images/articles/introducing-the-finance-toolkit-mcp-server/cover.jpg
-  alt: "Luca Pacioli, the friar who first published double-entry bookkeeping, works out a geometry problem on a slate, with a student beside him and a glass polyhedron hanging in the air."
-  credit: "Portrait of Luca Pacioli with a student, attributed to Jacopo de' Barbari, 1495, Museo di Capodimonte, public domain"
-  link: "https://commons.wikimedia.org/wiki/File:Jacopo_de'_Barbari_(attributed_to)_Portrait_of_Luca_Pacioli_(1445_1517)_with_a_student_(Guidobaldo_da_Montefeltro)_(2).jpg"
-  creator: "Jacopo de' Barbari (attributed)"
-  license: "https://creativecommons.org/publicdomain/mark/1.0/"
+  alt: "A laptop screen with a green candlestick price chart above a table of trades and their profit and loss."
+  credit: "Laptop showing a stock graph, Negative Space, CC0"
+  link: "https://commons.wikimedia.org/wiki/File:Blur-chart-data-69760.jpg"
+  creator: "Negative Space"
+  license: "https://creativecommons.org/publicdomain/zero/1.0/"
 ---
 On May 6, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.93 by Stockopedia, 32.05 by Morningstar, 32.66 by Macrotrends, 33.67 by the Wall Street Journal, and 34.4 by Companies Market Cap. Every one of those numbers is "correct." They just use different definitions of earnings, different share counts and different rounding. None of the providers publish the formula, so there is no way to know which one matches the calculation you actually want. Ask an AI assistant for the same number and it inherits the problem: it picks one of those figures from a web search, or recalls one from its training data, and when it finds nothing it may produce a plausible-looking number of its own.
 
