@@ -2499,6 +2499,35 @@ body.wide-no-sidebar:not(.no-title) {
     }
   }
 
+  // A group with its own page: the link carries the title, the summary next to
+  // it is only the chevron (a link inside a summary is nested interactive content)
+  > ul.nav__items > li:has(> a.nav__group-link) {
+    position: relative;
+  }
+  a.nav__group-link {
+    display: block;
+    text-decoration: none !important;
+    .nav__sub-title { padding-right: 40px !important; }
+    &:hover .nav__sub-title {
+      color: var(--accent-color) !important;
+      background: rgba(56, 189, 248, 0.06);
+    }
+    &.active .nav__sub-title { color: var(--accent-color) !important; }
+  }
+  details.nav__collapsible--linked > summary.nav__group-toggle {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    width: 40px;
+    height: 37px;
+    padding: 0 !important;
+    margin: 0 !important;
+    align-items: center;
+    justify-content: center !important;
+    border-radius: 8px;
+    &:focus-visible { outline: 2px solid var(--accent-color); outline-offset: -2px; }
+  }
+
   // "Modules" collapsible — orange accent to match the site's warning/CTA buttons, collapsed by default
   details.nav__collapsible--modules {
     summary.nav__collapsible-title {

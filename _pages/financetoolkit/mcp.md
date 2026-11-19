@@ -45,7 +45,7 @@ There is a growing number of MCP servers for financial data, from the official F
 
 <div class="mcp-compare">
 <table>
-<thead><tr><th></th><th>Raw data servers</th><th>Finance Toolkit MCP</th></tr></thead>
+<thead><tr><th><span class="visually-hidden">Aspect</span></th><th>Raw data servers</th><th>Finance Toolkit MCP</th></tr></thead>
 <tbody>
 <tr><th scope="row">What the assistant receives</th><td data-label="Raw data servers">Prices and financial statements</td><td data-label="Finance Toolkit MCP">Calculated ratios, models, risk metrics and indicators, plus the underlying data</td></tr>
 <tr><th scope="row">Who does the arithmetic</th><td data-label="Raw data servers">The language model</td><td data-label="Finance Toolkit MCP">The open-source Finance Toolkit</td></tr>

@@ -35,7 +35,7 @@ Language models are good at explaining how the economy works and poor at quantif
 
 <div class="mcp-compare">
 <table>
-<thead><tr><th></th><th>The model's memory</th><th>Finance Scenarios MCP</th></tr></thead>
+<thead><tr><th><span class="visually-hidden">Aspect</span></th><th>The model's memory</th><th>Finance Scenarios MCP</th></tr></thead>
 <tbody>
 <tr><th scope="row">Where the outlook comes from</th><td data-label="The model's memory">Whatever the model remembers</td><td data-label="Finance Scenarios MCP">Thousands of scenarios calibrated this month on market data</td></tr>
 <tr><th scope="row">Uncertainty</th><td data-label="The model's memory">One number, or a vague range</td><td data-label="Finance Scenarios MCP">The median and p5 to p95 for every year</td></tr>
