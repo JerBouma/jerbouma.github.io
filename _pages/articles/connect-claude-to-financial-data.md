@@ -20,11 +20,11 @@ key_points:
 image: /assets/images/projects/FinanceToolkitMCP.jpg
 cover:
   image: /assets/images/articles/connect-claude-to-financial-data/cover.jpg
-  alt: "A brass Edison stock ticker, the machine that printed live prices onto paper tape."
-  credit: "Edison stock telegraph ticker, H. Zimmer, CC BY 3.0"
-  link: "https://commons.wikimedia.org/wiki/File:Edison_Stock_Telegraph_Ticker.jpg"
-  creator: "H. Zimmer"
-  license: "https://creativecommons.org/licenses/by/3.0/"
+  alt: "Astronauts and flight controllers crowd around a console in Mission Control during Apollo 13 in 1970, reading the live data."
+  credit: "Apollo 13 Mission Control (S70-34986), NASA Johnson Space Center, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:Apollo_13_MCC_-_MSC_(s70-34986).jpg"
+  creator: "NASA Johnson Space Center"
+  license: "https://creativecommons.org/publicdomain/mark/1.0/"
 updates:
   - date: 2026-11-19
     note: "Corrected the maximum drawdowns of Berkshire Hathaway, Visa, Costco and the S&P 500, which covered a shorter window than the VaR and CVaR, to January 2020 onwards; Berkshire now has the smallest fall and Visa the deepest. Also said that alpha here is the return above the S&P 500, not adjusted for beta, and recalculated the ROIC of Apple and Microsoft with the Finance Toolkit's current definition: 62.0% and 25.8% in 2025, instead of 70.38% and 30.64%."

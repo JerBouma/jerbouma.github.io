@@ -19,7 +19,7 @@ key_points:
   - "The answers are snapshots, and the template DCF put Axon at $94.30 against a share price of $510.28 on July 17, 2026, so it can't price the growth on its own."
 cover:
   image: /assets/images/articles/equity-research-family-offices-fmp-mcp/cover.jpg
-  alt: "A sixteenth-century tax collector and his wife at a table with coins and an open account book, checking the figures."
+  alt: "A sixteenth-century moneychanger and his wife at a table with coins and an open account book, checking the figures."
   credit: "The Tax Collector and His Wife, 1538, Marinus van Reymerswaele, public domain"
   link: "https://commons.wikimedia.org/wiki/File:Marinus_van_Reymerswaele_-_A_Moneychanger_and_His_Wife.jpg"
   creator: "Marinus van Reymerswaele"

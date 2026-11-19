@@ -18,10 +18,10 @@ key_points:
   - "At the end of 2025 the price-to-free-cash-flow ratio of 50 was far above its median of 28 and the highest since 1999, so the price assumes the spending pays off."
 cover:
   image: /assets/images/articles/microsoft-financial-history-finance-toolkit/cover.jpg
-  alt: "A 1980s computer room with terminals, tape drives and staff at work."
-  credit: "US Census Bureau computer room, 1980s, public domain"
-  link: "https://commons.wikimedia.org/wiki/File:US_Census_Bureau_computer_room_1980s.jpg"
-  creator: "U.S. Census Bureau"
+  alt: "An aerial view of Microsoft's West Campus in Redmond, Washington, in 2009, office buildings around a sports field among the trees."
+  credit: "Aerial Microsoft West Campus, August 2009, Jelson25, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:Aerial_Microsoft_West_Campus_August_2009.jpg"
+  creator: "Jelson25"
   license: "https://creativecommons.org/publicdomain/mark/1.0/"
 updates:
   - date: 2026-11-19
