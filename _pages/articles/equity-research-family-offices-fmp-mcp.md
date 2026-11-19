@@ -2,7 +2,7 @@
 title: "Equity Research for Family Offices with the FMP MCP Server"
 seo_title: "Equity Research for Family Offices with AI"
 date: 2026-07-23
-last_modified_at: 2026-11-18
+last_modified_at: 2026-11-19
 permalink: /articles/equity-research-family-offices-fmp-mcp
 excerpt: "On July 17, 2026, Axon closed at $510.28, analysts averaged $658.56 and a DCF said $94.30. A full diligence pass for a concentrated portfolio, from returns to insider sales and 13F flows, run question by question through the FMP MCP server."
 description: "How family offices can run equity research diligence, from financial health to insider activity and ownership, with the FMP MCP server in Claude Desktop."
@@ -24,6 +24,9 @@ cover:
   link: "https://commons.wikimedia.org/wiki/File:Marinus_van_Reymerswaele_-_A_Moneychanger_and_His_Wife.jpg"
   creator: "Marinus van Reymerswaele"
   license: "https://creativecommons.org/publicdomain/mark/1.0/"
+updates:
+  - date: 2026-11-19
+    note: "Recalculated Axon's ROIC with the Finance Toolkit's current definition (after-tax operating income over equity and debt): −1.4% in 2025 instead of 2.8%."
 ---
 
 On July 17, 2026, Axon Enterprise closed at $510.28. The analysts covering it put their average price target at $658.56, a standard levered discounted cash flow model put the shares at $94.30, and the company's return on invested capital for 2025 was negative. Three readings of the same stock, the highest price seven times the lowest, and each one comes from a different part of the diligence file.
@@ -184,7 +187,7 @@ The [Finance Toolkit MCP](/projects/financetoolkit/mcp) extends FMP's endpoints 
 <div class="mcp-show__cell">{% include ft-chart.html id="axon-ft-valuation" src="/assets/data/article-charts.json" label="Axon's EV/sales and price-to-book, fiscal 2021 to 2025" %}</div>
 <div class="mcp-show__cell">{% include ft-chart.html id="axon-ft-returns" src="/assets/data/article-charts.json" label="Axon's total return per year against the S&P 500" %}</div>
 </div>
-<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Axon is a healthy business and a risky stock. The balance sheet is strong: a current ratio of 2.53, a quick ratio of 1.81 and debt to equity of 0.59 leave no sign of distress, and the cash conversion cycle shortened from 194 days in 2021 to 163 in 2025. The income statement is thin: a gross margin near 60% but an operating margin of −2.2%, a return on equity of 4.5% and an ROIC of 2.8% in 2025, weighed down by $634 million of stock-based compensation, 23% of revenue. The shares are priced for growth, at 20.7 times sales and 17.5 times book with a free cash flow yield of 0.13%, and they move like it: a 130.1% gain in 2024, then −4.5% in 2025 and −10.2% in 2026 up to July 17, while the S&amp;P 500 rose 17.8% and 9.6%.</p></div>
+<div class="mcp-show__verdict"><p class="mcp-show__label"><i class="fas fa-lightbulb" aria-hidden="true"></i> What the data shows</p><p>Axon is a healthy business and a risky stock. The balance sheet is strong: a current ratio of 2.53, a quick ratio of 1.81 and debt to equity of 0.59 leave no sign of distress, and the cash conversion cycle shortened from 194 days in 2021 to 163 in 2025. The income statement is thin: a gross margin near 60% but an operating margin of −2.2%, a return on equity of 4.5% and an ROIC of −1.4% in 2025, weighed down by $634 million of stock-based compensation, 23% of revenue. The shares are priced for growth, at 20.7 times sales and 17.5 times book with a free cash flow yield of 0.13%, and they move like it: a 130.1% gain in 2024, then −4.5% in 2025 and −10.2% in 2026 up to July 17, while the S&amp;P 500 rose 17.8% and 9.6%.</p></div>
 <div class="ca-nums"><span><b>52.9%</b>volatility 2025, S&amp;P 500 19.5%</span><span><b>−60.3%</b>maximum drawdown since 2021</span><span><b>1.08</b>beta 2025</span></div>
 </div>
 

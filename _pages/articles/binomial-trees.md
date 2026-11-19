@@ -281,7 +281,7 @@ Step5["$15.07"] -- D --> Step9["$25.14"]:::boxfont
 
 Because the American option can be exercised early, its fair value can be higher than that of an equivalent European option, especially when the option is deep in the money. The holder can take the intrinsic value straight away instead of waiting for expiration. The nodes highlighted in <span style="color:#d67f05; font-weight:bold;">orange</span> in the binomial trees show where the American option's value (due to potential early exercise) exceeds the calculated European value at that node.
 
-In this example that only happens for the put. After two down moves the stock is at $74.93, and exercising the put there pays $15.07 straight away, more than the $14.60 that holding it is worth. That early-exercise value carries back through the tree, so the American put is worth $4.88 today against $4.75 for the European put. The American call is worth exactly the same as the European call, $16.03: with a dividend yield of only 0.5%, exercising a call early never beats holding it.
+In this example that only happens for the put. After two down moves the stock is at $74.93, and exercising the put there pays $15.07 straight away, more than the $14.60 that holding it is worth. That early-exercise value carries back through the tree, so the American put is worth $4.88 today against $4.75 for the European put. The American call is worth exactly the same as the European call, $16.03: with a dividend yield of only 0.5%, no node in this tree is high enough for exercising the call early to beat holding it.
 
 ## How Many Steps Are Enough
 
@@ -509,7 +509,7 @@ For Apple's call options expiring on February 23, 2024, Black-Scholes lands with
 |            195 |         1.96 |         2.10 |         2.24 |         2.37 |         2.50 |         2.63 |         2.76 |
 |            200 |         0.87 |         0.97 |         1.07 |         1.17 |         1.27 |         1.37 |         1.47 |
 
-The binomial tree ($4.32) and Black-Scholes ($4.33) give almost the same fair value for the $190 call expiring on February 23, 2024. That agreement is expected: with 10 steps the tree comes close to Black-Scholes, and both use the same 28.26% historical volatility. It doesn't confirm that the market's $2.67 is too low. My reading is that part of the gap comes from that one volatility input, which is why I would compare it with the implied volatility in the option chain before calling any contract mispriced.
+The binomial tree ($4.32) and Black-Scholes ($4.33) give almost the same fair value for the $190 call expiring on February 23, 2024. That agreement is expected: both use the same 28.26% historical volatility, and the remaining cent is the step error of a 10-step tree described in the previous section. It doesn't confirm that the market's $2.67 is too low. My reading is that part of the gap comes from that one volatility input, which is why I would compare it with the implied volatility in the option chain before calling any contract mispriced.
 
 {: .notice--info}
 **Statistical Option Arbitrage**<br>

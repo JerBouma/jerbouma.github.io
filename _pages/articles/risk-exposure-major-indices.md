@@ -59,7 +59,7 @@ The year 2025 sits between the two. The April days pushed up volatility for the 
 
 ## Small Caps Fell the Furthest, 41.1% in 2020
 
-VaR and CVaR come from the spread of daily returns, so they say nothing about how far a fall runs over weeks. Maximum drawdown does: it is the actual fall from a peak to the lowest point after it, measured here within each calendar year, so it is the loss of someone who bought at that year's high and held on to its low.
+VaR and CVaR come from the spread of daily returns, so they say nothing about how far a fall runs over weeks. Maximum drawdown does: it is the actual fall from a peak to the lowest point after it, measured here within each calendar year, so it is the loss of someone who bought at the worst moment that year and held on to the low that followed.
 
 The darkest rows are 2020 and 2022, where a deeper fall has a stronger colour:
 
