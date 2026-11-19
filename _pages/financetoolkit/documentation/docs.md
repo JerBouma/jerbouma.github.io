@@ -11,6 +11,8 @@ redirect_from:
     - /docs
     - /financetoolkit/docs
     - /projects/financetoolkit/getting-started
+    - /projects/financetoolkit/functional-toolkit
+    - /projects/financetoolkit/docs/toolkit
 sidebar:
     nav: "financetoolkit-docs"
 ---

@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /fixedincome
     - /projects/financetoolkit/fixed-income-notebook
+    - /projects/financetoolkit/fixed-income-module
 sidebar:
     nav: "financetoolkit-docs-fixedincome"
 ---
