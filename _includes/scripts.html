@@ -75,6 +75,17 @@
           w.removeAttribute('role');
           w.removeAttribute('aria-label');
         }
+      });      // and so do wide diagrams on a phone
+      document.querySelectorAll('.page__content .mermaid').forEach(function (d, i) {
+        if (d.scrollWidth > d.clientWidth + 1) {
+          d.setAttribute('tabindex', '0');
+          d.setAttribute('role', 'region');
+          d.setAttribute('aria-label', 'Diagram ' + (i + 1) + ', scrolls sideways');
+        } else {
+          d.removeAttribute('tabindex');
+          d.removeAttribute('role');
+          d.removeAttribute('aria-label');
+        }
       });
     }
     scrollable();
