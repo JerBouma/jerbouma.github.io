@@ -886,17 +886,17 @@
     {
      "name": "Goodwill",
      "data": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      3.12,
+      3.31,
       3.87,
       4.76,
       12.1,
@@ -920,7 +920,10 @@
      ]
     }
    ],
-   "format": "billions"
+   "format": "billions",
+   "note": [
+    "Goodwill before 2006 is missing from the data source, which reports zero. The 2004 and 2005 values ($3.1 and $3.3 billion) are from Microsoft's 2005 Annual Report; earlier years are left blank."
+   ]
   },
   "msft-fcf": {
    "type": "bar",
