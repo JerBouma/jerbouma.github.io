@@ -15,7 +15,7 @@ share: true
 standfirst: "Asked for a return on invested capital from memory, a language model tends to give a plausible-sounding mistake. What does it take to make Claude calculate the number instead?"
 key_points:
   - "One URL connects Claude Desktop, claude.ai or Claude Code to 500+ financial methods in a minute, with nothing to install."
-  - "Ten worked questions show what comes back, such as Apple's return on invested capital of 70.38% in 2025 against 30.64% for Microsoft."
+  - "Ten worked questions show what comes back, such as Apple's return on invested capital of 62.0% in 2025 against 25.8% for Microsoft."
   - "FMP's free plan allows 250 requests a day and five years of US data, so a broad screen can use it up quickly."
 image: /assets/images/projects/FinanceToolkitMCP.jpg
 cover:
@@ -27,7 +27,7 @@ cover:
   license: "https://creativecommons.org/licenses/by/3.0/"
 updates:
   - date: 2026-11-19
-    note: "Corrected the maximum drawdowns of Berkshire Hathaway, Visa, Costco and the S&P 500, which covered a shorter window than the VaR and CVaR, to January 2020 onwards; Berkshire now has the smallest fall and Visa the deepest. Also said that alpha here is the return above the S&P 500, not adjusted for beta."
+    note: "Corrected the maximum drawdowns of Berkshire Hathaway, Visa, Costco and the S&P 500, which covered a shorter window than the VaR and CVaR, to January 2020 onwards; Berkshire now has the smallest fall and Visa the deepest. Also said that alpha here is the return above the S&P 500, not adjusted for beta, and recalculated the ROIC of Apple and Microsoft with the Finance Toolkit's current definition: 62.0% and 25.8% in 2025, instead of 70.38% and 30.64%."
 ---
 Ask Claude *"what is Apple's operating margin this year?"* and you get one of two answers: a polite explanation that it has no access to live data, or a confident number from its training data that may be a year or more out of date. Language models are good at reasoning about numbers, but they are not a data source, and asked to compute a return on invested capital from memory they tend to produce plausible-sounding mistakes.
 
@@ -108,7 +108,7 @@ Microsoft's margins stay above Apple's by a wide and steady gap:
 
 {% include ft-chart.html id="claude-margins" src="/assets/data/article-charts.json" label="Margins of Apple and Microsoft" %}
 
-So on margins the answer is Microsoft. Without being asked, Claude then checks capital efficiency, and that points the other way: Apple's return on invested capital was 70.38% in 2025 against 30.64% for Microsoft.
+So on margins the answer is Microsoft. Without being asked, Claude then checks capital efficiency, and that points the other way: Apple's return on invested capital was 62.0% in 2025 against 25.8% for Microsoft.
 
 <div class="ca-take"><p>Microsoft earns more per dollar of revenue; Apple earns more per dollar of capital. A single headline number would hide that.</p></div>
 
@@ -226,9 +226,9 @@ The Federal Reserve raised rates earlier and further, which shows best in the th
 
 {% include ft-chart.html id="claude-rates" src="/assets/data/article-charts.json" label="Inflation, policy rates and real policy rates in the US and the Eurozone" %}
 
-The real policy rate is the policy rate minus inflation, and the policy rates are annual averages.
+The real policy rate is the policy rate minus inflation, with German inflation standing in for the euro area against the ECB's rate, and the policy rates are annual averages.
 
-<div class="ca-take"><p>US policy was restrictive in real terms from 2023; the Eurozone only from 2024, after a real rate of −2.3% in 2023.</p></div>
+<div class="ca-take"><p>The US real rate turned positive in 2023; the ECB's, measured against German inflation, only in 2024, after −2.3% in 2023.</p></div>
 
 Every answer maps to a documented Finance Toolkit method, so you can look up exactly how a number was calculated in the [documentation](/projects/financetoolkit/docs). The [MCP server page](/projects/financetoolkit/mcp#example-conversations) has the full conversations for six more questions.
 

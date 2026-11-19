@@ -1,7 +1,7 @@
 ---
 title: How Microsoft Has Changed Since Its IPO
 date: 2026-06-14
-last_modified_at: 2026-11-18
+last_modified_at: 2026-11-19
 permalink: /articles/microsoft-financial-history-finance-toolkit
 excerpt: "Microsoft's revenue went from $198 million in 1986 to $282 billion in 2025. Under Steve Ballmer it nearly quadrupled while shareholders lost money, and forty years of financials show three different companies under one name."
 description: "Microsoft's financial history from its 1986 IPO to 2025: revenue growth by CEO era, margins, the balance sheet, free cash flow, ROE versus ROIC and valuation."
@@ -23,6 +23,9 @@ cover:
   link: "https://commons.wikimedia.org/wiki/File:US_Census_Bureau_computer_room_1980s.jpg"
   creator: "U.S. Census Bureau"
   license: "https://creativecommons.org/publicdomain/mark/1.0/"
+updates:
+  - date: 2026-11-19
+    note: "Goodwill before 2006 is missing in the data source, which reported zero; the chart now shows $3.1 and $3.3 billion for 2004 and 2005 from Microsoft's 2005 Annual Report. Added how finance leases affect capital expenditure and free cash flow."
 ---
 
 Microsoft went public on March 13, 1986 ([Wikipedia](https://en.wikipedia.org/wiki/History_of_Microsoft){:target="_blank"}). In the fiscal year that ended that June, its revenue was $198 million. In fiscal 2025 it was $282 billion, about 1,400 times as much, and a share bought at the IPO had risen more than 5,000-fold by the end of 2025.
@@ -111,7 +114,7 @@ Gross margin peaked at 92% in 1996, which is what pure software economics look l
 
 Net margin reached 41% in 2000, sat lower for most of the next two decades and was back at 36% in 2025. The two sharp dips are one-off charges: the $7.5 billion impairment of the phone business bought from Nokia in 2015 (as the 2015 Annual Report states it), and in 2018 a tax charge from the US tax reform of late 2017. Leaving those aside, the recovery comes from operating leverage. Revenue tripled between 2015 and 2025 while operating expenses grew much more slowly, so more of each extra dollar of cloud and subscription revenue was left as profit.
 
-## Goodwill Went From Zero to $120 Billion
+## Goodwill Went From $3 Billion to $120 Billion
 
 Microsoft's balance sheet went from a pile of cash to one carrying debt and the cost of its acquisitions. Goodwill, the part of an acquisition's price above the value of the assets bought, shows the buying, since it grows when a company buys instead of builds.
 
@@ -132,7 +135,7 @@ balance_sheet = balance_sheet.loc[["Cash and Short Term Investments", "Long Term
 
 For its first two decades Microsoft built rather than bought, and it carried no long-term debt to speak of. Cash piled up to $61 billion in 2004, until a special dividend in fiscal 2005 took it down to $38 billion. The first debt arrived in 2009. Microsoft did not need the money, but borrowing at low rates to fund buybacks was cheaper than bringing cash held abroad back to the US and paying tax on it. Long-term debt peaked at $76 billion in 2017 and was down to $40 billion by 2025.
 
-**Goodwill went from zero before 2006 to $120 billion in 2025, and most of it came under Nadella.** LinkedIn ($26 billion), Nuance ($20 billion) and Activision Blizzard ($69 billion) were the largest deals ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft){:target="_blank"}), and each shows up as a step in the line. Activision alone accounts for the jump in fiscal 2024, which is also the main reason the cash balance fell from its 2020 level.
+**Goodwill went from $3.3 billion in 2005 to $120 billion in 2025, and most of it came under Nadella.** LinkedIn ($26 billion), Nuance ($20 billion) and Activision Blizzard ($69 billion) were the largest deals ([Wikipedia](https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Microsoft){:target="_blank"}), and each shows up as a step in the line. Activision alone accounts for the jump in fiscal 2024, which is also the main reason the cash balance fell from its 2020 level.
 
 ## Capital Spending Rose From 6% to 23% of Revenue
 
@@ -156,6 +159,8 @@ cash_flow = cash_flow.loc[["Operating Cash Flow", "Capital Expenditure", "Free C
 Microsoft generated $72 billion in free cash flow in fiscal 2025. It comes from subscription and consumption revenue that grows without a matching rise in costs, and from customers who rarely leave once their work runs on Microsoft's software. That is my reading of it, since the cash flow statement shows how much cash came in and says nothing about why.
 
 The spending changed more than the cash coming in. Capital expenditure rose more than tenfold between 2015 and 2025, most of it on data centres for Azure and AI services, the same demand that [let NVIDIA overtake Intel among the large US chipmakers](/articles/semiconductor-sector-analysis-finance-toolkit), and went from 6% of revenue to 23%. Operating cash flow has grown fast enough to absorb it, but in 2015 about 80% of operating cash flow was left as free cash flow, and in 2025 only 53%. Whether this spending earns a return close to the old software business is the main capital allocation question for Microsoft, and the free cash flow line is where it shows first.
+
+The 23% understates the build-out. Part of Microsoft's data centre capacity comes through finance leases, which the cash flow statement leaves out of capital expenditure because no cash is paid up front. Microsoft counts them in its own figure: in the last quarter of fiscal 2025 it put capital expenditure at $24.2 billion, including $6.5 billion of finance leases, while cash paid for property and equipment was $17.1 billion ([earnings call](https://www.microsoft.com/en-us/investor/events/fy-2025/earnings-fy-2025-q4){:target="_blank"}). The lease repayments are reported under financing activities, so the usual free cash flow, operating cash flow minus capital expenditure, never counts most of that spending.
 
 ## Financing Lifted ROE and Inflation Lifted Growth
 
