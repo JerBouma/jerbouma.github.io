@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /models
     - /projects/financetoolkit/models-notebook
+    - /projects/financetoolkit/models-module
 sidebar:
     nav: "financetoolkit-docs-models"
 ---

@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /options
     - /projects/financetoolkit/options-notebook
+    - /projects/financetoolkit/options-module
 sidebar:
     nav: "financetoolkit-docs-options"
 ---

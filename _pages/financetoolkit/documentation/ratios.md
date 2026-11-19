@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /ratios
     - /projects/financetoolkit/ratios-notebook
+    - /projects/financetoolkit/ratios-module
     - /projects/financetoolkit/custom-ratios
 sidebar:
     nav: "financetoolkit-docs-ratios"

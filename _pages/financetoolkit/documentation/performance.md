@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /performance
     - /projects/financetoolkit/performance-notebook
+    - /projects/financetoolkit/performance-module
 sidebar:
     nav: "financetoolkit-docs-performance"
 ---

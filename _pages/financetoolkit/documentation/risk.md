@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /risk
     - /projects/financetoolkit/risk-notebook
+    - /projects/financetoolkit/risk-module
 sidebar:
     nav: "financetoolkit-docs-risk"
 ---
