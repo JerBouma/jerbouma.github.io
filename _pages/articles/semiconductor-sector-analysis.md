@@ -108,7 +108,7 @@ last_five = gross_margin.loc[:, "2021":"2025"].mean(axis=1)
 {% endcapture %}
 {% include ft-chart.html id="semis-margins" src="/assets/data/article-charts.json" label="Semiconductor gross margins" code=code_margins mcp="Show the gross margins of Intel, AMD, NVIDIA, Qualcomm, Broadcom and Texas Instruments since 2010, and the average of each over 2010 to 2014 and over 2021 to 2025." %}
 
-**Intel's gross margin fell from 66% in 2010 to 35% in 2025, the largest move in the chart.** The main cause is that Intel's own processes fell behind TSMC's, first by one process generation and then by two, so its chips cost more to make while competitors that use TSMC got better processes at a lower cost.
+**Intel's gross margin fell from 66% in 2010 to 35% in 2025, the largest move in the chart.** The fall matches the years in which Intel's own processes fell behind TSMC's, first by one process generation and then by two: its chips cost more to make, while competitors that use TSMC got better processes at a lower cost.
 
 NVIDIA went the other way, from 40% in 2010 to 71% in 2025, after a peak of 75% in 2024. With almost no competition in AI training hardware, it could charge what customers would pay.
 
@@ -217,7 +217,7 @@ Adding the two to the 2010 total lowers Intel's share that year from 54.0% to 48
 
 ## What This Means for Sector Analysis
 
-The six companies share a label, but only two pairs compete head to head, so comparing each company with its real rival says more than comparing it with the sector. In both pairs the gross margin and ROIC showed the direction before revenue did. The multiples only show what the market priced in at the end of 2025, and nothing in the statements says whether that will prove right.
+The six companies share a label, but only two pairs compete head to head, so comparing each company with its real rival says more than comparing it with the sector. For Intel and AMD the gross margin and ROIC showed the direction before revenue did; NVIDIA and AMD split on all three measures at once, from 2023. The multiples only show what the market priced in at the end of 2025, and nothing in the statements says whether that will prove right.
 
 When I look at this group again, I would start with Intel's gross margin next to AMD's, which shows whether Intel's foundry spending is closing the cost gap. Next to that, NVIDIA's gross margin and ROIC are where pressure from competitors, or from customers designing their own AI chips, would show up first. For AMD, ROIC is the number to follow as the Xilinx amortisation runs off.
 

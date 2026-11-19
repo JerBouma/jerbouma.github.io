@@ -100,7 +100,7 @@ A DCF is a pressure test: does the current price only make sense under aggressiv
 <div class="ca-nums"><span><b>$94.30</b>levered DCF value</span><span><b>$510.28</b>share price</span><span><b>5.4x</b>price over model value</span></div>
 </div>
 
-The model values the shares at $94.30 against a price of $510.28, so they trade at 5.4 times the model's value. A standard WACC-and-terminal-growth model can't capture a company compounding revenue in the 30%+ range, so the whole bull case for AXON has to rest on assumptions the template doesn't make for you. Running it leaves the valuation question open, and it shows how much of the investment case rests on judgment, which is worth knowing before writing the position up.
+The model values the shares at $94.30 against a price of $510.28, so they trade at 5.4 times the model's value. A DCF can price revenue compounding at 30% or more if it is given a separate high-growth stage, but FMP's template runs on its own default assumptions, so the whole bull case for AXON has to rest on assumptions the template doesn't make for you. Running it leaves the valuation question open, and it shows how much of the investment case rests on judgment, which is worth knowing before writing the position up.
 
 ## What Management Said: "We Passed the Inflection Point"
 
