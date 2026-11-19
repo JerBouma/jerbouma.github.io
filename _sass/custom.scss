@@ -7222,3 +7222,10 @@ body.article-document {
     }
   }
 }
+
+// Diagrams drawn ahead of time (_plugins/static_diagrams.rb): one SVG per theme
+.mermaid--static .mermaid__theme--light { display: none; }
+:root[data-theme="light"] .mermaid--static {
+  .mermaid__theme--dark { display: none; }
+  .mermaid__theme--light { display: block; }
+}
