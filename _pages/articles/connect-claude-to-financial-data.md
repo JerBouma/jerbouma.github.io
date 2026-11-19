@@ -2,7 +2,7 @@
 title: How to Connect Claude to Live Financial Data for Stock Analysis
 seo_title: "Connect Claude to Live Financial Data"
 date: 2026-09-11
-last_modified_at: 2026-11-18
+last_modified_at: 2026-11-19
 permalink: /articles/connect-claude-to-financial-data
 excerpt: "Claude cannot see today's prices or the latest financial statements on its own. With the free, hosted Finance Toolkit MCP server you connect Claude Desktop, claude.ai or Claude Code to live financial data and 500+ analysis methods in about a minute, no installation required."
 description: "Connect Claude to live financial data in a minute with the free Finance Toolkit MCP server: stock analysis, ratios, technical indicators and macro data."
@@ -25,6 +25,9 @@ cover:
   link: "https://commons.wikimedia.org/wiki/File:Edison_Stock_Telegraph_Ticker.jpg"
   creator: "H. Zimmer"
   license: "https://creativecommons.org/licenses/by/3.0/"
+updates:
+  - date: 2026-11-19
+    note: "Corrected the maximum drawdowns of Berkshire Hathaway, Visa, Costco and the S&P 500, which covered a shorter window than the VaR and CVaR, to January 2020 onwards; Berkshire now has the smallest fall and Visa the deepest. Also said that alpha here is the return above the S&P 500, not adjusted for beta."
 ---
 Ask Claude *"what is Apple's operating margin this year?"* and you get one of two answers: a polite explanation that it has no access to live data, or a confident number from its training data that may be a year or more out of date. Language models are good at reasoning about numbers, but they are not a data source, and asked to compute a return on invested capital from memory they tend to produce plausible-sounding mistakes.
 
@@ -143,7 +146,7 @@ All three carmakers ended 2025 below 1.8, the classic distress threshold for the
 
 {% include ft-chart.html id="claude-distress" src="/assets/data/article-charts.json" label="Altman Z-Score and Piotroski F-Score of Ford, GM and Stellantis" %}
 
-Stellantis moved the most, from 2.27 in 2023, when its operating result turned negative. A good answer adds the caveat: Ford and GM run large car-finance arms whose loan books inflate liabilities and push the score down structurally.
+Stellantis moved the most, from 2.27 in 2023 to 0.86 in 2025. A good answer adds the caveat: Ford and GM run large car-finance arms whose loan books inflate liabilities and push the score down structurally.
 
 <div class="ca-take"><p>Read the trend within each company, not the gap between them. Stellantis is the one that deteriorated.</p></div>
 
@@ -179,13 +182,13 @@ That death cross came on April 9, 2026, and there has been no golden cross since
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>Compute the Sharpe ratio, Sortino ratio, alpha and beta of Amazon, Alphabet and Meta against the S&P 500 since 2020.<span class="ca-q__tool">Finance Toolkit MCP · performance</span></p></div>
 
-<div class="ca-nums"><span><b>+168%</b>Meta alpha 2023</span><span><b>+48%</b>Alphabet alpha 2025</span><span><b>1.03</b>Alphabet beta 2025</span></div>
+<div class="ca-nums"><span><b>+168%</b>Meta above the S&P 500, 2023</span><span><b>+48%</b>Alphabet above the S&P 500, 2025</span><span><b>1.03</b>Alphabet beta 2025</span></div>
 
 All three did badly on every measure in 2022, and the lead changed hands in the years after:
 
 {% include ft-chart.html id="claude-performance" src="/assets/data/article-charts.json" label="Sharpe ratio, Sortino ratio, beta and alpha of Amazon, Alphabet and Meta" %}
 
-Meta led in 2023, after its "year of efficiency", and Alphabet in 2025, with the best alpha of the three and the lowest beta. The Sharpe and Sortino ratios are calculated within each year, so compare them with each other rather than with annualised figures elsewhere.
+Meta led in 2023, after its "year of efficiency", and Alphabet in 2025, with the best alpha of the three and the lowest beta. Alpha here is the return above the S&P 500, without an adjustment for beta; with Meta's beta of 1.76 in 2023, part of its lead came from moving more than the market in a rising year. The Sharpe and Sortino ratios are calculated within each year, so compare them with each other rather than with annualised figures elsewhere.
 
 <div class="ca-take"><p>No single winner: leadership rotated from Meta in 2023 to Alphabet in 2025.</p></div>
 
@@ -193,13 +196,13 @@ Meta led in 2023, after its "year of efficiency", and Alphabet in 2025, with the
 
 <div class="ca-q"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>What is the 95% Value at Risk and the maximum drawdown of Berkshire Hathaway, Visa and Costco since 2020?<span class="ca-q__tool">Finance Toolkit MCP · risk · VaR, CVaR, maximum drawdown</span></p></div>
 
-Berkshire looks safest on daily risk, but not on the worst fall since 2020:
+Berkshire looks safest on daily risk and on the worst fall since 2020, and Visa riskiest on both:
 
 {% include ft-chart.html id="claude-risk" src="/assets/data/article-charts.json" label="Value at Risk, CVaR and maximum drawdown of Berkshire Hathaway, Visa and Costco" %}
 
-Berkshire has the calmest days, with a daily VaR of −1.83%, close to the S&P 500. Visa has the fattest daily tail (CVaR −3.93%). But Costco had the smallest worst-case fall since 2020 (−20.3%), while Berkshire's −24.3% was slightly deeper than the market's.
+Berkshire has the calmest days, with a daily VaR of −1.83%, close to the S&P 500's −1.76%, and the smallest fall since 2020: −29.6%, against −33.7% for the market. Visa has the fattest daily tail (CVaR −3.93%) and the deepest fall, −36.4%. Both bottomed with the market on March 23, 2020. Costco's worst fall came two years later, −31.4% from April to May 2022.
 
-<div class="ca-take"><p>Daily risk and drawdown risk rank the same stocks differently. Ask for both.</p></div>
+<div class="ca-take"><p>Daily risk ranks these three the same way as their worst fall, but only the drawdown says when it hit: Costco's came in 2022, not in the 2020 crash. Ask for both.</p></div>
 
 ### How have unemployment rates developed since 2010? {#unemployment-since-2010}
 
