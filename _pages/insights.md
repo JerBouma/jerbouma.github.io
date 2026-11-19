@@ -14,14 +14,13 @@ classes: custom-document projects-v2 articles-v2
 author_profile: false
 ---
 
-I write about the economy, financial markets and how financial theory is applied in practice: macroeconomics, fundamental analysis, risk and derivatives, and how AI assistants can work with financial data. Most articles come with code you can run yourself with the [Finance Toolkit](/projects/financetoolkit).
+I write about the economy, financial markets and how financial theory is applied in practice: macroeconomics, fundamental analysis, risk and derivatives, and how AI assistants can work with financial data. Most articles come with code you can run yourself with the [Finance Toolkit](/projects/financetoolkit). A new part of the economic history series comes out every Sunday; to get every new article in a feed reader, use the [RSS feed](/feed.xml).
 
 {%- assign articles = site.pages | where: "collection", "article" | sort: "date" | reverse %}
 {%- assign all_tags = "" | split: "" %}
 {%- for art in articles %}{% for tag in art.tags %}{% unless all_tags contains tag %}{% assign all_tags = all_tags | push: tag %}{% endunless %}{% endfor %}{% endfor %}
 {%- assign all_tags = all_tags | sort_natural %}
 {%- assign latest = articles | first %}
-{%- assign latest_words = latest.content | number_of_words %}
 
 <div class="hp pj ar">
 
@@ -75,7 +74,6 @@ I write about the economy, financial markets and how financial theory is applied
   <div class="ar-grid" id="article-list">
   {%- for article in articles %}
     {%- assign slugs = "" | split: "" %}{% for tag in article.tags %}{% assign s = tag | slugify %}{% assign slugs = slugs | push: s %}{% endfor %}
-    {%- assign words = article.content | number_of_words %}
     <a href="{{ article.url | relative_url }}" class="ar-card{% if article.cover.image %} ar-card--cover{% endif %}" data-tags="{{ slugs | join: ' ' }}">
       {%- if article.cover.image %}<div class="ar-card__img">{% include article__thumb.html art=article %}</div>{% endif %}
       <p class="ar-meta">{{ article.date | date: "%b %-d, %Y" }} · {{ article.reading_minutes | default: 1 }} min read</p>
