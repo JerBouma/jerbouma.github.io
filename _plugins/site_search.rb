@@ -114,7 +114,16 @@ end
 
 Jekyll::Hooks.register :pages, :post_convert do |page|
   next unless SiteSearch.listed?(page)
-  SiteSearch.chunks[page.url.sub(/\.html\z/, "")] = SiteSearch.split(page.content.to_s)
+  chunks = SiteSearch.split(page.content.to_s)
+  # an article's standfirst and key points carry its findings and numbers but sit in
+  # the front matter: search each as a chunk of the text before the first heading
+  if page.data["collection"] == "article"
+    lead = [page.data["standfirst"], *Array(page.data["key_points"])].compact.map do |t|
+      t.to_s.gsub(/\[([^\]]+)\]\([^)]*\)/, '\1').gsub(/[*_`]/, "")
+    end
+    lead.reverse_each { |t| chunks.unshift(["", "", t]) }
+  end
+  SiteSearch.chunks[page.url.sub(/\.html\z/, "")] = chunks
 end
 
 Jekyll::Hooks.register :site, :post_write do |site|
