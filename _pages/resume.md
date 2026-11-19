@@ -5,6 +5,7 @@ description: "Quantitative Investment Strategist who analyzes financial informat
 permalink: /resume
 redirect_from:
   - /cv
+  - /about
 layout: single
 classes: custom-document resume-v2
 author_profile: false
