@@ -19,10 +19,10 @@ key_points:
   - "The cutoffs decide a lot: with a P/E limit of 18 only Merck is left, and Merck is the only name that passes in every variant."
 cover:
   image: /assets/images/articles/undervalued-stocks/cover.jpg
-  alt: "Three women bend over a harvested field to pick up the ears of wheat the harvesters left behind, with haystacks in the distance."
-  credit: "The Gleaners, Jean-François Millet, 1857, Musée d'Orsay, public domain"
-  link: "https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Millet_-_Gleaners_-_Google_Art_Project.jpg"
-  creator: "Jean-François Millet"
+  alt: "Three prospectors pan for gold beside a wooden sluice in a creek bed, 1889."
+  credit: "Washing and panning gold, Rockerville, 1889, John Grabill, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:Grabill_-_Washing_and_panning_gold.jpg"
+  creator: "John Grabill"
   license: "https://creativecommons.org/publicdomain/mark/1.0/"
 ---
 
