@@ -20,10 +20,10 @@ key_points:
 image: /assets/images/projects/FinanceToolkitMCP.jpg
 cover:
   image: /assets/images/articles/connect-claude-to-financial-data/cover.jpg
-  alt: "Astronauts and flight controllers crowd around a console in Mission Control during Apollo 13 in 1970, reading the live data."
-  credit: "Apollo 13 Mission Control (S70-34986), NASA Johnson Space Center, public domain"
-  link: "https://commons.wikimedia.org/wiki/File:Apollo_13_MCC_-_MSC_(s70-34986).jpg"
-  creator: "NASA Johnson Space Center"
+  alt: "Merchants and brokers trading in the arcaded courtyard of Amsterdam's old Exchange, around 1670."
+  credit: "The courtyard of the Old Exchange in Amsterdam, Job Berckheyde, c. 1670, Museum Boijmans Van Beuningen, public domain"
+  link: "https://commons.wikimedia.org/wiki/File:Berckheyde,_Job_Adriaensz.%E2%80%94Binnenplaats_van_de_Oude_Beurs_te_Amsterdam_na_1668%E2%80%94c.1670%E2%80%94Museum_Boijmans_Van_Beuningen%E2%80%941043_(OK)%E2%80%94WD_item_Q19924911.jpg"
+  creator: "Job Berckheyde"
   license: "https://creativecommons.org/publicdomain/mark/1.0/"
 updates:
   - date: 2026-11-19
