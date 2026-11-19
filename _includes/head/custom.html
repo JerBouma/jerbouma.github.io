@@ -24,7 +24,10 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <script>
   window.MathJax = {
-    output: { displayOverflow: "linebreak" }
+    output: { displayOverflow: "linebreak" },
+    // screen readers get each formula as hidden MathML, which they read natively;
+    // MathJax's own speech generation (about 1.2 MB of extra downloads) stays off
+    options: { menuOptions: { settings: { enrich: false, speech: false, braille: false, assistiveMml: true } } }
   };
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-chtml.js"></script>
