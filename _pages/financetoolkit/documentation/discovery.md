@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /discovery
     - /projects/financetoolkit/discovery-notebook
+    - /projects/financetoolkit/discovery-module
 sidebar:
     nav: "financetoolkit-docs-discovery"
 ---

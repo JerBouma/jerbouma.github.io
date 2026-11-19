@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /portfolio
     - /projects/financetoolkit/portfolio-notebook
+    - /projects/financetoolkit/portfolio-module
 sidebar:
     nav: "financetoolkit-docs-portfolio"
 ---

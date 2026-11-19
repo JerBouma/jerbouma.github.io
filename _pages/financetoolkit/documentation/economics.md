@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /economics
     - /projects/financetoolkit/economics-notebook
+    - /projects/financetoolkit/economics-module
 sidebar:
     nav: "financetoolkit-docs-economics"
 ---

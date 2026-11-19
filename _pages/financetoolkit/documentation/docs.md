@@ -9,6 +9,7 @@ classes: wide-sidebar
 layout: single
 redirect_from:
     - /docs
+    - /financetoolkit/docs
     - /projects/financetoolkit/getting-started
 sidebar:
     nav: "financetoolkit-docs"

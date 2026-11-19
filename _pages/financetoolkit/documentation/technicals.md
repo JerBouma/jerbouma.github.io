@@ -11,6 +11,7 @@ layout: single
 redirect_from:
     - /technicals
     - /projects/financetoolkit/technicals-notebook
+    - /projects/financetoolkit/technicals-module
 sidebar:
     nav: "financetoolkit-docs-technicals"
 ---
