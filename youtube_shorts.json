@@ -1,5 +1,12 @@
 [
   {
+    "id": "LXJbVGM42Dk",
+    "title": "Jobless claims, explained: why few layoffs don't mean easy hiring #Jobs #Economy #Shorts",
+    "published": "2026-11-19T15:57:19+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nInitial jobless claims count the Americans who lost a job and filed their first claim for state unemployment pay, each week, seasonally adjusted. In the week to 14 November 2026 there were 203K, close to the lowest level in decades: from 1970 until the pandemic, only six weeks were this low. Employers are keeping their staff, but they hire slowly, and Reuters reported a jump in continuing claims to 1.763 million. Claims only rise once layoffs start. In early March 2020 they stood at 208K, and in the week to 4 April 2020 at 6.1M.\n\nFormula: initial claims = new state filings / seasonal factor.\n\nData: US Department of Labor via FRED (weekly from 1967), OECD unemployment rate, through the Finance Toolkit MCP.\n\nNews: Reuters (19 Nov 2026; 26 Mar 2020), The Wall Street Journal (27 Dec 2025), Fortune (7 Jan 2026).\n\nhttps://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Jobs #Economy #Shorts",
+    "series": "finance"
+  },
+  {
     "id": "wyktcJDSbXE",
     "title": "Debt service ratio, explained: why 7.1% mortgages barely touch US households #economy #mortgages",
     "published": "2026-11-18T20:09:15+00:00",
