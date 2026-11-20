@@ -158,7 +158,8 @@
     "height": 900{% if page.cover.alt %},
     "caption": {{ page.cover.alt | jsonify }}{% endif %}{% if page.cover.credit %},
     "creditText": {{ page.cover.credit | jsonify }}{% endif %}{% if page.cover.creator %},
-    "creator": { "@type": "Person", "name": {{ page.cover.creator | jsonify }} }{% endif %}{% if page.cover.license %},
+    "creator": { "@type": "Person", "name": {{ page.cover.creator | jsonify }} }{% endif %}{% assign _cn = page.cover.copyright %}{% unless _cn %}{% if page.cover.license contains "publicdomain/zero" %}{% assign _cn = "Public domain (CC0 1.0)" %}{% elsif page.cover.license contains "publicdomain/mark" %}{% assign _cn = "Public domain" %}{% endif %}{% endunless %}{% if _cn %},
+    "copyrightNotice": {{ _cn | jsonify }}{% endif %}{% if page.cover.license %},
     "license": {{ page.cover.license | jsonify }}{% endif %}{% if page.cover.link %},
     "acquireLicensePage": {{ page.cover.link | jsonify }}{% endif %}
   }]{% else %}{% assign _article_img = page.header.og_image | default: page.image %}{% if _article_img %},
