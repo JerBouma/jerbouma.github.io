@@ -1,5 +1,12 @@
 [
   {
+    "id": "JeZOsx3Vp6s",
+    "title": "The VIX, explained: why the fear gauge can't say where stocks go #Stocks #Investing #Shorts",
+    "published": "2026-11-20T15:57:17+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nThe VIX is the swing in the S&P 500 that option prices imply for the next 30 days, written as a yearly percentage. It closed at 28.4 on Thursday 19 November 2026, up from 19.3 a week earlier and its highest close since 30 March, as investors sold chip and AI shares on doubts about the payoff of AI spending. About 9 in 10 closes since 1990 were lower. Divided by the square root of 12, a reading of 28.4 means a typical move of about 8% within a month, up or down. Its record close of 82.7 on 16 March 2020 came a week before the market's low. After its 2008 peak of 80.9, stocks kept falling for months.\n\nFormula: monthly swing ≈ VIX / √12.\n\nData: Cboe via FinancialModelingPrep and Yahoo Finance, through the Finance Toolkit MCP.\n\nNews: CNBC (20 Nov 2026; 17 Nov 2026; 16 Mar 2020).\n\nhttps://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#Stocks #Investing #Shorts",
+    "series": "finance"
+  },
+  {
     "id": "LXJbVGM42Dk",
     "title": "Jobless claims, explained: why few layoffs don't mean easy hiring #Jobs #Economy #Shorts",
     "published": "2026-11-19T15:57:19+00:00",
