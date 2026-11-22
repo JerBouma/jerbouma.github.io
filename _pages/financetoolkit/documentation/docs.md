@@ -254,7 +254,7 @@ Which returns:
 ---
 
 ## risk
-This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models. It also houses cross-asset systemic risk and liquidity measures (CoVaR, Tail Dependence, Amihud Illiquidity, Roll Spread).
+This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models. It also houses cross-asset systemic risk and liquidity measures (CoVaR, Marginal Expected Shortfall, SRISK, Tail Dependence, Amihud Illiquidity, Roll Spread).
 
 Note that the time-series diagnostic and econometric tests (unit root tests, cointegration, Granger causality, ARCH-LM, Jarque-Bera and similar tests) live in the separate Econometrics module instead.
 
@@ -1018,6 +1018,8 @@ Volatility is not included here. This is available as a dedicated calculation in
 
 Keep in mind that this data is available for a shorter period. This means that the start date is ignored if the difference between the start and end date is bigger than the maximum period.
 
+The data covers the start date to the end date of the Toolkit, both days included. It is retrieved once per period, return_column and fill_nan, so calling again with other values retrieves it again.
+
 If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
 
 Please note that this functionality is only available through Financial Modeling Prep. Therefore, an api_key is required to use this functionality.
@@ -1030,7 +1032,8 @@ Please note that this functionality is only available through Financial Modeling
 Defaults to "1hour".
 - <u>return_column (str, optional):</u> The column to use for the return calculation. Defaults to "Close".
 - <u>fill_nan (bool, optional):</u> Defines whether to forward fill NaN values. Defaults to True.
-- <u>rounding (int &#124; None, optional):</u> Defines the number of decimal places to round the data to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> Defines the number of decimal places to round the data to. Defaults to
+None, which uses the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2418,8 +2421,8 @@ rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool):</u> Defines whether to return the growth of the data. Defaults to False.
 - <u>lag (int &#124; list[int]):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated. Defaults to None, which uses no trailing
-window.
+E.g. when selecting 4 with quarterly data, the TTM is calculated. The window counts calendar periods, so a
+period without a report makes it NaN. Defaults to None, which uses no trailing window.
 - <u>compound (bool):</u> Defines whether the growth is the compound annual growth rate over the lag
 (e.g. lag=5, or lag=20 with quarterly data, for the five-year CAGR) instead of the total change.
 Defaults to False.
@@ -2479,8 +2482,8 @@ rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool):</u> Defines whether to return the growth of the data. Defaults to False.
 - <u>lag (int &#124; list[int]):</u> Defines the number of periods to lag the growth data by. Defaults to 1.
 - <u>trailing (int):</u> Defines whether to select a trailing period.
-E.g. when selecting 4 with quarterly data, the TTM is calculated. Defaults to None, which uses no trailing
-window.
+E.g. when selecting 4 with quarterly data, the TTM is calculated. The window counts calendar periods, so a
+period without a report makes it NaN. Defaults to None, which uses no trailing window.
 - <u>compound (bool):</u> Defines whether the growth is the compound annual growth rate over the lag
 (e.g. lag=5, or lag=20 with quarterly data, for the five-year CAGR) instead of the total change.
 Defaults to False.

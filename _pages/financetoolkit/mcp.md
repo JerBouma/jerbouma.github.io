@@ -4,7 +4,7 @@ title: Finance Toolkit MCP Server
 seo_title: "Finance Toolkit MCP Server: Financial Data for Claude and AI"
 seo_title_suffix: false
 excerpt: "Connect Claude, ChatGPT, Cursor, VS Code or any other MCP client to the Finance Toolkit, hosted or on your own machine, and analyze stocks, financial statements, technical indicators and macro data in plain English."
-description: "Open-source MCP server for stock analysis: 600+ financial methods, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
+description: "Open-source MCP server for stock analysis: 700+ financial methods, valuation models, technical indicators and macro data in Claude, ChatGPT or Cursor."
 classes: wide-sidebar
 author_profile: false
 layout: single
@@ -23,12 +23,12 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
   <div class="mcp-video-wrapper ft-hero__video">
     <video class="mcp-demo-video" autoplay muted playsinline controls preload="auto" width="1920" height="1080"
            poster="/assets/images/projects/financetoolkit-mcp-launch.jpg"
-           aria-label="Questions answered with charts by the Finance Toolkit MCP server: every answer fully transparent and reproducible, 600+ metrics, and it works with Claude, Copilot, Cursor and any other MCP client.">
+           aria-label="Questions answered with charts by the Finance Toolkit MCP server: every answer fully transparent and reproducible, 700+ metrics, and it works with Claude, Copilot, Cursor and any other MCP client.">
       <source src="/assets/video/financetoolkit-mcp-launch.mp4" type="video/mp4">
     </video>
   </div>
   <div class="mcp-facts ft-hero__facts">
-    <div class="mcp-fact"><strong>600+</strong><span>metrics in 25 tools, plus 3 for search</span></div>
+    <div class="mcp-fact"><strong>700+</strong><span>metrics in 25 tools, plus 3 for search</span></div>
     <div class="mcp-fact"><strong>Calculated</strong><span>not recalled: the same number in any model</span></div>
     <div class="mcp-fact"><strong>Free</strong><span>hosted, or run locally; MIT-licensed</span></div>
     <div class="mcp-fact"><strong>Any client</strong><span>Claude, ChatGPT, Copilot, Cursor and more</span></div>
@@ -37,7 +37,7 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
 
 Ask an AI assistant for Apple's return on invested capital and you will usually get a number. Whether it is right depends on what the model remembers from its training data, which of the several definitions it picked and whether the arithmetic held up along the way. Ask twice and you may get two different answers.
 
-The Finance Toolkit MCP server takes the calculation out of the model's hands. It is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that connects Claude, ChatGPT, GitHub Copilot, Cursor, Gemini and other assistants to the [Finance Toolkit](/projects/financetoolkit): current financial statements and market data, and 600+ documented methods that turn them into ratios, valuations, risk metrics, technical indicators and macroeconomic series. The assistant decides what to calculate and explains the result; the numbers themselves come from code you can read.
+The Finance Toolkit MCP server takes the calculation out of the model's hands. It is an open-source [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"} (MCP) server that connects Claude, ChatGPT, GitHub Copilot, Cursor, Gemini and other assistants to the [Finance Toolkit](/projects/financetoolkit): current financial statements and market data, and 700+ documented methods that turn them into ratios, valuations, risk metrics, technical indicators and macroeconomic series. The assistant decides what to calculate and explains the result; the numbers themselves come from code you can read.
 
 ## Why the Finance Toolkit MCP
 
@@ -632,7 +632,7 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" id="faq-tools" markdown="1">
   <summary><h3>Which tools does the server expose?</h3></summary>
 
-  The 600+ Finance Toolkit methods are grouped into 25 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus three search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns compact JSON, with rates and ratios as decimals (`0.05` is 5%).
+  The 700+ Finance Toolkit methods are grouped into 25 categorical tools, each taking an `indicator` parameter that selects the exact metric (e.g. `valuation` with `indicator='get_price_to_earnings_ratio'`), plus three search tools to navigate them. You never pick these by hand: the assistant chooses the tool and indicator from your plain-English question. Equity tools accept `tickers` (e.g. `'AAPL,MSFT'`), macro tools accept `countries` (e.g. `'United States,Germany'`), and all accept `start_date`, `end_date` and `quarterly`. Every tool returns compact JSON, with rates and ratios as decimals (`0.05` is 5%).
 
 | Category | Tool | Description |
 |:---|:---|:---|
@@ -693,7 +693,7 @@ The questions that come up most often about the server, its data sources and how
 <details class="ft-details" markdown="1">
   <summary><h3>How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?</h3></summary>
 
-  Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 600+ metrics, ratios, models and indicators with the open-source [Finance Toolkit](/projects/financetoolkit) code, so the numbers are consistent, documented and reproducible regardless of which model you use. [Why the Finance Toolkit MCP](#why-the-finance-toolkit-mcp) goes into this in more depth.
+  Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 700+ metrics, ratios, models and indicators with the open-source [Finance Toolkit](/projects/financetoolkit) code, so the numbers are consistent, documented and reproducible regardless of which model you use. [Why the Finance Toolkit MCP](#why-the-finance-toolkit-mcp) goes into this in more depth.
 
 </details>
 
@@ -763,7 +763,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "Which tools does the server expose?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The 600+ Finance Toolkit methods are grouped into 25 categorical tools, each taking an indicator parameter that selects the exact metric, plus three search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, etf, portfolio, portfolio_performance, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_metric_categories, search_by_category and search_metrics. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns compact JSON, with rates and ratios as decimals (0.05 is 5%). Looking up a ticker by name or ISIN is left to the Finance Database MCP server."
+        "text": "The 700+ Finance Toolkit methods are grouped into 25 categorical tools, each taking an indicator parameter that selects the exact metric, plus three search tools to navigate them: discovery, market_data, environment, performance, risk, options, econometrics, etf, portfolio, portfolio_performance, efficiency, liquidity, profitability, solvency, valuation, models, momentum, overlap, volatility, breadth, macroeconomics, government, jobs, rates, fixed_income, search_metric_categories, search_by_category and search_metrics. The assistant chooses the tool and indicator from your plain-English question; equity tools accept tickers, macro tools accept countries, and all accept start_date, end_date and quarterly. Every tool returns compact JSON, with rates and ratios as decimals (0.05 is 5%). Looking up a ticker by name or ISIN is left to the Finance Database MCP server."
       }
     },
     {
@@ -779,7 +779,7 @@ The questions that come up most often about the server, its data sources and how
       "name": "How is this different from the Financial Modeling Prep or Yahoo Finance MCP servers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 600+ metrics, ratios, models and indicators with the open-source Finance Toolkit code, so the numbers are consistent, documented and reproducible regardless of which model you use. Why the Finance Toolkit MCP goes into this in more depth."
+        "text": "Those servers return raw data and leave the calculations to the language model. The Finance Toolkit MCP computes 700+ metrics, ratios, models and indicators with the open-source Finance Toolkit code, so the numbers are consistent, documented and reproducible regardless of which model you use. Why the Finance Toolkit MCP goes into this in more depth."
       }
     }
   ]
@@ -808,9 +808,9 @@ The questions that come up most often about the server, its data sources and how
     "name": "Jeroen Bouma",
     "url": "https://www.jeroenbouma.com"
   },
-  "description": "Open-source Model Context Protocol server that gives Claude, ChatGPT, Cursor, VS Code and other AI assistants access to 600+ financial analysis methods: ratios, valuation models, technical indicators, risk metrics and macroeconomic data.",
+  "description": "Open-source Model Context Protocol server that gives Claude, ChatGPT, Cursor, VS Code and other AI assistants access to 700+ financial analysis methods: ratios, valuation models, technical indicators, risk metrics and macroeconomic data.",
   "featureList": [
-    "600+ financial methods, models and indicators",
+    "700+ financial methods, models and indicators",
     "Hosted server, no installation required",
     "OAuth 2.1 with PKCE, API key never stored",
     "Macroeconomic data for 60+ countries",

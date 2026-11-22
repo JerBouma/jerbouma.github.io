@@ -481,3 +481,68 @@ get_signals:
     signals_only: true
     show_columns: Moving Average Crossover
     limit: -5
+get_price_volume_trend:
+  question: How did the price volume trend of Apple and Microsoft, counted from the start of 2021, move from 24 to 31 December 2025?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_percentage_volume_oscillator:
+  question: How did the Percentage Volume Oscillator of Nvidia, with its signal line and histogram, move from 24 to 31 December 2025?
+  tool: momentum
+  arguments:
+    tickers: NVDA
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_stochastic_relative_strength_index:
+  question: How did the Stochastic RSI of Nvidia move from 24 to 31 December 2025?
+  tool: momentum
+  arguments:
+    tickers: NVDA
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_true_strength_index:
+  question: How did the True Strength Index of Microsoft and its signal line move from 24 to 31 December 2025?
+  tool: momentum
+  arguments:
+    tickers: MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_coppock_curve:
+  question: How did the monthly Coppock curve of the S&P 500 move from August to December 2025?
+  tool: momentum
+  arguments:
+    tickers: ^GSPC
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    period: monthly
+    limit: -5
+get_bollinger_percent_b_and_bandwidth:
+  question: Where did Apple trade within its Bollinger Bands (%B), and how wide were the bands, from 24 to 31 December 2025?
+  tool: volatility
+  arguments:
+    tickers: AAPL
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_mass_index:
+  question: How did the Mass Index of Amazon and Alphabet move from 24 to 31 December 2025?
+  tool: volatility
+  arguments:
+    tickers: AMZN,GOOGL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_chandelier_exit:
+  question: Where were Tesla's Chandelier Exit stops for long and short positions from 24 to 31 December 2025?
+  tool: volatility
+  arguments:
+    tickers: TSLA
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    limit: -5

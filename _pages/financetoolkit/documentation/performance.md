@@ -77,13 +77,13 @@ toolkit.performance.collect_all_metrics().xs("AAPL", level=1, axis=1)
 
 Which returns:
 
-|      |    Alpha |   Beta |     CAPM |   Jensen's Alpha |   Treynor Ratio |   Sharpe Ratio |   Sortino Ratio |   Ulcer Performance Index |   Calmar Ratio |   Sterling Ratio |   Burke Ratio |   Omega Ratio |   Kappa Ratio |   Gain to Pain Ratio |   Win Rate |   Upside Capture Ratio |   Downside Capture Ratio |   M2 Ratio |   Tracking Error |   Information Ratio |   Appraisal Ratio |   STARR Ratio |   Rachev Ratio |   Returns |   Excess Return |
-|:-----|---------:|-------:|---------:|-----------------:|----------------:|---------------:|----------------:|--------------------------:|---------------:|-----------------:|--------------:|--------------:|--------------:|---------------------:|-----------:|-----------------------:|-------------------------:|-----------:|-----------------:|--------------------:|------------------:|--------------:|---------------:|----------:|----------------:|
-| 2022 |  -0.0822 | 1.3025 |  -0.2458 |          -0.0182 |         -0.2254 |        -0.0482 |         -0.0675 |                   -4.4186 |        -0.8706 |          -1.0669 |       -0.1137 |        0.8943 |       -0.052  |              -0.1057 |     0.4781 |                 1.3036 |                   1.3242 |    -0.1698 |           0.0115 |             -0.025  |           -0.1098 |       -0.4128 |         1.0788 |   -0.2638 |         -0.2934 |
-| 2023 |   0.2283 | 1.1148 |   0.2873 |           0.2028 |          0.4041 |         0.1189 |          0.1839 |                   13.8927 |         3.2719 |           3.3669 |        0.5152 |        1.4099 |        0.1284 |               0.4099 |     0.576  |                 1.1755 |                   0.9726 |     0.3296 |           0.009  |              0.0794 |            1.44   |        1.0736 |         1.0726 |    0.489  |          0.4494 |
-| 2024 |   0.0583 | 0.9686 |   0.2423 |           0.0648 |          0.2736 |         0.07   |          0.1071 |                    7.7225 |         1.9958 |           1.9699 |        0.2621 |        1.2509 |        0.0767 |               0.2509 |     0.5    |                 1.1049 |                   1.0583 |     0.189  |           0.0121 |              0.0207 |            0.3386 |        0.5644 |         1.1443 |    0.3069 |          0.2648 |
-| 2025 |  -0.0867 | 1.2551 |   0.2115 |          -0.121  |          0.0379 |         0.0188 |          0.0283 |                    0.9488 |         0.2913 |           0.445  |        0.0249 |        1.0903 |        0.0186 |               0.0903 |     0.472  |                 1.0147 |                   1.1139 |     0.0714 |           0.0139 |             -0.0127 |           -0.5668 |        0.0659 |         1.0729 |    0.0904 |          0.0475 |
-| 2021 | nan      | 1.3196 | nan      |         nan      |        nan      |         0.0859 |          0.129  |                  nan      |       nan      |         nan      |      nan      |        1.2632 |        0.0943 |               0.2632 |     0.4921 |                 1.3706 |                   1.432  |   nan      |           0.0118 |              0.0266 |          nan      |      nan      |         0.9957 |    0.3811 |          0.3667 |
+|      |    Alpha |   Beta |     CAPM |   Jensen's Alpha |   Treynor Ratio |   Sharpe Ratio |   Safety-First Ratio |   Sortino Ratio |   Upside Potential Ratio |   Ulcer Performance Index |   Calmar Ratio |   Sterling Ratio |   Burke Ratio |   Pain Ratio |   Omega Ratio |   Kappa Ratio |   Gain to Pain Ratio |   Win Rate |   Upside Capture Ratio |   Downside Capture Ratio |   M2 Ratio |   Tracking Error |   Information Ratio |   Appraisal Ratio |   STARR Ratio |   Rachev Ratio |   Returns |   Excess Return |
+|:-----|---------:|-------:|---------:|-----------------:|----------------:|---------------:|---------------------:|----------------:|-------------------------:|--------------------------:|---------------:|-----------------:|--------------:|-------------:|--------------:|--------------:|---------------------:|-----------:|-----------------------:|-------------------------:|-----------:|-----------------:|--------------------:|------------------:|--------------:|---------------:|----------:|----------------:|
+| 2022 |  -0.0823 | 1.3027 |  -0.2457 |          -0.0184 |         -0.2253 |        -0.0483 |              -0.0431 |         -0.0676 |                   0.5071 |                   -1.7999 |        -0.87   |          -1.067  |       -0.1136 |      -1.9984 |        0.8941 |       -0.0521 |              -0.1059 |     0.4781 |                 1.3037 |                   1.3243 |    -0.1699 |           0.0115 |             -0.025  |           -0.1106 |       -0.4074 |         1.0649 |   -0.264  |         -0.2935 |
+| 2023 |   0.2283 | 1.1139 |   0.2871 |           0.203  |          0.4045 |         0.1191 |               0.1312 |          0.1843 |                   0.6867 |                    8.175  |         3.282  |           3.3708 |        0.517  |      12.346  |        1.4108 |        0.1286 |               0.4108 |     0.588  |                 1.1755 |                   0.9847 |     0.3297 |           0.009  |              0.0797 |            1.4414 |        1.0738 |         1.0942 |    0.4901 |          0.4505 |
+| 2024 |   0.0582 | 0.9687 |   0.2424 |           0.0647 |          0.2732 |         0.0701 |               0.0815 |          0.1072 |                   0.6117 |                    4.1633 |         1.9997 |           1.971  |        0.2623 |       5.4831 |        1.251  |        0.0767 |               0.251  |     0.504  |                 1.1048 |                   1.0687 |     0.1891 |           0.0121 |              0.0208 |            0.3379 |        0.5637 |         1.1444 |    0.3071 |          0.2646 |
+| 2025 |  -0.0867 | 1.2551 |   0.2114 |          -0.1209 |          0.0379 |         0.0189 |               0.027  |          0.0283 |                   0.4827 |                    0.3943 |         0.2913 |           0.4451 |        0.0249 |       0.4983 |        1.0903 |        0.0187 |               0.0903 |     0.472  |                 1.015  |                   1.1072 |     0.0715 |           0.0139 |             -0.0126 |           -0.5667 |        0.0659 |         1.0731 |    0.0905 |          0.0476 |
+| 2021 | nan      | 1.3195 | nan      |         nan      |        nan      |         0.0858 |               0.0894 |          0.1289 |                   0.642  |                  nan      |       nan      |         nan      |      nan      |     nan      |        1.2629 |        0.0942 |               0.2629 |     0.494  |                 1.3706 |                   1.4316 |   nan      |           0.0118 |              0.0267 |          nan      |      nan      |         0.9961 |    0.3806 |          0.3663 |
 
 ---
 
@@ -226,7 +226,7 @@ The Beta of each period is estimated from the daily returns over the `beta_windo
 Three measures put the Residual in context. The Residual Value is the Residual in money: the market value the asset's own move added or took away, the Residual times the market capitalization at the close before the period. The Residual Percentile and the Residual Largest Since measure the Residual against the earlier residuals, as `get_move_significance` does for the return itself: the Percentile is the share of the earlier residuals that were smaller in size and Largest Since the date of the last residual at least as large in the same direction ("the largest stock-specific fall since"), so the whole history counts without returning it.
 
 - Residual Value = Residual × Market Cap at the previous close
-- Residual Percentile(t) = Count(&#124;Residual(s)&#124; < &#124;Residual(t)&#124;, s < t) / Count(s < t)
+- Residual Percentile(t) = (Count(&#124;Residual(s)&#124; < &#124;Residual(t)&#124;, s < t) + 0.5 · Count(&#124;Residual(s)&#124; = &#124;Residual(t)&#124;, s < t)) / Count(s < t)
 - Residual Largest Since(t) = max(s < t : Residual(s) <= Residual(t)) if Residual(t) < 0, and max(s < t : Residual(s) >= Residual(t)) if Residual(t) > 0
 
 **See definition:** [https://en.wikipedia.org/wiki/Single-index_model](https://en.wikipedia.org/wiki/Single-index_model){:target="_blank"}
@@ -291,16 +291,16 @@ toolkit.performance.get_beta_implied_return().loc["2026-11-05"].unstack(sort=Fal
 
 Which returns:
 
-|                        | NVDA              | KO               | AMD               | TSLA              |
-|:-----------------------|:------------------|:-----------------|:------------------|:------------------|
-| Beta                   | 1.8763            | -0.2785          | 3.2862            | 2.1033            |
-| Benchmark Return       | -0.0441           | -0.0441          | -0.0441           | -0.0441           |
-| Implied Return         | -0.0827           | 0.0123           | -0.1449           | -0.0927           |
-| Actual Return          | -0.0926           | -0.0007          | -0.1726           | -0.1077           |
-| Residual               | -0.0099           | -0.013           | -0.0277           | -0.015            |
-| Residual Value         | -48381834809.5885 | -5375271284.7669 | -22181273645.0303 | -20387379231.5616 |
-| Residual Percentile    | 0.4241            | 0.8493           | 0.7588            | 0.4896            |
-| Residual Largest Since | 2026-11-04        | 2026-10-27       | 2026-11-04        | 2026-11-04        |
+|                        | NVDA              | KO              | AMD              | TSLA              |
+|:-----------------------|:------------------|:----------------|:-----------------|:------------------|
+| Beta                   | 1.8764            | -0.2779         | 3.2862           | 2.1033            |
+| Benchmark Return       | -0.0441           | -0.0441         | -0.0441          | -0.0441           |
+| Implied Return         | -0.0827           | 0.0123          | -0.1449          | -0.0927           |
+| Actual Return          | -0.0926           | -0.0007         | -0.1726          | -0.1077           |
+| Residual               | -0.0099           | -0.013          | -0.0277          | -0.015            |
+| Residual Value         | -48347086729.0694 | -5363943888.836 | -22181169537.895 | -20387104458.3291 |
+| Residual Percentile    | 0.4231            | 0.8482          | 0.7588           | 0.4896            |
+| Residual Largest Since | 2026-11-04        | 2026-10-27      | 2026-11-04       | 2026-11-04        |
 
 ---
 
@@ -377,11 +377,11 @@ Which returns:
 
 | Date   |     JPM |      GS |      MS |
 |:-------|--------:|--------:|--------:|
-| 2021   |  0.2426 |  0.2808 |  0.3177 |
-| 2022   | -0.1567 | -0.173  | -0.1915 |
-| 2023   |  0.2334 |  0.276  |  0.3055 |
+| 2021   |  0.2425 |  0.2807 |  0.3175 |
+| 2022   | -0.1567 | -0.173  | -0.1912 |
+| 2023   |  0.2333 |  0.2759 |  0.3056 |
 | 2024   |  0.2077 |  0.28   |  0.2632 |
-| 2025   |  0.1702 |  0.221  |  0.2174 |
+| 2025   |  0.1702 |  0.221  |  0.2173 |
 
 ---
 
@@ -932,11 +932,11 @@ Which returns:
 
 | Date   |     UNH |     JNJ |     PFE |
 |:-------|--------:|--------:|--------:|
-| 2021   |  0.2601 | -0.0093 |  0.6493 |
-| 2022   |  0.1608 |  0.0945 | -0.0261 |
-| 2023   | -0.0951 | -0.2013 | -0.5539 |
-| 2024   | -0.0911 | -0.0803 | -0.1158 |
-| 2025   | -0.4155 |  0.4249 | -0.0976 |
+| 2021   |  0.2601 | -0.0092 |  0.6494 |
+| 2022   |  0.1608 |  0.0946 | -0.0263 |
+| 2023   | -0.095  | -0.2012 | -0.5535 |
+| 2024   | -0.0914 | -0.0806 | -0.1165 |
+| 2025   | -0.4154 |  0.4249 | -0.0975 |
 
 ---
 
@@ -1005,11 +1005,11 @@ Which returns:
 
 | Date   |     UNP |     UPS |     FDX |
 |:-------|--------:|--------:|--------:|
-| 2021   |  0.2344 |  0.3677 | -0.0077 |
-| 2022   | -0.2789 | -0.2134 | -0.3426 |
-| 2023   |  0.2003 | -0.0898 |  0.4279 |
-| 2024   | -0.163  | -0.3386 |  0.1571 |
-| 2025   | -0.0065 | -0.2648 |  0.008  |
+| 2021   |  0.2343 |  0.3679 | -0.0076 |
+| 2022   | -0.2787 | -0.2133 | -0.3425 |
+| 2023   |  0.2005 | -0.0898 |  0.4281 |
+| 2024   | -0.1635 | -0.339  |  0.1565 |
+| 2025   | -0.0065 | -0.265  |  0.008  |
 
 ---
 
@@ -1070,7 +1070,7 @@ $$
 
 Where $$\widehat{\text{SR}}$$ is the observed Sharpe ratio, $$S (\gamma_{3})$$ is the skewness and $$K (\gamma_{4})$$ the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, $$\gamma \approx 0.5772$$ is the Euler-Mascheroni constant and $$\Phi$$ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
 
-This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of valid (non-NaN) values in that same rolling series. That series is built from the same returns as the Sharpe ratio being deflated, so both are on the same scale: the daily excess returns (the observations within each period) for the Sharpe ratio per period, and the excess returns of `period` itself for a rolling Sharpe ratio. This treats each rolling window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
+This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of non-overlapping `trials_window`-sized windows in that return history (at least 1): overlapping windows share most of their returns, so counting each of them as a trial would overstate N (Bailey and Lopez de Prado, 2014). That series is built from the same returns as the Sharpe ratio being deflated, so both are on the same scale: the daily excess returns (the observations within each period) for the Sharpe ratio per period, and the excess returns of `period` itself for a rolling Sharpe ratio. This treats each window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
 
 **See definition:** [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedia.org/wiki/Sharpe_ratio){:target="_blank"}
 
@@ -1082,6 +1082,7 @@ This codebase does not track "N literal strategy trials" - there is no record of
 initialised with quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
+Defaults to None, which calculates the Sharpe ratio within each period.
 - <u>method (str, optional):</u> Which Sharpe ratio to calculate, one of "standard", "lo",
 "adjusted", "probabilistic" or "deflated", as described above. Defaults to "standard".
 - <u>benchmark_sharpe_ratio (float, optional):</u> The hypothesized or benchmark Sharpe ratio
@@ -1091,16 +1092,17 @@ Defaults to 0.0, i.e. testing whether the strategy has any skill at all above do
 series that approximates `Var[SR_trials]` and the default `n_trials`, see above. Only
 used when method="deflated". It counts observations of the returns the Sharpe ratio is
 computed from: daily (or intraday) observations for the Sharpe ratio per period, and
-observations of `period` when `rolling` is set. Defaults to None, which uses the median
-number of observations per period (so each trial spans about one period) for the Sharpe
-ratio per period, and half of the available return history for a rolling Sharpe ratio
-so that enough overlapping windows exist regardless of `period` or date range.
+observations of `period` when `rolling` is set. Defaults to None, which uses, per ticker,
+the median number of its observations in a period (so each trial spans about one period)
+for the Sharpe ratio per period, and half of its return history for a rolling Sharpe
+ratio so that enough overlapping windows exist regardless of `period` or date range.
 - <u>n_trials (int, optional):</u> The number of independent (or effectively independent)
 strategy variations, parameter combinations, or lookback windows tried before
 arriving at the reported Sharpe ratio. Only used when method="deflated". Defaults to
-None, which falls back to the number of valid values in the auxiliary rolling Sharpe
-ratio series described above. Pass this explicitly whenever the actual number of trials
-is known.
+None, which falls back to the number of non-overlapping windows of `trials_window`
+observations the returns hold (at least 1), since the overlapping windows of the
+auxiliary rolling Sharpe ratio series are not independent trials. Pass this explicitly
+whenever the actual number of trials is known.
 - <u>lags (int, optional):</u> The number of autocorrelation lags in Lo's $$\eta (q)$$. Only used when
 method="lo". Defaults to None, which uses the Newey and West (1994) rule
 floor(4 * (n / 100)^(2/9)) on the n observations (4 for a year of daily returns),
@@ -1114,9 +1116,12 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>annualize (bool, optional):</u> Whether to annualize the Sharpe ratio, multiplying it by
 the square root of the number of observations in a year: 252 for the daily
-returns within each period, 252 times the median number of bars per day for the
-intraday returns within a day (period="daily" with an intraday_period), or the
-periods in a year for a rolling Sharpe ratio (e.g. 12 for monthly). Only for method="standard" and "adjusted", since the
+returns within each period (365 for a ticker that trades on weekends, such as a
+cryptocurrency), those
+days times the median number of bars per day for the intraday returns within a
+day (period="daily" with an intraday_period), or the periods in a year for a
+rolling Sharpe ratio (e.g. 12 for monthly, and the daily observations per year
+of each ticker for daily). Only for method="standard" and "adjusted", since the
 probabilistic and deflated methods return probabilities; method="lo" is annualized
 either way. Defaults to False.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -1164,11 +1169,11 @@ Which returns:
 
 | Date   |     SPY |     TLT |     GLD |   BTCUSD |
 |:-------|--------:|--------:|--------:|---------:|
-| 2021   |  1.9355 | -0.2283 | -0.6241 |   0.6316 |
-| 2022   | -0.608  | -0.9215 |  0.4971 |  -1.1891 |
-| 2023   |  1.1567 |  0.7714 |  0.8362 |   1.6139 |
-| 2024   |  1.5203 | -0.6917 |  1.4238 |   1.3959 |
-| 2025   |  0.3606 |  0.2664 |  1.7105 |  -0.1906 |
+| 2021   |  2.022  | -0.3656 | -0.5163 |   0.9441 |
+| 2022   | -0.8297 | -1.8879 | -0.1655 |  -1.3294 |
+| 2023   |  1.5607 |  0.03   |  0.6757 |   2.2623 |
+| 2024   |  1.5037 | -0.811  |  1.3751 |   1.666  |
+| 2025   |  0.7247 |  0.0591 |  2.3919 |  -0.0457 |
 
 ---
 
@@ -1258,11 +1263,188 @@ Which returns:
 
 | Date   |       V |      MA |     AXP |
 |:-------|--------:|--------:|--------:|
-| 2021   |  0.0058 |  0.0163 |  0.1221 |
-| 2022   | -0.0049 | -0.001  | -0.0138 |
-| 2023   |  0.129  |  0.1007 |  0.0922 |
-| 2024   |  0.0911 |  0.1065 |  0.1909 |
-| 2025   |  0.038  |  0.0273 |  0.0726 |
+| 2021   |  0.0057 |  0.0164 |  0.1224 |
+| 2022   | -0.0051 | -0.0011 | -0.0138 |
+| 2023   |  0.1287 |  0.1004 |  0.0924 |
+| 2024   |  0.0911 |  0.1066 |  0.1909 |
+| 2025   |  0.0374 |  0.0273 |  0.0726 |
+
+---
+
+## get_safety_first_ratio
+Calculate Roy's Safety-First Ratio of an investment portfolio or asset's returns.
+
+Roy (1952) argues that an investor first of all wants to avoid a disaster, a return below a threshold, and so prefers the portfolio with the lowest probability of falling below it. For normally distributed returns that probability is N(-Safety-First Ratio), so the best portfolio is the one with the highest ratio: the number of standard deviations the expected return lies above the threshold.
+
+The formula is as follows:
+
+$$
+\text{Safety-First Ratio} = \frac{\operatorname{Mean}(\text{Return}) - \text{Threshold per Observation}}{\text{Standard Deviation}(\text{Return})}
+$$
+
+$$
+\text{Threshold per Observation} = (1 + \text{Threshold})^{\frac{1}{\text{Observations per Year}}} - 1
+$$
+
+The threshold is an annual return, compounded down to the returns the ratio is computed from: by default the **daily** returns falling inside each `period`, 252 a year for a ticker that trades on trading days and 365 for one that also trades on weekends (such as a cryptocurrency). With `rolling`, `period` instead sets the frequency of the returns and the ratio is computed over a rolling window of `rolling` such returns, with the threshold compounded to that frequency. The standard deviation is the sample one (ddof=1). With the risk-free rate as the threshold the ratio is the Sharpe Ratio (`get_sharpe_ratio`); the default threshold of 0 is Roy's disaster of losing money.
+
+As with the Sharpe Ratio, the result is **not annualized**: it is a per-observation ratio, so multiply by SQRT(252), SQRT(52), SQRT(12) or SQRT(4) for daily, weekly, monthly or quarterly returns respectively before comparing against published annualized figures.
+
+For more information, see the following paper:
+
+- Roy, A.D. (1952). "Safety First and the Holding of Assets." Econometrica, 20(3), 431-449.
+
+**Also known as:** SFRatio, Roy's safety-first criterion.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>threshold (float, optional):</u> The minimum acceptable (shortfall) return as an annual decimal return,
+e.g. 0.02 for 2% a year. Defaults to 0.0.
+- <u>rolling (int &#124; None, optional):</u> The rolling window size to use for the calculation. If set, the
+ratio is calculated over a rolling window of this many periods across the full return history
+instead of per `period`. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Safety-First Ratio values.
+
+**Notes:**
+
+- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+is then computed from the intraday bars within each day, with the threshold compounded over the bars
+of a year. Without intraday data a single day holds one return, so the result is empty and logs why.
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "PEP", "MDLZ"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_safety_first_ratio(threshold=0.02)
+```
+
+Which returns:
+
+| Date   |      KO |     PEP |    MDLZ |
+|:-------|--------:|--------:|--------:|
+| 2021   |  0.0589 |  0.0893 |  0.0602 |
+| 2022   |  0.0323 |  0.0211 |  0.0093 |
+| 2023   | -0.0264 | -0.0177 |  0.0366 |
+| 2024   |  0.0361 | -0.0329 | -0.0637 |
+| 2025   |  0.0509 | -0.0036 | -0.0195 |
+
+---
+
+## get_upside_potential_ratio
+Calculate the Upside Potential Ratio of an investment portfolio or asset's returns.
+
+The Upside Potential Ratio of Sortino, van der Meer & Plantinga (1999) divides the expected return above a minimum acceptable return (MAR) by the downside deviation below it. Where the Sortino Ratio rewards the mean excess return, which the losses lower, this ratio rewards only the potential above the MAR and penalizes only the risk below it, each counted once.
+
+The formula is as follows:
+
+$$
+\text{Upside Potential Ratio} = \frac{\text{Upside Potential}}{\text{Downside Deviation}}
+$$
+
+$$
+\text{Upside Potential} = \frac{1}{N} \cdot \sum(\max(\text{Excess Return},\; 0))
+$$
+
+$$
+\text{Downside Deviation} = \sqrt{\frac{1}{N} \cdot \sum(\min(\text{Excess Return},\; 0)^{2})}
+$$
+
+Where N is the *total* number of observations in both, as the paper weighs every outcome by its probability, and the Excess Return is the return minus the risk-free rate, the MAR of `get_sortino_ratio` (whose Downside Deviation this is). By default one ratio is reported per `period`, computed from the **daily** excess returns falling inside that period. For a rolling period, `period` instead sets the frequency of the returns themselves and the ratio is computed over a rolling window of `rolling` such returns.
+
+A period needs at least two observations, and a period without a return below the MAR has no downside to divide by; both are left out.
+
+As with the Sortino Ratio, the result is a ratio of the observations within the period and is not annualized.
+
+For more information, see the following paper:
+
+- Sortino, F.A., van der Meer, R., & Plantinga, A. (1999). "The Dutch Triangle." Journal of Portfolio Management, 26(1), 50-57.
+
+**Also known as:** UPR.
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>rolling (int &#124; None, optional):</u> The rolling window size to use for the calculation. If set, the
+ratio is calculated over a rolling window of this many periods across the full return history
+instead of per `period`. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Upside Potential Ratio values.
+
+**Notes:**
+
+- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+is then computed from the intraday bars within each day, with the daily risk free rate spread over the
+bars of a day. Without intraday data a single day holds one return, so the result is empty and logs why.
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["NKE", "LULU", "ADDYY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_upside_potential_ratio()
+```
+
+Which returns:
+
+| Date   |    NKE |   LULU |   ADDYY |
+|:-------|-------:|-------:|--------:|
+| 2021   | 0.6044 | 0.5902 |  0.493  |
+| 2022   | 0.4878 | 0.513  |  0.4846 |
+| 2023   | 0.4598 | 0.6448 |  0.6168 |
+| 2024   | 0.3159 | 0.4143 |  0.5526 |
+| 2025   | 0.464  | 0.3496 |  0.4248 |
 
 ---
 
@@ -1276,7 +1458,7 @@ $$
 $$
 
 $$
-\text{Ulcer Index} = \sqrt{\operatorname{MEAN}(\text{Drawdown}^{2})},\;\; \text{with each day's drawdown measured from the highest value of the trailing rolling days within the period}
+\text{Ulcer Index} = \sqrt{\operatorname{MEAN}(\text{Drawdown}^{2})},\;\; \text{with each day's drawdown measured from the highest value since the start of the period (Martin's definition), or of the trailing rolling days within the period}
 $$
 
 It measures the excess return earned per unit of drawdown pain: the depth and the duration of the declines both weigh in, where the Sharpe Ratio treats upward and downward swings alike. Similar to the Sharpe Ratio, a higher UPI is better than a lower one (since investors prefer more return for less risk).
@@ -1287,7 +1469,9 @@ It measures the excess return earned per unit of drawdown pain: the depth and th
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int):</u> The rolling period to use to calculate the Ulcer Index. Defaults to 14.
+- <u>rolling (int &#124; None, optional):</u> The number of trailing days whose highest value each day's drawdown
+is measured from. Defaults to None, which measures it from the highest value since the start of
+the period, as Martin (1987) defines the Ulcer Index.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -1331,11 +1515,11 @@ Which returns:
 
 | Date   |      VZ |       T |    TMUS |
 |:-------|--------:|--------:|--------:|
-| 2021   | -3.7069 | -2.0886 | -3.7462 |
-| 2022   | -4.3869 |  0.7109 |  4.3646 |
-| 2023   | -0.3236 | -1.4171 |  3.5546 |
-| 2024   |  2.6617 | 15.933  | 13.5977 |
-| 2025   |  1.4725 |  2.6824 | -2.3337 |
+| 2021   | -1.3281 | -0.5668 | -1.2681 |
+| 2022   | -1.25   |  0.2849 |  3.6935 |
+| 2023   | -0.0995 | -0.3592 |  1.6567 |
+| 2024   |  1.8693 | 11.6197 | 11.534  |
+| 2025   |  0.7602 |  1.2863 | -0.7896 |
 
 ---
 
@@ -1552,11 +1736,97 @@ Which returns:
 
 | Date   |      BA |     LMT |     RTX |
 |:-------|--------:|--------:|--------:|
-| 2021   | -0.0305 |  0.014  |  0.3334 |
-| 2022   | -0.0181 |  0.3247 |  0.109  |
-| 2023   |  0.2136 | -0.0588 | -0.0744 |
-| 2024   | -0.0697 |  0.0508 |  0.6619 |
-| 2025   |  0.1203 | -0.0134 |  1.0527 |
+| 2021   | -0.0305 |  0.0141 |  0.3337 |
+| 2022   | -0.0181 |  0.3253 |  0.1089 |
+| 2023   |  0.2139 | -0.0588 | -0.0744 |
+| 2024   | -0.0697 |  0.0506 |  0.662  |
+| 2025   |  0.1202 | -0.0134 |  1.0514 |
+
+---
+
+## get_pain_ratio
+Calculate the Pain Ratio of an investment portfolio or asset's returns.
+
+The Pain Ratio divides the excess return (return minus the risk-free rate) of an investment portfolio or asset by its Pain Index, the mean depth of its drawdowns. Where the Ulcer Performance Index squares the drawdowns, which makes the deep ones dominate, the Pain Index weighs every observation under water by its depth alone.
+
+The formula is as follows:
+
+$$
+\text{Pain Ratio} = \frac{\text{Period Return} - \text{Risk-Free Rate}}{\text{Pain Index}}
+$$
+
+$$
+\text{Pain Index} = \frac{\sum(\left|\text{Drawdown}_{t}\right|)}{N}
+$$
+
+$$
+\text{Drawdown}_{t} = \frac{\text{Wealth}_{t}}{\text{Peak}_{t}} - 1,\;\; \text{with Peak\_t the highest wealth since the first return}
+$$
+
+With within_period=True (the default) the observations are the daily returns within each period: N is the number of days in the period, and the wealth and its peak restart from 1 before the first return of every period, so a loss on its first day is a drawdown as well. With within_period=False the observations are the `period` returns (such as the yearly returns) of the full history: N is the number of those periods, and every period's excess return is divided by that one Pain Index, as the Calmar, Sterling and Burke ratios do. Observations at a new high count as a drawdown of 0. The risk-free rate is compounded over the days of the period, so a partial period (such as the current year) earns the rate of the days it covers. Bacon (2013) divides the annualized return minus the risk-free rate; for period="yearly" that is the same for every full year, and for other periods the ratio uses the period's own (not annualized) excess return, as the Ulcer Performance Index and the Burke Ratio do.
+
+For more information, see the following source:
+
+- Bacon, C.R. (2013). "Practical Risk-Adjusted Performance Measurement." John Wiley & Sons, chapter 5 (the Pain Index and Pain Ratio of Zephyr Associates).
+
+**Args:**
+
+- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
+initialised with quarterly=True, otherwise "yearly".
+- <u>within_period (bool, optional):</u> Whether to calculate the Pain Index from the daily drawdowns
+within each period (if period = 'yearly', a Pain Index per year) or from the drawdowns of the
+`period` returns over the full history (one Pain Index from the yearly returns of all years).
+Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Pain Ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the Pain Ratio for each asset in
+the Toolkit instance.
+- A period without a drawdown has a Pain Index of 0 and no ratio (NaN).
+- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
+the Toolkit uses when initialised with risk_free_rate="13w".
+- If `growth` is set to True, the method calculates the growth of the ratio values using
+the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["HD", "LOW", "TGT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.performance.get_pain_ratio()
+```
+
+Which returns:
+
+| Date   |      HD |     LOW |     TGT |
+|:-------|--------:|--------:|--------:|
+| 2022   | -1.0217 | -1.1848 | -1.468  |
+| 2023   |  1.0889 |  1.3693 | -0.2573 |
+| 2024   |  1.7048 |  1.3511 | -0.5582 |
+| 2025   | -1.3355 | -0.4223 | -1.0867 |
 
 ---
 
@@ -1627,11 +1897,11 @@ Which returns:
 
 | Date   |      HD |     LOW |
 |:-------|--------:|--------:|
-| 2021   |  0.39   |  0.3481 |
+| 2021   |  0.39   |  0.348  |
 | 2022   | -0.1634 | -0.1482 |
 | 2023   |  0.0932 |  0.0955 |
-| 2024   |  0.1083 |  0.0921 |
-| 2025   | -0.0718 |  0.0055 |
+| 2024   |  0.1084 |  0.0923 |
+| 2025   | -0.0718 |  0.0056 |
 
 ---
 
@@ -1935,7 +2205,7 @@ The Win Rate is the share of days within each period in which the asset's return
 The formula is as follows:
 
 $$
-\text{Win Rate} = \text{Number of Days with Asset Return} > \frac{\text{Benchmark Return}}{\text{Number of Days}} \;\text{with both an Asset and a Benchmark Return},\;\; \text{using the daily returns within each period (e.g. each year)},\;\; \text{as a decimal} \;(0.55 = 55\%)
+\text{Win Rate} = \frac{\text{Number of Days with Asset Return} > \text{Benchmark Return}}{\text{Number of Days with both an Asset and a Benchmark Return}},\;\; \text{using the daily returns within each period (e.g. each year)},\;\; \text{as a decimal} \;(0.55 = 55\%)
 $$
 
 Days on which the asset or the benchmark has no return are left out of both counts rather than counted as losses.
@@ -2006,7 +2276,7 @@ Note that this already subtracts the Risk Free Rate.
 The formula is as follows:
 
 $$
-\text{Daily Excess Return} = \text{Daily Return} - \text{Daily Risk Free Rate},\;\; \text{with}\;\; \text{Daily Risk Free Rate} = (1 + \text{Annual Risk Free Rate})^{\frac{1}{252}} - 1
+\text{Daily Excess Return} = \text{Daily Return} - \text{Daily Risk Free Rate},\;\; \text{with}\;\; \text{Daily Risk Free Rate} = (1 + \text{Annual Risk Free Rate})^{\frac{1}{252}} - 1 \;(\text{compounded over the calendar days since the previous return},\; \text{on 365 days a year},\; \text{when a ticker trades on weekends})
 $$
 
 $$
@@ -2238,11 +2508,11 @@ Which returns:
 
 | Date   |     VOO |     QQQ |    SCHD |
 |:-------|--------:|--------:|--------:|
-| 2021   |  0.3176 |  0.278  |  0.3201 |
-| 2022   | -0.235  | -0.3837 | -0.0851 |
-| 2023   |  0.1796 |  0.4298 | -0.023  |
-| 2024   |  0.1793 |  0.1826 |  0.0485 |
-| 2025   |  0.1198 |  0.135  | -0.01   |
+| 2021   |  0.3176 |  0.278  |  0.3209 |
+| 2022   | -0.235  | -0.3836 | -0.0848 |
+| 2023   |  0.1799 |  0.4301 | -0.0227 |
+| 2024   |  0.1789 |  0.1822 |  0.0479 |
+| 2025   |  0.1198 |  0.1351 | -0.0098 |
 
 ---
 
@@ -2317,10 +2587,10 @@ Which returns:
 
 | Date   |    VOO |    QQQ |   SCHD |
 |:-------|-------:|-------:|-------:|
-| 2021   | 0.0148 | 0.0205 | 0.0214 |
-| 2022   | 0.0375 | 0.0449 | 0.0339 |
-| 2023   | 0.023  | 0.0445 | 0.0183 |
-| 2024   | 0.0121 | 0.0145 | 0.016  |
+| 2021   | 0.0148 | 0.0205 | 0.0215 |
+| 2022   | 0.0375 | 0.0449 | 0.0338 |
+| 2023   | 0.023  | 0.0444 | 0.0183 |
+| 2024   | 0.0122 | 0.0147 | 0.0162 |
 | 2025   | 0.0125 | 0.0256 | 0.0126 |
 
 ---
@@ -2483,11 +2753,11 @@ Which returns:
 
 |      |    AAPL |    MSFT |      KO |
 |:-----|--------:|--------:|--------:|
-| 2021 |  0.1113 |  0.1649 |  0.0911 |
-| 2022 | -0.056  | -0.0611 |  0.0557 |
-| 2023 |  0.1639 |  0.1547 | -0.0248 |
-| 2024 |  0.1137 |  0.0601 |  0.061  |
-| 2025 |  0.0433 |  0.0694 |  0.0717 |
+| 2021 |  0.1112 |  0.165  |  0.0913 |
+| 2022 | -0.0559 | -0.061  |  0.0559 |
+| 2023 |  0.1637 |  0.154  | -0.0245 |
+| 2024 |  0.1135 |  0.0601 |  0.0606 |
+| 2025 |  0.0434 |  0.0697 |  0.0716 |
 
 ---
 
@@ -2627,8 +2897,8 @@ The CAGR is measured on calendar time: each asset from its own first to its own 
 
 **Args:**
 
-- <u>rounding (int, optional):</u> The number of decimals to round the results to. If not provided,
-the function will use the default rounding value set in the class instance.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2762,7 +3032,11 @@ $$
 $$
 
 $$
-\text{Period Risk Free Rate} = (1 + \text{Average Annual Risk Free Rate})^{\frac{1}{\text{Periods per Year}}} - 1,\;\; \text{with the average taken over the daily Treasury yields within the period}
+\text{Daily Risk Free Rate} = (1 + \text{Annual Risk Free Rate})^{\frac{1}{252}} - 1,\;\; \text{or}\;\; (1 + \text{Annual Risk Free Rate})^{\frac{\text{Calendar Days}}{365}} - 1 \;\text{when a ticker trades on weekends},\;\; \text{with the Treasury yield of each day}
+$$
+
+$$
+\text{Period Risk Free Rate} = ((1 + \text{Daily Risk Free Rate}\; 1) \cdot \ldots \cdot (1 + \text{Daily Risk Free Rate}\; N)) - 1,\;\; \text{over the same } N \text{ days as the Period Return, so a period the data covers in part (such as the current year) earns the risk free rate of the days it covers}
 $$
 
 $$
@@ -2831,11 +3105,11 @@ Which returns:
 
 | Date   |     MCD |    SBUX |     CMG |   Benchmark |
 |:-------|--------:|--------:|--------:|------------:|
-| 2021   |  0.2901 |  0.1399 |  0.3099 |      0.2912 |
-| 2022   | -0.0255 | -0.1604 | -0.2359 |     -0.2112 |
-| 2023   |  0.1112 | -0.0511 |  0.6093 |      0.222  |
-| 2024   | -0.0405 | -0.0669 |  0.2772 |      0.2071 |
-| 2025   |  0.0359 | -0.0956 | -0.4292 |      0.1347 |
+| 2021   |  0.2901 |  0.139  |  0.3114 |      0.2908 |
+| 2022   | -0.0244 | -0.1612 | -0.2359 |     -0.2112 |
+| 2023   |  0.1111 | -0.0514 |  0.6088 |      0.2222 |
+| 2024   | -0.0411 | -0.0672 |  0.2759 |      0.2064 |
+| 2025   |  0.036  | -0.0956 | -0.4293 |      0.1343 |
 
 ---
 
@@ -2970,9 +3244,11 @@ Where the residual standard deviation is the standard deviation of the pointwise
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
-calculation. If set, Beta is estimated over a rolling window of this many periods across
-the full return history instead of per `period`. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Beta and
+the residual standard deviation are estimated over a rolling window of this many periods
+across the full return history instead of per `period`, the residuals of each window from
+the regression over that window (see `performance_model.get_rolling_appraisal_ratio`).
+Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -3017,11 +3293,11 @@ Which returns:
 
 | Date   |    ADBE |     CRM |    ORCL |
 |:-------|--------:|--------:|--------:|
-| 2021   | -1.1711 | -0.8087 |  0.5274 |
-| 2022   | -0.4641 | -0.6351 |  0.5198 |
-| 2023   |  1.5758 |  2.7157 |  0.1366 |
-| 2024   | -1.6901 | -0.1944 |  0.9946 |
-| 2025   | -1.4152 | -1.4877 | -0.1032 |
+| 2021   | -1.1713 | -0.8079 |  0.5274 |
+| 2022   | -0.4645 | -0.6352 |  0.5195 |
+| 2023   |  1.576  |  2.7166 |  0.1372 |
+| 2024   | -1.6888 | -0.1942 |  0.9947 |
+| 2025   | -1.415  | -1.4877 | -0.1032 |
 
 ---
 
@@ -3048,9 +3324,10 @@ Selectivity is the return earned above what would be required for a fully divers
 
 - <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
 initialised with quarterly=True, otherwise "yearly".
-- <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
-calculation. If set, Beta is estimated over a rolling window of this many periods across
-the full return history instead of per `period`. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Beta and
+the standard deviations of the asset and the benchmark are estimated from the returns per
+`period` over a rolling window of this many periods across the full return history,
+instead of from the daily returns within each `period`. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -3096,11 +3373,11 @@ Which returns:
 
 | Date   |     QQQ |     IWM |     XLE |
 |:-------|--------:|--------:|--------:|
-| 2021   | -0.123  | -0.3304 | -0.1035 |
-| 2022   | -0.0751 |  0.0106 |  0.9216 |
-| 2023   |  0.2052 | -0.2125 | -0.4352 |
-| 2024   | -0.0824 | -0.2697 | -0.28   |
-| 2025   |  0.0022 | -0.0738 | -0.1338 |
+| 2021   | -0.123  | -0.3306 | -0.1031 |
+| 2022   | -0.0751 |  0.0105 |  0.9386 |
+| 2023   |  0.2054 | -0.2123 | -0.4352 |
+| 2024   | -0.0824 | -0.2696 | -0.2803 |
+| 2025   |  0.0022 | -0.0738 | -0.1335 |
 
 ---
 
@@ -3175,11 +3452,11 @@ Which returns:
 
 | Date   |    CAT |      DE |     HON |
 |:-------|-------:|--------:|--------:|
-| 2021   | 0.287  |  0.4693 | -0.0376 |
-| 2022   | 0.2125 |  0.2897 |  0.0386 |
-| 2023   | 0.3701 | -0.1499 | -0.0915 |
-| 2024   | 0.3598 |  0.063  |  0.1513 |
-| 2025   | 0.8327 |  0.1243 | -0.1867 |
+| 2021   | 0.287  |  0.4695 | -0.0375 |
+| 2022   | 0.2127 |  0.2898 |  0.0391 |
+| 2023   | 0.3702 | -0.1498 | -0.0629 |
+| 2024   | 0.3589 |  0.0623 |  0.1468 |
+| 2025   | 0.8327 |  0.1244 | -0.1883 |
 
 ---
 
@@ -3572,11 +3849,11 @@ Which returns:
 
 | Date   |    SPY |    TLT |    GLD |   BTCUSD |
 |:-------|-------:|-------:|-------:|---------:|
-| 2021   | 0.0586 | 0.0585 | 0.0635 |   0.0605 |
-| 2022   | 0.0602 | 0.0567 | 0.0624 |   0.0589 |
-| 2023   | 0.0635 | 0.0564 | 0.0609 |   0.0605 |
-| 2024   | 0.0645 | 0.063  | 0.0617 |   0.0585 |
-| 2025   | 0.0554 | 0.0611 | 0.0623 |   0.0634 |
+| 2021   | 0.0586 | 0.0584 | 0.0634 |   0.0506 |
+| 2022   | 0.0602 | 0.0567 | 0.0624 |   0.0497 |
+| 2023   | 0.0635 | 0.0564 | 0.0609 |   0.0533 |
+| 2024   | 0.0645 | 0.0629 | 0.0617 |   0.0506 |
+| 2025   | 0.0554 | 0.0611 | 0.0623 |   0.047  |
 
 ---
 
@@ -3653,10 +3930,10 @@ Which returns:
 
 | Date   |      SPY |    TLT |      GLD |   BTCUSD |
 |:-------|---------:|-------:|---------:|---------:|
-| 2021   |  176.151 |    nan |  nan     | 1701.64  |
-| 2023   |  282.904 | 627999 | 1490.71  |  247.195 |
-| 2024   |  319.167 |    nan |  381.29  |  337.604 |
-| 2025   | 1220.25  | 197659 |  135.453 |  nan     |
+| 2021   |  176.667 |    nan |  nan     | 1102.59  |
+| 2023   |  282.689 | 755917 | 1474.87  |  178.459 |
+| 2024   |  320.09  |    nan |  380.932 |  344.545 |
+| 2025   | 1227.15  | 195160 |  134.903 |  nan     |
 
 ---
 

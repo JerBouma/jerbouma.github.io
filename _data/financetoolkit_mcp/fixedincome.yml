@@ -350,3 +350,12 @@ get_amortization_schedule:
   arguments:
     start_date: "2026-01-01"
     end_date: "2026-11-06"
+get_carry_and_roll_down:
+  question: What was the total carry and roll-down of 2-, 5-, 10- and 30-year US Treasuries each day from 19 to 23 October 2026?
+  tool: rates
+  arguments:
+    maturities: 2Y,5Y,10Y,30Y
+    countries: United States
+    start_date: "2026-10-19"
+    end_date: "2026-10-23"
+    show_columns: Total

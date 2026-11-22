@@ -17,7 +17,7 @@ get_gross_domestic_product_deflator:
   question: How did the GDP deflator of the United States, Canada and Russia develop from 2015 to 2025?
   tool: macroeconomics
   arguments:
-    countries: United States,Canada,Russian Federation
+    countries: United States,Canada,Russia
     start_date: "2015-01-01"
     end_date: "2025-12-31"
 get_real_gross_domestic_product_per_capita:
@@ -87,7 +87,7 @@ get_exports_to_gdp_ratio:
   question: How did exports as a share of GDP compare in the United States, Canada and Russia from 2015 to 2025?
   tool: macroeconomics
   arguments:
-    countries: United States,Canada,Russian Federation
+    countries: United States,Canada,Russia
     start_date: "2015-01-01"
     end_date: "2025-12-31"
 get_imports:
@@ -150,7 +150,7 @@ get_government_revenue_to_gdp_ratio:
   question: How did government revenue as a share of GDP compare in the United States, Canada and Russia from 2015 to 2025?
   tool: government
   arguments:
-    countries: United States,Canada,Russian Federation
+    countries: United States,Canada,Russia
     start_date: "2015-01-01"
     end_date: "2025-12-31"
 get_government_tax_revenue:
@@ -615,10 +615,10 @@ get_life_table:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
 get_shiller_stock_market_data:
-  question: What were the price, dividend, earnings and CAPE of the S&P Composite in Shiller's data in each month from January to September 2026?
+  question: What were the price, earnings, P/E and CAPE of the S&P Composite in Shiller's data in each month from January to September 2026?
   tool: macroeconomics
   arguments:
-    show_columns: Price,Dividend,Earnings,CAPE
+    show_columns: Price,Earnings,P/E,CAPE
     start_date: "2026-01-01"
     end_date: "2026-09-30"
 get_economic_calendar:
@@ -726,13 +726,13 @@ get_yield_decomposition:
     start_date: "2026-11-02"
     end_date: "2026-11-10"
 get_commodity_prices:
-  question: What was the gold price in today's dollars in January 1980, September 2011 and January 2026?
+  question: What did a barrel of Brent crude oil and an ounce of gold cost in euros in each month from October 2025 to September 2026?
   tool: macroeconomics
   arguments:
-    commodity: Gold
-    deflate_with: United States
-    start_date: "1979-01-01"
-    end_date: "2026-10-31"
+    commodity: Crude oil Brent,Gold
+    currency: EUR
+    start_date: "2025-10-01"
+    end_date: "2026-09-30"
 get_chokepoint_transits:
   question: How many tankers and cargo ships passed through the Strait of Hormuz on each day from 24 February to 3 March 2026?
   tool: macroeconomics
@@ -741,3 +741,96 @@ get_chokepoint_transits:
     show_columns: Tanker,Cargo,Total
     start_date: "2026-02-24"
     end_date: "2026-03-03"
+get_capacity_utilization:
+  question: How much of their production capacity did manufacturers in the United States, the euro area, Germany and France use each quarter from 2024 to the third quarter of 2026?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Euro Area,Germany,France
+    start_date: "2024-01-01"
+    end_date: "2026-09-30"
+get_job_vacancy_rate:
+  question: How did the job vacancy rate in the United States, the euro area, Germany and France develop each quarter from 2024 to the third quarter of 2026?
+  tool: jobs
+  arguments:
+    countries: United States,Euro Area,Germany,France
+    start_date: "2024-01-01"
+    end_date: "2026-09-30"
+get_unit_labour_costs:
+  question: How did unit labour costs in the United States, Germany, Japan and the United Kingdom develop each quarter from 2024 to the second quarter of 2026?
+  tool: jobs
+  arguments:
+    countries: United States,Germany,Japan,United Kingdom
+    start_date: "2024-01-01"
+    end_date: "2026-09-30"
+get_continuing_jobless_claims:
+  question: How many continuing jobless claims were there in the United States, on average per month, from August to December 2025?
+  tool: jobs
+  arguments:
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    period: monthly
+    limit: -5
+get_insured_unemployment_rate:
+  question: What was the insured unemployment rate in the United States in the last five weeks of 2025?
+  tool: jobs
+  arguments:
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_net_international_investment_position:
+  question: How did the net international investment position of the United States, the Netherlands, Spain and Japan, in millions of national currency, develop from 2015 to 2025?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Netherlands,Spain,Japan
+    period: yearly
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_net_international_investment_position_to_gdp_ratio:
+  question: How did the net international investment position of the United States, the Netherlands, Spain and Japan compare as a share of GDP from 2015 to 2025?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Netherlands,Spain,Japan
+    period: yearly
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_foreign_exchange_reserves:
+  question: How large were the foreign exchange reserves of China, Japan, the United States and India, in millions of dollars, at the end of each year from 2016 to 2025?
+  tool: macroeconomics
+  arguments:
+    countries: China,Japan,United States,India
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_reserves_import_cover:
+  question: How many months of imports could the reserves of China, Japan, the United States and Turkey pay for at the end of each year from 2016 to 2025?
+  tool: macroeconomics
+  arguments:
+    countries: China,Japan,United States,Turkey
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_outstanding_mortgage_rates:
+  question: What share of outstanding US mortgages had a rate below 3%, 4%, 5% and 6%, and what was the average rate, each quarter from 2025 to the second quarter of 2026?
+  tool: rates
+  arguments:
+    cumulative: true
+    start_date: "2025-01-01"
+    end_date: "2026-06-30"
+get_export_price_index:
+  question: How much did export prices in the United States, the euro area and Japan change compared with a year earlier, each month from October 2025 to September 2026?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Euro Area,Japan
+    period: monthly
+    growth: true
+    lag: 12
+    start_date: "2025-10-01"
+    end_date: "2026-09-30"
+get_import_price_index:
+  question: How much did import prices in the United States, the euro area and Japan change compared with a year earlier, each month from October 2025 to September 2026?
+  tool: macroeconomics
+  arguments:
+    countries: United States,Euro Area,Japan
+    period: monthly
+    growth: true
+    lag: 12
+    start_date: "2025-10-01"
+    end_date: "2026-09-30"

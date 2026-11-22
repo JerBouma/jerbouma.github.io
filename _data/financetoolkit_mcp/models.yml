@@ -324,3 +324,49 @@ get_factor_analysis:
     - get_piotroski_score
     - get_altman_z_score
     horizons: 12
+get_kaplan_zingales_index:
+  question: How financially constrained were Apple, Ford and Standard Motor Products from 2020 to 2025, according to the Kaplan-Zingales index?
+  tool: models
+  arguments:
+    tickers: AAPL,F,SMP
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    show_columns: Kaplan-Zingales Index
+get_whited_wu_index:
+  question: How financially constrained were Ford, General Motors, Lear and Standard Motor Products from 2020 to 2025, according to the Whited-Wu index?
+  tool: models
+  arguments:
+    tickers: F,GM,LEA,SMP
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    show_columns: Whited-Wu Index
+get_size_age_index:
+  question: How financially constrained were Apple, Ford, Standard Motor Products and Airbnb from 2020 to 2025, according to the size-age index?
+  tool: models
+  arguments:
+    tickers: AAPL,F,SMP,ABNB
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    show_columns: Size-Age Index
+get_nissim_penman_decomposition:
+  question: How much of Coca-Cola's return on common equity came from its operations and how much from leverage from 2021 to 2025, according to the Nissim-Penman decomposition?
+  tool: models
+  arguments:
+    tickers: KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_discretionary_accruals:
+  question: What were the total, non-discretionary and discretionary accruals of Apple and Microsoft from 2021 to 2025, according to the modified Jones model estimated from 2005?
+  tool: models
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2005-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_graham_intrinsic_value:
+  question: What were the intrinsic values of Coca-Cola, PepsiCo and Johnson & Johnson by Benjamin Graham's formula from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: KO,PEP,JNJ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"

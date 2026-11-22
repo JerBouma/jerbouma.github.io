@@ -28,2746 +28,6 @@ pip install financetoolkit -U
 
 {% include financetoolkit-getting-started/economics.md %}
 
-## get_gross_domestic_product
-Get the Gross Domestic Product for a variety of countries over time. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year. By default the data comes from the Global Macro Database (GMDB); set gmdb_source=False to retrieve it from the OECD instead.
-
-Note that the OECD source reports GDP on a per capita basis, i.e. the total Gross Domestic Product divided by the population of the country, whereas the Global Macro Database (GMDB) source reports the total (not per capita) figure. The two are also expressed in different units: the OECD source is in current-price US dollars per person converted with Purchasing Power Parities (PPPs), which makes the level comparable across countries, while the GMDB source is in millions of national currency. Both are annual.
-
-The data is returned as levels. To obtain period-on-period changes (e.g. year on year or quarter on quarter growth), set `growth=True` and use `lag` to control how many periods back the comparison is made.
-
-**See definition:** [https://data.oecd.org/gdp/gross-domestic-product-gdp.htm](https://data.oecd.org/gdp/gross-domestic-product-gdp.htm){:target="_blank"}
-
-The inflation adjusted and US dollar figures are only available from the Global Macro Database (GMDB), so they always come from it. For more information see: [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** GDP, national income, economic growth, real GDP, real GDP in USD, cross-country comparable GDP.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to retrieve the data from the GMDB. Defaults to None, which falls back to the gmdb_source set on the Economics class (True by default).
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. With inflation_adjusted=True, real GDP in millions of US dollars at constant 2015 prices, converted at the 2015 market exchange rate (not at purchasing power parities), so its growth equals the growth of real GDP in the national currency. Always from the GMDB. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Gross Domestic Product
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_gross_domestic_product(inflation_adjusted=True, countries=['Netherlands', 'Germany', 'China'])
-```
-
-Which returns:
-
-|      |   Netherlands |     Germany |       China |
-|:-----|--------------:|------------:|------------:|
-| 2015 |        699213 | 3.08436e+06 | 7.02512e+07 |
-| 2016 |        716132 | 3.15026e+06 | 7.50097e+07 |
-| 2017 |        736049 | 3.24792e+06 | 8.01788e+07 |
-| 2018 |        752633 | 3.28523e+06 | 8.55972e+07 |
-| 2019 |        769904 | 3.31842e+06 | 9.07907e+07 |
-| 2020 |        740429 | 3.16955e+06 | 9.29147e+07 |
-| 2021 |        786377 | 3.29206e+06 | 1.00878e+08 |
-| 2022 |        825789 | 3.35415e+06 | 1.04039e+08 |
-| 2023 |        820955 | 3.33152e+06 | 1.09674e+08 |
-| 2024 |        829705 | 3.3158e+06  | 1.15158e+08 |
-| 2025 |        844596 | 3.32724e+06 | 1.20916e+08 |
-
----
-
-## get_gross_domestic_product_growth
-The quarterly growth of real Gross Domestic Product (GDP) is the headline measure of how fast an economy grows: the change in the volume of everything produced, adjusted for inflation, seasonal patterns and the number of working days. Two consecutive quarters of negative growth is the common rule of thumb for a technical recession.
-
-By default the growth is measured on the previous quarter (quarter on quarter), as Eurostat and the Office for National Statistics report it. Set year_over_year=True for the change on the same quarter a year earlier. The growth is not annualized, so a US figure is about a quarter of the annualized rate the Bureau of Economic Analysis headlines.
-
-Every country comes from the most current source: Eurostat for the euro area and the countries it covers (including the preliminary flash estimate for the euro area, about thirty days after the quarter ends), the Office for National Statistics for the United Kingdom and the OECD Quarterly National Accounts for every other country, including the United States and Japan.
-
-The growth is the source's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{GDP Growth} \;(\text{quarter on quarter}) = \frac{\text{Real GDP} \;(t)}{\text{Real GDP} \;(t-1)} - 1
-$$
-
-$$
-\text{GDP Growth} \;(\text{year over year}) = \frac{\text{Real GDP} \;(t)}{\text{Real GDP} \;(t-4)} - 1
-$$
-
-Where Real GDP is the seasonally and calendar adjusted GDP in chain-linked volumes.
-
-The growth is expressed as a decimal fraction (0.006 for 0.6%).
-
-**Also known as:** GDP growth, real GDP growth, economic growth, quarter-on-quarter growth.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>year_over_year (bool, optional):</u> Whether to return the change on the same quarter a
-year earlier instead of on the previous quarter. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the quarterly growth of real GDP per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-01-01', end_date='2026-09-30')
-
-economics.get_gross_domestic_product_growth(
-    countries=['Euro Area', 'Germany', 'United Kingdom', 'United States', 'Japan']
-)
-```
-
-Which returns:
-
-|        |   Euro Area |   Germany |   United Kingdom |   United States |   Japan |
-|:-------|------------:|----------:|-----------------:|----------------:|--------:|
-| 2025Q1 |       0.005 |     0.001 |            0.006 |          0.0004 |  0.005  |
-| 2025Q2 |       0     |     0     |            0     |          0.0099 |  0.0012 |
-| 2025Q3 |       0.003 |     0     |            0.002 |          0.0096 | -0.0037 |
-| 2025Q4 |       0.002 |     0.003 |            0     |          0.0005 |  0.0026 |
-| 2026Q1 |       0     |     0.004 |            0.006 |          0.0062 |  0.0048 |
-| 2026Q2 |       0.006 |     0.003 |            0.005 |          0.0055 |  0.0036 |
-
----
-
-## get_gross_domestic_product_deflator
-Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year.
-
-The deflator is an annual index with 2015 = 100 for every country.
-
-The GDP deflator is the broadest measure of domestic inflation: it covers everything produced in the economy, including investment goods and government services, and leaves out imports, whereas the Consumer Price Index follows a fixed basket of what households buy, imports included. Its yearly change is compared with CPI inflation; a gap between the two often points to import prices or the terms of trade, as during an energy shock.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** GDP deflator, implicit price deflator.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Gross Domestic Product Deflator
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_gross_domestic_product_deflator(countries=['United States', 'Canada', 'Russian Federation'])
-```
-
-Which returns:
-
-|      |   United States |   Canada |   Russian Federation |
-|:-----|----------------:|---------:|---------------------:|
-| 2015 |         100     |  100     |              100     |
-| 2016 |         100.95  |  100.717 |              102.844 |
-| 2017 |         102.758 |  103.306 |              108.345 |
-| 2018 |         105.112 |  105.012 |              119.179 |
-| 2019 |         106.847 |  106.636 |              123.068 |
-| 2020 |         108.284 |  107.778 |              124.173 |
-| 2021 |         113.225 |  116.168 |              146.784 |
-| 2022 |         121.278 |  125.325 |              173.542 |
-| 2023 |         125.766 |  127.261 |              185.098 |
-| 2024 |         128.887 |  130.738 |              204.816 |
-| 2025 |         132.537 |  134.076 |              214.754 |
-
----
-
-## get_real_gross_domestic_product_per_capita
-Get the Real Gross Domestic Product per Capita for a variety of countries over time from the Global Macro Database (GMDB). This is the inflation-adjusted Gross Domestic Product (GDP) divided by the total population of a country, which gives an indication of the average economic output (and by extension, living standard) per person.
-
-This uses the Global Macro Database's own precomputed per-capita series (the source's figure) rather than dividing GDP by population manually, which avoids subtle mismatches that can arise from differences in population coverage or timing between the two underlying series.
-
-The formula is as follows:
-
-$$
-\text{Real GDP per Capita} = \frac{\text{Real Gross Domestic Product}}{\text{Population}},\;\; \text{in national currency at constant prices, or in US dollars as converted by the Global Macro Database when usd=True}
-$$
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** real GDP per capita, real income per capita, standard of living.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>usd (bool, optional):</u> Whether to return the values in US dollars per person, converted by the Global Macro Database, instead of national currency per person, which makes levels comparable across countries. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Real Gross Domestic Product per Capita
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_real_gross_domestic_product_per_capita(countries=['Netherlands', 'Germany', 'China'])
-```
-
-Which returns:
-
-|      |   Netherlands |   Germany |   China |
-|:-----|--------------:|----------:|--------:|
-| 2015 |       41275.9 |   37916.3 | 50786.7 |
-| 2016 |       42051.2 |   38480.1 | 53873.9 |
-| 2017 |       42965.9 |   39590.4 | 57266.1 |
-| 2018 |       43676.5 |   39987.4 | 60905.5 |
-| 2019 |       44387.7 |   40368.7 | 64386.9 |
-| 2020 |       42450.9 |   38593.8 | 65798   |
-| 2021 |       44851.3 |   40149.7 | 71412.9 |
-| 2022 |       46652.1 |   40642.1 | 73695.2 |
-| 2023 |       45922.4 |   40000.8 | 77801.2 |
-| 2024 |       46110.1 |   39702.4 | 81884.3 |
-| 2025 |       46646.5 |   39835.9 | 86171.3 |
-
----
-
-## get_output_gap
-Get the Output Gap for a variety of countries over time from the OECD Economic Outlook. The output gap is the difference between actual Gross Domestic Product (GDP) and estimated potential GDP, expressed as a percentage of potential GDP. Potential GDP is the level of output an economy can sustain over the long term without generating excess inflationary or disinflationary pressure, based on the full, non-inflationary use of its productive resources (labour, capital and technology).
-
-A positive output gap indicates the economy is running above its long-run potential (an economic "boom", typically associated with rising inflationary pressure), while a negative output gap indicates the economy is running below potential (an economic "slack", typically associated with rising unemployment and disinflationary pressure). The output gap therefore complements indicators such as the Inflation Rate and Unemployment Rate as a measure of where an economy sits within the business cycle.
-
-The output gap is the OECD's own estimate (the source's figure, divided by 100 here).
-
-The formula is as follows:
-
-$$
-\text{Output Gap} = \frac{\text{Actual GDP} - \text{Potential GDP}}{\text{Potential GDP}},\;\; \text{with both GDP measures in real terms}
-$$
-
-This data is only available on a yearly basis, since the OECD Economic Outlook is published as a set of annual projections and estimates.
-
-The result is a decimal fraction of potential GDP (-0.0422), where the OECD publishes a percentage (-4.2231), like every other rate and ratio in this class. Multiply by 100 to recover the published figure. A small gap loses resolution at the default rounding of 4 decimals, so pass a larger `rounding` when the sub-basis-point detail matters.
-
-Potential output cannot be observed, so the gap is an estimate, and the estimate for a given year is often revised substantially as later data comes in: the gap estimated at the time can differ by a percentage point or more from the one published years later. Treat recent values as provisional and compare the gap with other measures of slack, such as unemployment or capacity utilisation.
-
-**See definition:** [https://www.oecd.org/en/data/indicators/output-gaps.html](https://www.oecd.org/en/data/indicators/output-gaps.html){:target="_blank"}
-
-**Also known as:** business cycle gap, GDP gap.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Output Gap as a decimal fraction of
-potential GDP.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2018-01-01', end_date='2022-01-01')
-
-economics.get_output_gap(countries=['United States', 'Germany', 'Japan'])
-```
-
-Which returns:
-
-|      |   United States |   Germany |   Japan |
-|:-----|----------------:|----------:|--------:|
-| 2018 |          0.0002 |    0.019  |  0.0194 |
-| 2019 |          0.0015 |    0.0201 |  0.0072 |
-| 2020 |         -0.0422 |   -0.0315 | -0.0422 |
-| 2021 |         -0.0073 |   -0.0005 | -0.0137 |
-| 2022 |         -0.0066 |    0.0108 | -0.0049 |
-
----
-
-## get_total_consumption
-Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is final consumption expenditure: the goods and services bought by households and the non-profit institutions serving them (household consumption) and by the government (government consumption). Select either part with the component parameter.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are; with usd=True the levels are in millions of US dollars. With inflation_adjusted=True the level is in 2015 prices: the nominal level divided by the GDP deflator.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** final consumption expenditure, household consumption, private consumption, government consumption.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
-- <u>component (str, optional):</u> The part of final consumption expenditure: "total", "household" (households and the non-profit institutions serving them) or "government". Defaults to "total".
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency. Cannot be combined with inflation_adjusted. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Total Consumption
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
-
-total_consumption = economics.get_total_consumption()
-
-total_consumption.loc[:, ['Netherlands', 'France', 'Poland']]
-```
-
-Which returns:
-
-|      |   Netherlands |      France |      Poland |
-|:-----|--------------:|------------:|------------:|
-| 2018 |        543044 | 1.84623e+06 | 1.64263e+06 |
-| 2019 |        566526 | 1.88924e+06 | 1.75019e+06 |
-| 2020 |        558421 | 1.82884e+06 | 1.78274e+06 |
-| 2021 |        606447 | 1.94983e+06 | 1.99473e+06 |
-| 2022 |        679151 | 2.08811e+06 | 2.36421e+06 |
-| 2023 |        734728 | 2.22836e+06 | 2.61398e+06 |
-| 2024 |        776762 | 2.30127e+06 | 2.85179e+06 |
-| 2025 |        813178 | 2.33891e+06 | 3.08623e+06 |
-
----
-
-## get_total_consumption_to_gdp_ratio
-Get the Total Consumption to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Total Consumption to GDP Ratio is final consumption expenditure (households, the non-profit institutions serving them and the government) as a share of the Gross Domestic Product (GDP). Select the household or government part with the component parameter.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.8100 for 81.00% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Consumption to GDP Ratio} = \frac{\text{Final Consumption Expenditure}}{\text{Nominal GDP}},\;\; \text{with the total (households, the non-profit institutions serving them and the government), household or government part selected with component ("total" by default)}
-$$
-
-**Also known as:** consumption share of GDP.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>component (str, optional):</u> The part of final consumption expenditure: "total", "household" (households and the non-profit institutions serving them) or "government". Defaults to "total".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Total Consumption to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
-
-total_consumption_to_gdp_ratio = economics.get_total_consumption_to_gdp_ratio()
-
-total_consumption_to_gdp_ratio.loc[:, ['Netherlands', 'France', 'Poland']]
-```
-
-Which returns:
-
-|      |   Netherlands |   France |   Poland |
-|:-----|--------------:|---------:|---------:|
-| 2018 |        0.6896 |   0.7833 |   0.7655 |
-| 2019 |        0.6828 |   0.7757 |   0.7572 |
-| 2020 |        0.6838 |   0.7892 |   0.755  |
-| 2021 |        0.6805 |   0.7784 |   0.7496 |
-| 2022 |        0.6836 |   0.7871 |   0.7637 |
-| 2023 |        0.6997 |   0.7873 |   0.7662 |
-| 2024 |        0.6927 |   0.7878 |   0.7793 |
-| 2025 |        0.6895 |   0.7838 |   0.7901 |
-
----
-
-## get_investment
-Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is gross capital formation: what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, plus the change in inventories.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** total investment, capital formation.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Investment
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2014-01-01', end_date="2025-12-31")
-
-investment = economics.get_investment()
-
-investment.loc[:, ['United States', 'Portugal', 'China']]
-```
-
-Which returns:
-
-|      |   United States |   Portugal |       China |
-|:-----|----------------:|-----------:|------------:|
-| 2014 |     3.68031e+06 |    26574.5 | 2.97145e+07 |
-| 2015 |     3.91791e+06 |    28591.6 | 3.00218e+07 |
-| 2016 |     3.92796e+06 |    29873.8 | 3.20756e+07 |
-| 2017 |     4.14909e+06 |    34109.1 | 3.60559e+07 |
-| 2018 |     4.45542e+06 |    37975.2 | 4.05422e+07 |
-| 2019 |     4.66767e+06 |    40256   | 4.29201e+07 |
-| 2020 |     4.58237e+06 |    39037.7 | 4.40568e+07 |
-| 2021 |     5.07881e+06 |    45322.5 | 5.01014e+07 |
-| 2022 |     5.739e+06   |    52142.2 | 5.22678e+07 |
-| 2023 |     5.99898e+06 |    55414.9 | 5.3233e+07  |
-| 2024 |     6.30862e+06 |    58942.6 | 5.47878e+07 |
-| 2025 |     6.56842e+06 |    64530.2 | 5.47964e+07 |
-
----
-
-## get_investment_to_gdp_ratio
-Get the Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Investment to GDP Ratio is gross capital formation (what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, plus the change in inventories) as a share of the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.2248 for 22.48% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Investment to GDP Ratio} = \frac{\text{Gross Capital Formation}}{\text{Nominal GDP}},\;\; \text{with}\;\; \text{Gross Capital Formation} = \text{Gross Fixed Capital Formation} + \text{Change in Inventories}
-$$
-
-**Also known as:** investment rate.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Investment to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2019-01-01', end_date="2025-12-31")
-
-investment_to_gdp_ratio = economics.get_investment_to_gdp_ratio()
-
-investment_to_gdp_ratio.loc[:, ['Australia', 'Japan', 'Turkey']]
-```
-
-Which returns:
-
-|      |   Australia |   Japan |   Turkey |
-|:-----|------------:|--------:|---------:|
-| 2019 |      0.2265 |  0.2732 |   0.2751 |
-| 2020 |      0.2246 |  0.2689 |   0.3415 |
-| 2021 |      0.2333 |  0.2733 |   0.3438 |
-| 2022 |      0.2392 |  0.2831 |   0.386  |
-| 2023 |      0.2389 |  0.2778 |   0.3459 |
-| 2024 |      0.2453 |  0.2766 |   0.3073 |
-| 2025 |      0.2455 |  0.2778 |   0.3167 |
-
----
-
-## get_fixed_investment
-Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is gross fixed capital formation: what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, without the change in inventories.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** gross fixed capital formation, capital investment.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Fixed Investment
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2020-01-01', end_date="2025-12-31")
-
-fixed_investment = economics.get_fixed_investment()
-
-fixed_investment.loc[:, ['United Kingdom', 'Germany', 'France']]
-```
-
-Which returns:
-
-|      |   United Kingdom |   Germany |   France |
-|:-----|-----------------:|----------:|---------:|
-| 2020 |           387159 |    733569 |   519445 |
-| 2021 |           430541 |    775371 |   587672 |
-| 2022 |           490449 |    858069 |   622842 |
-| 2023 |           520091 |    894583 |   647114 |
-| 2024 |           539666 |    887571 |   645687 |
-| 2025 |           573803 |    911184 |   658386 |
-
----
-
-## get_fixed_investment_to_gdp_ratio
-Get the Fixed Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Fixed Investment to GDP Ratio is gross fixed capital formation (what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, without the change in inventories) as a share of the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.2179 for 21.79% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Fixed Investment to GDP Ratio} = \frac{\text{Gross Fixed Capital Formation}}{\text{Nominal GDP}}
-$$
-
-**Also known as:** investment to GDP ratio.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Fixed Investment to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2016-01-01', end_date="2025-12-31")
-
-fixed_investment_to_gdp_ratio = economics.get_fixed_investment_to_gdp_ratio()
-
-fixed_investment_to_gdp_ratio.loc[:, ['Austria', 'Germany', 'Switzerland']]
-```
-
-Which returns:
-
-|      |   Austria |   Germany |   Switzerland |
-|:-----|----------:|----------:|--------------:|
-| 2016 |    0.2332 |    0.2    |        0.2674 |
-| 2017 |    0.2385 |    0.2016 |        0.2751 |
-| 2018 |    0.2431 |    0.2086 |        0.2698 |
-| 2019 |    0.2508 |    0.2121 |        0.2699 |
-| 2020 |    0.2513 |    0.213  |        0.2763 |
-| 2021 |    0.2586 |    0.2111 |        0.268  |
-| 2022 |    0.2521 |    0.2154 |        0.2627 |
-| 2023 |    0.2469 |    0.2119 |        0.2689 |
-| 2024 |    0.2355 |    0.2049 |        0.2643 |
-| 2025 |    0.2353 |    0.2035 |        0.2599 |
-
----
-
-## get_exports
-Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** exports, trade exports.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Exports
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='1980-01-01', end_date='1990-01-01')
-
-economics.get_exports(countries=['Netherlands', 'Germany', 'China'])
-```
-
-Which returns:
-
-|      |   Netherlands |   Germany |    China |
-|:-----|--------------:|----------:|---------:|
-| 1980 |       89051.5 |    165542 |  31845.8 |
-| 1981 |      102962   |    187458 |  43100   |
-| 1982 |      106300   |    202401 |  48143   |
-| 1983 |      109580   |    205497 |  48825.2 |
-| 1984 |      124092   |    230732 |  64861.4 |
-| 1985 |      132292   |    254587 |  85285.2 |
-| 1986 |      114407   |    248907 | 101831   |
-| 1987 |      112478   |    248372 | 142745   |
-| 1988 |      122726   |    267089 | 188203   |
-| 1989 |      138150   |    301859 | 174600   |
-| 1990 |      144534   |    336413 | 264527   |
-
----
-
-## get_exports_to_gdp_ratio
-Get the Exports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Exports to GDP Ratio is the ratio of the total amount of goods and services produced in a country that are sold to other countries to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.1016 for 10.16% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Exports to GDP Ratio} = \frac{\text{Exports of Goods and Services}}{\text{Nominal GDP}}
-$$
-
-**Also known as:** exports to GDP ratio, trade openness.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Exports to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_exports_to_gdp_ratio(countries=['United States', 'Canada', 'Russian Federation'])
-```
-
-Which returns:
-
-|      |   United States |   Canada |   Russian Federation |
-|:-----|----------------:|---------:|---------------------:|
-| 2015 |          0.1241 |   0.3185 |               0.287  |
-| 2016 |          0.1189 |   0.315  |               0.2585 |
-| 2017 |          0.1218 |   0.3145 |               0.2609 |
-| 2018 |          0.1229 |   0.3233 |               0.3079 |
-| 2019 |          0.1179 |   0.3235 |               0.2843 |
-| 2020 |          0.1012 |   0.2947 |               0.2552 |
-| 2021 |          0.1083 |   0.3118 |               0.3    |
-| 2022 |          0.1165 |   0.3372 |               0.2771 |
-| 2023 |          0.1105 |   0.3334 |               0.2277 |
-| 2024 |          0.1097 |   0.3247 |               0.2179 |
-| 2025 |          0.1079 |   0.3133 |               0.1815 |
-
----
-
-## get_imports
-Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** imports, trade imports.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Imports
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2010-01-01', end_date="2025-12-31")
-
-economics.get_imports(countries=['United States', 'Canada', 'Mexico'])
-```
-
-Which returns:
-
-|      |   United States |           Canada |      Mexico |
-|:-----|----------------:|-----------------:|------------:|
-| 2010 |     2.38956e+06 | 517153           | 4.22154e+06 |
-| 2011 |     2.69548e+06 | 564513           | 4.8355e+06  |
-| 2012 |     2.76932e+06 | 589137           | 5.41225e+06 |
-| 2013 |     2.76638e+06 | 606801           | 5.41757e+06 |
-| 2014 |     2.88744e+06 | 651176           | 5.92175e+06 |
-| 2015 |     2.79494e+06 | 683019           | 6.96894e+06 |
-| 2016 |     2.73883e+06 | 685868           | 8.05624e+06 |
-| 2017 |     2.93159e+06 | 720254           | 8.88029e+06 |
-| 2018 |     3.13117e+06 | 766265           | 9.93588e+06 |
-| 2019 |     3.11668e+06 | 782419           | 9.78484e+06 |
-| 2020 |     2.78239e+06 | 703532           | 9.07008e+06 |
-| 2021 |     3.41793e+06 | 787922           | 1.13375e+07 |
-| 2022 |     3.97432e+06 | 951814           | 1.35378e+07 |
-| 2023 |     3.85986e+06 | 985422           | 1.19891e+07 |
-| 2024 |     4.11383e+06 |      1.01502e+06 | 1.27547e+07 |
-| 2025 |     4.24615e+06 |      1.04369e+06 | 1.41931e+07 |
-
----
-
-## get_imports_to_gdp_ratio
-Get the Imports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Imports to GDP Ratio is the ratio of the total amount of goods and services produced in other countries that are bought by a country to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.1213 for 12.13% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Imports to GDP Ratio} = \frac{\text{Imports of Goods and Services}}{\text{Nominal GDP}}
-$$
-
-**Also known as:** imports to GDP ratio.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Imports to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2010-01-01', end_date="2025-12-31")
-
-economics.get_imports_to_gdp_ratio(countries=['United States', 'Canada', 'Mexico'])
-```
-
-Which returns:
-
-|      |   United States |   Canada |   Mexico |
-|:-----|----------------:|---------:|---------:|
-| 2010 |          0.1588 |   0.3104 |   0.3022 |
-| 2011 |          0.1728 |   0.3182 |   0.3167 |
-| 2012 |          0.1704 |   0.3224 |   0.3277 |
-| 2013 |          0.1639 |   0.319  |   0.3195 |
-| 2014 |          0.164  |   0.3264 |   0.3264 |
-| 2015 |          0.1528 |   0.3431 |   0.3623 |
-| 2016 |          0.1456 |   0.3386 |   0.3885 |
-| 2017 |          0.1495 |   0.3365 |   0.3939 |
-| 2018 |          0.1516 |   0.3427 |   0.411  |
-| 2019 |          0.1447 |   0.3382 |   0.3894 |
-| 2020 |          0.1302 |   0.3168 |   0.377  |
-| 2021 |          0.1441 |   0.3107 |   0.4247 |
-| 2022 |          0.1525 |   0.3323 |   0.4585 |
-| 2023 |          0.1388 |   0.3323 |   0.3762 |
-| 2024 |          0.1404 |   0.3265 |   0.3811 |
-| 2025 |          0.138  |   0.3218 |   0.4025 |
-
----
-
-## get_trade_balance
-Get the Trade Balance for a variety of countries over time from the Global Macro Database (GMDB). The Trade Balance is the difference between the total value of goods and services a country exports and the total value of goods and services it imports. A positive trade balance (a "trade surplus") means a country exports more than it imports, while a negative trade balance (a "trade deficit") means a country imports more than it exports.
-
-The formula is as follows:
-
-$$
-\text{Trade Balance} = \text{Exports of Goods and Services} - \text{Imports of Goods and Services},\;\; \text{both the Global Macro Database's figures in millions of national currency (or of US dollars when usd=True)}
-$$
-
-The balance is annual and expressed in millions of national currency, with a negative value marking a trade deficit and a positive value a surplus.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** net exports, balance of trade.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Trade Balance
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2020-01-01', end_date='2023-01-01')
-
-economics.get_trade_balance(countries=['United States', 'Germany', 'China'])
-```
-
-Which returns:
-
-|      |   United States |   Germany |       China |
-|:-----|----------------:|----------:|------------:|
-| 2020 |         -618554 |    181408 | 2.57979e+06 |
-| 2021 |         -849233 |    185685 | 3.04482e+06 |
-| 2022 |         -937889 |     96043 | 3.97949e+06 |
-| 2023 |         -786495 |    167684 | 2.79265e+06 |
-
----
-
-## get_current_account_balance
-Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
-
-The balance is annual and expressed in millions of national currency, with a negative value marking a current account deficit and a positive value a surplus.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** current account, trade balance, balance of payments.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Current Account Balance
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_current_account_balance(countries=['France', 'Germany', 'Italy'])
-```
-
-Which returns:
-
-|      |   France |   Germany |     Italy |
-|:-----|---------:|----------:|----------:|
-| 2015 |    -7158 |    252800 |  20667.3  |
-| 2016 |   -11787 |    285460 |  41949.2  |
-| 2017 |   -12529 |    272550 |  42551.2  |
-| 2018 |   -16441 |    296480 |  44465.2  |
-| 2019 |    14533 |    288300 |  56955.4  |
-| 2020 |   -47596 |    217260 |  62807    |
-| 2021 |     6941 |    256470 |  36974.5  |
-| 2022 |   -37663 |    164120 | -36550.2  |
-| 2023 |   -29398 |    233650 |   5323.05 |
-| 2024 |     2665 |    253790 |  24121.3  |
-| 2025 |    -9345 |    201850 |  25049.5  |
-
----
-
-## get_current_account_balance_to_gdp_ratio
-Get the Current Account Balance to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance to GDP Ratio is the ratio of the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid) to the Gross Domestic Product (GDP).
-
-The ratio shows whether a country saves more than it invests (a surplus) or relies on foreign financing (a deficit). Persistent deficits are not a problem in themselves, but they leave a country exposed when capital inflows stop, which is why emerging markets with large deficits are watched closely for currency stress. The European Union's macroeconomic imbalance procedure uses a three-year average between -4% and +6% of GDP as its threshold.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (-0.0211 for -2.11% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Current Account Balance to GDP Ratio} = \frac{\text{Exports} - \text{Imports of Goods and Services} + \text{Net Primary Income} + \text{Net Secondary Income}}{\text{Nominal GDP}}
-$$
-
-**Also known as:** current account to GDP.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Current Account Balance to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_current_account_balance_to_gdp_ratio(countries=[
-    'Poland', 'Turkey', 'United Kingdom'])
-```
-
-Which returns:
-
-|      |   Poland |   Turkey |   United Kingdom |
-|:-----|---------:|---------:|-----------------:|
-| 2015 |  -0.013  |  -0.0245 |          -0.0478 |
-| 2016 |  -0.0105 |  -0.0254 |          -0.0525 |
-| 2017 |  -0.0117 |  -0.0408 |          -0.0338 |
-| 2018 |  -0.0197 |  -0.0132 |          -0.0372 |
-| 2019 |  -0.0027 |   0.0193 |          -0.0248 |
-| 2020 |   0.024  |  -0.0437 |          -0.0272 |
-| 2021 |  -0.0135 |  -0.0083 |          -0.0076 |
-| 2022 |  -0.0225 |  -0.0513 |          -0.0192 |
-| 2023 |   0.0156 |  -0.035  |          -0.0357 |
-| 2024 |   0.0031 |  -0.0098 |          -0.0295 |
-| 2025 |  -0.0086 |  -0.019  |          -0.0245 |
-
----
-
-## get_government_debt
-Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
-
-The stock is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** national debt, sovereign debt.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Debt
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_debt(countries=['United States', 'Canada', 'Mexico'])
-```
-
-Which returns:
-
-|      |   United States |        Canada |        Mexico |
-|:-----|----------------:|--------------:|--------------:|
-| 2015 |     1.92907e+07 |   1.83683e+06 |   9.80508e+06 |
-| 2016 |     2.01975e+07 |   1.87318e+06 |   1.14065e+07 |
-| 2017 |     2.08678e+07 |   1.94774e+06 |   1.184e+07   |
-| 2018 |     2.22374e+07 |   2.02901e+06 |   1.26199e+07 |
-| 2019 |     2.34322e+07 |   2.08475e+06 |   1.30327e+07 |
-| 2020 |     2.83333e+07 |   2.62165e+06 |   1.40652e+07 |
-| 2021 |     2.96684e+07 |   2.85548e+06 |   1.51339e+07 |
-| 2022 |     3.10429e+07 |   2.96557e+06 |   1.58852e+07 |
-| 2023 |     3.33635e+07 |   3.11556e+06 |   1.68118e+07 |
-| 2024 |     3.58226e+07 |   3.41999e+06 |   1.97928e+07 |
-| 2025 |     3.811e+07   | nan           | nan           |
-
----
-
-## get_government_debt_to_gdp_ratio
-Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
-
-Debt to GDP is the standard measure of a government's indebtedness, used by rating agencies, the IMF and the European Union, whose fiscal rules refer to 60% of GDP. Whether a ratio is sustainable depends less on its level than on the gap between the interest rate on the debt and the growth rate of nominal GDP, and on the primary balance. Compare countries on the same level of government (the level parameter), since central government debt can differ substantially from general government debt.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (1.3173 for 131.73% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Government Debt to GDP Ratio} = \frac{\text{Gross Government Debt}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
-$$
-
-**Also known as:** debt-to-GDP ratio, fiscal sustainability.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Debt to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_debt_to_gdp_ratio(countries=['Netherlands', 'Germany', 'China'])
-```
-
-Which returns:
-
-|      |   Netherlands |   Germany |    China |
-|:-----|--------------:|----------:|---------:|
-| 2015 |        0.6382 |    0.7118 |   0.4078 |
-| 2016 |        0.6087 |    0.683  |   0.5003 |
-| 2017 |        0.5597 |    0.6399 |   0.5389 |
-| 2018 |        0.5155 |    0.6076 |   0.5588 |
-| 2019 |        0.4765 |    0.5868 |   0.5984 |
-| 2020 |        0.5341 |    0.6804 |   0.7013 |
-| 2021 |        0.505  |    0.6794 |   0.7213 |
-| 2022 |        0.4841 |    0.644  |   0.7729 |
-| 2023 |        0.4585 |    0.6235 |   0.8408 |
-| 2024 |        0.4378 |    0.6223 |   0.9042 |
-| 2025 |        0.4439 |    0.635  | nan      |
-
----
-
-## get_government_revenue
-Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** government income, public revenue.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Revenue
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2019-01-01', end_date="2025-12-31")
-
-economics.get_government_revenue(countries=['United Kingdom', 'Canada', 'Japan'])
-```
-
-Which returns:
-
-|      |   United Kingdom |           Canada |       Japan |
-|:-----|-----------------:|-----------------:|------------:|
-| 2019 | 856511           | 938667           | 1.97133e+08 |
-| 2020 | 825025           | 919593           | 1.97357e+08 |
-| 2021 | 917948           |      1.07553e+06 | 2.07143e+08 |
-| 2022 |      1.04634e+06 |      1.17518e+06 | 2.16838e+08 |
-| 2023 |      1.10774e+06 |      1.23487e+06 | 2.24713e+08 |
-| 2024 |      1.1523e+06  |      1.31248e+06 | 2.33044e+08 |
-| 2025 |      1.23387e+06 |      1.36827e+06 | 2.44853e+08 |
-
----
-
-## get_government_revenue_to_gdp_ratio
-Get the Government Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes and other sources to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.3104 for 31.04% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Government Revenue to GDP Ratio} = \frac{\text{Government Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
-$$
-
-**Also known as:** revenue to GDP ratio.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Revenue to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_revenue_to_gdp_ratio(countries=['United States', 'Canada', 'Russian Federation'])
-```
-
-Which returns:
-
-|      |   United States |   Canada |   Russian Federation |
-|:-----|----------------:|---------:|---------------------:|
-| 2015 |          0.3324 |   0.3996 |               0.3189 |
-| 2016 |          0.3275 |   0.403  |               0.3292 |
-| 2017 |          0.3343 |   0.4034 |               0.3336 |
-| 2018 |          0.3169 |   0.4102 |               0.3554 |
-| 2019 |          0.3167 |   0.4057 |               0.3568 |
-| 2020 |          0.3239 |   0.4141 |               0.3516 |
-| 2021 |          0.3351 |   0.4241 |               0.3572 |
-| 2022 |          0.348  |   0.4103 |               0.338  |
-| 2023 |          0.3146 |   0.4165 |               0.339  |
-| 2024 |          0.3174 |   0.4222 |               0.3506 |
-| 2025 |          0.3253 |   0.4219 |               0.3523 |
-
----
-
-## get_government_tax_revenue
-Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** tax revenue, fiscal revenue.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Tax Revenue
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_tax_revenue(countries=['Kenya', 'Nigeria', 'South Africa'] )
-```
-
-Which returns:
-
-|      |         Kenya |   South Africa |
-|:-----|--------------:|---------------:|
-| 2015 |   1.0216e+06  |    1.16848e+06 |
-| 2016 |   1.14692e+06 |    1.24935e+06 |
-| 2017 |   1.28657e+06 |    1.33015e+06 |
-| 2018 |   1.35099e+06 |    1.41653e+06 |
-| 2019 |   1.55782e+06 |    1.48503e+06 |
-| 2020 |   1.54288e+06 |    1.38495e+06 |
-| 2021 |   1.64048e+06 |    1.70199e+06 |
-| 2022 |   1.99797e+06 |    1.83491e+06 |
-| 2023 |   2.11082e+06 |    1.89676e+06 |
-| 2024 | nan           |    2.02766e+06 |
-| 2025 | nan           |    2.03308e+06 |
-
----
-
-## get_government_tax_revenue_to_gdp_ratio
-Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.1022 for 10.22% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Government Tax Revenue to GDP Ratio} = \frac{\text{Government Tax Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
-$$
-
-**Also known as:** tax burden, tax to GDP ratio.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Tax Revenue to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_tax_revenue_to_gdp_ratio(
-    countries=['United States', 'Canada', 'Mexico'])
-```
-
-Which returns:
-
-|      |   United States |   Canada |   Mexico |
-|:-----|----------------:|---------:|---------:|
-| 2015 |          0.1994 |   0.2815 |   0.1323 |
-| 2016 |          0.1958 |   0.2855 |   0.1401 |
-| 2017 |          0.2031 |   0.2863 |   0.1358 |
-| 2018 |          0.1874 |   0.2903 |   0.136  |
-| 2019 |          0.1887 |   0.2857 |   0.1369 |
-| 2020 |          0.1928 |   0.2976 |   0.1484 |
-| 2021 |          0.2073 |   0.3021 |   0.1443 |
-| 2022 |          0.2203 |   0.2938 |   0.1449 |
-| 2023 |          0.1932 |   0.2958 |   0.1538 |
-| 2024 |          0.1942 |   0.2959 | nan      |
-| 2025 |          0.202  |   0.2925 | nan      |
-
----
-
-## get_government_expenditure
-Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total spending of the government: goods and services and the wages of its employees, but also social benefits and other transfers, subsidies and interest on its debt.
-
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** government spending, public expenditure.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Expenditure
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_expenditure(countries=['Japan', 'China', 'India'])
-```
-
-Which returns:
-
-|      |       Japan |       China |       India |
-|:-----|------------:|------------:|------------:|
-| 2015 | 2.06691e+08 | 2.1786e+07  | 3.65765e+07 |
-| 2016 | 2.08867e+08 | 2.41238e+07 | 4.12501e+07 |
-| 2017 | 2.09092e+08 | 2.71281e+07 | 4.4235e+07  |
-| 2018 | 2.10865e+08 | 3.05534e+07 | 4.91601e+07 |
-| 2019 | 2.14548e+08 | 3.38067e+07 | 5.35377e+07 |
-| 2020 | 2.47428e+08 | 3.6053e+07  | 6.12564e+07 |
-| 2021 | 2.43415e+08 | 3.74577e+07 | 7.03345e+07 |
-| 2022 | 2.41313e+08 | 4.02806e+07 | 7.82555e+07 |
-| 2023 | 2.39074e+08 | 4.23663e+07 | 8.60877e+07 |
-| 2024 | 2.43693e+08 | 4.44027e+07 | 9.31256e+07 |
-| 2025 | 2.51507e+08 | 4.44552e+07 | 9.84739e+07 |
-
----
-
-## get_government_expenditure_to_gdp_ratio
-Get the Government Expenditure to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Expenditure to GDP Ratio is the total spending of the government (goods and services and the wages of its employees, but also social benefits and other transfers, subsidies and interest on its debt) as a share of the Gross Domestic Product (GDP).
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The ratio is expressed as a decimal fraction (0.3708 for 37.08% of GDP).
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Government Expenditure to GDP Ratio} = \frac{\text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
-$$
-
-**Also known as:** government spending to GDP.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Expenditure to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_expenditure_to_gdp_ratio(
-    countries=['United States', 'Japan', 'Netherlands'])
-```
-
-Which returns:
-
-|      |   United States |   Japan |   Netherlands |
-|:-----|----------------:|--------:|--------------:|
-| 2015 |          0.3791 |  0.3766 |        0.4525 |
-| 2016 |          0.3818 |  0.3757 |        0.4391 |
-| 2017 |          0.3788 |  0.37   |        0.4275 |
-| 2018 |          0.3785 |  0.3705 |        0.4244 |
-| 2019 |          0.3836 |  0.3752 |        0.421  |
-| 2020 |          0.4736 |  0.4466 |        0.4781 |
-| 2021 |          0.4542 |  0.4244 |        0.4591 |
-| 2022 |          0.3849 |  0.4126 |        0.4328 |
-| 2023 |          0.3931 |  0.3881 |        0.4401 |
-| 2024 |          0.3966 |  0.3839 |        0.4429 |
-| 2025 |          0.3981 |  0.3791 |        0.4486 |
-
----
-
-## get_government_deficit
-Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The series is signed as a fiscal balance rather than as a deficit, in millions of national currency: a negative value is a deficit (spending exceeding revenue) and a positive value is a surplus.
-
-**Also known as:** budget deficit, fiscal deficit.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Deficit
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_deficit(countries=['United States', 'Canada', 'Mexico'])
-```
-
-Which returns:
-
-|      |     United States |   Canada |            Mexico |
-|:-----|------------------:|---------:|------------------:|
-| 2015 | -853792           |    -1231 | -742271           |
-| 2016 |      -1.02094e+06 |    -9182 | -556067           |
-| 2017 | -872728           |    -2401 | -233109           |
-| 2018 |      -1.27096e+06 |     8046 | -517006           |
-| 2019 |      -1.44074e+06 |     -400 | -569358           |
-| 2020 |      -3.20097e+06 |  -243127 |      -1.03224e+06 |
-| 2021 |      -2.82551e+06 |   -77523 |      -1.00013e+06 |
-| 2022 | -961028           |    17672 |      -1.27619e+06 |
-| 2023 |      -2.18266e+06 |    -4808 |      -1.36965e+06 |
-| 2024 |      -2.31875e+06 |   -65919 |      -1.93368e+06 |
-| 2025 |      -2.23721e+06 |   -57263 |     nan           |
-
----
-
-## get_government_deficit_to_gdp_ratio
-Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
-
-The budget balance as a share of GDP is the headline fiscal indicator, with the European Union's 3% of GDP as the best-known reference for deficits. It includes interest payments and moves with the business cycle, so analysts also look at the primary balance (excluding interest) and the cyclically adjusted balance to judge the fiscal stance. A deficit that stays above the nominal growth rate times the debt ratio keeps pushing debt to GDP up.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The series is signed as a fiscal balance rather than as a deficit, and expressed as a decimal fraction of GDP: -0.07068 means a deficit of 7.068% of GDP, and a positive value is a surplus.
-
-The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
-
-The formula is as follows:
-
-$$
-\text{Government Deficit to GDP Ratio} = \frac{\text{Government Revenue} - \text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
-$$
-
-**Also known as:** deficit-to-GDP, fiscal balance.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Deficit to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-government_deficit_to_gdp_ratio = economics.get_government_deficit_to_gdp_ratio()
-
-government_deficit_to_gdp_ratio.loc[:, ['New Zealand', 'Australia', 'United Kingdom']]
-```
-
-Which returns:
-
-|      |   New Zealand |   Australia |   United Kingdom |
-|:-----|--------------:|------------:|-----------------:|
-| 2015 |        0.0012 |     -0.0104 |          -0.045  |
-| 2016 |        0.0115 |     -0.0155 |          -0.0327 |
-| 2017 |        0.0162 |     -0.0063 |          -0.0246 |
-| 2018 |        0.0083 |     -0.0056 |          -0.0219 |
-| 2019 |       -0.0028 |     -0.0121 |          -0.0246 |
-| 2020 |       -0.0758 |     -0.1142 |          -0.1291 |
-| 2021 |       -0.0388 |     -0.0417 |          -0.0774 |
-| 2022 |       -0.0292 |     -0.0193 |          -0.0473 |
-| 2023 |       -0.0348 |     -0.0135 |          -0.0604 |
-| 2024 |       -0.0299 |     -0.0277 |          -0.0613 |
-| 2025 |       -0.0333 |     -0.0393 |          -0.0546 |
-
----
-
-## get_government_interest_expenditure
-Get the Government Interest Expenditure for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government (the central, state and local governments and the social security funds together) owes on its debt: GFS item 24, interest payable, which is D.41 in the national accounts.
-
-The interest is recorded when it accrues rather than when it is paid, and before the interest the government receives is netted against it. It is therefore higher than the net interest of a national budget: for the United States, the general government interest also covers the states and local governments, and the federal net interest the Congressional Budget Office reports subtracts the interest the federal government receives.
-
-The figures are quarterly (period="quarterly", the default) or yearly and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Quarterly figures are not seasonally adjusted; trailing=4 gives the interest over the last four quarters. The IMF's quarterly government finance statistics cover around 40 economies, among which the United States, the euro area and its members, the United Kingdom, Canada, Australia, Brazil, Turkey and Indonesia; countries outside them are left out with a warning. For those, get_government_expenditure_by_function with functions="Public Debt Transactions" has the yearly public debt transactions (COFOG 01.7, mostly interest) of around 180 countries.
-
-Data comes from the IMF's Quarterly Government Finance Statistics, further information can be found within [https://data.imf.org/en/datasets/IMF.STA:QGFS](https://data.imf.org/en/datasets/IMF.STA:QGFS){:target="_blank"}
-
-**Also known as:** interest payments, debt service cost, interest outlays, cost of government debt.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" or "yearly". Defaults to None, which is
-quarterly, the highest frequency published.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Interest Expenditure
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_interest_expenditure(
-    countries=['United States', 'Germany', 'Italy'], period='yearly')
-```
-
-Which returns:
-
-|      |    United States |   Germany |   Italy |
-|:-----|-----------------:|----------:|--------:|
-| 2015 | 428286           |     42913 |   68116 |
-| 2016 | 468186           |     37888 |   66258 |
-| 2017 | 494638           |     34489 |   65333 |
-| 2018 | 571996           |     31787 |   64366 |
-| 2019 | 606869           |     28052 |   60214 |
-| 2020 | 541832           |     22390 |   57125 |
-| 2021 | 631404           |     21756 |   63003 |
-| 2022 | 815793           |     28018 |   81614 |
-| 2023 | 997791           |     36848 |   77780 |
-| 2024 |      1.17905e+06 |     45828 |   85484 |
-| 2025 |      1.24322e+06 |     49544 |   87145 |
-
----
-
-## get_government_interest_expenditure_to_gdp_ratio
-Get the Government Interest Expenditure to GDP Ratio for a variety of countries over time from the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable, D.41 in the national accounts) as a share of the Gross Domestic Product (GDP).
-
-The interest burden as a share of GDP shows how much of the economy's output goes to servicing government debt. It rises with the debt ratio and with the interest rate the debt is refinanced at, and is the item that turns a primary balance into the overall balance. Comparing it with the spending on a function, such as defence with get_government_expenditure_by_function_to_gdp_ratio, uses the same general government and the same GDP.
-
-The interest is general government interest payable, on an accrual basis and before interest received is netted, so it is higher than the net interest of a national budget (see get_government_interest_expenditure). Both the interest and the GDP come from the IMF: its Quarterly Government Finance Statistics and its National Economic Accounts (quarterly GDP not seasonally adjusted, like the interest). Around 40 economies are covered; countries outside them are left out with a warning.
-
-The ratio is expressed as a decimal fraction (0.0402 for 4.02% of GDP).
-
-The formula is as follows:
-
-$$
-\text{Government Interest Expenditure to GDP Ratio} = \frac{\text{Interest Payable}}{\text{Nominal GDP}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without seasonal swings) or over the year for period="yearly"}
-$$
-
-**Also known as:** interest burden, interest to GDP, debt service to GDP.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
-each quarter) or "yearly". Defaults to None, which is quarterly, the highest
-frequency published.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Interest Expenditure to GDP Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-economics.get_government_interest_expenditure_to_gdp_ratio(
-    countries=['United States', 'Germany', 'Italy', 'United Kingdom'], period='yearly')
-```
-
-Which returns:
-
-|      |   United States |   Germany |   Italy |   United Kingdom |
-|:-----|----------------:|----------:|--------:|-----------------:|
-| 2015 |          0.0234 |    0.0139 |  0.041  |           0.0244 |
-| 2016 |          0.0249 |    0.0118 |  0.0389 |           0.0256 |
-| 2017 |          0.0252 |    0.0103 |  0.0375 |           0.028  |
-| 2018 |          0.0277 |    0.0092 |  0.0363 |           0.0258 |
-| 2019 |          0.0282 |    0.0079 |  0.0334 |           0.0229 |
-| 2020 |          0.0253 |    0.0064 |  0.0343 |           0.0208 |
-| 2021 |          0.0266 |    0.0059 |  0.0343 |           0.0277 |
-| 2022 |          0.0313 |    0.007  |  0.0408 |           0.0426 |
-| 2023 |          0.0359 |    0.0087 |  0.0363 |           0.0322 |
-| 2024 |          0.0402 |    0.0104 |  0.0387 |           0.0292 |
-| 2025 |          0.0404 |    0.0109 |  0.0385 |           0.0332 |
-
----
-
-## get_government_interest_expenditure_to_revenue_ratio
-Get the Government Interest Expenditure to Revenue Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable) as a share of its revenue (GFS item 1: taxes, social contributions, grants and other revenue).
-
-The share of revenue that goes to interest is the measure rating agencies use for debt affordability: it says how much of what the government collects is committed to its creditors before anything else is paid for. Both come from the same statistics of the same general government, on an accrual basis, with the interest before interest received is netted. Around 40 economies are covered; countries outside them are left out with a warning.
-
-The ratio is expressed as a decimal fraction (0.1351 for 13.51% of revenue).
-
-The formula is as follows:
-
-$$
-\text{Government Interest Expenditure to Revenue Ratio} = \frac{\text{Interest Payable}}{\text{Government Revenue}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without the seasonal swings of tax receipts) or over the year for period="yearly"}
-$$
-
-**Also known as:** interest to revenue, interest burden on revenue, debt affordability.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
-each quarter) or "yearly". Defaults to None, which is quarterly, the highest
-frequency published.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Interest Expenditure to Revenue Ratio
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2024-01-01', end_date="2025-12-31")
-
-economics.get_government_interest_expenditure_to_revenue_ratio(
-    countries=['United States', 'France', 'Canada'])
-```
-
-Which returns:
-
-|        |   United States |   France |   Canada |
-|:-------|----------------:|---------:|---------:|
-| 2024Q1 |          0.1258 |   0.038  |   0.0788 |
-| 2024Q2 |          0.1301 |   0.0386 |   0.0805 |
-| 2024Q3 |          0.1335 |   0.0402 |   0.0822 |
-| 2024Q4 |          0.1351 |   0.04   |   0.082  |
-| 2025Q1 |          0.1354 |   0.0416 |   0.0812 |
-| 2025Q2 |          0.1347 |   0.0418 |   0.0808 |
-| 2025Q3 |          0.1334 |   0.0423 |   0.0792 |
-| 2025Q4 |          0.1325 |   0.0427 |   0.08   |
-
----
-
-## get_government_expenditure_by_function
-Get the Government Expenditure by Function for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). The spending of the general government (the central, state and local governments and the social security funds together) is split by purpose according to the United Nations' Classification of the Functions of Government (COFOG), the classification Eurostat, the OECD and the IMF all publish.
-
-The ten COFOG divisions are General Public Services, Defence, Public Order and Safety, Economic Affairs, Environmental Protection, Housing and Community Amenities, Health, Recreation, Culture and Religion, Education and Social Protection, which add up to the Total. General Public Services include the Public Debt Transactions (group 01.7), which are mostly the interest on government debt, also available as a function of its own where a country reports it. Defence is military and civil defence, foreign military aid and defence research; military pensions are Social Protection.
-
-The data is yearly, in millions of national currency, for around 180 countries; the most recent year is usually one or two years back. Levels are not comparable across countries with different currencies, but growth rates are, and get_government_expenditure_by_function_to_gdp_ratio returns the shares of GDP.
-
-The columns are a country and a function each; a country without data for a function has no column for it, and countries without data are left out with a warning.
-
-Data comes from the IMF's Government Finance Statistics, further information can be found within [https://data.imf.org/en/datasets/IMF.STA:GFS_COFOG](https://data.imf.org/en/datasets/IMF.STA:GFS_COFOG){:target="_blank"}
-
-**Also known as:** COFOG, government spending by function, defence spending, military spending, health spending, education spending, social spending.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>functions (list[str] &#124; str &#124; None, optional):</u> The functions to return, a list or a
-comma-separated string of the ten divisions above, "Public Debt Transactions"
-or "Total". Defaults to None, which returns the ten divisions.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Expenditure by Function, with a
-(Country, Function) column
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
-
-expenditure = economics.get_government_expenditure_by_function(
-    countries=['United States', 'Germany'], functions='Defence,Health,Education')
-
-expenditure['United States']
-```
-
-Which returns:
-
-|      |   Defence |      Health |   Education |
-|:-----|----------:|------------:|------------:|
-| 2018 |    660147 | 1.91712e+06 | 1.22016e+06 |
-| 2019 |    712831 | 2.0491e+06  | 1.26193e+06 |
-| 2020 |    744556 | 2.26781e+06 | 1.28909e+06 |
-| 2021 |    762090 | 2.45445e+06 | 1.37456e+06 |
-| 2022 |    775165 | 2.64297e+06 | 1.47586e+06 |
-| 2023 |    843209 | 2.79374e+06 | 1.54819e+06 |
-| 2024 |    911017 | 3.01146e+06 | 1.63922e+06 |
-
----
-
-## get_government_expenditure_by_function_to_gdp_ratio
-Get the Government Expenditure by Function to GDP Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the spending of the general government on each function of the United Nations' Classification of the Functions of Government (COFOG) as a share of the Gross Domestic Product (GDP).
-
-Shares of GDP make the functions comparable across countries and over time, such as NATO's 2% of GDP guideline for defence. The ten divisions, the Public Debt Transactions (group 01.7, mostly interest) and the Total are described in get_government_expenditure_by_function. Defence covers military and civil defence, foreign military aid and defence research, not military pensions, so it differs from NATO's definition and from a national defence budget.
-
-For the interest itself, get_government_interest_expenditure_to_gdp_ratio uses the same general government and the same GDP, so the two together answer whether a government pays more in interest than it spends on defence.
-
-The data is yearly, for around 180 countries; the most recent year is usually one or two years back. The ratio is the IMF's own figure, published in percent and divided by 100 here, so it is a decimal fraction (0.0311 for 3.11% of GDP).
-
-The formula is as follows:
-
-$$
-\text{Government Expenditure by Function to GDP Ratio} = \frac{\text{Expenditure on the Function}}{\text{Nominal GDP}}
-$$
-
-**Also known as:** defence spending to GDP, military spending to GDP, health spending to GDP, education spending to GDP, social spending to GDP, COFOG to GDP.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>functions (list[str] &#124; str &#124; None, optional):</u> The functions to return, a list or a
-comma-separated string of the ten COFOG divisions, "Public Debt Transactions"
-or "Total". Defaults to None, which returns the ten divisions.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Government Expenditure by Function to GDP
-Ratio, with a (Country, Function) column
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
-
-defence = economics.get_government_expenditure_by_function_to_gdp_ratio(
-    countries=['United States', 'Japan', 'Germany', 'United Kingdom'], functions='Defence')
-
-defence.xs('Defence', axis=1, level='Function')
-```
-
-Which returns:
-
-|      |   United States |   Japan |   Germany |   United Kingdom |
-|:-----|----------------:|--------:|----------:|-----------------:|
-| 2015 |          0.0327 |  0.0086 |    0.0094 |           0.0198 |
-| 2016 |          0.0318 |  0.0079 |    0.0096 |           0.0189 |
-| 2017 |          0.0314 |  0.0085 |    0.0099 |           0.0185 |
-| 2018 |          0.032  |  0.009  |    0.0105 |           0.0183 |
-| 2019 |          0.0331 |  0.0089 |    0.0106 |           0.0196 |
-| 2020 |          0.0348 |  0.0092 |    0.0112 |           0.0214 |
-| 2021 |          0.0321 |  0.0099 |    0.0114 |           0.0212 |
-| 2022 |          0.0298 |  0.0092 |    0.0115 |           0.0214 |
-| 2023 |          0.0303 |  0.0105 |    0.0125 |           0.022  |
-| 2024 |          0.0311 |  0.013  |    0.0135 |           0.0225 |
-
----
-
-## get_trust_in_government
-Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “don’t know”) to the survey question: “In this country, do you have confidence in… national government?”
-
-Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010-18 to improve the accuracy of the estimates.
-
-The sample is ex ante designed to be nationally representative of the population aged 15 and over. The population-wide figure is returned -- both sexes, all education levels -- as an annual decimal fraction of that population (0.3933 for 39.33%). The breakdowns by sex and education level that the OECD publishes alongside it are not returned here.
-
-**See definition:** [https://data.oecd.org/gga/trust-in-government.htm](https://data.oecd.org/gga/trust-in-government.htm){:target="_blank"}
-
-**Also known as:** political trust, institutional trust.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Trust in Government.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(end_date="2025-12-31")
-
-trust_in_government = economics.get_trust_in_government()
-
-trust_in_government.loc[:, ['United States', 'Greece', 'Japan']]
-```
-
-Which returns:
-
-|      |   United States |   Greece |   Japan |
-|:-----|----------------:|---------:|--------:|
-| 2006 |          0.4756 |   0.4345 |  0.2952 |
-| 2007 |          0.4756 |   0.4345 |  0.2952 |
-| 2008 |          0.4335 |   0.2764 |  0.2478 |
-| 2009 |          0.4335 |   0.2764 |  0.2478 |
-| 2010 |          0.4335 |   0.2764 |  0.2478 |
-| 2011 |          0.34   |   0.1483 |  0.2528 |
-| 2012 |          0.34   |   0.1483 |  0.2528 |
-| 2013 |          0.34   |   0.1483 |  0.2528 |
-| 2014 |          0.3309 |   0.2527 |  0.3649 |
-| 2015 |          0.3309 |   0.2527 |  0.3649 |
-| 2016 |          0.3309 |   0.2527 |  0.3649 |
-| 2017 |          0.3544 |   0.2311 |  0.4029 |
-| 2018 |          0.3544 |   0.2311 |  0.4029 |
-| 2019 |          0.3544 |   0.2311 |  0.4029 |
-| 2020 |          0.3933 |   0.3518 |  0.3819 |
-| 2021 |          0.3933 |   0.3518 |  0.3819 |
-| 2022 |          0.3933 |   0.3518 |  0.3819 |
-| 2023 |          0.2944 |   0.2732 |  0.3215 |
-| 2024 |          0.2944 |   0.2732 |  0.3215 |
-| 2025 |          0.2944 |   0.2732 |  0.3215 |
-
----
-
-## get_consumer_price_index
-Consumer Price Index (CPI) is a measure that examines the average change in prices paid by consumers for goods and services over time. It is a measure of inflation.
-
-By default the data is monthly, from the most current national source per country (see below). With period="yearly" the data comes from the Global Macro Database (GMDB), annual with 2015 = 100. Set `oecd_source=True` to retrieve monthly or quarterly data from the OECD instead (base year varies per country).
-
-The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
-
-With period="monthly" and without oecd_source, every country comes from its most current source: Eurostat for the euro area and the European Economic Area (the HICP, 2015 = 100), the Office for National Statistics for the United Kingdom (CPI, 2015 = 100), the Statistics Bureau of Japan for Japan (CPI from 2015, on its latest base) and the Bank for International Settlements for every other country (2010 = 100). The base year differs between countries, so compare the changes rather than the levels.
-
-The measure parameter selects the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
-
-The US index of the BIS is the BLS's CPI-U rebased to 2010 = 100, which the BIS publishes a few days after the BLS. The months the BLS has published since are added to it, so a release appears the same day.
-
-With cumulative=True, every country's index is divided by its value in the first period of the date range: the growth of 1 in prices since the start_date (1.3460 for prices 34.60% higher), which compares countries regardless of their base year. A country without data in the first period starts from its own first period. The purchasing power of money is its inverse (see get_purchasing_power).
-
-Further information about the Global Macro Database (GMDB) variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** CPI, cost of living index, core CPI, CPI components, energy prices, food prices, shelter costs.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Without `oecd_source=True`, "monthly" uses the monthly sources described above and the
-annual data comes from the GMDB. Defaults to None, which is the monthly data (quarterly
-with `oecd_source=True` when the Economics class was initialized with quarterly=True).
-- <u>oecd_source (bool, optional):</u> Whether to get the data from the OECD instead of the
-Global Macro Database (GMDB). Defaults to False.
-- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
-energy, or a component: "energy", "food", "goods", "services" or "shelter"
-(United States only). Other measures than "all" are monthly, without
-oecd_source. Defaults to "all".
-- <u>cumulative (bool, optional):</u> Whether to return the growth of 1 in prices since the
-first period of the date range instead of the index. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Consumer Price Index.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2008-09-01', end_date='2020-03-01')
-
-economics.get_consumer_price_index(countries=['Germany', 'France', 'Portugal'], period='yearly')
-```
-
-Which returns:
-
-|      |   Germany |   France |   Portugal |
-|:-----|----------:|---------:|-----------:|
-| 2008 |   91.9238 |  93.2046 |    92.9047 |
-| 2009 |   92.2236 |  93.2862 |    92.1285 |
-| 2010 |   93.2552 |  94.7165 |    93.4207 |
-| 2011 |   95.1772 |  96.7132 |    96.8332 |
-| 2012 |   97.064  |  98.604  |    99.5189 |
-| 2013 |   98.5364 |  99.4547 |    99.7919 |
-| 2014 |   99.4445 |  99.9597 |    99.5142 |
-| 2015 |  100      | 100      |   100      |
-| 2016 |  100.467  | 100.184  |   100.608  |
-| 2017 |  101.975  | 101.216  |   101.984  |
-| 2018 |  103.765  | 103.09   |   102.998  |
-| 2019 |  105.237  | 104.231  |   103.346  |
-| 2020 |  105.801  | 104.729  |   103.333  |
-
----
-
-## get_inflation_rate
-Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
-
-With period="yearly" the data comes from the Global Macro Database (GMDB). Its years that are IMF World Economic Outlook projections are only included with gmdb_forecasts=True; by default a series ends with its last observation. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
-
-With period="monthly", the default, the annual rate of change is returned for every month, the figure statistical offices publish, taken per country from the most current source: Eurostat for the euro area and the European Economic Area (the HICP, including the flash estimate at the end of the month itself), the Office for National Statistics for the United Kingdom (CPI), the Statistics Bureau of Japan for Japan (CPI, from 2016), the Bank for International Settlements for around sixty other countries, including the United States, China, India and Brazil, and the IMF for around a hundred more, all republishing the national consumer price indices.
-
-The measure parameter selects the inflation of the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
-
-The US index of the BIS is the BLS's CPI-U rebased to 2010 = 100, which the BIS publishes a few days after the BLS. The months the BLS has published since are added to it, so a release appears the same day.
-
-The result is a decimal fraction (0.041166 for 4.1166%), like every other rate in the Finance Toolkit.
-
-The rates are the sources' own figures (published in percent and divided by 100 here), except for Japan, which is calculated from the Statistics Bureau of Japan's CPI.
-
-The formula is as follows:
-
-$$
-\text{Monthly Inflation Rate} \;(t) = \frac{\text{CPI} \;(t)}{\text{CPI} \;(t-12 \;\text{months})} - 1,\;\; \text{the annual rate of change for every month}
-$$
-
-$$
-\text{Yearly Inflation Rate} \;(t) = \frac{\text{CPI} \;(t)}{\text{CPI} \;(t-1 \;\text{year})} - 1,\;\; \text{the Global Macro Database's annual figure}
-$$
-
-Headline inflation is what most central banks target, usually at 2% a year, but they read it together with core inflation, which excludes energy and food, to see past temporary price shocks. Year-on-year rates react to base effects: a large price jump a year earlier lowers today's rate once it drops out of the comparison. The Eurostat figures are the harmonised index (HICP), which differs from national CPIs, for example in leaving out the costs of owner-occupied housing.
-
-**Also known as:** CPI-based inflation, price increases, consumer prices, core inflation, energy inflation, food inflation, services inflation, shelter inflation.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
-Defaults to None, which is the monthly data.
-- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
-energy, or a component: "energy", "food", "goods", "services" or "shelter"
-(United States only). Other measures than "all" are monthly. Defaults to "all".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Inflation Rate.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2003-01-01', end_date='2009-03-01')
-
-economics.get_inflation_rate(countries=['Germany', 'France', 'Portugal'], period='yearly')
-```
-
-Which returns:
-
-|      |   Germany |   France |   Portugal |
-|:-----|----------:|---------:|-----------:|
-| 2003 |    0.0107 |   0.0217 |     0.0324 |
-| 2004 |    0.0177 |   0.0234 |     0.0251 |
-| 2005 |    0.0195 |   0.0189 |     0.0213 |
-| 2006 |    0.0177 |   0.0189 |     0.0305 |
-| 2007 |    0.0229 |   0.016  |     0.0242 |
-| 2008 |    0.0275 |   0.0316 |     0.0265 |
-| 2009 |    0.0023 |   0.001  |    -0.009  |
-
----
-
-## get_purchasing_power
-Purchasing Power is what 100 units of a currency at the start of the date range buy in every later period, in the prices of the start: it falls as consumer prices rise, so 74.29 means that money has lost a quarter of its value. It is the inverse of the growth in the Consumer Price Index since the first period of the range (see get_consumer_price_index with cumulative=True), on the same monthly sources by default (period="yearly" for the Global Macro Database's annual averages).
-
-With overnight_rate=True, the 100 is not held as banknotes but deposited at the overnight rate of its currency, compounded day by day (see get_overnight_rate with cumulative=True): €STR for the Euro Area and its members, SONIA for the United Kingdom, TONA for Japan and SOFR for the United States. The result is the real value of cash, which stays above 100 only when the interest outpaced inflation. Countries without an overnight rate are left out with a note. A euro member earns €STR over the whole range, also before it adopted the euro.
-
-The formula is as follows:
-
-$$
-\text{Purchasing Power} \;(t) = \frac{100 \cdot \text{CPI} \;(\text{start})}{\text{CPI} \;(t)}
-$$
-
-$$
-\text{Purchasing Power of Cash} \;(t) = \frac{100 \cdot \text{Overnight Rate Growth} \;(t) \cdot \text{CPI} \;(\text{start})}{\text{CPI} \;(t)}
-$$
-
-CPI (start) is each country's index in the first period of the date range (its own first period when it starts later). The cash growth starts at 1 on the first day of the range and every month takes it on the last day of the month, next to the index of that same month (the reference month). The index of a month is published some weeks after it ends, so the latest months of the cash growth are left out until their index is published rather than paired with older prices.
-
-**Also known as:** real value of money, value of money, real value of cash, real return on cash, inflation erosion.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data.
-Defaults to None, which is every country with a consumer price index, or the
-Euro Area, Japan, the United Kingdom and the United States with
-overnight_rate=True.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
-Defaults to None, which is the monthly data. The overnight rate is only
-combined with the monthly data.
-- <u>overnight_rate (bool, optional):</u> Whether the 100 earns the overnight rate of its
-currency instead of being held as banknotes. Defaults to False.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The purchasing power of 100 per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2020-01-01', end_date='2026-09-30')
-
-economics.get_purchasing_power(
-    countries=['Euro Area', 'Netherlands', 'United States'], overnight_rate=True
-).iloc[::12]
-```
-
-Which returns:
-
-|         |   Euro Area |   Netherlands |   United States |
-|:--------|------------:|--------------:|----------------:|
-| 2020-01 |     99.9567 |       99.9567 |        100.124  |
-| 2021-01 |     98.5071 |       97.8545 |         98.9891 |
-| 2022-01 |     93.1777 |       90.4128 |         92.1353 |
-| 2023-01 |     85.9347 |       83.578  |         88.3553 |
-| 2024-01 |     86.5277 |       83.8851 |         90.2447 |
-| 2025-01 |     87.5091 |       84.4527 |         92.2405 |
-| 2026-01 |     87.9163 |       84.4219 |         93.9886 |
-
----
-
-## get_producer_price_index
-Get the Producer Price Index (PPI) for a variety of countries over time. The PPI measures the average change over time in the prices domestic producers receive for their output. Because producers tend to pass rising input costs on to their customers with a lag, the PPI is generally seen as a leading, upstream indicator of cost pressure that later shows up in the Consumer Price Index (CPI).
-
-Each country's headline index comes monthly from its official publisher:
-
-$$
-\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100
-$$
-
-$$
-\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the PPI for final demand},\;\; \text{November}\; 2009 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED, which republishes it}
-$$
-
-$$
-\text{The Bank of Japan for Japan:}\;\; \text{the Corporate Goods Price Index (domestic)},\;\; 2020 = 100,\;\; \text{from 1960}
-$$
-
-China is not included: the National Bureau of Statistics of China publishes its producer prices as changes rather than as an index, and its database refuses automated requests. Its monthly year-on-year figure is in get_economic_calendar.
-
-All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
-
-**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm){:target="_blank"}
-
-**Also known as:** PPI, wholesale prices, factory gate prices, upstream inflation.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Producer Price Index per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
-
-economics.get_producer_price_index(
-    countries=['United States', 'Euro Area', 'Japan'],
-    period='monthly',
-    growth=True,
-    lag=12,
-)
-```
-
-Which returns:
-
-|         |   United States |   Euro Area |   Japan |
-|:--------|----------------:|------------:|--------:|
-| 2025-10 |          0.0284 |     -0.004  |  0.0282 |
-| 2025-11 |          0.0314 |     -0.0126 |  0.0281 |
-| 2025-12 |          0.0314 |     -0.0204 |  0.0248 |
-| 2026-01 |          0.0308 |     -0.021  |  0.0247 |
-| 2026-02 |          0.0337 |     -0.0303 |  0.0223 |
-| 2026-03 |          0.0429 |      0.0198 |  0.0301 |
-| 2026-04 |          0.057  |      0.0493 |  0.0553 |
-| 2026-05 |          0.0592 |      0.0586 |  0.068  |
-| 2026-06 |          0.0559 |      0.046  |  0.0752 |
-| 2026-07 |          0.0494 |      0.0578 |  0.0773 |
-| 2026-08 |          0.0561 |      0.083  |  0.0759 |
-| 2026-09 |          0.0634 |      0.1113 |  0.0677 |
-
----
-
-## get_export_price_index
-Get the Export Price Index for a variety of countries over time. The index measures the average change over time in the prices a country's producers receive for the goods they sell abroad, in its own currency. Together with the Import Price Index it gives the terms of trade, and it shows how much of a currency move or a foreign price shock exporters pass on.
-
-Each country's index comes monthly from its official publisher:
-
-$$
-\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the non-domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100.\;\; \text{For the euro area these include sales to other members}
-$$
-
-$$
-\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the export price index of all commodities},\;\; 2000 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED}
-$$
-
-$$
-\text{The Bank of Japan for Japan:}\;\; \text{the export price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
-$$
-
-All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
-
-**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpp_esms.htm){:target="_blank"}
-
-**Also known as:** export prices, XPI, trade prices.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Export Price Index per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
-
-economics.get_export_price_index(
-    countries=['United States', 'Euro Area', 'Japan'],
-    period='monthly',
-    growth=True,
-    lag=12,
-)
-```
-
-Which returns:
-
-|         |   United States |   Euro Area |   Japan |
-|:--------|----------------:|------------:|--------:|
-| 2025-10 |        nan      |     -0.0052 |  0.0224 |
-| 2025-11 |          0.0329 |     -0.0087 |  0.0205 |
-| 2025-12 |          0.0341 |     -0.0147 |  0.04   |
-| 2026-01 |          0.0251 |     -0.0129 |  0.0494 |
-| 2026-02 |          0.038  |     -0.018  |  0.0838 |
-| 2026-03 |          0.0564 |      0.0121 |  0.113  |
-| 2026-04 |          0.0931 |      0.0323 |  0.1809 |
-| 2026-05 |          0.1135 |      0.042  |  0.2057 |
-| 2026-06 |          0.0998 |      0.042  |  0.2126 |
-| 2026-07 |          0.0812 |      0.0525 |  0.1936 |
-| 2026-08 |          0.0928 |      0.0623 |  0.1796 |
-| 2026-09 |          0.1163 |      0.0747 |  0.1786 |
-
----
-
-## get_import_price_index
-Get the Import Price Index for a variety of countries over time. The index measures the average change over time in the prices of the goods a country buys from abroad, in its own currency. It shows how foreign price shocks and currency moves reach the domestic economy, ahead of the Producer and Consumer Price Indices.
-
-Each country's index comes monthly from its official publisher:
-
-$$
-\text{Eurostat for the euro area, the European Union and around 20 European countries:}\;\; \text{the import prices of industrial products (mining, manufacturing and energy supply)},\;\; 2021 = 100.\;\; \text{For the euro area these include imports from other members}
-$$
-
-$$
-\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the import price index of all commodities},\;\; 2000 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED}
-$$
-
-$$
-\text{The Bank of Japan for Japan:}\;\; \text{the import price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
-$$
-
-All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
-
-**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpi_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_inpi_esms.htm){:target="_blank"}
-
-**Also known as:** import prices, MPI, trade prices.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Import Price Index per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
-
-economics.get_import_price_index(
-    countries=['United States', 'Euro Area', 'Japan'],
-    period='monthly',
-    growth=True,
-    lag=12,
-)
-```
-
-Which returns:
-
-|         |   United States |   Euro Area |   Japan |
-|:--------|----------------:|------------:|--------:|
-| 2025-10 |        nan      |     -0.0231 | -0.016  |
-| 2025-11 |         -0.0007 |     -0.0291 | -0.017  |
-| 2025-12 |          0      |     -0.036  |  0.0018 |
-| 2026-01 |          0.0021 |     -0.0357 |  0.0072 |
-| 2026-02 |          0.0099 |     -0.033  |  0.0283 |
-| 2026-03 |          0.0226 |      0.015  |  0.0831 |
-| 2026-04 |          0.0452 |      0.0617 |  0.217  |
-| 2026-05 |          0.0688 |      0.073  |  0.2642 |
-| 2026-06 |          0.0675 |      0.0604 |  0.3042 |
-| 2026-07 |          0.0602 |      0.064  |  0.2939 |
-| 2026-08 |          0.0674 |      0.0835 |  0.2506 |
-| 2026-09 |          0.081  |      0.1072 |  0.2447 |
-
----
-
 ## get_consumer_confidence_index
 This consumer confidence indicator provides an indication of future developments of households consumption and saving, based upon answers regarding their expected financial situation, their sentiment about the general economic situation, unemployment and capability of savings.
 
@@ -2787,7 +47,8 @@ An indicator above 100 signals a boost in the consumers’ confidence towards th
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2840,7 +101,8 @@ Numbers above 100 suggest an increased confidence in near future business perfor
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2895,7 +157,8 @@ The CLI is read for its direction and turning points rather than its level: a re
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2929,261 +192,6 @@ Which returns:
 
 ---
 
-## get_house_prices
-In most cases, the nominal house price index covers the sales of newly-built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
-
-By default the data comes from the Global Macro Database (GMDB), annual with 2015 = 100. Set gmdb_source=False to retrieve it from the OECD instead, which is the only source with quarterly data: asking for quarterly data takes it from the OECD unless gmdb_source=True is given.
-
-In the OECD data, the real house price index is given by the ratio of the nominal house price index to the consumers' expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted.
-
-Both are an index based on 2015 = 100.
-
-**See definition:** [https://data.oecd.org/price/housing-prices.htm](https://data.oecd.org/price/housing-prices.htm){:target="_blank"}
-
-**Also known as:** real estate prices, property prices, housing index.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
-annual data (False). Defaults to None, which returns the quarterly data, the
-highest frequency the OECD publishes.
-- <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data or the nominal data.
-Defaults to False.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB),
-which is annual. Defaults to None, which uses the OECD for quarterly data and the GMDB for
-annual data; asking for the GMDB together with quarterly data logs a warning.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the House Prices.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
-
-economics.get_house_prices(
-    countries=['Japan', 'Netherlands', 'Ireland'],
-    quarterly=False,
-    inflation_adjusted=True
-)
-```
-
-Which returns:
-
-|      |   Japan |   Netherlands |   Ireland |
-|:-----|--------:|--------------:|----------:|
-| 2015 | 100     |       100     |   100     |
-| 2016 | 102.645 |       106.044 |   108.503 |
-| 2017 | 104.009 |       113.945 |   120.785 |
-| 2018 | 105.604 |       122.047 |   128.926 |
-| 2019 | 106.087 |       126.665 |   128.744 |
-| 2020 | 107.773 |       135.898 |   130.088 |
-| 2021 | 115.407 |       156.892 |   144.681 |
-| 2022 | 121.069 |       150.691 |   145.71  |
-| 2023 | 119.632 |       145.341 |   141.362 |
-
----
-
-## get_rent_prices
-The housing rent price index measures the prices paid for renting residential properties over time. Together with the house price index it is a key input into affordability and house ownership profitability measures such as the price to rent ratio.
-
-This is an index based on 2015 = 100.
-
-**See definition:** [https://data.oecd.org/price/housing-prices.htm](https://data.oecd.org/price/housing-prices.htm){:target="_blank"}
-
-**Also known as:** rental prices, housing costs, rent index.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
-annual data (False). Defaults to None, which returns the quarterly data, the
-highest frequency the OECD publishes.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Rent Prices.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
-
-economics.get_rent_prices(
-    countries=['Turkey', 'United States', 'United Kingdom'],
-    quarterly=False)
-```
-
-Which returns:
-
-|      |   Turkey |   United States |   United Kingdom |
-|:-----|---------:|----------------:|-----------------:|
-| 2015 |  100     |         100     |          100     |
-| 2016 |  108.66  |         103.773 |          101.725 |
-| 2017 |  118.577 |         107.731 |          102.699 |
-| 2018 |  130.041 |         111.627 |          103.174 |
-| 2019 |  143.185 |         115.765 |          103.924 |
-| 2020 |  156.574 |         119.382 |          105.399 |
-| 2021 |  172.625 |         122.062 |          107.148 |
-| 2022 |  221.217 |         129.426 |          110.897 |
-| 2023 |  405.025 |         139.72  |          117.271 |
-
----
-
-## get_household_savings_rate
-Get the Gross Household Savings Rate for a variety of countries over time from the OECD's Household Dashboard. The household savings rate is the share of household gross disposable income (adjusted for the net change in pension entitlements) that is saved rather than spent on final consumption.
-
-It is a key input to consumption-smoothing and life-cycle/permanent-income theories of household behaviour, and a closely watched signal of both near-term consumption momentum (a falling savings rate can temporarily prop up spending even as income growth slows) and a household sector's buffer against future income shocks. It complements Total Consumption (see `get_total_consumption`) - the two together show how much of household income is spent versus set aside.
-
-The rate is seasonally adjusted and returned as a decimal fraction of adjusted gross disposable income (0.1177 for 11.77%). Because the denominator is adjusted for the net change in pension entitlements and the numerator is gross rather than net saving, this sits above the personal saving rate the BEA publishes for the United States.
-
-**See definition:** [https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC](https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC){:target="_blank"}
-
-**Also known as:** household savings ratio, personal savings rate.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
-annual data (False). Defaults to None, which returns the quarterly data, the
-highest frequency the OECD publishes.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Household Savings Rate.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date='2022-12-31')
-
-economics.get_household_savings_rate(
-    countries=['United States', 'Germany'],
-    quarterly=False)
-```
-
-Which returns:
-
-|      |   United States |   Germany |
-|:-----|----------------:|----------:|
-| 2015 |          0.1152 |    0.1724 |
-| 2016 |          0.1112 |    0.1715 |
-| 2017 |          0.1153 |    0.1757 |
-| 2018 |          0.1222 |    0.182  |
-| 2019 |          0.1305 |    0.1793 |
-| 2020 |          0.2063 |    0.2324 |
-| 2021 |          0.1707 |    0.2199 |
-| 2022 |          0.0981 |    0.189  |
-
----
-
-## get_household_debt_to_income_ratio
-Get the Household Debt to Disposable Income Ratio for a variety of countries over time from the OECD's Household Dashboard. This expresses total household gross debt (loans and debt securities) as a share of household gross disposable income, returned as a decimal ratio (1.0014 means debt equals 100.14% of income).
-
-It is a standard household-leverage indicator used in financial-stability analysis: a high or rapidly rising ratio signals households are more exposed to income shocks or interest rate increases (debt-servicing costs rise directly with rates on variable-rate or refinanced debt), and has historically preceded credit-cycle downturns (e.g. in the lead-up to the 2008 financial crisis). It is the household- sector analogue to government debt (see `get_government_debt_to_gdp_ratio`) - the two together give a fuller picture of an economy's overall leverage.
-
-**See definition:** [https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC](https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC){:target="_blank"}
-
-**Also known as:** household leverage ratio, debt-to-income ratio.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
-annual data (False). Defaults to None, which returns the quarterly data, the
-highest frequency the OECD publishes.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Household Debt to Income Ratio.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2015-01-01', end_date='2022-12-31')
-
-economics.get_household_debt_to_income_ratio(
-    countries=['United States', 'Australia'],
-    quarterly=False)
-```
-
-Which returns:
-
-|      |   United States |   Australia |
-|:-----|----------------:|------------:|
-| 2015 |          1.0396 |      1.86   |
-| 2016 |          1.0384 |      1.9308 |
-| 2017 |          1.0265 |      1.9843 |
-| 2018 |          1.0014 |      1.9888 |
-| 2019 |          0.9955 |      1.9676 |
-| 2020 |          0.9533 |      1.8811 |
-| 2021 |          0.9625 |      1.9168 |
-| 2022 |          1.0163 |      1.9253 |
-
----
-
 ## get_share_prices
 Share price indices are calculated from the prices of common shares of companies traded on national or foreign stock exchanges. They are usually determined by the stock exchange, using the closing daily values for the monthly data, and normally expressed as simple arithmetic averages of the daily data.
 
@@ -3210,7 +218,8 @@ quarterly=True and monthly otherwise.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3250,1462 +259,18 @@ Which returns:
 
 ---
 
-## get_exchange_rates
-Exchange rates are defined as the price of one country's currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
-
-**See definition:** [https://data.oecd.org/conversion/exchange-rates.htm](https://data.oecd.org/conversion/exchange-rates.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
-
-Both sources are quoted the same way (national currency per US dollar), but the OECD source omits the United States itself, since the rate is trivially 1, whereas the GMDB source carries it as 1.0. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
-
-Both are averages over each period. For daily and weekly rates (period="daily" or "weekly"), or the rate at the end of each month, quarter or year (end_of_period=True), the rates come from the Bank for International Settlements instead, without an API key: daily for around 80 currencies with history back to 1945 for some, and at the end of each month for around 130, back to the 1950s for most. Weekly and quarterly or yearly end-of-period rates take the last observation of each period.
-
-**Also known as:** currency exchange, FX rates, foreign exchange rates.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
-or the annual data. Defaults to None, which is quarterly when the Economics class
-was initialized with quarterly=True and otherwise the highest frequency available: daily.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
-- <u>end_of_period (bool, optional):</u> Whether to return the rate at the end of each month,
-quarter or year instead of its average. Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Exchange Rates.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2000-01-01', end_date='2010-12-31')
-
-economics.get_exchange_rates(countries=['Japan', 'Indonesia', "China"], period='yearly')
-```
-
-Which returns:
-
-|      |    Japan |   Indonesia |   China |
-|:-----|---------:|------------:|--------:|
-| 2000 | 107.746  |     8401.53 |  8.2771 |
-| 2001 | 121.409  |    10252.9  |  8.277  |
-| 2002 | 125.138  |     9315.13 |  8.277  |
-| 2003 | 115.929  |     8570.07 |  8.277  |
-| 2004 | 108.158  |     8945.34 |  8.2777 |
-| 2005 | 110.181  |     9714.85 |  8.1924 |
-| 2006 | 116.307  |     9170.49 |  7.9737 |
-| 2007 | 117.774  |     9138.88 |  7.6063 |
-| 2008 | 103.444  |     9682.61 |  6.9485 |
-| 2009 |  93.5426 |    10397.6  |  6.8311 |
-| 2010 |  87.7075 |     9082.76 |  6.7678 |
-
----
-
-## get_real_effective_exchange_rate
-Get the Real Effective Exchange Rate (REER) for a variety of countries over time from the Global Macro Database (GMDB). The REER is a trade-weighted average of a country's currency relative to a basket of other major currencies, adjusted for relative price levels (inflation) between the country and its trading partners.
-
-Unlike a simple bilateral exchange rate, the REER captures a currency's overall competitiveness: a rising REER indicates that a country's exports are becoming more expensive (and imports cheaper) relative to its trading partners after accounting for inflation differentials, while a falling REER indicates the opposite. The index is annual with 2015 = 100 for every country.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** REER, trade-weighted exchange rate, currency competitiveness index.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Real Effective Exchange Rate
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
-
-economics.get_real_effective_exchange_rate(countries=['United States', 'Japan', 'Netherlands'])
-```
-
-Which returns:
-
-|      |   United States |    Japan |   Netherlands |
-|:-----|----------------:|---------:|--------------:|
-| 2018 |         103.02  | 107.295  |       104.015 |
-| 2019 |         105.92  | 110.309  |       103.969 |
-| 2020 |         107.337 | 111.285  |       106.116 |
-| 2021 |         105.222 | 101.827  |       106.389 |
-| 2022 |         115.234 |  87.8727 |       106.548 |
-| 2023 |         116.036 |  83.6944 |       107.665 |
-| 2024 |         118.848 |  79.2776 |       109.002 |
-| 2025 |         119.249 |  80.8126 |       111.404 |
-
----
-
-## get_money_supply
-Money Supply is the total amount of money that is in circulation in a country. It includes currency, demand deposits, and other liquid assets that can be easily converted into cash. Money supply is an important economic indicator that the Federal Reserve uses to implement its monetary policy.
-
-Money supply can be divided into five categories: M0, M1, M2, M3 and M4.
-
-- M0: The total of all physical currency, plus accounts at the central bank that can be exchanged for physical currency.
-- M1: The total of all physical currency part of bank reserves + the amount in demand accounts ("checking" or "current" accounts).
-- M2: M1 + most savings accounts, money market accounts, retail money market mutual funds, and small denomination time deposits.
-- M3: M2 + large time deposits, institutional money market funds, short-term repurchase agreements, and other larger liquid assets.
-- M4: M3 + all other financial assets.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The aggregates are annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Not every country publishes every aggregate; the ones it does not are NaN.
-
-**Also known as:** M1, M2, M3, monetary aggregate.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>measure (str &#124; None, optional):</u> Which single aggregate to return, one of 'M0', 'M1',
-'M2', 'M3' or 'M4'. Defaults to None, which returns all five with the aggregate
-as the first level of the column index.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Money Supply
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2010-01-01', end_date='2020-12-31')
-
-money_supply = economics.get_money_supply(
-    countries=['Netherlands', 'Germany', 'United States'],
-    measure='M2'
-)
-```
-
-Which returns:
-
-|      |   Netherlands |    Germany |   United States |
-|:-----|--------------:|-----------:|----------------:|
-| 2010 |        701718 | 1.9878e+06 |     8.4731e+06  |
-| 2011 |        727265 | 2.1053e+06 |     8.8445e+06  |
-| 2012 |        746482 | 2.2556e+06 |     9.7533e+06  |
-| 2013 |        741372 | 2.3144e+06 |     1.05023e+07 |
-| 2014 |        743043 | 2.4272e+06 |     1.11275e+07 |
-| 2015 |        822382 | 2.6518e+06 |     1.18062e+07 |
-| 2016 |        841302 | 2.8022e+06 |     1.25222e+07 |
-| 2017 |        851237 | 2.9236e+06 |     1.33189e+07 |
-| 2018 |        846513 | 3.0562e+06 |     1.39024e+07 |
-| 2019 |        889033 | 3.1968e+06 |     1.44602e+07 |
-| 2020 |        974276 | 3.4582e+06 |     1.5425e+07  |
-
----
-
-## get_central_bank_policy_rate
-The Central Bank Policy Rate is the interest rate that a central bank sets on its loans and advances to a commercial bank. This interest rate is used by the monetary authorities to control inflation and stabilize the country's currency.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-The rate is annual and expressed as a decimal fraction per annum (0.0538 for 5.375%), taken at the end of the year rather than averaged over it.
-
-With period="daily", "weekly" or "monthly" the rates come from the Bank for International Settlements (BIS) instead. It publishes the policy rates of around fifty central banks daily, including the Federal Reserve, the European Central Bank (as "Euro Area"), the Bank of England and the Bank of Japan, some back to the 1940s. Weekly and monthly take the rate on the last day of each period, so the current week or month shows the rate so far.
-
-The BIS updates its series about once a week. The days since are added from the Bank of England (Bank Rate) and the European Central Bank, which publish their rates the same day; other countries end at the latest BIS update. For the euro area the BIS reports the main refinancing rate up to 17 September 2024 and the deposit facility rate from 18 September 2024, when the ECB began steering money markets with it; get_european_central_bank_rates has either rate throughout.
-
-The result is a decimal fraction (0.05375 for 5.375%), like every other rate in the Finance Toolkit.
-
-**Also known as:** policy rate, benchmark rate, base rate.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly or the annual
-data. Defaults to None, which is the daily data.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Central Bank Policy Rate
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2021-01-01', end_date='2025-12-31')
-
-economics.get_central_bank_policy_rate(countries=['Netherlands', 'Germany', 'United States'], period='yearly')
-```
-
-Which returns:
-
-|      |   Netherlands |   Germany |   United States |
-|:-----|--------------:|----------:|----------------:|
-| 2021 |       -0.005  |   -0.005  |          0.0012 |
-| 2022 |        0.0044 |    0.0044 |          0.0438 |
-| 2023 |        0.0362 |    0.0362 |          0.0538 |
-| 2024 |        0.0356 |    0.0356 |          0.0438 |
-| 2025 |        0.0213 |    0.0213 |          0.0362 |
-
----
-
-## get_short_term_interest_rate
-Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
-
-Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate". The OECD source specifically returns the 3-month interbank offered rate.
-
-**See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
-
-Both sources return the rate as a decimal fraction per annum (0.0513 for 5.13%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
-
-**Also known as:** 3-month rate, money market rate, short-term yield.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Short Term Interest Rate.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2023-05-01', end_date="2025-12-31")
-
-economics.get_short_term_interest_rate(
-    countries=['Japan', 'United States', 'China'],
-    gmdb_source=False,
-    period='quarterly'
-)
-```
-
-Which returns:
-
-|        |   Japan |   United States |   China |
-|:-------|--------:|----------------:|--------:|
-| 2023Q2 | -0.0001 |          0.0513 |  0.0289 |
-| 2023Q3 |  0.0001 |          0.0543 |  0.0261 |
-| 2023Q4 |  0.0002 |          0.054  |  0.0288 |
-| 2024Q1 |  0.0005 |          0.0526 |  0.0267 |
-| 2024Q2 |  0.0013 |          0.0531 |  0.0235 |
-| 2024Q3 |  0.0023 |          0.051  |  0.021  |
-| 2024Q4 |  0.0033 |          0.0454 |  0.0205 |
-| 2025Q1 |  0.0079 |          0.0432 |  0.0202 |
-| 2025Q2 |  0.0078 |          0.0431 |  0.0188 |
-| 2025Q3 |  0.0079 |          0.042  |  0.0171 |
-| 2025Q4 |  0.009  |          0.0386 |  0.0168 |
-
----
-
-## get_long_term_interest_rate
-Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
-
-In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
-
-**See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
-
-Both sources return the rate as a decimal fraction per annum (0.0357 for 3.57%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
-
-With period="daily" or "weekly" the 10-year yields come from the issuers themselves: the U.S. Department of the Treasury (par yield, from 1990), the Bank of England (nominal par yield of gilts, from 1993), the Japanese Ministry of Finance (JGBs, from 1974) and the European Central Bank (the euro area yield curve of all central government bonds, from 2004). The euro area rate is the 10-year zero-coupon rate of the ECB's Svensson curve, converted from continuous to annual compounding, while the other three are par yields. Weekly takes the yield on the last trading day of each week. Other countries have no daily source and are not included.
-
-A few countries report a national long-term rate to the OECD that is not a 10-year government bond yield, such as Brazil, whose series is the TJLP (Taxa de Juros de Longo Prazo), the long-term lending rate of the national development bank BNDES.
-
-**Also known as:** 10-year yield, government bond rate, long-term yield.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
-or the annual data. Defaults to None, which is quarterly when the Economics class
-was initialized with quarterly=True and otherwise the highest frequency available: daily
-for the United States, the United Kingdom, Japan and the Euro Area, monthly when
-other countries are requested.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
-Not used for daily and weekly data.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Long Term Interest Rate.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
-
-economics.get_long_term_interest_rate(
-    countries=['Japan', 'United States', 'Germany'],
-    gmdb_source=False,
-    period='monthly'
-)
-```
-
-Which returns:
-
-|         |   Japan |   United States |   Germany |
-|:--------|--------:|----------------:|----------:|
-| 2023-05 |  0.0043 |          0.0357 |    0.0234 |
-| 2023-06 |  0.004  |          0.0375 |    0.0238 |
-| 2023-07 |  0.0059 |          0.039  |    0.0246 |
-| 2023-08 |  0.0064 |          0.0417 |    0.0255 |
-| 2023-09 |  0.0076 |          0.0438 |    0.0266 |
-| 2023-10 |  0.0095 |          0.048  |    0.0282 |
-| 2023-11 |  0.0066 |          0.045  |    0.026  |
-| 2023-12 |  0.0062 |          0.0402 |    0.021  |
-
----
-
-## get_overnight_rate
-The overnight rate is the interest rate at which banks borrow from each other for a single day. It is the rate central banks steer with their policy rate, and the benchmark that replaced LIBOR for loans, derivatives and floating rate notes in each of these currencies, which makes it the most direct daily read of monetary conditions.
-
-Each currency has its own benchmark, published by its central bank:
-
-- Euro Area: the euro short-term rate (€STR) from the European Central Bank, since October 2019.
-- United Kingdom: the Sterling Overnight Index Average (SONIA) from the Bank of England, since 1997.
-- Japan: the uncollateralized overnight call rate, the Tokyo Overnight Average Rate (TONA), from the Bank of Japan, since 1985.
-- United States: the Secured Overnight Financing Rate (SOFR) from the Federal Reserve Bank of New York, since April 2018.
-
-The rates are returned as decimal fractions per annum (0.0244 for 2.44%). Weekly and monthly periods take the rate on the last day of each period (weeks end on Friday).
-
-With cumulative=True, the rates are compounded day by day into the growth of 1 deposited on the first day of the date range, the method of the compounded €STR index of the European Central Bank and the SOFR Index of the New York Fed:
-
-$$
-\text{Growth} \;(t) = \text{Growth} \;(t-1) \cdot \left(1 + \frac{\text{Overnight Rate} \;(t-1) \cdot \text{Days} \;(t-1)}{\text{Day Count}}\right)
-$$
-
-Days (t-1) is the number of calendar days the previous rate applies to (three over a weekend) and the Day Count is that of each money market: 360 for €STR and SOFR (ACT/360) and 365 for SONIA and TONA (ACT/365). The value on a day includes the interest up to that day, so the first day is 1, and weekly and monthly periods take the value on the last day of each period. It is the cash return of money deposited at the overnight rate, before costs and taxes.
-
-**Also known as:** €STR, ESTR, SONIA, TONA, SOFR, overnight interbank rate, risk-free rate.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data. Defaults to "daily".
-- <u>cumulative (bool, optional):</u> Whether to return the growth of 1 deposited at the
-overnight rate on the first day of the date range instead of the rate.
-Defaults to False.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the overnight rate per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
-
-economics.get_overnight_rate(period='monthly')
-```
-
-Which returns:
-
-|         |   Euro Area |   Japan |   United Kingdom |   United States |
-|:--------|------------:|--------:|-----------------:|----------------:|
-| 2026-04 |      0.0193 |  0.0073 |           0.0373 |          0.0366 |
-| 2026-05 |      0.0193 |  0.0073 |           0.0373 |          0.0363 |
-| 2026-06 |      0.0218 |  0.0098 |           0.0373 |          0.0368 |
-| 2026-07 |      0.0218 |  0.0098 |           0.0373 |          0.0366 |
-| 2026-08 |      0.0218 |  0.0098 |           0.0373 |          0.0368 |
-| 2026-09 |      0.0244 |  0.0123 |           0.0373 |          0.039  |
-
----
-
-## get_real_interest_rate
-Get the Real Interest Rate for a variety of countries over time. The Real Interest Rate is the nominal interest rate adjusted for inflation, and reflects the true cost of borrowing (or the true return earned on savings) once the erosion of purchasing power by inflation is taken into account.
-
-The formula is as follows (the Fisher equation, approximation):
-
-$$
-\text{Real Interest Rate} = \text{Nominal Interest Rate} - \text{Inflation Rate},\;\; \text{with the nominal rate the Long Term Interest Rate by default (rate\_type="long\_term") and the inflation rate the year-over-year change in consumer prices}
-$$
-
-The nominal interest rate is the Long Term Interest Rate (the 10-year government bond yield), the Short Term Interest Rate (the 3-month money market rate) or the Central Bank Policy Rate, selected via the rate_type parameter.
-
-Monthly (the default) subtracts the monthly year-over-year inflation rate of get_inflation_rate (national statistical offices, Eurostat for the euro area and the BIS) from the OECD's monthly long or short-term rate, the monthly average of the daily rates, or from the policy rate at the end of the month (see get_central_bank_policy_rate). The OECD has no euro area rates, so the euro area is available with rate_type="policy": the ECB's deposit facility rate minus euro area inflation. A month the inflation rate is not published yet is empty.
-
-Yearly subtracts the annual inflation rate of the Global Macro Database (GMDB) from its annual long or short-term rate (or the OECD's with gmdb_source=False) or its end-of-year policy rate.
-
-Both legs are decimal fractions (0.05 for 5%), so the result is itself a decimal fraction (-0.0016 for a real rate of -0.16%).
-
-A negative real interest rate means that, after inflation, savers are effectively losing purchasing power and borrowers are being subsidized in real terms; this occurred in many countries during the 2021-2022 inflation surge.
-
-This is the ex post real rate: the nominal rate minus the inflation that was realised in the same year, not the inflation investors expected when the rate was set. It shows how savers and borrowers actually fared, but for valuation or the stance of monetary policy practitioners use the ex ante real rate, such as the yield on inflation-linked bonds (get_real_yield_curve) or the nominal rate minus survey or breakeven inflation expectations (get_inflation_expectations, get_breakeven_inflation_expectations).
-
-**Also known as:** real yield, inflation-adjusted interest rate.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rate_type (str, optional):</u> Which nominal interest rate to use. Can be 'long_term'
-(10-year government bond yield), 'short_term' (3-month money market rate) or
-'policy' (central bank policy rate). Defaults to 'long_term'.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the yearly data.
-Defaults to None, which is the monthly data.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the yearly long or short-term
-rate from the Global Macro Database (GMDB) instead of the OECD. Defaults to
-None, which falls back to the gmdb_source set on the Economics class (True by
-default). Either way the yearly countries carry the GMDB names, such as
-"Russian Federation", "Eswatini" and "Congo DR", as the yearly inflation
-rate comes from the GMDB.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Real Interest Rate
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-01-01', end_date='2026-09-30')
-
-economics.get_real_interest_rate(
-    countries=['United States', 'Euro Area', 'Japan'], rate_type='policy'
-)
-```
-
-Which returns:
-
-|         |   United States |   Euro Area |   Japan |
-|:--------|----------------:|------------:|--------:|
-| 2026-01 |          0.0124 |      0.003  | -0.0079 |
-| 2026-02 |          0.0121 |      0.001  | -0.0054 |
-| 2026-03 |          0.0037 |     -0.006  | -0.0073 |
-| 2026-04 |         -0.0019 |     -0.01   | -0.006  |
-| 2026-05 |         -0.0062 |     -0.012  | -0.0074 |
-| 2026-06 |          0.0009 |     -0.0055 | -0.0064 |
-| 2026-07 |          0.0026 |     -0.0065 | -0.0095 |
-| 2026-08 |          0.0023 |     -0.0095 | -0.0089 |
-| 2026-09 |          0.0014 |     -0.013  | -0.009  |
-
----
-
-## get_yield_curve_slope
-Get the Yield Curve Slope for a variety of countries over time. The Yield Curve Slope is the difference between the Long Term Interest Rate (the 10-year government bond yield) and the Short Term Interest Rate (the 3-month money market rate), and summarizes the overall shape of the yield curve in a single number.
-
-The formula is as follows:
-
-$$
-\text{Yield Curve Slope} \;(t) = \text{Long Term Interest Rate} \;(t) - \text{Short Term Interest Rate} \;(t),\;\; \text{both from the OECD at the requested frequency (monthly by default), or both annual from the Global Macro Database}
-$$
-
-A positive (upward-sloping) yield curve is the historical norm and reflects investors demanding a premium for locking up money for longer. A negative (inverted) yield curve, where short-term rates exceed long-term rates, has historically been one of the more reliable leading indicators of an upcoming recession, as it signals that markets expect the central bank to cut rates in response to a weakening economy.
-
-Both legs are decimal fractions (0.05 for 5%) whichever source is used, so the result is itself a decimal fraction (-0.0122 for an inversion of 1.22 percentage points), matching the convention used by get_misery_index and get_real_interest_rate.
-
-**Also known as:** term spread, 10Y-3M spread, curve inversion.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB),
-which is annual. Defaults to None, which uses the GMDB only for yearly data and only when the
-gmdb_source set on the Economics class is True (its default); monthly and quarterly data, or
-gmdb_source=False on the class, come from the OECD. True uses the GMDB whatever the period,
-False always the OECD.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Yield Curve Slope
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2021-01-01', end_date='2023-12-31')
-
-economics.get_yield_curve_slope(
-    countries=['United States', 'Germany', 'Japan'],
-    period='yearly'
-)
-```
-
-Which returns:
-
-|      |   United States |   Germany |   Japan |
-|:-----|----------------:|----------:|--------:|
-| 2021 |          0.0139 |    0.0018 | -0      |
-| 2022 |          0.0071 |    0.008  |  0.0016 |
-| 2023 |         -0.0122 |   -0.01   |  0.0049 |
-
----
-
-## get_renewable_energy
-Renewable energy is defined as the contribution of renewables to total primary energy supply (TPES). Renewables include the primary energy equivalent of hydro (excluding pumped storage), geothermal, solar, wind, tide and wave sources.
-
-Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
-
-This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
-
-This indicator is the renewable share of total primary energy supply, returned as an annual decimal fraction (0.0872 for 8.72%).
-
-**See definition:** [https://data.oecd.org/energy/renewable-energy.htm](https://data.oecd.org/energy/renewable-energy.htm){:target="_blank"}
-
-**Also known as:** clean energy, green energy, renewable energy share.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Renewable Energy Percentage.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2010-01-01', end_date='2020-01-01')
-
-economics.get_renewable_energy(countries=['Austria', 'Germany', 'United States'])
-```
-
-Which returns:
-
-|      |   Austria |   Germany |   United States |
-|:-----|----------:|----------:|----------------:|
-| 2010 |    0.2742 |    0.0933 |          0.0569 |
-| 2011 |    0.2696 |    0.102  |          0.0619 |
-| 2012 |    0.307  |    0.1137 |          0.0632 |
-| 2013 |    0.3011 |    0.1147 |          0.0666 |
-| 2014 |    0.3068 |    0.1192 |          0.0678 |
-| 2015 |    0.2985 |    0.1264 |          0.0678 |
-| 2016 |    0.3034 |    0.1253 |          0.071  |
-| 2017 |    0.2984 |    0.1332 |          0.0743 |
-| 2018 |    0.2944 |    0.1396 |          0.0767 |
-| 2019 |    0.3006 |    0.1485 |          0.078  |
-| 2020 |    0.3191 |    0.1637 |          0.0837 |
-
----
-
-## get_carbon_footprint
-The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
-
-The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
-
-The data is sourced from the greenhouse gas emissions per capita indicator of the OECD's How's Life? well-being database (dataset ``DSD_HSL@DF_HSL_FWB``, indicator ``12_9``), so the figures are expressed in tonnes of CO2 equivalent per person, on an annual basis.
-
-This series currently ends in 2020, so a date range that starts after that returns an empty DataFrame and later years are absent rather than NaN.
-
-**Also known as:** CO2 emissions, carbon emissions, greenhouse gas.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Carbon Footprint.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
-
-economics.get_carbon_footprint(countries=['Germany', 'United States', 'Poland'])
-```
-
-Which returns:
-
-|      |   Germany |   United States |   Poland |
-|:-----|----------:|----------------:|---------:|
-| 2010 |    14.574 |          22.85  |   10.557 |
-| 2011 |    14.512 |          22.081 |   10.479 |
-| 2012 |    13.938 |          21.212 |   10.14  |
-| 2013 |    14.139 |          21.404 |    9.749 |
-| 2014 |    13.74  |          21.551 |    9.703 |
-| 2015 |    13.318 |          21.253 |    9.55  |
-| 2016 |    13.37  |          20.577 |    9.772 |
-| 2017 |    13.205 |          20.353 |   10.228 |
-| 2018 |    13.267 |          20.8   |   10.377 |
-| 2019 |    12.582 |          20.191 |    9.838 |
-| 2020 |    11.498 |          18.34  |    9.451 |
-
----
-
-## get_unemployment_rate
-The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
-
-This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
-
-For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
-
-The unemployment rate is a lagging indicator: it tends to rise only once a slowdown is under way, so its change matters more than its level. The Sahm rule, for example, flags a US recession when the three-month average rises 0.5 percentage points above its low of the previous twelve months. Levels differ between countries for structural reasons (labour market rules, participation), so compare a country with its own history or its estimated natural rate rather than with other countries.
-
-**See definition:** [https://data.oecd.org/unemp/unemployment-rate.htm](https://data.oecd.org/unemp/unemployment-rate.htm){:target="_blank"}
-
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
-
-Both sources return the rate as a decimal fraction of the labour force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so a monthly or quarterly request uses the OECD unless gmdb_source=True is passed, in which case the period argument has no effect.
-
-With period="monthly" (unless gmdb_source=True is passed explicitly) the euro area and the countries Eurostat covers come from Eurostat and the United Kingdom from the Office for National Statistics, which publish weeks before the OECD republishes their figures, and Brazil from the IBGE (as the UK, the average of the three months ending in each month); every other country comes from the OECD. The United States is extended with the months the Bureau of Labor Statistics has published since, when both agree on the months they share. The UK figure is the average of the three months ending in each month, as the Labour Force Survey reports it.
-
-Both sources return a decimal fraction (0.036 for 3.6%).
-
-**Also known as:** jobless rate, labor market, unemployment level.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Unemployment Rate.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
-
-economics.get_unemployment_rate(
-    countries=['Germany', 'United States', 'Japan'],
-    gmdb_source=False,
-    period='quarterly'
-)
-```
-
-Which returns:
-
-|        |   Germany |   United States |   Japan |
-|:-------|----------:|----------------:|--------:|
-| 2021Q1 |    0.039  |          0.0623 |  0.0287 |
-| 2021Q2 |    0.037  |          0.0593 |  0.029  |
-| 2021Q3 |    0.0343 |          0.0507 |  0.0277 |
-| 2021Q4 |    0.0337 |          0.0417 |  0.0273 |
-| 2022Q1 |    0.0323 |          0.0387 |  0.027  |
-| 2022Q2 |    0.031  |          0.0363 |  0.026  |
-| 2022Q3 |    0.031  |          0.0353 |  0.0253 |
-| 2022Q4 |    0.031  |          0.0357 |  0.0253 |
-| 2023Q1 |    0.0303 |          0.0353 |  0.026  |
-
----
-
-## get_misery_index
-Get the Misery Index for a variety of countries over time. The Misery Index is a simple gauge of the overall economic discomfort felt by the average person, combining the two economic ills that are most directly and visibly felt by households: unemployment and rising prices.
-
-The formula is as follows:
-
-$$
-\text{Misery Index} \;(\text{year}) = \text{Unemployment Rate} \;(\text{year}) + \text{Inflation Rate} \;(\text{year}),\;\; \text{with the annual unemployment rate from the Global Macro Database (or the OECD with gmdb\_source=False) and the Global Macro Database's annual CPI inflation}
-$$
-
-The Unemployment Rate and Inflation Rate are both retrieved as annual decimal fractions (0.05 for 5%) whichever source is used, so they line up directly for the addition and the result is itself a decimal fraction (0.0774 for a Misery Index of 7.74).
-
-A higher Misery Index indicates a more uncomfortable economic climate for the average household, while a lower value indicates a more comfortable one. It was originally popularized by economist Arthur Okun.
-
-**Also known as:** economic discomfort index, Okun's misery index.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the unemployment rate from the
-Global Macro Database (GMDB) instead of the OECD. Defaults to None, which falls
-back to the gmdb_source set on the Economics class (True by default).
-Either way the countries carry the GMDB names, such as "Russian Federation",
-"Eswatini" and "Congo DR", as the inflation rate comes from the GMDB.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Misery Index
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2018-01-01', end_date='2023-01-01')
-
-economics.get_misery_index(countries=['United States', 'Germany', 'Japan'])
-```
-
-Which returns:
-
-|      |   United States |   Germany |   Japan |
-|:-----|----------------:|----------:|--------:|
-| 2018 |          0.0633 |    0.051  |  0.0341 |
-| 2019 |          0.0549 |    0.0433 |  0.0284 |
-| 2020 |          0.0935 |    0.0399 |  0.0279 |
-| 2021 |          0.1003 |    0.0681 |  0.0256 |
-| 2022 |          0.1164 |    0.1181 |  0.0511 |
-| 2023 |          0.0775 |    0.091  |  0.0582 |
-
----
-
-## get_labour_productivity
-GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
-
-The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
-
-The level is reported in US dollars per hour worked at constant prices (currently referenced to 2020), converted with Purchasing Power Parities (PPPs) so that it is comparable across countries, for the total economy and on an annual basis. It is a level rather than an index, so a value of 61.36 means 61.36 PPP-converted US dollars of GDP produced per hour worked.
-
-The level is the OECD's own figure (the source's calculation).
-
-The formula is as follows:
-
-$$
-\text{Labour Productivity} = \frac{\text{Real GDP} \;(\text{constant prices},\; \text{PPP-converted US dollars})}{\text{Total Hours Worked by all persons engaged in production}}
-$$
-
-**See definition:** [https://data.oecd.org/lprdty/gdp-per-hour-worked.htm](https://data.oecd.org/lprdty/gdp-per-hour-worked.htm){:target="_blank"}
-
-**Also known as:** labor productivity, output per worker.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Labour Productivity.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(end_date="2025-12-31")
-
-economics.get_labour_productivity(countries=['Bulgaria', 'Croatia', 'Spain'])
-```
-
-Which returns:
-
-|      |   Bulgaria |   Croatia |   Spain |
-|:-----|-----------:|----------:|--------:|
-| 2016 |    28.0515 |   37.5651 | 60.3429 |
-| 2017 |    28.3199 |   37.9134 | 60.7889 |
-| 2018 |    28.9871 |   38.9686 | 60.7456 |
-| 2019 |    30.5046 |   39.5761 | 60.8858 |
-| 2020 |    30.7971 |   37.1191 | 60.9134 |
-| 2021 |    32.9483 |   41.2317 | 60.6022 |
-| 2022 |    33.9708 |   43.6926 | 61.3551 |
-| 2023 |    33.3439 |   44.313  | 61.2281 |
-| 2024 |    34.8229 |   43.9879 | 61.9601 |
-| 2025 |   nan      |   45.0352 | 62.42   |
-
----
-
-## get_income_inequality
-Income is defined as household disposable income in a particular year. It consists of earnings, self-employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
-
-The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
-
-One Gini coefficient is returned per country, for the total population and on the OECD's current income definition (in use since 2012). The other inequality measures published alongside it in the same dataflow (the P90/P10, P90/P50 and P50/P10 decile ratios, the Palma ratio and the S80/S20 quintile share) are not returned here.
-
-**See definition:** [https://data.oecd.org/inequality/income-inequality.htm](https://data.oecd.org/inequality/income-inequality.htm){:target="_blank"}
-
-**Also known as:** Gini coefficient, income distribution.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Income Inequality.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2013-01-01', end_date='2021-12-31')
-
-economics.get_income_inequality(countries=['United States', 'Germany', 'Japan'])
-```
-
-Which returns:
-
-|      |   United States |   Germany |   Japan |
-|:-----|----------------:|----------:|--------:|
-| 2013 |          0.396  |    0.2922 | nan     |
-| 2014 |          0.3938 |    0.2887 | nan     |
-| 2015 |          0.3896 |    0.2932 | nan     |
-| 2016 |          0.3912 |    0.2944 | nan     |
-| 2017 |          0.3899 |    0.2892 | nan     |
-| 2018 |          0.3927 |    0.2893 |   0.334 |
-| 2019 |          0.3949 |    0.2959 | nan     |
-| 2020 |          0.3773 |    0.3026 | nan     |
-| 2021 |          0.3752 |    0.3125 |   0.338 |
-
----
-
-## get_population_statistics
-Population is defined as all nationals present in, or temporarily absent from a country, and aliens permanently settled in a country. This indicator shows the number of people that usually live in an area. Growth rates are the annual changes in population resulting from births, deaths and net migration during the year.
-
-Total population includes the following:
-
-- national armed forces stationed abroad; merchant seamen at sea;
-- diplomatic personnel located abroad;
-- civilian aliens resident in the country;
-- displaced persons resident in the country.
-
-However, it excludes the following:
-
-- foreign armed forces stationed in the country;
-- foreign diplomatic personnel located in the country;
-- civilian aliens temporarily in the country.
-
-Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making.
-
-By default the data comes from the Global Macro Database (GMDB), which returns a single total population series per country, in millions of people. Set gmdb_source=False for the OECD series, which breaks the total down by gender, giving a Population, Men and Women series for each country, and reports a plain count of persons rather than millions. Both are annual, and the OECD source uses the historical (observed) series rather than its projections.
-
-**See definition:** [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
-
-**Also known as:** demographic data, census data.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
-Defaults to None, which falls back to the gmdb_source set on the Economics class (True by default).
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Population Statistics.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2010-01-01', end_date='2019-01-01')
-
-economics.get_population_statistics(countries='Japan')
-```
-
-Which returns:
-
-|      |   Japan |
-|:-----|--------:|
-| 2010 | 128.043 |
-| 2011 | 127.831 |
-| 2012 | 127.552 |
-| 2013 | 127.333 |
-| 2014 | 127.262 |
-| 2015 | 127.11  |
-| 2016 | 126.933 |
-| 2017 | 126.706 |
-| 2018 | 126.443 |
-| 2019 | 126.167 |
-
----
-
-## get_poverty_rate
-The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
-
-However, two countries with the same poverty rates may differ in terms of the relative income-level of the poor.
-
-**See definition:** [https://data.oecd.org/inequality/poverty-rate.htm](https://data.oecd.org/inequality/poverty-rate.htm){:target="_blank"}
-
-**Also known as:** poverty rate, income poverty.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Poverty Rates.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
-
-economics.get_poverty_rate(countries='Portugal')
-```
-
-Which returns:
-
-|      |   Portugal |
-|:-----|-----------:|
-| 2012 |     0.1295 |
-| 2013 |     0.135  |
-| 2014 |     0.135  |
-| 2015 |     0.1255 |
-| 2016 |     0.1246 |
-| 2017 |     0.1067 |
-| 2018 |     0.1038 |
-| 2019 |     0.1058 |
-| 2020 |     0.1279 |
-
----
-
-## get_sovereign_debt_crisis
-Get the Sovereign Debt Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a sovereign debt crisis (e.g. a default or restructuring of government debt), and 0 marks a year in which it was not.
-
-The crisis dating stops short of the present and ends in a different year per country (2017 for Argentina, for example), so the years after it are NaN rather than 0.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** sovereign default, debt crisis dummy.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Sovereign Debt Crisis dummy
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date="1999-01-01", end_date="2005-12-31")
-
-economics.get_sovereign_debt_crisis(countries=["Argentina", "Ecuador", "Greece"])
-```
-
-Which returns:
-
-|      |   Argentina |   Ecuador |   Greece |
-|:-----|------------:|----------:|---------:|
-| 1999 |           0 |         1 |        0 |
-| 2000 |           0 |         0 |        0 |
-| 2001 |           1 |         0 |        0 |
-| 2002 |           0 |         0 |        0 |
-| 2003 |           0 |         0 |        0 |
-| 2004 |           0 |         0 |        0 |
-| 2005 |           1 |         0 |        0 |
-
----
-
-## get_currency_crisis
-Get the Currency Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a currency crisis (e.g. a sharp, disorderly depreciation or collapse of the exchange rate), and 0 marks a year in which it was not.
-
-The crisis dating stops short of the present and ends in a different year per country, so the years after it are NaN rather than 0.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** currency collapse, exchange rate crisis dummy.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Currency Crisis dummy
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='1990-01-01', end_date="2025-12-31")
-
-economics.get_currency_crisis(countries='Turkey')
-```
-
-Which returns:
-
-|      |   Turkey |
-|:-----|---------:|
-| 2015 |        0 |
-| 2016 |        0 |
-| 2017 |        0 |
-| 2018 |      nan |
-| 2019 |      nan |
-
----
-
-## get_banking_crisis
-Get the Banking Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a systemic banking crisis (e.g. bank runs, large-scale bank failures or government intervention to prevent them), and 0 marks a year in which it was not.
-
-The crisis dating stops short of the present and ends in a different year per country, so the years after it are NaN rather than 0.
-
-Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
-
-**Also known as:** banking panic, financial crisis dummy, systemic banking crisis.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
-Database projects, from the IMF's World Economic Outlook, up to five years
-ahead. Only applies to data from the Global Macro Database. Defaults to
-False, which ends a series with its last observation.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Banking Crisis dummy
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2005-01-01', end_date="2025-12-31")
-
-economics.get_banking_crisis(countries=['United States', 'United Kingdom'])
-```
-
-Which returns:
-
-|      |   United States |   United Kingdom |
-|:-----|----------------:|-----------------:|
-| 2005 |               0 |                0 |
-| 2006 |               0 |                0 |
-| 2007 |               1 |                0 |
-| 2008 |               0 |                1 |
-| 2009 |               0 |                0 |
-| 2010 |               0 |                0 |
-| 2011 |               0 |                0 |
-| 2012 |               0 |                0 |
-| 2013 |               0 |                0 |
-| 2014 |               0 |                0 |
-| 2015 |               0 |                0 |
-| 2016 |               0 |                0 |
-| 2017 |               0 |                0 |
-| 2018 |               0 |                0 |
-| 2019 |               0 |                0 |
-| 2020 |               0 |                0 |
-| 2021 |               0 |                0 |
-| 2022 |               0 |                0 |
-| 2023 |               0 |                0 |
-| 2024 |               0 |                0 |
-| 2025 |               0 |                0 |
-
----
-
-## get_nonfarm_payrolls
-Get Total Nonfarm Payroll Employment for the United States from the Bureau of Labor Statistics.
-
-Nonfarm Payrolls is the headline monthly employment report and one of the most closely watched real-activity indicators in macroeconomics: it counts the number of paid US workers excluding farm employees, general government employees, private household employees and nonprofit organization employees. Sharp month-over-month changes are a core input to business-cycle dating (used directly by the NBER's Business Cycle Dating Committee) and, through Okun's Law, are closely tied to changes in the Unemployment Rate (see `get_unemployment_rate`).
-
-The series is the monthly level of employment in thousands of persons, seasonally adjusted, so 156857 means 156.857 million jobs -- not the monthly change that the headline "jobs added" number refers to. Use growth=True for that change.
-
-Without a FRED API key the data comes from the Bureau of Labor Statistics' API, which gives the same figures but only for about the last three years. The full history, from 1939, comes from FRED when a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class).
-
-**See definition:** [https://fred.stlouisfed.org/series/PAYEMS](https://fred.stlouisfed.org/series/PAYEMS){:target="_blank"}
-
-**Also known as:** NFP, nonfarm employment, the "jobs report".
-
-**Args:**
-
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A single-column ("United States") DataFrame of nonfarm payroll
-employment, in thousands of persons.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(
-    start_date='2020-01-01',
-    fred_api_key='FRED_API_KEY',
-    end_date="2025-12-31",
-)
-
-economics.get_nonfarm_payrolls()
-```
-
-Which returns:
-
-| Date       |   United States |
-|:-----------|----------------:|
-| 2025-08-01 |          158472 |
-| 2025-09-01 |          158548 |
-| 2025-10-01 |          158408 |
-| 2025-11-01 |          158449 |
-| 2025-12-01 |          158432 |
-
----
-
-## get_initial_jobless_claims
-Get weekly Initial Claims for Unemployment Insurance for the United States from the Department of Labor.
-
-Initial Jobless Claims counts the number of individuals filing for unemployment insurance for the first time in a given week. Because it is reported weekly (versus Nonfarm Payrolls' monthly cadence, see `get_nonfarm_payrolls`) and captures layoffs essentially in real time, it is one of the most timely leading indicators of labor-market deterioration and a core component of the Conference Board's Leading Economic Index.
-
-Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
-
-**See definition:** [https://fred.stlouisfed.org/series/ICSA](https://fred.stlouisfed.org/series/ICSA){:target="_blank"}
-
-**Also known as:** initial claims, new unemployment claims.
-
-**Args:**
-
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A single-column ("United States") DataFrame of weekly initial
-jobless claims, seasonally adjusted.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(
-    start_date='2020-01-01',
-    end_date="2025-12-31",
-)
-
-economics.get_initial_jobless_claims()
-```
-
-Which returns:
-
-| Date       |   United States |
-|:-----------|----------------:|
-| 2025-11-29 |          216000 |
-| 2025-12-06 |          235000 |
-| 2025-12-13 |          224000 |
-| 2025-12-20 |          215000 |
-| 2025-12-27 |          203000 |
-
----
-
 ## get_retail_sales
 Get Advance Retail Sales (Retail and Food Services) for the United States from the Census Bureau.
 
 Retail Sales measures nominal spending at retail and food-service establishments. Since Personal Consumption Expenditures make up roughly two-thirds to three-quarters of US GDP, this monthly, high-frequency series is a core input to real-time (nowcast) GDP estimates such as the Federal Reserve Bank of Atlanta's GDPNow.
 
-The series is monthly, in millions of US dollars, seasonally adjusted, and covers retail trade and food services. It is nominal, so growth=True mixes volume and price changes together; compare against the Consumer Price Index to separate the two.
+The series is monthly, in millions of US dollars, seasonally adjusted, and covers retail trade and food services. It is nominal, so growth=True mixes volume and price changes together. With inflation_adjusted=True the sales are deflated by the US Consumer Price Index for All Urban Consumers, all items, of the same month (see get_consumer_price_index), in the money of its latest month, so growth=True returns the real change: the change in volume. The growth is taken of the deflated level, so the real growth equals (1 + nominal growth) / (1 + CPI growth) - 1 over the same months. The index is not seasonally adjusted, so the real change is best read over 12 months (lag=12), and a month without a published index, such as October 2025 or a month whose index is not released yet, has no real value.
+
+The formula is as follows:
+
+$$
+\text{Real Retail Sales} \;(t) = \frac{\text{Retail Sales} \;(t) \cdot \text{CPI} \;(\text{latest month})}{\text{CPI} \;(t)}
+$$
 
 Without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
 
@@ -4715,6 +280,9 @@ Without a FRED API key the data comes from the Census Bureau directly, which giv
 
 **Args:**
 
+- <u>inflation_adjusted (bool, optional):</u> Whether to return the sales deflated by the US
+consumer price index (real sales, in the money of the index's latest month)
+instead of the nominal sales. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
@@ -4724,7 +292,8 @@ trailing periods. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4733,7 +302,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: A single-column ("United States") DataFrame of total retail
-and food services sales, in millions of dollars.
+and food services sales, in millions of dollars (of the latest month of the
+consumer price index with inflation_adjusted=True).
 
 **As an example:**
 
@@ -4782,7 +352,8 @@ trailing periods. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4815,6 +386,84 @@ Which returns:
 
 ---
 
+## get_capacity_utilization
+Capacity utilization is the share of the productive capacity of industry that is in use. Output close to capacity means firms have little slack: they raise prices sooner and invest to expand, so a high utilization rate points to inflationary pressure and future investment, while a low one points to slack and, with the output gap (see get_output_gap), to an economy producing below its potential. It moves with the business cycle alongside industrial production.
+
+The two publishers measure it differently, so compare each country with its own history rather than levels between the United States and Europe:
+
+- The Federal Reserve for the United States (G.17 release, the source of FRED's TCU series): the capacity utilization of total industry (manufacturing, mining and electric and gas utilities), monthly from 1967. It is computed rather than surveyed, as the industrial production index over the Federal Reserve's index of capacity, the sustainable maximum output, which it estimates from industry capacity data and surveys of plant utilization.
+- Eurostat for the euro area, the European Union and around 30 European countries: the capacity utilization of manufacturing from the quarterly business survey of the Joint Harmonised EU Programme of Business and Consumer Surveys (indicator BS-ICU-PC), quarterly from 1980. It is surveyed: manufacturers answer at what percentage of full capacity their company operates in the first month of the quarter, so the value of a quarter is known in that month.
+
+Both are seasonally adjusted and returned as a decimal fraction of capacity (0.764 for 76.4%). The quarterly US value is the average of its three months, for complete quarters only.
+
+The formula of the Federal Reserve's rate is as follows:
+
+$$
+\text{Capacity Utilization} = \frac{\text{Industrial Production Index}}{\text{Capacity Index}}
+$$
+
+The rates are the publishers' own figures, published in percent and divided by 100 here.
+
+See definitions: [https://www.federalreserve.gov/releases/g17/About.htm](https://www.federalreserve.gov/releases/g17/About.htm){:target="_blank"} and [https://economy-finance.ec.europa.eu/economic-forecast-and-surveys/business-and-consumer-surveys_en](https://economy-finance.ec.europa.eu/economic-forecast-and-surveys/business-and-consumer-surveys_en){:target="_blank"}
+
+**Also known as:** capacity utilisation, plant utilization, TCU, industrial slack.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the quarterly data.
+Defaults to None, which is monthly when only the United States, the one country
+published monthly, is requested and quarterly otherwise (and quarterly when the
+Economics class was initialized with quarterly=True). With period='monthly'
+the other countries are left out with a warning.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Capacity Utilization per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2024-01-01', end_date='2026-09-30')
+
+economics.get_capacity_utilization(
+    countries=['United States', 'Euro Area', 'Germany', 'France']
+)
+```
+
+Which returns:
+
+|        |   United States |   Euro Area |   Germany |   France |
+|:-------|----------------:|------------:|----------:|---------:|
+| 2024Q1 |          0.7629 |       0.789 |     0.809 |    0.809 |
+| 2024Q2 |          0.7664 |       0.787 |     0.797 |    0.807 |
+| 2024Q3 |          0.76   |       0.777 |     0.779 |    0.816 |
+| 2024Q4 |          0.7547 |       0.773 |     0.768 |    0.801 |
+| 2025Q1 |          0.7599 |       0.772 |     0.768 |    0.815 |
+| 2025Q2 |          0.7606 |       0.777 |     0.769 |    0.822 |
+| 2025Q3 |          0.7618 |       0.779 |     0.772 |    0.825 |
+| 2025Q4 |          0.7555 |       0.781 |     0.778 |    0.803 |
+| 2026Q1 |          0.7556 |       0.778 |     0.776 |    0.809 |
+| 2026Q2 |          0.7624 |       0.785 |     0.782 |    0.824 |
+| 2026Q3 |          0.7649 |       0.782 |     0.782 |    0.821 |
+
+---
+
 ## get_housing_starts
 Get Housing Starts (Total New Privately-Owned Housing Units Started) for the United States from the Census Bureau.
 
@@ -4837,7 +486,8 @@ trailing periods. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4895,7 +545,8 @@ trailing periods. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4932,63 +583,6 @@ Which returns:
 
 ---
 
-## get_mortgage_rate_30_year
-Get the weekly average 30-Year Fixed Rate Mortgage from FRED (Freddie Mac's Primary Mortgage Market Survey).
-
-The 30-year fixed mortgage rate is the primary interest rate US households actually borrow at for home purchases, and is one of the clearest single transmission points from Federal Reserve policy to the real economy: it moves with (but is not identical to) the 10-year Treasury yield plus a credit/prepayment spread, and directly drives housing affordability and demand. It is the natural interest-rate complement to Housing Starts (see `get_housing_starts`) - rate moves here lead construction activity, since higher borrowing costs price marginal buyers out of the market before builders scale back new projects.
-
-The rate is weekly (week ending Thursday), returned as a decimal fraction per annum (0.0648 for 6.48%) and not seasonally adjusted. FRED publishes it in percentage points; it is rescaled here so that every rate the Finance Toolkit returns is a decimal fraction.
-
-Without a FRED API key the data comes from Freddie Mac's Primary Mortgage Market Survey directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
-
-**See definition:** [https://fred.stlouisfed.org/series/MORTGAGE30US](https://fred.stlouisfed.org/series/MORTGAGE30US){:target="_blank"}
-
-**Also known as:** 30-year mortgage rate, Freddie Mac PMMS rate.
-
-**Args:**
-
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A single-column ("United States") DataFrame of the weekly
-average 30-year fixed mortgage rate, as a decimal fraction per annum.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2020-01-01', end_date="2025-12-31")
-
-economics.get_mortgage_rate_30_year()
-```
-
-Which returns:
-
-| Date       |   United States |
-|:-----------|----------------:|
-| 2025-12-04 |          0.0619 |
-| 2025-12-11 |          0.0622 |
-| 2025-12-18 |          0.0621 |
-| 2025-12-24 |          0.0618 |
-| 2025-12-31 |          0.0615 |
-
----
-
 ## get_recession_indicator
 Get the NBER-based US Recession Indicator from FRED.
 
@@ -5011,7 +605,8 @@ trailing periods. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5044,633 +639,6 @@ Which returns:
 
 ---
 
-## get_commercial_real_estate_prices
-Get the quarterly growth of commercial real estate prices: the change in the price of commercial property (offices, retail, industrial and apartment buildings) on the same quarter a year earlier, for around twenty economies.
-
-This tracks commercial (office, retail, industrial, apartment) property prices, as distinct from residential house prices (see `get_house_prices`, which tracks a completely different asset class/market). It is a transaction-based index rather than the appraisal-smoothed methodology used by institutional benchmarks like the NCREIF Property Index -- which is not freely available anywhere -- so expect more volatility and less autocorrelation than an appraisal-based series would show.
-
-The prices come from the commercial property price indices the Bank for International Settlements collects from national sources, for the euro area, the United States (from 1945), Japan, Denmark, the Netherlands, Germany, France, Spain and around ten more, taking per country a nominal index of commercial property, preferably all commercial property in the whole country. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), the United States instead comes from FRED's series sourced from the IMF's Financial Soundness Indicators.
-
-See definitions: [https://data.bis.org/topics/CPP](https://data.bis.org/topics/CPP){:target="_blank"} and [https://fred.stlouisfed.org/series/COMREPUSQ159N](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}
-
-**Also known as:** commercial property price index, CRE price index.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The quarterly change in commercial real estate prices on a year
-earlier, as a decimal fraction, with a column per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
-
-economics.get_commercial_real_estate_prices(countries=['United States', 'Euro Area', 'Japan', 'Germany'])
-```
-
-Which returns:
-
-|        |   United States |   Euro Area |   Japan |   Germany |
-|:-------|----------------:|------------:|--------:|----------:|
-| 2025Q1 |         -0.027  |      0.0232 |  0.0289 |    0.0221 |
-| 2025Q2 |         -0.0494 |      0.0331 |  0.0197 |    0.0266 |
-| 2025Q3 |          0.0209 |      0.0173 |  0.0222 |    0.0264 |
-| 2025Q4 |          0.0109 |      0.0189 |  0.0104 |    0.0207 |
-
----
-
-## get_credit_to_gdp_gap
-Get the credit-to-GDP gap: how far the ratio of credit to the private non-financial sector to GDP lies above or below its long-term trend, in percentage points of GDP. The trend is a one-sided Hodrick-Prescott filter with a smoothing parameter of 400,000, which only uses the quarters up to each point, so the gap is what was known at the time.
-
-A gap that stays above two percentage points of GDP has preceded most banking crises of the past decades, often by several years, which is why Basel III uses it as the guide for the countercyclical capital buffer: banks hold extra capital when the gap is wide (Drehmann and Tsatsaronis, 2014). A negative gap means credit grew slower than its trend, as it did in most advanced economies after the 2008 crisis.
-
-The credit is all credit to households and non-financial corporations from all lenders, banks and non-banks, at market value, as compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1950s for some.
-
-**See definition:** [https://data.bis.org/topics/CREDIT_GAPS](https://data.bis.org/topics/CREDIT_GAPS){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1403g.htm](https://www.bis.org/publ/qtrpdf/r_qt1403g.htm){:target="_blank"}
-
-**Also known as:** credit gap, Basel gap, credit-to-GDP deviation from trend.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The quarterly credit-to-GDP gap as a decimal fraction of GDP
-(-0.05 for five percentage points below the trend), with a column per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
-
-economics.get_credit_to_gdp_gap(countries=['United States', 'Euro Area', 'China', 'Japan'])
-```
-
-Which returns:
-
-|        |   United States |   Euro Area |   China |   Japan |
-|:-------|----------------:|------------:|--------:|--------:|
-| 2025Q1 |         -0.126  |     -0.1909 | -0.0443 |  0.0461 |
-| 2025Q2 |         -0.1236 |     -0.1894 | -0.053  |  0.0335 |
-| 2025Q3 |         -0.12   |     -0.1873 | -0.0639 |  0.0418 |
-| 2025Q4 |         -0.1159 |     -0.1815 | -0.0769 |  0.0587 |
-
----
-
-## get_debt_service_ratio
-Get the debt service ratio: the share of income that goes to interest payments and repayments of debt. It captures both how much is borrowed and at what rate, so it rises when rates go up even if the debt itself does not, and it is a leading indicator of financial stress: a high debt service ratio held back spending and preceded the downturns after several credit booms (Drehmann and Juselius, 2012).
-
-The ratio is computed by the Bank for International Settlements for the private non-financial sector of around 30 economies, and for households and non-financial corporations separately for about half of them, quarterly from 1999. It is the debt service (interest plus amortisation, assuming the average remaining maturity of the debt) divided by income: disposable income plus interest paid for households, and gross operating surplus plus interest paid for corporations. No API key is needed.
-
-**See definition:** [https://data.bis.org/topics/DSR](https://data.bis.org/topics/DSR){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1509h.htm](https://www.bis.org/publ/qtrpdf/r_qt1509h.htm){:target="_blank"}
-
-**Also known as:** DSR, debt service burden, debt service-to-income ratio.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>borrowers (str, optional):</u> The borrowing sector: "private" (households and
-non-financial corporations together), "households" or "corporations"
-(non-financial corporations). Defaults to "private", the sector with the
-widest coverage.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The quarterly debt service ratio as a decimal fraction of income,
-with a column per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
-
-economics.get_debt_service_ratio(countries=['United States', 'Germany', 'China', 'Japan'])
-```
-
-Which returns:
-
-|        |   United States |   Germany |   China |   Japan |
-|:-------|----------------:|----------:|--------:|--------:|
-| 2025Q1 |           0.14  |     0.123 |   0.189 |   0.15  |
-| 2025Q2 |           0.14  |     0.123 |   0.189 |   0.15  |
-| 2025Q3 |           0.139 |     0.123 |   0.188 |   0.152 |
-| 2025Q4 |           0.139 |     0.122 |   0.188 |   0.154 |
-
----
-
-## get_credit_to_gdp_ratio
-Get the total credit to a non-financial sector as a share of GDP: all loans and debt securities owed by households, non-financial corporations or the government, whoever the lender is (banks, other financial institutions, foreign lenders or bond holders). It measures how leveraged an economy is and where the debt sits, such as the high corporate debt in China or the high household debt in Australia and Canada.
-
-Unlike bank lending alone, it also counts market and cross-border funding, so it is comparable across countries where companies borrow from banks (the euro area, Japan) and where they issue bonds (the United States). The data is compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1940s for some, from national financial accounts.
-
-**See definition:** [https://data.bis.org/topics/TOTAL_CREDIT](https://data.bis.org/topics/TOTAL_CREDIT){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1303h.htm](https://www.bis.org/publ/qtrpdf/r_qt1303h.htm){:target="_blank"}
-
-**Also known as:** total credit to GDP, debt to GDP by sector, private debt to GDP, leverage ratio of the economy.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>borrowers (str, optional):</u> The borrowing sector: "private" (households and
-non-financial corporations), "households", "corporations" (non-financial
-corporations), "government" (at nominal value) or "non_financial" (all
-three together). Defaults to "private", the measure behind the
-credit-to-GDP gap.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The quarterly credit as a decimal fraction of GDP (1.5 for 150% of
-GDP), with a column per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
-
-economics.get_credit_to_gdp_ratio(countries=['United States', 'Euro Area', 'China', 'Japan'])
-```
-
-Which returns:
-
-|        |   United States |   Euro Area |   China |   Japan |
-|:-------|----------------:|------------:|--------:|--------:|
-| 2025Q1 |           1.416 |       1.553 |   2.019 |   1.71  |
-| 2025Q2 |           1.41  |       1.545 |   2.018 |   1.701 |
-| 2025Q3 |           1.406 |       1.537 |   2.015 |   1.713 |
-| 2025Q4 |           1.402 |       1.533 |   2.008 |   1.734 |
-
----
-
-## get_real_yield_curve
-Get the real yield curve of a variety of countries: the yields of inflation-linked government bonds, which pay a return on top of inflation, by maturity. Together with the nominal curve (see `fixedincome.get_government_bond_yield_curve`) it gives the inflation the bond market expects, see `get_breakeven_inflation_expectations`.
-
-Every curve comes from the official source:
-
-- United States: the U.S. Department of the Treasury's real par yield curve of Treasury Inflation-Protected Securities (TIPS), 5, 7, 10, 20 and 30 years, from 2003, the figures FRED republishes a day later as DFII.
-- United Kingdom: the Bank of England's real spot curve of index-linked gilts, 3 to 40 years, from 1985. Index-linked gilts pay the Retail Prices Index (RPI).
-- Germany: the real yields of the inflation-linked German federal securities the Bundesbank publishes, interpolated to constant maturities between 3 and 30 years from 2014. Germany has four to six of these bonds outstanding at a time, so only the maturities between its shortest (at least two years) and longest bond are filled. The bonds are indexed to euro area inflation (HICP excluding tobacco).
-
-Yields are returned as a decimal fraction per annum (0.0174 for 1.74%), with one column per country and maturity. Weekly and monthly periods take the curve on the last trading day of each period.
-
-**See definition:** [https://fred.stlouisfed.org/series/DFII10](https://fred.stlouisfed.org/series/DFII10){:target="_blank"}
-
-**Also known as:** TIPS yield curve, real Treasury yield curve, index-linked gilt curve, Bund linker real yields, inflation-linked bond yields.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
-"United States", "United Kingdom" and "Germany". Defaults to None, which
-retrieves every country.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The real yields as decimals, indexed by date with a column per
-country and maturity.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
-
-real_yield_curve = economics.get_real_yield_curve(period='monthly')
-
-real_yield_curve.xs('10Y', axis=1, level='Maturity')
-```
-
-Which returns:
-
-|         |   United States |   United Kingdom |   Germany |
-|:--------|----------------:|-----------------:|----------:|
-| 2026-04 |          0.0194 |           0.0154 |    0.0075 |
-| 2026-05 |          0.0207 |           0.0155 |    0.0084 |
-| 2026-06 |          0.022  |           0.0172 |    0.0095 |
-| 2026-07 |          0.0247 |           0.0188 |    0.0106 |
-| 2026-08 |          0.0244 |           0.0184 |    0.0108 |
-| 2026-09 |          0.0293 |           0.02   |    0.0132 |
-
----
-
-## get_breakeven_inflation_expectations
-Get the market-implied (Q-measure) breakeven inflation of a variety of countries by maturity: the nominal government bond yield minus the real yield of an inflation-linked bond of the same maturity, which is the inflation rate at which both earn the same. It is the bond market's expectation of inflation, including an inflation risk premium. See `get_inflation_expectations` for the expectations of professional forecasters instead.
-
-Every curve comes from the official source:
-
-- United States: the U.S. Department of the Treasury's nominal minus real (TIPS) par yields, 5, 7, 10, 20 and 30 years from 2003, plus the 5-year, 5-year forward rate ("5Y5Y"), the average inflation expected over the five years starting five years from now, with the formulas FRED uses for T5YIE, T10YIE and T5YIFR.
-- United Kingdom: the Bank of England's implied inflation spot curve, 3 to 40 years, from 1985. It is measured against the Retail Prices Index (RPI), which index-linked gilts pay and which has run above CPI inflation.
-- Germany: the nominal term structure of German federal securities at the remaining maturity of each inflation-linked federal security minus its real yield, interpolated to constant maturities between 3 and 30 years from 2014. The bonds are indexed to euro area inflation (HICP excluding tobacco), which makes this the euro area's market-implied inflation expectation, priced off its benchmark issuer, and a free proxy for euro area inflation swaps, which are licensed data. Only the maturities between the shortest (at least two years) and longest bond are filled.
-
-Rates are returned as a decimal fraction per annum (0.0221 for 2.21%), with one column per country and maturity. Weekly and monthly periods take the curve on the last trading day of each period.
-
-Investors compare breakeven inflation with their own inflation view to choose between nominal and inflation-linked bonds. Besides the inflation risk premium, it holds a liquidity premium: inflation-linked bonds trade less easily than nominal bonds, which lowers breakevens, most visibly in market stress (2008, March 2020), when they fell further than inflation expectations did.
-
-**See definition:** [https://fred.stlouisfed.org/series/T10YIE](https://fred.stlouisfed.org/series/T10YIE){:target="_blank"}
-
-**Also known as:** breakeven inflation rate, market-implied inflation expectations, UK implied inflation, euro area breakeven inflation, Bund linker breakeven.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
-"United States", "United Kingdom" and "Germany". Defaults to None, which
-retrieves every country.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The breakeven inflation as decimals, indexed by date with a column
-per country and maturity.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
-
-breakeven_inflation = economics.get_breakeven_inflation_expectations(period='monthly')
-
-breakeven_inflation.xs('10Y', axis=1, level='Maturity')
-```
-
-Which returns:
-
-|         |   United States |   United Kingdom |   Germany |
-|:--------|----------------:|-----------------:|----------:|
-| 2026-04 |          0.0246 |           0.0352 |    0.0234 |
-| 2026-05 |          0.0238 |           0.0331 |    0.0211 |
-| 2026-06 |          0.0224 |           0.0311 |    0.019  |
-| 2026-07 |          0.0228 |           0.0322 |    0.0208 |
-| 2026-08 |          0.0231 |           0.033  |    0.0221 |
-| 2026-09 |          0.0236 |           0.0341 |    0.0224 |
-
----
-
-## get_yield_decomposition
-Split the nominal government bond yield of a maturity into the real yield of the inflation-linked bond of that maturity and the breakeven inflation, the part the market demands for inflation, with the change of each part since the previous period:
-
-$$
-\text{Nominal Yield} = \text{Real Yield} + \text{Breakeven Inflation}
-$$
-
-A rise of the nominal yield is either a rise of real rates (tighter monetary policy, stronger growth, more supply of bonds) or of inflation compensation (a higher expectation of inflation or a larger inflation risk premium), and the split says which: a 5-year US yield up 0.14 with an unchanged breakeven rose on real rates alone.
-
-The curves are those of `get_real_yield_curve` and `get_breakeven_inflation_expectations`, from the official sources: the U.S. Department of the Treasury (par yields, 5 to 30 years), the Bank of England (spot rates, 3 to 40 years) and, for Germany, the Bundesbank (constant maturities between 3 and 30 years). Each source's breakeven is its nominal yield minus its real yield, so the parts add up to the nominal yield in that source's own compounding. UK breakevens are measured against the Retail Prices Index (RPI) and German ones against euro area inflation (HICP excluding tobacco).
-
-The changes are the difference with the previous period the country has a curve for, in decimals (0.0014 for 14 basis points), so a market holiday is not a change. The first period of the date range has no change.
-
-**Also known as:** real yield and breakeven split, nominal yield decomposition, inflation compensation, real rate versus inflation.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries, from the United
-States, the United Kingdom and Germany. Defaults to None, which is all three.
-- <u>maturities (list[str] &#124; str, optional):</u> The maturities, such as "5Y" or
-["5Y", "10Y"], each one both curves of a country have. Defaults to "10Y".
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data, the
-curve on the last trading day of each week or month. Defaults to "daily".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class (4 unless set otherwise).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The Nominal Yield, Real Yield, Breakeven Inflation and their Nominal
-Change, Real Change and Breakeven Change per country and maturity, with the dates
-as the index.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-11-02', end_date='2026-11-10')
-
-economics.get_yield_decomposition(
-    countries=['United States', 'Germany'], maturities='5Y'
-).xs(('United States', '5Y'), axis=1)
-```
-
-Which returns:
-
-|            |   Nominal Yield |   Real Yield |   Breakeven Inflation |   Nominal Change |   Real Change |   Breakeven Change |
-|:-----------|----------------:|-------------:|----------------------:|-----------------:|--------------:|-------------------:|
-| 2026-11-02 |          0.047  |       0.0231 |                0.0239 |         nan      |      nan      |           nan      |
-| 2026-11-03 |          0.0474 |       0.0235 |                0.0239 |           0.0004 |        0.0004 |             0      |
-| 2026-11-04 |          0.0469 |       0.0239 |                0.023  |          -0.0005 |        0.0004 |            -0.0009 |
-| 2026-11-05 |          0.0459 |       0.0233 |                0.0226 |          -0.001  |       -0.0006 |            -0.0004 |
-| 2026-11-06 |          0.0464 |       0.0235 |                0.0229 |           0.0005 |        0.0002 |             0.0003 |
-| 2026-11-09 |          0.0467 |       0.0242 |                0.0225 |           0.0003 |        0.0007 |            -0.0004 |
-| 2026-11-10 |          0.0481 |       0.0256 |                0.0225 |           0.0014 |        0.0014 |             0      |
-
----
-
-## get_inflation_expectations
-Get the inflation professional forecasters expect over the longer term, from surveys. Where `get_breakeven_inflation_expectations` is the bond market's expectation, priced daily and including risk premia, this is the forecasters' own expectation, with no inflation risk or liquidity premium in it and a longer history.
-
-Every series comes from the official source:
-
-- Germany: the inflation Consensus Economics' forecasters expect over 5 and 10 years, monthly from 1989. The Bundesbank publishes the expected real interest rate, the yield on debt securities outstanding issued by German residents with a residual maturity of 5 to 6 (or 9 to 10) years minus the expected inflation, so adding that yield back gives the expected inflation.
-- Euro Area: the average longer-term (five years ahead) HICP inflation forecast of the ECB's quarterly Survey of Professional Forecasters, from 1999. With period="monthly" each survey round is shown from the first month of its quarter until the next round.
-
-Rates are returned as a decimal fraction (0.0223 for 2.23%), with one column per country and horizon.
-
-**See definition:** [https://www.ecb.europa.eu/stats/ecb_surveys/survey_of_professional_forecasters/html/index.en.html](https://www.ecb.europa.eu/stats/ecb_surveys/survey_of_professional_forecasters/html/index.en.html){:target="_blank"}
-
-**Also known as:** survey-based inflation expectations, long-term inflation expectations, Consensus Economics inflation forecasts, Survey of Professional Forecasters.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
-"Germany" and "Euro Area". Defaults to None, which retrieves every country.
-- <u>period (str, optional):</u> Whether to return the monthly or quarterly data. Quarterly
-data takes the last month of each quarter. Defaults to "monthly".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The expected inflation as decimals, indexed by month or quarter with
-a column per country and horizon.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
-
-economics.get_inflation_expectations().xs('5Y', axis=1, level='Maturity')
-```
-
-Which returns:
-
-|         |   Germany |   Euro Area |
-|:--------|----------:|------------:|
-| 2026-04 |    0.0218 |      0.0203 |
-| 2026-05 |    0.0216 |      0.0203 |
-| 2026-06 |    0.0212 |      0.0203 |
-| 2026-07 |    0.0218 |      0.0204 |
-| 2026-08 |    0.0219 |      0.0204 |
-| 2026-09 |    0.0223 |      0.0204 |
-
----
-
-## get_implied_volatility
-Get the implied volatility the option markets price, by market and time to expiry: the volatility indices of Cboe, STOXX and ICE. Implied volatility is the market's expectation of how much prices will move, and its term structure (how it rises or falls with the time to expiry) is the market-consistent target for calibrating the volatility of equity, rate and commodity models.
-
-The markets and their maturities:
-
-- "US Equity": S&P 500 options, the Cboe VIX family: 9 days (VIX9D, from 2011), 1 month (VIX, from 1990), 3 months (VIX3M), 6 months (VIX6M) and 1 year (VIX1Y, from 2007).
-- "Euro Area Equity": EURO STOXX 50 options, the VSTOXX sub-indices from 1 to 24 months, from 1999.
-- "Emerging Markets Equity": options on the MSCI Emerging Markets ETF (Cboe VXEEM), 1 month, from 2011.
-- "US Equity Volatility": the volatility of the VIX itself (Cboe VVIX), 1 month, from 2006.
-- "US Treasury Bonds": options on the 20+ year Treasury bond ETF (Cboe VXTLT), the price volatility of long Treasuries, 1 month, from 2004.
-- "Crude Oil" and "Gold": options on the oil and gold ETFs (Cboe OVX and GVZ), 1 month, from 2009.
-- "US Treasury Rates": the ICE BofA MOVE index, the normal (basis point) volatility of Treasury yields implied by 1-month options on 2, 5, 10 and 30-year Treasuries, from
-2002. Requires a FinancialModelingPrep API key (the api_key of the Economics class).
-   - "Japan Government Bonds": the S&P/JPX JGB VIX, from options on JGB futures, 1 month, from 2015. Requires a FinancialModelingPrep API key.
-
-The volatility is returned as a decimal fraction per annum (0.155 for a VIX of 15.5), and the MOVE as a decimal yield change per annum (0.0105 for a MOVE of 105 basis points), with one column per market and maturity. Weekly and monthly periods take the value on the last trading day of each period. The Cboe SKEW index is not included since it is not a volatility.
-
-**See definition:** [https://www.cboe.com/tradable_products/vix/](https://www.cboe.com/tradable_products/vix/){:target="_blank"}
-
-**Also known as:** VIX, VSTOXX, MOVE index, volatility term structure, implied volatility index, fear index.
-
-**Args:**
-
-- <u>markets (list[str] &#124; str &#124; None, optional):</u> The markets to retrieve, from
-"US Equity", "Euro Area Equity", "Emerging Markets Equity", "US Equity
-Volatility", "US Treasury Bonds", "Crude Oil", "Gold", "US Treasury Rates" and
-"Japan Government Bonds". Defaults to None, which retrieves every market, with
-"US Treasury Rates" (the MOVE) and "Japan Government Bonds" (the JGB VIX) only
-when an API key is set.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The implied volatility as decimals, indexed by date with a column per
-market and maturity.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
-
-implied_volatility = economics.get_implied_volatility(
-    markets=['US Equity', 'Euro Area Equity'], period='monthly'
-)
-
-implied_volatility['US Equity']
-```
-
-Which returns:
-
-|         |     9D |     1M |     3M |     6M |     1Y |
-|:--------|-------:|-------:|-------:|-------:|-------:|
-| 2026-04 | 0.1437 | 0.1689 | 0.2008 | 0.2261 | 0.2365 |
-| 2026-05 | 0.1259 | 0.1532 | 0.1866 | 0.216  | 0.2306 |
-| 2026-06 | 0.1373 | 0.1645 | 0.19   | 0.215  | 0.2303 |
-| 2026-07 | 0.1305 | 0.1599 | 0.1902 | 0.2134 | 0.2294 |
-| 2026-08 | 0.1234 | 0.1492 | 0.1753 | 0.2017 | 0.2187 |
-| 2026-09 | 0.142  | 0.1634 | 0.1837 | 0.2035 | 0.218  |
-
----
-
-## get_stress_test_scenario
-Get the scenarios regulators publish for their stress tests: documented paths of the economy and financial markets under a baseline and an adverse scenario, which serve as calibration and validation targets for scenario generators and as the stresses banks and insurers are tested against.
-
-Two authorities are available:
-
-- "federal_reserve": the Federal Reserve's supervisory stress test, quarterly over 13 quarters. For the United States: real and nominal GDP and disposable income growth, unemployment, CPI inflation, the 3-month, 5-year and 10-year Treasury rates, the BBB corporate yield, the mortgage and prime rate, the Dow Jones Total Stock Market Index, house and commercial real estate price indices and the VIX; for the euro area, developing Asia, Japan and the United Kingdom: GDP growth, inflation and the dollar exchange rate. scenario="historic" returns the history of the same variables from 1976. year selects the year of the test (published in February), from 2025; by default the latest.
-- "esrb": the macro-financial scenario the European Systemic Risk Board designs for the EU-wide bank stress test of the EBA, yearly over three years: GDP growth, inflation, unemployment, residential and commercial real estate prices and long-term rates for every EU member and the main other economies, stock prices by region, commodity prices, iTraxx credit spreads and euro exchange rates. scenario="historic" returns the starting point. Always the latest exercise.
-
-The Federal Reserve's growth and inflation variables (GDP, disposable income and CPI, and the international GDP growth and inflation) are annualized quarter-on-quarter rates, as the Federal Reserve publishes them, so a "Real GDP growth" of -0.054 is a quarterly contraction of about 1.4%.
-
-Growth rates, inflation, interest rates, spreads and the VIX are decimal fractions (0.054 for 5.4%); price index levels, the stock market index and exchange rates are returned as published. The columns are per country (or region, index, commodity or currency pair) and variable.
-
-**See definition:** [https://www.federalreserve.gov/supervisionreg/dfast-archive.htm](https://www.federalreserve.gov/supervisionreg/dfast-archive.htm){:target="_blank"}
-
-**Also known as:** supervisory scenarios, CCAR, DFAST, EBA stress test, adverse scenario, severely adverse scenario.
-
-**Args:**
-
-- <u>scenario (str, optional):</u> "baseline", "adverse" (the Federal Reserve's severely
-adverse scenario) or "historic". Defaults to "adverse".
-- <u>authority (str, optional):</u> "federal_reserve" or "esrb". Defaults to
-"federal_reserve".
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries (or regions) to
-include. Defaults to None, which includes all of them.
-- <u>year (int &#124; None, optional):</u> The year of the Federal Reserve's stress test, from
-2025. Defaults to None, which takes the latest.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The scenario, indexed by quarter or year with a column per country
-and variable.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(end_date="2025-12-31")
-
-stress_test = economics.get_stress_test_scenario(countries='United States')
-
-stress_test['United States'][
-    ['Real GDP growth', 'Unemployment rate', '10-year Treasury yield', 'BBB corporate yield']
-].head()
-```
-
-Which returns:
-
-|        |   Real GDP growth |   Unemployment rate |   10-year Treasury yield |   BBB corporate yield |
-|:-------|------------------:|--------------------:|-------------------------:|----------------------:|
-| 2026Q1 |            -0.054 |               0.059 |                    0.031 |                 0.075 |
-| 2026Q2 |            -0.049 |               0.072 |                    0.027 |                 0.082 |
-| 2026Q3 |            -0.038 |               0.082 |                    0.024 |                 0.081 |
-| 2026Q4 |            -0.027 |               0.09  |                    0.023 |                 0.079 |
-| 2027Q1 |            -0.014 |               0.095 |                    0.023 |                 0.075 |
-
----
-
 ## get_supply_chain_pressure_index
 Get the Global Supply Chain Pressure Index (GSCPI) of the Federal Reserve Bank of New York, monthly from 1998: one measure of the pressure on global supply chains, combining 27 series. Shipping costs come from the Baltic Dry Index, the Harpex index of container ship charter rates and the US Bureau of Labor Statistics air freight price indices; the rest are the delivery times, backlogs and purchased stocks of the manufacturing purchasing managers' surveys of the euro area, China, Japan, South Korea, Taiwan, the United Kingdom and the United States. The index peaked in December 2021 at more than four standard deviations, when the reopening after COVID-19 met congested ports, and is a common leading indicator of goods inflation.
 
@@ -5691,7 +659,8 @@ moving average). Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5722,734 +691,6 @@ Which returns:
 | 2026-08 |  1.271  |
 | 2026-09 |  1.3612 |
 | 2026-10 |  1.2619 |
-
----
-
-## get_carbon_price
-Get the price of emitting one tonne of CO2 under the EU Emissions Trading System (EU ETS): the clearing price of the primary auctions of EU emission allowances (EUAs) the European Energy Exchange holds for the European Union, Germany and Poland almost every trading day, daily from 2020. The carbon price is the main transition risk variable of climate scenarios; see get_climate_scenario for its projected paths.
-
-The price is the average of the day's auctions of general allowances, in euro per tonne of CO2. Weekly and monthly periods take the price of the last auction of each period.
-
-**See definition:** [https://www.eex.com/en/markets/environmental-markets/eu-ets-auctions](https://www.eex.com/en/markets/environmental-markets/eu-ets-auctions){:target="_blank"}
-
-**Also known as:** EU ETS price, EUA price, CO2 price, emission allowance price.
-
-**Args:**
-
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
-trailing periods. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The price in euro per tonne of CO2, indexed by date with a "European
-Union" column.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
-
-economics.get_carbon_price(period='monthly', rounding=2)
-```
-
-Which returns:
-
-|         |   European Union |
-|:--------|-----------------:|
-| 2026-04 |            71.8  |
-| 2026-05 |            79.37 |
-| 2026-06 |            78.13 |
-| 2026-07 |            81.22 |
-| 2026-08 |            82.39 |
-| 2026-09 |            84.41 |
-
----
-
-## get_climate_scenario
-Get the path of an economic or financial variable in a climate scenario of the Network for Greening the Financial System (NGFS), the scenarios central banks and supervisors use for climate stress tests, yearly from 2022 to 2050 for around fifty countries and regions.
-
-The NGFS scenarios combine an integrated assessment model, which projects the energy system, emissions and the carbon price (model="REMIND-MAgPIE", "GCAM" or "MESSAGEix-GLOBIOM"), with NiGEM, the macroeconometric model of the National Institute of Economic and Social Research, which translates each scenario into GDP, inflation, interest rates, equity prices, exchange rates and energy prices. NiGEM separates the transition risk (the policies and technologies of the move to a low-carbon economy), the physical risk (the damage of climate change) and both together (risk="combined").
-
-The variables: "gdp" (2017 PPP US$ billion), "inflation", "long_term_interest_rate", "long_term_real_interest_rate", "policy_rate", "unemployment_rate", "equity_prices" (index, 2017 = 100), "effective_exchange_rate" (index), "domestic_demand", "exports", "imports" (2017 PPP US$ billion), "oil_price" (US$ per barrel), "gas_price" and "coal_price" (US$ per barrel of oil equivalent), and "carbon_price", which comes from the integrated assessment model itself: US$ of 2010 per tonne of CO2 for the world and the model's regions, every five years to 2100.
-
-By default the level is returned: the NiGEM baseline (a world without further climate change and policy, scenario="Baseline") with the scenario's deviation applied. With deviation=True the deviation from the baseline itself is returned: relative for levels (-0.034 for 3.4% lower GDP) and in decimal points for rates (0.0094 for 0.94 percentage points higher). Rates are decimal fractions (0.041 for 4.1%).
-
-The data is the Phase 5 vintage (November 2024), hosted by IIASA. The NGFS licence allows commercial use with attribution but not the redistribution of substantial parts, so it is retrieved when needed rather than stored with the Finance Toolkit.
-
-**See definition:** [https://www.ngfs.net/ngfs-scenarios-portal/](https://www.ngfs.net/ngfs-scenarios-portal/){:target="_blank"}
-
-**Also known as:** NGFS scenarios, climate stress test scenarios, transition risk, physical risk, carbon price path.
-
-**Args:**
-
-- <u>variable (str, optional):</u> The variable: "gdp", "inflation",
-"long_term_interest_rate", "long_term_real_interest_rate", "policy_rate",
-"unemployment_rate", "equity_prices", "effective_exchange_rate",
-"domestic_demand", "exports", "imports", "oil_price", "gas_price",
-"coal_price" or "carbon_price" (units above). Defaults to
-"long_term_interest_rate".
-- <u>scenario (str, optional):</u> "Net Zero 2050", "Below 2°C", "Low demand", "Delayed
-transition", "Nationally Determined Contributions (NDCs)", "Current
-Policies", "Fragmented World" or "Baseline". Defaults to "Net Zero 2050".
-- <u>model (str, optional):</u> The integrated assessment model behind the scenario:
-"REMIND-MAgPIE", "GCAM" or "MESSAGEix-GLOBIOM". Defaults to "REMIND-MAgPIE".
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries or regions to
-include. Defaults to None, which includes all of them.
-- <u>risk (str, optional):</u> "combined", "transition" or "physical". Current Policies has
-physical risk only, which is also its combined risk. Defaults to "combined".
-- <u>deviation (bool, optional):</u> Whether to return the deviation from the baseline
-instead of the level. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The path of the variable, indexed by year with a column per
-country or region.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(end_date="2025-12-31")
-
-climate_scenario = economics.get_climate_scenario(
-    variable='long_term_interest_rate',
-    scenario='Net Zero 2050',
-    countries=['United States', 'Germany', 'United Kingdom', 'Japan'],
-)
-
-climate_scenario.loc[['2025', '2030', '2035', '2040', '2045', '2050']]
-```
-
-Which returns:
-
-|      |   United States |   Germany |   United Kingdom |   Japan |
-|:-----|----------------:|----------:|-----------------:|--------:|
-| 2025 |          0.0492 |    0.0346 |           0.0435 |  0.0175 |
-| 2030 |          0.0428 |    0.041  |           0.041  |  0.0277 |
-| 2035 |          0.0378 |    0.0405 |           0.0393 |  0.0348 |
-| 2040 |          0.0349 |    0.0393 |           0.0405 |  0.0375 |
-| 2045 |          0.0341 |    0.0387 |           0.0413 |  0.0372 |
-| 2050 |          0.0341 |    0.0386 |           0.0412 |  0.0371 |
-
----
-
-## get_long_run_asset_returns
-Get the yearly total returns of equity, housing, government bonds and bills for 18 advanced economies from 1870 to 2020, from the Jordà-Schularick-Taylor Macrohistory Database (Jordà, Knoll, Kuvshinov, Schularick and Taylor, 2019, "The Rate of Return on Everything, 1870-2015", Quarterly Journal of Economics). A century and a half of returns across wars, depressions and inflations is what calibrates the long-run trend, the equity and housing risk premia and the cycles of scenario generators for 50 to 100-year horizons.
-
-The asset classes: "equity" (dividends reinvested), "housing" (rental income included), "bonds" (long-term government bonds, coupons included), "bills" (short-term government bills), "risky" (a wealth-weighted mix of equity and housing), "safe" (a mix of bonds and bills) and "wealth" (all of them weighted by their share of national wealth). The countries: Australia, Belgium, Canada, Denmark, Finland, France, Germany, Ireland, Italy, Japan, the Netherlands, Norway, Portugal, Spain, Sweden, Switzerland, the United Kingdom and the United States, with gaps in the war years.
-
-Returns are decimal fractions (0.08 for 8%), in local currency, and with real=True deflated by consumer price inflation.
-
-The database is licensed under CC BY-NC-SA 4.0: it may be used for non-commercial purposes with attribution, and its authors expressly exclude commercial data providers. Pass accept_licence=True to confirm the use is non-commercial; the data is retrieved from macrohistory.net when needed and is not distributed with the Finance Toolkit.
-
-**See definition:** [https://www.macrohistory.net/database/](https://www.macrohistory.net/database/){:target="_blank"}
-
-**Also known as:** rate of return on everything, long-run returns, JST macrohistory, historical equity premium.
-
-**Args:**
-
-- <u>asset_class (str, optional):</u> "equity", "housing", "bonds", "bills", "risky",
-"safe" or "wealth". Defaults to "equity".
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include. Defaults
-to None, which includes all of them.
-- <u>real (bool, optional):</u> Whether to deflate the returns by consumer price
-inflation. Defaults to False.
-- <u>accept_licence (bool, optional):</u> Confirms that the data is used for
-non-commercial purposes, as its licence (CC BY-NC-SA 4.0) requires. Defaults
-to False, which returns nothing.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The returns as decimals, indexed by year with a column per country.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2011-01-01', end_date='2020-12-31')
-
-economics.get_long_run_asset_returns(
-    asset_class='equity',
-    countries=['United States', 'United Kingdom', 'Germany', 'Japan'],
-    real=True,
-    accept_licence=True,
-)
-```
-
-Which returns:
-
-|      |   United States |   United Kingdom |   Germany |   Japan |
-|:-----|----------------:|-----------------:|----------:|--------:|
-| 2011 |         -0.0085 |          -0.0755 |   -0.1688 | -0.0456 |
-| 2012 |          0.1448 |           0.0906 |    0.2654 | -0.0431 |
-| 2013 |          0.2767 |           0.1752 |    0.2475 |  0.7158 |
-| 2014 |          0.1389 |          -0.0026 |    0.0231 |  0.0742 |
-| 2015 |          0.0193 |           0.0106 |    0.1058 |  0.1029 |
-| 2016 |          0.0233 |           0.1465 |    0.0529 |  0.0063 |
-| 2017 |          0.1679 |           0.1107 |    0.1442 |  0.2135 |
-| 2018 |          0.1149 |          -0.1176 |   -0.1843 | -0.16   |
-| 2019 |          0.0624 |           0.1629 |    0.2113 |  0.1793 |
-| 2020 |          0.1115 |          -0.1025 |    0.0719 |  0.0786 |
-
----
-
-## get_millennium_of_macroeconomic_data
-Get the headline annual series of "A millennium of macroeconomic data for the UK", the Bank of England's research dataset of British economic history (Thomas and Dimsdale, version 3.1): around eighty series of output, population, employment, prices, wages, interest rates, asset prices, exchange rates, money, credit and public finances, from as early as 1086 (GDP and population), 1209 (consumer prices), 1694 (Bank Rate) and 1700 (share prices) to 2016. It is the longest consistent record of interest rates, inflation and asset prices of any economy, for calibrating the very long-run behaviour of scenario generators.
-
-The series keep the names of the dataset, such as "Bank Rate", "Consols / long-term government bond yields", "Corporate bond yields", "Share prices", "Consumer price index", "Consumer price inflation", "House price index" and "$/£ exchange rate"; a second column of a series, such as its growth rate or its share of GDP, carries that unit in brackets. Rates, growth rates and shares of GDP are decimal fractions (0.05 for 5%); levels, indices and exchange rates are returned as published.
-
-The dataset is not updated anymore. The workbook is large (around 28 MB), so it is cached for a year.
-
-With deflate_with, every series is in real terms: in the money of the latest year of that country's yearly consumer price index up to the end date (see get_consumer_price_index), such as the dollar oil price ("$ Oil prices") in 2025 dollars with deflate_with="United States", which compares the oil price of 1864 with that of 2008. A year before the first year of the consumer price index has no real value. Only deflate series in money, such as prices, in the currency of that country: rates, indices and growth rates are not amounts of money.
-
-- Real Value (t) = Value (t) * CPI (latest year) / CPI (t)
-
-**See definition:** [https://www.bankofengland.co.uk/statistics/research-datasets](https://www.bankofengland.co.uk/statistics/research-datasets){:target="_blank"}
-
-**Also known as:** three centuries of macroeconomic data, BoE millennium dataset, long run UK data.
-
-**Args:**
-
-- <u>series (list[str] &#124; str &#124; None, optional):</u> The series to include, matched on
-(part of) their name without regard to case, e.g. "Bank Rate" or ["consols",
-"share prices"]. Defaults to None, which includes all of them.
-- <u>deflate_with (str &#124; None, optional):</u> The country whose yearly consumer price index
-the series are deflated with, e.g. "United States" for the dollar oil price
-or "United Kingdom" for sterling series. Defaults to None, which returns the
-series as published.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The series, indexed by year with a column per series.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='1700-01-01', end_date='2016-12-31')
-
-millennium = economics.get_millennium_of_macroeconomic_data(
-    series=['Bank Rate', 'Consols', 'Consumer price inflation', 'Share prices']
-)
-
-millennium.loc[['1720', '1815', '1914', '1974', '2008']]
-```
-
-Which returns:
-
-|      |   Bank Rate |   Consols / long-term government bond yields |   Consumer price inflation |   Share prices |
-|:-----|------------:|---------------------------------------------:|---------------------------:|---------------:|
-| 1720 |       0.05  |                                       0.04   |                     0.0515 |         2.416  |
-| 1815 |       0.05  |                                       0.0504 |                    -0.144  |         1.0776 |
-| 1914 |       0.05  |                                       0.0348 |                     0.0255 |        42.7811 |
-| 1974 |       0.115 |                                       0.1517 |                     0.1573 |        65.26   |
-| 2008 |       0.02  |                                       0.0459 |                     0.036  |      2128.8    |
-
----
-
-## get_scenario_set
-Get a regulator's published scenario set: the thousands of simulated paths of interest rates, equity returns and inflation that pension funds or insurers must use, generated by a documented and reviewed economic scenario generator. It is a reference to calibrate and validate an own scenario generator against, both for the real-world distribution and for the market-consistent one.
-
-Available is the scenario set of De Nederlandsche Bank (authority="dnb"), which Dutch pension funds use for their feasibility test and the transition to the new pension contract: 20,000 scenarios over a horizon of 100 years, generated every quarter with the model the Commissie Parameters 2022 specified, under the real-world measure (measure="real_world", the P-set) and the market-consistent measure (measure="market_consistent", the Q-set, arbitrage-free and calibrated to market prices including swaptions).
-
-The variables, as decimals per year of the horizon (year 0 is the end of the quarter the set is for): the annually compounded nominal zero rates "Nominal rate 1Y", "5Y", "10Y", "20Y" and "30Y" and the euro area "Real rate EU 10Y", derived from the model's term structure, and the annual "Equity return", "Inflation EU" and "Inflation NL" (from year 1).
-
-By default the distribution per year is returned: the quantiles of the 20,000 scenarios and their mean. With scenarios=True every scenario is returned instead (20,000 columns per variable). The set is a large workbook (around 180 MB) that takes a minute or two to download and read the first time; it is cached for 30 days.
-
-**See definition:** [https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/){:target="_blank"}
-
-**Also known as:** DNB scenarioset, uniform scenario set, CP2022 scenarios, P-set, Q-set, regulatory economic scenario generator.
-
-**Args:**
-
-- <u>authority (str, optional):</u> The regulator: "dnb". Defaults to "dnb".
-- <u>measure (str, optional):</u> "real_world" or "market_consistent". Defaults to
-"real_world".
-- <u>variables (list[str] &#124; str &#124; None, optional):</u> The variables to include, from
-"Nominal rate 1Y", "Nominal rate 5Y", "Nominal rate 10Y", "Nominal rate 20Y",
-"Nominal rate 30Y", "Real rate EU 10Y", "Equity return", "Inflation EU" and
-"Inflation NL". Defaults to None, which includes all of them.
-- <u>quantiles (list[float] &#124; None, optional):</u> The quantiles of the distribution
-per year. Defaults to None, which is [0.01, 0.05, 0.25, 0.5, 0.75, 0.95,
-0.99].
-- <u>scenarios (bool, optional):</u> Whether to return every scenario instead of the
-distribution. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Indexed by the year of the horizon, with a column per variable and
-quantile (or "Mean"), or per variable and scenario with scenarios=True.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(end_date="2025-12-31")
-
-scenario_set = economics.get_scenario_set(
-    measure='real_world', variables='Nominal rate 10Y', quantiles=[0.05, 0.5, 0.95]
-)
-
-scenario_set['Nominal rate 10Y'].loc[[0, 1, 5, 10, 30, 100]]
-```
-
-Which returns:
-
-|   Horizon |      5% |    50% |    95% |   Mean |
-|----------:|--------:|-------:|-------:|-------:|
-|         0 |  0.0293 | 0.0293 | 0.0293 | 0.0293 |
-|         1 |  0.0203 | 0.0281 | 0.0363 | 0.0282 |
-|         5 |  0.0139 | 0.028  | 0.0435 | 0.0283 |
-|        10 |  0.0069 | 0.0235 | 0.0416 | 0.0238 |
-|        30 | -0.0001 | 0.0178 | 0.037  | 0.018  |
-|       100 |  0.0024 | 0.0197 | 0.039  | 0.0201 |
-
----
-
-## get_asset_class_proxies
-Get the total returns of listed funds that track asset classes without a public return index: private equity, infrastructure, hedge funds, private credit, real estate and investment grade and high yield credit. Their returns approximate those of the asset classes for calibrating a scenario generator, with two caveats: listed prices are marked to market daily, so they are more volatile and more correlated with equities than the appraisal-based returns of private funds, and they include the funds' fees.
-
-The asset classes and the funds that track them, with the start of their history:
-
-- "Private Equity": the Invesco Global Listed Private Equity ETF (PSP), from 2006.
-- "Infrastructure": the iShares Global Infrastructure ETF (IGF), from 2007.
-- "Hedge Funds": the IQ Hedge Multi-Strategy Tracker ETF (QAI), which replicates the returns of hedge fund indices, from 2009.
-- "Merger Arbitrage": the IQ Merger Arbitrage ETF (MNA), from 2009.
-- "Private Credit": the VanEck BDC Income ETF (BIZD), business development companies that lend to private companies, from 2013.
-- "Real Estate": the Vanguard Real Estate ETF (VNQ), US REITs, from 2004.
-- "Investment Grade Credit": the iShares iBoxx $ Investment Grade Corporate Bond ETF (LQD), from 2002.
-- "High Yield Credit": the iShares iBoxx $ High Yield Corporate Bond ETF (HYG), from 2007.
-
-Returns are the change of the dividend-adjusted price over each period, as decimals, in US dollars; with returns=False the dividend-adjusted price itself is returned. The prices come from FinancialModelingPrep when an API key is set (the api_key of the Economics class) and from Yahoo Finance otherwise.
-
-**Also known as:** private market proxies, listed private equity, alternative asset returns, hedge fund replication.
-
-**Args:**
-
-- <u>asset_classes (list[str] &#124; str &#124; None, optional):</u> The asset classes to include,
-from "Private Equity", "Infrastructure", "Hedge Funds", "Merger Arbitrage",
-"Private Credit", "Real Estate", "Investment Grade Credit" and "High Yield
-Credit". Defaults to None, which includes all of them.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>returns (bool, optional):</u> Whether to return the total return per period instead
-of the dividend-adjusted price. Defaults to True.
-- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
-moving average). Defaults to None.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result.
-Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The returns (or prices), indexed by date with a column per asset
-class.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
-
-economics.get_asset_class_proxies(
-    asset_classes=['Private Equity', 'Infrastructure', 'Hedge Funds', 'Private Credit'],
-    period='monthly',
-)
-```
-
-Which returns:
-
-|         |   Private Equity |   Infrastructure |   Hedge Funds |   Private Credit |
-|:--------|-----------------:|-----------------:|--------------:|-----------------:|
-| 2026-04 |           0.0778 |           0.0228 |        0.046  |           0.0675 |
-| 2026-05 |           0.001  |          -0.0282 |        0.0202 |          -0.0395 |
-| 2026-06 |          -0.0688 |           0.0141 |        0.0052 |           0.0024 |
-| 2026-07 |           0.0711 |           0.0032 |       -0.0142 |          -0.0017 |
-| 2026-08 |           0.0734 |          -0.025  |        0.0083 |           0.0895 |
-| 2026-09 |          -0.1149 |          -0.055  |       -0.0093 |          -0.0459 |
-
----
-
-## get_commodity_forward_curve
-Get the forward/futures curve for a commodity from Yahoo Finance -- the historical daily closing (settlement) price of each of the nearest `contracts` dated futures contracts from the current month on (e.g. Crude Oil's December 2026, January 2027, ... contracts), rather than a single flat continuous/spot price.
-
-This is what a Schwartz-Smith (2000) two-factor commodity price model needs to back out the convenience-yield term structure under the risk-neutral (Q) measure -- the curve's shape (contango or backwardation) at each point in time is exactly what a single spot price series cannot reveal.
-
-Not every commodity has a listed contract for every calendar month (grains in particular only trade specific delivery months), and the contracts of the first months may already have expired (for crude oil the current month's contract and, late in the month, the next month's). Those months are skipped and later months are tried instead, until `contracts` contracts are found.
-
-By default the columns are the contracts listed today, so a past date shows how those contracts traded then, not the curve as it stood that day. With generic=True the columns are the positions on each day's curve instead: the front (the nearest contract that has not expired on that day), +1, +2 and so on, rolling to the next contract the day after the front's last trading day (the generic or nearby series, CL1, CL2, ... in Bloomberg notation). A position is a rank on the curve, not a constant maturity: the front's time to expiry shortens each day and jumps at the roll, as no price is interpolated. The last trading days follow the CME Group contract specifications on the US exchange calendar.
-
-Yahoo Finance only publishes the contracts that still trade: a contract's history disappears once it expires, and no free source publishes it (FinancialModelingPrep has the continuous front contract only). On a past date the positions of the contracts that have expired since are therefore NaN rather than filled with another contract: for crude oil on 2026-09-15 the front (October 2026) and +1 (November 2026) are NaN and +2 is the December 2026 contract. The further back the date, the more positions are NaN, until none is left about `contracts` months back.
-
-With growth=True the change is that of each column over `lag` trading days: of a contract, or with generic of a position, which compares two contracts across a roll.
-
-**Also known as:** futures term structure, forward curve, generic futures, nearby futures.
-
-**Args:**
-
-- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
-them, to retrieve the curve for: "Crude Oil", "Natural Gas", "Gold",
-"Silver", "Copper", "Corn", "Wheat" or "Soybeans". Defaults to None, which
-retrieves every one of them.
-- <u>contracts (int, optional):</u> The number of contracts to return, the nearest
-listed ones from the current month on, or with generic the
-number of positions (the front included). Defaults to 12.
-- <u>generic (bool, optional):</u> Whether the columns are the positions on
-each day's curve (Front, +1, +2, ...) instead of the contracts listed
-today. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the change of each column instead
-of the price. Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The number of trading days to calculate the
-change over. Defaults to 1.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Raises:**
-
-ValueError: If `commodity` is not one of the supported names.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame indexed by date, with one column per contract
-labeled by its delivery month (e.g. "2026-12"), containing that
-contract's daily closing price over its trading life, or with
-generic one column per position ("Front", "+1", ...). Columns are NaN
-outside the date range the contract actually traded in. With a list of
-commodities (or none given), the columns are the commodity and the contract.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-10-13', end_date='2026-10-23')
-
-economics.get_commodity_forward_curve(
-    "Crude Oil", contracts=4, generic=True
-)
-```
-
-Which returns:
-
-| Date       |   Front |     +1 |    +2 |    +3 |
-|:-----------|--------:|-------:|------:|------:|
-| 2026-10-13 |  nan    |  93.17 | 92.23 | 91.15 |
-| 2026-10-14 |  nan    |  93.9  | 92.83 | 91.53 |
-| 2026-10-15 |  nan    |  96.5  | 94.89 | 93.02 |
-| 2026-10-16 |  nan    |  99.02 | 97.44 | 95.48 |
-| 2026-10-19 |  nan    |  98.54 | 96.67 | 94.69 |
-| 2026-10-20 |  nan    |  97.82 | 96.02 | 94.05 |
-| 2026-10-21 |   97.15 |  95.46 | 93.71 | 91.99 |
-| 2026-10-22 |   99.47 |  97.52 | 95.35 | 93.08 |
-| 2026-10-23 |  103.27 | 100.94 | 98.36 | 95.68 |
-
----
-
-## get_commodity_term_structure
-Get the term structure of a commodity futures curve per day: the front contract, the 12-month calendar spread between the front and the last contract of the 12-month strip that starts with it (in price and in percent), the annualised roll yield and whether the curve is in backwardation, contango or flat.
-
-The far contract is the furthest one delivering less than 12 months after the front: for a December 2026 front of a monthly listed commodity (crude oil, natural gas, the metals) the November 2027 contract, 11 months later, and for corn's December 2026 front the September 2027 contract, 9 months later.
-
-The formulas are as follows:
-
-Spread = Front - Far Slope = Far / Front - 1 Roll Yield = ln(Front / Far) x 12 / Months
-
-The spread follows the exchange quote of a calendar spread, nearby minus deferred, so it is positive in backwardation, and its widest backwardation is its maximum. The slope is the percentage the far contract lies above the front (negative in backwardation). The roll yield is the annualised log basis of Fama and French (1987) and Szymanowska, De Roon, Nijman and Van den Goorbergh (2014): the continuously compounded yearly return a long position earns from the shape of the curve alone, positive in backwardation and negative in contango, with Months the months between both delivery months.
-
-By default the front of each day is the nearest contract that had not expired on that day (see get_commodity_forward_curve with generic=True), so the spread is a time series of the curve as it stood each day. Yahoo Finance drops a contract once it expires, so on the days whose front has expired since, Front, the Spread, Slope and Roll Yield are NaN while Front Contract names the contract. generic=False instead takes today's front and far contract on every day (e.g. December 2026 against November 2027 for crude oil): a fixed calendar spread with its full history.
-
-**Also known as:** calendar spread, roll yield, carry, basis, backwardation, contango.
-
-**Args:**
-
-- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
-them: "Crude Oil", "Natural Gas", "Gold", "Silver", "Copper", "Corn",
-"Wheat" or "Soybeans". Defaults to None, which retrieves every one of them.
-- <u>generic (bool, optional):</u> Whether the front and far contract are
-those of each day's curve, instead of today's. Defaults to True.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Raises:**
-
-ValueError: If `commodity` is not one of the supported names.
-
-**Returns:**
-
-pd.DataFrame: Per date the Front Contract and Far Contract (delivery months),
-their prices Front and Far, the Months between them, the Spread, Slope and Roll
-Yield (decimals) and the Structure ("Backwardation", "Contango" or "Flat" when
-the front and far contract trade at the same price). With a list
-of commodities (or none given), the columns are the commodity and the field.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-10-26', end_date='2026-11-06')
-
-economics.get_commodity_term_structure("Crude Oil")
-```
-
-Which returns:
-
-| Date       | Front Contract   |   Front | Far Contract   |   Far |   Months |   Spread |   Slope |   Roll Yield | Structure     |
-|:-----------|:-----------------|--------:|:---------------|------:|---------:|---------:|--------:|-------------:|:--------------|
-| 2026-10-26 | 2026-12          |  101.76 | 2027-11        | 81.98 |       11 |    19.78 | -0.1944 |       0.2358 | Backwardation |
-| 2026-10-27 | 2026-12          |   99.9  | 2027-11        | 82.07 |       11 |    17.83 | -0.1785 |       0.2145 | Backwardation |
-| 2026-10-28 | 2026-12          |  102.78 | 2027-11        | 83.15 |       11 |    19.63 | -0.191  |       0.2312 | Backwardation |
-| 2026-10-29 | 2026-12          |  102    | 2027-11        | 82.54 |       11 |    19.46 | -0.1908 |       0.2309 | Backwardation |
-| 2026-10-30 | 2026-12          |  104.12 | 2027-11        | 83.01 |       11 |    21.11 | -0.2027 |       0.2472 | Backwardation |
-| 2026-11-02 | 2026-12          |   96.46 | 2027-11        | 80.05 |       11 |    16.41 | -0.1701 |       0.2034 | Backwardation |
-| 2026-11-03 | 2026-12          |   96.09 | 2027-11        | 80.31 |       11 |    15.78 | -0.1642 |       0.1957 | Backwardation |
-| 2026-11-04 | 2026-12          |   88.12 | 2027-11        | 75.32 |       11 |    12.8  | -0.1453 |       0.1712 | Backwardation |
-| 2026-11-05 | 2026-12          |   90.52 | 2027-11        | 75.11 |       11 |    15.41 | -0.1702 |       0.2036 | Backwardation |
-| 2026-11-06 | 2026-12          |   90.83 | 2027-11        | 76.42 |       11 |    14.41 | -0.1586 |       0.1884 | Backwardation |
-
----
-
-## get_life_table
-Retrieves the life tables Eurostat compiles yearly for the countries of the European Economic Area, by single year of age from 0 to 95 (the last age group being 95 and over), from 1960 for most countries. A life table describes the mortality of a population: the basis of every pension, life insurance and annuity calculation, and of mortality and longevity assumptions in scenario models.
-
-The measures are the probability of dying within the year (death_probability, qx), the probability of surviving it (survival_probability, px), the age-specific death rate (death_rate, mx), the number of survivors out of 100,000 births (survivors, lx), the number dying (deaths, dx), the person-years lived within the year (person_years, Lx) and above the age (total_person_years, Tx), and the life expectancy at the age (life_expectancy, ex). Probabilities and rates are fractions; the others are counts or years.
-
-For countries outside Europe the UN World Population Prospects publish life tables for every country (bulk files at population.un.org/wpp), and the Human Mortality Database long national histories (with free registration).
-
-**Also known as:** mortality table, qx table, survival table, actuarial table.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include, e.g.
-'Germany' or ['Germany', 'France']. Defaults to None, which retrieves every country.
-- <u>measure (str, optional):</u> The life table measure, see above. Defaults to
-"death_probability".
-- <u>sex (str, optional):</u> "total", "male" or "female". Defaults to "total".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The measure, indexed by year with a column per country and age.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2020-01-01', end_date="2025-12-31")
-
-life_table = economics.get_life_table(countries='Germany', sex='male')
-
-life_table['Germany'][[0, 30, 65, 80, 95]]
-```
-
-Which returns:
-
-|      |      0 |     30 |     65 |     80 |   95 |
-|:-----|-------:|-------:|-------:|-------:|-----:|
-| 2020 | 0.0032 | 0.0005 | 0.0156 | 0.0575 |    1 |
-| 2021 | 0.0033 | 0.0006 | 0.0163 | 0.0559 |    1 |
-| 2022 | 0.0032 | 0.0005 | 0.016  | 0.0596 |    1 |
-| 2023 | 0.0033 | 0.0006 | 0.0153 | 0.0571 |    1 |
-| 2024 | 0.0035 | 0.0005 | 0.0151 | 0.0566 |    1 |
-
----
-
-## get_shiller_stock_market_data
-Retrieves Robert Shiller's monthly US stock market data from 1871, the data behind "Irrational Exuberance" and the CAPE ratio: the S&P Composite price, dividends and earnings, the consumer price index, the long-term interest rate, the same in real (inflation-adjusted) terms, and the cyclically adjusted price-earnings ratio (CAPE), the price over the average of ten years of real earnings. With more than 150 years of history it is the standard source for long-run equity returns, valuations and their relation to subsequent returns.
-
-Prices are monthly averages of daily closes; dividends and earnings are trailing twelve-month totals, with the latest months not yet published. The long interest rate is a decimal fraction (0.0475 for 4.75%).
-
-The CAPE is mostly used as a long-run valuation gauge: across the history of the data, higher starting CAPE ratios have gone with lower average returns over the following ten years, while saying little about returns over the next year, so it is not a timing tool. Comparisons with the distant past are imperfect, as accounting rules, payout policy (buybacks instead of dividends) and the composition of the index have changed. The Total Return CAPE corrects for the shift in payout policy.
-
-Shiller, R. J. (2015). Irrational Exuberance (3rd ed.). Princeton University Press.
-
-**See definition:** [https://shillerdata.com/](https://shillerdata.com/){:target="_blank"}
-
-**Also known as:** Shiller data, CAPE, Shiller PE, long-run stock returns.
-
-**Args:**
-
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: One column per measure, indexed by month.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date='2026-01-01', end_date='2026-09-30')
-
-economics.get_shiller_stock_market_data(show_columns=['Price', 'Dividend', 'Earnings', 'CAPE'])
-```
-
-Which returns:
-
-|         |   Price |   Dividend |   Earnings |    CAPE |
-|:--------|--------:|-----------:|-----------:|--------:|
-| 2026-01 | 6929.12 |    79.8018 |    247.664 | 39.6408 |
-| 2026-02 | 6893.81 |    80.0835 |    254.693 | 39.014  |
-| 2026-03 | 6654.42 |    80.3653 |    261.723 | 37.0316 |
-| 2026-04 | 6957.01 |    80.8113 |    272.945 | 38.1383 |
-| 2026-05 | 7412.55 |    81.2572 |    284.166 | 40.1014 |
-| 2026-06 | 7450.03 |    81.7032 |    295.388 | 40.1502 |
-| 2026-07 | 7481.34 |   nan      |    nan     | 40.0086 |
-| 2026-08 | 7711.32 |   nan      |    nan     | 40.9874 |
-| 2026-09 | 7669.41 |   nan      |    nan     | 40.5809 |
-
----
-
-## get_commodity_prices
-Retrieves the World Bank's monthly commodity prices from 1960 (The Pink Sheet): the average price of each month in US dollars of around seventy commodities, among which crude oil (Brent, WTI, Dubai), natural gas, coal, gold, silver, platinum, copper, aluminum, iron ore, nickel, zinc, grains, softs and fertilizers. Futures prices from exchanges reach back to 2000 at most, which leaves out the commodity booms and busts of the 1970s and 1980s, such as gold's peak of January 1980 and the oil shocks.
-
-With deflate_with, the prices are in real terms: in the money of the latest month of that country's consumer price index up to the end date (see get_consumer_price_index), so that the gold price of 1980 can be compared with today's. A month after the latest month of the consumer price index, which is published a few weeks late, keeps its nominal price, and a month the consumer price index skipped has no real price.
-
-The formula is as follows:
-
-$$
-\text{Real Price} \;(t) = \frac{\text{Price} \;(t) \cdot \text{CPI} \;(\text{latest month})}{\text{CPI} \;(t)}
-$$
-
-The units are those of the World Bank: US dollars per barrel ($/bbl) for crude oil, per million British thermal units ($/mmbtu) for natural gas, per troy ounce ($/troy oz) for gold, silver and platinum, per metric ton ($/mt) for coal, base metals, grains, oils and fertilizers, per kilogram ($/kg) for cocoa, coffee, tea, sugar, meat, fruit, cotton and rubber, per dry metric ton unit ($/dmtu) for iron ore, per cubic meter for logs and sawnwood and cents per sheet for plywood. The Natural gas index is an index (2010=100).
-
-**Also known as:** Pink Sheet, commodity price history, long-run gold price, real gold price, real oil price, inflation-adjusted commodity prices.
-
-**Args:**
-
-- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodities, e.g. "Gold" or
-["Gold", "Crude oil Brent"], as named by the World Bank without commas ("Crude
-oil, Brent" is "Crude oil Brent"), in any casing. Defaults to None, which
-returns all of them.
-- <u>deflate_with (str &#124; None, optional):</u> The country whose consumer price index the
-prices are deflated with, e.g. "United States" for US dollar prices. Defaults
-to None, which returns nominal prices.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the Economics class.
-- <u>growth (bool, optional):</u> Whether to calculate the growth. Defaults to False.
-- <u>lag (int, optional):</u> The lag in months for the growth, e.g. 12 for the change
-over a year. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result.
-Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The monthly prices with a column per commodity.
-
-**Notes:**
-
-- World Bank, "Commodity Markets: The Pink Sheet", monthly prices, licensed under
-CC BY 4.0.
-- The prices are monthly averages: a peak within a month, such as gold's $850 London
-fix of 21 January 1980, is higher than the average of its month.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics
-
-economics = Economics(start_date="1979-01-01", end_date="2026-10-31")
-
-prices = economics.get_commodity_prices(commodity="Gold", deflate_with="United States")
-prices.loc[["1980-01", "2011-09", "2026-01"]]
-```
-
-Which returns:
-
-|         |    Gold |
-|:--------|--------:|
-| 1980-01 | 2923.32 |
-| 2011-09 | 2631.5  |
-| 2026-01 | 4923.8  |
 
 ---
 
@@ -6593,6 +834,6675 @@ Which returns:
 | 2026-09-03 14:00:00 | United States | ISM Services PMI (Aug)      |     54.1   |     54.3   |   55.4   |
 | 2026-09-04 12:30:00 | United States | Non Farm Payrolls (Aug)     |     21     |     56     |  162     |
 | 2026-09-04 12:30:00 | United States | Unemployment Rate (Aug)     |      0.041 |      0.041 |    0.041 |
+
+---
+
+## get_commodity_forward_curve
+Get the forward/futures curve for a commodity from Yahoo Finance -- the historical daily closing (settlement) price of each of the nearest `contracts` dated futures contracts from the current month on (e.g. Crude Oil's December 2026, January 2027, ... contracts), rather than a single flat continuous/spot price.
+
+This is what a Schwartz-Smith (2000) two-factor commodity price model needs to back out the convenience-yield term structure under the risk-neutral (Q) measure -- the curve's shape (contango or backwardation) at each point in time is exactly what a single spot price series cannot reveal.
+
+Not every commodity has a listed contract for every calendar month (grains in particular only trade specific delivery months), and the contracts of the first months may already have expired (for crude oil the current month's contract and, late in the month, the next month's). Those months are skipped and later months are tried instead, until `contracts` contracts are found.
+
+By default the columns are the contracts listed today, so a past date shows how those contracts traded then, not the curve as it stood that day. With generic=True the columns are the positions on each day's curve instead: the front (the nearest contract that has not expired on that day), +1, +2 and so on, rolling to the next contract the day after the front's last trading day (the generic or nearby series, CL1, CL2, ... in Bloomberg notation). A position is a rank on the curve, not a constant maturity: the front's time to expiry shortens each day and jumps at the roll, as no price is interpolated. The last trading days follow the CME Group contract specifications on the US exchange calendar.
+
+Yahoo Finance only publishes the contracts that still trade: a contract's history disappears once it expires, and no free source publishes it (FinancialModelingPrep has the continuous front contract only). On a past date the positions of the contracts that have expired since are therefore NaN rather than filled with another contract: for crude oil on 2026-09-15 the front (October 2026) and +1 (November 2026) are NaN and +2 is the December 2026 contract. The further back the date, the more positions are NaN, until none is left about `contracts` months back.
+
+With growth=True the change is that of each column over `lag` trading days: of a contract, or with generic of a position, which compares two contracts across a roll.
+
+**Also known as:** futures term structure, forward curve, generic futures, nearby futures.
+
+**Args:**
+
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
+them, to retrieve the curve for: "Crude Oil", "Natural Gas", "Gold",
+"Silver", "Copper", "Corn", "Wheat" or "Soybeans". Defaults to None, which
+retrieves every one of them.
+- <u>contracts (int, optional):</u> The number of contracts to return, the nearest
+listed ones from the current month on, or with generic the
+number of positions (the front included). Defaults to 12.
+- <u>generic (bool, optional):</u> Whether the columns are the positions on
+each day's curve (Front, +1, +2, ...) instead of the contracts listed
+today. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>growth (bool, optional):</u> Whether to return the change of each column instead
+of the price. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The number of trading days to calculate the
+change over. Defaults to 1.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Raises:**
+
+ValueError: If `commodity` is not one of the supported names.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame indexed by date, with one column per contract
+labeled by its delivery month (e.g. "2026-12"), containing that
+contract's daily closing price over its trading life, or with
+generic one column per position ("Front", "+1", ...). Columns are NaN
+outside the date range the contract actually traded in. With a list of
+commodities (or none given), the columns are the commodity and the contract.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-10-13', end_date='2026-10-23')
+
+economics.get_commodity_forward_curve(
+    "Crude Oil", contracts=4, generic=True
+)
+```
+
+Which returns:
+
+| Date       |   Front |     +1 |    +2 |    +3 |
+|:-----------|--------:|-------:|------:|------:|
+| 2026-10-13 |  nan    |  93.17 | 92.23 | 91.15 |
+| 2026-10-14 |  nan    |  93.9  | 92.83 | 91.53 |
+| 2026-10-15 |  nan    |  96.5  | 94.89 | 93.02 |
+| 2026-10-16 |  nan    |  99.02 | 97.44 | 95.48 |
+| 2026-10-19 |  nan    |  98.54 | 96.67 | 94.69 |
+| 2026-10-20 |  nan    |  97.82 | 96.02 | 94.05 |
+| 2026-10-21 |   97.15 |  95.46 | 93.71 | 91.99 |
+| 2026-10-22 |   99.47 |  97.52 | 95.35 | 93.08 |
+| 2026-10-23 |  103.27 | 100.94 | 98.36 | 95.68 |
+
+---
+
+## get_commodity_term_structure
+Get the term structure of a commodity futures curve per day: the front contract, the 12-month calendar spread between the front and the last contract of the 12-month strip that starts with it (in price and in percent), the annualised roll yield and whether the curve is in backwardation, contango or flat.
+
+The far contract is the furthest one delivering less than 12 months after the front: for a December 2026 front of a monthly listed commodity (crude oil, natural gas, the metals) the November 2027 contract, 11 months later, and for corn's December 2026 front the September 2027 contract, 9 months later.
+
+The formulas are as follows:
+
+Spread = Front - Far Slope = Far / Front - 1 Roll Yield = ln(Front / Far) x 12 / Months
+
+The spread follows the exchange quote of a calendar spread, nearby minus deferred, so it is positive in backwardation, and its widest backwardation is its maximum. The slope is the percentage the far contract lies above the front (negative in backwardation). The roll yield is the annualised log basis of Fama and French (1987) and Szymanowska, De Roon, Nijman and Van den Goorbergh (2014): the continuously compounded yearly return a long position earns from the shape of the curve alone, positive in backwardation and negative in contango, with Months the months between both delivery months.
+
+By default the front of each day is the nearest contract that had not expired on that day (see get_commodity_forward_curve with generic=True), so the spread is a time series of the curve as it stood each day. Yahoo Finance drops a contract once it expires, so on the days whose front has expired since, Front, the Spread, Slope and Roll Yield are NaN while Front Contract names the contract. generic=False instead takes today's front and far contract on every day (e.g. December 2026 against November 2027 for crude oil): a fixed calendar spread with its full history.
+
+**Also known as:** calendar spread, roll yield, carry, basis, backwardation, contango.
+
+**Args:**
+
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
+them: "Crude Oil", "Natural Gas", "Gold", "Silver", "Copper", "Corn",
+"Wheat" or "Soybeans". Defaults to None, which retrieves every one of them.
+- <u>generic (bool, optional):</u> Whether the front and far contract are
+those of each day's curve, instead of today's. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Raises:**
+
+ValueError: If `commodity` is not one of the supported names.
+
+**Returns:**
+
+pd.DataFrame: Per date the Front Contract and Far Contract (delivery months),
+their prices Front and Far, the Months between them, the Spread, Slope and Roll
+Yield (decimals) and the Structure ("Backwardation", "Contango" or "Flat" when
+the front and far contract trade at the same price). With a list
+of commodities (or none given), the columns are the commodity and the field.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-10-26', end_date='2026-11-06')
+
+economics.get_commodity_term_structure("Crude Oil")
+```
+
+Which returns:
+
+| Date       | Front Contract   |   Front | Far Contract   |   Far |   Months |   Spread |   Slope |   Roll Yield | Structure     |
+|:-----------|:-----------------|--------:|:---------------|------:|---------:|---------:|--------:|-------------:|:--------------|
+| 2026-10-26 | 2026-12          |  101.76 | 2027-11        | 81.98 |       11 |    19.78 | -0.1944 |       0.2358 | Backwardation |
+| 2026-10-27 | 2026-12          |   99.9  | 2027-11        | 82.07 |       11 |    17.83 | -0.1785 |       0.2145 | Backwardation |
+| 2026-10-28 | 2026-12          |  102.78 | 2027-11        | 83.15 |       11 |    19.63 | -0.191  |       0.2312 | Backwardation |
+| 2026-10-29 | 2026-12          |  102    | 2027-11        | 82.54 |       11 |    19.46 | -0.1908 |       0.2309 | Backwardation |
+| 2026-10-30 | 2026-12          |  104.12 | 2027-11        | 83.01 |       11 |    21.11 | -0.2027 |       0.2472 | Backwardation |
+| 2026-11-02 | 2026-12          |   96.46 | 2027-11        | 80.05 |       11 |    16.41 | -0.1701 |       0.2034 | Backwardation |
+| 2026-11-03 | 2026-12          |   96.09 | 2027-11        | 80.31 |       11 |    15.78 | -0.1642 |       0.1957 | Backwardation |
+| 2026-11-04 | 2026-12          |   88.12 | 2027-11        | 75.32 |       11 |    12.8  | -0.1453 |       0.1712 | Backwardation |
+| 2026-11-05 | 2026-12          |   90.52 | 2027-11        | 75.11 |       11 |    15.41 | -0.1702 |       0.2036 | Backwardation |
+| 2026-11-06 | 2026-12          |   90.83 | 2027-11        | 76.42 |       11 |    14.41 | -0.1586 |       0.1884 | Backwardation |
+
+---
+
+## get_renewable_energy
+Renewable energy is defined as the contribution of renewables to total primary energy supply (TPES). Renewables include the primary energy equivalent of hydro (excluding pumped storage), geothermal, solar, wind, tide and wave sources.
+
+Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
+
+This includes wood, vegetal waste (including wood waste and crops used for energy production), ethanol, animal materials/wastes and sulphite lyes. Municipal waste comprises wastes produced by the residential, commercial and public service sectors that are collected by local authorities for disposal in a central location for the production of heat and/or power.
+
+This indicator is the renewable share of total primary energy supply, returned as an annual decimal fraction (0.0872 for 8.72%).
+
+**See definition:** [https://data.oecd.org/energy/renewable-energy.htm](https://data.oecd.org/energy/renewable-energy.htm){:target="_blank"}
+
+**Also known as:** clean energy, green energy, renewable energy share.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Renewable Energy Percentage.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2010-01-01', end_date='2020-01-01')
+
+economics.get_renewable_energy(countries=['Austria', 'Germany', 'United States'])
+```
+
+Which returns:
+
+|      |   Austria |   Germany |   United States |
+|:-----|----------:|----------:|----------------:|
+| 2010 |    0.2742 |    0.0933 |          0.0569 |
+| 2011 |    0.2696 |    0.102  |          0.0619 |
+| 2012 |    0.307  |    0.1137 |          0.0632 |
+| 2013 |    0.3011 |    0.1147 |          0.0666 |
+| 2014 |    0.3068 |    0.1192 |          0.0678 |
+| 2015 |    0.2985 |    0.1264 |          0.0678 |
+| 2016 |    0.3034 |    0.1253 |          0.071  |
+| 2017 |    0.2984 |    0.1332 |          0.0743 |
+| 2018 |    0.2944 |    0.1396 |          0.0767 |
+| 2019 |    0.3006 |    0.1485 |          0.078  |
+| 2020 |    0.3191 |    0.1637 |          0.0837 |
+
+---
+
+## get_carbon_footprint
+The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
+
+The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
+
+The data is sourced from the greenhouse gas emissions per capita indicator of the OECD's How's Life? well-being database (dataset ``DSD_HSL@DF_HSL_FWB``, indicator ``12_9``), so the figures are expressed in tonnes of CO2 equivalent per person, on an annual basis.
+
+This series currently ends in 2020, so a date range that starts after that returns an empty DataFrame and later years are absent rather than NaN.
+
+**Also known as:** CO2 emissions, carbon emissions, greenhouse gas.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Carbon Footprint.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date="2010-01-01", end_date="2020-01-01")
+
+economics.get_carbon_footprint(countries=['Germany', 'United States', 'Poland'])
+```
+
+Which returns:
+
+|      |   Germany |   United States |   Poland |
+|:-----|----------:|----------------:|---------:|
+| 2010 |    14.574 |          22.85  |   10.557 |
+| 2011 |    14.512 |          22.081 |   10.479 |
+| 2012 |    13.938 |          21.212 |   10.14  |
+| 2013 |    14.139 |          21.404 |    9.749 |
+| 2014 |    13.74  |          21.551 |    9.703 |
+| 2015 |    13.318 |          21.253 |    9.55  |
+| 2016 |    13.37  |          20.577 |    9.772 |
+| 2017 |    13.205 |          20.353 |   10.228 |
+| 2018 |    13.267 |          20.8   |   10.377 |
+| 2019 |    12.582 |          20.191 |    9.838 |
+| 2020 |    11.498 |          18.34  |    9.451 |
+
+---
+
+## get_carbon_price
+Get the price of emitting one tonne of CO2 under the EU Emissions Trading System (EU ETS): the clearing price of the primary auctions of EU emission allowances (EUAs) the European Energy Exchange holds for the European Union, Germany and Poland almost every trading day, daily from 2020. The carbon price is the main transition risk variable of climate scenarios; see get_climate_scenario for its projected paths.
+
+The price is the average of the day's auctions of general allowances, in euro per tonne of CO2. Weekly and monthly periods take the price of the last auction of each period.
+
+**See definition:** [https://www.eex.com/en/markets/environmental-markets/eu-ets-auctions](https://www.eex.com/en/markets/environmental-markets/eu-ets-auctions){:target="_blank"}
+
+**Also known as:** EU ETS price, EUA price, CO2 price, emission allowance price.
+
+**Args:**
+
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The price in euro per tonne of CO2, indexed by date with a "European
+Union" column.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
+
+economics.get_carbon_price(period='monthly', rounding=2)
+```
+
+Which returns:
+
+|         |   European Union |
+|:--------|-----------------:|
+| 2026-04 |            71.8  |
+| 2026-05 |            79.37 |
+| 2026-06 |            78.13 |
+| 2026-07 |            81.22 |
+| 2026-08 |            82.39 |
+| 2026-09 |            84.41 |
+
+---
+
+## get_climate_scenario
+Get the path of an economic or financial variable in a climate scenario of the Network for Greening the Financial System (NGFS), the scenarios central banks and supervisors use for climate stress tests, yearly from 2022 to 2050 for around fifty countries and regions.
+
+The NGFS scenarios combine an integrated assessment model, which projects the energy system, emissions and the carbon price (model="REMIND-MAgPIE", "GCAM" or "MESSAGEix-GLOBIOM"), with NiGEM, the macroeconometric model of the National Institute of Economic and Social Research, which translates each scenario into GDP, inflation, interest rates, equity prices, exchange rates and energy prices. NiGEM separates the transition risk (the policies and technologies of the move to a low-carbon economy), the physical risk (the damage of climate change) and both together (risk="combined").
+
+The variables: "gdp" (2017 PPP US$ billion), "inflation", "long_term_interest_rate", "long_term_real_interest_rate", "policy_rate", "unemployment_rate", "equity_prices" (index, 2017 = 100), "effective_exchange_rate" (index), "domestic_demand", "exports", "imports" (2017 PPP US$ billion), "oil_price" (US$ per barrel), "gas_price" and "coal_price" (US$ per barrel of oil equivalent), and "carbon_price", which comes from the integrated assessment model itself: US$ of 2010 per tonne of CO2 for the world and the model's regions, every five years to 2100.
+
+By default the level is returned: the NiGEM baseline (a world without further climate change and policy, scenario="Baseline") with the scenario's deviation applied. With deviation=True the deviation from the baseline itself is returned: relative for levels (-0.034 for 3.4% lower GDP) and in decimal points for rates (0.0094 for 0.94 percentage points higher). Rates are decimal fractions (0.041 for 4.1%).
+
+The data is the Phase 5 vintage (November 2024), hosted by IIASA. The NGFS licence allows commercial use with attribution but not the redistribution of substantial parts, so it is retrieved when needed rather than stored with the Finance Toolkit.
+
+**See definition:** [https://www.ngfs.net/ngfs-scenarios-portal/](https://www.ngfs.net/ngfs-scenarios-portal/){:target="_blank"}
+
+**Also known as:** NGFS scenarios, climate stress test scenarios, transition risk, physical risk, carbon price path.
+
+**Args:**
+
+- <u>variable (str, optional):</u> The variable: "gdp", "inflation",
+"long_term_interest_rate", "long_term_real_interest_rate", "policy_rate",
+"unemployment_rate", "equity_prices", "effective_exchange_rate",
+"domestic_demand", "exports", "imports", "oil_price", "gas_price",
+"coal_price" or "carbon_price" (units above). Defaults to
+"long_term_interest_rate".
+- <u>scenario (str, optional):</u> "Net Zero 2050", "Below 2°C", "Low demand", "Delayed
+transition", "Nationally Determined Contributions (NDCs)", "Current
+Policies", "Fragmented World" or "Baseline". Defaults to "Net Zero 2050".
+- <u>model (str, optional):</u> The integrated assessment model behind the scenario:
+"REMIND-MAgPIE", "GCAM" or "MESSAGEix-GLOBIOM". Defaults to "REMIND-MAgPIE".
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries or regions to
+include. Defaults to None, which includes all of them.
+- <u>risk (str, optional):</u> "combined", "transition" or "physical". Current Policies has
+physical risk only, which is also its combined risk. Defaults to "combined".
+- <u>deviation (bool, optional):</u> Whether to return the deviation from the baseline
+instead of the level. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The path of the variable, indexed by year with a column per
+country or region.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(end_date="2025-12-31")
+
+climate_scenario = economics.get_climate_scenario(
+    variable='long_term_interest_rate',
+    scenario='Net Zero 2050',
+    countries=['United States', 'Germany', 'United Kingdom', 'Japan'],
+)
+
+climate_scenario.loc[['2025', '2030', '2035', '2040', '2045', '2050']]
+```
+
+Which returns:
+
+|      |   United States |   Germany |   United Kingdom |   Japan |
+|:-----|----------------:|----------:|-----------------:|--------:|
+| 2025 |          0.0492 |    0.0346 |           0.0435 |  0.0175 |
+| 2030 |          0.0428 |    0.041  |           0.041  |  0.0277 |
+| 2035 |          0.0378 |    0.0405 |           0.0393 |  0.0348 |
+| 2040 |          0.0349 |    0.0393 |           0.0405 |  0.0375 |
+| 2045 |          0.0341 |    0.0387 |           0.0413 |  0.0372 |
+| 2050 |          0.0341 |    0.0386 |           0.0412 |  0.0371 |
+
+---
+
+## get_government_debt
+Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
+
+The stock is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** national debt, sovereign debt.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Debt
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_debt(countries=['United States', 'Canada', 'Mexico'])
+```
+
+Which returns:
+
+|      |   United States |        Canada |        Mexico |
+|:-----|----------------:|--------------:|--------------:|
+| 2015 |     1.92907e+07 |   1.83683e+06 |   9.80508e+06 |
+| 2016 |     2.01975e+07 |   1.87318e+06 |   1.14065e+07 |
+| 2017 |     2.08678e+07 |   1.94774e+06 |   1.184e+07   |
+| 2018 |     2.22374e+07 |   2.02901e+06 |   1.26199e+07 |
+| 2019 |     2.34322e+07 |   2.08475e+06 |   1.30327e+07 |
+| 2020 |     2.83333e+07 |   2.62165e+06 |   1.40652e+07 |
+| 2021 |     2.96684e+07 |   2.85548e+06 |   1.51339e+07 |
+| 2022 |     3.10429e+07 |   2.96557e+06 |   1.58852e+07 |
+| 2023 |     3.33635e+07 |   3.11556e+06 |   1.68118e+07 |
+| 2024 |     3.58226e+07 |   3.41999e+06 |   1.97928e+07 |
+| 2025 |     3.811e+07   | nan           | nan           |
+
+---
+
+## get_government_debt_to_gdp_ratio
+Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
+
+Debt to GDP is the standard measure of a government's indebtedness, used by rating agencies, the IMF and the European Union, whose fiscal rules refer to 60% of GDP. Whether a ratio is sustainable depends less on its level than on the gap between the interest rate on the debt and the growth rate of nominal GDP, and on the primary balance. Compare countries on the same level of government (the level parameter), since central government debt can differ substantially from general government debt.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (1.3173 for 131.73% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Government Debt to GDP Ratio} = \frac{\text{Gross Government Debt}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+$$
+
+**Also known as:** debt-to-GDP ratio, fiscal sustainability.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Debt to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_debt_to_gdp_ratio(countries=['Netherlands', 'Germany', 'China'])
+```
+
+Which returns:
+
+|      |   Netherlands |   Germany |    China |
+|:-----|--------------:|----------:|---------:|
+| 2015 |        0.6382 |    0.7118 |   0.4078 |
+| 2016 |        0.6087 |    0.683  |   0.5003 |
+| 2017 |        0.5597 |    0.6399 |   0.5389 |
+| 2018 |        0.5155 |    0.6076 |   0.5588 |
+| 2019 |        0.4765 |    0.5868 |   0.5984 |
+| 2020 |        0.5341 |    0.6804 |   0.7013 |
+| 2021 |        0.505  |    0.6794 |   0.7213 |
+| 2022 |        0.4841 |    0.644  |   0.7729 |
+| 2023 |        0.4585 |    0.6235 |   0.8408 |
+| 2024 |        0.4378 |    0.6223 |   0.9042 |
+| 2025 |        0.4439 |    0.635  | nan      |
+
+---
+
+## get_government_revenue
+Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** government income, public revenue.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Revenue
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2019-01-01', end_date="2025-12-31")
+
+economics.get_government_revenue(countries=['United Kingdom', 'Canada', 'Japan'])
+```
+
+Which returns:
+
+|      |   United Kingdom |           Canada |       Japan |
+|:-----|-----------------:|-----------------:|------------:|
+| 2019 | 856511           | 938667           | 1.97133e+08 |
+| 2020 | 825025           | 919593           | 1.97357e+08 |
+| 2021 | 917948           |      1.07553e+06 | 2.07143e+08 |
+| 2022 |      1.04634e+06 |      1.17518e+06 | 2.16838e+08 |
+| 2023 |      1.10774e+06 |      1.23487e+06 | 2.24713e+08 |
+| 2024 |      1.1523e+06  |      1.31248e+06 | 2.33044e+08 |
+| 2025 |      1.23387e+06 |      1.36827e+06 | 2.44853e+08 |
+
+---
+
+## get_government_revenue_to_gdp_ratio
+Get the Government Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes and other sources to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.3104 for 31.04% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Government Revenue to GDP Ratio} = \frac{\text{Government Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+$$
+
+**Also known as:** revenue to GDP ratio.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Revenue to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_revenue_to_gdp_ratio(countries=['United States', 'Canada', 'Russia'])
+```
+
+Which returns:
+
+|      |   United States |   Canada |   Russia |
+|:-----|----------------:|---------:|---------:|
+| 2015 |          0.3324 |   0.3996 |   0.3189 |
+| 2016 |          0.3275 |   0.403  |   0.3292 |
+| 2017 |          0.3343 |   0.4034 |   0.3336 |
+| 2018 |          0.3169 |   0.4102 |   0.3554 |
+| 2019 |          0.3167 |   0.4057 |   0.3568 |
+| 2020 |          0.3239 |   0.4141 |   0.3516 |
+| 2021 |          0.3351 |   0.4241 |   0.3572 |
+| 2022 |          0.348  |   0.4103 |   0.338  |
+| 2023 |          0.3146 |   0.4165 |   0.339  |
+| 2024 |          0.3174 |   0.4222 |   0.3506 |
+| 2025 |          0.3253 |   0.4219 |   0.3523 |
+
+---
+
+## get_government_tax_revenue
+Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** tax revenue, fiscal revenue.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Tax Revenue
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_tax_revenue(countries=['Kenya', 'Nigeria', 'South Africa'] )
+```
+
+Which returns:
+
+|      |         Kenya |   South Africa |
+|:-----|--------------:|---------------:|
+| 2015 |   1.0216e+06  |    1.16848e+06 |
+| 2016 |   1.14692e+06 |    1.24935e+06 |
+| 2017 |   1.28657e+06 |    1.33015e+06 |
+| 2018 |   1.35099e+06 |    1.41653e+06 |
+| 2019 |   1.55782e+06 |    1.48503e+06 |
+| 2020 |   1.54288e+06 |    1.38495e+06 |
+| 2021 |   1.64048e+06 |    1.70199e+06 |
+| 2022 |   1.99797e+06 |    1.83491e+06 |
+| 2023 |   2.11082e+06 |    1.89676e+06 |
+| 2024 | nan           |    2.02766e+06 |
+| 2025 | nan           |    2.03308e+06 |
+
+---
+
+## get_government_tax_revenue_to_gdp_ratio
+Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.1022 for 10.22% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Government Tax Revenue to GDP Ratio} = \frac{\text{Government Tax Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+$$
+
+**Also known as:** tax burden, tax to GDP ratio.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Tax Revenue to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_tax_revenue_to_gdp_ratio(
+    countries=['United States', 'Canada', 'Mexico'])
+```
+
+Which returns:
+
+|      |   United States |   Canada |   Mexico |
+|:-----|----------------:|---------:|---------:|
+| 2015 |          0.1994 |   0.2815 |   0.1323 |
+| 2016 |          0.1958 |   0.2855 |   0.1401 |
+| 2017 |          0.2031 |   0.2863 |   0.1358 |
+| 2018 |          0.1874 |   0.2903 |   0.136  |
+| 2019 |          0.1887 |   0.2857 |   0.1369 |
+| 2020 |          0.1928 |   0.2976 |   0.1484 |
+| 2021 |          0.2073 |   0.3021 |   0.1443 |
+| 2022 |          0.2203 |   0.2938 |   0.1449 |
+| 2023 |          0.1932 |   0.2958 |   0.1538 |
+| 2024 |          0.1942 |   0.2959 | nan      |
+| 2025 |          0.202  |   0.2925 | nan      |
+
+---
+
+## get_government_expenditure
+Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total spending of the government: goods and services and the wages of its employees, but also social benefits and other transfers, subsidies and interest on its debt.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** government spending, public expenditure.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Expenditure
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_expenditure(countries=['Japan', 'China', 'India'])
+```
+
+Which returns:
+
+|      |       Japan |       China |       India |
+|:-----|------------:|------------:|------------:|
+| 2015 | 2.06691e+08 | 2.1786e+07  | 3.65765e+07 |
+| 2016 | 2.08867e+08 | 2.41238e+07 | 4.12501e+07 |
+| 2017 | 2.09092e+08 | 2.71281e+07 | 4.4235e+07  |
+| 2018 | 2.10865e+08 | 3.05534e+07 | 4.91601e+07 |
+| 2019 | 2.14548e+08 | 3.38067e+07 | 5.35377e+07 |
+| 2020 | 2.47428e+08 | 3.6053e+07  | 6.12564e+07 |
+| 2021 | 2.43415e+08 | 3.74577e+07 | 7.03345e+07 |
+| 2022 | 2.41313e+08 | 4.02806e+07 | 7.82555e+07 |
+| 2023 | 2.39074e+08 | 4.23663e+07 | 8.60877e+07 |
+| 2024 | 2.43693e+08 | 4.44027e+07 | 9.31256e+07 |
+| 2025 | 2.51507e+08 | 4.44552e+07 | 9.84739e+07 |
+
+---
+
+## get_government_expenditure_to_gdp_ratio
+Get the Government Expenditure to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Expenditure to GDP Ratio is the total spending of the government (goods and services and the wages of its employees, but also social benefits and other transfers, subsidies and interest on its debt) as a share of the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.3708 for 37.08% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Government Expenditure to GDP Ratio} = \frac{\text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+$$
+
+**Also known as:** government spending to GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Expenditure to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_expenditure_to_gdp_ratio(
+    countries=['United States', 'Japan', 'Netherlands'])
+```
+
+Which returns:
+
+|      |   United States |   Japan |   Netherlands |
+|:-----|----------------:|--------:|--------------:|
+| 2015 |          0.3791 |  0.3766 |        0.4525 |
+| 2016 |          0.3818 |  0.3757 |        0.4391 |
+| 2017 |          0.3788 |  0.37   |        0.4275 |
+| 2018 |          0.3785 |  0.3705 |        0.4244 |
+| 2019 |          0.3836 |  0.3752 |        0.421  |
+| 2020 |          0.4736 |  0.4466 |        0.4781 |
+| 2021 |          0.4542 |  0.4244 |        0.4591 |
+| 2022 |          0.3849 |  0.4126 |        0.4328 |
+| 2023 |          0.3931 |  0.3881 |        0.4401 |
+| 2024 |          0.3966 |  0.3839 |        0.4429 |
+| 2025 |          0.3981 |  0.3791 |        0.4486 |
+
+---
+
+## get_government_deficit
+Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The series is signed as a fiscal balance rather than as a deficit, in millions of national currency: a negative value is a deficit (spending exceeding revenue) and a positive value is a surplus.
+
+**Also known as:** budget deficit, fiscal deficit.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Deficit
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_deficit(countries=['United States', 'Canada', 'Mexico'])
+```
+
+Which returns:
+
+|      |     United States |   Canada |            Mexico |
+|:-----|------------------:|---------:|------------------:|
+| 2015 | -853792           |    -1231 | -742271           |
+| 2016 |      -1.02094e+06 |    -9182 | -556067           |
+| 2017 | -872728           |    -2401 | -233109           |
+| 2018 |      -1.27096e+06 |     8046 | -517006           |
+| 2019 |      -1.44074e+06 |     -400 | -569358           |
+| 2020 |      -3.20097e+06 |  -243127 |      -1.03224e+06 |
+| 2021 |      -2.82551e+06 |   -77523 |      -1.00013e+06 |
+| 2022 | -961028           |    17672 |      -1.27619e+06 |
+| 2023 |      -2.18266e+06 |    -4808 |      -1.36965e+06 |
+| 2024 |      -2.31875e+06 |   -65919 |      -1.93368e+06 |
+| 2025 |      -2.23721e+06 |   -57263 |     nan           |
+
+---
+
+## get_government_deficit_to_gdp_ratio
+Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
+
+The budget balance as a share of GDP is the headline fiscal indicator, with the European Union's 3% of GDP as the best-known reference for deficits. It includes interest payments and moves with the business cycle, so analysts also look at the primary balance (excluding interest) and the cyclically adjusted balance to judge the fiscal stance. A deficit that stays above the nominal growth rate times the debt ratio keeps pushing debt to GDP up.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The series is signed as a fiscal balance rather than as a deficit, and expressed as a decimal fraction of GDP: -0.07068 means a deficit of 7.068% of GDP, and a positive value is a surplus.
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Government Deficit to GDP Ratio} = \frac{\text{Government Revenue} - \text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+$$
+
+**Also known as:** deficit-to-GDP, fiscal balance.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Deficit to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+government_deficit_to_gdp_ratio = economics.get_government_deficit_to_gdp_ratio()
+
+government_deficit_to_gdp_ratio.loc[:, ['New Zealand', 'Australia', 'United Kingdom']]
+```
+
+Which returns:
+
+|      |   New Zealand |   Australia |   United Kingdom |
+|:-----|--------------:|------------:|-----------------:|
+| 2015 |        0.0012 |     -0.0104 |          -0.045  |
+| 2016 |        0.0115 |     -0.0155 |          -0.0327 |
+| 2017 |        0.0162 |     -0.0063 |          -0.0246 |
+| 2018 |        0.0083 |     -0.0056 |          -0.0219 |
+| 2019 |       -0.0028 |     -0.0121 |          -0.0246 |
+| 2020 |       -0.0758 |     -0.1142 |          -0.1291 |
+| 2021 |       -0.0388 |     -0.0417 |          -0.0774 |
+| 2022 |       -0.0292 |     -0.0193 |          -0.0473 |
+| 2023 |       -0.0348 |     -0.0135 |          -0.0604 |
+| 2024 |       -0.0299 |     -0.0277 |          -0.0613 |
+| 2025 |       -0.0333 |     -0.0393 |          -0.0546 |
+
+---
+
+## get_government_interest_expenditure
+Get the Government Interest Expenditure for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government (the central, state and local governments and the social security funds together) owes on its debt: GFS item 24, interest payable, which is D.41 in the national accounts.
+
+The interest is recorded when it accrues rather than when it is paid, and before the interest the government receives is netted against it. It is therefore higher than the net interest of a national budget: for the United States, the general government interest also covers the states and local governments, and the federal net interest the Congressional Budget Office reports subtracts the interest the federal government receives.
+
+The figures are quarterly (period="quarterly", the default) or yearly and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Quarterly figures are not seasonally adjusted; trailing=4 gives the interest over the last four quarters. The IMF's quarterly government finance statistics cover around 40 economies, among which the United States, the euro area and its members, the United Kingdom, Canada, Australia, Brazil, Turkey and Indonesia; countries outside them are left out with a warning. For those, get_government_expenditure_by_function with functions="Public Debt Transactions" has the yearly public debt transactions (COFOG 01.7, mostly interest) of around 180 countries.
+
+Data comes from the IMF's Quarterly Government Finance Statistics, further information can be found within [https://data.imf.org/en/datasets/IMF.STA:QGFS](https://data.imf.org/en/datasets/IMF.STA:QGFS){:target="_blank"}
+
+**Also known as:** interest payments, debt service cost, interest outlays, cost of government debt.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" or "yearly". Defaults to None, which is
+quarterly, the highest frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Interest Expenditure
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_interest_expenditure(
+    countries=['United States', 'Germany', 'Italy'], period='yearly')
+```
+
+Which returns:
+
+|      |    United States |   Germany |   Italy |
+|:-----|-----------------:|----------:|--------:|
+| 2015 | 428286           |     42913 |   68116 |
+| 2016 | 468186           |     37888 |   66258 |
+| 2017 | 494638           |     34489 |   65333 |
+| 2018 | 571996           |     31787 |   64366 |
+| 2019 | 606869           |     28052 |   60214 |
+| 2020 | 541832           |     22390 |   57125 |
+| 2021 | 631404           |     21756 |   63003 |
+| 2022 | 815793           |     28018 |   81614 |
+| 2023 | 997791           |     36848 |   77780 |
+| 2024 |      1.17905e+06 |     45828 |   85484 |
+| 2025 |      1.24322e+06 |     49544 |   87145 |
+
+---
+
+## get_government_interest_expenditure_to_gdp_ratio
+Get the Government Interest Expenditure to GDP Ratio for a variety of countries over time from the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable, D.41 in the national accounts) as a share of the Gross Domestic Product (GDP).
+
+The interest burden as a share of GDP shows how much of the economy's output goes to servicing government debt. It rises with the debt ratio and with the interest rate the debt is refinanced at, and is the item that turns a primary balance into the overall balance. Comparing it with the spending on a function, such as defence with get_government_expenditure_by_function_to_gdp_ratio, uses the same general government and the same GDP.
+
+The interest is general government interest payable, on an accrual basis and before interest received is netted, so it is higher than the net interest of a national budget (see get_government_interest_expenditure). Both the interest and the GDP come from the IMF: its Quarterly Government Finance Statistics and its National Economic Accounts (quarterly GDP not seasonally adjusted, like the interest). Around 40 economies are covered; countries outside them are left out with a warning.
+
+The ratio is expressed as a decimal fraction (0.0402 for 4.02% of GDP).
+
+The formula is as follows:
+
+$$
+\text{Government Interest Expenditure to GDP Ratio} = \frac{\text{Interest Payable}}{\text{Nominal GDP}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without seasonal swings) or over the year for period="yearly"}
+$$
+
+**Also known as:** interest burden, interest to GDP, debt service to GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
+each quarter) or "yearly". Defaults to None, which is quarterly, the highest
+frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Interest Expenditure to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_government_interest_expenditure_to_gdp_ratio(
+    countries=['United States', 'Germany', 'Italy', 'United Kingdom'], period='yearly')
+```
+
+Which returns:
+
+|      |   United States |   Germany |   Italy |   United Kingdom |
+|:-----|----------------:|----------:|--------:|-----------------:|
+| 2015 |          0.0234 |    0.0139 |  0.041  |           0.0244 |
+| 2016 |          0.0249 |    0.0118 |  0.0389 |           0.0256 |
+| 2017 |          0.0252 |    0.0103 |  0.0375 |           0.028  |
+| 2018 |          0.0277 |    0.0092 |  0.0363 |           0.0258 |
+| 2019 |          0.0282 |    0.0079 |  0.0334 |           0.0229 |
+| 2020 |          0.0253 |    0.0064 |  0.0343 |           0.0208 |
+| 2021 |          0.0266 |    0.0059 |  0.0343 |           0.0277 |
+| 2022 |          0.0313 |    0.007  |  0.0408 |           0.0426 |
+| 2023 |          0.0359 |    0.0087 |  0.0363 |           0.0322 |
+| 2024 |          0.0402 |    0.0104 |  0.0387 |           0.0292 |
+| 2025 |          0.0404 |    0.0109 |  0.0385 |           0.0332 |
+
+---
+
+## get_government_interest_expenditure_to_revenue_ratio
+Get the Government Interest Expenditure to Revenue Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable) as a share of its revenue (GFS item 1: taxes, social contributions, grants and other revenue).
+
+The share of revenue that goes to interest is the measure rating agencies use for debt affordability: it says how much of what the government collects is committed to its creditors before anything else is paid for. Both come from the same statistics of the same general government, on an accrual basis, with the interest before interest received is netted. Around 40 economies are covered; countries outside them are left out with a warning.
+
+The ratio is expressed as a decimal fraction (0.1351 for 13.51% of revenue).
+
+The formula is as follows:
+
+$$
+\text{Government Interest Expenditure to Revenue Ratio} = \frac{\text{Interest Payable}}{\text{Government Revenue}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without the seasonal swings of tax receipts) or over the year for period="yearly"}
+$$
+
+**Also known as:** interest to revenue, interest burden on revenue, debt affordability.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
+each quarter) or "yearly". Defaults to None, which is quarterly, the highest
+frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Interest Expenditure to Revenue Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2024-01-01', end_date="2025-12-31")
+
+economics.get_government_interest_expenditure_to_revenue_ratio(
+    countries=['United States', 'France', 'Canada'])
+```
+
+Which returns:
+
+|        |   United States |   France |   Canada |
+|:-------|----------------:|---------:|---------:|
+| 2024Q1 |          0.1258 |   0.038  |   0.0788 |
+| 2024Q2 |          0.1301 |   0.0386 |   0.0805 |
+| 2024Q3 |          0.1335 |   0.0402 |   0.0822 |
+| 2024Q4 |          0.1351 |   0.04   |   0.082  |
+| 2025Q1 |          0.1354 |   0.0416 |   0.0812 |
+| 2025Q2 |          0.1347 |   0.0418 |   0.0808 |
+| 2025Q3 |          0.1334 |   0.0423 |   0.0792 |
+| 2025Q4 |          0.1325 |   0.0427 |   0.08   |
+
+---
+
+## get_government_expenditure_by_function
+Get the Government Expenditure by Function for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). The spending of the general government (the central, state and local governments and the social security funds together) is split by purpose according to the United Nations' Classification of the Functions of Government (COFOG), the classification Eurostat, the OECD and the IMF all publish.
+
+The ten COFOG divisions are General Public Services, Defence, Public Order and Safety, Economic Affairs, Environmental Protection, Housing and Community Amenities, Health, Recreation, Culture and Religion, Education and Social Protection, which add up to the Total. General Public Services include the Public Debt Transactions (group 01.7), which are mostly the interest on government debt, also available as a function of its own where a country reports it. Defence is military and civil defence, foreign military aid and defence research; military pensions are Social Protection.
+
+The data is yearly, in millions of national currency, for around 180 countries; the most recent year is usually one or two years back. Levels are not comparable across countries with different currencies, but growth rates are, and get_government_expenditure_by_function_to_gdp_ratio returns the shares of GDP.
+
+The columns are a country and a function each; a country without data for a function has no column for it, and countries without data are left out with a warning.
+
+Data comes from the IMF's Government Finance Statistics, further information can be found within [https://data.imf.org/en/datasets/IMF.STA:GFS_COFOG](https://data.imf.org/en/datasets/IMF.STA:GFS_COFOG){:target="_blank"}
+
+**Also known as:** COFOG, government spending by function, defence spending, military spending, health spending, education spending, social spending.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>functions (list[str] &#124; str &#124; None, optional):</u> The functions to return, a list or a
+comma-separated string of the ten divisions above, "Public Debt Transactions"
+or "Total". Defaults to None, which returns the ten divisions.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Expenditure by Function, with a
+(Country, Function) column
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
+
+expenditure = economics.get_government_expenditure_by_function(
+    countries=['United States', 'Germany'], functions='Defence,Health,Education')
+
+expenditure['United States']
+```
+
+Which returns:
+
+|      |   Defence |      Health |   Education |
+|:-----|----------:|------------:|------------:|
+| 2018 |    660147 | 1.91712e+06 | 1.22016e+06 |
+| 2019 |    712831 | 2.0491e+06  | 1.26193e+06 |
+| 2020 |    744556 | 2.26781e+06 | 1.28909e+06 |
+| 2021 |    762090 | 2.45445e+06 | 1.37456e+06 |
+| 2022 |    775165 | 2.64297e+06 | 1.47586e+06 |
+| 2023 |    843209 | 2.79374e+06 | 1.54819e+06 |
+| 2024 |    911017 | 3.01146e+06 | 1.63922e+06 |
+
+---
+
+## get_government_expenditure_by_function_to_gdp_ratio
+Get the Government Expenditure by Function to GDP Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the spending of the general government on each function of the United Nations' Classification of the Functions of Government (COFOG) as a share of the Gross Domestic Product (GDP).
+
+Shares of GDP make the functions comparable across countries and over time, such as NATO's 2% of GDP guideline for defence. The ten divisions, the Public Debt Transactions (group 01.7, mostly interest) and the Total are described in get_government_expenditure_by_function. Defence covers military and civil defence, foreign military aid and defence research, not military pensions, so it differs from NATO's definition and from a national defence budget.
+
+For the interest itself, get_government_interest_expenditure_to_gdp_ratio uses the same general government and the same GDP, so the two together answer whether a government pays more in interest than it spends on defence.
+
+The data is yearly, for around 180 countries; the most recent year is usually one or two years back. The ratio is the IMF's own figure, published in percent and divided by 100 here, so it is a decimal fraction (0.0311 for 3.11% of GDP).
+
+The formula is as follows:
+
+$$
+\text{Government Expenditure by Function to GDP Ratio} = \frac{\text{Expenditure on the Function}}{\text{Nominal GDP}}
+$$
+
+**Also known as:** defence spending to GDP, military spending to GDP, health spending to GDP, education spending to GDP, social spending to GDP, COFOG to GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>functions (list[str] &#124; str &#124; None, optional):</u> The functions to return, a list or a
+comma-separated string of the ten COFOG divisions, "Public Debt Transactions"
+or "Total". Defaults to None, which returns the ten divisions.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Government Expenditure by Function to GDP
+Ratio, with a (Country, Function) column
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+defence = economics.get_government_expenditure_by_function_to_gdp_ratio(
+    countries=['United States', 'Japan', 'Germany', 'United Kingdom'], functions='Defence')
+
+defence.xs('Defence', axis=1, level='Function')
+```
+
+Which returns:
+
+|      |   United States |   Japan |   Germany |   United Kingdom |
+|:-----|----------------:|--------:|----------:|-----------------:|
+| 2015 |          0.0327 |  0.0086 |    0.0094 |           0.0198 |
+| 2016 |          0.0318 |  0.0079 |    0.0096 |           0.0189 |
+| 2017 |          0.0314 |  0.0085 |    0.0099 |           0.0185 |
+| 2018 |          0.032  |  0.009  |    0.0105 |           0.0183 |
+| 2019 |          0.0331 |  0.0089 |    0.0106 |           0.0196 |
+| 2020 |          0.0348 |  0.0092 |    0.0112 |           0.0214 |
+| 2021 |          0.0321 |  0.0099 |    0.0114 |           0.0212 |
+| 2022 |          0.0298 |  0.0092 |    0.0115 |           0.0214 |
+| 2023 |          0.0303 |  0.0105 |    0.0125 |           0.022  |
+| 2024 |          0.0311 |  0.013  |    0.0135 |           0.0225 |
+
+---
+
+## get_trust_in_government
+Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “don’t know”) to the survey question: “In this country, do you have confidence in… national government?”
+
+Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010-18 to improve the accuracy of the estimates.
+
+The sample is ex ante designed to be nationally representative of the population aged 15 and over. The population-wide figure is returned -- both sexes, all education levels -- as an annual decimal fraction of that population (0.3933 for 39.33%). The breakdowns by sex and education level that the OECD publishes alongside it are not returned here.
+
+**See definition:** [https://data.oecd.org/gga/trust-in-government.htm](https://data.oecd.org/gga/trust-in-government.htm){:target="_blank"}
+
+**Also known as:** political trust, institutional trust.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Trust in Government.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(end_date="2025-12-31")
+
+trust_in_government = economics.get_trust_in_government()
+
+trust_in_government.loc[:, ['United States', 'Greece', 'Japan']]
+```
+
+Which returns:
+
+|      |   United States |   Greece |   Japan |
+|:-----|----------------:|---------:|--------:|
+| 2006 |          0.4756 |   0.4345 |  0.2952 |
+| 2007 |          0.4756 |   0.4345 |  0.2952 |
+| 2008 |          0.4335 |   0.2764 |  0.2478 |
+| 2009 |          0.4335 |   0.2764 |  0.2478 |
+| 2010 |          0.4335 |   0.2764 |  0.2478 |
+| 2011 |          0.34   |   0.1483 |  0.2528 |
+| 2012 |          0.34   |   0.1483 |  0.2528 |
+| 2013 |          0.34   |   0.1483 |  0.2528 |
+| 2014 |          0.3309 |   0.2527 |  0.3649 |
+| 2015 |          0.3309 |   0.2527 |  0.3649 |
+| 2016 |          0.3309 |   0.2527 |  0.3649 |
+| 2017 |          0.3544 |   0.2311 |  0.4029 |
+| 2018 |          0.3544 |   0.2311 |  0.4029 |
+| 2019 |          0.3544 |   0.2311 |  0.4029 |
+| 2020 |          0.3933 |   0.3518 |  0.3819 |
+| 2021 |          0.3933 |   0.3518 |  0.3819 |
+| 2022 |          0.3933 |   0.3518 |  0.3819 |
+| 2023 |          0.2944 |   0.2732 |  0.3215 |
+| 2024 |          0.2944 |   0.2732 |  0.3215 |
+| 2025 |          0.2944 |   0.2732 |  0.3215 |
+
+---
+
+## get_long_run_asset_returns
+Get the yearly total returns of equity, housing, government bonds and bills for 18 advanced economies from 1870 to 2020, from the Jordà-Schularick-Taylor Macrohistory Database (Jordà, Knoll, Kuvshinov, Schularick and Taylor, 2019, "The Rate of Return on Everything, 1870-2015", Quarterly Journal of Economics). A century and a half of returns across wars, depressions and inflations is what calibrates the long-run trend, the equity and housing risk premia and the cycles of scenario generators for 50 to 100-year horizons.
+
+The asset classes: "equity" (dividends reinvested), "housing" (rental income included), "bonds" (long-term government bonds, coupons included), "bills" (short-term government bills), "risky" (a wealth-weighted mix of equity and housing), "safe" (a mix of bonds and bills) and "wealth" (all of them weighted by their share of national wealth). The countries: Australia, Belgium, Canada, Denmark, Finland, France, Germany, Ireland, Italy, Japan, the Netherlands, Norway, Portugal, Spain, Sweden, Switzerland, the United Kingdom and the United States, with gaps in the war years.
+
+Returns are decimal fractions (0.08 for 8%), in local currency, and with real=True deflated by consumer price inflation.
+
+The database is licensed under CC BY-NC-SA 4.0: it may be used for non-commercial purposes with attribution, and its authors expressly exclude commercial data providers. Pass accept_licence=True to confirm the use is non-commercial; the data is retrieved from macrohistory.net when needed and is not distributed with the Finance Toolkit.
+
+**See definition:** [https://www.macrohistory.net/database/](https://www.macrohistory.net/database/){:target="_blank"}
+
+**Also known as:** rate of return on everything, long-run returns, JST macrohistory, historical equity premium.
+
+**Args:**
+
+- <u>asset_class (str, optional):</u> "equity", "housing", "bonds", "bills", "risky",
+"safe" or "wealth". Defaults to "equity".
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include. Defaults
+to None, which includes all of them.
+- <u>real (bool, optional):</u> Whether to deflate the returns by consumer price
+inflation. Defaults to False.
+- <u>accept_licence (bool, optional):</u> Confirms that the data is used for
+non-commercial purposes, as its licence (CC BY-NC-SA 4.0) requires. Defaults
+to False, which returns nothing.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The returns as decimals, indexed by year with a column per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2011-01-01', end_date='2020-12-31')
+
+economics.get_long_run_asset_returns(
+    asset_class='equity',
+    countries=['United States', 'United Kingdom', 'Germany', 'Japan'],
+    real=True,
+    accept_licence=True,
+)
+```
+
+Which returns:
+
+|      |   United States |   United Kingdom |   Germany |   Japan |
+|:-----|----------------:|-----------------:|----------:|--------:|
+| 2011 |         -0.0085 |          -0.0755 |   -0.1688 | -0.0456 |
+| 2012 |          0.1448 |           0.0906 |    0.2654 | -0.0431 |
+| 2013 |          0.2767 |           0.1752 |    0.2475 |  0.7158 |
+| 2014 |          0.1389 |          -0.0026 |    0.0231 |  0.0742 |
+| 2015 |          0.0193 |           0.0106 |    0.1058 |  0.1029 |
+| 2016 |          0.0233 |           0.1465 |    0.0529 |  0.0063 |
+| 2017 |          0.1679 |           0.1107 |    0.1442 |  0.2135 |
+| 2018 |          0.1149 |          -0.1176 |   -0.1843 | -0.16   |
+| 2019 |          0.0624 |           0.1629 |    0.2113 |  0.1793 |
+| 2020 |          0.1115 |          -0.1025 |    0.0719 |  0.0786 |
+
+---
+
+## get_millennium_of_macroeconomic_data
+Get the headline annual series of "A millennium of macroeconomic data for the UK", the Bank of England's research dataset of British economic history (Thomas and Dimsdale, version 3.1): around eighty series of output, population, employment, prices, wages, interest rates, asset prices, exchange rates, money, credit and public finances, from as early as 1086 (GDP and population), 1209 (consumer prices), 1694 (Bank Rate) and 1700 (share prices) to 2016. It is the longest consistent record of interest rates, inflation and asset prices of any economy, for calibrating the very long-run behaviour of scenario generators.
+
+The series keep the names of the dataset, such as "Bank Rate", "Consols / long-term government bond yields", "Corporate bond yields", "Share prices", "Consumer price index", "Consumer price inflation", "House price index" and "$/£ exchange rate"; a second column of a series, such as its growth rate or its share of GDP, carries that unit in brackets. Rates, growth rates and shares of GDP are decimal fractions (0.05 for 5%); levels, indices and exchange rates are returned as published.
+
+The dataset is not updated anymore. The workbook is large (around 28 MB), so it is cached for a year.
+
+With deflate_with, every series is in real terms: in the money of the latest year of that country's yearly consumer price index up to the end date (see get_consumer_price_index), such as the dollar oil price ("$ Oil prices") in 2025 dollars with deflate_with="United States", which compares the oil price of 1864 with that of 2008. A year before the first year of the consumer price index has no real value. Only deflate series in money, such as prices, in the currency of that country: rates, indices and growth rates are not amounts of money.
+
+- Real Value (t) = Value (t) * CPI (latest year) / CPI (t)
+
+**See definition:** [https://www.bankofengland.co.uk/statistics/research-datasets](https://www.bankofengland.co.uk/statistics/research-datasets){:target="_blank"}
+
+**Also known as:** three centuries of macroeconomic data, BoE millennium dataset, long run UK data.
+
+**Args:**
+
+- <u>series (list[str] &#124; str &#124; None, optional):</u> The series to include, matched on
+(part of) their name without regard to case, e.g. "Bank Rate" or ["consols",
+"share prices"]. Defaults to None, which includes all of them.
+- <u>deflate_with (str &#124; None, optional):</u> The country whose yearly consumer price index
+the series are deflated with, e.g. "United States" for the dollar oil price
+or "United Kingdom" for sterling series. Defaults to None, which returns the
+series as published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The series, indexed by year with a column per series.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='1700-01-01', end_date='2016-12-31')
+
+millennium = economics.get_millennium_of_macroeconomic_data(
+    series=['Bank Rate', 'Consols', 'Consumer price inflation', 'Share prices']
+)
+
+millennium.loc[['1720', '1815', '1914', '1974', '2008']]
+```
+
+Which returns:
+
+|      |   Bank Rate |   Consols / long-term government bond yields |   Consumer price inflation |   Share prices |
+|:-----|------------:|---------------------------------------------:|---------------------------:|---------------:|
+| 1720 |       0.05  |                                       0.04   |                     0.0515 |         2.416  |
+| 1815 |       0.05  |                                       0.0504 |                    -0.144  |         1.0776 |
+| 1914 |       0.05  |                                       0.0348 |                     0.0255 |        42.7811 |
+| 1974 |       0.115 |                                       0.1517 |                     0.1573 |        65.26   |
+| 2008 |       0.02  |                                       0.0459 |                     0.036  |      2128.8    |
+
+---
+
+## get_scenario_set
+Get a regulator's published scenario set: the thousands of simulated paths of interest rates, equity returns and inflation that pension funds or insurers must use, generated by a documented and reviewed economic scenario generator. It is a reference to calibrate and validate an own scenario generator against, both for the real-world distribution and for the market-consistent one.
+
+Available is the scenario set of De Nederlandsche Bank (authority="dnb"), which Dutch pension funds use for their feasibility test and the transition to the new pension contract: 20,000 scenarios over a horizon of 100 years, generated every quarter with the model the Commissie Parameters 2022 specified, under the real-world measure (measure="real_world", the P-set) and the market-consistent measure (measure="market_consistent", the Q-set, arbitrage-free and calibrated to market prices including swaptions).
+
+The variables, as decimals per year of the horizon (year 0 is the end of the quarter the set is for): the annually compounded nominal zero rates "Nominal rate 1Y", "5Y", "10Y", "20Y" and "30Y" and the euro area "Real rate EU 10Y", derived from the model's term structure, and the annual "Equity return", "Inflation EU" and "Inflation NL" (from year 1).
+
+By default the distribution per year is returned: the quantiles of the 20,000 scenarios and their mean. With scenarios=True every scenario is returned instead (20,000 columns per variable). The set is a large workbook (around 180 MB) that takes a minute or two to download and read the first time; it is cached for 30 days.
+
+**See definition:** [https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/){:target="_blank"}
+
+**Also known as:** DNB scenarioset, uniform scenario set, CP2022 scenarios, P-set, Q-set, regulatory economic scenario generator.
+
+**Args:**
+
+- <u>authority (str, optional):</u> The regulator: "dnb". Defaults to "dnb".
+- <u>measure (str, optional):</u> "real_world" or "market_consistent". Defaults to
+"real_world".
+- <u>variables (list[str] &#124; str &#124; None, optional):</u> The variables to include, from
+"Nominal rate 1Y", "Nominal rate 5Y", "Nominal rate 10Y", "Nominal rate 20Y",
+"Nominal rate 30Y", "Real rate EU 10Y", "Equity return", "Inflation EU" and
+"Inflation NL". Defaults to None, which includes all of them.
+- <u>quantiles (list[float] &#124; None, optional):</u> The quantiles of the distribution
+per year. Defaults to None, which is [0.01, 0.05, 0.25, 0.5, 0.75, 0.95,
+0.99].
+- <u>scenarios (bool, optional):</u> Whether to return every scenario instead of the
+distribution. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Indexed by the year of the horizon, with a column per variable and
+quantile (or "Mean"), or per variable and scenario with scenarios=True.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(end_date="2025-12-31")
+
+scenario_set = economics.get_scenario_set(
+    measure='real_world', variables='Nominal rate 10Y', quantiles=[0.05, 0.5, 0.95]
+)
+
+scenario_set['Nominal rate 10Y'].loc[[0, 1, 5, 10, 30, 100]]
+```
+
+Which returns:
+
+|   Horizon |      5% |    50% |    95% |   Mean |
+|----------:|--------:|-------:|-------:|-------:|
+|         0 |  0.0293 | 0.0293 | 0.0293 | 0.0293 |
+|         1 |  0.0203 | 0.0281 | 0.0363 | 0.0282 |
+|         5 |  0.0139 | 0.028  | 0.0435 | 0.0283 |
+|        10 |  0.0069 | 0.0235 | 0.0416 | 0.0238 |
+|        30 | -0.0001 | 0.0178 | 0.037  | 0.018  |
+|       100 |  0.0024 | 0.0197 | 0.039  | 0.0201 |
+
+---
+
+## get_asset_class_proxies
+Get the total returns of listed funds that track asset classes without a public return index: private equity, infrastructure, hedge funds, private credit, real estate and investment grade and high yield credit. Their returns approximate those of the asset classes for calibrating a scenario generator, with two caveats: listed prices are marked to market daily, so they are more volatile and more correlated with equities than the appraisal-based returns of private funds, and they include the funds' fees.
+
+The asset classes and the funds that track them, with the start of their history:
+
+- "Private Equity": the Invesco Global Listed Private Equity ETF (PSP), from 2006.
+- "Infrastructure": the iShares Global Infrastructure ETF (IGF), from 2007.
+- "Hedge Funds": the IQ Hedge Multi-Strategy Tracker ETF (QAI), which replicates the returns of hedge fund indices, from 2009.
+- "Merger Arbitrage": the IQ Merger Arbitrage ETF (MNA), from 2009.
+- "Private Credit": the VanEck BDC Income ETF (BIZD), business development companies that lend to private companies, from 2013.
+- "Real Estate": the Vanguard Real Estate ETF (VNQ), US REITs, from 2004.
+- "Investment Grade Credit": the iShares iBoxx $ Investment Grade Corporate Bond ETF (LQD), from 2002.
+- "High Yield Credit": the iShares iBoxx $ High Yield Corporate Bond ETF (HYG), from 2007.
+
+Returns are the change of the dividend-adjusted price over each period, as decimals, in US dollars; with returns=False the dividend-adjusted price itself is returned. The prices come from FinancialModelingPrep when an API key is set (the api_key of the Economics class) and from Yahoo Finance otherwise.
+
+**Also known as:** private market proxies, listed private equity, alternative asset returns, hedge fund replication.
+
+**Args:**
+
+- <u>asset_classes (list[str] &#124; str &#124; None, optional):</u> The asset classes to include,
+from "Private Equity", "Infrastructure", "Hedge Funds", "Merger Arbitrage",
+"Private Credit", "Real Estate", "Investment Grade Credit" and "High Yield
+Credit". Defaults to None, which includes all of them.
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>returns (bool, optional):</u> Whether to return the total return per period instead
+of the dividend-adjusted price. Defaults to True.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result.
+Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The returns (or prices), indexed by date with a column per asset
+class.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
+
+economics.get_asset_class_proxies(
+    asset_classes=['Private Equity', 'Infrastructure', 'Hedge Funds', 'Private Credit'],
+    period='monthly',
+)
+```
+
+Which returns:
+
+|         |   Private Equity |   Infrastructure |   Hedge Funds |   Private Credit |
+|:--------|-----------------:|-----------------:|--------------:|-----------------:|
+| 2026-04 |           0.0778 |           0.0228 |        0.046  |           0.0675 |
+| 2026-05 |           0.001  |          -0.0282 |        0.0202 |          -0.0395 |
+| 2026-06 |          -0.0688 |           0.0141 |        0.0052 |           0.0024 |
+| 2026-07 |           0.0711 |           0.0032 |       -0.0142 |          -0.0017 |
+| 2026-08 |           0.0734 |          -0.025  |        0.0083 |           0.0895 |
+| 2026-09 |          -0.1149 |          -0.055  |       -0.0093 |          -0.0459 |
+
+---
+
+## get_shiller_stock_market_data
+Retrieves Robert Shiller's monthly US stock market data from 1871, the data behind "Irrational Exuberance" and the CAPE ratio: the S&P Composite price, dividends and earnings, the consumer price index, the long-term interest rate, the same in real (inflation-adjusted) terms, the trailing price-earnings ratio (P/E), the price over the earnings of the last twelve months, and the cyclically adjusted price-earnings ratio (CAPE), the price over the average of ten years of real earnings. With more than 150 years of history it is the standard source for long-run equity returns, valuations and their relation to subsequent returns.
+
+Prices are monthly averages of daily closes; dividends and earnings are trailing twelve-month totals, with the latest months not yet published. The long interest rate is a decimal fraction (0.0475 for 4.75%).
+
+The CAPE is mostly used as a long-run valuation gauge: across the history of the data, higher starting CAPE ratios have gone with lower average returns over the following ten years, while saying little about returns over the next year, so it is not a timing tool. Comparisons with the distant past are imperfect, as accounting rules, payout policy (buybacks instead of dividends) and the composition of the index have changed. The Total Return CAPE corrects for the shift in payout policy.
+
+Shiller, R. J. (2015). Irrational Exuberance (3rd ed.). Princeton University Press.
+
+**See definition:** [https://shillerdata.com/](https://shillerdata.com/){:target="_blank"}
+
+**Also known as:** Shiller data, CAPE, Shiller PE, long-run stock returns.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One column per measure, indexed by month.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-01-01', end_date='2026-09-30')
+
+economics.get_shiller_stock_market_data(show_columns=['Price', 'Earnings', 'P/E', 'CAPE'])
+```
+
+Which returns:
+
+|         |   Price |   Earnings |     P/E |    CAPE |
+|:--------|--------:|-----------:|--------:|--------:|
+| 2026-01 | 6929.12 |    237.839 | 29.1336 | 39.6591 |
+| 2026-02 | 6893.81 |    239.865 | 28.7403 | 39.0501 |
+| 2026-03 | 6654.42 |    241.891 | 27.51   | 37.0914 |
+| 2026-04 | 6957.01 |    248.79  | 27.9633 | 38.2345 |
+| 2026-05 | 7412.55 |    255.69  | 28.9904 | 40.246  |
+| 2026-06 | 7450.03 |    262.589 | 28.3715 | 40.3455 |
+| 2026-07 | 7481.34 |    273.565 | 27.3475 | 40.2609 |
+| 2026-08 | 7711.32 |    284.542 | 27.1008 | 41.0871 |
+| 2026-09 | 7669.41 |    295.518 | 25.9524 | 40.2683 |
+
+---
+
+## get_household_savings_rate
+Get the Gross Household Savings Rate for a variety of countries over time from the OECD's Household Dashboard. The household savings rate is the share of household gross disposable income (adjusted for the net change in pension entitlements) that is saved rather than spent on final consumption.
+
+It is a key input to consumption-smoothing and life-cycle/permanent-income theories of household behaviour, and a closely watched signal of both near-term consumption momentum (a falling savings rate can temporarily prop up spending even as income growth slows) and a household sector's buffer against future income shocks. It complements Total Consumption (see `get_total_consumption`) - the two together show how much of household income is spent versus set aside.
+
+The rate is seasonally adjusted and returned as a decimal fraction of adjusted gross disposable income (0.1177 for 11.77%). Because the denominator is adjusted for the net change in pension entitlements and the numerator is gross rather than net saving, this sits above the personal saving rate the BEA publishes for the United States.
+
+**See definition:** [https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC](https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC){:target="_blank"}
+
+**Also known as:** household savings ratio, personal savings rate.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
+annual data (False). Defaults to None, which returns the quarterly data, the
+highest frequency the OECD publishes.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Household Savings Rate.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date='2022-12-31')
+
+economics.get_household_savings_rate(
+    countries=['United States', 'Germany'],
+    quarterly=False)
+```
+
+Which returns:
+
+|      |   United States |   Germany |
+|:-----|----------------:|----------:|
+| 2015 |          0.1152 |    0.1724 |
+| 2016 |          0.1112 |    0.1715 |
+| 2017 |          0.1153 |    0.1757 |
+| 2018 |          0.1222 |    0.182  |
+| 2019 |          0.1305 |    0.1793 |
+| 2020 |          0.2063 |    0.2324 |
+| 2021 |          0.1707 |    0.2199 |
+| 2022 |          0.0981 |    0.189  |
+
+---
+
+## get_household_debt_to_income_ratio
+Get the Household Debt to Disposable Income Ratio for a variety of countries over time from the OECD's Household Dashboard. This expresses total household gross debt (loans and debt securities) as a share of household gross disposable income, returned as a decimal ratio (1.0014 means debt equals 100.14% of income).
+
+It is a standard household-leverage indicator used in financial-stability analysis: a high or rapidly rising ratio signals households are more exposed to income shocks or interest rate increases (debt-servicing costs rise directly with rates on variable-rate or refinanced debt), and has historically preceded credit-cycle downturns (e.g. in the lead-up to the 2008 financial crisis). It is the household- sector analogue to government debt (see `get_government_debt_to_gdp_ratio`) - the two together give a fuller picture of an economy's overall leverage.
+
+**See definition:** [https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC](https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_HHDASH%40DF_HHDASH_INDIC){:target="_blank"}
+
+**Also known as:** household leverage ratio, debt-to-income ratio.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
+annual data (False). Defaults to None, which returns the quarterly data, the
+highest frequency the OECD publishes.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Household Debt to Income Ratio.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date='2022-12-31')
+
+economics.get_household_debt_to_income_ratio(
+    countries=['United States', 'Australia'],
+    quarterly=False)
+```
+
+Which returns:
+
+|      |   United States |   Australia |
+|:-----|----------------:|------------:|
+| 2015 |          1.0396 |      1.86   |
+| 2016 |          1.0384 |      1.9308 |
+| 2017 |          1.0265 |      1.9843 |
+| 2018 |          1.0014 |      1.9888 |
+| 2019 |          0.9955 |      1.9676 |
+| 2020 |          0.9533 |      1.8811 |
+| 2021 |          0.9625 |      1.9168 |
+| 2022 |          1.0163 |      1.9253 |
+
+---
+
+## get_unemployment_rate
+The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
+
+This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
+
+For European Union countries where monthly LFS information is not available, the monthly unemployed figures are estimated by Eurostat.
+
+The unemployment rate is a lagging indicator: it tends to rise only once a slowdown is under way, so its change matters more than its level. The Sahm rule, for example, flags a US recession when the three-month average rises 0.5 percentage points above its low of the previous twelve months. Levels differ between countries for structural reasons (labour market rules, participation), so compare a country with its own history or its estimated natural rate rather than with other countries.
+
+**See definition:** [https://data.oecd.org/unemp/unemployment-rate.htm](https://data.oecd.org/unemp/unemployment-rate.htm){:target="_blank"}
+
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
+Both sources return the rate as a decimal fraction of the labour force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so a monthly or quarterly request uses the OECD unless gmdb_source=True is passed, in which case the period argument has no effect.
+
+With period="monthly" (unless gmdb_source=True is passed explicitly) the euro area and the countries Eurostat covers come from Eurostat and the United Kingdom from the Office for National Statistics, which publish weeks before the OECD republishes their figures, and Brazil from the IBGE (as the UK, the average of the three months ending in each month); every other country comes from the OECD. The United States is extended with the months the Bureau of Labor Statistics has published since, when both agree on the months they share. The UK figure is the average of the three months ending in each month, as the Labour Force Survey reports it.
+
+Both sources return a decimal fraction (0.036 for 3.6%).
+
+**Also known as:** jobless rate, labor market, unemployment level.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise. Countries the OECD publishes quarterly only,
+such as New Zealand, are not in the monthly data; a warning names them when they
+are requested.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Unemployment Rate.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2021-03-01', end_date='2023-01-01')
+
+economics.get_unemployment_rate(
+    countries=['Germany', 'United States', 'Japan'],
+    gmdb_source=False,
+    period='quarterly'
+)
+```
+
+Which returns:
+
+|        |   Germany |   United States |   Japan |
+|:-------|----------:|----------------:|--------:|
+| 2021Q1 |    0.039  |          0.0623 |  0.0287 |
+| 2021Q2 |    0.037  |          0.0593 |  0.029  |
+| 2021Q3 |    0.0343 |          0.0507 |  0.0277 |
+| 2021Q4 |    0.0337 |          0.0417 |  0.0273 |
+| 2022Q1 |    0.0323 |          0.0387 |  0.027  |
+| 2022Q2 |    0.031  |          0.0363 |  0.026  |
+| 2022Q3 |    0.031  |          0.0353 |  0.0253 |
+| 2022Q4 |    0.031  |          0.0357 |  0.0253 |
+| 2023Q1 |    0.0303 |          0.0353 |  0.026  |
+
+---
+
+## get_job_vacancy_rate
+The job vacancy rate is the share of all posts, occupied or not, that employers are actively trying to fill from outside the company. It measures unmet labour demand, the counterpart of the unemployment rate: plotted against each other, the two trace the Beveridge curve, where a movement along the curve reflects the business cycle and a shift of the curve a change in how well job seekers and vacancies are matched. A high vacancy rate next to low unemployment points to a tight labour market and, in time, wage pressure.
+
+Each country comes from its official publisher, seasonally adjusted:
+
+- Eurostat for the euro area, the European Union and around 30 European countries: the job vacancy statistics (Regulation (EC) No 453/2008) of industry, construction and services (NACE Rev. 2.1 B-T), quarterly from 2006 for the euro area and starting between 2008 and 2017 for most countries (Denmark from 2026Q1).
+- The Bureau of Labor Statistics for the United States: the job openings rate of total nonfarm from the Job Openings and Labor Turnover Survey (JOLTS), monthly from December 2000. The BLS API returns about the last three years; with a FRED API key the full history comes from FRED (series JTSJOR), which republishes it.
+
+Both define the rate the same way, as the vacancies (job openings) on a reference day over the occupied posts (employment) plus the vacancies, and return it as a decimal (0.045 for 4.5%). The quarterly US value is the average of its three months, for complete quarters only.
+
+The formula is as follows:
+
+$$
+\text{Job Vacancy Rate} = \frac{\text{Job Vacancies}}{\text{Occupied Posts} + \text{Job Vacancies}}
+$$
+
+The rate is the publishers' own figure, published in percent and divided by 100 here.
+
+See definitions: [https://ec.europa.eu/eurostat/cache/metadata/en/jvs_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/jvs_esms.htm){:target="_blank"} and [https://www.bls.gov/jlt/](https://www.bls.gov/jlt/){:target="_blank"}
+
+**Also known as:** vacancy rate, job openings rate, JOLTS, labour demand.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the quarterly data.
+Defaults to None, which is monthly when only the United States, the one country
+published monthly, is requested and quarterly otherwise (and quarterly when the
+Economics class was initialized with quarterly=True). With period='monthly'
+the other countries are left out with a warning.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Job Vacancy Rate per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2024-01-01', end_date='2026-09-30')
+
+economics.get_job_vacancy_rate(
+    countries=['United States', 'Euro Area', 'Germany', 'France']
+)
+```
+
+Which returns:
+
+|        |   United States |   Euro Area |   Germany |   France |
+|:-------|----------------:|------------:|----------:|---------:|
+| 2024Q1 |          0.0507 |       0.028 |     0.036 |    0.028 |
+| 2024Q2 |          0.046  |       0.026 |     0.033 |    0.027 |
+| 2024Q3 |          0.0443 |       0.025 |     0.031 |    0.026 |
+| 2024Q4 |          0.045  |       0.026 |     0.033 |    0.024 |
+| 2025Q1 |          0.0437 |       0.023 |     0.027 |    0.025 |
+| 2025Q2 |          0.0433 |       0.022 |     0.026 |    0.024 |
+| 2025Q3 |          0.0427 |       0.022 |     0.026 |    0.024 |
+| 2025Q4 |          0.0413 |       0.023 |     0.027 |    0.024 |
+| 2026Q1 |          0.0427 |       0.022 |     0.026 |    0.024 |
+| 2026Q2 |          0.0447 |       0.021 |     0.025 |    0.023 |
+| 2026Q3 |          0.044  |     nan     |   nan     |  nan     |
+
+---
+
+## get_misery_index
+Get the Misery Index for a variety of countries over time. The Misery Index is a simple gauge of the overall economic discomfort felt by the average person, combining the two economic ills that are most directly and visibly felt by households: unemployment and rising prices.
+
+The formula is as follows:
+
+$$
+\text{Misery Index} \;(\text{year}) = \text{Unemployment Rate} \;(\text{year}) + \text{Inflation Rate} \;(\text{year}),\;\; \text{with the annual unemployment rate from the Global Macro Database (or the OECD with gmdb\_source=False) and the Global Macro Database's annual CPI inflation}
+$$
+
+The Unemployment Rate and Inflation Rate are both retrieved as annual decimal fractions (0.05 for 5%) whichever source is used, so they line up directly for the addition and the result is itself a decimal fraction (0.0774 for a Misery Index of 7.74).
+
+A higher Misery Index indicates a more uncomfortable economic climate for the average household, while a lower value indicates a more comfortable one. It was originally popularized by economist Arthur Okun.
+
+**Also known as:** economic discomfort index, Okun's misery index.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the unemployment rate from the
+Global Macro Database (GMDB) instead of the OECD. Defaults to None, which falls
+back to the gmdb_source set on the Economics class (True by default).
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Misery Index
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2018-01-01', end_date='2023-01-01')
+
+economics.get_misery_index(countries=['United States', 'Germany', 'Japan'])
+```
+
+Which returns:
+
+|      |   United States |   Germany |   Japan |
+|:-----|----------------:|----------:|--------:|
+| 2018 |          0.0633 |    0.051  |  0.0341 |
+| 2019 |          0.0549 |    0.0433 |  0.0284 |
+| 2020 |          0.0935 |    0.0399 |  0.0279 |
+| 2021 |          0.1003 |    0.0681 |  0.0256 |
+| 2022 |          0.1164 |    0.1181 |  0.0511 |
+| 2023 |          0.0775 |    0.091  |  0.0582 |
+
+---
+
+## get_labour_productivity
+GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
+
+The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
+
+The level is reported in US dollars per hour worked at constant prices (currently referenced to 2020), converted with Purchasing Power Parities (PPPs) so that it is comparable across countries, for the total economy and on an annual basis. It is a level rather than an index, so a value of 61.36 means 61.36 PPP-converted US dollars of GDP produced per hour worked.
+
+The level is the OECD's own figure (the source's calculation).
+
+The formula is as follows:
+
+$$
+\text{Labour Productivity} = \frac{\text{Real GDP} \;(\text{constant prices},\; \text{PPP-converted US dollars})}{\text{Total Hours Worked by all persons engaged in production}}
+$$
+
+**See definition:** [https://data.oecd.org/lprdty/gdp-per-hour-worked.htm](https://data.oecd.org/lprdty/gdp-per-hour-worked.htm){:target="_blank"}
+
+**Also known as:** labor productivity, output per worker.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Labour Productivity.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(end_date="2025-12-31")
+
+economics.get_labour_productivity(countries=['Bulgaria', 'Croatia', 'Spain'])
+```
+
+Which returns:
+
+|      |   Bulgaria |   Croatia |   Spain |
+|:-----|-----------:|----------:|--------:|
+| 2016 |    28.0515 |   37.5651 | 60.3429 |
+| 2017 |    28.3199 |   37.9134 | 60.7889 |
+| 2018 |    28.9871 |   38.9686 | 60.7456 |
+| 2019 |    30.5046 |   39.5761 | 60.8858 |
+| 2020 |    30.7971 |   37.1191 | 60.9134 |
+| 2021 |    32.9483 |   41.2317 | 60.6022 |
+| 2022 |    33.9708 |   43.6926 | 61.3551 |
+| 2023 |    33.3439 |   44.313  | 61.2281 |
+| 2024 |    34.8229 |   43.9879 | 61.9601 |
+| 2025 |   nan      |   45.0352 | 62.42   |
+
+---
+
+## get_unit_labour_costs
+Unit labour costs are the average cost of labour per unit of output: what an economy pays its employees for producing one unit of real GDP. They link wages to productivity (see get_labour_productivity): pay rising faster than output per worker raises unit labour costs, which firms either pass on in prices or absorb in their margins. That makes them a measure of domestic cost pressure and, compared between countries, of cost competitiveness; the European Union's macroeconomic imbalance procedure, for example, watches their growth over three years.
+
+The OECD compiles them for the total economy, employment based, from the national accounts: the compensation of employees per employee divided by real GDP per person employed (OECD Compendium of Productivity Indicators). They are published quarterly, seasonally adjusted, as an index with 2015 = 100 in national currency, so compare their growth rather than their level between countries; growth=True with lag=4 gives the change on the same quarter a year earlier as a decimal.
+
+The index is the OECD's own figure (the source's calculation).
+
+The formula is as follows:
+
+$$
+\text{Unit Labour Costs} = \frac{\frac{\text{Compensation of Employees}}{\text{Employees}}}{\frac{\text{Real GDP}}{\text{Total Employment}}}
+$$
+
+**See definition:** [https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_PDB%40DF_PDB_ULC_Q&df[ag]=OECD.SDD.TPS](https://data-explorer.oecd.org/vis?df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_PDB%40DF_PDB_ULC_Q&df[ag]=OECD.SDD.TPS){:target="_blank"}
+
+**Also known as:** unit labor costs, ULC, labour cost per unit of output.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Unit Labour Costs (index, 2015 = 100).
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2024-01-01', end_date='2026-09-30')
+
+economics.get_unit_labour_costs(
+    countries=['United States', 'Germany', 'Japan', 'United Kingdom']
+)
+```
+
+Which returns:
+
+|        |   United States |   Germany |   Japan |   United Kingdom |
+|:-------|----------------:|----------:|--------:|-----------------:|
+| 2024Q1 |         123.636 |   130.876 | 110.592 |          129.865 |
+| 2024Q2 |         124.092 |   132.198 | 112.014 |          130.988 |
+| 2024Q3 |         124.5   |   133.416 | 112.228 |          133.209 |
+| 2024Q4 |         125.343 |   134.974 | 112.874 |          136.223 |
+| 2025Q1 |         127.233 |   136.405 | 112.925 |          137.779 |
+| 2025Q2 |         126.863 |   137.912 | 113.68  |          138.804 |
+| 2025Q3 |         127.209 |   139.548 | 115.082 |          141.405 |
+| 2025Q4 |         127.89  |   140.455 | 115.908 |          142.565 |
+| 2026Q1 |         128.219 |   140.494 | 116.313 |          145.51  |
+| 2026Q2 |         128.821 |   141.639 | 118.368 |          nan     |
+
+---
+
+## get_income_inequality
+Income is defined as household disposable income in a particular year. It consists of earnings, self-employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
+
+The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
+
+One Gini coefficient is returned per country, for the total population and on the OECD's current income definition (in use since 2012). The other inequality measures published alongside it in the same dataflow (the P90/P10, P90/P50 and P50/P10 decile ratios, the Palma ratio and the S80/S20 quintile share) are not returned here.
+
+**See definition:** [https://data.oecd.org/inequality/income-inequality.htm](https://data.oecd.org/inequality/income-inequality.htm){:target="_blank"}
+
+**Also known as:** Gini coefficient, income distribution.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Income Inequality.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2013-01-01', end_date='2021-12-31')
+
+economics.get_income_inequality(countries=['United States', 'Germany', 'Japan'])
+```
+
+Which returns:
+
+|      |   United States |   Germany |   Japan |
+|:-----|----------------:|----------:|--------:|
+| 2013 |          0.396  |    0.2922 | nan     |
+| 2014 |          0.3938 |    0.2887 | nan     |
+| 2015 |          0.3896 |    0.2932 | nan     |
+| 2016 |          0.3912 |    0.2944 | nan     |
+| 2017 |          0.3899 |    0.2892 | nan     |
+| 2018 |          0.3927 |    0.2893 |   0.334 |
+| 2019 |          0.3949 |    0.2959 | nan     |
+| 2020 |          0.3773 |    0.3026 | nan     |
+| 2021 |          0.3752 |    0.3125 |   0.338 |
+
+---
+
+## get_population_statistics
+Population is defined as all nationals present in, or temporarily absent from a country, and aliens permanently settled in a country. This indicator shows the number of people that usually live in an area. Growth rates are the annual changes in population resulting from births, deaths and net migration during the year.
+
+Total population includes the following:
+
+- national armed forces stationed abroad; merchant seamen at sea;
+- diplomatic personnel located abroad;
+- civilian aliens resident in the country;
+- displaced persons resident in the country.
+
+However, it excludes the following:
+
+- foreign armed forces stationed in the country;
+- foreign diplomatic personnel located in the country;
+- civilian aliens temporarily in the country.
+
+Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making.
+
+By default the data comes from the Global Macro Database (GMDB), which returns a single total population series per country, in millions of people. Set gmdb_source=False for the OECD series, which breaks the total down by gender, giving a Population, Men and Women series for each country, and reports a plain count of persons rather than millions. Both are annual, and the OECD source uses the historical (observed) series rather than its projections.
+
+**See definition:** [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
+
+**Also known as:** demographic data, census data.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+Defaults to None, which falls back to the gmdb_source set on the Economics class (True by default).
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Population Statistics.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2010-01-01', end_date='2019-01-01')
+
+economics.get_population_statistics(countries='Japan')
+```
+
+Which returns:
+
+|      |   Japan |
+|:-----|--------:|
+| 2010 | 128.043 |
+| 2011 | 127.831 |
+| 2012 | 127.552 |
+| 2013 | 127.333 |
+| 2014 | 127.262 |
+| 2015 | 127.11  |
+| 2016 | 126.933 |
+| 2017 | 126.706 |
+| 2018 | 126.443 |
+| 2019 | 126.167 |
+
+---
+
+## get_poverty_rate
+The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
+
+However, two countries with the same poverty rates may differ in terms of the relative income-level of the poor.
+
+**See definition:** [https://data.oecd.org/inequality/poverty-rate.htm](https://data.oecd.org/inequality/poverty-rate.htm){:target="_blank"}
+
+**Also known as:** poverty rate, income poverty.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Poverty Rates.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2012-01-01', end_date='2020-01-01')
+
+economics.get_poverty_rate(countries='Portugal')
+```
+
+Which returns:
+
+|      |   Portugal |
+|:-----|-----------:|
+| 2012 |     0.1295 |
+| 2013 |     0.135  |
+| 2014 |     0.135  |
+| 2015 |     0.1255 |
+| 2016 |     0.1246 |
+| 2017 |     0.1067 |
+| 2018 |     0.1038 |
+| 2019 |     0.1058 |
+| 2020 |     0.1279 |
+
+---
+
+## get_nonfarm_payrolls
+Get Total Nonfarm Payroll Employment for the United States from the Bureau of Labor Statistics.
+
+Nonfarm Payrolls is the headline monthly employment report and one of the most closely watched real-activity indicators in macroeconomics: it counts the number of paid US workers excluding farm employees, general government employees, private household employees and nonprofit organization employees. Sharp month-over-month changes are a core input to business-cycle dating (used directly by the NBER's Business Cycle Dating Committee) and, through Okun's Law, are closely tied to changes in the Unemployment Rate (see `get_unemployment_rate`).
+
+The series is the monthly level of employment in thousands of persons, seasonally adjusted, so 156857 means 156.857 million jobs -- not the monthly change that the headline "jobs added" number refers to. Use growth=True for that change.
+
+Without a FRED API key the data comes from the Bureau of Labor Statistics' API, which gives the same figures but only for about the last three years. The full history, from 1939, comes from FRED when a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class).
+
+**See definition:** [https://fred.stlouisfed.org/series/PAYEMS](https://fred.stlouisfed.org/series/PAYEMS){:target="_blank"}
+
+**Also known as:** NFP, nonfarm employment, the "jobs report".
+
+**Args:**
+
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A single-column ("United States") DataFrame of nonfarm payroll
+employment, in thousands of persons.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(
+    start_date='2020-01-01',
+    fred_api_key='FRED_API_KEY',
+    end_date="2025-12-31",
+)
+
+economics.get_nonfarm_payrolls()
+```
+
+Which returns:
+
+| Date       |   United States |
+|:-----------|----------------:|
+| 2025-08-01 |          158472 |
+| 2025-09-01 |          158548 |
+| 2025-10-01 |          158408 |
+| 2025-11-01 |          158449 |
+| 2025-12-01 |          158432 |
+
+---
+
+## get_initial_jobless_claims
+Get weekly Initial Claims for Unemployment Insurance for the United States from the Department of Labor.
+
+Initial Jobless Claims counts the number of individuals filing for unemployment insurance for the first time in a given week. Because it is reported weekly (versus Nonfarm Payrolls' monthly cadence, see `get_nonfarm_payrolls`) and captures layoffs essentially in real time, it is one of the most timely leading indicators of labor-market deterioration and a core component of the Conference Board's Leading Economic Index. The continued claims of the same report are in `get_continuing_jobless_claims`.
+
+Each week is dated by the Saturday it ends, the week the claims were filed. With period="monthly", "quarterly" or "yearly" the weeks are combined into that period: by default their average, as FRED converts its weekly series, or the highest, lowest or last week of the period with aggregation="max", "min" or "last".
+
+The formula is as follows:
+
+$$
+\text{Monthly Claims} \;(\text{mean}) = \frac{\text{Sum of the weekly claims of the weeks ending in the month}}{\text{Number of those weeks}}
+$$
+
+$$
+\text{Monthly Claims} \;(\max) = \text{the highest weekly claims of the weeks ending in the month}
+$$
+
+A week belongs to the month, quarter or year its Saturday falls in, as FRED aggregates the weekly series, so a month has four or five weeks. A period is only returned once all of its weeks are published, so the month that is still running is left out rather than shown as the average of its first weeks. The rolling, trailing, growth and lag options work on the combined series, e.g. growth=True with lag=12 on monthly data gives the change on the same month a year earlier.
+
+Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+
+**See definition:** [https://fred.stlouisfed.org/series/ICSA](https://fred.stlouisfed.org/series/ICSA){:target="_blank"}
+
+**Also known as:** initial claims, new unemployment claims, jobless claims, monthly average of initial claims.
+
+**Args:**
+
+- <u>period (str &#124; None, optional):</u> Whether to return the weekly, monthly, quarterly or
+yearly data. Defaults to None, which is weekly, or quarterly when the Economics
+class was initialized with quarterly=True.
+- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or
+year: "mean" (the average of its weeks), "max" (the highest week), "min" (the
+lowest week) or "last" (the last week). Not used with weekly data. Defaults to
+"mean".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A single-column ("United States") DataFrame of initial jobless
+claims, seasonally adjusted: weekly, indexed by the Saturday each week ends, or
+per month, quarter or year.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(
+    start_date='2020-01-01',
+    end_date="2025-12-31",
+)
+
+economics.get_initial_jobless_claims()
+```
+
+Which returns:
+
+| Date       |   United States |
+|:-----------|----------------:|
+| 2025-11-29 |          216000 |
+| 2025-12-06 |          235000 |
+| 2025-12-13 |          224000 |
+| 2025-12-20 |          215000 |
+| 2025-12-27 |          203000 |
+
+---
+
+## get_continuing_jobless_claims
+Get weekly Continued Claims (Insured Unemployment) for the United States from the Department of Labor.
+
+Continued claims count the people who already receive unemployment insurance and claim it for another week: the stock of insured unemployed, where initial claims (see `get_initial_jobless_claims`) are the inflow. Rising continued claims with steady initial claims mean that people who lose their job take longer to find a new one, which is why both are read together.
+
+Each week is dated by the Saturday ending the week of unemployment the claims count, as FRED dates CCSA and the Department of Labor's weekly claims report does. That week lies a week before the week the claims are filed, so the weekly news release reports the continued claims a week behind the initial claims: a release with the initial claims of the week ending November 14 gives the continued claims of the week ending November 7. With period="monthly", "quarterly" or "yearly" the weeks are combined into that period as in `get_initial_jobless_claims`: by default their average, or the highest, lowest or last week with aggregation="max", "min" or "last".
+
+The formula is as follows:
+
+$$
+\text{Monthly Claims} \;(\text{mean}) = \frac{\text{Sum of the weekly continued claims of the weeks ending in the month}}{\text{Number of those weeks}}
+$$
+
+$$
+\text{Monthly Claims} \;(\max) = \text{the highest weekly continued claims of the weeks ending in the month}
+$$
+
+A week belongs to the month, quarter or year its Saturday falls in, and a period is only returned once all of its weeks are published. The rolling, trailing, growth and lag options work on the combined series.
+
+Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+
+**See definition:** [https://fred.stlouisfed.org/series/CCSA](https://fred.stlouisfed.org/series/CCSA){:target="_blank"}
+
+**Also known as:** continuing claims, continued claims, insured unemployment, ongoing jobless claims.
+
+**Args:**
+
+- <u>period (str &#124; None, optional):</u> Whether to return the weekly, monthly, quarterly or
+yearly data. Defaults to None, which is weekly, or quarterly when the Economics
+class was initialized with quarterly=True.
+- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or
+year: "mean" (the average of its weeks), "max" (the highest week), "min" (the
+lowest week) or "last" (the last week). Not used with weekly data. Defaults to
+"mean".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A single-column ("United States") DataFrame of continued jobless
+claims, seasonally adjusted: weekly, indexed by the Saturday ending the week of
+unemployment, or per month, quarter or year.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(
+    start_date='2020-01-01',
+    end_date="2025-12-31",
+)
+
+economics.get_continuing_jobless_claims(period="monthly")
+```
+
+Which returns:
+
+| Date    |   United States |
+|:--------|----------------:|
+| 2025-08 |         1941000 |
+| 2025-09 |         1922750 |
+| 2025-10 |         1947500 |
+| 2025-11 |         1932800 |
+| 2025-12 |         1889250 |
+
+---
+
+## get_insured_unemployment_rate
+Get the weekly Insured Unemployment Rate for the United States from the Department of Labor.
+
+The insured unemployment rate is the continued claims (see `get_continuing_jobless_claims`) as a share of the employment covered by unemployment insurance. It is narrower than the unemployment rate (see `get_unemployment_rate`), as it only counts the unemployed who receive state unemployment insurance, but it is published weekly. It is the trigger of the Extended Benefits program, which starts paying in a state once the state's insured unemployment rate is high enough.
+
+Each week is dated like the continued claims, by the Saturday ending the week of unemployment, as FRED dates IURSA. With period="monthly", "quarterly" or "yearly" the weeks are combined into that period as in `get_initial_jobless_claims`: by default their average, or the highest, lowest or last week with aggregation="max", "min" or "last".
+
+The formula is as follows:
+
+$$
+\text{Insured Unemployment Rate} = \frac{\text{Continued Claims}}{\text{Covered Employment}}
+$$
+
+The Department of Labor publishes the rate in percent with one decimal, from 1971; it is returned as a decimal (0.012 for 1.2%), so it moves in steps of 0.001. Covered employment is updated once a quarter.
+
+Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+
+**See definition:** [https://fred.stlouisfed.org/series/IURSA](https://fred.stlouisfed.org/series/IURSA){:target="_blank"}
+
+**Also known as:** IUR, insured unemployment rate, covered unemployment rate.
+
+**Args:**
+
+- <u>period (str &#124; None, optional):</u> Whether to return the weekly, monthly, quarterly or
+yearly data. Defaults to None, which is weekly, or quarterly when the Economics
+class was initialized with quarterly=True.
+- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or
+year: "mean" (the average of its weeks), "max" (the highest week), "min" (the
+lowest week) or "last" (the last week). Not used with weekly data. Defaults to
+"mean".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A single-column ("United States") DataFrame of the insured
+unemployment rate as a decimal, seasonally adjusted: weekly, indexed by the
+Saturday ending the week of unemployment, or per month, quarter or year.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(
+    start_date='2020-01-01',
+    end_date="2025-12-31",
+)
+
+economics.get_insured_unemployment_rate()
+```
+
+Which returns:
+
+| Date       |   United States |
+|:-----------|----------------:|
+| 2025-11-29 |           0.012 |
+| 2025-12-06 |           0.012 |
+| 2025-12-13 |           0.012 |
+| 2025-12-20 |           0.012 |
+| 2025-12-27 |           0.012 |
+
+---
+
+## get_life_table
+Retrieves the life tables Eurostat compiles yearly for the countries of the European Economic Area, by single year of age from 0 to 95 (the last age group being 95 and over), from 1960 for most countries. A life table describes the mortality of a population: the basis of every pension, life insurance and annuity calculation, and of mortality and longevity assumptions in scenario models.
+
+The measures are the probability of dying within the year (death_probability, qx), the probability of surviving it (survival_probability, px), the age-specific death rate (death_rate, mx), the number of survivors out of 100,000 births (survivors, lx), the number dying (deaths, dx), the person-years lived within the year (person_years, Lx) and above the age (total_person_years, Tx), and the life expectancy at the age (life_expectancy, ex). Probabilities and rates are fractions; the others are counts or years.
+
+For countries outside Europe the UN World Population Prospects publish life tables for every country (bulk files at population.un.org/wpp), and the Human Mortality Database long national histories (with free registration).
+
+**Also known as:** mortality table, qx table, survival table, actuarial table.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include, e.g.
+'Germany' or ['Germany', 'France']. Defaults to None, which retrieves every country.
+- <u>measure (str, optional):</u> The life table measure, see above. Defaults to
+"death_probability".
+- <u>sex (str, optional):</u> "total", "male" or "female". Defaults to "total".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The measure, indexed by year with a column per country and age.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2020-01-01', end_date="2025-12-31")
+
+life_table = economics.get_life_table(countries='Germany', sex='male')
+
+life_table['Germany'][[0, 30, 65, 80, 95]]
+```
+
+Which returns:
+
+|      |      0 |     30 |     65 |     80 |   95 |
+|:-----|-------:|-------:|-------:|-------:|-----:|
+| 2020 | 0.0032 | 0.0005 | 0.0156 | 0.0575 |    1 |
+| 2021 | 0.0033 | 0.0006 | 0.0163 | 0.0559 |    1 |
+| 2022 | 0.0032 | 0.0005 | 0.016  | 0.0596 |    1 |
+| 2023 | 0.0033 | 0.0006 | 0.0153 | 0.0571 |    1 |
+| 2024 | 0.0035 | 0.0005 | 0.0151 | 0.0566 |    1 |
+
+---
+
+## get_gross_domestic_product
+Get the Gross Domestic Product for a variety of countries over time. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year. By default the data comes from the Global Macro Database (GMDB); set gmdb_source=False to retrieve it from the OECD instead.
+
+Note that the OECD source reports GDP on a per capita basis, i.e. the total Gross Domestic Product divided by the population of the country, whereas the Global Macro Database (GMDB) source reports the total (not per capita) figure. The two are also expressed in different units: the OECD source is in current-price US dollars per person converted with Purchasing Power Parities (PPPs), which makes the level comparable across countries, while the GMDB source is in millions of national currency. Both are annual.
+
+The data is returned as levels. To obtain period-on-period changes (e.g. year on year or quarter on quarter growth), set `growth=True` and use `lag` to control how many periods back the comparison is made.
+
+**See definition:** [https://data.oecd.org/gdp/gross-domestic-product-gdp.htm](https://data.oecd.org/gdp/gross-domestic-product-gdp.htm){:target="_blank"}
+
+The inflation adjusted and US dollar figures are only available from the Global Macro Database (GMDB), so they always come from it. For more information see: [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** GDP, national income, economic growth, real GDP, real GDP in USD, cross-country comparable GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to retrieve the data from the GMDB. Defaults to None, which falls back to the gmdb_source set on the Economics class (True by default).
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. With inflation_adjusted=True, real GDP in millions of US dollars at constant 2015 prices, converted at the 2015 market exchange rate (not at purchasing power parities), so its growth equals the growth of real GDP in the national currency. Always from the GMDB. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Gross Domestic Product
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_gross_domestic_product(inflation_adjusted=True, countries=['Netherlands', 'Germany', 'China'])
+```
+
+Which returns:
+
+|      |   Netherlands |     Germany |       China |
+|:-----|--------------:|------------:|------------:|
+| 2015 |        699213 | 3.08436e+06 | 7.02512e+07 |
+| 2016 |        716132 | 3.15026e+06 | 7.50097e+07 |
+| 2017 |        736049 | 3.24792e+06 | 8.01788e+07 |
+| 2018 |        752633 | 3.28523e+06 | 8.55972e+07 |
+| 2019 |        769904 | 3.31842e+06 | 9.07907e+07 |
+| 2020 |        740429 | 3.16955e+06 | 9.29147e+07 |
+| 2021 |        786377 | 3.29206e+06 | 1.00878e+08 |
+| 2022 |        825789 | 3.35415e+06 | 1.04039e+08 |
+| 2023 |        820955 | 3.33152e+06 | 1.09674e+08 |
+| 2024 |        829705 | 3.3158e+06  | 1.15158e+08 |
+| 2025 |        844596 | 3.32724e+06 | 1.20916e+08 |
+
+---
+
+## get_gross_domestic_product_growth
+The quarterly growth of real Gross Domestic Product (GDP) is the headline measure of how fast an economy grows: the change in the volume of everything produced, adjusted for inflation, seasonal patterns and the number of working days. Two consecutive quarters of negative growth is the common rule of thumb for a technical recession.
+
+By default the growth is measured on the previous quarter (quarter on quarter), as Eurostat and the Office for National Statistics report it. Set year_over_year=True for the change on the same quarter a year earlier. The growth is not annualized, so a US figure is about a quarter of the annualized rate the Bureau of Economic Analysis headlines.
+
+Every country comes from the most current source: Eurostat for the euro area and the countries it covers (including the preliminary flash estimate for the euro area, about thirty days after the quarter ends), the Office for National Statistics for the United Kingdom and the OECD Quarterly National Accounts for every other country, including the United States and Japan.
+
+The growth is the source's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{GDP Growth} \;(\text{quarter on quarter}) = \frac{\text{Real GDP} \;(t)}{\text{Real GDP} \;(t-1)} - 1
+$$
+
+$$
+\text{GDP Growth} \;(\text{year over year}) = \frac{\text{Real GDP} \;(t)}{\text{Real GDP} \;(t-4)} - 1
+$$
+
+Where Real GDP is the seasonally and calendar adjusted GDP in chain-linked volumes.
+
+The growth is expressed as a decimal fraction (0.006 for 0.6%).
+
+**Also known as:** GDP growth, real GDP growth, economic growth, quarter-on-quarter growth.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>year_over_year (bool, optional):</u> Whether to return the change on the same quarter a
+year earlier instead of on the previous quarter. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the quarterly growth of real GDP per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-01-01', end_date='2026-09-30')
+
+economics.get_gross_domestic_product_growth(
+    countries=['Euro Area', 'Germany', 'United Kingdom', 'United States', 'Japan']
+)
+```
+
+Which returns:
+
+|        |   Euro Area |   Germany |   United Kingdom |   United States |   Japan |
+|:-------|------------:|----------:|-----------------:|----------------:|--------:|
+| 2025Q1 |       0.005 |     0.001 |            0.006 |          0.0004 |  0.005  |
+| 2025Q2 |       0     |     0     |            0     |          0.0099 |  0.0012 |
+| 2025Q3 |       0.003 |     0     |            0.002 |          0.0096 | -0.0037 |
+| 2025Q4 |       0.002 |     0.003 |            0     |          0.0005 |  0.0026 |
+| 2026Q1 |       0     |     0.004 |            0.006 |          0.0062 |  0.0048 |
+| 2026Q2 |       0.006 |     0.003 |            0.005 |          0.0055 |  0.0036 |
+
+---
+
+## get_gross_domestic_product_deflator
+Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year.
+
+The deflator is an annual index with 2015 = 100 for every country.
+
+The GDP deflator is the broadest measure of domestic inflation: it covers everything produced in the economy, including investment goods and government services, and leaves out imports, whereas the Consumer Price Index follows a fixed basket of what households buy, imports included. Its yearly change is compared with CPI inflation; a gap between the two often points to import prices or the terms of trade, as during an energy shock.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** GDP deflator, implicit price deflator.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Gross Domestic Product Deflator
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_gross_domestic_product_deflator(countries=['United States', 'Canada', 'Russia'])
+```
+
+Which returns:
+
+|      |   United States |   Canada |   Russia |
+|:-----|----------------:|---------:|---------:|
+| 2015 |         100     |  100     |  100     |
+| 2016 |         100.95  |  100.717 |  102.844 |
+| 2017 |         102.758 |  103.306 |  108.345 |
+| 2018 |         105.112 |  105.012 |  119.179 |
+| 2019 |         106.847 |  106.636 |  123.068 |
+| 2020 |         108.284 |  107.778 |  124.173 |
+| 2021 |         113.225 |  116.168 |  146.784 |
+| 2022 |         121.278 |  125.325 |  173.542 |
+| 2023 |         125.766 |  127.261 |  185.098 |
+| 2024 |         128.887 |  130.738 |  204.816 |
+| 2025 |         132.537 |  134.076 |  214.754 |
+
+---
+
+## get_real_gross_domestic_product_per_capita
+Get the Real Gross Domestic Product per Capita for a variety of countries over time from the Global Macro Database (GMDB). This is the inflation-adjusted Gross Domestic Product (GDP) divided by the total population of a country, which gives an indication of the average economic output (and by extension, living standard) per person.
+
+This uses the Global Macro Database's own precomputed per-capita series (the source's figure) rather than dividing GDP by population manually, which avoids subtle mismatches that can arise from differences in population coverage or timing between the two underlying series.
+
+The formula is as follows:
+
+$$
+\text{Real GDP per Capita} = \frac{\text{Real Gross Domestic Product}}{\text{Population}},\;\; \text{in national currency at constant prices, or in US dollars as converted by the Global Macro Database when usd=True}
+$$
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** real GDP per capita, real income per capita, standard of living.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>usd (bool, optional):</u> Whether to return the values in US dollars per person, converted by the Global Macro Database, instead of national currency per person, which makes levels comparable across countries. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Real Gross Domestic Product per Capita
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_real_gross_domestic_product_per_capita(countries=['Netherlands', 'Germany', 'China'])
+```
+
+Which returns:
+
+|      |   Netherlands |   Germany |   China |
+|:-----|--------------:|----------:|--------:|
+| 2015 |       41275.9 |   37916.3 | 50786.7 |
+| 2016 |       42051.2 |   38480.1 | 53873.9 |
+| 2017 |       42965.9 |   39590.4 | 57266.1 |
+| 2018 |       43676.5 |   39987.4 | 60905.5 |
+| 2019 |       44387.7 |   40368.7 | 64386.9 |
+| 2020 |       42450.9 |   38593.8 | 65798   |
+| 2021 |       44851.3 |   40149.7 | 71412.9 |
+| 2022 |       46652.1 |   40642.1 | 73695.2 |
+| 2023 |       45922.4 |   40000.8 | 77801.2 |
+| 2024 |       46110.1 |   39702.4 | 81884.3 |
+| 2025 |       46646.5 |   39835.9 | 86171.3 |
+
+---
+
+## get_output_gap
+Get the Output Gap for a variety of countries over time from the OECD Economic Outlook. The output gap is the difference between actual Gross Domestic Product (GDP) and estimated potential GDP, expressed as a percentage of potential GDP. Potential GDP is the level of output an economy can sustain over the long term without generating excess inflationary or disinflationary pressure, based on the full, non-inflationary use of its productive resources (labour, capital and technology).
+
+A positive output gap indicates the economy is running above its long-run potential (an economic "boom", typically associated with rising inflationary pressure), while a negative output gap indicates the economy is running below potential (an economic "slack", typically associated with rising unemployment and disinflationary pressure). The output gap therefore complements indicators such as the Inflation Rate and Unemployment Rate as a measure of where an economy sits within the business cycle.
+
+The output gap is the OECD's own estimate (the source's figure, divided by 100 here).
+
+The formula is as follows:
+
+$$
+\text{Output Gap} = \frac{\text{Actual GDP} - \text{Potential GDP}}{\text{Potential GDP}},\;\; \text{with both GDP measures in real terms}
+$$
+
+This data is only available on a yearly basis, since the OECD Economic Outlook is published as a set of annual projections and estimates.
+
+The result is a decimal fraction of potential GDP (-0.0422), where the OECD publishes a percentage (-4.2231), like every other rate and ratio in this class. Multiply by 100 to recover the published figure. A small gap loses resolution at the default rounding of 4 decimals, so pass a larger `rounding` when the sub-basis-point detail matters.
+
+Potential output cannot be observed, so the gap is an estimate, and the estimate for a given year is often revised substantially as later data comes in: the gap estimated at the time can differ by a percentage point or more from the one published years later. Treat recent values as provisional and compare the gap with other measures of slack, such as unemployment or capacity utilisation.
+
+**See definition:** [https://www.oecd.org/en/data/indicators/output-gaps.html](https://www.oecd.org/en/data/indicators/output-gaps.html){:target="_blank"}
+
+**Also known as:** business cycle gap, GDP gap.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Output Gap as a decimal fraction of
+potential GDP.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2018-01-01', end_date='2022-01-01')
+
+economics.get_output_gap(countries=['United States', 'Germany', 'Japan'])
+```
+
+Which returns:
+
+|      |   United States |   Germany |   Japan |
+|:-----|----------------:|----------:|--------:|
+| 2018 |          0.0002 |    0.019  |  0.0194 |
+| 2019 |          0.0015 |    0.0201 |  0.0072 |
+| 2020 |         -0.0422 |   -0.0315 | -0.0422 |
+| 2021 |         -0.0073 |   -0.0005 | -0.0137 |
+| 2022 |         -0.0066 |    0.0108 | -0.0049 |
+
+---
+
+## get_total_consumption
+Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is final consumption expenditure: the goods and services bought by households and the non-profit institutions serving them (household consumption) and by the government (government consumption). Select either part with the component parameter.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are; with usd=True the levels are in millions of US dollars. With inflation_adjusted=True the level is in 2015 prices: the nominal level divided by the GDP deflator.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** final consumption expenditure, household consumption, private consumption, government consumption.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
+- <u>component (str, optional):</u> The part of final consumption expenditure: "total", "household" (households and the non-profit institutions serving them) or "government". Defaults to "total".
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency. Cannot be combined with inflation_adjusted. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Total Consumption
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
+
+total_consumption = economics.get_total_consumption()
+
+total_consumption.loc[:, ['Netherlands', 'France', 'Poland']]
+```
+
+Which returns:
+
+|      |   Netherlands |      France |      Poland |
+|:-----|--------------:|------------:|------------:|
+| 2018 |        543044 | 1.84623e+06 | 1.64263e+06 |
+| 2019 |        566526 | 1.88924e+06 | 1.75019e+06 |
+| 2020 |        558421 | 1.82884e+06 | 1.78274e+06 |
+| 2021 |        606447 | 1.94983e+06 | 1.99473e+06 |
+| 2022 |        679151 | 2.08811e+06 | 2.36421e+06 |
+| 2023 |        734728 | 2.22836e+06 | 2.61398e+06 |
+| 2024 |        776762 | 2.30127e+06 | 2.85179e+06 |
+| 2025 |        813178 | 2.33891e+06 | 3.08623e+06 |
+
+---
+
+## get_total_consumption_to_gdp_ratio
+Get the Total Consumption to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Total Consumption to GDP Ratio is final consumption expenditure (households, the non-profit institutions serving them and the government) as a share of the Gross Domestic Product (GDP). Select the household or government part with the component parameter.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.8100 for 81.00% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Consumption to GDP Ratio} = \frac{\text{Final Consumption Expenditure}}{\text{Nominal GDP}},\;\; \text{with the total (households, the non-profit institutions serving them and the government), household or government part selected with component ("total" by default)}
+$$
+
+**Also known as:** consumption share of GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>component (str, optional):</u> The part of final consumption expenditure: "total", "household" (households and the non-profit institutions serving them) or "government". Defaults to "total".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Total Consumption to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
+
+total_consumption_to_gdp_ratio = economics.get_total_consumption_to_gdp_ratio()
+
+total_consumption_to_gdp_ratio.loc[:, ['Netherlands', 'France', 'Poland']]
+```
+
+Which returns:
+
+|      |   Netherlands |   France |   Poland |
+|:-----|--------------:|---------:|---------:|
+| 2018 |        0.6896 |   0.7833 |   0.7655 |
+| 2019 |        0.6828 |   0.7757 |   0.7572 |
+| 2020 |        0.6838 |   0.7892 |   0.755  |
+| 2021 |        0.6805 |   0.7784 |   0.7496 |
+| 2022 |        0.6836 |   0.7871 |   0.7637 |
+| 2023 |        0.6997 |   0.7873 |   0.7662 |
+| 2024 |        0.6927 |   0.7878 |   0.7793 |
+| 2025 |        0.6895 |   0.7838 |   0.7901 |
+
+---
+
+## get_investment
+Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is gross capital formation: what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, plus the change in inventories.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** total investment, capital formation.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Investment
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2014-01-01', end_date="2025-12-31")
+
+investment = economics.get_investment()
+
+investment.loc[:, ['United States', 'Portugal', 'China']]
+```
+
+Which returns:
+
+|      |   United States |   Portugal |       China |
+|:-----|----------------:|-----------:|------------:|
+| 2014 |     3.68031e+06 |    26574.5 | 2.97145e+07 |
+| 2015 |     3.91791e+06 |    28591.6 | 3.00218e+07 |
+| 2016 |     3.92796e+06 |    29873.8 | 3.20756e+07 |
+| 2017 |     4.14909e+06 |    34109.1 | 3.60559e+07 |
+| 2018 |     4.45542e+06 |    37975.2 | 4.05422e+07 |
+| 2019 |     4.66767e+06 |    40256   | 4.29201e+07 |
+| 2020 |     4.58237e+06 |    39037.7 | 4.40568e+07 |
+| 2021 |     5.07881e+06 |    45322.5 | 5.01014e+07 |
+| 2022 |     5.739e+06   |    52142.2 | 5.22678e+07 |
+| 2023 |     5.99898e+06 |    55414.9 | 5.3233e+07  |
+| 2024 |     6.30862e+06 |    58942.6 | 5.47878e+07 |
+| 2025 |     6.56842e+06 |    64530.2 | 5.47964e+07 |
+
+---
+
+## get_investment_to_gdp_ratio
+Get the Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Investment to GDP Ratio is gross capital formation (what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, plus the change in inventories) as a share of the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.2248 for 22.48% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Investment to GDP Ratio} = \frac{\text{Gross Capital Formation}}{\text{Nominal GDP}},\;\; \text{with}\;\; \text{Gross Capital Formation} = \text{Gross Fixed Capital Formation} + \text{Change in Inventories}
+$$
+
+**Also known as:** investment rate.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Investment to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2019-01-01', end_date="2025-12-31")
+
+investment_to_gdp_ratio = economics.get_investment_to_gdp_ratio()
+
+investment_to_gdp_ratio.loc[:, ['Australia', 'Japan', 'Turkey']]
+```
+
+Which returns:
+
+|      |   Australia |   Japan |   Turkey |
+|:-----|------------:|--------:|---------:|
+| 2019 |      0.2265 |  0.2732 |   0.2751 |
+| 2020 |      0.2246 |  0.2689 |   0.3415 |
+| 2021 |      0.2333 |  0.2733 |   0.3438 |
+| 2022 |      0.2392 |  0.2831 |   0.386  |
+| 2023 |      0.2389 |  0.2778 |   0.3459 |
+| 2024 |      0.2453 |  0.2766 |   0.3073 |
+| 2025 |      0.2455 |  0.2778 |   0.3167 |
+
+---
+
+## get_fixed_investment
+Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is gross fixed capital formation: what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, without the change in inventories.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** gross fixed capital formation, capital investment.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Fixed Investment
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2020-01-01', end_date="2025-12-31")
+
+fixed_investment = economics.get_fixed_investment()
+
+fixed_investment.loc[:, ['United Kingdom', 'Germany', 'France']]
+```
+
+Which returns:
+
+|      |   United Kingdom |   Germany |   France |
+|:-----|-----------------:|----------:|---------:|
+| 2020 |           387159 |    733569 |   519445 |
+| 2021 |           430541 |    775371 |   587672 |
+| 2022 |           490449 |    858069 |   622842 |
+| 2023 |           520091 |    894583 |   647114 |
+| 2024 |           539666 |    887571 |   645687 |
+| 2025 |           573803 |    911184 |   658386 |
+
+---
+
+## get_fixed_investment_to_gdp_ratio
+Get the Fixed Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Fixed Investment to GDP Ratio is gross fixed capital formation (what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, without the change in inventories) as a share of the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.2179 for 21.79% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Fixed Investment to GDP Ratio} = \frac{\text{Gross Fixed Capital Formation}}{\text{Nominal GDP}}
+$$
+
+**Also known as:** investment to GDP ratio.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Fixed Investment to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2016-01-01', end_date="2025-12-31")
+
+fixed_investment_to_gdp_ratio = economics.get_fixed_investment_to_gdp_ratio()
+
+fixed_investment_to_gdp_ratio.loc[:, ['Austria', 'Germany', 'Switzerland']]
+```
+
+Which returns:
+
+|      |   Austria |   Germany |   Switzerland |
+|:-----|----------:|----------:|--------------:|
+| 2016 |    0.2332 |    0.2    |        0.2674 |
+| 2017 |    0.2385 |    0.2016 |        0.2751 |
+| 2018 |    0.2431 |    0.2086 |        0.2698 |
+| 2019 |    0.2508 |    0.2121 |        0.2699 |
+| 2020 |    0.2513 |    0.213  |        0.2763 |
+| 2021 |    0.2586 |    0.2111 |        0.268  |
+| 2022 |    0.2521 |    0.2154 |        0.2627 |
+| 2023 |    0.2469 |    0.2119 |        0.2689 |
+| 2024 |    0.2355 |    0.2049 |        0.2643 |
+| 2025 |    0.2353 |    0.2035 |        0.2599 |
+
+---
+
+## get_exports
+Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** exports, trade exports.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Exports
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='1980-01-01', end_date='1990-01-01')
+
+economics.get_exports(countries=['Netherlands', 'Germany', 'China'])
+```
+
+Which returns:
+
+|      |   Netherlands |   Germany |    China |
+|:-----|--------------:|----------:|---------:|
+| 1980 |       89051.5 |    165542 |  31845.8 |
+| 1981 |      102962   |    187458 |  43100   |
+| 1982 |      106300   |    202401 |  48143   |
+| 1983 |      109580   |    205497 |  48825.2 |
+| 1984 |      124092   |    230732 |  64861.4 |
+| 1985 |      132292   |    254587 |  85285.2 |
+| 1986 |      114407   |    248907 | 101831   |
+| 1987 |      112478   |    248372 | 142745   |
+| 1988 |      122726   |    267089 | 188203   |
+| 1989 |      138150   |    301859 | 174600   |
+| 1990 |      144534   |    336413 | 264527   |
+
+---
+
+## get_exports_to_gdp_ratio
+Get the Exports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Exports to GDP Ratio is the ratio of the total amount of goods and services produced in a country that are sold to other countries to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.1016 for 10.16% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Exports to GDP Ratio} = \frac{\text{Exports of Goods and Services}}{\text{Nominal GDP}}
+$$
+
+**Also known as:** exports to GDP ratio, trade openness.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Exports to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_exports_to_gdp_ratio(countries=['United States', 'Canada', 'Russia'])
+```
+
+Which returns:
+
+|      |   United States |   Canada |   Russia |
+|:-----|----------------:|---------:|---------:|
+| 2015 |          0.1241 |   0.3185 |   0.287  |
+| 2016 |          0.1189 |   0.315  |   0.2585 |
+| 2017 |          0.1218 |   0.3145 |   0.2609 |
+| 2018 |          0.1229 |   0.3233 |   0.3079 |
+| 2019 |          0.1179 |   0.3235 |   0.2843 |
+| 2020 |          0.1012 |   0.2947 |   0.2552 |
+| 2021 |          0.1083 |   0.3118 |   0.3    |
+| 2022 |          0.1165 |   0.3372 |   0.2771 |
+| 2023 |          0.1105 |   0.3334 |   0.2277 |
+| 2024 |          0.1097 |   0.3247 |   0.2179 |
+| 2025 |          0.1079 |   0.3133 |   0.1815 |
+
+---
+
+## get_imports
+Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** imports, trade imports.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Imports
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2010-01-01', end_date="2025-12-31")
+
+economics.get_imports(countries=['United States', 'Canada', 'Mexico'])
+```
+
+Which returns:
+
+|      |   United States |           Canada |      Mexico |
+|:-----|----------------:|-----------------:|------------:|
+| 2010 |     2.38956e+06 | 517153           | 4.22154e+06 |
+| 2011 |     2.69548e+06 | 564513           | 4.8355e+06  |
+| 2012 |     2.76932e+06 | 589137           | 5.41225e+06 |
+| 2013 |     2.76638e+06 | 606801           | 5.41757e+06 |
+| 2014 |     2.88744e+06 | 651176           | 5.92175e+06 |
+| 2015 |     2.79494e+06 | 683019           | 6.96894e+06 |
+| 2016 |     2.73883e+06 | 685868           | 8.05624e+06 |
+| 2017 |     2.93159e+06 | 720254           | 8.88029e+06 |
+| 2018 |     3.13117e+06 | 766265           | 9.93588e+06 |
+| 2019 |     3.11668e+06 | 782419           | 9.78484e+06 |
+| 2020 |     2.78239e+06 | 703532           | 9.07008e+06 |
+| 2021 |     3.41793e+06 | 787922           | 1.13375e+07 |
+| 2022 |     3.97432e+06 | 951814           | 1.35378e+07 |
+| 2023 |     3.85986e+06 | 985422           | 1.19891e+07 |
+| 2024 |     4.11383e+06 |      1.01502e+06 | 1.27547e+07 |
+| 2025 |     4.24615e+06 |      1.04369e+06 | 1.41931e+07 |
+
+---
+
+## get_imports_to_gdp_ratio
+Get the Imports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Imports to GDP Ratio is the ratio of the total amount of goods and services produced in other countries that are bought by a country to the Gross Domestic Product (GDP).
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (0.1213 for 12.13% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Imports to GDP Ratio} = \frac{\text{Imports of Goods and Services}}{\text{Nominal GDP}}
+$$
+
+**Also known as:** imports to GDP ratio.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Imports to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2010-01-01', end_date="2025-12-31")
+
+economics.get_imports_to_gdp_ratio(countries=['United States', 'Canada', 'Mexico'])
+```
+
+Which returns:
+
+|      |   United States |   Canada |   Mexico |
+|:-----|----------------:|---------:|---------:|
+| 2010 |          0.1588 |   0.3104 |   0.3022 |
+| 2011 |          0.1728 |   0.3182 |   0.3167 |
+| 2012 |          0.1704 |   0.3224 |   0.3277 |
+| 2013 |          0.1639 |   0.319  |   0.3195 |
+| 2014 |          0.164  |   0.3264 |   0.3264 |
+| 2015 |          0.1528 |   0.3431 |   0.3623 |
+| 2016 |          0.1456 |   0.3386 |   0.3885 |
+| 2017 |          0.1495 |   0.3365 |   0.3939 |
+| 2018 |          0.1516 |   0.3427 |   0.411  |
+| 2019 |          0.1447 |   0.3382 |   0.3894 |
+| 2020 |          0.1302 |   0.3168 |   0.377  |
+| 2021 |          0.1441 |   0.3107 |   0.4247 |
+| 2022 |          0.1525 |   0.3323 |   0.4585 |
+| 2023 |          0.1388 |   0.3323 |   0.3762 |
+| 2024 |          0.1404 |   0.3265 |   0.3811 |
+| 2025 |          0.138  |   0.3218 |   0.4025 |
+
+---
+
+## get_trade_balance
+Get the Trade Balance for a variety of countries over time from the Global Macro Database (GMDB). The Trade Balance is the difference between the total value of goods and services a country exports and the total value of goods and services it imports. A positive trade balance (a "trade surplus") means a country exports more than it imports, while a negative trade balance (a "trade deficit") means a country imports more than it exports.
+
+The formula is as follows:
+
+$$
+\text{Trade Balance} = \text{Exports of Goods and Services} - \text{Imports of Goods and Services},\;\; \text{both the Global Macro Database's figures in millions of national currency (or of US dollars when usd=True)}
+$$
+
+The balance is annual and expressed in millions of national currency, with a negative value marking a trade deficit and a positive value a surplus.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** net exports, balance of trade.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Trade Balance
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2020-01-01', end_date='2023-01-01')
+
+economics.get_trade_balance(countries=['United States', 'Germany', 'China'])
+```
+
+Which returns:
+
+|      |   United States |   Germany |       China |
+|:-----|----------------:|----------:|------------:|
+| 2020 |         -618554 |    181408 | 2.57979e+06 |
+| 2021 |         -849233 |    185685 | 3.04482e+06 |
+| 2022 |         -937889 |     96043 | 3.97949e+06 |
+| 2023 |         -786495 |    167684 | 2.79265e+06 |
+
+---
+
+## get_current_account_balance
+Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
+
+The balance is annual and expressed in millions of national currency, with a negative value marking a current account deficit and a positive value a surplus.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** current account, trade balance, balance of payments.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency, which makes levels comparable across countries. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Current Account Balance
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_current_account_balance(countries=['France', 'Germany', 'Italy'])
+```
+
+Which returns:
+
+|      |   France |   Germany |     Italy |
+|:-----|---------:|----------:|----------:|
+| 2015 |    -7158 |    252800 |  20667.3  |
+| 2016 |   -11787 |    285460 |  41949.2  |
+| 2017 |   -12529 |    272550 |  42551.2  |
+| 2018 |   -16441 |    296480 |  44465.2  |
+| 2019 |    14533 |    288300 |  56955.4  |
+| 2020 |   -47596 |    217260 |  62807    |
+| 2021 |     6941 |    256470 |  36974.5  |
+| 2022 |   -37663 |    164120 | -36550.2  |
+| 2023 |   -29398 |    233650 |   5323.05 |
+| 2024 |     2665 |    253790 |  24121.3  |
+| 2025 |    -9345 |    201850 |  25049.5  |
+
+---
+
+## get_current_account_balance_to_gdp_ratio
+Get the Current Account Balance to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance to GDP Ratio is the ratio of the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid) to the Gross Domestic Product (GDP).
+
+The ratio shows whether a country saves more than it invests (a surplus) or relies on foreign financing (a deficit). Persistent deficits are not a problem in themselves, but they leave a country exposed when capital inflows stop, which is why emerging markets with large deficits are watched closely for currency stress. The European Union's macroeconomic imbalance procedure uses a three-year average between -4% and +6% of GDP as its threshold.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (-0.0211 for -2.11% of GDP).
+
+The ratio is the Global Macro Database's own figure, published in percent and divided by 100 here.
+
+The formula is as follows:
+
+$$
+\text{Current Account Balance to GDP Ratio} = \frac{\text{Exports} - \text{Imports of Goods and Services} + \text{Net Primary Income} + \text{Net Secondary Income}}{\text{Nominal GDP}}
+$$
+
+**Also known as:** current account to GDP.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Current Account Balance to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_current_account_balance_to_gdp_ratio(countries=[
+    'Poland', 'Turkey', 'United Kingdom'])
+```
+
+Which returns:
+
+|      |   Poland |   Turkey |   United Kingdom |
+|:-----|---------:|---------:|-----------------:|
+| 2015 |  -0.013  |  -0.0245 |          -0.0478 |
+| 2016 |  -0.0105 |  -0.0254 |          -0.0525 |
+| 2017 |  -0.0117 |  -0.0408 |          -0.0338 |
+| 2018 |  -0.0197 |  -0.0132 |          -0.0372 |
+| 2019 |  -0.0027 |   0.0193 |          -0.0248 |
+| 2020 |   0.024  |  -0.0437 |          -0.0272 |
+| 2021 |  -0.0135 |  -0.0083 |          -0.0076 |
+| 2022 |  -0.0225 |  -0.0513 |          -0.0192 |
+| 2023 |   0.0156 |  -0.035  |          -0.0357 |
+| 2024 |   0.0031 |  -0.0098 |          -0.0295 |
+| 2025 |  -0.0086 |  -0.019  |          -0.0245 |
+
+---
+
+## get_net_international_investment_position
+Get the Net International Investment Position (NIIP) for a variety of countries over time from the International Monetary Fund (IMF). The Net International Investment Position is the value of the external financial assets of a country's residents (direct investment, portfolio investment, financial derivatives, other investment and reserve assets) less the value of their external liabilities, at the end of each period.
+
+Where the current account is the flow, the international investment position is the stock it builds up: a country that runs current account deficits for years finances them by borrowing from or selling assets to the rest of the world, and ends up with a negative position, a net debtor. The position also moves without any transaction, with exchange rates and the prices of the assets and liabilities held.
+
+The position follows the IMF's Balance of Payments and International Investment Position Manual, sixth edition (BPM6), and is published by the IMF in millions of US dollars, converted at the exchange rate at the end of the period, for about 130 economies quarterly and 175 yearly, and the euro area. A negative value marks a net debtor, a positive value a net creditor.
+
+For more information, see the following sources:
+
+- International Monetary Fund (2009). Balance of Payments and International Investment Position Manual, Sixth Edition (BPM6), chapter 7: [https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf](https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf){:target="_blank"}
+- IMF International Investment Position dataset: [https://data.imf.org](https://data.imf.org){:target="_blank"}
+
+The formula is as follows:
+
+$$
+\text{Net International Investment Position} = \text{External Financial Assets} - \text{External Liabilities},\;\; \text{at the end of the quarter (period="quarterly") or the year (period="yearly")}
+$$
+
+**Also known as:** NIIP, net foreign assets, net external position, net external assets.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" (the position at the end of each quarter)
+or "yearly" (at the end of each year). Defaults to None, which is quarterly, the
+highest frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Net International Investment Position in millions of US dollars
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_net_international_investment_position(
+    countries=['United States', 'Netherlands', 'Spain', 'Japan'], period='yearly')
+```
+
+Which returns:
+
+|      |   United States |   Netherlands |    Spain |   Japan |
+|:-----|----------------:|--------------:|---------:|--------:|
+| 2015 |        -7590470 |        208976 | -1038360 | 2715260 |
+| 2016 |        -8258387 |        299722 |  -997827 | 2879336 |
+| 2017 |        -7830723 |        356302 | -1183935 | 2916758 |
+| 2018 |        -9795821 |        455332 | -1082426 | 3080841 |
+| 2019 |       -11666440 |        634921 | -1013505 | 3271768 |
+| 2020 |       -11894319 |        884178 | -1159871 | 3473817 |
+| 2021 |       -15357982 |        730264 |  -971356 | 3659120 |
+| 2022 |       -14226691 |        590199 |  -825201 | 3166226 |
+| 2023 |       -17123596 |        625354 |  -818813 | 3327381 |
+| 2024 |       -22127875 |        753541 |  -663085 | 3435052 |
+| 2025 |       -21873581 |        656342 |  -847469 | 3594052 |
+
+---
+
+## get_net_international_investment_position_to_gdp_ratio
+Get the Net International Investment Position (NIIP) to GDP Ratio for a variety of countries over time from the International Monetary Fund (IMF). The ratio is the value of the external financial assets of a country's residents less the value of their external liabilities, at the end of each period, relative to the country's nominal Gross Domestic Product (GDP).
+
+The ratio shows how much a country owes to (negative) or is owed by (positive) the rest of the world compared to the size of its economy. A large negative position leaves a country dependent on foreign financing and exposed to a sudden stop of capital inflows, which is why the European Union's macroeconomic imbalance procedure (MIP) uses a position below -35% of GDP as its indicative threshold. Large creditors, such as Japan, Germany and the Netherlands, earn net investment income on their position.
+
+The IMF publishes the position in US dollars only, converted at the exchange rate at the end of the period. It is converted back to national currency at that same IMF end-of-period exchange rate (the euro area's for the euro members) and divided by the IMF's nominal GDP in national currency, so the ratio does not move with the gap between the end-of-period and the average exchange rate. This is the convention of Eurostat's MIP scoreboard (tipsii10), whose figures differ from it only by the vintage of the GDP and the position each publisher holds. The IMF's national accounts of some countries, such as the euro members, end a few quarters before their position, which leaves the latest periods of those countries empty.
+
+For more information, see the following sources:
+
+- International Monetary Fund (2009). Balance of Payments and International Investment Position Manual, Sixth Edition (BPM6), chapter 7: [https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf](https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf){:target="_blank"}
+- European Commission (2016). The Macroeconomic Imbalance Procedure: Rationale, Process, Application: A Compendium. Institutional Paper 039 (scoreboard threshold of -35% of GDP).
+- Eurostat MIP scoreboard: [https://ec.europa.eu/eurostat/databrowser/view/tipsii10/default/table](https://ec.europa.eu/eurostat/databrowser/view/tipsii10/default/table){:target="_blank"}
+
+The ratio is expressed as a decimal fraction (-0.35 for -35% of GDP).
+
+The formula is as follows:
+
+$$
+\text{Net International Investment Position to GDP Ratio} = \frac{(\text{External Financial Assets} - \text{External Liabilities}) \;\text{in US Dollars} \cdot \text{National Currency per US Dollar at the End of the Period}}{\text{Nominal GDP in National Currency}}
+$$
+
+- The position is the stock at the end of the quarter or year; the GDP is summed over the four quarters up to and including that quarter (not seasonally adjusted) for period="quarterly" or over the calendar year for period="yearly"
+
+**Also known as:** NIIP to GDP, net foreign assets to GDP, net external position.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> "quarterly" (the position at the end of each quarter)
+or "yearly" (at the end of each year). Defaults to None, which is quarterly, the
+highest frequency published.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Net International Investment Position to GDP Ratio
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date="2025-12-31")
+
+economics.get_net_international_investment_position_to_gdp_ratio(
+    countries=['United States', 'Netherlands', 'Spain', 'Japan'], period='yearly')
+```
+
+Which returns:
+
+|      |   United States |   Netherlands |    Spain |   Japan |
+|:-----|----------------:|--------------:|---------:|--------:|
+| 2015 |         -0.4149 |        0.2745 |  -0.8773 |  0.5961 |
+| 2016 |         -0.4392 |        0.3948 |  -0.843  |  0.6049 |
+| 2017 |         -0.3993 |        0.3957 |  -0.8437 |  0.5827 |
+| 2018 |         -0.4742 |        0.5051 |  -0.7798 |  0.5999 |
+| 2019 |         -0.5416 |        0.6811 |  -0.7196 |  0.6243 |
+| 2020 |         -0.5565 |        0.8825 |  -0.8371 |  0.6497 |
+| 2021 |         -0.6473 |        0.7232 |  -0.6942 |  0.7285 |
+| 2022 |         -0.546  |        0.5568 |  -0.5632 |  0.7186 |
+| 2023 |         -0.6157 |        0.5301 |  -0.4946 |  0.7657 |
+| 2024 |         -0.7553 |        0.6396 |  -0.401  |  0.8449 |
+| 2025 |         -0.7111 |      nan      | nan      |  0.8429 |
+
+---
+
+## get_foreign_exchange_reserves
+Get the total reserves, including gold, of a variety of countries over time from the World Bank's World Development Indicators (FI.RES.TOTL.CD), which takes them from the IMF's International Financial Statistics. Reserve assets are the external assets that a central bank or other monetary authority controls and can use at once to finance a balance of payments need, to intervene in the currency market or to keep confidence in the currency: foreign currency deposits and securities, monetary gold, special drawing rights (SDRs) and the reserve position in the IMF (IMF Balance of Payments and International Investment Position Manual, sixth edition; IMF (2013), International Reserves and Foreign Currency Liquidity: Guidelines for a Data Template).
+
+Reserves are a country's buffer against a sudden stop of capital inflows: they let a central bank pay for imports and service foreign debt, and defend its currency, when foreign financing dries up. Their adequacy is judged against what they may have to cover, such as months of imports (see get_reserves_import_cover) or short-term external debt (the Greenspan-Guidotti rule asks for reserves at least equal to the external debt falling due within a year).
+
+The reserves are the end-of-year stock in millions of current US dollars, so a change includes valuation effects (exchange rates, the gold price) as well as purchases and sales. Data is annual. The euro area and the European Union are included as aggregates.
+
+**See definition:** [https://data.worldbank.org/indicator/FI.RES.TOTL.CD](https://data.worldbank.org/indicator/FI.RES.TOTL.CD){:target="_blank"}
+
+**Also known as:** international reserves, FX reserves, official reserve assets.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Foreign Exchange Reserves in millions of US dollars.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2016-01-01', end_date="2025-12-31")
+
+economics.get_foreign_exchange_reserves(
+    countries=['China', 'Japan', 'United States', 'India'])
+```
+
+Which returns:
+
+|      |   China |   Japan |   United States |   India |
+|:-----|--------:|--------:|----------------:|--------:|
+| 2016 | 3097658 | 1216519 |          405942 |  361694 |
+| 2017 | 3235682 | 1264141 |          451285 |  412614 |
+| 2018 | 3168216 | 1270467 |          449907 |  399167 |
+| 2019 | 3222895 | 1322443 |          516701 |  463470 |
+| 2020 | 3357241 | 1390809 |          628370 |  590227 |
+| 2021 | 3427931 | 1405749 |          716152 |  638485 |
+| 2022 | 3306839 | 1227573 |          706644 |  567298 |
+| 2023 | 3449544 | 1294636 |          773426 |  627793 |
+| 2024 | 3456025 | 1230667 |          910037 |  643043 |
+| 2025 | 3748745 | 1371402 |         1385447 |  700074 |
+
+---
+
+## get_reserves_import_cover
+Get the total reserves, including gold, in months of imports for a variety of countries over time from the World Bank's World Development Indicators (FI.RES.TOTL.MO), which takes them from the IMF's International Financial Statistics: the number of months of imports of goods and services the reserves could pay for. Reserve assets are the external assets that a central bank or other monetary authority controls and can use at once to finance a balance of payments need, to intervene in the currency market or to keep confidence in the currency: foreign currency deposits and securities, monetary gold, special drawing rights (SDRs) and the reserve position in the IMF (IMF Balance of Payments and International Investment Position Manual, sixth edition; IMF (2013), International Reserves and Foreign Currency Liquidity: Guidelines for a Data Template).
+
+Import cover is the classic measure of reserve adequacy for countries whose main external risk runs through the current account rather than the capital account: three months of imports is the traditional rule of thumb for the minimum, and the IMF's reserve adequacy assessments use it next to measures of short-term external debt and broad money for countries with open capital accounts.
+
+The cover is a number of months (3.5 means three and a half months of imports), not a decimal ratio. Data is annual. The euro area, the European Union and the world are included as aggregates.
+
+The ratio is the World Bank's own figure (the source's calculation).
+
+The formula is as follows:
+
+$$
+\text{Reserves Import Cover} = \frac{\text{Total Reserves}}{\frac{\text{Imports of Goods and Services}}{12}}
+$$
+
+**See definition:** [https://data.worldbank.org/indicator/FI.RES.TOTL.MO](https://data.worldbank.org/indicator/FI.RES.TOTL.MO){:target="_blank"}
+
+**Also known as:** import cover, reserves in months of imports, reserve adequacy.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Reserves Import Cover in months of imports.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2016-01-01', end_date="2025-12-31")
+
+economics.get_reserves_import_cover(
+    countries=['China', 'Japan', 'United States', 'Turkey'])
+```
+
+Which returns:
+
+|      |   China |   Japan |   United States |   Turkey |
+|:-----|--------:|--------:|----------------:|---------:|
+| 2016 | 16.7161 | 16.969  |          1.4483 |   5.4317 |
+| 2017 | 15.4175 | 16.2733 |          1.4924 |   4.7879 |
+| 2018 | 13.1417 | 14.6891 |          1.3675 |   4.2176 |
+| 2019 | 13.6333 | 15.4234 |          1.5576 |   5.1843 |
+| 2020 | 14.497  | 18.5186 |          2.1028 |   4.6221 |
+| 2021 | 11.4763 | 16.0722 |          1.9792 |   4.4464 |
+| 2022 | 11.046  | 12.3369 |          1.6876 |   3.8766 |
+| 2023 | 11.4423 | 13.5201 |          1.7943 |   4.1542 |
+| 2024 | 11.0155 | 12.9547 |          1.9364 |   4.6984 |
+| 2025 | 11.943  | 14.0094 |          2.7991 |   5.1277 |
+
+---
+
+## get_consumer_price_index
+Consumer Price Index (CPI) is a measure that examines the average change in prices paid by consumers for goods and services over time. It is a measure of inflation.
+
+By default the data is monthly, from the most current national source per country (see below). With period="yearly" the data comes from the Global Macro Database (GMDB), annual with 2015 = 100. Set `oecd_source=True` to retrieve monthly or quarterly data from the OECD instead (base year varies per country).
+
+The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
+
+With period="monthly" and without oecd_source, every country comes from its most current source: Eurostat for the euro area and the European Economic Area (the HICP, 2015 = 100), the Office for National Statistics for the United Kingdom (CPI, 2015 = 100), the Statistics Bureau of Japan for Japan (CPI from 2015, on its latest base) and the Bank for International Settlements for every other country (2010 = 100). The base year differs between countries, so compare the changes rather than the levels. Countries that publish their consumer prices quarterly, such as Australia and New Zealand, have a value in the last month of each quarter only.
+
+The measure parameter selects the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
+
+The US index of the BIS is the BLS's CPI-U rebased to 2010 = 100, which the BIS publishes a few days after the BLS. The months the BLS has published since are added to it, so a release appears the same day.
+
+With cumulative=True, every country's index is divided by its value in the first period of the date range: the growth of 1 in prices since the start_date (1.3460 for prices 34.60% higher), which compares countries regardless of their base year. A country without data in the first period starts from its own first period. The purchasing power of money is its inverse (see get_purchasing_power).
+
+Further information about the Global Macro Database (GMDB) variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** CPI, cost of living index, core CPI, CPI components, energy prices, food prices, shelter costs.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Without `oecd_source=True`, "monthly" uses the monthly sources described above and the
+annual data comes from the GMDB. Defaults to None, which is the monthly data (quarterly
+with `oecd_source=True` when the Economics class was initialized with quarterly=True).
+- <u>oecd_source (bool, optional):</u> Whether to get the data from the OECD instead of the
+Global Macro Database (GMDB). Defaults to False.
+- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
+energy, or a component: "energy", "food", "goods", "services" or "shelter"
+(United States only). Other measures than "all" are monthly, without
+oecd_source. Defaults to "all".
+- <u>cumulative (bool, optional):</u> Whether to return the growth of 1 in prices since the
+first period of the date range instead of the index. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Consumer Price Index.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2008-09-01', end_date='2020-03-01')
+
+economics.get_consumer_price_index(countries=['Germany', 'France', 'Portugal'], period='yearly')
+```
+
+Which returns:
+
+|      |   Germany |   France |   Portugal |
+|:-----|----------:|---------:|-----------:|
+| 2008 |   91.9238 |  93.2046 |    92.9047 |
+| 2009 |   92.2236 |  93.2862 |    92.1285 |
+| 2010 |   93.2552 |  94.7165 |    93.4207 |
+| 2011 |   95.1772 |  96.7132 |    96.8332 |
+| 2012 |   97.064  |  98.604  |    99.5189 |
+| 2013 |   98.5364 |  99.4547 |    99.7919 |
+| 2014 |   99.4445 |  99.9597 |    99.5142 |
+| 2015 |  100      | 100      |   100      |
+| 2016 |  100.467  | 100.184  |   100.608  |
+| 2017 |  101.975  | 101.216  |   101.984  |
+| 2018 |  103.765  | 103.09   |   102.998  |
+| 2019 |  105.237  | 104.231  |   103.346  |
+| 2020 |  105.801  | 104.729  |   103.333  |
+
+---
+
+## get_inflation_rate
+Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
+
+With period="yearly" the data comes from the Global Macro Database (GMDB). Its years that are IMF World Economic Outlook projections are only included with gmdb_forecasts=True; by default a series ends with its last observation. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
+
+With period="monthly", the default, the annual rate of change is returned for every month, the figure statistical offices publish, taken per country from the most current source: Eurostat for the euro area and the European Economic Area (the HICP, including the flash estimate at the end of the month itself), the Office for National Statistics for the United Kingdom (CPI), the Statistics Bureau of Japan for Japan (CPI, from 2016), the Bank for International Settlements for around sixty other countries, including the United States, China, India and Brazil, and the IMF for around a hundred more, all republishing the national consumer price indices.
+
+The measure parameter selects the inflation of the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
+
+The US index of the BIS is the BLS's CPI-U rebased to 2010 = 100, which the BIS publishes a few days after the BLS. The months the BLS has published since are added to it, so a release appears the same day.
+
+The result is a decimal fraction (0.041166 for 4.1166%), like every other rate in the Finance Toolkit.
+
+The rates are the sources' own figures (published in percent and divided by 100 here), except for Japan, which is calculated from the Statistics Bureau of Japan's CPI, and the US months the BLS has published after the BIS, which are calculated from the BLS's CPI-U.
+
+Countries that publish their consumer prices quarterly, such as Australia and New Zealand, have a value in the last month of each quarter only.
+
+The formula is as follows:
+
+$$
+\text{Monthly Inflation Rate} \;(t) = \frac{\text{CPI} \;(t)}{\text{CPI} \;(t-12 \;\text{months})} - 1,\;\; \text{the annual rate of change for every month}
+$$
+
+$$
+\text{Yearly Inflation Rate} \;(t) = \frac{\text{CPI} \;(t)}{\text{CPI} \;(t-1 \;\text{year})} - 1,\;\; \text{the Global Macro Database's annual figure}
+$$
+
+Headline inflation is what most central banks target, usually at 2% a year, but they read it together with core inflation, which excludes energy and food, to see past temporary price shocks. Year-on-year rates react to base effects: a large price jump a year earlier lowers today's rate once it drops out of the comparison. The Eurostat figures are the harmonised index (HICP), which differs from national CPIs, for example in leaving out the costs of owner-occupied housing.
+
+**Also known as:** CPI-based inflation, price increases, consumer prices, core inflation, energy inflation, food inflation, services inflation, shelter inflation.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
+Defaults to None, which is the monthly data.
+- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
+energy, or a component: "energy", "food", "goods", "services" or "shelter"
+(United States only). Other measures than "all" are monthly. Defaults to "all".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Inflation Rate.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2003-01-01', end_date='2009-03-01')
+
+economics.get_inflation_rate(countries=['Germany', 'France', 'Portugal'], period='yearly')
+```
+
+Which returns:
+
+|      |   Germany |   France |   Portugal |
+|:-----|----------:|---------:|-----------:|
+| 2003 |    0.0107 |   0.0217 |     0.0324 |
+| 2004 |    0.0177 |   0.0234 |     0.0251 |
+| 2005 |    0.0195 |   0.0189 |     0.0213 |
+| 2006 |    0.0177 |   0.0189 |     0.0305 |
+| 2007 |    0.0229 |   0.016  |     0.0242 |
+| 2008 |    0.0275 |   0.0316 |     0.0265 |
+| 2009 |    0.0023 |   0.001  |    -0.009  |
+
+---
+
+## get_purchasing_power
+Purchasing Power is what 100 units of a currency at the start of the date range buy in every later period, in the prices of the start: it falls as consumer prices rise, so 74.29 means that money has lost a quarter of its value. It is the inverse of the growth in the Consumer Price Index since the first period of the range (see get_consumer_price_index with cumulative=True), on the same monthly sources by default (period="yearly" for the Global Macro Database's annual averages).
+
+With overnight_rate=True, the 100 is not held as banknotes but deposited at the overnight rate of its currency, compounded day by day (see get_overnight_rate with cumulative=True): €STR for the Euro Area and its members, SONIA for the United Kingdom, TONA for Japan and SOFR for the United States. The result is the real value of cash, which stays above 100 only when the interest outpaced inflation. Countries without an overnight rate are left out with a note. A euro member earns €STR over the whole range, also before it adopted the euro.
+
+The formula is as follows:
+
+$$
+\text{Purchasing Power} \;(t) = \frac{100 \cdot \text{CPI} \;(\text{start})}{\text{CPI} \;(t)}
+$$
+
+$$
+\text{Purchasing Power of Cash} \;(t) = \frac{100 \cdot \text{Overnight Rate Growth} \;(t) \cdot \text{CPI} \;(\text{start})}{\text{CPI} \;(t)}
+$$
+
+CPI (start) is each country's index in the first period of the date range (its own first period when it starts later). The cash growth starts at 1 on the first day of the range and every month takes it on the last day of the month, next to the index of that same month (the reference month). The index of a month is published some weeks after it ends, so the latest months of the cash growth are left out until their index is published rather than paired with older prices.
+
+**Also known as:** real value of money, value of money, real value of cash, real return on cash, inflation erosion.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data.
+Defaults to None, which is every country with a consumer price index, or the
+Euro Area, Japan, the United Kingdom and the United States with
+overnight_rate=True.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
+Defaults to None, which is the monthly data. The overnight rate is only
+combined with the monthly data.
+- <u>overnight_rate (bool, optional):</u> Whether the 100 earns the overnight rate of its
+currency instead of being held as banknotes. Defaults to False.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The purchasing power of 100 per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2020-01-01', end_date='2026-09-30')
+
+economics.get_purchasing_power(
+    countries=['Euro Area', 'Netherlands', 'United States'], overnight_rate=True
+).iloc[::12]
+```
+
+Which returns:
+
+|         |   Euro Area |   Netherlands |   United States |
+|:--------|------------:|--------------:|----------------:|
+| 2020-01 |     99.9567 |       99.9567 |        100.124  |
+| 2021-01 |     98.5071 |       97.8545 |         98.9891 |
+| 2022-01 |     93.1777 |       90.4128 |         92.1353 |
+| 2023-01 |     85.9347 |       83.578  |         88.3553 |
+| 2024-01 |     86.5277 |       83.8851 |         90.2447 |
+| 2025-01 |     87.5091 |       84.4527 |         92.2405 |
+| 2026-01 |     87.9163 |       84.4219 |         93.9886 |
+
+---
+
+## get_producer_price_index
+Get the Producer Price Index (PPI) for a variety of countries over time. The PPI measures the average change over time in the prices domestic producers receive for their output. Because producers tend to pass rising input costs on to their customers with a lag, the PPI is generally seen as a leading, upstream indicator of cost pressure that later shows up in the Consumer Price Index (CPI).
+
+Each country's headline index comes monthly from its official publisher:
+
+$$
+\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100
+$$
+
+$$
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the PPI for final demand},\;\; \text{November}\; 2009 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED, which republishes it}
+$$
+
+$$
+\text{The Bank of Japan for Japan:}\;\; \text{the Corporate Goods Price Index (domestic)},\;\; 2020 = 100,\;\; \text{from 1960}
+$$
+
+China is not included: the National Bureau of Statistics of China publishes its producer prices as changes rather than as an index, and its database refuses automated requests. Its monthly year-on-year figure is in get_economic_calendar.
+
+All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+
+**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm){:target="_blank"}
+
+**Also known as:** PPI, wholesale prices, factory gate prices, upstream inflation.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Producer Price Index per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
+
+economics.get_producer_price_index(
+    countries=['United States', 'Euro Area', 'Japan'],
+    period='monthly',
+    growth=True,
+    lag=12,
+)
+```
+
+Which returns:
+
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2025-10 |          0.0284 |     -0.004  |  0.0282 |
+| 2025-11 |          0.0314 |     -0.0126 |  0.0281 |
+| 2025-12 |          0.0314 |     -0.0204 |  0.0248 |
+| 2026-01 |          0.0308 |     -0.021  |  0.0247 |
+| 2026-02 |          0.0337 |     -0.0303 |  0.0223 |
+| 2026-03 |          0.0429 |      0.0198 |  0.0301 |
+| 2026-04 |          0.057  |      0.0493 |  0.0553 |
+| 2026-05 |          0.0592 |      0.0586 |  0.068  |
+| 2026-06 |          0.0559 |      0.046  |  0.0752 |
+| 2026-07 |          0.0494 |      0.0578 |  0.0773 |
+| 2026-08 |          0.0561 |      0.083  |  0.0759 |
+| 2026-09 |          0.0634 |      0.1113 |  0.0677 |
+
+---
+
+## get_export_price_index
+Get the Export Price Index for a variety of countries over time. The index measures the average change over time in the prices a country's producers receive for the goods they sell abroad, in its own currency. Together with the Import Price Index it gives the terms of trade, and it shows how much of a currency move or a foreign price shock exporters pass on.
+
+Each country's index comes monthly from its official publisher:
+
+$$
+\text{Eurostat for the euro area, the European Union and around 35 European countries:}\;\; \text{the industrial producer prices on the non-domestic market (industry except construction, sewerage and waste management)},\;\; 2021 = 100.\;\; \text{For the euro area these include sales to other members}
+$$
+
+$$
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the export price index of all commodities},\;\; 2000 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED}
+$$
+
+$$
+\text{The Bank of Japan for Japan:}\;\; \text{the export price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
+$$
+
+All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+
+**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm){:target="_blank"}
+
+**Also known as:** export prices, XPI, trade prices.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Export Price Index per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
+
+economics.get_export_price_index(
+    countries=['United States', 'Euro Area', 'Japan'],
+    period='monthly',
+    growth=True,
+    lag=12,
+)
+```
+
+Which returns:
+
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2025-10 |        nan      |     -0.0052 |  0.0224 |
+| 2025-11 |          0.0329 |     -0.0087 |  0.0205 |
+| 2025-12 |          0.0341 |     -0.0147 |  0.04   |
+| 2026-01 |          0.0251 |     -0.0129 |  0.0494 |
+| 2026-02 |          0.038  |     -0.018  |  0.0838 |
+| 2026-03 |          0.0564 |      0.0121 |  0.113  |
+| 2026-04 |          0.0931 |      0.0323 |  0.1809 |
+| 2026-05 |          0.1135 |      0.042  |  0.2057 |
+| 2026-06 |          0.0998 |      0.042  |  0.2126 |
+| 2026-07 |          0.0812 |      0.0525 |  0.195  |
+| 2026-08 |          0.0928 |      0.0623 |  0.1811 |
+| 2026-09 |          0.1163 |      0.0747 |  0.1822 |
+
+---
+
+## get_import_price_index
+Get the Import Price Index for a variety of countries over time. The index measures the average change over time in the prices of the goods a country buys from abroad, in its own currency. It shows how foreign price shocks and currency moves reach the domestic economy, ahead of the Producer and Consumer Price Indices.
+
+Each country's index comes monthly from its official publisher:
+
+$$
+\text{Eurostat for the euro area, the European Union and around 20 European countries:}\;\; \text{the import prices of industrial products (mining, manufacturing and energy supply)},\;\; 2021 = 100.\;\; \text{For the euro area these include imports from other members}
+$$
+
+$$
+\text{The Bureau of Labor Statistics for the United States:}\;\; \text{the import price index of all commodities},\;\; 2000 = 100.\;\; \text{The BLS API returns about the last three years};\;\; \text{with a FRED API key the full history comes from FRED}
+$$
+
+$$
+\text{The Bank of Japan for Japan:}\;\; \text{the import price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
+$$
+
+All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+
+**See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm){:target="_blank"}
+
+**Also known as:** import prices, MPI, trade prices.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Import Price Index per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-10-01', end_date='2026-09-30')
+
+economics.get_import_price_index(
+    countries=['United States', 'Euro Area', 'Japan'],
+    period='monthly',
+    growth=True,
+    lag=12,
+)
+```
+
+Which returns:
+
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2025-10 |        nan      |     -0.0231 | -0.016  |
+| 2025-11 |         -0.0007 |     -0.0291 | -0.017  |
+| 2025-12 |          0      |     -0.036  |  0.0018 |
+| 2026-01 |          0.0021 |     -0.0357 |  0.0072 |
+| 2026-02 |          0.0099 |     -0.033  |  0.0283 |
+| 2026-03 |          0.0226 |      0.015  |  0.0831 |
+| 2026-04 |          0.0452 |      0.0617 |  0.217  |
+| 2026-05 |          0.0688 |      0.073  |  0.2642 |
+| 2026-06 |          0.0675 |      0.0604 |  0.3042 |
+| 2026-07 |          0.0602 |      0.064  |  0.2939 |
+| 2026-08 |          0.0674 |      0.0835 |  0.2506 |
+| 2026-09 |          0.081  |      0.1072 |  0.2376 |
+
+---
+
+## get_house_prices
+In most cases, the nominal house price index covers the sales of newly-built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
+
+By default the data is quarterly, from the OECD, the only source with quarterly data. With quarterly=False the data is annual and comes from the Global Macro Database (GMDB), with 2015 = 100, unless gmdb_source=False is given (or the Economics class was initialized with gmdb_source=False), which takes the annual data from the OECD.
+
+In the OECD data, the real house price index is given by the ratio of the nominal house price index to the consumers' expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted. China's index comes from the BIS instead: the National Bureau of Statistics' prices of newly built homes in 70 cities (nominal, or deflated by consumer prices), rebased to 2015 = 100. The OECD's own index for China kept rising while these prices fell.
+
+Both are an index based on 2015 = 100.
+
+**See definition:** [https://data.oecd.org/price/housing-prices.htm](https://data.oecd.org/price/housing-prices.htm){:target="_blank"}
+
+**Also known as:** real estate prices, property prices, housing index.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
+annual data (False). Defaults to None, which returns the quarterly data, the
+highest frequency the OECD publishes.
+- <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data or the nominal data.
+Defaults to False.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB),
+which is annual. Defaults to None, which uses the OECD for quarterly data and the GMDB for
+annual data; asking for the GMDB together with quarterly data logs a warning.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the House Prices.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
+
+economics.get_house_prices(
+    countries=['Japan', 'Netherlands', 'Ireland'],
+    quarterly=False,
+    inflation_adjusted=True
+)
+```
+
+Which returns:
+
+|      |   Japan |   Netherlands |   Ireland |
+|:-----|--------:|--------------:|----------:|
+| 2015 | 100     |       100     |   100     |
+| 2016 | 102.645 |       106.044 |   108.503 |
+| 2017 | 104.009 |       113.945 |   120.785 |
+| 2018 | 105.604 |       122.047 |   128.926 |
+| 2019 | 106.087 |       126.665 |   128.744 |
+| 2020 | 107.773 |       135.898 |   130.088 |
+| 2021 | 115.407 |       156.892 |   144.681 |
+| 2022 | 121.069 |       150.691 |   145.71  |
+| 2023 | 119.632 |       145.341 |   141.362 |
+
+---
+
+## get_rent_prices
+The housing rent price index measures the prices paid for renting residential properties over time. Together with the house price index it is a key input into affordability and house ownership profitability measures such as the price to rent ratio.
+
+This is an index based on 2015 = 100.
+
+**See definition:** [https://data.oecd.org/price/housing-prices.htm](https://data.oecd.org/price/housing-prices.htm){:target="_blank"}
+
+**Also known as:** rental prices, housing costs, rent index.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>quarterly (bool &#124; None, optional):</u> Whether to return the quarterly data (True) or the
+annual data (False). Defaults to None, which returns the quarterly data, the
+highest frequency the OECD publishes.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Rent Prices.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2015-01-01', end_date='2023-12-31')
+
+economics.get_rent_prices(
+    countries=['Turkey', 'United States', 'United Kingdom'],
+    quarterly=False)
+```
+
+Which returns:
+
+|      |   Turkey |   United States |   United Kingdom |
+|:-----|---------:|----------------:|-----------------:|
+| 2015 |  100     |         100     |          100     |
+| 2016 |  108.66  |         103.773 |          101.725 |
+| 2017 |  118.577 |         107.731 |          102.699 |
+| 2018 |  130.041 |         111.627 |          103.174 |
+| 2019 |  143.185 |         115.765 |          103.924 |
+| 2020 |  156.574 |         119.382 |          105.399 |
+| 2021 |  172.625 |         122.062 |          107.148 |
+| 2022 |  221.217 |         129.426 |          110.897 |
+| 2023 |  405.025 |         139.72  |          117.271 |
+
+---
+
+## get_commercial_real_estate_prices
+Get the quarterly growth of commercial real estate prices: the change in the price of commercial property (offices, retail, industrial and apartment buildings) on the same quarter a year earlier, for around twenty economies.
+
+This tracks commercial (office, retail, industrial, apartment) property prices, as distinct from residential house prices (see `get_house_prices`, which tracks a completely different asset class/market). It is a transaction-based index rather than the appraisal-smoothed methodology used by institutional benchmarks like the NCREIF Property Index -- which is not freely available anywhere -- so expect more volatility and less autocorrelation than an appraisal-based series would show.
+
+The prices come from the commercial property price indices the Bank for International Settlements collects from national sources, for the euro area, the United States (from 1945), Japan, Denmark, the Netherlands, Germany, France, Spain and around ten more, taking per country a nominal index of commercial property, preferably all commercial property in the whole country. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), the United States instead comes from FRED's series sourced from the IMF's Financial Soundness Indicators.
+
+See definitions: [https://data.bis.org/topics/CPP](https://data.bis.org/topics/CPP){:target="_blank"} and [https://fred.stlouisfed.org/series/COMREPUSQ159N](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}
+
+**Also known as:** commercial property price index, CRE price index.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The quarterly change in commercial real estate prices on a year
+earlier, as a decimal fraction, with a column per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
+
+economics.get_commercial_real_estate_prices(countries=['United States', 'Euro Area', 'Japan', 'Germany'])
+```
+
+Which returns:
+
+|        |   United States |   Euro Area |   Japan |   Germany |
+|:-------|----------------:|------------:|--------:|----------:|
+| 2025Q1 |         -0.027  |      0.0232 |  0.0289 |    0.0221 |
+| 2025Q2 |         -0.0494 |      0.0331 |  0.0197 |    0.0266 |
+| 2025Q3 |          0.0209 |      0.0173 |  0.0222 |    0.0264 |
+| 2025Q4 |          0.0109 |      0.0189 |  0.0104 |    0.0207 |
+
+---
+
+## get_commodity_prices
+Retrieves the World Bank's monthly commodity prices from 1960 (The Pink Sheet): the average price of each month in US dollars of around seventy commodities, among which crude oil (Brent, WTI, Dubai), natural gas, coal, gold, silver, platinum, copper, aluminum, iron ore, nickel, zinc, grains, softs and fertilizers. Futures prices from exchanges reach back to 2000 at most, which leaves out the commodity booms and busts of the 1970s and 1980s, such as gold's peak of January 1980 and the oil shocks.
+
+With deflate_with, the prices are in real terms: in the money of the latest month of that country's consumer price index up to the end date (see get_consumer_price_index), so that the gold price of 1980 can be compared with today's. A month after the latest month of the consumer price index, which is published a few weeks late, keeps its nominal price, and a month the consumer price index skipped has no real price.
+
+With currency, the prices are in another currency than the US dollar, such as the euro, the pound sterling, the yen, the Swiss franc or the renminbi: each month's average price is converted at the average exchange rate of the same month, from the Bank for International Settlements (BIS), which publishes the monthly averages of around 130 currencies against the US dollar from the central banks (the euro as the euro area series, from June 1974). An average price is converted at an average rate so that both cover the same days. A month without a rate, such as the latest month before the BIS publishes its average a few days after the month ends, has no price in the currency (NaN), and a warning names those months. The Natural gas index is an index rather than a price in US dollars and is not converted.
+
+With both, the prices are converted first and deflated after, so deflate_with is the country whose money the currency is, e.g. currency="EUR" with deflate_with="Euro Area" for prices in euros of the latest month of the euro area consumer price index.
+
+The formula is as follows:
+
+$$
+\text{Price in Currency} \;(t) = \text{Price in US Dollars} \;(t) \cdot \text{Exchange Rate} \;(t)
+$$
+
+$$
+\text{Real Price} \;(t) = \frac{\text{Price} \;(t) \cdot \text{CPI} \;(\text{latest month})}{\text{CPI} \;(t)}
+$$
+
+Where the Exchange Rate (t) is the average of month t in units of the currency per US dollar (e.g. 0.854 euro per US dollar, an EUR/USD rate of 1.171) and the Price (t) is the price in US dollars, or in the currency when one is given.
+
+The units are those of the World Bank: US dollars per barrel ($/bbl) for crude oil, per million British thermal units ($/mmbtu) for natural gas, per troy ounce ($/troy oz) for gold, silver and platinum, per metric ton ($/mt) for coal, base metals, grains, oils and fertilizers, per kilogram ($/kg) for cocoa, coffee, tea, sugar, meat, fruit, cotton and rubber, per dry metric ton unit ($/dmtu) for iron ore, per cubic meter for logs and sawnwood and cents per sheet for plywood. The Natural gas index is an index (2010=100). With currency, the same units hold in that currency (euros per barrel, euro cents per sheet of plywood), except for the Natural gas index.
+
+**Also known as:** Pink Sheet, commodity price history, long-run gold price, real gold price, real oil price, inflation-adjusted commodity prices, oil price in euros, gold price in local currency.
+
+**Args:**
+
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodities, e.g. "Gold" or
+["Gold", "Crude oil Brent"], as named by the World Bank without commas ("Crude
+oil, Brent" is "Crude oil Brent"), in any casing. Defaults to None, which
+returns all of them.
+- <u>currency (str &#124; None, optional):</u> The ISO 4217 code of the currency to express
+the prices in, e.g. "EUR", "GBP", "JPY", "CHF" or "CNY", converted at the BIS
+average exchange rate of each month. Defaults to None, which keeps the US
+dollar prices of the World Bank ("USD" does the same).
+- <u>deflate_with (str &#124; None, optional):</u> The country whose consumer price index the
+prices are deflated with, after the conversion into currency, e.g. "United
+States" for US dollar prices or "Euro Area" for euro prices. Defaults to None,
+which returns nominal prices.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>growth (bool, optional):</u> Whether to calculate the growth. Defaults to False.
+- <u>lag (int, optional):</u> The lag in months for the growth, e.g. 12 for the change
+over a year. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result.
+Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The monthly prices with a column per commodity.
+
+**Notes:**
+
+- World Bank, "Commodity Markets: The Pink Sheet", monthly prices, licensed under
+CC BY 4.0.
+- The prices are monthly averages: a peak within a month, such as gold's $850 London
+fix of 21 January 1980, is higher than the average of its month.
+- BIS, "Bilateral exchange rates" (WS_XRU), the monthly averages (collection A) in
+units of national currency per US dollar. A price converted at the rate of the end of
+each month, or at the latest rate, differs from it by the move of the currency within
+the month.
+- A currency is converted for the months the BIS has a rate for: from June 1974 for
+the euro (the BIS euro area series) and from the start of its BIS history for the
+others; earlier months are NaN.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date="2025-10-01", end_date="2026-10-31")
+
+economics.get_commodity_prices(commodity=["Crude oil Brent", "Gold"], currency="EUR")
+```
+
+Which returns:
+
+|         |   Crude oil Brent |    Gold |
+|:--------|------------------:|--------:|
+| 2025-10 |           55.6312 | 3489.2  |
+| 2025-11 |           55.017  | 3535.45 |
+| 2025-12 |           53.551  | 3680.24 |
+| 2026-01 |           56.9133 | 4049.53 |
+| 2026-02 |           60.133  | 4245.68 |
+| 2026-03 |           89.7212 | 4201.41 |
+| 2026-04 |          102.854  | 4032.99 |
+| 2026-05 |           92.0936 | 3929.61 |
+| 2026-06 |           74.1506 | 3671.06 |
+| 2026-07 |           73.0464 | 3567.36 |
+| 2026-08 |           78.4106 | 3804.94 |
+| 2026-09 |          101.456  | 3751.61 |
+| 2026-10 |          111.593  | 3664.7  |
+
+---
+
+## get_exchange_rates
+Exchange rates are defined as the price of one country's currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
+
+**See definition:** [https://data.oecd.org/conversion/exchange-rates.htm](https://data.oecd.org/conversion/exchange-rates.htm){:target="_blank"}
+
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
+Both sources are quoted the same way (national currency per US dollar), but the OECD source omits the United States itself, since the rate is trivially 1, whereas the GMDB source carries it as 1.0. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+
+Both are averages over each period. For daily and weekly rates (period="daily" or "weekly"), or the rate at the end of each month, quarter or year (end_of_period=True), the rates come from the Bank for International Settlements instead, without an API key: daily for around 80 currencies with history back to 1945 for some, and at the end of each month for around 130, back to the 1950s for most. Weekly and quarterly or yearly end-of-period rates take the last observation of each period.
+
+**Also known as:** currency exchange, FX rates, foreign exchange rates.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
+or the annual data. Defaults to None, which is quarterly when the Economics class
+was initialized with quarterly=True and otherwise the highest frequency available: daily.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>end_of_period (bool, optional):</u> Whether to return the rate at the end of each month,
+quarter or year instead of its average. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Exchange Rates.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2000-01-01', end_date='2010-12-31')
+
+economics.get_exchange_rates(countries=['Japan', 'Indonesia', "China"], period='yearly')
+```
+
+Which returns:
+
+|      |    Japan |   Indonesia |   China |
+|:-----|---------:|------------:|--------:|
+| 2000 | 107.746  |     8401.53 |  8.2771 |
+| 2001 | 121.409  |    10252.9  |  8.277  |
+| 2002 | 125.138  |     9315.13 |  8.277  |
+| 2003 | 115.929  |     8570.07 |  8.277  |
+| 2004 | 108.158  |     8945.34 |  8.2777 |
+| 2005 | 110.181  |     9714.85 |  8.1924 |
+| 2006 | 116.307  |     9170.49 |  7.9737 |
+| 2007 | 117.774  |     9138.88 |  7.6063 |
+| 2008 | 103.444  |     9682.61 |  6.9485 |
+| 2009 |  93.5426 |    10397.6  |  6.8311 |
+| 2010 |  87.7075 |     9082.76 |  6.7678 |
+
+---
+
+## get_real_effective_exchange_rate
+Get the Real Effective Exchange Rate (REER) for a variety of countries over time from the Global Macro Database (GMDB). The REER is a trade-weighted average of a country's currency relative to a basket of other major currencies, adjusted for relative price levels (inflation) between the country and its trading partners.
+
+Unlike a simple bilateral exchange rate, the REER captures a currency's overall competitiveness: a rising REER indicates that a country's exports are becoming more expensive (and imports cheaper) relative to its trading partners after accounting for inflation differentials, while a falling REER indicates the opposite. The index is annual with 2015 = 100 for every country.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** REER, trade-weighted exchange rate, currency competitiveness index.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Real Effective Exchange Rate
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2018-01-01', end_date="2025-12-31")
+
+economics.get_real_effective_exchange_rate(countries=['United States', 'Japan', 'Netherlands'])
+```
+
+Which returns:
+
+|      |   United States |    Japan |   Netherlands |
+|:-----|----------------:|---------:|--------------:|
+| 2018 |         103.02  | 107.295  |       104.015 |
+| 2019 |         105.92  | 110.309  |       103.969 |
+| 2020 |         107.337 | 111.285  |       106.116 |
+| 2021 |         105.222 | 101.827  |       106.389 |
+| 2022 |         115.234 |  87.8727 |       106.548 |
+| 2023 |         116.036 |  83.6944 |       107.665 |
+| 2024 |         118.848 |  79.2776 |       109.002 |
+| 2025 |         119.249 |  80.8126 |       111.404 |
+
+---
+
+## get_money_supply
+Money Supply is the total amount of money that is in circulation in a country. It includes currency, demand deposits, and other liquid assets that can be easily converted into cash. Money supply is an important economic indicator that the Federal Reserve uses to implement its monetary policy.
+
+Money supply can be divided into five categories: M0, M1, M2, M3 and M4.
+
+- M0: The total of all physical currency, plus accounts at the central bank that can be exchanged for physical currency.
+- M1: The total of all physical currency part of bank reserves + the amount in demand accounts ("checking" or "current" accounts).
+- M2: M1 + most savings accounts, money market accounts, retail money market mutual funds, and small denomination time deposits.
+- M3: M2 + large time deposits, institutional money market funds, short-term repurchase agreements, and other larger liquid assets.
+- M4: M3 + all other financial assets.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The aggregates are annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Not every country publishes every aggregate; the ones it does not are NaN.
+
+**Also known as:** M1, M2, M3, monetary aggregate.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>measure (str &#124; None, optional):</u> Which single aggregate to return, one of 'M0', 'M1',
+'M2', 'M3' or 'M4'. Defaults to None, which returns all five with the aggregate
+as the first level of the column index.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Money Supply
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2010-01-01', end_date='2020-12-31')
+
+money_supply = economics.get_money_supply(
+    countries=['Netherlands', 'Germany', 'United States'],
+    measure='M2'
+)
+```
+
+Which returns:
+
+|      |   Netherlands |    Germany |   United States |
+|:-----|--------------:|-----------:|----------------:|
+| 2010 |        701718 | 1.9878e+06 |     8.4731e+06  |
+| 2011 |        727265 | 2.1053e+06 |     8.8445e+06  |
+| 2012 |        746482 | 2.2556e+06 |     9.7533e+06  |
+| 2013 |        741372 | 2.3144e+06 |     1.05023e+07 |
+| 2014 |        743043 | 2.4272e+06 |     1.11275e+07 |
+| 2015 |        822382 | 2.6518e+06 |     1.18062e+07 |
+| 2016 |        841302 | 2.8022e+06 |     1.25222e+07 |
+| 2017 |        851237 | 2.9236e+06 |     1.33189e+07 |
+| 2018 |        846513 | 3.0562e+06 |     1.39024e+07 |
+| 2019 |        889033 | 3.1968e+06 |     1.44602e+07 |
+| 2020 |        974276 | 3.4582e+06 |     1.5425e+07  |
+
+---
+
+## get_central_bank_policy_rate
+The Central Bank Policy Rate is the interest rate that a central bank sets on its loans and advances to a commercial bank. This interest rate is used by the monetary authorities to control inflation and stabilize the country's currency.
+
+By default the rates are daily, from the Bank for International Settlements (BIS), which publishes the policy rates of around fifty central banks, including the Federal Reserve, the European Central Bank (as "Euro Area"), the Bank of England and the Bank of Japan, some back to the 1940s. For the United States the BIS reports the midpoint of the Federal Reserve's target range for the federal funds rate (0.03875 for a range of 3.75% to 4.00%). Days are business days: the weekends some central banks list in the BIS data are left out for all. Weekly, monthly and quarterly data take the rate on the last business day of each period, so the current week, month or quarter shows the rate so far.
+
+The BIS updates its series about once a week. The days since are added from the Bank of England (Bank Rate) and the European Central Bank, which publish their rates the same day, when both publishers agree on the month before; other countries end at the latest BIS update. For the euro area the BIS reports the main refinancing rate up to 17 September 2024 and the deposit facility rate from 18 September 2024, when the ECB began steering money markets with it; get_european_central_bank_rates has either rate throughout.
+
+With period="yearly" the rates come from the Global Macro Database (GMDB) instead, taken at the end of the year rather than averaged over it. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+The result is a decimal fraction per annum (0.05375 for 5.375%), like every other rate in the Finance Toolkit.
+
+**Also known as:** policy rate, benchmark rate, base rate.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
+or the yearly data. Defaults to None, which is quarterly when the Economics class
+was initialized with quarterly=True and otherwise the highest frequency available: daily.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Central Bank Policy Rate
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2021-01-01', end_date='2025-12-31')
+
+economics.get_central_bank_policy_rate(countries=['Netherlands', 'Germany', 'United States'], period='yearly')
+```
+
+Which returns:
+
+|      |   Netherlands |   Germany |   United States |
+|:-----|--------------:|----------:|----------------:|
+| 2021 |       -0.005  |   -0.005  |          0.0012 |
+| 2022 |        0.0044 |    0.0044 |          0.0438 |
+| 2023 |        0.0362 |    0.0362 |          0.0538 |
+| 2024 |        0.0356 |    0.0356 |          0.0438 |
+| 2025 |        0.0213 |    0.0213 |          0.0362 |
+
+---
+
+## get_short_term_interest_rate
+Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
+
+Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate". The OECD source specifically returns the 3-month interbank offered rate.
+
+**See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
+
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
+Both sources return the rate as a decimal fraction per annum (0.0513 for 5.13%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+
+**Also known as:** 3-month rate, money market rate, short-term yield.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Short Term Interest Rate.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2023-05-01', end_date="2025-12-31")
+
+economics.get_short_term_interest_rate(
+    countries=['Japan', 'United States', 'China'],
+    gmdb_source=False,
+    period='quarterly'
+)
+```
+
+Which returns:
+
+|        |   Japan |   United States |   China |
+|:-------|--------:|----------------:|--------:|
+| 2023Q2 | -0.0001 |          0.0513 |  0.0289 |
+| 2023Q3 |  0.0001 |          0.0543 |  0.0261 |
+| 2023Q4 |  0.0002 |          0.054  |  0.0288 |
+| 2024Q1 |  0.0005 |          0.0526 |  0.0267 |
+| 2024Q2 |  0.0013 |          0.0531 |  0.0235 |
+| 2024Q3 |  0.0023 |          0.051  |  0.021  |
+| 2024Q4 |  0.0033 |          0.0454 |  0.0205 |
+| 2025Q1 |  0.0079 |          0.0432 |  0.0202 |
+| 2025Q2 |  0.0078 |          0.0431 |  0.0188 |
+| 2025Q3 |  0.0079 |          0.042  |  0.0171 |
+| 2025Q4 |  0.009  |          0.0386 |  0.0168 |
+
+---
+
+## get_long_term_interest_rate
+Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
+
+In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
+
+**See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
+
+It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+
+Both sources return the rate as a decimal fraction per annum (0.0357 for 3.57%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+
+With period="daily" or "weekly" the 10-year yields come from the issuers themselves: the U.S. Department of the Treasury (par yield, from 1990), the Bank of England (nominal par yield of gilts, from 1993), the Japanese Ministry of Finance (JGBs, from 1974) and the European Central Bank (the euro area yield curve of all central government bonds, from 2004). The euro area rate is the 10-year zero-coupon rate of the ECB's Svensson curve, converted from continuous to annual compounding, while the other three are par yields of bonds paying coupons twice a year, quoted with semi-annual (bond-equivalent) compounding. Weekly takes the yield on the last trading day of each week. Other countries have no daily source and are not included.
+
+A few countries report a national long-term rate to the OECD that is not a 10-year government bond yield, such as Brazil, whose series is the TJLP (Taxa de Juros de Longo Prazo), the long-term lending rate of the national development bank BNDES.
+
+**Also known as:** 10-year yield, government bond rate, long-term yield.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
+or the annual data. Defaults to None, which is quarterly when the Economics class
+was initialized with quarterly=True and otherwise the highest frequency available: daily
+when only the United States, the United Kingdom, Japan and the Euro Area are requested,
+and the monthly OECD data when other countries are requested or countries is None.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+Not used for daily and weekly data.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Long Term Interest Rate.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2023-05-01', end_date='2023-12-31')
+
+economics.get_long_term_interest_rate(
+    countries=['Japan', 'United States', 'Germany'],
+    gmdb_source=False,
+    period='monthly'
+)
+```
+
+Which returns:
+
+|         |   Japan |   United States |   Germany |
+|:--------|--------:|----------------:|----------:|
+| 2023-05 |  0.0043 |          0.0357 |    0.0234 |
+| 2023-06 |  0.004  |          0.0375 |    0.0238 |
+| 2023-07 |  0.0059 |          0.039  |    0.0246 |
+| 2023-08 |  0.0064 |          0.0417 |    0.0255 |
+| 2023-09 |  0.0076 |          0.0438 |    0.0266 |
+| 2023-10 |  0.0095 |          0.048  |    0.0282 |
+| 2023-11 |  0.0066 |          0.045  |    0.026  |
+| 2023-12 |  0.0062 |          0.0402 |    0.021  |
+
+---
+
+## get_overnight_rate
+The overnight rate is the interest rate at which banks borrow from each other for a single day. It is the rate central banks steer with their policy rate, and the benchmark that replaced LIBOR for loans, derivatives and floating rate notes in each of these currencies, which makes it the most direct daily read of monetary conditions.
+
+Each currency has its own benchmark, published by its central bank:
+
+- Euro Area: the euro short-term rate (€STR) from the European Central Bank, since October 2019.
+- United Kingdom: the Sterling Overnight Index Average (SONIA) from the Bank of England, since 1997.
+- Japan: the uncollateralized overnight call rate, the Tokyo Overnight Average Rate (TONA), from the Bank of Japan, since 1985.
+- United States: the Secured Overnight Financing Rate (SOFR) from the Federal Reserve Bank of New York, since April 2018.
+
+The rates are returned as decimal fractions per annum (0.0244 for 2.44%). Weekly and monthly periods take the rate on the last day of each period (weeks end on Friday).
+
+With cumulative=True, the rates are compounded day by day into the growth of 1 deposited on the first day of the date range, the method of the compounded €STR index of the European Central Bank and the SOFR Index of the New York Fed:
+
+$$
+\text{Growth} \;(t) = \text{Growth} \;(t-1) \cdot \left(1 + \frac{\text{Overnight Rate} \;(t-1) \cdot \text{Days} \;(t-1)}{\text{Day Count}}\right)
+$$
+
+Days (t-1) is the number of calendar days the previous rate applies to (three over a weekend) and the Day Count is that of each money market: 360 for €STR and SOFR (ACT/360) and 365 for SONIA and TONA (ACT/365). The value on a day includes the interest up to that day, so the first day is 1, and weekly and monthly periods take the value on the last day of each period. It is the cash return of money deposited at the overnight rate, before costs and taxes.
+
+**Also known as:** €STR, ESTR, SONIA, TONA, SOFR, overnight interbank rate, risk-free rate.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data. Defaults to "daily".
+- <u>cumulative (bool, optional):</u> Whether to return the growth of 1 deposited at the
+overnight rate on the first day of the date range instead of the rate.
+Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the overnight rate per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
+
+economics.get_overnight_rate(period='monthly')
+```
+
+Which returns:
+
+|         |   Euro Area |   Japan |   United Kingdom |   United States |
+|:--------|------------:|--------:|-----------------:|----------------:|
+| 2026-04 |      0.0193 |  0.0073 |           0.0373 |          0.0366 |
+| 2026-05 |      0.0193 |  0.0073 |           0.0373 |          0.0363 |
+| 2026-06 |      0.0218 |  0.0098 |           0.0373 |          0.0368 |
+| 2026-07 |      0.0218 |  0.0098 |           0.0373 |          0.0366 |
+| 2026-08 |      0.0218 |  0.0098 |           0.0373 |          0.0368 |
+| 2026-09 |      0.0244 |  0.0123 |           0.0373 |          0.039  |
+
+---
+
+## get_real_interest_rate
+Get the Real Interest Rate for a variety of countries over time. The Real Interest Rate is the nominal interest rate adjusted for inflation, and reflects the true cost of borrowing (or the true return earned on savings) once the erosion of purchasing power by inflation is taken into account.
+
+The formula is as follows (the Fisher equation, approximation):
+
+$$
+\text{Real Interest Rate} = \text{Nominal Interest Rate} - \text{Inflation Rate},\;\; \text{with the nominal rate the Long Term Interest Rate by default (rate\_type="long\_term") and the inflation rate the year-over-year change in consumer prices}
+$$
+
+The nominal interest rate is the Long Term Interest Rate (the 10-year government bond yield), the Short Term Interest Rate (the 3-month money market rate) or the Central Bank Policy Rate, selected via the rate_type parameter.
+
+Monthly (the default) subtracts the monthly year-over-year inflation rate of get_inflation_rate (national statistical offices, Eurostat for the euro area and the BIS) from the OECD's monthly long or short-term rate, the monthly average of the daily rates, or from the policy rate at the end of the month (see get_central_bank_policy_rate). For the euro area these are the OECD's euro area 10-year yield and 3-month EURIBOR, or the ECB's deposit facility rate, minus euro area inflation (Eurostat's HICP). A month the inflation rate is not published yet is empty.
+
+Yearly subtracts the annual inflation rate of the Global Macro Database (GMDB) from its annual long or short-term rate (or the OECD's with gmdb_source=False) or its end-of-year policy rate.
+
+Both legs are decimal fractions (0.05 for 5%), so the result is itself a decimal fraction (-0.0016 for a real rate of -0.16%).
+
+A negative real interest rate means that, after inflation, savers are effectively losing purchasing power and borrowers are being subsidized in real terms; this occurred in many countries during the 2021-2022 inflation surge.
+
+This is the ex post real rate: the nominal rate minus the inflation that was realised in the same year, not the inflation investors expected when the rate was set. It shows how savers and borrowers actually fared, but for valuation or the stance of monetary policy practitioners use the ex ante real rate, such as the yield on inflation-linked bonds (get_real_yield_curve) or the nominal rate minus survey or breakeven inflation expectations (get_inflation_expectations, get_breakeven_inflation_expectations).
+
+**Also known as:** real yield, inflation-adjusted interest rate.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rate_type (str, optional):</u> Which nominal interest rate to use. Can be 'long_term'
+(10-year government bond yield), 'short_term' (3-month money market rate) or
+'policy' (central bank policy rate). Defaults to 'long_term'.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the yearly data.
+Defaults to None, which is the monthly data.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the yearly long or short-term
+rate from the Global Macro Database (GMDB) instead of the OECD. Defaults to
+None, which falls back to the gmdb_source set on the Economics class (True by
+default).
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Real Interest Rate
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-01-01', end_date='2026-09-30')
+
+economics.get_real_interest_rate(
+    countries=['United States', 'Euro Area', 'Japan'], rate_type='policy'
+)
+```
+
+Which returns:
+
+|         |   United States |   Euro Area |   Japan |
+|:--------|----------------:|------------:|--------:|
+| 2026-01 |          0.0124 |      0.003  | -0.0079 |
+| 2026-02 |          0.0121 |      0.001  | -0.0054 |
+| 2026-03 |          0.0037 |     -0.006  | -0.0073 |
+| 2026-04 |         -0.0019 |     -0.01   | -0.006  |
+| 2026-05 |         -0.0062 |     -0.012  | -0.0074 |
+| 2026-06 |          0.0009 |     -0.0055 | -0.0064 |
+| 2026-07 |          0.0026 |     -0.0065 | -0.0095 |
+| 2026-08 |          0.0023 |     -0.0095 | -0.0089 |
+| 2026-09 |          0.0014 |     -0.013  | -0.009  |
+
+---
+
+## get_yield_curve_slope
+Get the Yield Curve Slope for a variety of countries over time. The Yield Curve Slope is the difference between the Long Term Interest Rate (the 10-year government bond yield) and the Short Term Interest Rate (the 3-month money market rate), and summarizes the overall shape of the yield curve in a single number.
+
+The formula is as follows:
+
+$$
+\text{Yield Curve Slope} \;(t) = \text{Long Term Interest Rate} \;(t) - \text{Short Term Interest Rate} \;(t),\;\; \text{both from the OECD at the requested frequency (monthly by default), or both annual from the Global Macro Database}
+$$
+
+A positive (upward-sloping) yield curve is the historical norm and reflects investors demanding a premium for locking up money for longer. A negative (inverted) yield curve, where short-term rates exceed long-term rates, has historically been one of the more reliable leading indicators of an upcoming recession, as it signals that markets expect the central bank to cut rates in response to a weakening economy.
+
+Both legs are decimal fractions (0.05 for 5%) whichever source is used, so the result is itself a decimal fraction (-0.0122 for an inversion of 1.22 percentage points), matching the convention used by get_misery_index and get_real_interest_rate.
+
+**Also known as:** term spread, 10Y-3M spread, curve inversion.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which is quarterly when the Economics class was initialized with
+quarterly=True and monthly otherwise.
+- <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB),
+which is annual. Defaults to None, which uses the GMDB only for yearly data and only when the
+gmdb_source set on the Economics class is True (its default); monthly and quarterly data, or
+gmdb_source=False on the class, come from the OECD. True uses the GMDB whatever the period,
+False always the OECD.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Yield Curve Slope
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2021-01-01', end_date='2023-12-31')
+
+economics.get_yield_curve_slope(
+    countries=['United States', 'Germany', 'Japan'],
+    period='yearly'
+)
+```
+
+Which returns:
+
+|      |   United States |   Germany |   Japan |
+|:-----|----------------:|----------:|--------:|
+| 2021 |          0.0139 |    0.0018 | -0      |
+| 2022 |          0.0071 |    0.008  |  0.0016 |
+| 2023 |         -0.0122 |   -0.01   |  0.0049 |
+
+---
+
+## get_mortgage_rate_30_year
+Get the weekly average 30-Year Fixed Rate Mortgage from FRED (Freddie Mac's Primary Mortgage Market Survey).
+
+The 30-year fixed mortgage rate is the primary interest rate US households actually borrow at for home purchases, and is one of the clearest single transmission points from Federal Reserve policy to the real economy: it moves with (but is not identical to) the 10-year Treasury yield plus a credit/prepayment spread, and directly drives housing affordability and demand. It is the natural interest-rate complement to Housing Starts (see `get_housing_starts`) - rate moves here lead construction activity, since higher borrowing costs price marginal buyers out of the market before builders scale back new projects.
+
+The rate is weekly (week ending Thursday), returned as a decimal fraction per annum (0.0648 for 6.48%) and not seasonally adjusted. FRED publishes it in percentage points; it is rescaled here so that every rate the Finance Toolkit returns is a decimal fraction.
+
+Without a FRED API key the data comes from Freddie Mac's Primary Mortgage Market Survey directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+
+**See definition:** [https://fred.stlouisfed.org/series/MORTGAGE30US](https://fred.stlouisfed.org/series/MORTGAGE30US){:target="_blank"}
+
+**Also known as:** 30-year mortgage rate, Freddie Mac PMMS rate.
+
+**Args:**
+
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A single-column ("United States") DataFrame of the weekly
+average 30-year fixed mortgage rate, as a decimal fraction per annum.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2020-01-01', end_date="2025-12-31")
+
+economics.get_mortgage_rate_30_year()
+```
+
+Which returns:
+
+| Date       |   United States |
+|:-----------|----------------:|
+| 2025-12-04 |          0.0619 |
+| 2025-12-11 |          0.0622 |
+| 2025-12-18 |          0.0621 |
+| 2025-12-24 |          0.0618 |
+| 2025-12-31 |          0.0615 |
+
+---
+
+## get_outstanding_mortgage_rates
+Get the distribution of the interest rates US homeowners pay on the mortgages they already have, from the National Mortgage Database (NMDB) of the Federal Housing Finance Agency (FHFA): the share of the mortgages outstanding at the end of each quarter with a contract interest rate below 3%, between 3% and 4%, 4% and 5%, 5% and 6%, and at or above 6%, next to their average rate.
+
+This is the measure of the mortgage rate "lock-in": a homeowner with a rate well below the rate on a new mortgage (see `get_mortgage_rate_30_year`) gives that rate up when moving, so the further the outstanding rates lie below the market rate, the fewer existing homes come up for sale. The share of mortgages below 3%, 4%, 5% and 6% (cumulative=True) is how the lock-in is usually reported, to be compared with the rate on a new mortgage.
+
+The NMDB is a 1-in-20 sample of the closed-end first-lien residential mortgages reported to one of the three national credit bureaus, quarterly from 2013 Q1 and published about three months after the quarter ends. The rate is the contract interest rate at origination, a nominal annual rate (compounded monthly for the usual monthly payments), so an adjustable rate mortgage counts at its initial rate. Each market is a subset of all mortgages, as the FHFA defines them:
+
+- All Mortgages: every closed-end first-lien single-family mortgage in the NMDB.
+- Enterprise: the mortgages acquired by Fannie Mae and Freddie Mac (that are not guaranteed by a government agency).
+- Government: the government insured, guaranteed or direct mortgages (FHA, VA, USDA).
+- Other Conventional: the remaining conventional mortgages (jumbo mortgages, bank portfolios, private label pools, credit unions and the Federal Home Loan Bank programs).
+
+The shares come in two weightings, as the FHFA publishes them: by the number of mortgages ("loans", VALUE1 in the NMDB files, "weighted by the number of mortgages at the end of the quarter") and by the unpaid principal balance ("balance", VALUE2, "weighted by the value of the unpaid principal balance (UPB) of the mortgage as of the end of the quarter"), see the NMDB Aggregate Statistics Data Dictionary.
+
+See the data: [https://www.fhfa.gov/data/national-mortgage-database-aggregate-statistics](https://www.fhfa.gov/data/national-mortgage-database-aggregate-statistics){:target="_blank"}
+
+**Also known as:** mortgage rate lock-in, outstanding mortgage rate distribution, share of mortgages below 3%, 4%, 5% or 6%, NMDB outstanding residential mortgage statistics.
+
+The formula is as follows:
+
+$$
+\text{Share Below}\; \text{X\%} = \text{Share Below}\; 3\% + \ldots + \text{Share} \;(X - 1) \% \;\text{to}\; \text{X\%},\;\; \text{the sum of the published buckets below } X \text{\% (cumulative=True)}
+$$
+
+**Args:**
+
+- <u>market (str, optional):</u> The market of the mortgages: "all", "enterprise"
+(Fannie Mae and Freddie Mac), "government" or "other conventional".
+Defaults to "all".
+- <u>region (str, optional):</u> The area: "United States", a census region ("Northeast",
+"Midwest", "South", "West"), a census division ("New England", "Middle
+Atlantic", "East North Central", "West North Central", "South Atlantic",
+"East South Central", "West South Central", "Mountain", "Pacific"), or
+"United States Rural" and "United States Non-Rural". Defaults to "United
+States".
+- <u>weighting (str, optional):</u> Whether the shares and the average rate are weighted
+by the number of mortgages ("loans") or by their unpaid principal balance
+("balance"). Defaults to "loans".
+- <u>cumulative (bool, optional):</u> Whether to return the share of mortgages below 3%,
+4%, 5% and 6% instead of the share per bucket. Defaults to False.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The quarterly shares of the outstanding mortgages per rate bucket
+("Below 3%", "3% to 4%", "4% to 5%", "5% to 6%" and "6% and Above", or "Below 3%"
+to "Below 6%" with cumulative=True) and their "Average Rate", all as decimals
+(0.192 for 19.2%).
+
+**Notes:**
+
+The FHFA publishes the shares in percent with one decimal and the average rate
+with one decimal (4.4%), so the buckets add up to 100% within rounding (100.1%
+for example) and a cumulative share is the sum of the rounded buckets below it.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-01-01', end_date="2026-06-30")
+
+economics.get_outstanding_mortgage_rates(cumulative=True)
+```
+
+Which returns:
+
+| Date   |   Below 3% |   Below 4% |   Below 5% |   Below 6% |   Average Rate |
+|:-------|-----------:|-----------:|-----------:|-----------:|---------------:|
+| 2025Q1 |      0.205 |      0.531 |      0.707 |      0.81  |          0.043 |
+| 2025Q2 |      0.202 |      0.521 |      0.695 |      0.799 |          0.043 |
+| 2025Q3 |      0.198 |      0.51  |      0.681 |      0.786 |          0.044 |
+| 2025Q4 |      0.195 |      0.501 |      0.67  |      0.781 |          0.044 |
+| 2026Q1 |      0.193 |      0.494 |      0.66  |      0.778 |          0.044 |
+| 2026Q2 |      0.192 |      0.491 |      0.656 |      0.776 |          0.044 |
+
+---
+
+## get_real_yield_curve
+Get the real yield curve of a variety of countries: the yields of inflation-linked government bonds, which pay a return on top of inflation, by maturity. Together with the nominal curve (see `fixedincome.get_government_bond_yield_curve`) it gives the inflation the bond market expects, see `get_breakeven_inflation_expectations`.
+
+Every curve comes from the official source:
+
+- United States: the U.S. Department of the Treasury's real par yield curve of Treasury Inflation-Protected Securities (TIPS), 5, 7, 10, 20 and 30 years, from 2003, the figures FRED republishes a day later as DFII.
+- United Kingdom: the Bank of England's real spot curve of index-linked gilts, 3 to 40 years, from 1985. Index-linked gilts pay the Retail Prices Index (RPI).
+- Germany: the real yields of the inflation-linked German federal securities the Bundesbank publishes, interpolated to constant maturities between 3 and 30 years from 2014. Germany has four to six of these bonds outstanding at a time, so only the maturities between its shortest (at least two years) and longest bond are filled. The bonds are indexed to euro area inflation (HICP excluding tobacco).
+
+Yields are returned as a decimal fraction per annum (0.0174 for 1.74%), with one column per country and maturity. Weekly and monthly periods take the curve on the last trading day of each period.
+
+**See definition:** [https://fred.stlouisfed.org/series/DFII10](https://fred.stlouisfed.org/series/DFII10){:target="_blank"}
+
+**Also known as:** TIPS yield curve, real Treasury yield curve, index-linked gilt curve, Bund linker real yields, inflation-linked bond yields.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
+"United States", "United Kingdom" and "Germany". Defaults to None, which
+retrieves every country.
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The real yields as decimals, indexed by date with a column per
+country and maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
+
+real_yield_curve = economics.get_real_yield_curve(period='monthly')
+
+real_yield_curve.xs('10Y', axis=1, level='Maturity')
+```
+
+Which returns:
+
+|         |   United States |   United Kingdom |   Germany |
+|:--------|----------------:|-----------------:|----------:|
+| 2026-04 |          0.0194 |           0.0154 |    0.0075 |
+| 2026-05 |          0.0207 |           0.0155 |    0.0084 |
+| 2026-06 |          0.022  |           0.0172 |    0.0095 |
+| 2026-07 |          0.0247 |           0.0188 |    0.0106 |
+| 2026-08 |          0.0244 |           0.0184 |    0.0108 |
+| 2026-09 |          0.0293 |           0.02   |    0.0132 |
+
+---
+
+## get_breakeven_inflation_expectations
+Get the market-implied (Q-measure) breakeven inflation of a variety of countries by maturity: the nominal government bond yield minus the real yield of an inflation-linked bond of the same maturity, which is the inflation rate at which both earn the same. It is the bond market's expectation of inflation, including an inflation risk premium. See `get_inflation_expectations` for the expectations of professional forecasters instead.
+
+Every curve comes from the official source:
+
+- United States: the U.S. Department of the Treasury's nominal minus real (TIPS) par yields, 5, 7, 10, 20 and 30 years from 2003, plus the 5-year, 5-year forward rate ("5Y5Y"), the average inflation expected over the five years starting five years from now, with the formulas FRED uses for T5YIE, T10YIE and T5YIFR.
+- United Kingdom: the Bank of England's implied inflation spot curve, 3 to 40 years, from 1985. It is measured against the Retail Prices Index (RPI), which index-linked gilts pay and which has run above CPI inflation.
+- Germany: the nominal term structure of German federal securities at the remaining maturity of each inflation-linked federal security minus its real yield, interpolated to constant maturities between 3 and 30 years from 2014. The bonds are indexed to euro area inflation (HICP excluding tobacco), which makes this the euro area's market-implied inflation expectation, priced off its benchmark issuer, and a free proxy for euro area inflation swaps, which are licensed data. Only the maturities between the shortest (at least two years) and longest bond are filled.
+
+Rates are returned as a decimal fraction per annum (0.0221 for 2.21%), with one column per country and maturity. Weekly and monthly periods take the curve on the last trading day of each period.
+
+Investors compare breakeven inflation with their own inflation view to choose between nominal and inflation-linked bonds. Besides the inflation risk premium, it holds a liquidity premium: inflation-linked bonds trade less easily than nominal bonds, which lowers breakevens, most visibly in market stress (2008, March 2020), when they fell further than inflation expectations did.
+
+**See definition:** [https://fred.stlouisfed.org/series/T10YIE](https://fred.stlouisfed.org/series/T10YIE){:target="_blank"}
+
+**Also known as:** breakeven inflation rate, market-implied inflation expectations, UK implied inflation, euro area breakeven inflation, Bund linker breakeven.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
+"United States", "United Kingdom" and "Germany". Defaults to None, which
+retrieves every country.
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The breakeven inflation as decimals, indexed by date with a column
+per country and maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
+
+breakeven_inflation = economics.get_breakeven_inflation_expectations(period='monthly')
+
+breakeven_inflation.xs('10Y', axis=1, level='Maturity')
+```
+
+Which returns:
+
+|         |   United States |   United Kingdom |   Germany |
+|:--------|----------------:|-----------------:|----------:|
+| 2026-04 |          0.0246 |           0.0352 |    0.0234 |
+| 2026-05 |          0.0238 |           0.0331 |    0.0211 |
+| 2026-06 |          0.0224 |           0.0311 |    0.019  |
+| 2026-07 |          0.0228 |           0.0322 |    0.0208 |
+| 2026-08 |          0.0231 |           0.033  |    0.0221 |
+| 2026-09 |          0.0236 |           0.0341 |    0.0224 |
+
+---
+
+## get_yield_decomposition
+Split the nominal government bond yield of a maturity into the real yield of the inflation-linked bond of that maturity and the breakeven inflation, the part the market demands for inflation, with the change of each part since the previous period:
+
+$$
+\text{Nominal Yield} = \text{Real Yield} + \text{Breakeven Inflation}
+$$
+
+A rise of the nominal yield is either a rise of real rates (tighter monetary policy, stronger growth, more supply of bonds) or of inflation compensation (a higher expectation of inflation or a larger inflation risk premium), and the split says which: a 5-year US yield up 0.14 with an unchanged breakeven rose on real rates alone.
+
+The curves are those of `get_real_yield_curve` and `get_breakeven_inflation_expectations`, from the official sources: the U.S. Department of the Treasury (par yields, 5 to 30 years), the Bank of England (spot rates, 3 to 40 years) and, for Germany, the Bundesbank (constant maturities between 3 and 30 years). Each source's breakeven is its nominal yield minus its real yield, so the parts add up to the nominal yield in that source's own compounding. UK breakevens are measured against the Retail Prices Index (RPI) and German ones against euro area inflation (HICP excluding tobacco).
+
+The changes are the difference with the previous period the country has a curve for, in decimals (0.0014 for 14 basis points), so a market holiday is not a change. The first period of the date range has no change.
+
+**Also known as:** real yield and breakeven split, nominal yield decomposition, inflation compensation, real rate versus inflation.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries, from the United
+States, the United Kingdom and Germany. Defaults to None, which is all three.
+- <u>maturities (list[str] &#124; str, optional):</u> The maturities, such as "5Y" or
+["5Y", "10Y"], each one both curves of a country have. Defaults to "10Y".
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data, the
+curve on the last trading day of each week or month. Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The Nominal Yield, Real Yield, Breakeven Inflation and their Nominal
+Change, Real Change and Breakeven Change per country and maturity, with the dates
+as the index.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-11-02', end_date='2026-11-10')
+
+economics.get_yield_decomposition(
+    countries=['United States', 'Germany'], maturities='5Y'
+).xs(('United States', '5Y'), axis=1)
+```
+
+Which returns:
+
+|            |   Nominal Yield |   Real Yield |   Breakeven Inflation |   Nominal Change |   Real Change |   Breakeven Change |
+|:-----------|----------------:|-------------:|----------------------:|-----------------:|--------------:|-------------------:|
+| 2026-11-02 |          0.047  |       0.0231 |                0.0239 |         nan      |      nan      |           nan      |
+| 2026-11-03 |          0.0474 |       0.0235 |                0.0239 |           0.0004 |        0.0004 |             0      |
+| 2026-11-04 |          0.0469 |       0.0239 |                0.023  |          -0.0005 |        0.0004 |            -0.0009 |
+| 2026-11-05 |          0.0459 |       0.0233 |                0.0226 |          -0.001  |       -0.0006 |            -0.0004 |
+| 2026-11-06 |          0.0464 |       0.0235 |                0.0229 |           0.0005 |        0.0002 |             0.0003 |
+| 2026-11-09 |          0.0467 |       0.0242 |                0.0225 |           0.0003 |        0.0007 |            -0.0004 |
+| 2026-11-10 |          0.0481 |       0.0256 |                0.0225 |           0.0014 |        0.0014 |             0      |
+
+---
+
+## get_inflation_expectations
+Get the inflation professional forecasters expect over the longer term, from surveys. Where `get_breakeven_inflation_expectations` is the bond market's expectation, priced daily and including risk premia, this is the forecasters' own expectation, with no inflation risk or liquidity premium in it and a longer history.
+
+Every series comes from the official source:
+
+- Germany: the inflation Consensus Economics' forecasters expect over 5 and 10 years, monthly from 1989. The Bundesbank publishes the expected real interest rate, the yield on debt securities outstanding issued by German residents with a residual maturity of 5 to 6 (or 9 to 10) years minus the expected inflation, so adding that yield back gives the expected inflation.
+- Euro Area: the average longer-term (five years ahead) HICP inflation forecast of the ECB's quarterly Survey of Professional Forecasters, from 1999. With period="monthly" each survey round is shown from the first month of its quarter until the next round.
+
+Rates are returned as a decimal fraction (0.0223 for 2.23%), with one column per country and horizon.
+
+**See definition:** [https://www.ecb.europa.eu/stats/ecb_surveys/survey_of_professional_forecasters/html/index.en.html](https://www.ecb.europa.eu/stats/ecb_surveys/survey_of_professional_forecasters/html/index.en.html){:target="_blank"}
+
+**Also known as:** survey-based inflation expectations, long-term inflation expectations, Consensus Economics inflation forecasts, Survey of Professional Forecasters.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
+"Germany" and "Euro Area". Defaults to None, which retrieves every country.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly or quarterly data.
+Quarterly data takes the last month of each quarter. Defaults to None, which is
+quarterly when the Economics class was initialized with quarterly=True and
+otherwise the highest frequency available: monthly.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The expected inflation as decimals, indexed by month or quarter with
+a column per country and horizon.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
+
+economics.get_inflation_expectations().xs('5Y', axis=1, level='Maturity')
+```
+
+Which returns:
+
+|         |   Germany |   Euro Area |
+|:--------|----------:|------------:|
+| 2026-04 |    0.0218 |      0.0203 |
+| 2026-05 |    0.0216 |      0.0203 |
+| 2026-06 |    0.0212 |      0.0203 |
+| 2026-07 |    0.0218 |      0.0204 |
+| 2026-08 |    0.0219 |      0.0204 |
+| 2026-09 |    0.0223 |      0.0204 |
+
+---
+
+## get_sovereign_debt_crisis
+Get the Sovereign Debt Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a sovereign debt crisis (e.g. a default or restructuring of government debt), and 0 marks a year in which it was not.
+
+The crisis dating stops short of the present and ends in a different year per country (2017 for Argentina, for example), so the years after it are NaN rather than 0.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** sovereign default, debt crisis dummy.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Sovereign Debt Crisis dummy
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date="1999-01-01", end_date="2005-12-31")
+
+economics.get_sovereign_debt_crisis(countries=["Argentina", "Ecuador", "Greece"])
+```
+
+Which returns:
+
+|      |   Argentina |   Ecuador |   Greece |
+|:-----|------------:|----------:|---------:|
+| 1999 |           0 |         1 |        0 |
+| 2000 |           0 |         0 |        0 |
+| 2001 |           1 |         0 |        0 |
+| 2002 |           0 |         0 |        0 |
+| 2003 |           0 |         0 |        0 |
+| 2004 |           0 |         0 |        0 |
+| 2005 |           1 |         0 |        0 |
+
+---
+
+## get_currency_crisis
+Get the Currency Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a currency crisis (e.g. a sharp, disorderly depreciation or collapse of the exchange rate), and 0 marks a year in which it was not.
+
+The crisis dating stops short of the present and ends in a different year per country, so the years after it are NaN rather than 0.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** currency collapse, exchange rate crisis dummy.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Currency Crisis dummy
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='1990-01-01', end_date="2025-12-31")
+
+economics.get_currency_crisis(countries='Turkey')
+```
+
+Which returns:
+
+|      |   Turkey |
+|:-----|---------:|
+| 2015 |        0 |
+| 2016 |        0 |
+| 2017 |        0 |
+| 2018 |      nan |
+| 2019 |      nan |
+
+---
+
+## get_banking_crisis
+Get the Banking Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a systemic banking crisis (e.g. bank runs, large-scale bank failures or government intervention to prevent them), and 0 marks a year in which it was not.
+
+The crisis dating stops short of the present and ends in a different year per country, so the years after it are NaN rather than 0.
+
+Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+
+**Also known as:** banking panic, financial crisis dummy, systemic banking crisis.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>gmdb_forecasts (bool, optional):</u> Whether to include the years the Global Macro
+Database projects, from the IMF's World Economic Outlook, up to five years
+ahead. Only applies to data from the Global Macro Database. Defaults to
+False, which ends a series with its last observation.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Banking Crisis dummy
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2005-01-01', end_date="2025-12-31")
+
+economics.get_banking_crisis(countries=['United States', 'United Kingdom'])
+```
+
+Which returns:
+
+|      |   United States |   United Kingdom |
+|:-----|----------------:|-----------------:|
+| 2005 |               0 |                0 |
+| 2006 |               0 |                0 |
+| 2007 |               1 |                0 |
+| 2008 |               0 |                1 |
+| 2009 |               0 |                0 |
+| 2010 |               0 |                0 |
+| 2011 |               0 |                0 |
+| 2012 |               0 |                0 |
+| 2013 |               0 |                0 |
+| 2014 |               0 |                0 |
+| 2015 |               0 |                0 |
+| 2016 |               0 |                0 |
+| 2017 |               0 |                0 |
+| 2018 |               0 |                0 |
+| 2019 |               0 |                0 |
+| 2020 |               0 |                0 |
+| 2021 |               0 |                0 |
+| 2022 |               0 |                0 |
+| 2023 |               0 |                0 |
+| 2024 |               0 |                0 |
+| 2025 |               0 |                0 |
+
+---
+
+## get_credit_to_gdp_gap
+Get the credit-to-GDP gap: how far the ratio of credit to the private non-financial sector to GDP lies above or below its long-term trend, in percentage points of GDP. The trend is a one-sided Hodrick-Prescott filter with a smoothing parameter of 400,000, which only uses the quarters up to each point, so the gap is what was known at the time.
+
+A gap that stays above two percentage points of GDP has preceded most banking crises of the past decades, often by several years, which is why Basel III uses it as the guide for the countercyclical capital buffer: banks hold extra capital when the gap is wide (Drehmann and Tsatsaronis, 2014). A negative gap means credit grew slower than its trend, as it did in most advanced economies after the 2008 crisis.
+
+The credit is all credit to households and non-financial corporations from all lenders, banks and non-banks, at market value, as compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1950s for some.
+
+**See definition:** [https://data.bis.org/topics/CREDIT_GAPS](https://data.bis.org/topics/CREDIT_GAPS){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1403g.htm](https://www.bis.org/publ/qtrpdf/r_qt1403g.htm){:target="_blank"}
+
+**Also known as:** credit gap, Basel gap, credit-to-GDP deviation from trend.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The quarterly credit-to-GDP gap as a decimal fraction of GDP
+(-0.05 for five percentage points below the trend), with a column per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
+
+economics.get_credit_to_gdp_gap(countries=['United States', 'Euro Area', 'China', 'Japan'])
+```
+
+Which returns:
+
+|        |   United States |   Euro Area |   China |   Japan |
+|:-------|----------------:|------------:|--------:|--------:|
+| 2025Q1 |         -0.126  |     -0.1909 | -0.0443 |  0.0461 |
+| 2025Q2 |         -0.1236 |     -0.1894 | -0.053  |  0.0335 |
+| 2025Q3 |         -0.12   |     -0.1873 | -0.0639 |  0.0418 |
+| 2025Q4 |         -0.1159 |     -0.1815 | -0.0769 |  0.0587 |
+
+---
+
+## get_debt_service_ratio
+Get the debt service ratio: the share of income that goes to interest payments and repayments of debt. It captures both how much is borrowed and at what rate, so it rises when rates go up even if the debt itself does not, and it is a leading indicator of financial stress: a high debt service ratio held back spending and preceded the downturns after several credit booms (Drehmann and Juselius, 2012).
+
+The ratio is computed by the Bank for International Settlements for the private non-financial sector of around 30 economies, and for households and non-financial corporations separately for about half of them, quarterly from 1999. It is the debt service (interest plus amortisation, assuming the average remaining maturity of the debt) divided by income: disposable income plus interest paid for households, and gross operating surplus plus interest paid for corporations. No API key is needed.
+
+**See definition:** [https://data.bis.org/topics/DSR](https://data.bis.org/topics/DSR){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1509h.htm](https://www.bis.org/publ/qtrpdf/r_qt1509h.htm){:target="_blank"}
+
+**Also known as:** DSR, debt service burden, debt service-to-income ratio.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>borrowers (str, optional):</u> The borrowing sector: "private" (households and
+non-financial corporations together), "households" or "corporations"
+(non-financial corporations). Defaults to "private", the sector with the
+widest coverage.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The quarterly debt service ratio as a decimal fraction of income,
+with a column per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
+
+economics.get_debt_service_ratio(countries=['United States', 'Germany', 'China', 'Japan'])
+```
+
+Which returns:
+
+|        |   United States |   Germany |   China |   Japan |
+|:-------|----------------:|----------:|--------:|--------:|
+| 2025Q1 |           0.14  |     0.123 |   0.189 |   0.15  |
+| 2025Q2 |           0.14  |     0.123 |   0.189 |   0.15  |
+| 2025Q3 |           0.139 |     0.123 |   0.188 |   0.152 |
+| 2025Q4 |           0.139 |     0.122 |   0.188 |   0.154 |
+
+---
+
+## get_credit_to_gdp_ratio
+Get the total credit to a non-financial sector as a share of GDP: all loans and debt securities owed by households, non-financial corporations or the government, whoever the lender is (banks, other financial institutions, foreign lenders or bond holders). It measures how leveraged an economy is and where the debt sits, such as the high corporate debt in China or the high household debt in Australia and Canada.
+
+Unlike bank lending alone, it also counts market and cross-border funding, so it is comparable across countries where companies borrow from banks (the euro area, Japan) and where they issue bonds (the United States). The data is compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1940s for some, from national financial accounts.
+
+**See definition:** [https://data.bis.org/topics/TOTAL_CREDIT](https://data.bis.org/topics/TOTAL_CREDIT){:target="_blank"} and [https://www.bis.org/publ/qtrpdf/r_qt1303h.htm](https://www.bis.org/publ/qtrpdf/r_qt1303h.htm){:target="_blank"}
+
+**Also known as:** total credit to GDP, debt to GDP by sector, private debt to GDP, leverage ratio of the economy.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
+- <u>borrowers (str, optional):</u> The borrowing sector: "private" (households and
+non-financial corporations), "households", "corporations" (non-financial
+corporations), "government" (at nominal value) or "non_financial" (all
+three together). Defaults to "private", the measure behind the
+credit-to-GDP gap.
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The quarterly credit as a decimal fraction of GDP (1.5 for 150% of
+GDP), with a column per country.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2025-01-01', end_date="2025-12-31")
+
+economics.get_credit_to_gdp_ratio(countries=['United States', 'Euro Area', 'China', 'Japan'])
+```
+
+Which returns:
+
+|        |   United States |   Euro Area |   China |   Japan |
+|:-------|----------------:|------------:|--------:|--------:|
+| 2025Q1 |           1.416 |       1.553 |   2.019 |   1.71  |
+| 2025Q2 |           1.41  |       1.545 |   2.018 |   1.701 |
+| 2025Q3 |           1.406 |       1.537 |   2.015 |   1.713 |
+| 2025Q4 |           1.402 |       1.533 |   2.008 |   1.734 |
+
+---
+
+## get_implied_volatility
+Get the implied volatility the option markets price, by market and time to expiry: the volatility indices of Cboe, STOXX and ICE. Implied volatility is the market's expectation of how much prices will move, and its term structure (how it rises or falls with the time to expiry) is the market-consistent target for calibrating the volatility of equity, rate and commodity models.
+
+The markets and their maturities:
+
+- "US Equity": S&P 500 options, the Cboe VIX family: 9 days (VIX9D, from 2011), 1 month (VIX, from 1990), 3 months (VIX3M), 6 months (VIX6M) and 1 year (VIX1Y, from 2007).
+- "Euro Area Equity": EURO STOXX 50 options, the VSTOXX sub-indices from 1 to 24 months, from 1999.
+- "Emerging Markets Equity": options on the MSCI Emerging Markets ETF (Cboe VXEEM), 1 month, from 2011.
+- "US Equity Volatility": the volatility of the VIX itself (Cboe VVIX), 1 month, from 2006.
+- "US Treasury Bonds": options on the 20+ year Treasury bond ETF (Cboe VXTLT), the price volatility of long Treasuries, 1 month, from 2004.
+- "Crude Oil" and "Gold": options on the oil and gold ETFs (Cboe OVX and GVZ), 1 month, from 2009.
+- "US Treasury Rates": the ICE BofA MOVE index, the normal (basis point) volatility of Treasury yields implied by 1-month options on 2, 5, 10 and 30-year Treasuries, from
+2002. Requires a FinancialModelingPrep API key (the api_key of the Economics class).
+   - "Japan Government Bonds": the S&P/JPX JGB VIX, from options on JGB futures, 1 month, from 2015. Requires a FinancialModelingPrep API key.
+
+The volatility is returned as a decimal fraction per annum (0.155 for a VIX of 15.5), and the MOVE as a decimal yield change per annum (0.0105 for a MOVE of 105 basis points), with one column per market and maturity. Weekly and monthly periods take the value on the last trading day of each period. The Cboe SKEW index is not included since it is not a volatility.
+
+**See definition:** [https://www.cboe.com/tradable_products/vix/](https://www.cboe.com/tradable_products/vix/){:target="_blank"}
+
+**Also known as:** VIX, VSTOXX, MOVE index, volatility term structure, implied volatility index, fear index.
+
+**Args:**
+
+- <u>markets (list[str] &#124; str &#124; None, optional):</u> The markets to retrieve, from
+"US Equity", "Euro Area Equity", "Emerging Markets Equity", "US Equity
+Volatility", "US Treasury Bonds", "Crude Oil", "Gold", "US Treasury Rates" and
+"Japan Government Bonds". Defaults to None, which retrieves every market, with
+"US Treasury Rates" (the MOVE) and "Japan Government Bonds" (the JGB VIX) only
+when an API key is set.
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
+moving average). Defaults to None.
+- <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
+trailing periods. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The implied volatility as decimals, indexed by date with a column per
+market and maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(start_date='2026-04-01', end_date='2026-09-30')
+
+implied_volatility = economics.get_implied_volatility(
+    markets=['US Equity', 'Euro Area Equity'], period='monthly'
+)
+
+implied_volatility['US Equity']
+```
+
+Which returns:
+
+|         |     9D |     1M |     3M |     6M |     1Y |
+|:--------|-------:|-------:|-------:|-------:|-------:|
+| 2026-04 | 0.1437 | 0.1689 | 0.2008 | 0.2261 | 0.2365 |
+| 2026-05 | 0.1259 | 0.1532 | 0.1866 | 0.216  | 0.2306 |
+| 2026-06 | 0.1373 | 0.1645 | 0.19   | 0.215  | 0.2303 |
+| 2026-07 | 0.1305 | 0.1599 | 0.1902 | 0.2134 | 0.2294 |
+| 2026-08 | 0.1234 | 0.1492 | 0.1753 | 0.2017 | 0.2187 |
+| 2026-09 | 0.142  | 0.1634 | 0.1837 | 0.2035 | 0.218  |
+
+---
+
+## get_stress_test_scenario
+Get the scenarios regulators publish for their stress tests: documented paths of the economy and financial markets under a baseline and an adverse scenario, which serve as calibration and validation targets for scenario generators and as the stresses banks and insurers are tested against.
+
+Two authorities are available:
+
+- "federal_reserve": the Federal Reserve's supervisory stress test, quarterly over 13 quarters. For the United States: real and nominal GDP and disposable income growth, unemployment, CPI inflation, the 3-month, 5-year and 10-year Treasury rates, the BBB corporate yield, the mortgage and prime rate, the Dow Jones Total Stock Market Index, house and commercial real estate price indices and the VIX; for the euro area, developing Asia, Japan and the United Kingdom: GDP growth, inflation and the dollar exchange rate. scenario="historic" returns the history of the same variables from 1976. year selects the year of the test (published in February), from 2025; by default the latest.
+- "esrb": the macro-financial scenario the European Systemic Risk Board designs for the EU-wide bank stress test of the EBA, yearly over three years: GDP growth, inflation, unemployment, residential and commercial real estate prices and long-term rates for every EU member and the main other economies, stock prices by region, commodity prices, iTraxx credit spreads and euro exchange rates. scenario="historic" returns the starting point. Always the latest exercise.
+
+The Federal Reserve's growth and inflation variables (GDP, disposable income and CPI, and the international GDP growth and inflation) are annualized quarter-on-quarter rates, as the Federal Reserve publishes them, so a "Real GDP growth" of -0.054 is a quarterly contraction of about 1.4%.
+
+Growth rates, inflation, interest rates, spreads and the VIX are decimal fractions (0.054 for 5.4%); price index levels, the stock market index and exchange rates are returned as published. The columns are per country (or region, index, commodity or currency pair) and variable.
+
+**See definition:** [https://www.federalreserve.gov/supervisionreg/dfast-archive.htm](https://www.federalreserve.gov/supervisionreg/dfast-archive.htm){:target="_blank"}
+
+**Also known as:** supervisory scenarios, CCAR, DFAST, EBA stress test, adverse scenario, severely adverse scenario.
+
+**Args:**
+
+- <u>scenario (str, optional):</u> "baseline", "adverse" (the Federal Reserve's severely
+adverse scenario) or "historic". Defaults to "adverse".
+- <u>authority (str, optional):</u> "federal_reserve" or "esrb". Defaults to
+"federal_reserve".
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries (or regions) to
+include. Defaults to None, which includes all of them.
+- <u>year (int &#124; None, optional):</u> The year of the Federal Reserve's stress test, from
+2025. Defaults to None, which takes the latest.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the Economics class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The scenario, indexed by quarter or year with a column per country
+and variable.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics
+
+economics = Economics(end_date="2025-12-31")
+
+stress_test = economics.get_stress_test_scenario(countries='United States')
+
+stress_test['United States'][
+    ['Real GDP growth', 'Unemployment rate', '10-year Treasury yield', 'BBB corporate yield']
+].head()
+```
+
+Which returns:
+
+|        |   Real GDP growth |   Unemployment rate |   10-year Treasury yield |   BBB corporate yield |
+|:-------|------------------:|--------------------:|-------------------------:|----------------------:|
+| 2026Q1 |            -0.054 |               0.059 |                    0.031 |                 0.075 |
+| 2026Q2 |            -0.049 |               0.072 |                    0.027 |                 0.082 |
+| 2026Q3 |            -0.038 |               0.082 |                    0.024 |                 0.081 |
+| 2026Q4 |            -0.027 |               0.09  |                    0.023 |                 0.079 |
+| 2027Q1 |            -0.014 |               0.095 |                    0.023 |                 0.075 |
 
 ---
 

@@ -53,7 +53,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -89,15 +90,15 @@ Which returns:
 
 |                             |         2021 |         2022 |         2023 |         2024 |         2025 |
 |:----------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
-| EV-to-Sales                 |  8.3883      |  5.5928      |  8.1056      | 10.0052      |  9.9405      |
-| EV-to-EBIT                  | 28.1653      | 18.4649      | 27.1806      | 31.7522      | 31.0925      |
-| EV-to-EBITDA                | 25.522       | 16.8942      | 24.6921      | 29.0536      | 28.5797      |
-| EV-to-Operating-Cash-Flow   | 29.4949      | 18.0546      | 28.1046      | 33.0846      | 37.1078      |
+| EV-to-Sales                 |  6.9753      |  6.4415      |  7.2261      |  9.1135      |  9.3492      |
+| EV-to-EBIT                  | 23.4208      | 21.267       | 24.2311      | 28.9224      | 29.243       |
+| EV-to-EBITDA                | 21.2228      | 19.458       | 22.0127      | 26.4642      | 26.8797      |
+| EV-to-Operating-Cash-Flow   | 24.5264      | 20.7945      | 25.0549      | 30.136       | 34.9005      |
 | Tangible Asset Value        |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |  5.695e+10   |  7.3733e+10  |
 | Net Current Asset Value     | -1.53076e+11 | -1.66678e+11 | -1.46871e+11 | -1.55043e+11 | -1.37551e+11 |
-| EV-to-Free-Cash-Flow        | 33.0122      | 19.7894      | 31.1974      | 35.9571      | 41.885       |
-| Buyback Yield               |  0.0283      |  0.0421      |  0.0255      |  0.0246      |  0.0222      |
-| Shareholder Yield           |  0.0332      |  0.0491      |  0.0304      |  0.0286      |  0.026       |
+| EV-to-Free-Cash-Flow        | 27.4513      | 22.7925      | 27.8121      | 32.7525      | 39.3935      |
+| Buyback Yield               |  0.0343      |  0.0364      |  0.0286      |  0.0271      |  0.0237      |
+| Shareholder Yield           |  0.04        |  0.0424      |  0.0341      |  0.0314      |  0.0277      |
 | SBC-Adjusted Free Cash Flow |  8.5047e+10  |  1.02405e+11 |  8.8751e+10  |  9.7119e+10  |  8.5904e+10  |
 
 ---
@@ -199,7 +200,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -287,10 +289,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -359,10 +364,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -432,10 +440,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -507,10 +518,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -580,10 +594,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -650,10 +667,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -723,10 +743,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -798,10 +821,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -868,7 +894,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -937,10 +964,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1008,7 +1038,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1076,10 +1107,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1146,10 +1180,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1220,7 +1257,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1292,7 +1330,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1362,7 +1401,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1436,7 +1476,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1511,7 +1552,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1583,7 +1625,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1656,7 +1699,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
-months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+months (TTM) and 3 with annual data a three-year cumulative figure. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to
 None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1712,7 +1756,7 @@ $$
 
 Capital expenditure is reported as a negative cash outflow, so its magnitude is used. Depreciation and amortization of zero or less gives NaN.
 
-**Also known as:** capex to D&A, capex to depreciation, reinvestment ratio, maintenance capex ratio.
+**Also known as:** capex to D&A, capex to depreciation, maintenance capex ratio.
 
 **Args:**
 
@@ -1727,8 +1771,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (cash flow statement
 items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
-and 3 with annual data a three-year cumulative figure. Defaults to None, which
-uses single-period flows.
+and 3 with annual data a three-year cumulative figure. The window counts
+calendar periods, so a period without a report makes it NaN. Defaults to None,
+which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1801,8 +1846,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (cash flow statement
 items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
-and 3 with annual data a three-year cumulative figure. Defaults to None, which
-uses single-period flows.
+and 3 with annual data a three-year cumulative figure. The window counts
+calendar periods, so a period without a report makes it NaN. Defaults to None,
+which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1877,9 +1923,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods the total assets are compared
-over. E.g. 3 with annual data gives the growth over three years. Defaults to
-None, which uses a year: 4 quarters with quarterly data and 1 year with annual
-data.
+over. E.g. 3 with annual data gives the growth over three years. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults
+to None, which uses a year: 4 quarters with quarterly data and 1 year with
+annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2023,7 +2070,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2101,7 +2149,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2173,7 +2222,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2243,7 +2293,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2313,7 +2364,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2367,6 +2419,8 @@ $$
 \text{Operating Cash Flow Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Current Liabilities}}
 $$
 
+The current liabilities are those at the end of the period and fall due within a year, so they are set against a year of operating cash flow: with quarterly data the trailing twelve months by default.
+
 **Also known as:** OCF ratio, cash liquidity.
 
 **Args:**
@@ -2380,11 +2434,11 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over; the total current liabilities
+stays that at the end of the last period. E.g. 4 with quarterly data gives the trailing twelve
+months (TTM) and 3 with annual data a three-year cumulative figure. The window counts calendar
+periods, so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2453,7 +2507,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2507,6 +2562,8 @@ $$
 \text{Short Term Coverage Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Short Term Debt}}
 $$
 
+The short term debt is that at the end of the period and falls due within a year, so it is set against a year of operating cash flow: with quarterly data the trailing twelve months by default.
+
 **Also known as:** short-term debt coverage.
 
 **Args:**
@@ -2520,11 +2577,12 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over; the short term debt
+stays that at the end of the last period. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses the trailing twelve months (4 quarters) with quarterly
+data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -2591,7 +2649,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2651,7 +2710,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2701,6 +2761,9 @@ Which returns:
 | Cash Return on Assets                       |  0.3083 |  0.3471 |  0.3134 |   0.3296 |   0.3079 |
 | Return on Equity                            |  1.4744 |  1.7546 |  1.7195 |   1.5741 |   1.7142 |
 | Return on Invested Capital                  |  0.4879 |  0.5229 |  0.528  |   0.5166 |   0.6201 |
+| Return on Net Operating Assets              | 38.7091 |  8.6341 |  5.1105 | nan      | nan      |
+| Net Borrowing Cost                          |  0.0028 | -0.002  | -0.0042 | nan      | nan      |
+| Financial Leverage                          | -0.962  | -0.7966 | -0.663  |  -0.6361 |  -0.441  |
 | Return on Capital Employed                  |  0.4831 |  0.6009 |  0.5514 |   0.6534 |   0.6872 |
 | Return on Tangible Assets                   |  0.2806 |  0.2836 |  0.275  |   0.2613 |   0.3093 |
 | Income Quality Ratio                        |  1.0988 |  1.2239 |  1.1397 |   1.2616 |   0.9953 |
@@ -2716,6 +2779,7 @@ Which returns:
 | Cash Return on Invested Capital             |  0.4801 |  0.5823 |  0.5394 |   0.601  |   0.5455 |
 | Free Cash Flow Conversion                   |  0.9818 |  1.1166 |  1.0267 |   1.1608 |   0.8818 |
 | Free Cash Flow to EBITDA                    |  0.7731 |  0.8537 |  0.7915 |   0.808  |   0.6823 |
+| Percent Accruals                            | -0.0988 | -0.2239 | -0.1397 |  -0.2616 |   0.0047 |
 
 ---
 
@@ -2748,7 +2812,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2804,7 +2869,7 @@ $$
 
 Operating margin is the usual yardstick for the profitability of the core business, before financing and taxes. Companies with high fixed costs show operating leverage: their margin rises quickly when revenue grows and falls quickly when it shrinks. Restructuring charges and impairments are included, so a single weak year should be checked for one-off items before comparing with peers.
 
-**Also known as:** EBIT margin, operating income margin.
+**Also known as:** operating income margin, operating profit margin.
 
 **Args:**
 
@@ -2820,7 +2885,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2890,7 +2956,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -2960,7 +3027,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3015,7 +3083,7 @@ $$
 \text{Interest Burden Ratio} = \frac{\text{Income Before Tax}}{\text{Operating Income}}
 $$
 
-**Also known as:** EBT to EBIT ratio, interest burden.
+**Also known as:** interest burden, DuPont interest burden.
 
 **Args:**
 
@@ -3031,7 +3099,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3101,7 +3170,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3173,7 +3243,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3243,10 +3314,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3314,10 +3388,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3361,15 +3438,17 @@ Which returns:
 ## get_return_on_equity
 Calculate the return on equity (ROE), a profitability ratio that measures how efficiently a company generates profits using its shareholders' equity.
 
-The return on equity is calculated by dividing the net income by the average shareholders' equity. Shareholders' equity represents the residual interest in the assets of a company after deducting liabilities. Note that it is false to take the total equity at the end of the period, given that an income statement reports over the period whereas a balance sheet reports at a point in time; the average equity over the period is used instead.
+The return on equity is calculated by dividing the net income by the average shareholders' equity. Shareholders' equity represents the residual interest in the assets of a company after deducting liabilities. Note that it is false to take the equity at the end of the period, given that an income statement reports over the period whereas a balance sheet reports at a point in time; the average equity over the period is used instead.
 
 ROE provides insight into the company's ability to generate profits from the investments made by its shareholders. A higher ROE indicates that the company is using its equity effectively to generate higher returns for its shareholders.
 
 The formula is as follows:
 
 $$
-\text{Return on Equity} = \frac{\text{Net Income}}{\text{Average Shareholders' Equity} \;(\text{or Total Equity})}
+\text{Return on Equity} = \frac{\text{Net Income}}{\text{Average Total Shareholder Equity}}
 $$
+
+The net income is that attributable to the shareholders of the parent, so it is set against their equity (Total Shareholder Equity), without the minority interest that the Total Equity includes.
 
 ROE is usually read through the DuPont analysis (`Toolkit.models.get_dupont_analysis`), which splits it into net margin, asset turnover and the equity multiplier, because the same ROE can come from high margins or from a thin equity base. Large buybacks and accumulated losses shrink equity and can push ROE to extreme or negative values (well above 1 for heavy buyers of their own shares), in which case ROIC or ROA says more. For banks and insurers ROE is set against the cost of equity, and together with the price-to-book ratio it explains much of their valuation.
 
@@ -3387,10 +3466,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3426,7 +3508,7 @@ Which returns:
 |:----|-------:|-------:|-------:|-------:|-------:|
 | GS  | 0.2055 | 0.0948 | 0.0676 | 0.1132 | 0.132  |
 | JPM | 0.1622 | 0.1224 | 0.154  | 0.1691 | 0.1575 |
-| MS  | 0.1389 | 0.1014 | 0.0848 | 0.1246 | 0.149  |
+| MS  | 0.1406 | 0.1025 | 0.0857 | 0.1258 | 0.1504 |
 
 ---
 
@@ -3457,10 +3539,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3500,6 +3585,332 @@ Which returns:
 
 ---
 
+## get_return_on_net_operating_assets
+Calculate the return on net operating assets (RNOA) of Nissim and Penman (2001), the after-tax return a company earns on its operations, separated from how they are financed.
+
+The return on net operating assets divides the operating income after tax by the average net operating assets. Nissim and Penman define the operating income as the net income plus the net financial expense (the after-tax net interest expense), so every item that is not financing counts as operating. Unlike the return on invested capital, the financial assets are deducted from the capital, so a company that holds much cash is not penalised for it and its interest income is not counted as an operating return.
+
+RNOA is the operating part of the return on common equity in the Nissim-Penman decomposition, ROCE = RNOA + FLEV x (RNOA - NBC) (`Toolkit.models.get_nissim_penman_decomposition`). Nissim and Penman find RNOA to be the main driver of the future return on equity, and that it reverts to the mean more slowly than the leverage effect.
+
+The formula is as follows:
+
+$$
+\text{Net Financial Expense} = (\text{Interest Expense} - \text{Interest Income}) \cdot (1 - \text{Effective Tax Rate})
+$$
+
+$$
+\text{Operating Income} = \text{Net Income} + \text{Net Financial Expense}
+$$
+
+$$
+\text{Net Financial Obligations} = \text{Total Debt} + \text{Preferred Stock} - \text{Cash and Short Term Investments} - \text{Long Term Investments}
+$$
+
+$$
+\text{Common Equity} = \text{Total Shareholder Equity} - \text{Preferred Stock}
+$$
+
+$$
+\text{Net Operating Assets} = \text{Net Financial Obligations} + \text{Common Equity}
+$$
+
+$$
+\text{Return on Net Operating Assets} = \frac{\text{Operating Income}}{\text{Average Net Operating Assets}}
+$$
+
+The balance sheet is split into operating and financial items as follows:
+
+- Financial assets: the cash and cash equivalents, the short term investments and the long term investments. Nissim and Penman treat the marketable securities as financial; the long term investments of the statements are mostly those securities (Apple's long term marketable securities), but also hold equity method stakes (Coca-Cola's bottlers), which Nissim and Penman count as operating and which are financial here.
+
+- Financial obligations: the Total Debt, which holds the short and long term debt and the lease obligations (capital leases are debt in Nissim and Penman), and the preferred stock, which Nissim and Penman treat as a financial claim.
+
+- Common equity: the Total Shareholder Equity minus the preferred stock.
+
+- Operating: everything else, so the net operating assets are the net financial obligations plus the common equity (the operating assets minus the operating liabilities and the minority interest).
+
+**Also known as:** RNOA, return on operating assets.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Return on net operating assets (RNOA) values.
+
+**Notes:**
+
+- Nissim, D. and S. H. Penman, "Ratio Analysis and Equity Valuation: From Research to
+Practice," Review of Accounting Studies 6, 2001, pp. 109-154.
+- The net financial expense is taxed at the effective tax rate (bounded to [0, 1], 0 for
+a pre-tax loss) instead of the marginal statutory rate of Nissim and Penman, and holds
+no preferred dividends, which the statements do not report.
+- Missing data is treated in two ways. A short or long term investment, preferred
+stock or interest income that is not reported is absent and counts as zero (a company
+with debt but no interest income is normal). A period with neither an interest
+expense nor an interest income (both missing or zero, as in Apple's statements from
+fiscal 2024) has an unknown net financial expense rather than a zero one, so the
+ratio is NaN for that period and for every trailing window that holds it.
+- A company whose operating liabilities (payables, deferred revenue, accruals) nearly
+cover its operating assets has small net operating assets and an RNOA well above 1
+(Apple); net operating assets of zero or below make the ratio meaningless (it flips
+sign). Such periods are returned as calculated.
+- The first period has no opening balance and is NaN, so set an earlier start_date to
+obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "KO", "DUK"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_return_on_net_operating_assets()
+```
+
+Which returns:
+
+|      |    2021 |   2022 |   2023 |     2024 |     2025 |
+|:-----|--------:|-------:|-------:|---------:|---------:|
+| AAPL | 38.7091 | 8.6341 | 5.1105 | nan      | nan      |
+| DUK  |  0.0562 | 0.0423 | 0.0467 |   0.0607 |   0.0613 |
+| KO   |  0.311  | 0.2795 | 0.3197 |   0.3076 |   0.337  |
+
+---
+
+## get_net_borrowing_cost
+Calculate the net borrowing cost (NBC) of Nissim and Penman (2001), the after-tax interest rate a company pays on its net financial obligations.
+
+The net borrowing cost divides the net financial expense (the interest expense minus the interest income, after tax) by the average net financial obligations (the debt and preferred stock minus the cash and investments). A company with net financial assets and net interest income has a negative expense over negative obligations, so the ratio is then the after-tax return it earns on its net financial assets.
+
+In the Nissim-Penman decomposition, ROCE = RNOA + FLEV x (RNOA - NBC) (`Toolkit.models.get_nissim_penman_decomposition`), borrowing raises the return on equity only as long as the return on net operating assets exceeds the net borrowing cost. When the net financial obligations are close to zero the ratio is volatile and says little.
+
+The formula is as follows:
+
+$$
+\text{Net Financial Expense} = (\text{Interest Expense} - \text{Interest Income}) \cdot (1 - \text{Effective Tax Rate})
+$$
+
+$$
+\text{Net Financial Obligations} = \text{Total Debt} + \text{Preferred Stock} - \text{Cash and Short Term Investments} - \text{Long Term Investments}
+$$
+
+$$
+\text{Net Borrowing Cost} = \frac{\text{Net Financial Expense}}{\text{Average Net Financial Obligations}}
+$$
+
+The balance sheet is split into operating and financial items as follows:
+
+- Financial assets: the cash and cash equivalents, the short term investments and the long term investments. Nissim and Penman treat the marketable securities as financial; the long term investments of the statements are mostly those securities (Apple's long term marketable securities), but also hold equity method stakes (Coca-Cola's bottlers), which Nissim and Penman count as operating and which are financial here.
+
+- Financial obligations: the Total Debt, which holds the short and long term debt and the lease obligations (capital leases are debt in Nissim and Penman), and the preferred stock, which Nissim and Penman treat as a financial claim.
+
+- Common equity: the Total Shareholder Equity minus the preferred stock.
+
+- Operating: everything else, so the net operating assets are the net financial obligations plus the common equity (the operating assets minus the operating liabilities and the minority interest).
+
+**Also known as:** NBC, after-tax cost of net debt.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Net borrowing cost (NBC) values.
+
+**Notes:**
+
+- Nissim, D. and S. H. Penman, "Ratio Analysis and Equity Valuation: From Research to
+Practice," Review of Accounting Studies 6, 2001, pp. 109-154.
+- The net financial expense is taxed at the effective tax rate (bounded to [0, 1], 0 for
+a pre-tax loss) instead of the marginal statutory rate of Nissim and Penman, and holds
+no preferred dividends, which the statements do not report.
+- Missing data is treated in two ways. A short or long term investment, preferred
+stock or interest income that is not reported is absent and counts as zero (a company
+with debt but no interest income is normal). A period with neither an interest
+expense nor an interest income (both missing or zero, as in Apple's statements from
+fiscal 2024) has an unknown net financial expense rather than a zero one, so the
+ratio is NaN for that period and for every trailing window that holds it.
+- The interest on the lease obligations is part of the operating expenses for
+operating leases, so the cost of the leases in the Total Debt is understated.
+- The first period has no opening balance and is NaN, so set an earlier start_date to
+obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "KO", "DUK"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_net_borrowing_cost()
+```
+
+Which returns:
+
+|      |   2021 |    2022 |    2023 |     2024 |    2025 |
+|:-----|-------:|--------:|--------:|---------:|--------:|
+| AAPL | 0.0028 | -0.002  | -0.0042 | nan      | nan     |
+| DUK  | 0.0357 |  0.0354 |  0.039  |   0.0404 |   0.039 |
+| KO   | 0.0765 |  0.0299 |  0.0508 |   0.0497 |   0.057 |
+
+---
+
+## get_financial_leverage
+Calculate the financial leverage (FLEV) of Nissim and Penman (2001), the net financial obligations per unit of common equity.
+
+The financial leverage divides the average net financial obligations (the debt and preferred stock minus the cash and investments) by the average common equity. It is negative for a company with net financial assets, which then dilute rather than lever the return on equity. Unlike the debt to equity ratio, it nets the financial assets against the debt, and unlike the equity multiplier, it leaves the operating liabilities out (they are part of the net operating assets).
+
+In the Nissim-Penman decomposition, ROCE = RNOA + FLEV x (RNOA - NBC) (`Toolkit.models.get_nissim_penman_decomposition`), the financial leverage scales the spread between the return on net operating assets and the net borrowing cost.
+
+The formula is as follows:
+
+$$
+\text{Net Financial Obligations} = \text{Total Debt} + \text{Preferred Stock} - \text{Cash and Short Term Investments} - \text{Long Term Investments}
+$$
+
+$$
+\text{Common Equity} = \text{Total Shareholder Equity} - \text{Preferred Stock}
+$$
+
+$$
+\text{Financial Leverage} = \frac{\text{Average Net Financial Obligations}}{\text{Average Common Equity}}
+$$
+
+The balance sheet is split into operating and financial items as follows:
+
+- Financial assets: the cash and cash equivalents, the short term investments and the long term investments. Nissim and Penman treat the marketable securities as financial; the long term investments of the statements are mostly those securities (Apple's long term marketable securities), but also hold equity method stakes (Coca-Cola's bottlers), which Nissim and Penman count as operating and which are financial here.
+
+- Financial obligations: the Total Debt, which holds the short and long term debt and the lease obligations (capital leases are debt in Nissim and Penman), and the preferred stock, which Nissim and Penman treat as a financial claim.
+
+- Common equity: the Total Shareholder Equity minus the preferred stock.
+
+- Operating: everything else, so the net operating assets are the net financial obligations plus the common equity (the operating assets minus the operating liabilities and the minority interest).
+
+**Also known as:** FLEV, net financial leverage.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Financial leverage (FLEV) values.
+
+**Notes:**
+
+- Nissim, D. and S. H. Penman, "Ratio Analysis and Equity Valuation: From Research to
+Practice," Review of Accounting Studies 6, 2001, pp. 109-154.
+- Negative common equity (after large buybacks) makes the ratio flip sign.
+- A short or long term investment or preferred stock that is not reported is absent and
+counts as zero; a missing Total Debt or Total Shareholder Equity gives NaN. The ratio
+needs no interest data, so it is available for periods whose return on net operating
+assets and net borrowing cost are NaN for lack of interest rows.
+- The first period has no opening balance and is NaN, so set an earlier start_date to
+obtain it.
+- If `growth` is set to True, the method calculates the growth of the ratio values
+using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "KO", "DUK"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_financial_leverage()
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | -0.962  | -0.7966 | -0.663  | -0.6361 | -0.441  |
+| DUK  |  1.2292 |  1.3348 |  1.4697 |  1.5123 |  1.6533 |
+| KO   |  0.644  |  0.5033 |  0.4032 |  0.4304 |  0.4383 |
+
+---
+
 ## get_income_quality_ratio
 Calculate the income quality ratio, a financial metric that measures the cash flow from operating activities relative to the net income of the company.
 
@@ -3529,7 +3940,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3595,10 +4007,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3669,7 +4084,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3740,7 +4156,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3810,7 +4227,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3877,7 +4295,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3947,7 +4366,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3999,7 +4419,7 @@ $$
 \text{EBT to EBIT} = \frac{\text{Net Income} + \text{Income Tax Expense}}{\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense}}
 $$
 
-**Also known as:** EBT to EBIT, interest burden.
+**Also known as:** EBT/EBIT, pre-tax income to EBIT.
 
 **Args:**
 
@@ -4015,7 +4435,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4083,7 +4504,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4151,7 +4573,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4223,7 +4646,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4293,7 +4717,8 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the revenue and cost of goods
-sold over; the total assets stay those at the end of the last period. Defaults to
+sold over; the total assets stay those at the end of the last period. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to
 None, which uses the trailing twelve months (4 quarters) with quarterly data and
 single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4371,7 +4796,8 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the income statement items
-over; the book equity stays that at the end of the last period. Defaults to None,
+over; the book equity stays that at the end of the last period. The window counts
+calendar periods, so a period without a report makes it NaN. Defaults to None,
 which uses the trailing twelve months (4 quarters) with quarterly data and single
 years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4445,11 +4871,11 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum the income statement items
-over, which is also the number of periods the balance changes span and the
-number of periods the total assets are taken before. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+- <u>trailing (int, optional):</u> The number of periods to sum the income statement items over,
+which is also the number of periods the balance changes span and the number of
+periods the total assets are taken before. The window counts calendar periods, so a
+period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4525,12 +4951,14 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, as for the return on invested
+capital, so trailing=1 equals the default average of the opening and closing
+balance. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar
+periods, so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data) against
-the average of the opening and closing invested capital, as for the return on
-invested capital.
+the average of the opening and closing invested capital.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4601,7 +5029,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
-months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+months (TTM) and 3 with annual data a three-year cumulative figure. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to
 None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4672,7 +5101,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
-months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+months (TTM) and 3 with annual data a three-year cumulative figure. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to
 None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4742,8 +5172,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the net income and cash
-flow from operations over. Defaults to None, which uses the trailing twelve
-months (4 quarters) with quarterly data and single years with annual data.
+flow from operations over. The window counts calendar periods, so a period
+without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual
+data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4807,7 +5239,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4850,8 +5283,9 @@ Which returns:
 | Debt-to-Equity Ratio               |   2.1639 |   2.6145 |   1.9942 |   2.0906 |   1.5241 |
 | Debt Service Coverage Ratio        |   6.5852 |   5.4299 |   6.3739 |   6.4496 |   7.1203 |
 | Equity Multiplier                  |   5.255  |   6.1862 |   6.252  |   6.0251 |   5.5418 |
-| Free Cash Flow Yield               |   0.031  |   0.0525 |   0.0327 |   0.0282 |   0.0242 |
+| Free Cash Flow Yield               |   0.0375 |   0.0454 |   0.0368 |   0.031  |   0.0258 |
 | Net-Debt to EBITDA Ratio           |   0.8449 |   0.8337 |   0.7468 |   0.6618 |   0.5281 |
+| Net-Debt to Equity Ratio           |   1.6101 |   2.1478 |   1.512  |   1.5648 |   1.0368 |
 | Gross Debt to EBITDA Ratio         |   1.1355 |   1.0149 |   0.985  |   0.8841 |   0.7764 |
 | Cash Flow Coverage Ratio           |   0.7621 |   0.922  |   0.892  |   0.9932 |   0.992  |
 | CAPEX Coverage Ratio               |   9.3855 |  11.4075 |  10.087  |  12.5176 |   8.7678 |
@@ -4897,7 +5331,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4963,7 +5398,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4998,7 +5434,7 @@ Which returns:
 
 |     |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:----|-------:|-------:|-------:|-------:|-------:|
-| KMI | 1.4053 | 1.3851 | 1.4027 | 1.4371 | 1.5344 |
+| KMI | 1.4053 | 1.3851 | 1.4027 | 1.4371 | 1.4848 |
 | OKE | 1.4978 | 1.5692 | 1.6095 | 1.526  | 1.5656 |
 | WMB | 1.5739 | 1.6223 | 1.5972 | 1.6317 | 1.6245 |
 
@@ -5033,7 +5469,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5103,7 +5540,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5171,10 +5609,13 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5243,7 +5684,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5318,9 +5760,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5355,7 +5797,7 @@ Which returns:
 |     |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:----|-------:|-------:|-------:|-------:|-------:|
 | BTI | 0.1492 | 0.1348 | 0.1953 | 0.1505 | 0.0614 |
-| MO  | 0.0942 | 0.0976 | 0.1268 | 0.0959 | 0.0938 |
+| MO  | 0.0942 | 0.0976 | 0.1268 | 0.0959 | 0.0932 |
 | PM  | 0.0758 | 0.0619 | 0.054  | 0.0575 | 0.0427 |
 
 ---
@@ -5371,7 +5813,9 @@ $$
 \text{Net Debt to EBITDA Ratio} = \frac{\text{Net Debt}}{\text{EBITDA}}
 $$
 
-Net debt to EBITDA is the leverage measure lenders, rating agencies and loan covenants use most: it reads as the number of years of EBITDA needed to repay the debt net of cash. What counts as high depends on how stable the earnings are, so utilities and telecoms carry more than cyclical companies. A negative value means the company holds more cash than debt, and the ratio becomes meaningless when EBITDA is close to zero or negative.
+Net debt to EBITDA is the leverage measure lenders, rating agencies and loan covenants use most: it reads as the number of years of EBITDA needed to repay the debt net of cash. What counts as high depends on how stable the earnings are, so utilities and telecoms carry more than cyclical companies. A negative value means the company holds more cash than debt, and the ratio becomes meaningless when EBITDA is close to zero or negative, so an EBITDA of zero or less gives NaN.
+
+The net debt is that at the end of the period. Net debt to EBITDA is an annual measure, so with quarterly data the EBITDA is that of the trailing twelve months by default.
 
 **Args:**
 
@@ -5384,11 +5828,12 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over; the net debt
+stays that at the end of the last period. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses the trailing twelve months (4 quarters) with quarterly
+data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5423,8 +5868,77 @@ Which returns:
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
 | CHTR | 4.5163 | 4.5991 | 4.5983 | 4.3482 | 4.3822 |
-| TMUS | 4.3904 | 5.3127 | 4.0131 | 3.524  | 3.6175 |
-| VZ   | 3.6331 | 3.6523 | 3.7214 | 3.3851 | 3.8134 |
+| TMUS | 4.3904 | 5.3127 | 4.0131 | 3.524  | 3.6704 |
+| VZ   | 3.597  | 3.6523 | 4.2685 | 3.5245 | 3.4153 |
+
+---
+
+## get_net_debt_to_equity_ratio
+Calculates the net debt to equity ratio, also known as net gearing, which measures the debt of the company net of its cash relative to its equity.
+
+Net gearing is the debt to equity ratio after deducting the cash the company could repay its debt with, the way European and UK companies and their lenders usually report leverage. A ratio of 0.5 means the debt net of cash is half of the equity; a negative ratio means the company holds more cash than debt (a net cash position).
+
+The formula is as follows:
+
+$$
+\text{Net Debt to Equity Ratio} = \frac{\text{Net Debt}}{\text{Total Equity}}
+$$
+
+The Net Debt is that of the balance sheet, the Total Debt minus the Cash and Cash Equivalents, the same as in `get_net_debt_to_ebitda_ratio`, and the Total Equity includes the minority interest, as in `get_debt_to_equity_ratio`. Both are balances at the end of the period. Equity is a book value, so large buybacks or accumulated losses can make it small or negative; with an equity of zero or less the ratio no longer measures leverage, so those periods are NaN.
+
+**Also known as:** net gearing, net gearing ratio, net debt to equity, net leverage ratio.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of period ends to average the net debt and the
+equity over. E.g. 4 with quarterly data averages the last four quarter ends. The
+window counts calendar periods, so a period without a report makes it NaN. Defaults
+to None, which uses the balances at the end of each period.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Net debt to equity ratio values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
+- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["VZ", "TMUS", "CHTR"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_net_debt_to_equity_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| CHTR | 5.0247 | 7.7499 | 6.6241 | 4.836  | 4.71   |
+| TMUS | 1.4788 | 1.5402 | 1.6795 | 1.7654 | 1.9707 |
+| VZ   | 2.1035 | 1.8789 | 1.8431 | 1.6322 | 1.5377 |
 
 ---
 
@@ -5439,6 +5953,8 @@ $$
 \text{Gross Debt to EBITDA Ratio} = \frac{\text{Total Debt}}{\text{EBITDA}}
 $$
 
+The total debt is that at the end of the period. Gross debt to EBITDA is an annual measure, so with quarterly data the EBITDA is that of the trailing twelve months by default. An EBITDA of zero or less gives NaN.
+
 **Args:**
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -5450,11 +5966,12 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over; the total debt
+stays that at the end of the last period. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses the trailing twelve months (4 quarters) with quarterly
+data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5486,11 +6003,11 @@ toolkit.ratios.get_gross_debt_to_ebitda_ratio()
 
 Which returns:
 
-|      |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:-----|-------:|-------:|-------:|-------:|-------:|
-| AVGO | 2.766  | 2.0812 | 1.9782 | 2.8785 | 1.9013 |
-| IBM  | 4.1515 | 4.1625 | 4.2157 | 3.9615 | 3.8345 |
-| ORCL | 5.4    | 4.7123 | 4.3955 | 4.3646 | 5.1938 |
+|      |   2021 |   2022 |   2023 |   2024 |     2025 |
+|:-----|-------:|-------:|-------:|-------:|---------:|
+| AVGO | 2.766  | 2.0812 | 1.9782 | 2.8785 |   1.9013 |
+| IBM  | 4.1515 | 4.1625 | 4.2157 | 3.9615 |   3.8345 |
+| ORCL | 5.4    | 4.7123 | 4.3955 | 4.3646 | nan      |
 
 ---
 
@@ -5505,6 +6022,8 @@ $$
 \text{Cash Flow Coverage Ratio} = \frac{\text{Cash Flow from Operations}}{\text{Total Debt}}
 $$
 
+The total debt is that at the end of the period, set against a year of operating cash flow: with quarterly data the trailing twelve months by default.
+
 **Args:**
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -5516,11 +6035,12 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
+- <u>trailing (int, optional):</u> The number of periods to sum the flows over; the total debt
+stays that at the end of the last period. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses the trailing twelve months (4 quarters) with quarterly
+data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5587,7 +6107,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5655,7 +6176,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5723,7 +6245,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5789,7 +6312,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5846,7 +6370,7 @@ $$
 
 A common reason for interest paid to exceed the interest expense is capitalized interest: companies building plants, fabs or networks add part of their interest to the cost of the asset, so the income statement shows less interest than was paid. When the data has no interest paid for a year, the ratio shows as 0, which means the figure is missing, not that no interest was paid.
 
-**Also known as:** cash interest coverage, interest cash conversion.
+**Also known as:** interest cash conversion, cash interest to interest expense.
 
 **Args:**
 
@@ -5862,7 +6386,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5931,7 +6456,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
-months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+months (TTM) and 3 with annual data a three-year cumulative figure. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to
 None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -6002,7 +6528,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
-months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+months (TTM) and 3 with annual data a three-year cumulative figure. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to
 None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -6073,7 +6600,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over. E.g. 4 with quarterly data gives the trailing twelve
-months (TTM) and 3 with annual data a three-year cumulative figure. Defaults to
+months (TTM) and 3 with annual data a three-year cumulative figure. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to
 None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -6147,9 +6675,9 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over; the total debt
-stays that at the end of the last period. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+stays that at the end of the last period. The window counts calendar periods, so
+a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -6223,9 +6751,9 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over; the total debt
-stays that at the end of the last period. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+stays that at the end of the last period. The window counts calendar periods, so
+a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -6296,7 +6824,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
 changes are compared, e.g. 4 with quarterly data compares trailing twelve months
-with those a year earlier. Defaults to None, which uses single-period flows.
+with those a year earlier. The window counts calendar periods, so a period
+without a report makes it NaN. Defaults to None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -6368,7 +6897,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
 changes are compared, e.g. 4 with quarterly data compares trailing twelve months
-with those a year earlier. Defaults to None, which uses single-period flows.
+with those a year earlier. The window counts calendar periods, so a period
+without a report makes it NaN. Defaults to None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -6438,7 +6968,8 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the flows over before their
 changes are compared, e.g. 4 with quarterly data compares trailing twelve months
-with those a year earlier. Defaults to None, which uses single-period flows.
+with those a year earlier. The window counts calendar periods, so a period
+without a report makes it NaN. Defaults to None, which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -6500,7 +7031,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -6536,38 +7068,42 @@ valuation_ratios.loc['AAPL']
 
 Which returns:
 
-|                             |         2021 |         2022 |         2023 |          2024 |         2025 |
-|:----------------------------|-------------:|-------------:|-------------:|--------------:|-------------:|
-| Earnings per Share          |  5.614       |  6.1132      |  6.1341      |   6.0836      |  7.465       |
-| Revenue per Share           | 21.691       | 24.1536      | 24.2393      |  25.3785      | 27.7354      |
-| Price-to-Earnings           | 31.6297      | 21.254       | 31.3871      |  41.1634      | 36.418       |
-| Price-to-Earnings-Growth    |  0.443       |  2.3908      | 92.315       | -50.1993      |  1.6036      |
-| Book Value per Share        |  3.7409      |  3.1038      |  3.9302      |   3.6961      |  4.914       |
-| Price-to-Book               | 47.4672      | 41.8617      | 48.9877      |  67.7523      | 55.3236      |
-| Interest Debt per Share     |  8.2519      |  8.2943      |  8.0862      |   7.727       |  7.4895      |
-| CAPEX per Share             | -0.6573      | -0.6559      | -0.6931      |  -0.6131      | -0.8474      |
-| Earnings Yield              |  0.0316      |  0.047       |  0.0319      |   0.0243      |  0.0275      |
-| Dividend Payout Ratio       |  0.1528      |  0.1487      |  0.1549      |   0.1625      |  0.1377      |
-| Dividend Yield              |  0.0049      |  0.007       |  0.0049      |   0.004       |  0.0038      |
-| Weighted Dividend Yield     |  0.0048      |  0.007       |  0.0049      |   0.0039      |  0.0038      |
-| Price-to-Cash-Flow          | 28.7847      | 17.3655      | 27.5403      |  32.6289      | 36.5905      |
-| Price-to-Free-Cash-Flow     | 32.2174      | 19.0341      | 30.5711      |  35.4618      | 41.301       |
-| Price-to-Sales              |  8.1863      |  5.3793      |  7.9429      |   9.8674      |  9.8019      |
-| Market Cap                  |  2.9947e+12  |  2.12121e+12 |  3.04439e+12 |   3.8585e+12  |  4.07918e+12 |
-| Enterprise Value            |  3.06859e+12 |  2.20539e+12 |  3.10676e+12 |   3.91238e+12 |  4.13686e+12 |
-| EV-to-Sales                 |  8.3883      |  5.5928      |  8.1056      |  10.0052      |  9.9405      |
-| EV-to-EBIT                  | 28.1653      | 18.4649      | 27.1806      |  31.7522      | 31.0925      |
-| EV-to-EBITDA                | 25.522       | 16.8942      | 24.6921      |  29.0536      | 28.5797      |
-| EV-to-Operating-Cash-Flow   | 29.4949      | 18.0546      | 28.1046      |  33.0846      | 37.1078      |
-| Tangible Asset Value        |  6.309e+10   |  5.0672e+10  |  6.2146e+10  |   5.695e+10   |  7.3733e+10  |
-| Net Current Asset Value     | -1.53076e+11 | -1.66678e+11 | -1.46871e+11 |  -1.55043e+11 | -1.37551e+11 |
-| EV-to-Free-Cash-Flow        | 33.0122      | 19.7894      | 31.1974      |  35.9571      | 41.885       |
-| Buyback Yield               |  0.0283      |  0.0421      |  0.0255      |   0.0246      |  0.0222      |
-| Shareholder Yield           |  0.0332      |  0.0491      |  0.0304      |   0.0286      |  0.026       |
-| SBC-Adjusted Free Cash Flow |  8.5047e+10  |  1.02405e+11 |  8.8751e+10  |   9.7119e+10  |  8.5904e+10  |
-| Free Cash Flow Payout Ratio |  0.1556      |  0.1332      |  0.1509      |   0.14        |  0.1561      |
-| EV-to-Invested-Capital      | 22.4029      | 16.3546      | 24.9497      |  35.2982      | 31.4798      |
-| Price-to-Tangible-Book      | 47.4672      | 41.8617      | 48.9877      |  67.7523      | 55.3236      |
+|                             |          2021 |          2022 |          2023 |          2024 |         2025 |
+|:----------------------------|--------------:|--------------:|--------------:|--------------:|-------------:|
+| Earnings per Share          |   5.614       |   6.1132      |   6.1341      |   6.0836      |  7.465       |
+| Revenue per Share           |  21.691       |  24.1536      |  24.2393      |  25.3785      | 27.7354      |
+| Price-to-Earnings           |  26.1702      |  24.6074      |  27.9114      |  37.4436      | 34.2211      |
+| Price-to-Earnings-Growth    |   0.3665      |   2.7675      |  81.8253      | -45.4836      |  1.507       |
+| Dividend-Adjusted PEG       |   0.3636      |   2.593       |  31.3561      | -95.2735      |  1.481       |
+| Book Value per Share        |   3.7409      |   3.1038      |   3.9302      |   3.6961      |  4.914       |
+| Price-to-Book               |  39.274       |  48.4665      |  43.563       |  61.6297      | 51.9862      |
+| Interest Debt per Share     |   8.2519      |   8.2943      |   8.0862      |   7.727       |  7.4895      |
+| CAPEX per Share             |  -0.6573      |  -0.6559      |  -0.6931      |  -0.6131      | -0.8474      |
+| Earnings Yield              |   0.0382      |   0.0406      |   0.0358      |   0.0267      |  0.0292      |
+| Dividend Payout Ratio       |   0.1528      |   0.1487      |   0.1549      |   0.1625      |  0.1377      |
+| Dividend Yield              |   0.0058      |   0.006       |   0.0055      |   0.0043      |  0.004       |
+| Weighted Dividend Yield     |   0.0058      |   0.006       |   0.0055      |   0.0043      |  0.004       |
+| Price-to-Cash-Flow          |  23.8162      |  20.1054      |  24.4906      |  29.6803      | 34.3831      |
+| Price-to-Free-Cash-Flow     |  26.6564      |  22.0372      |  27.1858      |  32.2572      | 38.8095      |
+| Price-to-Sales              |   6.7733      |   6.228       |   7.0633      |   8.9757      |  9.2106      |
+| Market Cap                  |   2.47779e+12 |   2.45589e+12 |   2.70727e+12 |   3.50981e+12 |  3.8331e+12  |
+| Enterprise Value            |   2.55168e+12 |   2.54007e+12 |   2.76964e+12 |   3.5637e+12  |  3.89078e+12 |
+| EV-to-Sales                 |   6.9753      |   6.4415      |   7.2261      |   9.1135      |  9.3492      |
+| EV-to-EBIT                  |  23.4208      |  21.267       |  24.2311      |  28.9224      | 29.243       |
+| EV-to-EBITDA                |  21.2228      |  19.458       |  22.0127      |  26.4642      | 26.8797      |
+| EV-to-Operating-Cash-Flow   |  24.5264      |  20.7945      |  25.0549      |  30.136       | 34.9005      |
+| Tangible Asset Value        |   6.309e+10   |   5.0672e+10  |   6.2146e+10  |   5.695e+10   |  7.3733e+10  |
+| Net Current Asset Value     |  -1.53076e+11 |  -1.66678e+11 |  -1.46871e+11 |  -1.55043e+11 | -1.37551e+11 |
+| EV-to-Free-Cash-Flow        |  27.4513      |  22.7925      |  27.8121      |  32.7525      | 39.3935      |
+| Buyback Yield               |   0.0343      |   0.0364      |   0.0286      |   0.0271      |  0.0237      |
+| Shareholder Yield           |   0.04        |   0.0424      |   0.0341      |   0.0314      |  0.0277      |
+| SBC-Adjusted Free Cash Flow |   8.5047e+10  |   1.02405e+11 |   8.8751e+10  |   9.7119e+10  |  8.5904e+10  |
+| Free Cash Flow Payout Ratio |   0.1556      |   0.1332      |   0.1509      |   0.14        |  0.1561      |
+| EV-to-Invested-Capital      |  18.6291      |  18.8365      |  22.2424      |  32.1523      | 29.6073      |
+| Price-to-Tangible-Book      |  39.274       |  48.4665      |  43.563       |  61.6297      | 51.9862      |
+| Net Share Issuance          |  -0.0382      |  -0.0295      |  -0.0295      |  -0.0258      | -0.0261      |
+| Composite Equity Issuance   | nan           | nan           | nan           | nan           | -0.176       |
+| Net External Financing      |  -0.2568      |  -0.2966      |  -0.2906      |  -0.3238      | -0.3165      |
 
 ---
 
@@ -6603,7 +7139,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -6672,7 +7209,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -6751,9 +7289,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -6787,9 +7325,99 @@ Which returns:
 
 |      |    2021 |    2022 |    2023 |    2024 |     2025 |
 |:-----|--------:|--------:|--------:|--------:|---------:|
-| COST | 50.3805 | 34.7419 | 46.6265 | 55.3169 |  47.3603 |
-| TGT  | 16.4167 | 24.9133 | 15.9285 | 15.2594 | nan      |
-| WMT  | 29.683  | 33.1872 | 27.4726 | 37.5653 | nan      |
+| COST | 39.9654 | 40.4741 | 38.4445 | 53.8746 |  51.8078 |
+| TGT  | 15.44   | 28.1678 | 16.2718 | 15.5675 | nan      |
+| WMT  | 28.6798 | 33.6788 | 28.7953 | 40.8125 | nan      |
+
+---
+
+## get_cyclically_adjusted_price_to_earnings_ratio
+Calculate the cyclically adjusted price earnings ratio (CAPE), the share price divided by the average inflation-adjusted earnings per share of the last ten years.
+
+Graham and Dodd (1934) advised valuing a company on its average earnings over "not less than five years, preferably seven to ten years" rather than on a single year, which can be far above or below what the company earns over a business cycle. Campbell and Shiller (1998) applied this to the S&P 500 as the price divided by the ten-year average of real earnings, the Shiller CAPE (toolkit.economics.get_shiller_stock_market_data). This is the same ratio for a single company.
+
+The formula is as follows:
+
+$$
+\text{Real EPS} \;(s) = \frac{\text{EPS} \;(s) \cdot \text{CPI} \;(t)}{\text{CPI} \;(s)}
+$$
+
+$$
+\text{CAPE} \;(t) = \frac{\text{Share Price} \;(t)}{\text{Average of Real EPS} \;(s)} \;\text{over the years}\; s = t - \text{years} + 1 \;\text{to}\; t
+$$
+
+The earnings per share are those of the price earnings ratio (`get_price_to_earnings_ratio`): net income (less preferred dividends with include_dividends) over the weighted average (diluted) shares of each fiscal year. With quarterly data, each quarter averages the trailing twelve month earnings per share of that quarter and of the same quarter in each earlier year, so every quarter of earnings enters once. The share price is the traded close at the end of each fiscal period (or the filing day with point_in_time), the same as for the price earnings ratio, so with years=1 and inflation_adjusted=False the ratio equals the price earnings ratio wherever the earnings are positive.
+
+The consumer price index is the monthly all items index of `country` (toolkit.economics.get_consumer_price_index with period="monthly": the Bank for International Settlements, with the latest months of the Bureau of Labor Statistics for the United States, and Eurostat, the ONS or the Statistics Bureau of Japan for their countries), taken in the month each fiscal period ends (the latest published month for a period that ends after it). The monthly index of Japan (Statistics Bureau of Japan) starts in January 2015, so with years=10 its values start in about 2024. The United States index is used for every company unless another country is given, so choose the country of the currency the earnings are in: with convert_currency the statements are in the listing currency, so the currency the shares trade in (e.g. country="Netherlands" for ASML.AS), and otherwise the currency of the statements.
+
+Every year of the window must be available, as in Campbell and Shiller (1998), so the first `years` - 1 years after the first statement (4 x `years` - 1 quarters with quarterly data) are NaN: choose a start_date that many years before the first ratio of interest. The FinancialModelingPrep plan can limit the history to five years of statements; years=5 is the shortest window Graham and Dodd recommend. An average real EPS of zero or below gives NaN, as the ratio has no meaning for a company that lost money over the cycle.
+
+A high CAPE relative to the company's own history or its peers means the market prices the company well above its average earnings power, which in Campbell and Shiller (1998) foreshadowed lower returns over the following ten years for the market as a whole.
+
+**Also known as:** Shiller P/E, P/E10, Graham and Dodd P/E, normalized P/E, CAPE ratio.
+
+References:
+
+- Graham, B. and Dodd, D. (1934). Security Analysis. McGraw-Hill, New York.
+- Campbell, J. Y. and Shiller, R. J. (1998). Valuation Ratios and the Long-Run Stock Market Outlook. The Journal of Portfolio Management, 24(2), 11-26.
+
+**Args:**
+
+- <u>years (int, optional):</u> The number of years of earnings to average. Defaults to 10.
+- <u>inflation_adjusted (bool, optional):</u> Whether to express the earnings of every year
+in the prices of the period of the ratio with the consumer price index.
+Defaults to True.
+- <u>country (str, optional):</u> The country whose consumer price index adjusts the
+earnings for inflation. Defaults to "United States".
+- <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
+Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Cyclically adjusted price earnings ratio (CAPE) values.
+
+**Notes:**
+
+- The method retrieves historical data and calculates the CAPE for each asset in the Toolkit instance.
+- It is not part of collect_valuation_ratios, as it retrieves the consumer price index.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "JNJ", "AAPL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2012-01-01",
+    end_date="2025-12-31",
+)
+
+# The last five years, each with ten years of earnings behind it.
+toolkit.ratios.get_cyclically_adjusted_price_to_earnings_ratio().iloc[:, -5:]
+```
+
+Which returns:
+
+|      |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:-----|--------:|--------:|--------:|--------:|--------:|
+| AAPL | 51.6596 | 43.1482 | 42.3565 | 50.2245 | 50.0506 |
+| JNJ  | 29.766  | 28.1009 | 21.813  | 20.1288 | 26.7847 |
+| KO   | 31.7418 | 32.6074 | 29.2816 | 29.6145 | 31.2952 |
 
 ---
 
@@ -6859,9 +7487,78 @@ Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| ADP  | 6.2692 | 2.2192 | 1.6493 | 2.9504 | 2.6649 |
-| COST | 2.016  | 2.0916 | 6.0241 | 3.2539 | 4.7694 |
-| MA   | 1.0968 | 2.0264 | 2.2927 | 2.1854 | 1.7108 |
+| ADP  | 5.0468 | 1.9513 | 1.5562 | 2.4061 | 3.1965 |
+| COST | 1.5994 | 2.4369 | 4.9671 | 3.1683 | 5.2198 |
+| MA   | 1.0967 | 2.0263 | 2.2929 | 2.1848 | 1.8225 |
+
+---
+
+## get_dividend_adjusted_price_to_earnings_growth_ratio
+Calculate the dividend-adjusted price earnings to growth (PEGY) ratio, the PEG ratio with the dividend yield added to the earnings growth, as Peter Lynch proposed in One Up On Wall Street (1989, chapter 13). A company that pays out much of its earnings grows them more slowly, and the PEG ratio counts that against it; the PEGY ratio credits the dividend as part of the return, which suits mature dividend payers.
+
+The formula is as follows:
+
+$$
+\text{PEGY Ratio} = \frac{\text{Price Earnings Ratio} \;\left(\frac{P}{E}\right)}{(\text{EPS Growth Rate} + \text{Dividend Yield}) \cdot 100}
+$$
+
+The EPS growth rate is that of `get_price_to_earnings_growth_ratio`: the growth of the (diluted) earnings per share on the previous year, with quarterly data of the trailing twelve months on those of four quarters earlier. The dividend yield is that of `get_dividend_yield`, the dividends per share paid over the year (the trailing four quarters with quarterly data) divided by the close at the end of the period. Both are decimals, and their sum is multiplied by 100 so that it enters in percent, as Lynch wrote it and as in the PEG ratio.
+
+Lynch divided the growth plus the yield by the P/E, the reciprocal of this ratio, and called a result below 1 poor, 1.5 okay and 2 or more good, so a PEGY ratio above 1 is poor and 0.5 or less good. Like the PEG ratio it uses a single year of earnings growth, so it swings widely and turns negative when the earnings fall by more than the dividend yield.
+
+**Also known as:** PEGY ratio, dividend-adjusted PEG ratio, yield-adjusted PEG, Lynch ratio.
+
+**Args:**
+
+- <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income, in both
+the P/E and the EPS growth. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Dividend-adjusted price earnings to growth (PEGY) ratio values.
+
+**Notes:**
+
+- A company without dividends has a dividend yield of 0, so its PEGY ratio equals its PEG ratio.
+- If `growth` is set to True, the method calculates the growth of the PEGY ratio values using the
+specified `lag`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["MA", "ADP", "COST"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_dividend_adjusted_price_to_earnings_growth_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| ADP  | 3.9205 | 1.7338 | 1.3813 | 1.9893 | 2.6594 |
+| COST | 1.434  | 2.3471 | 4.5521 | 2.8098 | 4.9592 |
+| MA   | 1.0825 | 1.9604 | 2.2175 | 2.1234 | 1.7727 |
 
 ---
 
@@ -7032,7 +7729,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -7086,7 +7784,9 @@ $$
 \text{Price to Book Ratio} = \frac{\text{Share Price}}{\text{Book Value per Share}}
 $$
 
-The price to book ratio matters most for banks and insurers, whose balance sheets consist mostly of financial assets and liabilities, so that book value is a fair measure of what shareholders own. It is read together with return on equity: a bank that earns more than its cost of equity can justify trading above book value, one that earns less trades below it. For companies whose value lies in brands, software or people, book value says little, and buybacks can shrink it until the ratio becomes extreme.
+The price to book ratio matters most for banks and insurers, whose balance sheets consist mostly of financial assets and liabilities, so that book value is a fair measure of what shareholders own. It is read together with return on equity: a bank that earns more than its cost of equity can justify trading above book value, one that earns less trades below it. For companies whose value lies in brands, software or people, book value says little, and buybacks can shrink it until the ratio becomes extreme. A book value of zero or less gives NaN, as a multiple of it does not measure value.
+
+The book value per share is that at the end of the period, the date of the close.
 
 **Also known as:** P/B ratio.
 
@@ -7106,11 +7806,6 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -7179,7 +7874,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -7252,7 +7948,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -7261,7 +7958,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Capex per share values.
+pd.DataFrame: Capex per share values, negative as capital expenditure is a cash
+outflow.
 
 **Notes:**
 
@@ -7306,7 +8004,7 @@ $$
 \text{Dividend Yield} = \frac{\text{Dividends per Share}}{\text{Share Price}}
 $$
 
-The dividends per share are those paid over a year: the trailing four quarters with quarterly data, each year with annual data and, with show_daily, the 365 calendar days up to each day. The share price is the close at the end of the period (or day).
+The dividends per share are those paid over a year: each fiscal year with annual data, the trailing four fiscal quarters with quarterly data and, with show_daily, the 365 calendar days up to each day. The share price is the close on the last trading day of the fiscal period (or the day), the same close as the price-to-earnings ratio of that period, and the year of dividends ends on that same day (the filing day with point_in_time, so no dividend after the price date is counted). So for a fiscal year ending in June the column 2024 holds the dividends paid from July 2023 through June 2024 against the close of June 2024. A period outside the financial statements uses the calendar period of its label, and a period that has not ended yet the year of dividends up to the last close, against that close. The dividends are FinancialModelingPrep's split-adjusted dividends on their ex-dividend dates.
 
 **Also known as:** annual dividend yield, income yield.
 
@@ -7329,9 +8027,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -7367,9 +8065,9 @@ Which returns:
 
 |     |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:----|-------:|-------:|-------:|-------:|-------:|
-| JNJ | 0.0245 | 0.0252 | 0.03   | 0.034  | 0.0248 |
+| JNJ | 0.0245 | 0.0252 | 0.03   | 0.0339 | 0.0248 |
 | KO  | 0.0284 | 0.0277 | 0.0312 | 0.0312 | 0.0292 |
-| PEP | 0.0245 | 0.025  | 0.0291 | 0.0351 | 0.0392 |
+| PEP | 0.0245 | 0.025  | 0.0291 | 0.0351 | 0.0391 |
 
 ---
 
@@ -7405,9 +8103,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -7443,8 +8141,8 @@ Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| ADI  | 0.0157 | 0.018  | 0.0167 | 0.0169 | 0.0143 |
-| QCOM | 0.0143 | 0.0257 | 0.0213 | 0.0212 | 0.0201 |
+| ADI  | 0.0159 | 0.0204 | 0.0207 | 0.016  | 0.0165 |
+| QCOM | 0.0203 | 0.025  | 0.0277 | 0.0192 | 0.0204 |
 | TXN  | 0.022  | 0.0281 | 0.0292 | 0.0278 | 0.0316 |
 
 ---
@@ -7481,9 +8179,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -7521,7 +8219,7 @@ Which returns:
 |:-----|-------:|-------:|-------:|-------:|-------:|
 | BP   | 3.8083 | 2.7006 | 3.2687 | 3.0351 | 3.7607 |
 | SHEL | 3.7559 | 3.0844 | 4.1282 | 3.6452 | 5.0988 |
-| TTE  | 4.3059 | 3.3711 | 4.0313 | 4.1606 | 5.0908 |
+| TTE  | 4.3059 | 3.3711 | 4.0313 | 4.1606 | 5.298  |
 
 ---
 
@@ -7557,9 +8255,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -7593,11 +8291,11 @@ toolkit.ratios.get_price_to_free_cash_flow_ratio()
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| ADBE | 39.57   | 21.4313 | 39.4468 | 25.4167 | 15.1691 |
-| CRM  | 46.8527 | 20.9397 | 27.2615 | 26.1893 | 17.5846 |
-| INTU | 56.1917 | 30.2018 | 36.9585 | 38.5183 | 30.8178 |
+|      |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:-----|--------:|--------:|--------:|--------:|---------:|
+| ADBE | 43.0908 | 21.7497 | 40.4961 | 29.4892 |  13.8749 |
+| CRM  | 42.8888 | 26.5272 | 29.1211 | 26.7666 | nan      |
+| INTU | 46.2982 | 34.9198 | 30.0688 | 38.9672 |  36.4667 |
 
 ---
 
@@ -7633,9 +8331,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -7669,11 +8367,11 @@ toolkit.ratios.get_price_to_sales_ratio()
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| AMD  | 10.7614 |  4.3114 | 10.5618 |  7.6685 | 10.1148 |
-| INTC |  2.6655 |  1.7282 |  3.903  |  1.6161 |  3.3903 |
-| NVDA | 27.7019 | 13.5824 | 20.2731 | 25.5249 | 21.1721 |
+|      |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:-----|--------:|--------:|--------:|--------:|---------:|
+| AMD  | 10.9289 |  4.3114 | 10.5618 |  7.9479 |  10.154  |
+| INTC |  2.6556 |  1.7282 |  3.903  |  1.6362 |   3.1027 |
+| NVDA | 21.5127 | 18.9229 | 24.9842 | 27.1083 | nan      |
 
 ---
 
@@ -7688,9 +8386,9 @@ $$
 \text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}
 $$
 
-Market cap is a point-in-time value, so the price is the close on the last trading day of each calendar period (or of each day with show_daily) and never an average. The periods follow the calendar, so for a company whose fiscal year ends in, for example, September, the price of the year is the December close while the shares come from the fiscal year. With show_daily, each day uses the shares of the latest period that has ended.
+Market cap is a point-in-time value, so the price is the close on the last trading day on or before the end of each fiscal period (or of each day with show_daily) and never an average: for a company whose fiscal year ends in, for example, September, the price of the year is the September close, matching the shares of that fiscal year. With show_daily, each day uses the shares of the latest period that has ended.
 
-When the Toolkit analyses the tickers as a basket (Toolkit(basket=True)), a "Total" row (a column with show_daily) adds up their market caps, for example to compare a group of companies with a country (see get_market_cap_to_gdp). The total of a period is left empty when a ticker has no market cap in it, as the sum of the others would understate the basket. With share, each ticker is its share of that total (a decimal, the Total is 1). Market caps are summed in the currency the tickers are listed in, so a basket of tickers listed in different currencies is refused.
+When the Toolkit analyses the tickers as a basket (Toolkit(basket=True)), a "Total" row (a column with show_daily) adds up their market caps, for example to compare a group of companies with a country (see get_market_cap_to_gdp); the total of a period adds the market caps at each ticker's own fiscal period end. The total of a period is left empty when a ticker has no market cap in it, as the sum of the others would understate the basket. With share, each ticker is its share of that total (a decimal, the Total is 1). Market caps are summed in the currency the tickers are listed in, so a basket of tickers listed in different currencies is refused.
 
 - Basket Market Capitalization = Sum of the Market Capitalizations of the Tickers
 - Share of the Basket = Market Capitalization / Basket Market Capitalization
@@ -7744,10 +8442,10 @@ Which returns:
 
 |       |        2021 |        2022 |        2023 |        2024 |        2025 |
 |:------|------------:|------------:|------------:|------------:|------------:|
-| AAPL  | 2.9947e+12  | 2.12121e+12 | 3.04439e+12 | 3.8585e+12  | 4.07918e+12 |
+| AAPL  | 2.47779e+12 | 2.45589e+12 | 2.70727e+12 | 3.50981e+12 | 3.8331e+12  |
 | GOOGL | 1.96322e+12 | 1.16102e+12 | 1.77714e+12 | 2.35622e+12 | 3.82799e+12 |
-| MSFT  | 2.55872e+12 | 1.80824e+12 | 2.80977e+12 | 3.14818e+12 | 3.61022e+12 |
-| Total | 7.51665e+12 | 5.09048e+12 | 7.6313e+12  | 9.3629e+12  | 1.15174e+13 |
+| MSFT  | 2.06101e+12 | 1.9365e+12  | 2.54451e+12 | 3.33827e+12 | 3.71317e+12 |
+| Total | 6.50202e+12 | 5.55341e+12 | 7.02892e+12 | 9.2043e+12  | 1.13743e+13 |
 
 ---
 
@@ -7826,10 +8524,8 @@ Calculates the Enterprise Value (EV) of a company. The Enterprise Value (EV) is 
 The formula is as follows:
 
 $$
-\text{Enterprise Value} = \text{Market Capitalization} + \text{Total Debt} + \text{Minority Interest} + \text{Preferred Equity}
+\text{Enterprise Value} = \text{Market Capitalization} + \text{Total Debt} + \text{Minority Interest} + \text{Preferred Equity} - (\text{Cash and Cash Equivalents} + \text{Short Term Investments})
 $$
-
-- (Cash and Cash Equivalents + Short Term Investments)
 
 Enterprise value is the price of the whole business, equity and debt together, which makes it the right numerator for multiples of operating results such as EV to EBITDA or EV to sales, and comparable across companies with different capital structures. Cash and marketable securities (short-term investments) are both deducted (Damodaran), since both are available to pay off the debt. Enterprise value is a point-in-time value: the market cap and the balance sheet items are taken at the end of each period, or on each day with show_daily, where each day uses the balance sheet of the latest period that has ended.
 
@@ -7879,8 +8575,8 @@ Which returns:
 
 |      |        2021 |        2022 |        2023 |        2024 |        2025 |
 |:-----|------------:|------------:|------------:|------------:|------------:|
-| DIS  | 3.39164e+11 | 2.12744e+11 | 2.15456e+11 | 2.52223e+11 | 2.50508e+11 |
-| NFLX | 2.86423e+11 | 1.41371e+11 | 2.28687e+11 | 3.99933e+11 | 4.10176e+11 |
+| DIS  | 3.77771e+11 | 2.26355e+11 | 1.98546e+11 | 2.24135e+11 | 2.49965e+11 |
+| NFLX | 2.86405e+11 | 1.4138e+11  | 2.28696e+11 | 3.99925e+11 | 4.12681e+11 |
 | WBD  | 2.83757e+10 | 6.52312e+10 | 6.88567e+10 | 6.09905e+10 | 1.02163e+11 |
 
 ---
@@ -7917,9 +8613,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -7946,11 +8642,11 @@ toolkit.ratios.get_ev_to_sales_ratio()
 
 Which returns:
 
-|      |    2021 |    2022 |    2023 |    2024 |    2025 |
-|:-----|--------:|--------:|--------:|--------:|--------:|
-| CRM  |  9.4734 |  4.2668 |  7.3823 |  8.5235 |  6.2821 |
-| NOW  | 22.1821 | 10.6245 | 15.902  | 19.7984 | 11.7871 |
-| WDAY | 13.2039 |  6.3974 |  9.4665 |  7.6732 |  5.7531 |
+|      |    2021 |    2022 |    2023 |    2024 |     2025 |
+|:-----|--------:|--------:|--------:|--------:|---------:|
+| CRM  |  8.683  |  5.3919 |  7.889  |  8.7129 | nan      |
+| NOW  | 22.1821 | 10.6245 | 15.902  | 19.7984 |  11.7871 |
+| WDAY | 12.2069 |  6.9755 | 10.0151 |  7.8017 | nan      |
 
 ---
 
@@ -7965,7 +8661,7 @@ $$
 \text{Enterprise Value to EBITDA Ratio} = \frac{\text{Enterprise Value}}{\text{EBITDA}}
 $$
 
-EV to EBITDA is the most common multiple in sector comparisons and takeover pricing because it is not affected by capital structure, tax rates or depreciation policy. That is also its limit: it ignores the capital expenditure needed to sustain EBITDA, so capital-intensive companies look cheaper than they are, and EV to EBIT (`get_ev_to_ebit`) or EV to free cash flow (`get_ev_to_free_cash_flow_ratio`) is a useful cross-check.
+EV to EBITDA is the most common multiple in sector comparisons and takeover pricing because it is not affected by capital structure, tax rates or depreciation policy. That is also its limit: it ignores the capital expenditure needed to sustain EBITDA, so capital-intensive companies look cheaper than they are, and EV to EBIT (`get_ev_to_ebit`) or EV to free cash flow (`get_ev_to_free_cash_flow_ratio`) is a useful cross-check. An EBITDA of zero or less gives NaN, as a multiple of it does not measure value.
 
 **Also known as:** EV/EBITDA.
 
@@ -7988,9 +8684,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8019,8 +8715,8 @@ Which returns:
 
 |     |    2021 |    2022 |    2023 |    2024 |    2025 |
 |:----|--------:|--------:|--------:|--------:|--------:|
-| A   | 30.0759 | 24.0884 | 26.0937 | 23.6894 | 22.7554 |
-| DHR | 23.3741 | 19.6229 | 24.9274 | 24.4558 | 23.2822 |
+| A   | 29.6783 | 22.3364 | 19.5821 | 23.0173 | 24.4093 |
+| DHR | 24.7936 | 19.6229 | 25.1879 | 25.5439 | 24.904  |
 | TMO | 23.0008 | 20.5519 | 21.5992 | 21.0334 | 22.7626 |
 
 ---
@@ -8055,9 +8751,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8126,9 +8822,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8159,7 +8855,7 @@ Which returns:
 |:---|-------:|--------:|-------:|-------:|---------:|
 | F  | 0.2141 | -0.0424 | 0.0882 | 0.1477 |  -0.1567 |
 | GM | 0.1143 |  0.1823 | 0.2038 | 0.1195 |   0.0402 |
-| TM | 0.0986 |  0.0971 | 0.1382 | 0.1225 | nan      |
+| TM | 0.1014 |  0.0936 | 0.1007 | 0.1351 | nan      |
 
 ---
 
@@ -8171,8 +8867,10 @@ The payout ratio is a financial metric that helps investors assess the portion o
 The formula is as follows:
 
 $$
-\text{Dividend Payout Ratio} = \frac{\text{Dividends Paid}}{\text{Net Income}}
+\text{Dividend Payout Ratio} = \frac{\left|\text{Dividends Paid}\right|}{\text{Net Income}}
 $$
+
+Dividends paid are reported as a negative cash outflow, so their magnitude is used.
 
 The payout ratio shows how much room a company has to keep or raise its dividend. A ratio above 1 means the dividend is paid partly from reserves or borrowing, which cannot last unless profits were depressed by one-off charges. Because it uses net income, it is often checked against free cash flow, and for real estate investment trusts, whose net income is reduced by depreciation, it is not a useful measure.
 
@@ -8192,7 +8890,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -8255,7 +8954,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -8316,7 +9016,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -8377,7 +9078,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -8443,9 +9145,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8512,9 +9214,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8543,8 +9245,8 @@ Which returns:
 
 |    |    2021 |    2022 |    2023 |    2024 |    2025 |
 |:---|--------:|--------:|--------:|--------:|--------:|
-| MA | 41.9184 | 32.0227 | 35.3215 | 34.7836 | 31.69   |
-| V  | 33.0331 | 25.1707 | 27.6636 | 34.662  | 32.1372 |
+| MA | 41.9184 | 32.0227 | 35.3215 | 34.7836 | 31.9679 |
+| V  | 33.9431 | 21.5735 | 24.4519 | 30.202  | 31.4257 |
 
 ---
 
@@ -8578,9 +9280,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8616,8 +9318,8 @@ Which returns:
 
 |      |   2021 |   2022 |   2023 |   2024 |   2025 |
 |:-----|-------:|-------:|-------:|-------:|-------:|
-| AAPL | 0.0283 | 0.0421 | 0.0255 | 0.0246 | 0.0222 |
-| AZO  | 0.0668 | 0.083  | 0.0712 | 0.052  | 0.024  |
+| AAPL | 0.0343 | 0.0364 | 0.0286 | 0.0271 | 0.0237 |
+| AZO  | 0.0904 | 0.0947 | 0.075  | 0.0523 | 0.0194 |
 | ORLY | 0.0511 | 0.0613 | 0.0554 | 0.028  | 0.0258 |
 
 ---
@@ -8650,9 +9352,9 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses the
-trailing twelve months (4 quarters) with quarterly data and single years with
-annual data.
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8691,8 +9393,8 @@ Which returns:
 
 |     |   2021 |   2022 |   2023 |   2024 |
 |:----|-------:|-------:|-------:|-------:|
-| HD  | 0.0489 | 0.0439 | 0.0461 | 0.0238 |
-| LOW | 0.0829 | 0.1309 | 0.0665 | 0.0472 |
+| HD  | 0.0553 | 0.0438 | 0.045  | 0.0225 |
+| LOW | 0.092  | 0.1219 | 0.0677 | 0.045  |
 
 ---
 
@@ -8723,7 +9425,8 @@ values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
 statement items) over, with balance sheet items averaged over the same number of
 period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. Defaults to None, which uses
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
 single-period flows (per quarter and not annualized with quarterly data).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -8794,8 +9497,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum flows (cash flow statement
 items) over. E.g. 4 with quarterly data gives the trailing twelve months (TTM)
-and 3 with annual data a three-year cumulative figure. Defaults to None, which
-uses single-period flows.
+and 3 with annual data a three-year cumulative figure. The window counts
+calendar periods, so a period without a report makes it NaN. Defaults to None,
+which uses single-period flows.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8872,9 +9576,6 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of period ends to average the balance sheet
-items over, as for the price to book ratio. Defaults to None, which uses the
-balance sheet at the end of each period.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -8911,7 +9612,7 @@ Which returns:
 
 |      |    2021 |    2022 |    2023 |    2024 |    2025 |
 |:-----|--------:|--------:|--------:|--------:|--------:|
-| AAPL | 22.4029 | 16.3546 | 24.9497 | 35.2982 | 31.4798 |
+| AAPL | 18.6291 | 18.8365 | 22.2424 | 32.1523 | 29.6073 |
 | F    |  1.2546 |  1.0247 |  1.0422 |  0.97   |  1.0985 |
 | KO   |  5.1209 |  5.6096 |  5.0137 |  5.2427 |  4.9835 |
 
@@ -8952,9 +9653,6 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of period ends to average the balance sheet
-items over, as for the price to book ratio. Defaults to None, which uses the
-balance sheet at the end of each period.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -9026,8 +9724,10 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods the shares are compared over.
-E.g. 5 with annual data gives the five-year issuance. Defaults to None, which
-uses a year: 4 quarters with quarterly data and 1 year with annual data.
+E.g. 5 with annual data gives the five-year issuance. The window counts
+calendar periods, so a period without a report makes it NaN. Defaults to
+None, which uses a year: 4 quarters with quarterly data and 1 year with
+annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -9080,10 +9780,8 @@ A company's market capitalization grows with its stock return and with the equit
 The formula is as follows:
 
 $$
-\text{Composite Equity Issuance} = \ln\left(\frac{\text{Market Cap}}{\text{Market Cap Five Years Earlier}}\right)
+\text{Composite Equity Issuance} = \ln\left(\frac{\text{Market Cap}}{\text{Market Cap Five Years Earlier}}\right) - \ln(\text{Total Return over the Five Years})
 $$
-
-- ln(Total Return over the Five Years)
 
 The total return is the log change in the price adjusted for dividends and splits, so a company that pays dividends without issuing shares has a negative value. The market cap is the close (adjusted for splits only) at the end of each period times the weighted average shares, as in `get_market_cap`, and the periods follow the calendar. The window is five years, as in the paper: 5 years with annual data and 20 quarters with quarterly data.
 
@@ -9104,8 +9802,9 @@ the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Default
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods of the window. E.g. 1 with annual
-data gives the issuance over a year. Defaults to None, which uses five years:
-20 quarters with quarterly data and 5 years with annual data.
+data gives the issuance over a year. The window counts calendar periods, so a
+period without a report makes it NaN. Defaults to None, which uses five
+years: 20 quarters with quarterly data and 5 years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -9186,8 +9885,9 @@ combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
 - <u>trailing (int, optional):</u> The number of periods to sum the cash flow statement
 items over, with the total assets averaged over the start and the end of that
-window. Defaults to None, which uses the trailing twelve months (4 quarters)
-with quarterly data and single years with annual data.
+window. The window counts calendar periods, so a period without a report
+makes it NaN. Defaults to None, which uses the trailing twelve months (4
+quarters) with quarterly data and single years with annual data.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none

@@ -856,3 +856,53 @@ get_market_cap_to_gdp:
     start_date: "2025-01-01"
     end_date: "2026-11-06"
     limit: -5
+get_return_on_net_operating_assets:
+  question: What was the return on net operating assets of Apple, Coca-Cola and Duke Energy from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: AAPL,KO,DUK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_net_borrowing_cost:
+  question: What was the net borrowing cost of Apple, Coca-Cola and Duke Energy from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: AAPL,KO,DUK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_financial_leverage:
+  question: What was the financial leverage (net financial obligations to common equity) of Apple, Coca-Cola and Duke Energy from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: AAPL,KO,DUK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_net_debt_to_equity_ratio:
+  question: What was the net debt to equity ratio of Verizon, T-Mobile and Charter from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: VZ,TMUS,CHTR
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_cyclically_adjusted_price_to_earnings_ratio:
+  question: What were the cyclically adjusted P/E ratios (CAPE) of Coca-Cola, Johnson & Johnson and Apple from 2021 to 2025, each over ten years of inflation-adjusted earnings?
+  tool: valuation
+  arguments:
+    tickers: KO,JNJ,AAPL
+    start_date: "2012-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_dividend_adjusted_price_to_earnings_growth_ratio:
+  question: What was the dividend-adjusted PEG ratio (PEGY) of Mastercard, ADP and Costco from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: MA,ADP,COST
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_asset_coverage_ratio:
+  question: What was the asset coverage ratio of Kinder Morgan, Williams and ONEOK from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: KMI,WMB,OKE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"

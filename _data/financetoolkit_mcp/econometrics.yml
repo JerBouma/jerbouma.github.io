@@ -453,3 +453,11 @@ get_streaks:
     period: monthly
     start_date: "2021-06-01"
     end_date: "2026-11-09"
+get_level_significance:
+  question: How unusual were the long-term interest rates of the United States, Germany and Japan in October 2026, compared with their monthly levels since 2000?
+  tool: econometrics
+  arguments:
+    series: "rates:get_long_term_interest_rate:United States,Germany,Japan"
+    period: monthly
+    start_date: "2000-01-01"
+    end_date: "2026-10-31"

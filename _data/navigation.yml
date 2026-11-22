@@ -594,6 +594,12 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_to_ebitda_ratio
       - title: Percent Accruals
         url: /projects/financetoolkit/docs/ratios#get_percent_accruals
+      - title: Return on Net Operating Assets (RNOA)
+        url: /projects/financetoolkit/docs/ratios#get_return_on_net_operating_assets
+      - title: Net Borrowing Cost
+        url: /projects/financetoolkit/docs/ratios#get_net_borrowing_cost
+      - title: Financial Leverage
+        url: /projects/financetoolkit/docs/ratios#get_financial_leverage
   - title: Solvency Ratios
     children:
       - title: All Solvency Ratios
@@ -644,6 +650,8 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_degree_of_financial_leverage
       - title: Degree of Total Leverage (DTL)
         url: /projects/financetoolkit/docs/ratios#get_degree_of_total_leverage
+      - title: Net Debt to Equity Ratio
+        url: /projects/financetoolkit/docs/ratios#get_net_debt_to_equity_ratio
   - title: Valuation Ratios
     children:
       - title: All Valuation Ratios
@@ -722,6 +730,10 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_composite_equity_issuance
       - title: Net External Financing
         url: /projects/financetoolkit/docs/ratios#get_net_external_financing
+      - title: Cyclically Adjusted P/E Ratio (CAPE)
+        url: /projects/financetoolkit/docs/ratios#get_cyclically_adjusted_price_to_earnings_ratio
+      - title: Dividend-Adjusted PEG Ratio (PEGY)
+        url: /projects/financetoolkit/docs/ratios#get_dividend_adjusted_price_to_earnings_growth_ratio
   - title: Factor Analysis
     children:
       - title: Factor Analysis
@@ -847,6 +859,20 @@ financetoolkit-docs-models:
         url: /projects/financetoolkit/docs/models#get_quality_score
       - title: Factor Analysis
         url: /projects/financetoolkit/docs/models#get_factor_analysis
+      - title: Kaplan-Zingales Index
+        url: /projects/financetoolkit/docs/models#get_kaplan_zingales_index
+      - title: Whited-Wu Index
+        url: /projects/financetoolkit/docs/models#get_whited_wu_index
+      - title: Size-Age Index
+        url: /projects/financetoolkit/docs/models#get_size_age_index
+      - title: Nissim-Penman Decomposition
+        url: /projects/financetoolkit/docs/models#get_nissim_penman_decomposition
+      - title: Discretionary Accruals
+        url: /projects/financetoolkit/docs/models#get_discretionary_accruals
+      - title: Implied Cost of Capital
+        url: /projects/financetoolkit/docs/models#get_implied_cost_of_capital
+      - title: Graham Intrinsic Value
+        url: /projects/financetoolkit/docs/models#get_graham_intrinsic_value
 financetoolkit-docs-options:
   - title: Modules
     children:
@@ -979,6 +1005,10 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_model_free_implied_volatility
       - title: Volatility Risk Premium
         url: /projects/financetoolkit/docs/options#get_volatility_risk_premium
+      - title: Risk-Neutral Moments
+        url: /projects/financetoolkit/docs/options#get_risk_neutral_moments
+      - title: SKEW Index
+        url: /projects/financetoolkit/docs/options#get_skew_index
 financetoolkit-docs-technicals:
   - title: Modules
     children:
@@ -1042,6 +1072,8 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_negative_volume_index
       - title: Market Breadth
         url: /projects/financetoolkit/docs/technicals#get_market_breadth
+      - title: Price Volume Trend (PVT)
+        url: /projects/financetoolkit/docs/technicals#get_price_volume_trend
   - title: Momentum Indicators
     children:
       - title: All Momentum Indicators
@@ -1092,6 +1124,14 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_choppiness_index
       - title: Relative Strength
         url: /projects/financetoolkit/docs/technicals#get_relative_strength
+      - title: Percentage Volume Oscillator (PVO)
+        url: /projects/financetoolkit/docs/technicals#get_percentage_volume_oscillator
+      - title: Stochastic RSI
+        url: /projects/financetoolkit/docs/technicals#get_stochastic_relative_strength_index
+      - title: True Strength Index (TSI)
+        url: /projects/financetoolkit/docs/technicals#get_true_strength_index
+      - title: Coppock Curve
+        url: /projects/financetoolkit/docs/technicals#get_coppock_curve
   - title: Overlap Indicators
     children:
       - title: All Overlap Indicators
@@ -1130,6 +1170,12 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_volatility_cone
       - title: Supertrend
         url: /projects/financetoolkit/docs/technicals#get_supertrend
+      - title: "Bollinger %B and BandWidth"
+        url: /projects/financetoolkit/docs/technicals#get_bollinger_percent_b_and_bandwidth
+      - title: Mass Index
+        url: /projects/financetoolkit/docs/technicals#get_mass_index
+      - title: Chandelier Exit
+        url: /projects/financetoolkit/docs/technicals#get_chandelier_exit
   - title: Seasonality
     children:
       - title: Seasonality
@@ -1205,6 +1251,10 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_hill_estimator
       - title: Move Significance
         url: /projects/financetoolkit/docs/risk#get_move_significance
+      - title: Marginal Expected Shortfall (MES)
+        url: /projects/financetoolkit/docs/risk#get_marginal_expected_shortfall
+      - title: SRISK
+        url: /projects/financetoolkit/docs/risk#get_srisk
   - title: Drawdowns
     children:
       - title: "Maximum Drawdown (MDD)"
@@ -1219,6 +1269,8 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_drawdown_series
       - title: Drawdown Table
         url: /projects/financetoolkit/docs/risk#get_drawdown_table
+      - title: Pain Index
+        url: /projects/financetoolkit/docs/risk#get_pain_index
   - title: Volatility
     children:
       - title: "Variance"
@@ -1239,6 +1291,8 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_volatility--rogers-satchell
       - title: "Yang-Zhang Volatility"
         url: /projects/financetoolkit/docs/risk#get_volatility--yang-zhang
+      - title: Idiosyncratic Volatility
+        url: /projects/financetoolkit/docs/risk#get_idiosyncratic_volatility
   - title: Volatility Models
     children:
       - title: "GARCH Volatility Model"
@@ -1290,6 +1344,14 @@ financetoolkit-docs-risk:
       - title: "Roll Spread"
         url: /projects/financetoolkit/docs/risk#get_roll_spread
 
+      - title: Corwin-Schultz Spread
+        url: /projects/financetoolkit/docs/risk#get_corwin_schultz_spread
+      - title: Abdi-Ranaldo Spread
+        url: /projects/financetoolkit/docs/risk#get_abdi_ranaldo_spread
+      - title: EDGE Spread
+        url: /projects/financetoolkit/docs/risk#get_edge_spread
+      - title: Share Turnover
+        url: /projects/financetoolkit/docs/risk#get_share_turnover
   - title: Factor Analysis
     children:
       - title: Factor Analysis
@@ -1391,6 +1453,10 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_morningstar_risk_adjusted_return
       - title: Morningstar Risk
         url: /projects/financetoolkit/docs/performance#get_morningstar_risk
+      - title: "Roy's Safety-First Ratio"
+        url: /projects/financetoolkit/docs/performance#get_safety_first_ratio
+      - title: Upside Potential Ratio
+        url: /projects/financetoolkit/docs/performance#get_upside_potential_ratio
   - title: Drawdown Ratios
     children:
       - title: "Calmar Ratio"
@@ -1403,6 +1469,8 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_ulcer_performance_index
       - title: "Gain-to-Pain Ratio"
         url: /projects/financetoolkit/docs/performance#get_gain_to_pain_ratio
+      - title: Pain Ratio
+        url: /projects/financetoolkit/docs/performance#get_pain_ratio
   - title: Vs. Benchmark
     children:
       - title: "Tracking Error"
@@ -1587,6 +1655,8 @@ financetoolkit-docs-fixedincome:
         url: /projects/financetoolkit/docs/fixedincome#get_nelson_siegel_svensson
       - title: Yield Curve Principal Components
         url: /projects/financetoolkit/docs/fixedincome#get_yield_curve_principal_components
+      - title: Carry and Roll-Down
+        url: /projects/financetoolkit/docs/fixedincome#get_carry_and_roll_down
   - title: Short-Rate Models
     children:
       - title: Short-Rate Model
@@ -1877,6 +1947,14 @@ financetoolkit-docs-economics:
       url: /projects/financetoolkit/docs/economics#get_output_gap
     - title: Trade Balance
       url: /projects/financetoolkit/docs/economics#get_trade_balance
+    - title: Net International Investment Position
+      url: /projects/financetoolkit/docs/economics#get_net_international_investment_position
+    - title: Net International Investment Position to GDP
+      url: /projects/financetoolkit/docs/economics#get_net_international_investment_position_to_gdp_ratio
+    - title: Foreign Exchange Reserves
+      url: /projects/financetoolkit/docs/economics#get_foreign_exchange_reserves
+    - title: Reserves Import Cover
+      url: /projects/financetoolkit/docs/economics#get_reserves_import_cover
   - title: Economy
     children:
       - title: Consumer Price Index
@@ -1937,6 +2015,8 @@ financetoolkit-docs-economics:
         url: /projects/financetoolkit/docs/economics#get_supply_chain_pressure_index
       - title: Chokepoint Transits
         url: /projects/financetoolkit/docs/economics#get_chokepoint_transits
+      - title: Capacity Utilization
+        url: /projects/financetoolkit/docs/economics#get_capacity_utilization
   - title: Finance
     children:
     - title: Money Supply
@@ -1975,6 +2055,8 @@ financetoolkit-docs-economics:
       url: /projects/financetoolkit/docs/economics#get_credit_to_gdp_gap
     - title: Debt Service Ratio
       url: /projects/financetoolkit/docs/economics#get_debt_service_ratio
+    - title: Outstanding Mortgage Rates
+      url: /projects/financetoolkit/docs/economics#get_outstanding_mortgage_rates
   - title: Environment
     children:
       - title: Renewable Energy
@@ -2003,6 +2085,14 @@ financetoolkit-docs-economics:
         url: /projects/financetoolkit/docs/economics#get_nonfarm_payrolls
       - title: Initial Jobless Claims
         url: /projects/financetoolkit/docs/economics#get_initial_jobless_claims
+      - title: Job Vacancy Rate
+        url: /projects/financetoolkit/docs/economics#get_job_vacancy_rate
+      - title: Unit Labour Costs
+        url: /projects/financetoolkit/docs/economics#get_unit_labour_costs
+      - title: Continuing Jobless Claims
+        url: /projects/financetoolkit/docs/economics#get_continuing_jobless_claims
+      - title: Insured Unemployment Rate
+        url: /projects/financetoolkit/docs/economics#get_insured_unemployment_rate
   - title: Crisis Indicators
     children:
       - title: Banking Crisis

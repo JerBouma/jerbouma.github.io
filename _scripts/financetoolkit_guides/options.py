@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 from financetoolkit import Toolkit
-from financetoolkit.options import greeks_model
+from financetoolkit.options.greeks import greeks_model
 
 from .common import API_KEY, label, line, values
 

@@ -185,7 +185,8 @@ Every method is also available as a plain function in `financetoolkit.econometri
 import numpy as np
 import pandas as pd
 
-from financetoolkit.econometrics import diagnostics_model, regression_model
+from financetoolkit.econometrics.diagnostics import diagnostics_model
+from financetoolkit.econometrics.regression import regression_model
 
 np.random.seed(42)
 
