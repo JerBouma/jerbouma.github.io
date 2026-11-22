@@ -7258,3 +7258,21 @@ body.article-document {
   .mermaid__theme--dark { display: none; }
   .mermaid__theme--light { display: block; }
 }
+
+// Articles: the text column is centred in the content box, so charts, tables, the cover and
+// other wide blocks stick out by the same amount on both sides. The header (kicker, title,
+// byline) and the end notes line up with the text.
+body.article-document {
+  .page__inner-wrap > header > .article-kicker,
+  .page__inner-wrap > header > .page__title,
+  .page__inner-wrap > header > .article-standfirst,
+  .page__inner-wrap > header > .article-byline,
+  .page__content > p, .page__content > ul, .page__content > ol, .page__content > blockquote,
+  .page__content > h2, .page__content > h3, .page__content > h4,
+  .page__content > details, .page__content > dl,
+  .article-updates, .article-series, .article-cite {
+    max-width: var(--article-measure);
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
