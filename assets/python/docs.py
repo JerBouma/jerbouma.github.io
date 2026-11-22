@@ -1757,8 +1757,8 @@ PAGES = [
         "location": "_pages/financetoolkit/documentation/docs.md",
         "header": f"""---
 title: Documentation
-excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
+excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 700+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 700+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
 permalink: /projects/financetoolkit/docs
 classes: wide-sidebar
@@ -1769,7 +1769,7 @@ sidebar:
     nav: "financetoolkit-docs"
 ---
 
-These pages document the Finance Toolkit, an open-source toolkit in which all relevant financial methods (500+) are written down in the most simplistic way allowing for complete transparency of the calculation method. Each class has an introduction page like this one, and the sidebar leads to a page for every function that shows how to use it through the [Finance Toolkit MCP](/projects/financetoolkit/mcp) in an AI assistant and in Python. The Python examples are also embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the [Getting Started](#getting-started) section below and the one that opens every module page.
+These pages document the Finance Toolkit, an open-source toolkit in which all relevant financial methods (700+) are written down in the most simplistic way allowing for complete transparency of the calculation method. Each class has an introduction page like this one, and the sidebar leads to a page for every function that shows how to use it through the [Finance Toolkit MCP](/projects/financetoolkit/mcp) in an AI assistant and in Python. The Python examples are also embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the [Getting Started](#getting-started) section below and the one that opens every module page.
 
 The Toolkit Module is a collection of functions that collect and parse data, including historical data, fundamental data (balance, income and cash flow statements) and metrics from Financial Modeling Prep such as enterprise values, company profiles and more. From this module you can access all related sub-modules.
 

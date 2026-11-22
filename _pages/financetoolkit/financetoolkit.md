@@ -7,8 +7,8 @@ software:
 title: Finance Toolkit
 seo_title: "Finance Toolkit: Python Library for Financial Analysis"
 seo_title_suffix: false
-excerpt: This is a free open-source toolkit written in Python in which 500+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
-description: "The Finance Toolkit is a free open-source Python package with 500+ transparent financial ratios, metrics and models computed from financial statements."
+excerpt: This is a free open-source toolkit written in Python in which 700+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+description: "The Finance Toolkit is a free open-source Python package with 700+ transparent financial ratios, metrics and models computed from financial statements."
 classes: wide-sidebar ft-overview
 author_profile: false
 redirect_from:
@@ -28,12 +28,12 @@ image: assets/images/projects/FinanceToolkit.jpg
   <div class="mcp-video-wrapper ft-hero__video">
     <video class="mcp-demo-video" autoplay muted playsinline controls preload="auto" width="1920" height="1080"
            poster="/assets/images/projects/financetoolkit-launch.jpg"
-           aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 500+ metrics.">
+           aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 700+ metrics.">
       <source src="/assets/video/financetoolkit-launch.mp4" type="video/mp4">
     </video>
   </div>
   <div class="mcp-facts ft-hero__facts">
-    <div class="mcp-fact"><strong>500+</strong><span>metrics</span></div>
+    <div class="mcp-fact"><strong>700+</strong><span>metrics</span></div>
     <div class="mcp-fact"><strong>{{ ft_stars.value }}</strong><span>GitHub stars</span></div>
     <div class="mcp-fact"><strong>{{ ft_dl.value }}</strong><span>downloads</span></div>
   </div>
@@ -43,7 +43,7 @@ While browsing a variety of websites, I kept finding that the same financial met
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, but each source applies a different method, which leads to different results. Collecting data from multiple sources can therefore lead to a wrong interpretation of the results, since one source could be using a different calculation method than another. That is, if the method is freely available at all; often it is hidden behind a paid subscription.
 
-**This is why I designed the FinanceToolkit**, an open-source toolkit in which all relevant financial methods ([500+](/projects/financetoolkit/docs)) are written down in the simplest way possible so that the calculation method is completely transparent ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This way you don't have to depend on metrics from providers that don't share their methods. Given a set of financial statements, you can do the calculations yourself with one consistent set of formulas that anyone can read and understand.
+**This is why I designed the FinanceToolkit**, an open-source toolkit in which all relevant financial methods ([700+](/projects/financetoolkit/docs)) are written down in the simplest way possible so that the calculation method is completely transparent ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This way you don't have to depend on metrics from providers that don't share their methods. Given a set of financial statements, you can do the calculations yourself with one consistent set of formulas that anyone can read and understand.
 
 Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, allowing you to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
@@ -86,7 +86,7 @@ This section is an introduction to the Finance Toolkit. The documentation contai
 
 [Find the Documentation](/projects/financetoolkit/docs){: .btn .btn--warning .btn--large .align-center}
 
-The sections below follow one analysis of the semiconductor sector from start to finish, where each step answers the question the previous one raises: which companies make up the sector, how their shares did, what drives their profits, how much risk came with the returns, what the option market expects next, how the economy shaped all of it, whether a fund is the better way in and how the sector fits into a diversified portfolio. Every module of the Finance Toolkit appears once, but each holds far more than shown here: 500+ methods in total, all described with examples in the [documentation](/projects/financetoolkit/docs).
+The sections below follow one analysis of the semiconductor sector from start to finish, where each step answers the question the previous one raises: which companies make up the sector, how their shares did, what drives their profits, how much risk came with the returns, what the option market expects next, how the economy shaped all of it, whether a fund is the better way in and how the sector fits into a diversified portfolio. Every module of the Finance Toolkit appears once, but each holds far more than shown here: 700+ methods in total, all described with examples in the [documentation](/projects/financetoolkit/docs).
 
 ### Discovering the Sector
 

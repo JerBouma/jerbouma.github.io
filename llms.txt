@@ -16,7 +16,7 @@ sitemap: false
 
 > {{ home.description | strip_newlines }}
 
-The Finance Toolkit calculates 500+ financial metrics (ratios, valuation and risk models, performance, technical indicators, options, fixed income, econometrics and macroeconomic data) with transparent, documented formulas. The Finance Database classifies 300,000+ stocks, ETFs and indices by sector, industry, country and more. Both are free and open source, and both run as MCP servers so Claude, ChatGPT and other AI assistants can use them.
+The Finance Toolkit calculates 700+ financial metrics (ratios, valuation and risk models, performance, technical indicators, options, fixed income, econometrics and macroeconomic data) with transparent, documented formulas. The Finance Database classifies 300,000+ stocks, ETFs and indices by sector, industry, country and more. Both are free and open source, and both run as MCP servers so Claude, ChatGPT and other AI assistants can use them.
 
 ## Projects
 {% for u in projects %}{% assign p = site.pages | where: "url", u | first %}{% if p %}

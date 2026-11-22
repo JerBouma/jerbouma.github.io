@@ -2,7 +2,7 @@
 title: How to Find and Analyze Stocks and ETFs with Claude
 seo_title: "Find and Analyze Stocks and ETFs with Claude"
 date: 2026-10-10
-last_modified_at: 2026-11-18
+last_modified_at: 2026-11-22
 permalink: /articles/find-stocks-and-etfs-with-claude
 redirect_from:
   - /articles/find-stocks-etfs-funds-with-claude
@@ -37,7 +37,7 @@ It pairs well with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp
 <div class="ca-strip">
   <div><strong>2 connectors</strong><span>one to find, one to analyze, in the same conversation</span></div>
   <div><strong>300,000+</strong><span>stocks, ETFs, indices, currencies and cryptos to search</span></div>
-  <div><strong>500+</strong><span>financial methods to run on what you find</span></div>
+  <div><strong>700+</strong><span>financial methods to run on what you find</span></div>
   <div><strong>Free</strong><span>hosted servers, open-source code</span></div>
 </div>
 

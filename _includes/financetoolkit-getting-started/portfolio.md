@@ -1,6 +1,6 @@
 ## Getting Started
 
-The Portfolio module analyses your own portfolio from a list of transactions: what you bought and sold, when, at what price and at what cost. From that list it builds the positions over time, the return and profit-and-loss of every asset and transaction, and the same transactions made in a benchmark, so you can see whether your decisions beat simply buying the index. The portfolio is also connected to the rest of the Finance Toolkit, which means any of the 500+ ratios, risk and performance metrics and technical indicators can be calculated for the assets you hold and for the portfolio as a whole, weighted by its positions over time.
+The Portfolio module analyses your own portfolio from a list of transactions: what you bought and sold, when, at what price and at what cost. From that list it builds the positions over time, the return and profit-and-loss of every asset and transaction, and the same transactions made in a benchmark, so you can see whether your decisions beat simply buying the index. The portfolio is also connected to the rest of the Finance Toolkit, which means any of the 700+ ratios, risk and performance metrics and technical indicators can be calculated for the assets you hold and for the portfolio as a whole, weighted by its positions over time.
 
 ### The Portfolio Template
 
