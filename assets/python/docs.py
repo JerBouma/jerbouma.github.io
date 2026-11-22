@@ -1636,8 +1636,31 @@ def _iter_functions(source: str):
     yield from _walk(ast.parse(source).body)
 
 
+_RE_SUB_CONTROLLER = re.compile(
+    r"^from financetoolkit\.([\w.]+)_controller import", re.M
+)
+
+
+def _fetch_with_sub_controllers(file_url: str) -> str:
+    """Fetch a controller and, after it, the sub-controllers it mixes in.
+
+    Since v2.3.5 a module's class (Models, Risk, Economics, ...) inherits its methods
+    from controllers in topic folders below its own folder, e.g.
+    models/valuation/valuation_controller.py. Only imports from below the controller's
+    own folder count, so shared helpers such as the cache are left out.
+    """
+    content = _fetch_file(file_url)
+    folder = file_url.split(f"{_BASE}/", 1)[1].rsplit("/", 1)[0]
+    parts = [content]
+    for dotted in _RE_SUB_CONTROLLER.findall(content):
+        path = dotted.replace(".", "/") + "_controller.py"
+        if folder and path.startswith(folder + "/") and path.count("/") > folder.count("/") + 1:
+            parts.append(_fetch_with_sub_controllers(f"{_BASE}/{path}"))
+    return "\n\n".join(parts)
+
+
 def create_markdown_file(file_url: str, header: str, location: str) -> None:
-    file_content = _fetch_file(file_url)
+    file_content = _fetch_with_sub_controllers(file_url)
 
     functions_with_docstrings = []
     for function_name, docstring in _iter_functions(file_content):
@@ -1996,7 +2019,7 @@ The ETF module analyzes exchange-traded funds: their holdings, sector and countr
 """,
     },
     {
-        "url": f"{_BASE}/portfolio/construction_controller.py",
+        "url": f"{_BASE}/portfolio/construction/construction_controller.py",
         "location": "_pages/financetoolkit/documentation/portfolio-optimization.md",
         "header": f"""---
 title: Portfolio Optimization

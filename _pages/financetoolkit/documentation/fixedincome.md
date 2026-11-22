@@ -35,7 +35,7 @@ Treasuries come from the Treasury's daily FedInvest prices (see `get_treasury_se
 
 The fields are:
 
-- Years to Maturity: counted on the bond's actual coupon dates (actual/actual).
+- Years to Maturity: counted on the bond's actual coupon dates, in actual days for Treasuries (actual/actual) and on the 30/360 Bond Basis for corporate bonds; a bill counts its days on a 365-day year.
 - Accrued Interest: the coupon earned since the previous coupon date.
 - Yield to Maturity: the rate that discounts the coupons and principal to the price plus the accrued interest, compounded twice a year.
 - Current Yield: the annual coupon divided by the price.
@@ -94,9 +94,9 @@ $$
 \text{Z-Spread solves Price} = \sum\left(\frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{Spot Rate}(t) + \text{Z-Spread}}{2}\right)^{2t}}\right) - \text{Accrued Interest}
 $$
 
-Where Spot Rate(t) is the Treasury zero-coupon rate of `get_zero_coupon_curve`, restated from annual to semi-annual compounding, interpolated linearly between its maturities. Bills pay no coupon and their yield is the bond-equivalent yield (see `get_bond_equivalent_yield`). TIPS are priced on their inflation-adjusted principal, so their yield is a real yield and they have no present value or Z-spread on the nominal curve. Floating rate notes are left out.
+Where Spot Rate(t) is the Treasury zero-coupon rate of `get_zero_coupon_curve`, restated from annual to semi-annual compounding, interpolated linearly between the bills and the half-yearly coupon dates of the bootstrap, on which every par bond of the par yield curve prices at par. Bills pay no coupon and their yield is the bond-equivalent yield (see `get_bond_equivalent_yield`), simple interest up to half a year, so their durations and convexity follow from that pricing: a modified duration of t / (1 + YTM * t) up to half a year rather than t / (1 + YTM / 2). TIPS are priced on their inflation-adjusted principal, so their yield is a real yield and they have no present value or Z-spread on the nominal curve. Floating rate notes are left out.
 
-To calculate these statistics for terms of your own, use the functions of `financetoolkit.fixedincome.bond_model` (get_bond_price, get_yield_to_maturity, get_macaulays_duration, get_modified_duration, get_effective_duration, get_dollar_duration, get_dv01, get_convexity and get_z_spread).
+To calculate these statistics for terms of your own, use the functions of `financetoolkit.fixedincome.bonds.bond_model` (get_bond_price, get_yield_to_maturity, get_macaulays_duration, get_modified_duration, get_effective_duration, get_dollar_duration, get_dv01, get_convexity and get_z_spread).
 
 **Also known as:** bond data, fixed income statistics, bond analytics.
 
@@ -158,8 +158,8 @@ Which returns:
 | Dollar Duration     | 1.8847      | 4.4294      | 7.6505      | 14.7715     |
 | DV01                | 0.0188      | 0.0443      | 0.0765      | 0.1477      |
 | Convexity           | 4.5145      | 22.7527     | 71.6857     | 333.2043    |
-| Present Value       | 100.3147    | 100.7082    | 98.4008     | 98.028      |
-| Z-Spread            | 0.0         | 0.0         | 0.0         | -0.0001     |
+| Present Value       | 100.3147    | 100.7083    | 98.4039     | 98.098      |
+| Z-Spread            | 0.0         | 0.0         | 0.0         | 0.0         |
 
 ---
 
@@ -187,7 +187,7 @@ C = \text{Coupon payment per half year},\;\; \frac{100 \cdot \text{Coupon}}{2}
 $$
 
 $$
-s(t) = \text{Treasury zero-coupon rate at}\; t \;\text{years} \;(\text{get\_zero\_coupon\_curve}),\;\; \text{restated from annual to semi-annual compounding and interpolated linearly between its maturities}
+s(t) = \text{Treasury zero-coupon rate at}\; t \;\text{years} \;(\text{get\_zero\_coupon\_curve}),\;\; \text{restated from annual to semi-annual compounding and interpolated linearly between the bills and the half-yearly coupon dates of the bootstrap}
 $$
 
 $$
@@ -249,12 +249,12 @@ Which returns:
 |           |   Coupon | Maturity   |    Price |   Present Value |
 |:----------|---------:|:-----------|---------:|----------------:|
 | 91282CRU7 |   0.0462 | 2028-10-31 | 100.312  |        100.315  |
-| 91282CLR0 |   0.0412 | 2029-10-31 |  98.875  |         98.8811 |
+| 91282CLR0 |   0.0412 | 2029-10-31 |  98.875  |         98.8812 |
 | 91282CRT0 |   0.0475 | 2031-10-31 | 100.688  |        100.708  |
-| 91282CRV5 |   0.0488 | 2033-10-31 | 101.062  |        101.039  |
-| 91282CRF0 |   0.0462 | 2036-08-15 |  98.4375 |         98.4008 |
-| 912810RU4 |   0.0288 | 2046-11-15 |  70.0312 |         69.9175 |
-| 912810UW6 |   0.0512 | 2056-08-15 |  98.125  |         98.028  |
+| 91282CRV5 |   0.0488 | 2033-10-31 | 101.062  |        101.04   |
+| 91282CRF0 |   0.0462 | 2036-08-15 |  98.4375 |         98.4039 |
+| 912810RU4 |   0.0288 | 2046-11-15 |  70.0312 |         69.9481 |
+| 912810UW6 |   0.0512 | 2056-08-15 |  98.125  |         98.098  |
 
 ---
 
@@ -371,7 +371,7 @@ C = \text{Coupon payment per half year},\;\; \frac{100 \cdot \text{Coupon}}{2}
 $$
 
 $$
-a = \text{Elapsed fraction of the current coupon period},\;\; \text{in actual days (actual/actual), 0 on a coupon date}
+a = \text{Elapsed fraction of the current coupon period},\;\; \text{in actual days for Treasuries (actual/actual) and on the 30/360 Bond Basis for corporate bonds, 0 on a coupon date}
 $$
 
 $$
@@ -384,7 +384,7 @@ $$
 
 The yield is a nominal annual rate compounded twice a year (bond-equivalent), as the Treasury and US corporate bond markets quote it, solved with the secant method. For a bill it is the bond-equivalent yield of its discount price (see `get_bond_equivalent_yield`), for TIPS the real yield. The bonds are selected as in `collect_bond_statistics`. For terms of your own, use `bond_model.get_yield_to_maturity`.
 
-The yield to maturity is the return of a bond bought at this price and held to maturity, if every coupon is reinvested at the same yield and the issuer pays in full. It is the standard way to quote and compare bonds, but it is one average rate for all cash flows: bonds with the same maturity but different coupons have different yields even when both are priced in line with the same spot curve, which the Z-spread (`get_z_spread`) accounts for. For callable bonds the yield to worst is quoted instead.
+The yield to maturity is the return of a bond bought at this price and held to maturity, if every coupon is reinvested at the same yield and the issuer pays in full. It is the standard way to quote and compare bonds, but it is one average rate for all cash flows: bonds with the same maturity but different coupons have different yields even when both are priced in line with the same spot curve, which the Z-spread (`get_z_spread`) accounts for. For callable bonds the yield to worst is quoted instead, which `bond_model.get_yield_to_worst` calculates from a call schedule.
 
 **Also known as:** YTM, bond return to maturity, redemption yield.
 
@@ -451,7 +451,7 @@ $$
 \text{Price} = \sum\left(\frac{\text{Cash Flow}(t)}{\left(1 + \frac{\text{Spot Rate}(t) + \text{Z-Spread}}{2}\right)^{2t}}\right) - \text{Accrued Interest}
 $$
 
-Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates and Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding, interpolated linearly between its maturities and held flat beyond its first and last maturity.
+Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates and Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding, interpolated linearly between the bills and the half-yearly coupon dates of the bootstrap and held flat beyond its first and last maturity.
 
 The bonds are selected as in `collect_bond_statistics`. TIPS have no Z-spread on the nominal curve. For a bond with an embedded option the Z-spread includes the option's value, which an option-adjusted spread removes: the ICE BofA option-adjusted spreads of bond indices are in `get_ice_bofa_option_adjusted_spread`, and `short_rate_model.get_option_adjusted_spread` calculates one for a call schedule of your own. For terms of your own, use `bond_model.get_z_spread`.
 
@@ -501,18 +501,18 @@ Which returns:
 
 |              | Issuer    |   Coupon | Maturity   |   Price | Price Date   |   Z-Spread |
 |:-------------|:----------|---------:|:-----------|--------:|:-------------|-----------:|
-| US037833EU05 | APPLE INC |   0.0415 | 2030-05-10 |   97.95 | 2026-11-05   |     0.0024 |
-| US037833DU14 | APPLE INC |   0.0165 | 2030-05-11 |   89.69 | 2026-11-05   |     0.0033 |
-| US037833EZ91 | APPLE INC |   0.042  | 2030-05-12 |   98.25 | 2026-11-05   |     0.002  |
-| US037833DY36 | APPLE INC |   0.0125 | 2030-08-20 |   87.72 | 2026-11-05   |     0.0027 |
-| US037833ED89 | APPLE INC |   0.0165 | 2031-02-08 |   87.78 | 2026-11-05   |     0.0029 |
-| US037833EJ59 | APPLE INC |   0.017  | 2031-08-05 |   86.74 | 2026-11-05   |     0.0027 |
-| US037833FG02 | APPLE INC |   0.049  | 2031-11-09 |   99.83 | 2026-11-05   |     0.0035 |
-| US037833FA32 | APPLE INC |   0.045  | 2032-05-12 |   98.35 | 2026-11-05   |     0.0022 |
-| US037833EP10 | APPLE INC |   0.0335 | 2032-08-08 |   92.53 | 2026-11-05   |     0.0022 |
-| US037833EV87 | APPLE INC |   0.043  | 2033-05-10 |   95.84 | 2026-11-05   |     0.0038 |
-| US037833FH84 | APPLE INC |   0.051  | 2033-11-09 |   99.77 | 2026-11-05   |     0.0044 |
-| US037833FB15 | APPLE INC |   0.0475 | 2035-05-12 |   97.91 | 2026-11-05   |     0.0028 |
+| US037833EU05 | APPLE INC |   0.0415 | 2030-05-10 |   96.93 | 2026-11-13   |     0.0019 |
+| US037833DU14 | APPLE INC |   0.0165 | 2030-05-11 |   88.78 | 2026-11-13   |     0.0026 |
+| US037833EZ91 | APPLE INC |   0.042  | 2030-05-12 |   97.22 | 2026-11-13   |     0.0014 |
+| US037833DY36 | APPLE INC |   0.0125 | 2030-08-20 |   86.64 | 2026-11-13   |     0.0025 |
+| US037833ED89 | APPLE INC |   0.0165 | 2031-02-08 |   86.66 | 2026-11-13   |     0.0024 |
+| US037833EJ59 | APPLE INC |   0.017  | 2031-08-05 |   85.5  | 2026-11-13   |     0.0022 |
+| US037833FG02 | APPLE INC |   0.049  | 2031-11-09 |   98.53 | 2026-11-13   |     0.0026 |
+| US037833FA32 | APPLE INC |   0.045  | 2032-05-12 |   96.52 | 2026-11-13   |     0.0024 |
+| US037833EP10 | APPLE INC |   0.0335 | 2032-08-08 |   90.86 | 2026-11-13   |     0.002  |
+| US037833EV87 | APPLE INC |   0.043  | 2033-05-10 |   94.57 | 2026-11-13   |     0.0027 |
+| US037833FH84 | APPLE INC |   0.051  | 2033-11-09 |   98.13 | 2026-11-13   |     0.0038 |
+| US037833FB15 | APPLE INC |   0.0475 | 2035-05-12 |   95.86 | 2026-11-13   |     0.0026 |
 
 ---
 
@@ -531,7 +531,7 @@ $$
 \text{Key Rate Duration} = - \frac{\text{Dirty Price}(\text{Key Rate} + \Delta y) - \text{Dirty Price}(\text{Key Rate} - \Delta y)}{2 \cdot \text{Dirty Price} \cdot \Delta y}
 $$
 
-Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates, Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding and interpolated linearly between its maturities, and $$\Delta y$$ is the shock applied to the key rate only (1 basis point by default).
+Where each coupon is 100 * Coupon / 2, the principal is repaid with the last coupon, t is each remaining payment time in years on the bond's actual coupon dates, Spot Rate(t) is the Treasury zero-coupon rate of the price date (`get_zero_coupon_curve`), restated from annual to semi-annual compounding and interpolated linearly between the maturities the Treasury quotes (the key rates), and $$\Delta y$$ is the shock applied to the key rate only (1 basis point by default).
 
 The bonds are selected as in `collect_bond_statistics`; TIPS have no key rate durations on the nominal curve. For terms or a curve of your own, use `bond_model.get_key_rate_duration`.
 
@@ -737,7 +737,7 @@ $$
 \text{BEY} = \frac{- 2t + 2 \cdot \sqrt{t^{2} - (2t - 1) \cdot \left(1 - \frac{100}{\text{Price}}\right)}}{2t - 1},\;\; \text{with}\;\; t = \frac{\text{Days to Maturity}}{365},\;\; \text{for more than 182.5 days}
 $$
 
-A bill with half a year or less remaining takes the simple restatement onto the purchase price and a 365-day year. Beyond that an equivalent coupon-bearing note would have paid a coupon at the six month point, so the U.S. Treasury's semi-annually compounded solution (31 CFR 356, Appendix B) is used instead. Applying the simple formula to a 52-week bill instead overstates its yield by roughly seven basis points.
+A bill with half a year or less remaining takes the simple restatement onto the purchase price and a 365-day year. Beyond that an equivalent coupon-bearing note would have paid a coupon at the six month point, so the U.S. Treasury's semi-annually compounded solution (31 CFR 356, Appendix B) is used instead. Applying the simple formula to a 52-week bill instead overstates its yield, by about 4 to 7 basis points at discount yields of 4 to 5% (4.2265% instead of 4.1829% at a 4% discount yield).
 
 The prices are the Treasury's daily FedInvest prices, see `get_treasury_securities`. To convert a discount yield of your own, use `bond_model.get_bond_equivalent_yield`.
 
@@ -793,1104 +793,10 @@ Which returns:
 
 ---
 
-## get_forward_rate
-Calculates the implied forward rates between pairs of maturities of a country's zero-coupon (spot) yield curve on a day. The forward rate is the interest rate, implied by that day's curve, for a loan that starts at a future date: it follows from no-arbitrage pricing rather than being a forecast of future rates, and contains a term premium.
-
-The formula is as follows:
-
-$$
-\text{Forward Rate} = \left(\frac{(1 + r_{2})^{t_{2}}}{(1 + r_{1})^{t_{1}}}\right)^{\frac{1}{t_{2} - t_{1}}} - 1
-$$
-
-where:
-
-$$
-r_{1} = \text{Zero-coupon rate at the near maturity},\;\; \text{interpolated linearly from the curve}
-$$
-
-$$
-t_{1} = \text{Near maturity},\;\; \text{in years}
-$$
-
-$$
-r_{2} = \text{Zero-coupon rate at the far maturity},\;\; \text{interpolated linearly from the curve}
-$$
-
-$$
-t_{2} = \text{Far maturity},\;\; \text{in years}
-$$
-
-The curve is the zero-coupon curve of `get_zero_coupon_curve`, bootstrapped from the country's government bond par yields and annually compounded, so the forward rate is annually compounded as well. For a curve of your own, use `yieldcurve_model.get_forward_rate`.
-
-**Also known as:** implied forward rate, forward-forward rate.
-
-**Args:**
-
-- <u>near_maturity (float &#124; str &#124; list &#124; None, optional):</u> The nearer maturity (or
-maturities), in years or as labels such as '6M'. Defaults to None, 1 to 5 years.
-- <u>far_maturity (float &#124; str &#124; list &#124; None, optional):</u> The further maturity (or
-maturities), in years or as labels such as '10Y'. Defaults to None, 5 to 10 years.
-- <u>country (str, optional):</u> The country, see `get_zero_coupon_curve`. Defaults to
-"United States".
-- <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
-before it with a curve. Defaults to None, the end date.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
-to. Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The forward rate (decimal, annually compounded) for each combination
-of near (rows) and far maturity (columns). Combinations where the far maturity is
-not greater than the near maturity are NaN.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome()
-
-fixedincome.get_forward_rate(
-    near_maturity=[1, 2, 5], far_maturity=[5, 10, 30], date="2026-11-05"
-)
-```
-
-Which returns:
-
-|   Near Maturity |        5 |     10 |     30 |
-|----------------:|---------:|-------:|-------:|
-|               1 |   0.0473 | 0.0501 | 0.0548 |
-|               2 |   0.0474 | 0.0505 | 0.0551 |
-|               5 | nan      | 0.0524 | 0.056  |
-
----
-
-## get_par_yield
-Calculates the par yields of any maturity from a country's zero-coupon (spot) yield curve on a day. The par yield for a maturity is the coupon rate a newly issued bond of that maturity needs so that, discounted with the spot curve, its price equals par.
-
-The government bond yield curve quotes par yields at its own maturities; this gives the par yield of any maturity in between (such as 4 or 15 years) with the interpolation done on the zero-coupon rates, where it belongs, rather than on the par yields.
-
-The formula is as follows:
-
-$$
-\operatorname{DF}(t) = \frac{1}{\left(1 + \frac{\text{Spot Rate}\left(\frac{t}{\text{Frequency}}\right)}{\text{Frequency}}\right)^{t}},\;\; \text{the discount factor of a cash flow after } t \text{ coupon periods}
-$$
-
-$$
-\text{Par Yield} = \frac{\text{Frequency} \cdot (1 - \operatorname{DF}(t_{n}))}{\sum(\operatorname{DF}(t_{i})) - a},\;\; \text{over}\;\; \text{the remaining coupons}\; i = 1,\; \ldots,\; n
-$$
-
-where Spot Rate(τ) is the zero-coupon rate of `get_zero_coupon_curve` at $$\tau$$ years, restated from annual compounding to the country's coupon frequency (twice a year, once for Sweden and Norway) and interpolated linearly, a is the elapsed fraction of the current coupon period (0 on a coupon date) and $$t_{i} = i - a$$ is the time of the i-th coupon in periods. The par yield is a nominal annual coupon rate paid at the coupon frequency, like the government bond yield curve. For a curve of your own, use `yieldcurve_model.get_par_yield`.
-
-**Also known as:** par rate, par coupon rate.
-
-**Args:**
-
-- <u>years_to_maturity (float &#124; str &#124; list &#124; None, optional):</u> The maturities, in years
-or as labels such as '15Y'. Defaults to None, 1 to 30 years.
-- <u>country (str, optional):</u> The country, see `get_zero_coupon_curve`. Defaults to
-"United States".
-- <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
-before it with a curve. Defaults to None, the end date.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
-to. Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.Series: The par yield (decimal) by maturity in years.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome()
-
-fixedincome.get_par_yield(years_to_maturity=[1, 4, 8, 15, 25], date="2026-11-05")
-```
-
-Which returns:
-
-|   Years to Maturity |   Par Yield |
-|--------------------:|------------:|
-|                   1 |      0.0428 |
-|                   4 |      0.0456 |
-|                   8 |      0.0475 |
-|                  15 |      0.0507 |
-|                  25 |      0.0527 |
-
----
-
-## get_yield_curve_spread
-Calculates the spreads between pairs of maturities of a country's government bond yield curve on a day, e.g. the widely followed 10-year minus 2-year and 10-year minus 3-month Treasury spreads. A positive spread indicates a "normal" upward-sloping curve, while a negative spread ("inversion") has historically been used as a leading indicator of an economic slowdown.
-
-The formula is as follows:
-
-$$
-\text{Yield Curve Spread} = \text{Long-Term Yield} - \text{Short-Term Yield}
-$$
-
-Where both yields are the par yields of `get_government_bond_yield_curve`, as the Treasury and FRED (T10Y2Y, T10Y3M) calculate the spreads, interpolated linearly for a maturity the curve does not quote. For the history of these spreads, take the difference of two columns of `get_government_bond_yield_curve`; for yields of your own, use `yieldcurve_model.get_yield_curve_spread`.
-
-**Also known as:** term spread, yield curve slope, 10Y-2Y spread.
-
-**Args:**
-
-- <u>long_maturity (float &#124; str &#124; list &#124; None, optional):</u> The longer maturity (or
-maturities), in years or as labels such as '10Y'. Defaults to None, 5, 10 and
-30 years.
-- <u>short_maturity (float &#124; str &#124; list &#124; None, optional):</u> The shorter maturity (or
-maturities), in years or as labels such as '3M'. Defaults to None, 3 months
-and 2 years.
-- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
-Defaults to "United States".
-- <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
-before it with a curve. Defaults to None, the end date.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
-to. Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The spread (decimal) for each combination of long (rows) and short
-maturity (columns).
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome()
-
-fixedincome.get_yield_curve_spread(date="2026-11-05")
-```
-
-Which returns:
-
-| Long Maturity   |     3M |     2Y |
-|:----------------|-------:|-------:|
-| 5Y              | 0.0042 | 0.0013 |
-| 10Y             | 0.0067 | 0.0038 |
-| 30Y             | 0.0108 | 0.0079 |
-
----
-
-## get_breakeven_inflation_rate
-Calculates the breakeven inflation rates of the US Treasury curve on a day: the nominal par yield minus the real (TIPS) par yield of the 5, 7, 10, 20 and 30-year maturities. It is the rate of inflation that would make an investor indifferent between holding a nominal Treasury and a TIPS of the same maturity, and is widely used as a market-implied measure of expected inflation.
-
-The formula is as follows:
-
-$$
-\text{Breakeven Inflation Rate} = \text{Nominal Yield} - \text{Real Yield}
-$$
-
-Where both yields are the Treasury's par yield curve rates (nominal and real), the simple difference FRED publishes as T5YIE and T10YIE, not (1 + Nominal) / (1 + Real) - 1.
-
-The breakeven rate is often read as the market's expected inflation, but it also contains an inflation risk premium, which raises it, and a liquidity premium on inflation-linked bonds, which lowers it, so it rises and falls in market stress for reasons other than inflation expectations. The comparison is with CPI-U, the index TIPS pay on. The daily history, with the 5-year, 5-year forward rate, is `get_inflation_expectations` in the Economics module; for yields of your own, use `yieldcurve_model.get_breakeven_inflation_rate`.
-
-**Also known as:** TIPS breakeven spread, inflation breakeven.
-
-**Args:**
-
-- <u>date (str &#124; None, optional):</u> The day (YYYY-MM-DD), or the last business day
-before it. Defaults to None, the end date.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
-to. Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The Nominal Yield, Real Yield and Breakeven Inflation Rate (decimals)
-by maturity, with the date of the yields.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome()
-
-fixedincome.get_breakeven_inflation_rate(date="2026-11-05")
-```
-
-Which returns:
-
-| Maturity   |   Nominal Yield |   Real Yield |   Breakeven Inflation Rate | Date       |
-|:-----------|----------------:|-------------:|---------------------------:|:-----------|
-| 5 Year     |          0.0459 |       0.0233 |                     0.0226 | 2026-11-05 |
-| 7 Year     |          0.047  |       0.0246 |                     0.0224 | 2026-11-05 |
-| 10 Year    |          0.0484 |       0.026  |                     0.0224 | 2026-11-05 |
-| 20 Year    |          0.0527 |       0.029  |                     0.0237 | 2026-11-05 |
-| 30 Year    |          0.0525 |       0.0305 |                     0.022  | 2026-11-05 |
-
----
-
-## get_government_bond_yield
-Get the government bond yield for a variety of countries over time from the OECD. By default this is the long-term (10-year) government bond yield; set short_term=True to get the short-term (3-month) rate instead. The two maturities are described below.
-
-Long-term (short_term=False): long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
-
-In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth.
-
-**See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
-
-Short-term (short_term=True): short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage. They are based on three-month money market rates where available; the OECD source specifically returns the 3-month interbank offered rate rather than a government bill yield, so for most countries it tracks the central bank's policy rate closely.
-
-**See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
-
-**Also known as:** treasury yield, bond yield by maturity.
-
-**Args:**
-
-- <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
-This means that the long-term interest rate will be returned.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which returns the monthly data (quarterly when the class was
-created with quarterly=True).
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the long-term (10-year) government bond yield, or the
-short-term (3-month) interest rate when short_term=True.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2023-05-01', end_date='2023-12-31')
-
-long_term_interest_rate = fixedincome.get_government_bond_yield(short_term=False, period='monthly')
-
-long_term_interest_rate.loc[:, ['Japan', 'United States', 'Germany']]
-```
-
-Which returns:
-
-|         |   Japan |   United States |   Germany |
-|:--------|--------:|----------------:|----------:|
-| 2023-05 |  0.0043 |          0.0357 |    0.0234 |
-| 2023-06 |  0.004  |          0.0375 |    0.0238 |
-| 2023-07 |  0.0059 |          0.039  |    0.0246 |
-| 2023-08 |  0.0064 |          0.0417 |    0.0255 |
-| 2023-09 |  0.0076 |          0.0438 |    0.0266 |
-| 2023-10 |  0.0095 |          0.048  |    0.0282 |
-| 2023-11 |  0.0066 |          0.045  |    0.026  |
-| 2023-12 |  0.0062 |          0.0402 |    0.021  |
-
----
-
-## get_government_bond_yield_curve
-Retrieves the government bond yield curve of a variety of countries, every maturity a country's government borrows at, from treasury bills to bonds of 30 years and more. The yield curve is the basis for discounting cash flows and pricing bonds, and its shape is one of the most watched signals in markets: an inverted curve, with short rates above long rates, has preceded most recessions.
-
-Every curve comes from the official source:
-
-- United States: the U.S. Department of the Treasury's par yield curve, 1 month to 30 years, from 1990.
-- Euro Area: the yield curve the European Central Bank estimates from the bonds of all euro area central governments, 3 months to 30 years, from 2004, as zero-coupon (spot) rates of a Svensson model, continuously compounded.
-- Germany: the term structure the Deutsche Bundesbank estimates from listed federal securities, 1 to 30 years, as zero-coupon (spot) rates of a Svensson model, continuously compounded.
-- United Kingdom: the Bank of England's nominal par yields of gilts, 5, 10 and 20 years.
-- Japan: the Ministry of Finance's Japanese government bond yields, 1 to 40 years, from 1974.
-- Canada: the Bank of Canada's treasury bill yields (1 month to 1 year, weekly) and benchmark bond yields (2 to 30 years).
-- Sweden: the Riksbank's treasury bill and government bond yields, 1 month to 10 years.
-- Norway: Norges Bank's generic government bond yields, 3 to 10 years.
-- Australia: the Reserve Bank of Australia's government bond yields interpolated to 2, 3, 5 and 10 years, from 2013.
-
-With period="monthly", every other European Union member, such as France, Italy, Spain, the Netherlands and Poland, is included with its 10-year yield, the long-term interest rate for convergence purposes the ECB publishes monthly. For other countries, see `get_government_bond_yield` for the monthly 3-month and 10-year rates of around forty countries from the OECD. Only the requested countries are retrieved, and only the days that are not cached yet.
-
-The yields are returned as decimal fractions per annum (0.0419 for 4.19%), with one column per country and maturity, sorted from the shortest to the longest maturity. Each curve is returned as its source publishes it: the Euro Area and Germany curves are continuously compounded zero-coupon rates, while the other countries publish par or benchmark bond yields, which compound with the coupon frequency of their bonds. The two are not interchangeable: a continuously compounded zero rate r equals an annually compounded zero rate of exp(r) - 1, and a par yield is the coupon rate at which a bond prices at par, which differs from the zero rate of the same maturity whenever the curve is not flat. Weekly and monthly periods take the yields on the last trading day of each period (weeks end on Friday).
-
-**Also known as:** yield curve, term structure of interest rates, sovereign curve, treasury curve, bund curve, gilt curve, JGB curve.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
-"United States", "Euro Area", "Germany", "United Kingdom", "Japan", "Canada",
-"Sweden", "Norway" and "Australia", and with period="monthly" any European
-Union member.
-Defaults to None, which retrieves every country.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame with the yields as decimals, indexed by date with a
-column per country and maturity.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-09-28', end_date='2026-10-01')
-
-yield_curve = fixedincome.get_government_bond_yield_curve(
-    countries=['United States', 'Germany']
-)
-
-yield_curve['Germany'][['1Y', '2Y', '5Y', '10Y', '20Y', '30Y']]
-```
-
-Which returns:
-
-|            |     1Y |     2Y |     5Y |    10Y |    20Y |    30Y |
-|:-----------|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2026-09-28 | 0.031  | 0.0332 | 0.0344 | 0.0369 | 0.0393 | 0.0401 |
-| 2026-09-29 | 0.0307 | 0.0329 | 0.0341 | 0.0368 | 0.0394 | 0.0403 |
-| 2026-09-30 | 0.0304 | 0.0324 | 0.0336 | 0.0364 | 0.039  | 0.0399 |
-| 2026-10-01 | 0.0302 | 0.0321 | 0.0335 | 0.0366 | 0.0394 | 0.0403 |
-
----
-
-## get_treasury_rates
-Retrieves the daily U.S. Treasury par yield curve rates as officially published by the U.S. Department of the Treasury, covering every maturity from 1 Month through 30 Year in a single dataset. This is the official, risk-free curve widely used as the discount curve for bond valuation and as the benchmark for credit spreads.
-
-With a FinancialModelingPrep API key the rates come from FinancialModelingPrep, and without one, or when the key's plan does not include them, from the U.S. Department of the Treasury directly, which gives the same figures.
-
-These are par yields: the coupons at which a new Treasury of each maturity would price at par, interpolated by the Treasury from the most recently auctioned securities. Discounting individual cash flows needs zero-coupon (spot) rates bootstrapped from them; on a steep curve the two differ by several basis points at long maturities. The 10-year minus 2-year and 10-year minus 3-month spreads from this curve are the most watched recession indicators.
-
-**Also known as:** the Treasury yield curve, the risk-free curve.
-
-**Args:**
-
-- <u>maturities (float &#124; str &#124; list &#124; None, optional):</u> The maturities to return, in years
-or as labels such as "3M" and "10Y" (a list or a comma-separated string, e.g.
-"2Y,10Y,30Y"), from 1M, 2M, 3M, 6M, 1Y, 2Y, 3Y, 5Y, 7Y, 10Y, 20Y and 30Y.
-Defaults to None, which returns every maturity.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Notes:**
-
-The underlying endpoint caps each request at 90 calendar days of data, so this method
-paginates in 90-day windows to cover the full start_date to end_date range the class
-was initialized with. A long range therefore issues many requests -- be mindful of
-this on a Free plan's daily request limit and consider a narrower start_date where
-possible.
-
-The U.S. Department of the Treasury publishes these rates in percentage points (a
-ten-year yield of 3.95%), but they are converted to decimals here (0.0395) so that
-they match every other rate method in this module -- `get_euribor_rates`,
-`get_european_central_bank_rates`, `get_federal_reserve_rates`,
-`get_government_bond_yield` and the ICE BofA yield methods -- as well as the risk-free
-rate returned by `Toolkit.get_treasury_data`. They can therefore be passed directly
-into `get_present_value`, `get_z_spread`, `get_par_yield` and `get_key_rate_duration`,
-each of which is documented as taking a rate in decimal form.
-
-The rates are decimal fractions, so they feed straight into the bond-pricing methods
-above. Multiply by 100 to recover the published Treasury figures.
-
-**Returns:**
-
-pd.DataFrame: A DataFrame containing the Treasury par yield curve rates, as decimals,
-with one column per maturity.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2024-01-01', end_date='2024-01-15')
-
-fixedincome.get_treasury_rates(maturities='3M,2Y,10Y,30Y')
-```
-
-Which returns:
-
-| Date       |   3 Month |   2 Year |   10 Year |   30 Year |
-|:-----------|----------:|---------:|----------:|----------:|
-| 2024-01-02 |    0.0546 |   0.0433 |    0.0395 |    0.0408 |
-| 2024-01-03 |    0.0548 |   0.0433 |    0.0391 |    0.0405 |
-| 2024-01-04 |    0.0548 |   0.0438 |    0.0399 |    0.0413 |
-| 2024-01-05 |    0.0547 |   0.044  |    0.0405 |    0.0421 |
-| 2024-01-08 |    0.0549 |   0.0436 |    0.0401 |    0.0417 |
-| 2024-01-09 |    0.0547 |   0.0436 |    0.0402 |    0.0418 |
-| 2024-01-10 |    0.0546 |   0.0437 |    0.0404 |    0.042  |
-| 2024-01-11 |    0.0546 |   0.0426 |    0.0398 |    0.0418 |
-| 2024-01-12 |    0.0545 |   0.0414 |    0.0396 |    0.042  |
-
----
-
-## get_zero_coupon_curve
-Calculates the zero-coupon (spot) yield curve of a country by bootstrapping its government bond par yields. A par yield is the coupon at which a bond trades at par, so it mixes the discount rates of every coupon date; the zero-coupon rate of a maturity is the single rate that discounts a payment at that date. Zero-coupon rates are what bonds and other cash flows are discounted with, and what forward rates and the curve models (Nelson-Siegel, Vasicek) are built on.
-
-Maturities up to one year are treasury bills, which pay no coupon, so their yield only needs converting to annual compounding: US bill yields are bond-equivalent yields (simple interest up to half a year), Canadian bill yields simple interest on a 365-day year and Swedish bill yields simple interest on a 360-day year. Beyond that the par yields are interpolated linearly to every coupon date and each discount factor follows from the earlier ones:
-
-$$
-P (t_{n}) = (1 - c / f \sum_{i < n} P (t_{i})) / (1 + c / f)
-$$
-
-with c the par yield of maturity $$t_{n}$$ and f the coupons per year (two, and one for Sweden and Norway). The curves of the Euro Area and Germany are estimated as zero-coupon curves by the ECB and the Bundesbank, which publish them continuously compounded; they are converted to annual compounding like the others. A curve needs a maturity of a year or less to start from, so the United Kingdom, Norway and Australia (and Canada before its bill yields start) are not covered.
-
-**Also known as:** spot curve, zero curve, bootstrapped curve, discount curve.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str, optional):</u> The countries, see
-`get_government_bond_yield_curve`. Defaults to "United States".
-- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
-Defaults to "daily".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The zero-coupon rates as decimals (annually compounded), indexed by
-date with a column per country and maturity.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-10-19', end_date='2026-10-23')
-
-zero_curve = fixedincome.get_zero_coupon_curve()
-
-zero_curve['United States'][['1Y', '2Y', '5Y', '10Y', '20Y', '30Y']]
-```
-
-Which returns:
-
-|            |     1Y |     2Y |     5Y |    10Y |    20Y |    30Y |
-|:-----------|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2026-10-19 | 0.0455 | 0.0484 | 0.0501 | 0.0526 | 0.0581 | 0.0564 |
-| 2026-10-20 | 0.0456 | 0.0486 | 0.0501 | 0.0522 | 0.0573 | 0.0556 |
-| 2026-10-21 | 0.0457 | 0.0488 | 0.0502 | 0.0523 | 0.0572 | 0.0556 |
-| 2026-10-22 | 0.0446 | 0.0471 | 0.0485 | 0.0506 | 0.0557 | 0.0545 |
-| 2026-10-23 | 0.0449 | 0.0475 | 0.0489 | 0.051  | 0.0563 | 0.0548 |
-
----
-
-## get_nelson_siegel_svensson
-Fits the Nelson-Siegel-Svensson model to the zero-coupon yield curve of a country on every date. The model describes a whole curve with a few parameters, which smooths out the noise of individual maturities, gives a yield for any maturity in between and turns the history of curves into a history of a handful of factors. It is the model central banks such as the ECB, the Bundesbank and the Federal Reserve (Gürkaynak, Sack and Wright) publish their curves with.
-
-The Nelson-Siegel model has a level $$\beta_{0}$$ (the yield at an infinite maturity), a slope $$\beta_{1}$$ (the short end minus the long end) and a curvature $$\beta_{2}$$ (a hump that peaks at about $$1.8 \tau_{1}$$ years):
-
-$$
-y (m) = \beta_{0} + \beta_{1} (1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) + \beta_{2} [(1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) - e^{- m / \tau_{1}}]
-$$
-
-Svensson adds a second curvature $$\beta_{3}$$ with its own decay $$\tau_{2}$$, which fits the long end better. With the dozen maturities a government curve has, the six Svensson parameters are weakly identified, as the level and the second curvature can offset each other; set svensson=False for the three factors to read as level, slope and curvature (Diebold and Li, 2006).
-
-Given the decays the betas follow exactly from least squares, so the decays are searched on a grid and refined for every date. The second decay is kept at least 1.5 times the first and the first at least a third of the shortest maturity, and the level at or above the lower of zero and the longest yield (as Gürkaynak, Sack and Wright keep it at or above zero), so that the curve extrapolates sensibly beyond the maturities it is fitted to. The curve is the zero-coupon curve of `get_zero_coupon_curve`, so the countries are those it covers that have at least as many maturities as the model has parameters. The model is fitted to the continuously compounded rates, as the ECB, the Bundesbank and the Federal Reserve fit it, so the parameters compare with theirs; the yields at `maturities` are annually compounded, like those of `get_zero_coupon_curve`.
-
-For more information, see the following papers:
-
-- Nelson, C.R. and Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489.
-- Svensson, L.E.O. (1994). "Estimating and Interpreting Forward Interest Rates: Sweden 1992-1994." NBER Working Paper 4871.
-- Diebold, F.X. and Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364.
-- Gürkaynak, R.S., Sack, B. and Wright, J.H. (2007). "The U.S. Treasury Yield Curve: 1961 to the Present." Journal of Monetary Economics, 54(8), 2291-2304.
-
-**Also known as:** NSS, Svensson curve, Nelson-Siegel curve, yield curve fitting, level slope curvature factors.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str, optional):</u> The countries, see
-`get_zero_coupon_curve`. Defaults to "United States".
-- <u>period (str, optional):</u> Whether to fit the daily, weekly or monthly curves.
-Defaults to "daily".
-- <u>svensson (bool, optional):</u> Whether to fit the Svensson model (True) or the
-Nelson-Siegel model (False). Defaults to True.
-- <u>maturities (list[float &#124; str] &#124; str &#124; None, optional):</u> The maturities, in years or
-as labels such as "3M" and "10Y" (a list or a comma-separated string), to
-return the fitted zero-coupon yields at instead of the parameters. Defaults
-to None, which returns the parameters.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per date, the parameters (Beta 0 to Beta 3 as continuously
-compounded rates, Tau 1 and Tau 2 in years) and the Root Mean Squared Error of the
-fit, or the fitted (annually compounded) yields, with a column per country and
-parameter (or maturity).
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-10-19', end_date='2026-10-23')
-
-fixedincome.get_nelson_siegel_svensson(countries='Germany')
-```
-
-Which returns:
-
-|            |   Beta 0 |   Beta 1 |   Beta 2 |   Beta 3 |   Tau 1 |   Tau 2 |   Root Mean Squared Error |
-|:-----------|---------:|---------:|---------:|---------:|--------:|--------:|--------------------------:|
-| 2026-10-19 |   0.0409 |  -0.0173 |   0.0418 |  -0.051  |  1.1799 |  1.7805 |                         0 |
-| 2026-10-20 |   0.0408 |  -0.0172 |   0.0411 |  -0.0505 |  1.1997 |  1.7996 |                         0 |
-| 2026-10-21 |   0.0406 |  -0.0168 |   0.0308 |  -0.041  |  1.1497 |  1.8913 |                         0 |
-| 2026-10-22 |   0.0397 |  -0.0161 |   0.0313 |  -0.0385 |  1.1471 |  1.8929 |                         0 |
-| 2026-10-23 |   0.0395 |  -0.0154 |   0.0365 |  -0.0462 |  1.2162 |  1.8245 |                         0 |
-
----
-
-## get_yield_curve_principal_components
-Calculates the principal components of a country's government bond yield curve: the few independent movements that explain nearly all of how the curve changes. Litterman and Scheinkman (1991) found that three components explain over 95% of the changes of Treasury yields: a parallel shift (level, PC1, loading about equally on every maturity), a steepening (slope, PC2, with opposite signs at the short and long end) and a bending (curvature, PC3, moving the middle against both ends). Hedging a bond portfolio against the first two covers most of its interest rate risk.
-
-The components are the eigenvectors of the covariance matrix of the yield changes (or levels), sorted by the share of the variance they explain. Their sign is arbitrary, so PC1 is oriented as a rise in all yields (its loadings sum to a positive number), PC2 as a steepening (the longest maturity loads above the shortest) and the others so that their loadings sum to a positive number. Maturities that are only published for part of the period (such as the 4-month Treasury bill from 2022) are left out, so that the analysis covers the full period.
-
-For more information, see the following paper:
-
-- Litterman, R. and Scheinkman, J. (1991). "Common Factors Affecting Bond Returns." The Journal of Fixed Income, 1(1), 54-61.
-
-**Also known as:** PCA of the yield curve, level slope curvature, term structure factors.
-
-**Args:**
-
-- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
-Defaults to "United States".
-- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
-Defaults to "daily".
-- <u>components (int, optional):</u> The number of components. Defaults to 3.
-- <u>changes (bool, optional):</u> Whether to analyze the changes of the yields, the usual
-choice as yields themselves are not stationary, or their levels. Defaults to True.
-- <u>scores (bool, optional):</u> Whether to return the value of every component per date
-(the scores) instead of the loadings. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The loadings per maturity and component, with the share of the
-variance each component explains as the last row, or the scores per date.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2016-01-01', end_date='2025-12-31')
-
-fixedincome.get_yield_curve_principal_components(period='monthly')
-```
-
-Which returns:
-
-| Maturity           |    PC1 |     PC2 |     PC3 |
-|:-------------------|-------:|--------:|--------:|
-| 1M                 | 0.1332 | -0.6209 |  0.3084 |
-| 3M                 | 0.1713 | -0.4809 |  0.1636 |
-| 6M                 | 0.225  | -0.3809 | -0.0592 |
-| 1Y                 | 0.2789 | -0.2545 | -0.2647 |
-| 2Y                 | 0.3538 | -0.0249 | -0.4383 |
-| 3Y                 | 0.3676 |  0.0701 | -0.3617 |
-| 5Y                 | 0.3733 |  0.1595 | -0.1347 |
-| 7Y                 | 0.3636 |  0.1907 |  0.0399 |
-| 10Y                | 0.3434 |  0.1972 |  0.2136 |
-| 20Y                | 0.3052 |  0.1888 |  0.4277 |
-| 30Y                | 0.2855 |  0.1773 |  0.4831 |
-| Explained Variance | 0.732  |  0.1938 |  0.0501 |
-
----
-
-## get_short_rate_model
-Calibrates the Vasicek and Cox-Ingersoll-Ross (CIR) short-rate models to the history of a country's short-term government bond yield and compares the zero-coupon curve each model implies with today's. Short-rate models describe how the interest rate moves, pulled back to a long-run mean b at a speed a with a volatility $$\sigma$$:
-
-$$
-\text{Vasicek (1977):}\;\; \,\mathrm{d}r = a (b - r) \,\mathrm{d}t + \sigma \,\mathrm{d}W
-$$
-
-$$
-\text{CIR (1985):}\;\; \,\mathrm{d}r = a (b - r) \,\mathrm{d}t + \sigma \sqrt{r} \,\mathrm{d}W
-$$
-
-In CIR the volatility shrinks as the rate approaches zero, so the rate stays positive when $$2 ab \geq \sigma^{2}$$ (the Feller condition) and can otherwise touch zero; in Vasicek it can turn negative. The models describe a continuously compounded short rate, so the yields are converted to continuous compounding first (US bill yields from their bond-equivalent quote). Both give bond prices, and so a full zero-coupon curve, in closed form. The parameters are estimated by regressing the change of the rate on its level over the period (CIR on the changes scaled by the square root of the rate, which needs a rate above zero throughout). The half-life is the time it takes to close half the gap to the long-run mean, ln(2) / a.
-
-A model calibrated to the history does not reproduce today's curve, which is what the comparison with the market shows; the Hull-White model of `get_short_rate_simulation` adds a time-varying mean that does.
-
-For more information, see the following papers:
-
-- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188.
-- Cox, J.C., Ingersoll, J.E. and Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407.
-
-**Also known as:** short rate model, mean reversion of interest rates, Vasicek model, CIR model, equilibrium term structure model.
-
-**Args:**
-
-- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
-Defaults to "United States".
-- <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,
-such as "1M", "3M" or "6M". Defaults to "3M".
-- <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
-Defaults to "daily".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per model (columns Vasicek and CIR) the Speed of Mean Reversion, the
-Long-Run Mean, the Volatility, the Current Rate and the Half-Life in years, then
-the zero-coupon rate per maturity (continuously compounded), with the market's
-zero-coupon rates in the Market column.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2000-01-01', end_date='2026-10-23')
-
-fixedincome.get_short_rate_model(short_rate='6M')
-```
-
-Which returns:
-
-| Parameter               |   Vasicek |    CIR |   Market |
-|:------------------------|----------:|-------:|---------:|
-| Speed of Mean Reversion |    0.0873 | 0.1481 | nan      |
-| Long-Run Mean           |    0.0144 | 0.017  | nan      |
-| Volatility              |    0.0059 | 0.0558 | nan      |
-| Current Rate            |    0.0425 | 0.0425 |   0.0425 |
-| Half-Life               |    7.9398 | 4.6816 | nan      |
-| Zero Rate 1M            |    0.0424 | 0.0424 |   0.041  |
-| Zero Rate 1.5M          |    0.0424 | 0.0423 |   0.041  |
-| Zero Rate 2M            |    0.0423 | 0.0422 |   0.0415 |
-| Zero Rate 3M            |    0.0422 | 0.0421 |   0.042  |
-| Zero Rate 4M            |    0.0421 | 0.0419 |   0.0427 |
-| Zero Rate 6M            |    0.0419 | 0.0416 |   0.0425 |
-| Zero Rate 1Y            |    0.0413 | 0.0407 |   0.0439 |
-| Zero Rate 2Y            |    0.0402 | 0.039  |   0.0464 |
-| Zero Rate 3Y            |    0.0391 | 0.0375 |   0.047  |
-| Zero Rate 5Y            |    0.0371 | 0.0347 |   0.0477 |
-| Zero Rate 7Y            |    0.0353 | 0.0324 |   0.0485 |
-| Zero Rate 10Y           |    0.0328 | 0.0297 |   0.0497 |
-| Zero Rate 20Y           |    0.0269 | 0.0242 |   0.0548 |
-| Zero Rate 30Y           |    0.0232 | 0.0216 |   0.0534 |
-
----
-
-## get_short_rate_simulation
-Simulates the future path of a country's short-term interest rate with the Hull-White, Vasicek or Cox-Ingersoll-Ross model and summarizes the distribution of the paths per step: the mean and the 5th, 25th, 50th, 75th and 95th percentiles. Simulated rate paths value interest rate derivatives and path-dependent products (such as mortgages with prepayment), and stress the interest income of a balance sheet.
-
-The speed of mean reversion and the volatility are calibrated to the history of the rate, see `get_short_rate_model`. In the Vasicek and CIR models the rate is pulled to the long-run mean of that history. The Hull-White (1990) model replaces it with a mean that varies over time and follows from today's zero-coupon curve, so that the model reproduces the discount factors of that curve (its expected short rate lies above the forward rate by the convexity term $$\sigma^{2} (1 - e^{- at})^{2} / (2 a^{2})$$):
-
-$$
-dr = [\theta (t) - a r] dt + \sigma dW,\quad \theta (t) = \partial f / \partial t + a f (t) + \sigma^{2} (1 - e^{- 2 at}) / (2 a)
-$$
-
-with f the instantaneous forward rate. The paths are simulated with an Euler scheme starting at today's rate (CIR's are kept at or above zero).
-
-For more information, see the following paper:
-
-- Hull, J. and White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592.
-
-**Also known as:** interest rate simulation, Hull-White model, Monte Carlo short rate, interest rate scenarios.
-
-**Args:**
-
-- <u>model (str, optional):</u> "hull_white", "vasicek" or "cir". Defaults to "hull_white".
-- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
-Defaults to "United States".
-- <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,
-such as "1M", "3M" or "6M". Defaults to "3M".
-- <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
-Defaults to "daily".
-- <u>years (float, optional):</u> The horizon in years. Defaults to 10.
-- <u>steps_per_year (int, optional):</u> The steps per year. Defaults to 12.
-- <u>paths (int, optional):</u> The number of simulated paths. Defaults to 10,000.
-- <u>seed (int &#124; None, optional):</u> The random seed, None for a different simulation
-every time. Defaults to 0.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The Mean and the percentiles of the simulated rate (as decimals),
-indexed by the time in years.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2000-01-01', end_date='2026-10-23')
-
-simulation = fixedincome.get_short_rate_simulation(
-    short_rate='6M', years=5, steps_per_year=1
-)
-
-simulation
-```
-
-Which returns:
-
-|   Years |   Mean |     5% |    25% |    50% |    75% |    95% |
-|--------:|-------:|-------:|-------:|-------:|-------:|-------:|
-|       0 | 0.0425 | 0.0425 | 0.0425 | 0.0425 | 0.0425 | 0.0425 |
-|       1 | 0.0489 | 0.0393 | 0.0449 | 0.0489 | 0.0529 | 0.0587 |
-|       2 | 0.0483 | 0.035  | 0.0429 | 0.0483 | 0.0537 | 0.0614 |
-|       3 | 0.0485 | 0.0332 | 0.0421 | 0.0484 | 0.0547 | 0.0643 |
-|       4 | 0.0493 | 0.0324 | 0.0423 | 0.0492 | 0.0563 | 0.0666 |
-|       5 | 0.0503 | 0.0322 | 0.0427 | 0.0503 | 0.0579 | 0.0689 |
-
----
-
-## get_treasury_auctions
-Retrieves the results of the US Treasury auctions held between the start and end date: every bill, note, bond, TIPS and floating rate note the Treasury sold, with the yield it sold at, how many times the offering was bid (the bid-to-cover ratio) and who bought it. Auction results are the most direct read of the demand for US government debt: a lower bid-to-cover ratio or a smaller share for indirect bidders (which include foreign central banks) at a large auction is a sign of weak demand.
-
-The data comes from the Treasury's Fiscal Data API, from 1979 on. The Yield is the high yield of notes and bonds and the investment rate (the bond equivalent yield) of bills; the High Discount Rate is the discount rate bills are quoted at. The Bid-to-Cover Ratio is the Treasury's, which leaves out the Federal Reserve's (SOMA) bids, while the Total Tendered and Total Accepted include them, so their ratio is lower when the Federal Reserve rolls over maturing holdings. The bidder shares are each class's part of the competitive awards: primary dealers (who must bid at every auction), direct bidders (buying for their own account) and indirect bidders (bidding through a dealer, such as foreign and international monetary authorities and investment funds). Auctions that are announced but not yet held, and older auctions for which the Treasury did not publish a breakdown, show NaN for the missing results.
-
-**See definition:** [https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/](https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/){:target="_blank"}
-
-**Also known as:** Treasury auction results, bid-to-cover ratio, auction demand, indirect bidders, Treasury issuance.
-
-**Args:**
-
-- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security: "Bill",
-"Cash Management Bill", "Note", "Bond", "TIPS" or "FRN", or several (a list or
-a comma-separated string). Defaults to None, which returns every kind.
-- <u>security_term (str &#124; None, optional):</u> The term as the Treasury writes it, such as
-"13-Week", "10-Year" or "30-Year". Defaults to None, which returns every term.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which keeps the precision the Treasury publishes.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: One row per auction, indexed by the auction date, with the security,
-its dates, the Coupon Rate, Yield and High Discount Rate as decimals, the
-Bid-to-Cover Ratio, the amounts in dollars and the bidder shares as decimals.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2025-01-01', end_date='2026-10-23')
-
-auctions = fixedincome.get_treasury_auctions(security_type='Note', security_term='10-Year')
-
-auctions[['Security Term', 'Reopening', 'Yield', 'Bid-to-Cover Ratio', 'Indirect Bidder Share']].tail()
-```
-
-Which returns:
-
-| Auction Date   | Security Term   | Reopening   |   Yield |   Bid-to-Cover Ratio |   Indirect Bidder Share |
-|:---------------|:----------------|:------------|--------:|---------------------:|------------------------:|
-| 2025-08-06     | 10-Year         | No          | 0.04255 |                 2.35 |                  0.6423 |
-| 2025-11-12     | 10-Year         | No          | 0.04074 |                 2.43 |                  0.67   |
-| 2026-02-11     | 10-Year         | No          | 0.04177 |                 2.39 |                  0.6454 |
-| 2026-05-12     | 10-Year         | No          | 0.04468 |                 2.4  |                  0.6395 |
-| 2026-08-12     | 10-Year         | No          | 0.04683 |                 2.53 |                  0.7673 |
-
----
-
-## get_bond_universe
-Retrieves thousands of individual US dollar bonds with their price, yield to maturity, modified duration and spread over Treasuries, read from the holdings of bond ETFs.
-
-Individual bond prices are not published for free, but bond ETFs publish their holdings every day: each bond's coupon and maturity (in its name), its par amount and its market value, from which the price follows. By default this reads the iShares iBoxx $ Investment Grade Corporate Bond ETF (LQD), the iShares 0-5 Year Investment Grade Corporate Bond ETF (IGSB) and the iShares Broad USD High Yield Corporate Bond ETF (USHY): together about 8,000 investment grade and high yield corporate bonds. A bond held by several funds is listed once, with the funds that hold it.
-
-The formula is as follows:
-
-$$
-\text{Price} = \frac{\text{Market Value}}{\text{Par Amount}} \cdot 100 \;(\text{a clean price per 100 of par})
-$$
-
-$$
-\text{Yield to Maturity:}\;\; \text{the rate } y \text{ at which the coupons and principal},\;\; \text{discounted at} \;\left(1 + \frac{y}{2}\right) \;\text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
-$$
-
-$$
-\text{Modified Duration} = \frac{\text{Macaulay Duration}}{1 + \frac{y}{2}} \;(\text{see} \;\text{get\_duration})
-$$
-
-$$
-\text{G-Spread} = \text{Yield to Maturity} - \text{Treasury Par Yield at the bond's maturity}
-$$
-
-Coupons are semi-annual, the US convention for corporate bonds, and the yield is a nominal annual rate compounded twice a year (bond-equivalent), like the Treasury par yields it is compared with. The coupon periods fall on the bond's actual coupon dates, counted back from maturity, and the time in the current period is counted in actual days. The Treasury par yield at a maturity is interpolated linearly between the maturities of the US Treasury par yield curve on the price date (held at the 1-month and 30-year yield beyond them).
-
-**Also known as:** corporate bond prices, bond yields, bond screener, credit spreads per bond, G-spread.
-
-**Args:**
-
-- <u>etfs (list[str] &#124; str &#124; None, optional):</u> The bond ETFs to read the holdings of, as
-a list or a comma-separated string. The holdings must name each bond as
-"ISSUER COUPON% MM/DD/YYYY" with a par amount, as iShares funds do. Defaults
-to None, which uses LQD, IGSB and USHY.
-- <u>issuer (list[str] &#124; str &#124; None, optional):</u> Keeps the bonds whose issuer contains
-this text (case-insensitive), e.g. "APPLE" or "JPMORGAN", or any of several.
-Defaults to None, every issuer.
-- <u>maturity_start (str &#124; None, optional):</u> Keeps the bonds maturing on or after this
-date (YYYY-MM-DD). Defaults to None.
-- <u>maturity_end (str &#124; None, optional):</u> Keeps the bonds maturing on or before this
-date (YYYY-MM-DD). Defaults to None.
-- <u>bonds (list[str] &#124; str &#124; None, optional):</u> Keeps the bonds with these ISINs or
-CUSIPs, as a list or a comma-separated string. Defaults to None, every bond.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: One row per bond, indexed by ISIN, with the Issuer, CUSIP, Coupon
-(decimal), Maturity, whether it is a Rule 144A bond, the Price per 100 of par, the
-Yield to Maturity and G-Spread (decimals), the Modified Duration (years), the
-Price Date and the Funds that hold it, sorted by issuer and maturity.
-
-**Notes:**
-
-- The prices are the funds' own end-of-day valuations (iShares uses evaluated bid
-prices), not trades. iShares publish the holdings valued at the previous business
-day's close, which is the Price Date; FinancialModelingPrep serves only the latest
-holdings, so there is no history. For the Treasuries the funds hold, the yields are
-within about a basis point of the FedInvest prices of the same day (see
-`get_treasury_securities`).
-- The yield is to maturity. A callable bond that trades above its call price
-yields less to its call date (the yield to worst), which is common among high
-yield bonds; call schedules are not in the holdings.
-- The fund prints the coupon to two decimals (2.125% shows as 2.13%), which moves the
-yield by well under a basis point a year of maturity.
-- Left out, with a count in the log: lines that are not fixed-coupon bonds (cash,
-futures, swaps), floating rate notes, bank notes marked fixed-to-floating
-("FXD-FRN", which switch to a floating coupon before maturity), inflation-linked
-bonds, mortgage pools, perpetual bonds, bonds without a US ISIN (the funds of
-other currencies) and prices outside 1 to 300. A fixed-to-floating note the fund
-does not mark as such is kept, and its yield assumes the fixed coupon to maturity.
-- Requires a FinancialModelingPrep API key for the holdings; the Treasury curve needs
-none.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(api_key="FINANCIAL_MODELING_PREP_KEY")
-
-bonds = fixedincome.get_bond_universe(issuer="APPLE INC")
-
-bonds[["Coupon", "Maturity", "Price", "Yield to Maturity", "Modified Duration", "G-Spread"]].head()
-```
-
-Which returns:
-
-| ISIN         |   Coupon | Maturity   |   Price |   Yield to Maturity |   Modified Duration |   G-Spread |
-|:-------------|---------:|:-----------|--------:|--------------------:|--------------------:|-----------:|
-| US037833EC07 |   0.012  | 2028-02-08 |   95.96 |              0.0454 |              1.2213 |     0.0021 |
-| US037833ET32 |   0.04   | 2028-05-10 |   99.12 |              0.0461 |              1.4224 |     0.0024 |
-| US037833EY27 |   0.04   | 2028-05-12 |   99.09 |              0.0463 |              1.4275 |     0.0025 |
-| US037833EH93 |   0.014  | 2028-08-05 |   94.67 |              0.046  |              1.6896 |     0.0019 |
-| US037833FD70 |   0.0465 | 2028-11-09 |   99.95 |              0.0468 |              1.8564 |     0.0022 |
-
----
-
-## get_issuer_spreads
-Compares the credit spreads of bond issuers at the same maturities: the G-Spread (yield to maturity minus the Treasury par yield) of each issuer at, for example, 2, 5 and 10 years, interpolated between the issuer's own bonds from `get_bond_universe`. Picking one bond per issuer by hand compares bonds of different maturities, and spreads rise with maturity; at the same maturity the difference is the credit.
-
-The formula is as follows:
-
-$$
-\text{Spread} \;(\text{issuer},\; T) = s(a) + \frac{(s(b) - s(a)) \cdot (T - a)}{b - a}
-$$
-
-Where a and b are the years to maturity of the issuer's bonds closest below and above T and s their G-Spreads (see `get_bond_universe`). Bonds of the same maturity count with their average spread, and a maturity outside the range of the issuer's bonds has no spread, as a spread curve is not extrapolated.
-
-**Also known as:** issuer spread curve, credit curve, spread at a maturity, interpolated G-spread, credit spread comparison.
-
-**Args:**
-
-- <u>issuer (list[str] &#124; str &#124; None, optional):</u> The issuers, each kept by the text its
-name contains (case-insensitive), e.g. "APPLE,BOEING". Defaults to None, every
-issuer in the funds.
-- <u>maturity_years (list[float] &#124; str &#124; float &#124; None, optional):</u> The maturities in years,
-as a list or comma-separated, e.g. "2,5,10". Defaults to None, which uses 2, 3,
-5, 7, 10, 20 and 30 years.
-- <u>etfs (list[str] &#124; str &#124; None, optional):</u> The bond ETFs to read the bonds from (see
-`get_bond_universe`). Defaults to None, LQD, IGSB and USHY.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per issuer (the name the funds give it) the G-Spread at each
-maturity (decimals, columns such as "5Y"), the number of Bonds and the Shortest
-and Longest years to maturity among them.
-
-**Notes:**
-
-- An issuer's bonds of one name can differ in seniority, and the funds list a
-finance subsidiary (such as Ford Motor Credit) under its own name, apart from its
-parent.
-- The spreads are those of `get_bond_universe`: to maturity, at the funds' evaluated
-prices of the previous business day. A callable bond priced above its call price
-has a lower yield to worst.
-- Requires a FinancialModelingPrep API key for the holdings.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(api_key="FINANCIAL_MODELING_PREP_KEY")
-
-fixedincome.get_issuer_spreads(issuer="APPLE INC,BOEING,INTEL", maturity_years="2,5,10")
-```
-
-Which returns:
-
-| Issuer            |     2Y |     5Y |    10Y |   Bonds |   Shortest |   Longest |
-|:------------------|-------:|-------:|-------:|--------:|-----------:|----------:|
-| APPLE INC         | 0.0017 | 0.0029 | 0.0052 |      43 |     1.2473 |   35.7473 |
-| BOEING CO         | 0.0062 | 0.0083 | 0.0093 |      20 |     1.2283 |   37.4779 |
-| INTEL CORPORATION | 0.0081 | 0.0112 | 0.0149 |      35 |     1.2527 |   36.2527 |
-
----
-
-## get_treasury_securities
-Retrieves every marketable US Treasury (bills, notes, bonds, TIPS and floating rate notes) with its price, yield to maturity and modified duration on a day, without an API key.
-
-Where the Treasury par yield curve gives one yield per constant maturity, this lists the roughly 460 securities themselves, from the Bureau of the Fiscal Service's daily FedInvest prices: the prices the Treasury values its own accounts at. That shows where individual issues trade off the curve (old and new issues of the same maturity, the cheapest notes to deliver into futures) and gives the yield of any maturity date.
-
-The formula is as follows:
-
-$$
-\text{Notes and bonds:}\;\; \text{Yield to Maturity is the rate } y \text{ at which the coupons and principal},\;\; \text{discounted at} \;\left(1 + \frac{y}{2}\right) \;\text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
-$$
-
-$$
-\text{Bills:}\;\; \text{Discount Yield} = \frac{\frac{100 - \text{Price}}{100} \cdot 360}{\text{Days}},\;\; \text{restated as the bond-equivalent yield (see get\_bond\_equivalent\_yield)}
-$$
-
-$$
-\text{Modified Duration} = \frac{\text{Macaulay Duration}}{1 + \frac{y}{2}} \;(\text{see} \;\text{get\_duration})
-$$
-
-Coupons are semi-annual and fall on the actual coupon dates, counted back from maturity; the time in the current period is counted in actual days (actual/actual, the Treasury convention). Yields are nominal annual rates compounded twice a year (bond-equivalent), as the Treasury quotes them. For TIPS the price is per 100 of inflation-adjusted principal, so the yield is the real yield. Floating rate notes reset their coupon every week, so they have a price but no yield or duration.
-
-**See definition:** [https://www.treasurydirect.gov/GA-FI/FedInvest/selectSecurityPriceDate](https://www.treasurydirect.gov/GA-FI/FedInvest/selectSecurityPriceDate){:target="_blank"}
-
-**Also known as:** Treasury bond prices, Treasury yields per security, CUSIP yields, off-the-run Treasuries, FedInvest prices.
-
-**Args:**
-
-- <u>date (str &#124; None, optional):</u> The day (YYYY-MM-DD); a weekend or holiday uses the
-business day before it. Defaults to None, the latest day with prices.
-- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security: "Bill",
-"Note", "Bond", "TIPS" or "FRN", or several (a list or a comma-separated
-string). Defaults to None, which returns every kind.
-- <u>bonds (list[str] &#124; str &#124; None, optional):</u> Keeps the securities with these CUSIPs
-(or their US ISINs), as a list or a comma-separated string. Defaults to None,
-every security.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: One row per security, indexed by CUSIP, with the Security Type,
-Coupon (decimal), Maturity, Price per 100 of par, Yield to Maturity (decimal),
-Modified Duration (years) and Price Date, sorted by maturity.
-
-**Notes:**
-
-- The price is the end-of-day price. It is published the next business day, so the
-latest day uses the bid (FedInvest's Sell price) until then.
-- One request per day; a day with end-of-day prices is cached for good.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome()
-
-treasuries = fixedincome.get_treasury_securities(date="2026-11-05", security_type="Note,Bond")
-
-treasuries.loc[treasuries["Maturity"].between("2035-01-01", "2036-12-31")]
-```
-
-Which returns:
-
-| CUSIP     | Security Type   |   Coupon | Maturity   |   Price |   Yield to Maturity |   Modified Duration | Price Date   |
-|:----------|:----------------|---------:|:-----------|--------:|--------------------:|--------------------:|:-------------|
-| 91282CMM0 | Note            |   0.0462 | 2035-02-15 | 99.0312 |              0.0477 |              6.7323 | 2026-11-05   |
-| 91282CNC1 | Note            |   0.0425 | 2035-05-15 | 96.3125 |              0.0478 |              6.8997 | 2026-11-05   |
-| 91282CNT4 | Note            |   0.0425 | 2035-08-15 | 96.125  |              0.048  |              7.1425 | 2026-11-05   |
-| 91282CPJ4 | Note            |   0.04   | 2035-11-15 | 94.1562 |              0.0481 |              7.2897 | 2026-11-05   |
-| 912810FT0 | Bond            |   0.045  | 2036-02-15 | 98.875  |              0.0465 |              7.4268 | 2026-11-05   |
-| 91282CPZ8 | Note            |   0.0412 | 2036-02-15 | 94.9062 |              0.0481 |              7.5011 | 2026-11-05   |
-| 91282CQQ7 | Note            |   0.0438 | 2036-05-15 | 96.625  |              0.0482 |              7.5126 | 2026-11-05   |
-| 91282CRF0 | Note            |   0.0462 | 2036-08-15 | 98.4375 |              0.0483 |              7.6914 | 2026-11-05   |
-
----
-
 ## get_ice_bofa_option_adjusted_spread
 The ICE BofA Option-Adjusted Spreads (OASs) are the calculated spreads between a computed OAS index of all bonds in a given maturity and rating category and a spot Treasury curve. An OAS index is constructed using each constituent bond's OAS, weighted by market capitalization.
 
-The Option-Adjusted Spread (OAS) is the spread relative to a risk-free interest rate, usually quoted in basis points, that equates the theoretical present value of a series of uncertain cash flows to the market price of a fixed-income investment. The spread is added to the risk-free rate to compensate for the uncertainty of the cash flows.
+The Option-Adjusted Spread (OAS) is the spread relative to a risk-free interest rate, usually quoted in basis points, that equates the theoretical present value of a series of uncertain cash flows to the market price of a fixed-income investment. The spread is added to the risk-free rate to compensate for the uncertainty of the cash flows. ICE adds it to the semi-annually compounded forward rates of the Treasury curve (ICE Bond Index Methodologies), so it is a semi-annually compounded spread.
 
 See definitions:
 
@@ -1955,7 +861,7 @@ Which returns:
 ## get_ice_bofa_effective_yield
 This data represents the effective yield of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
 
-The effective yield of an ICE BofA index is the yield of the index as a whole, aggregated from the yields of its constituent bonds and weighted by their market capitalisation. It is an index-level yield of the corporate bond market segment, not a statistic derived from any single bond's coupon - for the single-bond coupon-reinvestment calculation, see the "Effective Yield" row of `collect_bond_statistics` instead.
+The effective yield of an ICE BofA index is the yield of the index as a whole, aggregated from the yields of its constituent bonds and weighted by their market capitalisation. It is an index-level yield of the corporate bond market segment, not a statistic derived from any single bond's coupon; for the yield of a single bond, see the "Yield to Maturity" of `collect_bond_statistics` instead. ICE states each bond's yield in conventional terms, compounded at the bond's coupon frequency (ICE Bond Index Methodologies): twice a year for the US indices, so their effective yields compound semi-annually like Treasury yields.
 
 The FRED series are published in percent and are converted to decimals here, so a 5.40% BBB index yield is returned as 0.054.
 
@@ -2086,7 +992,7 @@ Which returns:
 ## get_ice_bofa_yield_to_worst
 This data represents the semi-annual yield to worst of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
 
-Yield to worst is the lowest potential yield that a bond can generate without the issuer defaulting. The standard US convention for this series is to use semi-annual coupon payments, whereas the standard in the foreign markets is to use coupon payments with frequencies of annual, semi-annual, quarterly, and monthly.
+Yield to worst is the lowest potential yield that a bond can generate without the issuer defaulting. The standard US convention for this series is to use semi-annual coupon payments, whereas the standard in the foreign markets is to use coupon payments with frequencies of annual, semi-annual, quarterly, and monthly. These series state every index in semi-annual terms, so the yields are compounded twice a year whatever the coupon frequency.
 
 See definitions:
 
@@ -2636,244 +1542,6 @@ Which returns:
 
 ---
 
-## get_term_premium
-Retrieves the Treasury term premia of Adrian, Crump and Moench (2013), as the Federal Reserve Bank of New York estimates them daily from 1961 for maturities of 1 to 10 years. A Treasury yield is split into the average short rate investors expect over the bond's life and the term premium: the extra yield they demand for holding a long bond instead of rolling over short ones. The split tells whether a move in long yields comes from expected monetary policy or from compensation for risk, such as inflation and fiscal uncertainty.
-
-Adrian, T., Crump, R. K., & Moench, E. (2013). Pricing the Term Structure with Linear Regressions. Journal of Financial Economics, 110(1), 110-138. [https://doi.org/10.1016/j.jfineco.2013.04.009](https://doi.org/10.1016/j.jfineco.2013.04.009){:target="_blank"}
-
-Three components are returned per maturity: the "Term Premium", the "Expected Short Rate" (the risk-neutral yield, the yield if investors were indifferent to risk) and the "Fitted Yield" of the model, which is their sum. The model is fitted to the zero-coupon Treasury curve of Gürkaynak, Sack and Wright (2007), so every value is a continuously compounded zero-coupon rate, as a decimal fraction (0.0067 for 0.67%). Weekly and monthly periods take the last day of each period, matching the New York Fed's own month-end series.
-
-The term premium is a model estimate rather than an observed price: it rests on the model's five pricing factors (principal components of the yield curve), and other models, such as that of Kim and Wright (2005), give different levels with similar movements.
-
-**See definition:** [https://www.newyorkfed.org/research/data_indicators/term-premia-tabs](https://www.newyorkfed.org/research/data_indicators/term-premia-tabs){:target="_blank"}
-
-**Also known as:** ACM term premium, Treasury term premium, risk-neutral yield, expected short rate, bond risk premium.
-
-**Args:**
-
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>maturity_years (list[int] &#124; str &#124; None, optional):</u> The maturities in years to keep,
-from 1 to 10, e.g. [2, 5, 10] (or "2,5,10"). Defaults to None, which keeps every
-maturity.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The rates, indexed by date with a column per component ("Term
-Premium", "Expected Short Rate" and "Fitted Yield") and maturity ("1Y" to "10Y").
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-05-01', end_date='2026-10-31')
-
-term_premium = fixedincome.get_term_premium(period='monthly', maturity_years=[2, 5, 10])
-
-term_premium['Term Premium']
-```
-
-Which returns:
-
-|         |     2Y |     5Y |    10Y |
-|:--------|-------:|-------:|-------:|
-| 2026-05 | 0.0011 | 0.003  | 0.0066 |
-| 2026-06 | 0.0004 | 0.0018 | 0.0051 |
-| 2026-07 | 0.0018 | 0.0043 | 0.0083 |
-| 2026-08 | 0.0015 | 0.0038 | 0.0076 |
-| 2026-09 | 0.0042 | 0.0057 | 0.0089 |
-| 2026-10 | 0.0024 | 0.0037 | 0.0068 |
-
----
-
-## get_eiopa_risk_free_rate
-Retrieves the risk-free interest rate term structures the European Insurance and Occupational Pensions Authority (EIOPA) publishes monthly: the curves European insurers must discount their liabilities with under Solvency II. They cover the euro and the currencies of every country of the European Economic Area, plus Switzerland, the United Kingdom, Australia, Canada, China, Colombia, Hong Kong, Japan, Taiwan and the United States, for maturities of 1 to 150 years. Beyond the last liquid maturity each curve converges to the ultimate forward rate (UFR), as Solvency II prescribes.
-
-Four curves are published: the basic spot curve (curve="spot_no_va"), the spot curve with the volatility adjustment (curve="spot_with_va"), and the basic curve after the interest rate shocks of the Solvency II standard formula (curve="shock_up" and curve="shock_down"). EIOPA ships the shocked worksheets as formulas without computed values, so they are computed here with those formulas: upwards by the relative shock per maturity and at least one percentage point, downwards by the relative shock with negative rates left unchanged. Every value is a decimal fraction (0.0358 for 3.58%), at the end of the month the release is for.
-
-EIOPA's page links the releases from January 2023; each is a separate file, so only the months between the start and end date are downloaded, and a release is cached for a year since it does not change.
-
-Up to the last liquid point the curve follows market rates (for the euro, swap rates minus a credit risk adjustment); beyond it the curve is extrapolated towards the ultimate forward rate, so long maturities reflect the regulatory assumption more than market prices. Insurers that are allowed to apply the volatility adjustment discount with that curve, and the shocked curves give the interest rate risk capital requirement of the standard formula.
-
-**See definition:** [https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en){:target="_blank"}
-
-**Also known as:** Solvency II discount curve, EIOPA RFR, risk-free rate term structure, UFR curve.
-
-**Args:**
-
-- <u>countries (list[str] &#124; str &#124; None, optional):</u> The currencies or countries to include,
-as EIOPA names them, e.g. 'Euro Area', 'United Kingdom' or 'United States'.
-Defaults to None, which returns all of them.
-- <u>curve (str, optional):</u> "spot_no_va", "spot_with_va", "shock_up" or "shock_down".
-Defaults to "spot_no_va".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>maturity_years (list[int] &#124; None, optional):</u> The maturities in years to keep, e.g.
-[1, 2, 5, 10, 20, 30] (or "1,2,5,10,20,30") for the key points of the curve. Defaults to None, which
-keeps every maturity from 1 to 150 years.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The rates, indexed by month with a column per currency or country and
-maturity ("1Y" to "150Y").
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-07-01', end_date='2026-09-30')
-
-curves = fixedincome.get_eiopa_risk_free_rate(countries=['Euro Area', 'United Kingdom'])
-
-curves.loc[:, (slice(None), ['1Y', '10Y', '30Y', '60Y', '150Y'])]
-```
-
-Which returns:
-
-|         |   ('Euro Area', '1Y') |   ('United Kingdom', '1Y') |   ('Euro Area', '10Y') |   ('United Kingdom', '10Y') |   ('Euro Area', '30Y') |   ('United Kingdom', '30Y') |   ('Euro Area', '60Y') |   ('United Kingdom', '60Y') |   ('Euro Area', '150Y') |   ('United Kingdom', '150Y') |
-|:--------|----------------------:|---------------------------:|-----------------------:|----------------------------:|-----------------------:|----------------------------:|-----------------------:|----------------------------:|------------------------:|-----------------------------:|
-| 2026-07 |                0.0283 |                     0.0415 |                 0.0316 |                      0.0468 |                 0.0337 |                      0.0518 |                 0.0335 |                      0.0443 |                  0.0332 |                       0.0375 |
-| 2026-09 |                0.0327 |                     0.0445 |                 0.0358 |                      0.0501 |                 0.0351 |                      0.0533 |                 0.0342 |                      0.0447 |                  0.0335 |                       0.0376 |
-
----
-
-## get_eiopa_symmetric_adjustment
-Retrieves the symmetric adjustment of the equity capital charge of Solvency II, the "equity dampener" EIOPA publishes, daily from 1991, and the equity charges of the standard formula it results in. The adjustment raises the charge when equity prices are above their three-year average and lowers it when they are below, between -10% and +10%, so insurers are not forced to sell equities into a falling market. With get_eiopa_risk_free_rate it completes the market inputs of the standard formula's market risk module.
-
-The formula is as follows:
-
-$$
-\text{Type 1 Equity Charge} = 0.39 + \text{Symmetric Adjustment},\;\; \text{for equities listed in the EEA or OECD}
-$$
-
-$$
-\text{Type 2 Equity Charge} = 0.49 + \text{Symmetric Adjustment},\;\; \text{for other equities Every value is a decimal fraction (0.0771 for 7.71\%)}.\;\; \text{Weekly and monthly periods take the value on the last day of each period, which is the value insurers apply at that reporting date}
-$$
-
-**See definition:** [https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en](https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en){:target="_blank"}
-
-**Also known as:** equity dampener, symmetric adjustment, Solvency II equity charge.
-
-**Args:**
-
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The symmetric adjustment and the type 1 and type 2 equity charges,
-indexed by date.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-04-01', end_date='2026-09-30')
-
-fixedincome.get_eiopa_symmetric_adjustment(period='monthly')
-```
-
-Which returns:
-
-|         |   Symmetric Adjustment |   Type 1 Equity Charge |   Type 2 Equity Charge |
-|:--------|-----------------------:|-----------------------:|-----------------------:|
-| 2026-04 |                 0.0767 |                 0.4667 |                 0.5667 |
-| 2026-05 |                 0.0868 |                 0.4768 |                 0.5768 |
-| 2026-06 |                 0.0894 |                 0.4794 |                 0.5794 |
-| 2026-07 |                 0.0951 |                 0.4851 |                 0.5851 |
-| 2026-08 |                 0.0938 |                 0.4838 |                 0.5838 |
-| 2026-09 |                 0.0771 |                 0.4671 |                 0.5671 |
-
----
-
-## get_bank_of_england_yield_curve
-Retrieves the UK yield curves the Bank of England estimates daily from 1985, for maturities from 0.5 years to 40 years (25 years for OIS): the nominal spot curve of UK government bonds (gilts) and the spot curve of overnight index swaps on SONIA (OIS, from 2009). Unlike the par yields of 5, 10 and 20 years in `get_government_bond_yield_curve`, these are zero-coupon spot rates over the full range of maturities with history back to 1985.
-
-The Bank of England's real and implied inflation curves are part of `economics.get_real_yield_curve` and `economics.get_breakeven_inflation_expectations` (countries='United Kingdom').
-
-The archive is a set of large files, of which only those covering the requested years are read, and they are cached since past years do not change. Weekly and monthly periods take the curve on the last day of each period.
-
-**See definition:** [https://www.bankofengland.co.uk/statistics/yield-curves](https://www.bankofengland.co.uk/statistics/yield-curves){:target="_blank"}
-
-**Also known as:** gilt curve, UK spot curve, SONIA OIS curve.
-
-**Args:**
-
-- <u>curve (str, optional):</u> "nominal" or "ois". Defaults to "nominal".
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
-- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
-- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The spot rates as decimals, indexed by date with a column per
-maturity in years, in steps of half a year.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-04-01', end_date='2026-09-30')
-
-fixedincome.get_bank_of_england_yield_curve(period='monthly')[
-    ['1Y', '3Y', '5Y', '10Y', '20Y', '30Y']
-]
-```
-
-Which returns:
-
-|         |     1Y |     3Y |     5Y |    10Y |    20Y |    30Y |
-|:--------|-------:|-------:|-------:|-------:|-------:|-------:|
-| 2026-04 | 0.0426 | 0.0433 | 0.0447 | 0.0506 | 0.0573 | 0.0581 |
-| 2026-05 | 0.0403 | 0.0414 | 0.043  | 0.0486 | 0.0555 | 0.0563 |
-| 2026-06 | 0.0402 | 0.041  | 0.0427 | 0.0483 | 0.0552 | 0.0561 |
-| 2026-07 | 0.0417 | 0.0438 | 0.0456 | 0.051  | 0.058  | 0.0589 |
-| 2026-08 | 0.0418 | 0.0441 | 0.046  | 0.0514 | 0.0582 | 0.0591 |
-| 2026-09 | 0.0442 | 0.0478 | 0.0494 | 0.054  | 0.0598 | 0.06   |
-
----
-
 ## get_corporate_borrowing_cost
 Retrieves the composite cost of borrowing for non-financial corporations the European Central Bank publishes monthly from 2003, for the euro area and every member: the average interest rate on new bank loans to companies across maturities and loan sizes. Euro area companies borrow mostly from banks rather than in the bond market, which makes this the broadest measure of their cost of credit, and the closest freely available proxy for euro area corporate credit conditions, since euro area corporate bond indices are licensed data.
 
@@ -2981,6 +1649,1504 @@ Which returns:
 | 2026-07 |      0.0129 |          0.0493 |           0.0075 |  0.0209 |
 | 2026-08 |      0.0205 |          0.0194 |           0.0011 |  0.0072 |
 | 2026-09 |      0.0133 |          0.0091 |           0.0122 |  0.0015 |
+
+---
+
+## get_forward_rate
+Calculates the implied forward rates between pairs of maturities of a country's zero-coupon (spot) yield curve on a day. The forward rate is the interest rate, implied by that day's curve, for a loan that starts at a future date: it follows from no-arbitrage pricing rather than being a forecast of future rates, and contains a term premium.
+
+The formula is as follows:
+
+$$
+\text{Forward Rate} = \left(\frac{(1 + r_{2})^{t_{2}}}{(1 + r_{1})^{t_{1}}}\right)^{\frac{1}{t_{2} - t_{1}}} - 1
+$$
+
+where:
+
+$$
+r_{1} = \text{Zero-coupon rate at the near maturity},\;\; \text{interpolated linearly from the curve}
+$$
+
+$$
+t_{1} = \text{Near maturity},\;\; \text{in years}
+$$
+
+$$
+r_{2} = \text{Zero-coupon rate at the far maturity},\;\; \text{interpolated linearly from the curve}
+$$
+
+$$
+t_{2} = \text{Far maturity},\;\; \text{in years}
+$$
+
+The curve is the zero-coupon curve of `get_zero_coupon_curve`, bootstrapped from the country's government bond par yields and annually compounded, so the forward rate is annually compounded as well. It holds the zero rate of every coupon date the bootstrap solves for, not only those of the quoted maturities. For a curve of your own, use `yieldcurve_model.get_forward_rate`.
+
+**Also known as:** implied forward rate, forward-forward rate.
+
+**Args:**
+
+- <u>near_maturity (float &#124; str &#124; list &#124; None, optional):</u> The nearer maturity (or
+maturities), in years or as labels such as '6M'. Defaults to None, 1 to 5 years.
+- <u>far_maturity (float &#124; str &#124; list &#124; None, optional):</u> The further maturity (or
+maturities), in years or as labels such as '10Y'. Defaults to None, 5 to 10 years.
+- <u>country (str, optional):</u> The country, see `get_zero_coupon_curve`. Defaults to
+"United States".
+- <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
+before it with a curve. Defaults to None, the end date.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
+to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The forward rate (decimal, annually compounded) for each combination
+of near (rows) and far maturity (columns). Combinations where the far maturity is
+not greater than the near maturity are NaN.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_forward_rate(
+    near_maturity=[1, 2, 5], far_maturity=[5, 10, 30], date="2026-11-05"
+)
+```
+
+Which returns:
+
+|   Near Maturity |        5 |     10 |     30 |
+|----------------:|---------:|-------:|-------:|
+|               1 |   0.0473 | 0.0501 | 0.0548 |
+|               2 |   0.0474 | 0.0505 | 0.0551 |
+|               5 | nan      | 0.0524 | 0.056  |
+
+---
+
+## get_par_yield
+Calculates the par yields of any maturity from a country's zero-coupon (spot) yield curve on a day. The par yield for a maturity is the coupon rate a newly issued bond of that maturity needs so that, discounted with the spot curve, its price equals par.
+
+The government bond yield curve quotes par yields at its own maturities; this gives the par yield of any maturity in between (such as 4 or 15 years) from the zero-coupon rates of every coupon date the bootstrap of `get_zero_coupon_curve` solves for, so a maturity on a coupon date reprices the par yield the bootstrap assumed there and a maturity between coupon dates is interpolated on the zero-coupon rates.
+
+The formula is as follows:
+
+$$
+\operatorname{DF}(t) = \frac{1}{\left(1 + \frac{\text{Spot Rate}\left(\frac{t}{\text{Frequency}}\right)}{\text{Frequency}}\right)^{t}},\;\; \text{the discount factor of a cash flow after } t \text{ coupon periods}
+$$
+
+$$
+\text{Par Yield} = \frac{\text{Frequency} \cdot (1 - \operatorname{DF}(t_{n}))}{\sum(\operatorname{DF}(t_{i})) - a},\;\; \text{over}\;\; \text{the remaining coupons}\; i = 1,\; \ldots,\; n
+$$
+
+where Spot Rate(τ) is the zero-coupon rate of `get_zero_coupon_curve` at $$\tau$$ years, restated from annual compounding to the country's coupon frequency (twice a year, once for Sweden and Norway) and interpolated linearly between the bills and the coupon dates of the bootstrap, a is the elapsed fraction of the current coupon period (0 on a coupon date) and $$t_{i} = i - a$$ is the time of the i-th coupon in periods. The par yield is a nominal annual coupon rate paid at the coupon frequency, like the government bond yield curve. For a curve of your own, use `yieldcurve_model.get_par_yield`.
+
+**Also known as:** par rate, par coupon rate.
+
+**Args:**
+
+- <u>years_to_maturity (float &#124; str &#124; list &#124; None, optional):</u> The maturities, in years
+or as labels such as '15Y'. Defaults to None, 1 to 30 years.
+- <u>country (str, optional):</u> The country, see `get_zero_coupon_curve`. Defaults to
+"United States".
+- <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
+before it with a curve. Defaults to None, the end date.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
+to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.Series: The par yield (decimal) by maturity in years.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_par_yield(years_to_maturity=[1, 4, 8, 15, 25], date="2026-11-05")
+```
+
+Which returns:
+
+|   Years to Maturity |   Par Yield |
+|--------------------:|------------:|
+|                   1 |      0.0428 |
+|                   4 |      0.0456 |
+|                   8 |      0.0475 |
+|                  15 |      0.0505 |
+|                  25 |      0.0526 |
+
+---
+
+## get_yield_curve_spread
+Calculates the spreads between pairs of maturities of a country's government bond yield curve on a day, e.g. the widely followed 10-year minus 2-year and 10-year minus 3-month Treasury spreads. A positive spread indicates a "normal" upward-sloping curve, while a negative spread ("inversion") has historically been used as a leading indicator of an economic slowdown.
+
+The formula is as follows:
+
+$$
+\text{Yield Curve Spread} = \text{Long-Term Yield} - \text{Short-Term Yield}
+$$
+
+Where both yields are the par yields of `get_government_bond_yield_curve`, as the Treasury and FRED (T10Y2Y, T10Y3M) calculate the spreads, interpolated linearly for a maturity the curve does not quote. They keep the source's quote convention: for the United States bond-equivalent yields, compounded twice a year beyond a year and simple interest for the bill maturities up to half a year, so a spread against a bill yield mixes the two conventions, as the published spreads do. For the history of these spreads, take the difference of two columns of `get_government_bond_yield_curve`; for yields of your own, use `yieldcurve_model.get_yield_curve_spread`.
+
+**Also known as:** term spread, yield curve slope, 10Y-2Y spread.
+
+**Args:**
+
+- <u>long_maturity (float &#124; str &#124; list &#124; None, optional):</u> The longer maturity (or
+maturities), in years or as labels such as '10Y'. Defaults to None, 5, 10 and
+30 years.
+- <u>short_maturity (float &#124; str &#124; list &#124; None, optional):</u> The shorter maturity (or
+maturities), in years or as labels such as '3M'. Defaults to None, 3 months
+and 2 years.
+- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
+Defaults to "United States".
+- <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
+before it with a curve. Defaults to None, the end date.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
+to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The spread (decimal) for each combination of long (rows) and short
+maturity (columns).
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_yield_curve_spread(date="2026-11-05")
+```
+
+Which returns:
+
+| Long Maturity   |     3M |     2Y |
+|:----------------|-------:|-------:|
+| 5Y              | 0.0042 | 0.0013 |
+| 10Y             | 0.0067 | 0.0038 |
+| 30Y             | 0.0108 | 0.0079 |
+
+---
+
+## get_breakeven_inflation_rate
+Calculates the breakeven inflation rates of the US Treasury curve on a day: the nominal par yield minus the real (TIPS) par yield of the 5, 7, 10, 20 and 30-year maturities. It is the rate of inflation that would make an investor indifferent between holding a nominal Treasury and a TIPS of the same maturity, and is widely used as a market-implied measure of expected inflation.
+
+The formula is as follows:
+
+$$
+\text{Breakeven Inflation Rate} = \text{Nominal Yield} - \text{Real Yield}
+$$
+
+Where both yields are the Treasury's par yield curve rates (nominal and real), quoted as bond-equivalent yields compounded twice a year, and the breakeven rate is their simple difference, as FRED publishes it as T5YIE and T10YIE, not (1 + Nominal) / (1 + Real) - 1.
+
+The breakeven rate is often read as the market's expected inflation, but it also contains an inflation risk premium, which raises it, and a liquidity premium on inflation-linked bonds, which lowers it, so it rises and falls in market stress for reasons other than inflation expectations. The comparison is with CPI-U, the index TIPS pay on. The daily history, with the 5-year, 5-year forward rate, is `get_inflation_expectations` in the Economics module; for yields of your own, use `yieldcurve_model.get_breakeven_inflation_rate`.
+
+**Also known as:** TIPS breakeven spread, inflation breakeven.
+
+**Args:**
+
+- <u>date (str &#124; None, optional):</u> The day (YYYY-MM-DD), or the last business day
+before it. Defaults to None, the end date.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
+to. Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The Nominal Yield, Real Yield and Breakeven Inflation Rate (decimals)
+by maturity, with the date of the yields.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+fixedincome.get_breakeven_inflation_rate(date="2026-11-05")
+```
+
+Which returns:
+
+| Maturity   |   Nominal Yield |   Real Yield |   Breakeven Inflation Rate | Date       |
+|:-----------|----------------:|-------------:|---------------------------:|:-----------|
+| 5 Year     |          0.0459 |       0.0233 |                     0.0226 | 2026-11-05 |
+| 7 Year     |          0.047  |       0.0246 |                     0.0224 | 2026-11-05 |
+| 10 Year    |          0.0484 |       0.026  |                     0.0224 | 2026-11-05 |
+| 20 Year    |          0.0527 |       0.029  |                     0.0237 | 2026-11-05 |
+| 30 Year    |          0.0525 |       0.0305 |                     0.022  | 2026-11-05 |
+
+---
+
+## get_government_bond_yield
+Get the government bond yield for a variety of countries over time from the OECD. By default this is the long-term (10-year) government bond yield; set short_term=True to get the short-term (3-month) rate instead. The two maturities are described below.
+
+Long-term (short_term=False): long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
+
+In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth.
+
+**See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
+
+Short-term (short_term=True): short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage. They are based on three-month money market rates where available; the OECD source specifically returns the 3-month interbank offered rate rather than a government bill yield, so for most countries it tracks the central bank's policy rate closely.
+
+**See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
+
+**Also known as:** treasury yield, bond yield by maturity.
+
+**Args:**
+
+- <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
+This means that the long-term interest rate will be returned.
+- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
+Defaults to None, which returns the monthly data (quarterly when the class was
+created with quarterly=True).
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the long-term (10-year) government bond yield, or the
+short-term (3-month) interest rate when short_term=True.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2023-05-01', end_date='2023-12-31')
+
+long_term_interest_rate = fixedincome.get_government_bond_yield(short_term=False, period='monthly')
+
+long_term_interest_rate.loc[:, ['Japan', 'United States', 'Germany']]
+```
+
+Which returns:
+
+|         |   Japan |   United States |   Germany |
+|:--------|--------:|----------------:|----------:|
+| 2023-05 |  0.0043 |          0.0357 |    0.0234 |
+| 2023-06 |  0.004  |          0.0375 |    0.0238 |
+| 2023-07 |  0.0059 |          0.039  |    0.0246 |
+| 2023-08 |  0.0064 |          0.0417 |    0.0255 |
+| 2023-09 |  0.0076 |          0.0438 |    0.0266 |
+| 2023-10 |  0.0095 |          0.048  |    0.0282 |
+| 2023-11 |  0.0066 |          0.045  |    0.026  |
+| 2023-12 |  0.0062 |          0.0402 |    0.021  |
+
+---
+
+## get_government_bond_yield_curve
+Retrieves the government bond yield curve of a variety of countries, every maturity a country's government borrows at, from treasury bills to bonds of 30 years and more. The yield curve is the basis for discounting cash flows and pricing bonds, and its shape is one of the most watched signals in markets: an inverted curve, with short rates above long rates, has preceded most recessions.
+
+Every curve comes from the official source:
+
+- United States: the U.S. Department of the Treasury's par yield curve, 1 month to 30 years, from 1990.
+- Euro Area: the yield curve the European Central Bank estimates from the bonds of all euro area central governments, 3 months to 30 years, from 2004, as zero-coupon (spot) rates of a Svensson model, continuously compounded.
+- Germany: the term structure the Deutsche Bundesbank estimates from listed federal securities, 1 to 30 years, as zero-coupon (spot) rates of a Svensson model, continuously compounded.
+- United Kingdom: the Bank of England's nominal par yields of gilts, 5, 10 and 20 years.
+- Japan: the Ministry of Finance's Japanese government bond yields, 1 to 40 years, from 1974.
+- Canada: the Bank of Canada's treasury bill yields (1 month to 1 year, weekly) and benchmark bond yields (2 to 30 years).
+- Sweden: the Riksbank's treasury bill and government bond yields, 1 month to 10 years.
+- Norway: Norges Bank's generic government bond yields, 3 to 10 years.
+- Australia: the Reserve Bank of Australia's government bond yields interpolated to 2, 3, 5 and 10 years, from 2013.
+
+With period="monthly", every other European Union member, such as France, Italy, Spain, the Netherlands and Poland, is included with its 10-year yield, the long-term interest rate for convergence purposes the ECB publishes monthly. For other countries, see `get_government_bond_yield` for the monthly 3-month and 10-year rates of around forty countries from the OECD. Only the requested countries are retrieved, and only the days that are not cached yet.
+
+The yields are returned as decimal fractions per annum (0.0419 for 4.19%), with one column per country and maturity, sorted from the shortest to the longest maturity. Each curve is returned as its source publishes it: the Euro Area and Germany curves are continuously compounded zero-coupon rates, while the other countries publish par or benchmark bond yields, which compound with the coupon frequency of their bonds. The two are not interchangeable: a continuously compounded zero rate r equals an annually compounded zero rate of exp(r) - 1, and a par yield is the coupon rate at which a bond prices at par, which differs from the zero rate of the same maturity whenever the curve is not flat. Weekly and monthly periods take the yields on the last trading day of each period (weeks end on Friday).
+
+**Also known as:** yield curve, term structure of interest rates, sovereign curve, treasury curve, bund curve, gilt curve, JGB curve.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
+"United States", "Euro Area", "Germany", "United Kingdom", "Japan", "Canada",
+"Sweden", "Norway" and "Australia", and with period="monthly" any European
+Union member.
+Defaults to None, which retrieves every country.
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame with the yields as decimals, indexed by date with a
+column per country and maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-09-28', end_date='2026-10-01')
+
+yield_curve = fixedincome.get_government_bond_yield_curve(
+    countries=['United States', 'Germany']
+)
+
+yield_curve['Germany'][['1Y', '2Y', '5Y', '10Y', '20Y', '30Y']]
+```
+
+Which returns:
+
+|            |     1Y |     2Y |     5Y |    10Y |    20Y |    30Y |
+|:-----------|-------:|-------:|-------:|-------:|-------:|-------:|
+| 2026-09-28 | 0.031  | 0.0332 | 0.0344 | 0.0369 | 0.0393 | 0.0401 |
+| 2026-09-29 | 0.0307 | 0.0329 | 0.0341 | 0.0368 | 0.0394 | 0.0403 |
+| 2026-09-30 | 0.0304 | 0.0324 | 0.0336 | 0.0364 | 0.039  | 0.0399 |
+| 2026-10-01 | 0.0302 | 0.0321 | 0.0335 | 0.0366 | 0.0394 | 0.0403 |
+
+---
+
+## get_treasury_rates
+Retrieves the daily U.S. Treasury par yield curve rates as officially published by the U.S. Department of the Treasury, covering every maturity from 1 Month through 30 Year in a single dataset. This is the official, risk-free curve widely used as the discount curve for bond valuation and as the benchmark for credit spreads.
+
+With a FinancialModelingPrep API key the rates come from FinancialModelingPrep, and without one, or when the key's plan does not include them, from the U.S. Department of the Treasury directly, which gives the same figures.
+
+These are par yields: the coupons at which a new Treasury of each maturity would price at par, interpolated by the Treasury from the most recently auctioned securities. Discounting individual cash flows needs zero-coupon (spot) rates bootstrapped from them; on a steep curve the two differ by several basis points at long maturities. The 10-year minus 2-year and 10-year minus 3-month spreads from this curve are the most watched recession indicators.
+
+**Also known as:** the Treasury yield curve, the risk-free curve.
+
+**Args:**
+
+- <u>maturities (float &#124; str &#124; list &#124; None, optional):</u> The maturities to return, in years
+or as labels such as "3M" and "10Y" (a list or a comma-separated string, e.g.
+"2Y,10Y,30Y"), from 1M, 2M, 3M, 6M, 1Y, 2Y, 3Y, 5Y, 7Y, 10Y, 20Y and 30Y.
+Defaults to None, which returns every maturity.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Notes:**
+
+The underlying endpoint caps each request at 90 calendar days of data, so this method
+paginates in 90-day windows to cover the full start_date to end_date range the class
+was initialized with. A long range therefore issues many requests -- be mindful of
+this on a Free plan's daily request limit and consider a narrower start_date where
+possible.
+
+The U.S. Department of the Treasury publishes these rates in percentage points (a
+ten-year yield of 3.95%), but they are converted to decimals here (0.0395) so that
+they match every other rate method in this module -- `get_euribor_rates`,
+`get_european_central_bank_rates`, `get_federal_reserve_rates`,
+`get_government_bond_yield` and the ICE BofA yield methods -- as well as the risk-free
+rate returned by `Toolkit.get_treasury_data`. They can therefore be passed directly
+into `get_present_value`, `get_z_spread`, `get_par_yield` and `get_key_rate_duration`,
+each of which is documented as taking a rate in decimal form.
+
+The rates are decimal fractions, so they feed straight into the bond-pricing methods
+above. Multiply by 100 to recover the published Treasury figures.
+
+**Returns:**
+
+pd.DataFrame: A DataFrame containing the Treasury par yield curve rates, as decimals,
+with one column per maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2024-01-01', end_date='2024-01-15')
+
+fixedincome.get_treasury_rates(maturities='3M,2Y,10Y,30Y')
+```
+
+Which returns:
+
+| Date       |   3 Month |   2 Year |   10 Year |   30 Year |
+|:-----------|----------:|---------:|----------:|----------:|
+| 2024-01-02 |    0.0546 |   0.0433 |    0.0395 |    0.0408 |
+| 2024-01-03 |    0.0548 |   0.0433 |    0.0391 |    0.0405 |
+| 2024-01-04 |    0.0548 |   0.0438 |    0.0399 |    0.0413 |
+| 2024-01-05 |    0.0547 |   0.044  |    0.0405 |    0.0421 |
+| 2024-01-08 |    0.0549 |   0.0436 |    0.0401 |    0.0417 |
+| 2024-01-09 |    0.0547 |   0.0436 |    0.0402 |    0.0418 |
+| 2024-01-10 |    0.0546 |   0.0437 |    0.0404 |    0.042  |
+| 2024-01-11 |    0.0546 |   0.0426 |    0.0398 |    0.0418 |
+| 2024-01-12 |    0.0545 |   0.0414 |    0.0396 |    0.042  |
+
+---
+
+## get_zero_coupon_curve
+Calculates the zero-coupon (spot) yield curve of a country by bootstrapping its government bond par yields. A par yield is the coupon at which a bond trades at par, so it mixes the discount rates of every coupon date; the zero-coupon rate of a maturity is the single rate that discounts a payment at that date. Zero-coupon rates are what bonds and other cash flows are discounted with, and what forward rates and the curve models (Nelson-Siegel, Vasicek) are built on.
+
+Maturities up to one year are treasury bills, which pay no coupon, so their yield only needs converting to annual compounding: US bill yields are bond-equivalent yields (simple interest up to half a year), Canadian bill yields simple interest on a 365-day year and Swedish bill yields simple interest on a 360-day year. Beyond that the par yields are interpolated linearly to every coupon date and each discount factor follows from the earlier ones:
+
+$$
+P (t_{n}) = (1 - c / f \sum_{i < n} P (t_{i})) / (1 + c / f)
+$$
+
+with c the par yield of maturity $$t_{n}$$ and f the coupons per year (two, and one for Sweden and Norway). The curves of the Euro Area and Germany are estimated as zero-coupon curves by the ECB and the Bundesbank, which publish them continuously compounded; they are converted to annual compounding like the others. A curve needs a maturity of a year or less to start from, so the United Kingdom, Norway and Australia (and Canada before its bill yields start) are not covered.
+
+**Also known as:** spot curve, zero curve, bootstrapped curve, discount curve.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str, optional):</u> The countries, see
+`get_government_bond_yield_curve`. Defaults to "United States".
+- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
+Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The zero-coupon rates as decimals (annually compounded), indexed by
+date with a column per country and maturity.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-10-19', end_date='2026-10-23')
+
+zero_curve = fixedincome.get_zero_coupon_curve()
+
+zero_curve['United States'][['1Y', '2Y', '5Y', '10Y', '20Y', '30Y']]
+```
+
+Which returns:
+
+|            |     1Y |     2Y |     5Y |    10Y |    20Y |    30Y |
+|:-----------|-------:|-------:|-------:|-------:|-------:|-------:|
+| 2026-10-19 | 0.0455 | 0.0484 | 0.0501 | 0.0526 | 0.0581 | 0.0564 |
+| 2026-10-20 | 0.0456 | 0.0486 | 0.0501 | 0.0522 | 0.0573 | 0.0556 |
+| 2026-10-21 | 0.0457 | 0.0488 | 0.0502 | 0.0523 | 0.0572 | 0.0556 |
+| 2026-10-22 | 0.0446 | 0.0471 | 0.0485 | 0.0506 | 0.0557 | 0.0545 |
+| 2026-10-23 | 0.0449 | 0.0475 | 0.0489 | 0.051  | 0.0563 | 0.0548 |
+
+---
+
+## get_nelson_siegel_svensson
+Fits the Nelson-Siegel-Svensson model to the zero-coupon yield curve of a country on every date. The model describes a whole curve with a few parameters, which smooths out the noise of individual maturities, gives a yield for any maturity in between and turns the history of curves into a history of a handful of factors. It is the model central banks such as the ECB, the Bundesbank and the Federal Reserve (Gürkaynak, Sack and Wright) publish their curves with.
+
+The Nelson-Siegel model has a level $$\beta_{0}$$ (the yield at an infinite maturity), a slope $$\beta_{1}$$ (the short end minus the long end) and a curvature $$\beta_{2}$$ (a hump that peaks at about $$1.8 \tau_{1}$$ years):
+
+$$
+y (m) = \beta_{0} + \beta_{1} (1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) + \beta_{2} [(1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) - e^{- m / \tau_{1}}]
+$$
+
+Svensson adds a second curvature $$\beta_{3}$$ with its own decay $$\tau_{2}$$, which fits the long end better. With the dozen maturities a government curve has, the six Svensson parameters are weakly identified, as the level and the second curvature can offset each other; set svensson=False for the three factors to read as level, slope and curvature (Diebold and Li, 2006).
+
+Given the decays the betas follow exactly from least squares, so the decays are searched on a grid and refined for every date. The second decay is kept at least 1.5 times the first and the first at least a third of the shortest maturity, and the level at or above the lower of zero and the longest yield (as Gürkaynak, Sack and Wright keep it at or above zero), so that the curve extrapolates sensibly beyond the maturities it is fitted to. The curve is the zero-coupon curve of `get_zero_coupon_curve`, so the countries are those it covers that have at least as many maturities as the model has parameters. The model is fitted to the continuously compounded rates, as the ECB, the Bundesbank and the Federal Reserve fit it, so the parameters compare with theirs; the yields at `maturities` are annually compounded, like those of `get_zero_coupon_curve`.
+
+For more information, see the following papers:
+
+- Nelson, C.R. and Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489.
+- Svensson, L.E.O. (1994). "Estimating and Interpreting Forward Interest Rates: Sweden 1992-1994." NBER Working Paper 4871.
+- Diebold, F.X. and Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364.
+- Gürkaynak, R.S., Sack, B. and Wright, J.H. (2007). "The U.S. Treasury Yield Curve: 1961 to the Present." Journal of Monetary Economics, 54(8), 2291-2304.
+
+**Also known as:** NSS, Svensson curve, Nelson-Siegel curve, yield curve fitting, level slope curvature factors.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str, optional):</u> The countries, see
+`get_zero_coupon_curve`. Defaults to "United States".
+- <u>period (str, optional):</u> Whether to fit the daily, weekly or monthly curves.
+Defaults to "daily".
+- <u>svensson (bool, optional):</u> Whether to fit the Svensson model (True) or the
+Nelson-Siegel model (False). Defaults to True.
+- <u>maturities (list[float &#124; str] &#124; str &#124; None, optional):</u> The maturities, in years or
+as labels such as "3M" and "10Y" (a list or a comma-separated string), to
+return the fitted zero-coupon yields at instead of the parameters. Defaults
+to None, which returns the parameters.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per date, the parameters (Beta 0 to Beta 3 as continuously
+compounded rates, Tau 1 and Tau 2 in years) and the Root Mean Squared Error of the
+fit, or the fitted (annually compounded) yields, with a column per country and
+parameter (or maturity).
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-10-19', end_date='2026-10-23')
+
+fixedincome.get_nelson_siegel_svensson(countries='Germany')
+```
+
+Which returns:
+
+|            |   Beta 0 |   Beta 1 |   Beta 2 |   Beta 3 |   Tau 1 |   Tau 2 |   Root Mean Squared Error |
+|:-----------|---------:|---------:|---------:|---------:|--------:|--------:|--------------------------:|
+| 2026-10-19 |   0.0409 |  -0.0173 |   0.0418 |  -0.051  |  1.1799 |  1.7805 |                         0 |
+| 2026-10-20 |   0.0408 |  -0.0172 |   0.0411 |  -0.0505 |  1.1997 |  1.7996 |                         0 |
+| 2026-10-21 |   0.0406 |  -0.0168 |   0.0308 |  -0.041  |  1.1497 |  1.8913 |                         0 |
+| 2026-10-22 |   0.0397 |  -0.0161 |   0.0313 |  -0.0385 |  1.1471 |  1.8929 |                         0 |
+| 2026-10-23 |   0.0395 |  -0.0154 |   0.0365 |  -0.0462 |  1.2162 |  1.8245 |                         0 |
+
+---
+
+## get_carry_and_roll_down
+Calculates the carry and roll-down of zero-coupon government bonds on every date: the return in excess of financing that a bond of each maturity earns over the horizon if the yield curve stays as it is. The bond earns its own yield over the financing rate (the carry) and, as it ages, is priced at the yield of a shorter maturity, which on an upward sloping curve is lower, so its price rises (the roll-down). Together they are the return an unchanged curve gives, the bond carry of Koijen, Moskowitz, Pedersen and Vrugt (2018): the yield spread over the short rate plus the roll-down. It shows where on the curve a position is paid most for holding it, and where an inverted curve makes holding a bond cost money.
+
+The formula is as follows:
+
+$$
+\text{Carry} = (1 + z(T))^{h} - (1 + r)^{h}
+$$
+
+$$
+\text{Roll-Down} = \frac{(1 + z(T))^{T}}{(1 + z(T - h))^{T - h}} - (1 + z(T))^{h}
+$$
+
+$$
+\text{Total} = \text{Carry} + \text{Roll-Down} = \frac{P(T - h)}{P(T)} - (1 + r)^{h}
+$$
+
+where:
+
+$$
+z(m) = \text{The zero-coupon rate of maturity}\; m,\;\; \text{annually compounded}
+$$
+
+$$
+P(m) = (1 + z(m))^{- m},\;\; \text{the price of a zero-coupon bond paying 1 at } m
+$$
+
+$$
+T = \text{The maturity of the bond},\;\; \text{in years}
+$$
+
+$$
+h = \text{The horizon},\;\; \text{in years}
+$$
+
+$$
+r = \text{The financing rate over the}\; \text{horizon:} \;\text{the zero-coupon rate of the horizon},\;\; z \text{(} h \text{)}
+$$
+
+The curve is the zero-coupon curve of `get_zero_coupon_curve`, bootstrapped from the government bond par yields of the day (or published as zero-coupon rates for the Euro Area and Germany) and annually compounded, with the zero rate of every coupon date the bootstrap solves for. z(T - h) and z(h) are interpolated linearly on it, as for `get_forward_rate`, and held flat below the shortest maturity, so where the curve starts beyond the horizon (Germany at one year) the financing rate is the shortest rate. Beyond the longest maturity L the curve is held flat as well, so a bond with T - h at or beyond L has a roll-down of 0 and only the carry (1 + z(L))^h - (1 + z(h))^h. Each bond is repriced exactly on the unchanged curve: the carry is what it earns over the financing if its own yield stays z(T), the roll-down the price change from its yield moving to z(T - h), valued at the horizon. Every value is a return over the horizon, not annualized. Germany and Japan quote maturities from one year, so a horizon of a year avoids the flat extrapolation there. For a curve or a financing rate of your own, use `yieldcurve_model.get_carry_and_roll_down`.
+
+To first order, with $$D = (T - h) / (1 + z (T))$$ the modified duration (annual compounding) of the bond at the horizon, as Koijen et al. (2018) approximate it:
+
+- Carry ≈ $$(z (T) - r) \times h$$
+- Roll-Down ≈ $$- D \times (z (T - h) - z (T))$$
+
+For more information, see the following sources:
+
+- Koijen, R.S.J., Moskowitz, T.J., Pedersen, L.H. and Vrugt, E.B. (2018). "Carry." Journal of Financial Economics, 127(2), 197-225.
+- Ilmanen, A. (2011). "Expected Returns: An Investor's Guide to Harvesting Market Rewards." Wiley, chapter 9.
+
+**Also known as:** bond carry, rolldown, roll yield, horizon return on an unchanged curve.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str, optional):</u> The countries, see
+`get_zero_coupon_curve`. Defaults to "United States".
+- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
+Defaults to "daily".
+- <u>horizon (float &#124; str, optional):</u> The holding period, in years or as a label such
+as "3M" or "1Y". Defaults to 0.25 (three months).
+- <u>maturities (list[float &#124; str] &#124; str &#124; None, optional):</u> The maturities of the
+bonds, in years or as labels such as "2Y" (a list or a comma-separated
+string). A maturity shorter than the horizon is NaN. Defaults to None, every
+maturity of the curve longer than the horizon.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The Carry, Roll-Down and Total as decimals (returns over the
+horizon), indexed by date with a column per country, component and maturity. A
+date whose curve has no maturity of a year or less to bootstrap from (such as
+Canada before its bill yields of the day are published) is left out.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-10-19', end_date='2026-10-23')
+
+carry_and_roll_down = fixedincome.get_carry_and_roll_down(maturities='2Y,5Y,10Y,30Y')
+
+carry_and_roll_down['United States']['Total']
+```
+
+Which returns:
+
+|            |     2Y |     5Y |    10Y |    30Y |
+|:-----------|-------:|-------:|-------:|-------:|
+| 2026-10-19 | 0.0024 | 0.0022 | 0.0033 | 0.002  |
+| 2026-10-20 | 0.0025 | 0.0022 | 0.0031 | 0.0019 |
+| 2026-10-21 | 0.0026 | 0.0021 | 0.0032 | 0.0019 |
+| 2026-10-22 | 0.0021 | 0.0017 | 0.0028 | 0.002  |
+| 2026-10-23 | 0.0022 | 0.0019 | 0.003  | 0.002  |
+
+---
+
+## get_yield_curve_principal_components
+Calculates the principal components of a country's government bond yield curve: the few independent movements that explain nearly all of how the curve changes. Litterman and Scheinkman (1991) found that three components explain over 95% of the changes of Treasury yields: a parallel shift (level, PC1, loading about equally on every maturity), a steepening (slope, PC2, with opposite signs at the short and long end) and a bending (curvature, PC3, moving the middle against both ends). Hedging a bond portfolio against the first two covers most of its interest rate risk.
+
+The components are the eigenvectors of the covariance matrix of the yield changes (or levels), sorted by the share of the variance they explain. Their sign is arbitrary, so PC1 is oriented as a rise in all yields (its loadings sum to a positive number), PC2 as a steepening (the longest maturity loads above the shortest) and the others so that their loadings sum to a positive number. Maturities that are only published for part of the period (such as the 4-month Treasury bill from 2022) are left out, so that the analysis covers the full period.
+
+For more information, see the following paper:
+
+- Litterman, R. and Scheinkman, J. (1991). "Common Factors Affecting Bond Returns." The Journal of Fixed Income, 1(1), 54-61.
+
+**Also known as:** PCA of the yield curve, level slope curvature, term structure factors.
+
+**Args:**
+
+- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
+Defaults to "United States".
+- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
+Defaults to "daily".
+- <u>components (int, optional):</u> The number of components. Defaults to 3.
+- <u>changes (bool, optional):</u> Whether to analyze the changes of the yields, the usual
+choice as yields themselves are not stationary, or their levels. Defaults to True.
+- <u>scores (bool, optional):</u> Whether to return the value of every component per date
+(the scores) instead of the loadings. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The loadings per maturity and component, with the share of the
+variance each component explains as the last row, or the scores per date.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2016-01-01', end_date='2025-12-31')
+
+fixedincome.get_yield_curve_principal_components(period='monthly')
+```
+
+Which returns:
+
+| Maturity           |    PC1 |     PC2 |     PC3 |
+|:-------------------|-------:|--------:|--------:|
+| 1M                 | 0.1332 | -0.6209 |  0.3084 |
+| 3M                 | 0.1713 | -0.4809 |  0.1636 |
+| 6M                 | 0.225  | -0.3809 | -0.0592 |
+| 1Y                 | 0.2789 | -0.2545 | -0.2647 |
+| 2Y                 | 0.3538 | -0.0249 | -0.4383 |
+| 3Y                 | 0.3676 |  0.0701 | -0.3617 |
+| 5Y                 | 0.3733 |  0.1595 | -0.1347 |
+| 7Y                 | 0.3636 |  0.1907 |  0.0399 |
+| 10Y                | 0.3434 |  0.1972 |  0.2136 |
+| 20Y                | 0.3052 |  0.1888 |  0.4277 |
+| 30Y                | 0.2855 |  0.1773 |  0.4831 |
+| Explained Variance | 0.732  |  0.1938 |  0.0501 |
+
+---
+
+## get_term_premium
+Retrieves the Treasury term premia of Adrian, Crump and Moench (2013), as the Federal Reserve Bank of New York estimates them daily from 1961 for maturities of 1 to 10 years. A Treasury yield is split into the average short rate investors expect over the bond's life and the term premium: the extra yield they demand for holding a long bond instead of rolling over short ones. The split tells whether a move in long yields comes from expected monetary policy or from compensation for risk, such as inflation and fiscal uncertainty.
+
+Adrian, T., Crump, R. K., & Moench, E. (2013). Pricing the Term Structure with Linear Regressions. Journal of Financial Economics, 110(1), 110-138. [https://doi.org/10.1016/j.jfineco.2013.04.009](https://doi.org/10.1016/j.jfineco.2013.04.009){:target="_blank"}
+
+Three components are returned per maturity: the "Term Premium", the "Expected Short Rate" (the risk-neutral yield, the yield if investors were indifferent to risk) and the "Fitted Yield" of the model, which is their sum. The model is fitted to the zero-coupon Treasury curve of Gürkaynak, Sack and Wright (2007), so every value is a continuously compounded zero-coupon rate, as a decimal fraction (0.0067 for 0.67%). Weekly and monthly periods take the last day of each period, matching the New York Fed's own month-end series.
+
+The term premium is a model estimate rather than an observed price: it rests on the model's five pricing factors (principal components of the yield curve), and other models, such as that of Kim and Wright (2005), give different levels with similar movements.
+
+**See definition:** [https://www.newyorkfed.org/research/data_indicators/term-premia-tabs](https://www.newyorkfed.org/research/data_indicators/term-premia-tabs){:target="_blank"}
+
+**Also known as:** ACM term premium, Treasury term premium, risk-neutral yield, expected short rate, bond risk premium.
+
+**Args:**
+
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>maturity_years (list[int] &#124; str &#124; None, optional):</u> The maturities in years to keep,
+from 1 to 10, e.g. [2, 5, 10] (or "2,5,10"). Defaults to None, which keeps every
+maturity.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The rates, indexed by date with a column per component ("Term
+Premium", "Expected Short Rate" and "Fitted Yield") and maturity ("1Y" to "10Y").
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-05-01', end_date='2026-10-31')
+
+term_premium = fixedincome.get_term_premium(period='monthly', maturity_years=[2, 5, 10])
+
+term_premium['Term Premium']
+```
+
+Which returns:
+
+|         |     2Y |     5Y |    10Y |
+|:--------|-------:|-------:|-------:|
+| 2026-05 | 0.0011 | 0.003  | 0.0066 |
+| 2026-06 | 0.0004 | 0.0018 | 0.0051 |
+| 2026-07 | 0.0018 | 0.0043 | 0.0083 |
+| 2026-08 | 0.0015 | 0.0038 | 0.0076 |
+| 2026-09 | 0.0042 | 0.0057 | 0.0089 |
+| 2026-10 | 0.0024 | 0.0037 | 0.0068 |
+
+---
+
+## get_eiopa_risk_free_rate
+Retrieves the risk-free interest rate term structures the European Insurance and Occupational Pensions Authority (EIOPA) publishes monthly: the curves European insurers must discount their liabilities with under Solvency II. They cover the euro and the currencies of every country of the European Economic Area, plus Switzerland, the United Kingdom, Australia, Canada, China, Colombia, Hong Kong, Japan, Taiwan and the United States, for maturities of 1 to 150 years. Beyond the last liquid maturity each curve converges to the ultimate forward rate (UFR), as Solvency II prescribes.
+
+Four curves are published: the basic spot curve (curve="spot_no_va"), the spot curve with the volatility adjustment (curve="spot_with_va"), and the basic curve after the interest rate shocks of the Solvency II standard formula (curve="shock_up" and curve="shock_down"). EIOPA ships the shocked worksheets as formulas without computed values, so they are computed here with those formulas: upwards by the relative shock per maturity and at least one percentage point, downwards by the relative shock with negative rates left unchanged. Every value is a decimal fraction (0.0358 for 3.58%), at the end of the month the release is for, and an annually compounded spot rate, as Solvency II defines the term structure: a rate r discounts a payment in t years with (1 + r)^(-t).
+
+EIOPA's page links the releases from January 2023; each is a separate file, so only the months between the start and end date are downloaded, and a release is cached for a year since it does not change.
+
+Up to the last liquid point the curve follows market rates (for the euro, swap rates minus a credit risk adjustment); beyond it the curve is extrapolated towards the ultimate forward rate, so long maturities reflect the regulatory assumption more than market prices. Insurers that are allowed to apply the volatility adjustment discount with that curve, and the shocked curves give the interest rate risk capital requirement of the standard formula.
+
+**See definition:** [https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en](https://www.eiopa.europa.eu/tools-and-data/risk-free-interest-rate-term-structures_en){:target="_blank"}
+
+**Also known as:** Solvency II discount curve, EIOPA RFR, risk-free rate term structure, UFR curve.
+
+**Args:**
+
+- <u>countries (list[str] &#124; str &#124; None, optional):</u> The currencies or countries to include,
+as EIOPA names them, e.g. 'Euro Area', 'United Kingdom' or 'United States'.
+Defaults to None, which returns all of them.
+- <u>curve (str, optional):</u> "spot_no_va", "spot_with_va", "shock_up" or "shock_down".
+Defaults to "spot_no_va".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>maturity_years (list[int] &#124; None, optional):</u> The maturities in years to keep, e.g.
+[1, 2, 5, 10, 20, 30] (or "1,2,5,10,20,30") for the key points of the curve. Defaults to None, which
+keeps every maturity from 1 to 150 years.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The rates, indexed by month with a column per currency or country and
+maturity ("1Y" to "150Y").
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-07-01', end_date='2026-09-30')
+
+curves = fixedincome.get_eiopa_risk_free_rate(countries=['Euro Area', 'United Kingdom'])
+
+curves.loc[:, (slice(None), ['1Y', '10Y', '30Y', '60Y', '150Y'])]
+```
+
+Which returns:
+
+|         |   ('Euro Area', '1Y') |   ('United Kingdom', '1Y') |   ('Euro Area', '10Y') |   ('United Kingdom', '10Y') |   ('Euro Area', '30Y') |   ('United Kingdom', '30Y') |   ('Euro Area', '60Y') |   ('United Kingdom', '60Y') |   ('Euro Area', '150Y') |   ('United Kingdom', '150Y') |
+|:--------|----------------------:|---------------------------:|-----------------------:|----------------------------:|-----------------------:|----------------------------:|-----------------------:|----------------------------:|------------------------:|-----------------------------:|
+| 2026-07 |                0.0283 |                     0.0415 |                 0.0316 |                      0.0468 |                 0.0337 |                      0.0518 |                 0.0335 |                      0.0443 |                  0.0332 |                       0.0375 |
+| 2026-09 |                0.0327 |                     0.0445 |                 0.0358 |                      0.0501 |                 0.0351 |                      0.0533 |                 0.0342 |                      0.0447 |                  0.0335 |                       0.0376 |
+
+---
+
+## get_eiopa_symmetric_adjustment
+Retrieves the symmetric adjustment of the equity capital charge of Solvency II, the "equity dampener" EIOPA publishes, daily from 1991, and the equity charges of the standard formula it results in. The adjustment raises the charge when equity prices are above their three-year average and lowers it when they are below, between -10% and +10%, so insurers are not forced to sell equities into a falling market. With get_eiopa_risk_free_rate it completes the market inputs of the standard formula's market risk module.
+
+The formula is as follows:
+
+$$
+\text{Type 1 Equity Charge} = 0.39 + \text{Symmetric Adjustment},\;\; \text{for equities listed in the EEA or OECD}
+$$
+
+$$
+\text{Type 2 Equity Charge} = 0.49 + \text{Symmetric Adjustment},\;\; \text{for other equities}
+$$
+
+Every value is a decimal fraction (0.0771 for 7.71%). Weekly and monthly periods take the value on the last day of each period, which is the value insurers apply at that reporting date.
+
+**See definition:** [https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en](https://www.eiopa.europa.eu/tools-and-data/symmetric-adjustment-equity-capital-charge_en){:target="_blank"}
+
+**Also known as:** equity dampener, symmetric adjustment, Solvency II equity charge.
+
+**Args:**
+
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The symmetric adjustment and the type 1 and type 2 equity charges,
+indexed by date.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-04-01', end_date='2026-09-30')
+
+fixedincome.get_eiopa_symmetric_adjustment(period='monthly')
+```
+
+Which returns:
+
+|         |   Symmetric Adjustment |   Type 1 Equity Charge |   Type 2 Equity Charge |
+|:--------|-----------------------:|-----------------------:|-----------------------:|
+| 2026-04 |                 0.0767 |                 0.4667 |                 0.5667 |
+| 2026-05 |                 0.0868 |                 0.4768 |                 0.5768 |
+| 2026-06 |                 0.0894 |                 0.4794 |                 0.5794 |
+| 2026-07 |                 0.0951 |                 0.4851 |                 0.5851 |
+| 2026-08 |                 0.0938 |                 0.4838 |                 0.5838 |
+| 2026-09 |                 0.0771 |                 0.4671 |                 0.5671 |
+
+---
+
+## get_bank_of_england_yield_curve
+Retrieves the UK yield curves the Bank of England estimates daily from 1985, for maturities from 0.5 years to 40 years (25 years for OIS): the nominal spot curve of UK government bonds (gilts) and the spot curve of overnight index swaps on SONIA (OIS, from 2009). Unlike the par yields of 5, 10 and 20 years in `get_government_bond_yield_curve`, these are zero-coupon spot rates over the full range of maturities with history back to 1985. The Bank of England publishes them continuously compounded, and they are returned that way: a spot rate r discounts a payment in t years with exp(-r t).
+
+The Bank of England's real and implied inflation curves are part of `economics.get_real_yield_curve` and `economics.get_breakeven_inflation_expectations` (countries='United Kingdom').
+
+The archive is a set of large files, of which only those covering the requested years are read, and they are cached since past years do not change. Weekly and monthly periods take the curve on the last day of each period.
+
+**See definition:** [https://www.bankofengland.co.uk/statistics/yield-curves](https://www.bankofengland.co.uk/statistics/yield-curves){:target="_blank"}
+
+**Also known as:** gilt curve, UK spot curve, SONIA OIS curve.
+
+**Args:**
+
+- <u>curve (str, optional):</u> "nominal" or "ois". Defaults to "nominal".
+- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
+Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
+- <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The spot rates as decimals, indexed by date with a column per
+maturity in years, in steps of half a year.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-04-01', end_date='2026-09-30')
+
+fixedincome.get_bank_of_england_yield_curve(period='monthly')[
+    ['1Y', '3Y', '5Y', '10Y', '20Y', '30Y']
+]
+```
+
+Which returns:
+
+|         |     1Y |     3Y |     5Y |    10Y |    20Y |    30Y |
+|:--------|-------:|-------:|-------:|-------:|-------:|-------:|
+| 2026-04 | 0.0426 | 0.0433 | 0.0447 | 0.0506 | 0.0573 | 0.0581 |
+| 2026-05 | 0.0403 | 0.0414 | 0.043  | 0.0486 | 0.0555 | 0.0563 |
+| 2026-06 | 0.0402 | 0.041  | 0.0427 | 0.0483 | 0.0552 | 0.0561 |
+| 2026-07 | 0.0417 | 0.0438 | 0.0456 | 0.051  | 0.058  | 0.0589 |
+| 2026-08 | 0.0418 | 0.0441 | 0.046  | 0.0514 | 0.0582 | 0.0591 |
+| 2026-09 | 0.0442 | 0.0478 | 0.0494 | 0.054  | 0.0598 | 0.06   |
+
+---
+
+## get_loan_payment
+Calculates the monthly payment of a new 30-year fixed-rate mortgage at every weekly US mortgage rate: what the same loan costs a buyer at each date, with the total interest over its life and the interest in its first payment. By default the loan is 400,000 US dollars, so the payment of the same house at the same price can be followed through the rate cycle (1,611.86 a month at the 2.65% of January 2021, 2,709.74 at 7.18%).
+
+The loan is an annuity, repaid in equal payments. The formula is as follows:
+
+$$
+\text{Payment} = \frac{L \cdot r}{1 - (1 + r)^{-n}},\;\; \text{or}\;\; \frac{L}{n} \;\text{when}\; r \;\text{is zero}
+$$
+
+$$
+\text{Total Interest} = \text{Payment} \cdot n - L
+$$
+
+$$
+\text{First Payment Interest} = L \cdot r
+$$
+
+Where:
+
+$$
+L = \text{Principal},\;\; \text{the amount borrowed}
+$$
+
+$$
+r = \frac{\text{Rate}}{\text{payments per year}},\;\; \text{the rate per payment}
+$$
+
+$$
+n = \text{years} \cdot \text{payments per year},\;\; \text{the number of payments}
+$$
+
+US mortgage rates are quoted as a nominal annual rate compounded monthly, so the rate per payment is the annual rate divided by twelve (7.18% is 0.5983% a month). The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey (the rate of `Economics.get_mortgage_rate_30_year`), from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_loan_payment`, which takes a number or a series of rates.
+
+**Also known as:** mortgage payment, monthly payment, annuity payment, mortgage calculator, loan calculator, cost of a mortgage.
+
+**Args:**
+
+- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+fixed mortgage rate for another term. Defaults to 30.
+- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per survey date the Rate (a decimal), the Payment, the Total Interest
+over the life of the loan and the First Payment Interest, in the currency of the
+principal.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2021-01-01', end_date='2026-11-06')
+
+fixedincome.get_loan_payment().iloc[[0, -1]]
+```
+
+Which returns:
+
+| Date       |   Rate |   Payment |   Total Interest |   First Payment Interest |
+|:-----------|-------:|----------:|-----------------:|-------------------------:|
+| 2021-01-07 | 0.0265 | 1611.8552 |      180267.8595 |                 883.3333 |
+| 2026-11-05 | 0.0718 | 2709.7393 |      575506.1579 |                2393.3333 |
+
+---
+
+## get_affordable_loan
+Calculates the loan a fixed monthly payment carries at every weekly US mortgage rate: the 30-year fixed-rate mortgage the payment repays, and how that loan compares with the one it carried at the start date. By default the payment is the one a 400,000 US dollar loan had at the first rate of the range, so the answer is how much house the same monthly budget buys as rates move (the 1,611.86 a month of a 400,000 loan at 2.65% carries 237,935 at 7.18%).
+
+The loan is an annuity, repaid in equal payments. The formula is as follows:
+
+$$
+\text{Affordable Loan} = \frac{P \cdot (1 - (1 + r)^{-n})}{r},\;\; \text{or}\;\; P \cdot n \;\text{when}\; r \;\text{is zero}
+$$
+
+$$
+\text{Change} = \frac{\text{Affordable Loan}}{\text{Affordable Loan}(\text{first date})} - 1
+$$
+
+Where:
+
+$$
+P = \text{Payment per period}
+$$
+
+$$
+r = \frac{\text{Rate}}{\text{payments per year}},\;\; \text{the rate per payment}
+$$
+
+$$
+n = \text{years} \cdot \text{payments per year},\;\; \text{the number of payments}
+$$
+
+US mortgage rates are quoted as a nominal annual rate compounded monthly, so the rate per payment is the annual rate divided by twelve. The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey, from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_affordable_loan`.
+
+**Also known as:** affordability, how much can I borrow, mortgage affordability, borrowing capacity, loan amount from payment.
+
+**Args:**
+
+- <u>payment (float &#124; None, optional):</u> The payment per period. Defaults to None, the
+payment of a loan of principal at the first rate between the start and end date.
+- <u>principal (float, optional):</u> The loan whose payment at the first rate is used when
+no payment is given. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+fixed mortgage rate for another term. Defaults to 30.
+- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per survey date the Rate (a decimal), the Payment, the Affordable Loan
+and its Change since the first date (a decimal).
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2021-01-01', end_date='2026-11-06')
+
+fixedincome.get_affordable_loan().iloc[[0, -1]]
+```
+
+Which returns:
+
+| Date       |   Rate |   Payment |   Affordable Loan |   Change |
+|:-----------|-------:|----------:|------------------:|---------:|
+| 2021-01-07 | 0.0265 | 1611.8552 |       400000.0000 |   0.0000 |
+| 2026-11-05 | 0.0718 | 1611.8552 |       237935.0883 |  -0.4052 |
+
+---
+
+## get_amortization_schedule
+Calculates the amortization schedule of a new 30-year fixed-rate mortgage at the US mortgage rate of a date: per monthly payment the part that is interest, the part that repays the loan and the balance left. Early payments are mostly interest, the more so the higher the rate: the first payment of a 400,000 US dollar loan at 7.18% is 2,393.33 of interest and 316.41 of repayment.
+
+The formula is as follows:
+
+$$
+\operatorname{Interest}(k) = \operatorname{Balance}(k - 1) \cdot r
+$$
+
+$$
+\operatorname{Principal}(k) = \text{Payment} - \operatorname{Interest}(k)
+$$
+
+$$
+\operatorname{Balance}(k) = \operatorname{Balance}(k - 1) - \operatorname{Principal}(k),\;\; \text{with}\;\; \operatorname{Balance}(0) = L
+$$
+
+Where L is the principal, r = Rate / payments per year the rate per payment and Payment the annuity payment of `get_loan_payment`. US mortgage rates are quoted as a nominal annual rate compounded monthly. The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey on the date (the last survey on or before it), from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_amortization_schedule`.
+
+**Also known as:** amortization table, mortgage schedule, repayment schedule, interest and principal per payment, remaining balance.
+
+**Args:**
+
+- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+fixed mortgage rate for another term. Defaults to 30.
+- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>date (str &#124; None, optional):</u> The date of the rate (YYYY-MM-DD). Defaults to None, the
+latest rate up to the end date.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per payment number (1 to years * payments per year) the Rate (a
+decimal), the Payment, the Interest, the Principal repaid and the Balance after it.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2026-01-01', end_date='2026-11-06')
+
+fixedincome.get_amortization_schedule().iloc[[0, 1, 2, 119, 239, 359]]
+```
+
+Which returns:
+
+|   Payment Number |   Rate |   Payment |   Interest |   Principal |     Balance |
+|-----------------:|-------:|----------:|-----------:|------------:|------------:|
+|                1 | 0.0718 | 2709.7393 |  2393.3333 |    316.4060 | 399683.5940 |
+|                2 | 0.0718 | 2709.7393 |  2391.4402 |    318.2992 | 399365.2948 |
+|                3 | 0.0718 | 2709.7393 |  2389.5357 |    320.2036 | 399045.0912 |
+|              120 | 0.0718 | 2709.7393 |  2066.2399 |    643.4995 | 344689.0688 |
+|              240 | 0.0718 | 2709.7393 |  1393.1739 |   1316.5655 | 231525.8632 |
+|              360 | 0.0718 | 2709.7393 |    16.1168 |   2693.6225 |      0.0000 |
+
+---
+
+## get_treasury_auctions
+Retrieves the results of the US Treasury auctions held between the start and end date: every bill, note, bond, TIPS and floating rate note the Treasury sold, with the yield it sold at, how many times the offering was bid (the bid-to-cover ratio) and who bought it. Auction results are the most direct read of the demand for US government debt: a lower bid-to-cover ratio or a smaller share for indirect bidders (which include foreign central banks) at a large auction is a sign of weak demand.
+
+The data comes from the Treasury's Fiscal Data API, from 1979 on. The Yield is the high yield of notes and bonds and the investment rate (the bond equivalent yield) of bills; the High Discount Rate is the discount rate bills are quoted at. The Bid-to-Cover Ratio is the Treasury's, which leaves out the Federal Reserve's (SOMA) bids, while the Total Tendered and Total Accepted include them, so their ratio is lower when the Federal Reserve rolls over maturing holdings. The bidder shares are each class's part of the competitive awards: primary dealers (who must bid at every auction), direct bidders (buying for their own account) and indirect bidders (bidding through a dealer, such as foreign and international monetary authorities and investment funds). Auctions that are announced but not yet held, and older auctions for which the Treasury did not publish a breakdown, show NaN for the missing results.
+
+**See definition:** [https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/](https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/){:target="_blank"}
+
+**Also known as:** Treasury auction results, bid-to-cover ratio, auction demand, indirect bidders, Treasury issuance.
+
+**Args:**
+
+- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security: "Bill",
+"Cash Management Bill", "Note", "Bond", "TIPS" or "FRN", or several (a list or
+a comma-separated string). Defaults to None, which returns every kind.
+- <u>security_term (str &#124; None, optional):</u> The term as the Treasury writes it, such as
+"13-Week", "10-Year" or "30-Year". Defaults to None, which returns every term.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which keeps the precision the Treasury publishes.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per auction, indexed by the auction date, with the security,
+its dates, the Coupon Rate, Yield and High Discount Rate as decimals, the
+Bid-to-Cover Ratio, the amounts in dollars and the bidder shares as decimals.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(start_date='2025-01-01', end_date='2026-10-23')
+
+auctions = fixedincome.get_treasury_auctions(security_type='Note', security_term='10-Year')
+
+auctions[['Security Term', 'Reopening', 'Yield', 'Bid-to-Cover Ratio', 'Indirect Bidder Share']].tail()
+```
+
+Which returns:
+
+| Auction Date   | Security Term   | Reopening   |   Yield |   Bid-to-Cover Ratio |   Indirect Bidder Share |
+|:---------------|:----------------|:------------|--------:|---------------------:|------------------------:|
+| 2025-08-06     | 10-Year         | No          | 0.04255 |                 2.35 |                  0.6423 |
+| 2025-11-12     | 10-Year         | No          | 0.04074 |                 2.43 |                  0.67   |
+| 2026-02-11     | 10-Year         | No          | 0.04177 |                 2.39 |                  0.6454 |
+| 2026-05-12     | 10-Year         | No          | 0.04468 |                 2.4  |                  0.6395 |
+| 2026-08-12     | 10-Year         | No          | 0.04683 |                 2.53 |                  0.7673 |
+
+---
+
+## get_bond_universe
+Retrieves thousands of individual US dollar bonds with their price, yield to maturity, modified duration and spread over Treasuries, read from the holdings of bond ETFs.
+
+Individual bond prices are not published for free, but bond ETFs publish their holdings every day: each bond's coupon and maturity (in its name), its par amount and its market value, from which the price follows. By default this reads the iShares iBoxx $ Investment Grade Corporate Bond ETF (LQD), the iShares 0-5 Year Investment Grade Corporate Bond ETF (IGSB) and the iShares Broad USD High Yield Corporate Bond ETF (USHY): together about 8,000 investment grade and high yield corporate bonds. A bond held by several funds is listed once, with the funds that hold it.
+
+The formula is as follows:
+
+$$
+\text{Price} = \frac{\text{Market Value}}{\text{Par Amount}} \cdot 100 \;(\text{a clean price per 100 of par})
+$$
+
+$$
+\text{Yield to Maturity:}\;\; \text{the rate } y \text{ at which the coupons and principal},\;\; \text{discounted at} \;\left(1 + \frac{y}{2}\right) \;\text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
+$$
+
+$$
+\text{Modified Duration} = \frac{\text{Macaulay Duration}}{1 + \frac{y}{2}} \;(\text{see} \;\text{get\_duration})
+$$
+
+$$
+\text{G-Spread} = \text{Yield to Maturity} - \text{Treasury Par Yield at the bond's maturity}
+$$
+
+Coupons are semi-annual, the US convention for corporate bonds, and the yield is a nominal annual rate compounded twice a year (bond-equivalent), like the Treasury par yields it is compared with. The coupon periods fall on the bond's actual coupon dates, counted back from maturity (on the last day of the month for a bond maturing on a month's last day), and the time in the current period is counted on the 30/360 Bond Basis, the day count of US corporate bonds: 30 days to a month and 180 days to a coupon period. The Treasury par yield at a maturity is interpolated linearly between the maturities of the US Treasury par yield curve on the price date (held at the 1-month and 30-year yield beyond them).
+
+**Also known as:** corporate bond prices, bond yields, bond screener, credit spreads per bond, G-spread.
+
+**Args:**
+
+- <u>etfs (list[str] &#124; str &#124; None, optional):</u> The bond ETFs to read the holdings of, as
+a list or a comma-separated string. The holdings must name each bond as
+"ISSUER COUPON% MM/DD/YYYY" with a par amount, as iShares funds do. Defaults
+to None, which uses LQD, IGSB and USHY.
+- <u>issuer (list[str] &#124; str &#124; None, optional):</u> Keeps the bonds whose issuer contains
+this text (case-insensitive), e.g. "APPLE" or "JPMORGAN", or any of several.
+Defaults to None, every issuer.
+- <u>maturity_start (str &#124; None, optional):</u> Keeps the bonds maturing on or after this
+date (YYYY-MM-DD). Defaults to None.
+- <u>maturity_end (str &#124; None, optional):</u> Keeps the bonds maturing on or before this
+date (YYYY-MM-DD). Defaults to None.
+- <u>bonds (list[str] &#124; str &#124; None, optional):</u> Keeps the bonds with these ISINs or
+CUSIPs, as a list or a comma-separated string. Defaults to None, every bond.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per bond, indexed by ISIN, with the Issuer, CUSIP, Coupon
+(decimal), Maturity, whether it is a Rule 144A bond, the Price per 100 of par, the
+Yield to Maturity and G-Spread (decimals), the Modified Duration (years), the
+Price Date and the Funds that hold it, sorted by issuer and maturity.
+
+**Notes:**
+
+- The prices are the funds' own end-of-day valuations (iShares uses evaluated bid
+prices), not trades. iShares publish the holdings valued at the previous business
+day's close, which is the Price Date; FinancialModelingPrep serves only the latest
+holdings, so there is no history. For the Treasuries the funds hold, the yields are
+within about a basis point of the FedInvest prices of the same day (see
+`get_treasury_securities`).
+- Each bond is valued as of its Price Date: the accrued interest and the years to
+maturity count from that day, not from a later settlement date.
+- The yield is to maturity. A callable bond that trades above its call price
+yields less to its call date (the yield to worst), which is common among high
+yield bonds; call schedules are not in the holdings.
+- The fund prints the coupon to two decimals (2.125% shows as 2.13%), which moves the
+yield by well under a basis point a year of maturity.
+- Left out, with a count in the log: lines that are not fixed-coupon bonds (cash,
+futures, swaps), floating rate notes, bank notes marked fixed-to-floating
+("FXD-FRN", which switch to a floating coupon before maturity), inflation-linked
+bonds, mortgage pools, perpetual bonds, bonds without a US ISIN (the funds of
+other currencies) and prices outside 1 to 300. A fixed-to-floating note the fund
+does not mark as such is kept, and its yield assumes the fixed coupon to maturity.
+- Requires a FinancialModelingPrep API key for the holdings; the Treasury curve needs
+none.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(api_key="FINANCIAL_MODELING_PREP_KEY")
+
+bonds = fixedincome.get_bond_universe(issuer="APPLE INC")
+
+bonds[["Coupon", "Maturity", "Price", "Yield to Maturity", "Modified Duration", "G-Spread"]].head()
+```
+
+Which returns:
+
+| ISIN         |   Coupon | Maturity   |   Price |   Yield to Maturity |   Modified Duration |   G-Spread |
+|:-------------|---------:|:-----------|--------:|--------------------:|--------------------:|-----------:|
+| US037833EC07 |   0.012  | 2028-02-08 |   95.54 |              0.0496 |              1.1972 |     0.0026 |
+| US037833ET32 |   0.04   | 2028-05-10 |   98.61 |              0.0498 |              1.4267 |     0.0022 |
+| US037833EY27 |   0.04   | 2028-05-12 |   98.65 |              0.0495 |              1.4324 |     0.0018 |
+| US037833EH93 |   0.014  | 2028-08-05 |   94.13 |              0.0499 |              1.6647 |     0.0017 |
+| US037833FD70 |   0.0465 | 2028-11-09 |   99.32 |              0.0501 |              1.8745 |     0.0014 |
+
+---
+
+## get_issuer_spreads
+Compares the credit spreads of bond issuers at the same maturities: the G-Spread (yield to maturity minus the Treasury par yield) of each issuer at, for example, 2, 5 and 10 years, interpolated between the issuer's own bonds from `get_bond_universe`. Picking one bond per issuer by hand compares bonds of different maturities, and spreads rise with maturity; at the same maturity the difference is the credit.
+
+The formula is as follows:
+
+$$
+\text{Spread} \;(\text{issuer},\; T) = s(a) + \frac{(s(b) - s(a)) \cdot (T - a)}{b - a}
+$$
+
+Where a and b are the years to maturity of the issuer's bonds closest below and above T and s their G-Spreads (see `get_bond_universe`). Bonds of the same maturity count with their average spread, and a maturity outside the range of the issuer's bonds has no spread, as a spread curve is not extrapolated.
+
+**Also known as:** issuer spread curve, credit curve, spread at a maturity, interpolated G-spread, credit spread comparison.
+
+**Args:**
+
+- <u>issuer (list[str] &#124; str &#124; None, optional):</u> The issuers, each kept by the text its
+name contains (case-insensitive), e.g. "APPLE,BOEING". Defaults to None, every
+issuer in the funds.
+- <u>maturity_years (list[float] &#124; str &#124; float &#124; None, optional):</u> The maturities in years,
+as a list or comma-separated, e.g. "2,5,10". Defaults to None, which uses 2, 3,
+5, 7, 10, 20 and 30 years.
+- <u>etfs (list[str] &#124; str &#124; None, optional):</u> The bond ETFs to read the bonds from (see
+`get_bond_universe`). Defaults to None, LQD, IGSB and USHY.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per issuer (the name the funds give it) the G-Spread at each
+maturity (decimals, columns such as "5Y"), the number of Bonds and the Shortest
+and Longest years to maturity among them.
+
+**Notes:**
+
+- An issuer's bonds of one name can differ in seniority, and the funds list a
+finance subsidiary (such as Ford Motor Credit) under its own name, apart from its
+parent.
+- The spreads are those of `get_bond_universe`: to maturity, at the funds' evaluated
+prices of the previous business day. A callable bond priced above its call price
+has a lower yield to worst.
+- Requires a FinancialModelingPrep API key for the holdings.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome(api_key="FINANCIAL_MODELING_PREP_KEY")
+
+fixedincome.get_issuer_spreads(issuer="APPLE INC,BOEING,INTEL", maturity_years="2,5,10")
+```
+
+Which returns:
+
+| Issuer            |     2Y |     5Y |    10Y |   Bonds |   Shortest |   Longest |
+|:------------------|-------:|-------:|-------:|--------:|-----------:|----------:|
+| APPLE INC         | 0.0014 | 0.0026 | 0.0045 |      43 |     1.2361 |   35.7361 |
+| BOEING CO         | 0.0064 | 0.0081 | 0.0094 |      20 |     1.2167 |   37.4667 |
+| INTEL CORPORATION | 0.0078 | 0.0107 | 0.0146 |      35 |     1.2417 |   36.2417 |
+
+---
+
+## get_treasury_securities
+Retrieves every marketable US Treasury (bills, notes, bonds, TIPS and floating rate notes) with its price, yield to maturity and modified duration on a day, without an API key.
+
+Where the Treasury par yield curve gives one yield per constant maturity, this lists the roughly 460 securities themselves, from the Bureau of the Fiscal Service's daily FedInvest prices: the prices the Treasury values its own accounts at. That shows where individual issues trade off the curve (old and new issues of the same maturity, the cheapest notes to deliver into futures) and gives the yield of any maturity date.
+
+The formula is as follows:
+
+$$
+\text{Notes and bonds:}\;\; \text{Yield to Maturity is the rate } y \text{ at which the coupons and principal},\;\; \text{discounted at} \;\left(1 + \frac{y}{2}\right) \;\text{per half year},\;\; \text{are worth the clean price plus accrued interest (see get\_yield\_to\_maturity)}
+$$
+
+$$
+\text{Bills:}\;\; \text{Discount Yield} = \frac{\frac{100 - \text{Price}}{100} \cdot 360}{\text{Days}},\;\; \text{restated as the bond-equivalent yield (see get\_bond\_equivalent\_yield)}
+$$
+
+$$
+\text{Modified Duration} = \frac{\text{Macaulay Duration}}{1 + \frac{y}{2}} \;(\text{see} \;\text{get\_duration})
+$$
+
+Coupons are semi-annual and fall on the actual coupon dates, counted back from maturity (on the last day of the month for a note maturing on a month's last day, such as 30 April); the time in the current period is counted in actual days (actual/actual, the Treasury convention). Yields are nominal annual rates compounded twice a year (bond-equivalent), as the Treasury quotes them. For TIPS the price is per 100 of inflation-adjusted principal, so the yield is the real yield. Floating rate notes reset their coupon every week, so they have a price but no yield or duration.
+
+**See definition:** [https://www.treasurydirect.gov/GA-FI/FedInvest/selectSecurityPriceDate](https://www.treasurydirect.gov/GA-FI/FedInvest/selectSecurityPriceDate){:target="_blank"}
+
+**Also known as:** Treasury bond prices, Treasury yields per security, CUSIP yields, off-the-run Treasuries, FedInvest prices.
+
+**Args:**
+
+- <u>date (str &#124; None, optional):</u> The day (YYYY-MM-DD); a weekend or holiday uses the
+business day before it. Defaults to None, the latest day with prices.
+- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security: "Bill",
+"Note", "Bond", "TIPS" or "FRN", or several (a list or a comma-separated
+string). Defaults to None, which returns every kind.
+- <u>bonds (list[str] &#124; str &#124; None, optional):</u> Keeps the securities with these CUSIPs
+(or their US ISINs), as a list or a comma-separated string. Defaults to None,
+every security.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per security, indexed by CUSIP, with the Security Type,
+Coupon (decimal), Maturity, Price per 100 of par, Yield to Maturity (decimal),
+Modified Duration (years) and Price Date, sorted by maturity.
+
+**Notes:**
+
+- The price is the end-of-day price. It is published the next business day, so the
+latest day uses the bid (FedInvest's Sell price) until then.
+- One request per day; a day with end-of-day prices is cached for good.
+
+**As an example:**
+
+```python
+from financetoolkit import FixedIncome
+
+fixedincome = FixedIncome()
+
+treasuries = fixedincome.get_treasury_securities(date="2026-11-05", security_type="Note,Bond")
+
+treasuries.loc[treasuries["Maturity"].between("2035-01-01", "2036-12-31")]
+```
+
+Which returns:
+
+| CUSIP     | Security Type   |   Coupon | Maturity   |   Price |   Yield to Maturity |   Modified Duration | Price Date   |
+|:----------|:----------------|---------:|:-----------|--------:|--------------------:|--------------------:|:-------------|
+| 91282CMM0 | Note            |   0.0462 | 2035-02-15 | 99.0312 |              0.0477 |              6.7323 | 2026-11-05   |
+| 91282CNC1 | Note            |   0.0425 | 2035-05-15 | 96.3125 |              0.0478 |              6.8997 | 2026-11-05   |
+| 91282CNT4 | Note            |   0.0425 | 2035-08-15 | 96.125  |              0.048  |              7.1425 | 2026-11-05   |
+| 91282CPJ4 | Note            |   0.04   | 2035-11-15 | 94.1562 |              0.0481 |              7.2897 | 2026-11-05   |
+| 912810FT0 | Bond            |   0.045  | 2036-02-15 | 98.875  |              0.0465 |              7.4268 | 2026-11-05   |
+| 91282CPZ8 | Note            |   0.0412 | 2036-02-15 | 94.9062 |              0.0481 |              7.5011 | 2026-11-05   |
+| 91282CQQ7 | Note            |   0.0438 | 2036-05-15 | 96.625  |              0.0482 |              7.5126 | 2026-11-05   |
+| 91282CRF0 | Note            |   0.0462 | 2036-08-15 | 98.4375 |              0.0483 |              7.6914 | 2026-11-05   |
 
 ---
 
@@ -3193,49 +3359,37 @@ Which returns:
 
 ---
 
-## get_loan_payment
-Calculates the monthly payment of a new 30-year fixed-rate mortgage at every weekly US mortgage rate: what the same loan costs a buyer at each date, with the total interest over its life and the interest in its first payment. By default the loan is 400,000 US dollars, so the payment of the same house at the same price can be followed through the rate cycle (1,611.86 a month at the 2.65% of January 2021, 2,709.74 at 7.18%).
-
-The loan is an annuity, repaid in equal payments. The formula is as follows:
+## get_short_rate_model
+Calibrates the Vasicek and Cox-Ingersoll-Ross (CIR) short-rate models to the history of a country's short-term government bond yield and compares the zero-coupon curve each model implies with today's. Short-rate models describe how the interest rate moves, pulled back to a long-run mean b at a speed a with a volatility $$\sigma$$:
 
 $$
-\text{Payment} = \frac{L \cdot r}{1 - (1 + r)^{-n}},\;\; \text{or}\;\; \frac{L}{n} \;\text{when}\; r \;\text{is zero}
+\text{Vasicek (1977):}\;\; \,\mathrm{d}r = a (b - r) \,\mathrm{d}t + \sigma \,\mathrm{d}W
 $$
 
 $$
-\text{Total Interest} = \text{Payment} \cdot n - L
+\text{CIR (1985):}\;\; \,\mathrm{d}r = a (b - r) \,\mathrm{d}t + \sigma \sqrt{r} \,\mathrm{d}W
 $$
 
-$$
-\text{First Payment Interest} = L \cdot r
-$$
+In CIR the volatility shrinks as the rate approaches zero, so the rate stays positive when $$2 ab \geq \sigma^{2}$$ (the Feller condition) and can otherwise touch zero; in Vasicek it can turn negative. The models describe a continuously compounded short rate, so the yields are converted to continuous compounding first (US bill yields from their bond-equivalent quote). Both give bond prices, and so a full zero-coupon curve, in closed form. The parameters are estimated by regressing the change of the rate on its level over the period (CIR on the changes scaled by the square root of the rate, which needs a rate above zero throughout). The half-life is the time it takes to close half the gap to the long-run mean, ln(2) / a.
 
-Where:
+A model calibrated to the history does not reproduce today's curve, which is what the comparison with the market shows; the Hull-White model of `get_short_rate_simulation` adds a time-varying mean that does.
 
-$$
-L = \text{Principal},\;\; \text{the amount borrowed}
-$$
+For more information, see the following papers:
 
-$$
-r = \frac{\text{Rate}}{\text{payments per year}},\;\; \text{the rate per payment}
-$$
+- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188.
+- Cox, J.C., Ingersoll, J.E. and Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407.
 
-$$
-n = \text{years} \cdot \text{payments per year},\;\; \text{the number of payments}
-$$
-
-US mortgage rates are quoted as a nominal annual rate compounded monthly, so the rate per payment is the annual rate divided by twelve (7.18% is 0.5983% a month). The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey (the rate of `Economics.get_mortgage_rate_30_year`), from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_loan_payment`, which takes a number or a series of rates.
-
-**Also known as:** mortgage payment, monthly payment, annuity payment, mortgage calculator, loan calculator, cost of a mortgage.
+**Also known as:** short rate model, mean reversion of interest rates, Vasicek model, CIR model, equilibrium term structure model.
 
 **Args:**
 
-- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
-- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
-fixed mortgage rate for another term. Defaults to 30.
-- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class.
+- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
+Defaults to "United States".
+- <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,
+such as "1M", "3M" or "6M". Defaults to "3M".
+- <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
+Defaults to "daily".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3243,71 +3397,81 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Per survey date the Rate (a decimal), the Payment, the Total Interest
-over the life of the loan and the First Payment Interest, in the currency of the
-principal.
+pd.DataFrame: Per model (columns Vasicek and CIR) the Speed of Mean Reversion, the
+Long-Run Mean, the Volatility, the Current Rate and the Half-Life in years, then
+the zero-coupon rate per maturity (continuously compounded), with the market's
+zero-coupon rates in the Market column.
 
 **As an example:**
 
 ```python
 from financetoolkit import FixedIncome
 
-fixedincome = FixedIncome(start_date='2021-01-01', end_date='2026-11-06')
+fixedincome = FixedIncome(start_date='2000-01-01', end_date='2026-10-23')
 
-fixedincome.get_loan_payment().iloc[[0, -1]]
+fixedincome.get_short_rate_model(short_rate='6M')
 ```
 
 Which returns:
 
-| Date       |   Rate |   Payment |   Total Interest |   First Payment Interest |
-|:-----------|-------:|----------:|-----------------:|-------------------------:|
-| 2021-01-07 | 0.0265 | 1611.8552 |      180267.8595 |                 883.3333 |
-| 2026-11-05 | 0.0718 | 2709.7393 |      575506.1579 |                2393.3333 |
+| Parameter               |   Vasicek |    CIR |   Market |
+|:------------------------|----------:|-------:|---------:|
+| Speed of Mean Reversion |    0.0873 | 0.1481 | nan      |
+| Long-Run Mean           |    0.0144 | 0.017  | nan      |
+| Volatility              |    0.0059 | 0.0558 | nan      |
+| Current Rate            |    0.0425 | 0.0425 |   0.0425 |
+| Half-Life               |    7.9398 | 4.6816 | nan      |
+| Zero Rate 1M            |    0.0424 | 0.0424 |   0.041  |
+| Zero Rate 1.5M          |    0.0424 | 0.0423 |   0.041  |
+| Zero Rate 2M            |    0.0423 | 0.0422 |   0.0415 |
+| Zero Rate 3M            |    0.0422 | 0.0421 |   0.042  |
+| Zero Rate 4M            |    0.0421 | 0.0419 |   0.0427 |
+| Zero Rate 6M            |    0.0419 | 0.0416 |   0.0425 |
+| Zero Rate 1Y            |    0.0413 | 0.0407 |   0.0439 |
+| Zero Rate 2Y            |    0.0402 | 0.039  |   0.0464 |
+| Zero Rate 3Y            |    0.0391 | 0.0375 |   0.047  |
+| Zero Rate 5Y            |    0.0371 | 0.0347 |   0.0477 |
+| Zero Rate 7Y            |    0.0353 | 0.0324 |   0.0485 |
+| Zero Rate 10Y           |    0.0328 | 0.0297 |   0.0497 |
+| Zero Rate 20Y           |    0.0269 | 0.0242 |   0.0548 |
+| Zero Rate 30Y           |    0.0232 | 0.0216 |   0.0534 |
 
 ---
 
-## get_affordable_loan
-Calculates the loan a fixed monthly payment carries at every weekly US mortgage rate: the 30-year fixed-rate mortgage the payment repays, and how that loan compares with the one it carried at the start date. By default the payment is the one a 400,000 US dollar loan had at the first rate of the range, so the answer is how much house the same monthly budget buys as rates move (the 1,611.86 a month of a 400,000 loan at 2.65% carries 237,935 at 7.18%).
+## get_short_rate_simulation
+Simulates the future path of a country's short-term interest rate with the Hull-White, Vasicek or Cox-Ingersoll-Ross model and summarizes the distribution of the paths per step: the mean and the 5th, 25th, 50th, 75th and 95th percentiles. Simulated rate paths value interest rate derivatives and path-dependent products (such as mortgages with prepayment), and stress the interest income of a balance sheet.
 
-The loan is an annuity, repaid in equal payments. The formula is as follows:
-
-$$
-\text{Affordable Loan} = \frac{P \cdot (1 - (1 + r)^{-n})}{r},\;\; \text{or}\;\; P \cdot n \;\text{when}\; r \;\text{is zero}
-$$
+The speed of mean reversion and the volatility are calibrated to the history of the rate, see `get_short_rate_model`. In the Vasicek and CIR models the rate is pulled to the long-run mean of that history. The Hull-White (1990) model replaces it with a mean that varies over time and follows from today's zero-coupon curve, so that the model reproduces the discount factors of that curve (its expected short rate lies above the forward rate by the convexity term $$\sigma^{2} (1 - e^{- at})^{2} / (2 a^{2})$$):
 
 $$
-\text{Change} = \frac{\text{Affordable Loan}}{\text{Affordable Loan}(\text{first date})} - 1
+dr = [\theta (t) - a r] dt + \sigma dW,\quad \theta (t) = \partial f / \partial t + a f (t) + \sigma^{2} (1 - e^{- 2 at}) / (2 a)
 $$
 
-Where:
+with f the instantaneous forward rate. The paths are simulated with an Euler scheme starting at today's rate (CIR's are kept at or above zero).
 
-$$
-P = \text{Payment per period}
-$$
+The simulated short rates are continuously compounded, the rate these models describe: the quoted yield of the short_rate maturity is converted from its quote convention (for US bills the bond-equivalent yield) and the zero-coupon curve of the Hull-White mean from annual compounding.
 
-$$
-r = \frac{\text{Rate}}{\text{payments per year}},\;\; \text{the rate per payment}
-$$
+For more information, see the following paper:
 
-$$
-n = \text{years} \cdot \text{payments per year},\;\; \text{the number of payments}
-$$
+- Hull, J. and White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592.
 
-US mortgage rates are quoted as a nominal annual rate compounded monthly, so the rate per payment is the annual rate divided by twelve. The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey, from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_affordable_loan`.
-
-**Also known as:** affordability, how much can I borrow, mortgage affordability, borrowing capacity, loan amount from payment.
+**Also known as:** interest rate simulation, Hull-White model, Monte Carlo short rate, interest rate scenarios.
 
 **Args:**
 
-- <u>payment (float &#124; None, optional):</u> The payment per period. Defaults to None, the
-payment of a loan of principal at the first rate between the start and end date.
-- <u>principal (float, optional):</u> The loan whose payment at the first rate is used when
-no payment is given. Defaults to 400,000.
-- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
-fixed mortgage rate for another term. Defaults to 30.
-- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class.
+- <u>model (str, optional):</u> "hull_white", "vasicek" or "cir". Defaults to "hull_white".
+- <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
+Defaults to "United States".
+- <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,
+such as "1M", "3M" or "6M". Defaults to "3M".
+- <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
+Defaults to "daily".
+- <u>years (float, optional):</u> The horizon in years. Defaults to 10.
+- <u>steps_per_year (int, optional):</u> The steps per year. Defaults to 12.
+- <u>paths (int, optional):</u> The number of simulated paths. Defaults to 10,000.
+- <u>seed (int &#124; None, optional):</u> The random seed, None for a different simulation
+every time. Defaults to 0.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -3315,89 +3479,33 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Per survey date the Rate (a decimal), the Payment, the Affordable Loan
-and its Change since the first date (a decimal).
+pd.DataFrame: The Mean and the percentiles of the simulated rate (as decimals),
+indexed by the time in years.
 
 **As an example:**
 
 ```python
 from financetoolkit import FixedIncome
 
-fixedincome = FixedIncome(start_date='2021-01-01', end_date='2026-11-06')
+fixedincome = FixedIncome(start_date='2000-01-01', end_date='2026-10-23')
 
-fixedincome.get_affordable_loan().iloc[[0, -1]]
+simulation = fixedincome.get_short_rate_simulation(
+    short_rate='6M', years=5, steps_per_year=1
+)
+
+simulation
 ```
 
 Which returns:
 
-| Date       |   Rate |   Payment |   Affordable Loan |   Change |
-|:-----------|-------:|----------:|------------------:|---------:|
-| 2021-01-07 | 0.0265 | 1611.8552 |       400000.0000 |   0.0000 |
-| 2026-11-05 | 0.0718 | 1611.8552 |       237935.0883 |  -0.4052 |
-
----
-
-## get_amortization_schedule
-Calculates the amortization schedule of a new 30-year fixed-rate mortgage at the US mortgage rate of a date: per monthly payment the part that is interest, the part that repays the loan and the balance left. Early payments are mostly interest, the more so the higher the rate: the first payment of a 400,000 US dollar loan at 7.18% is 2,393.33 of interest and 316.41 of repayment.
-
-The formula is as follows:
-
-$$
-\operatorname{Interest}(k) = \operatorname{Balance}(k - 1) \cdot r
-$$
-
-$$
-\operatorname{Principal}(k) = \text{Payment} - \operatorname{Interest}(k)
-$$
-
-$$
-\operatorname{Balance}(k) = \operatorname{Balance}(k - 1) - \operatorname{Principal}(k),\;\; \text{with}\;\; \operatorname{Balance}(0) = L
-$$
-
-Where L is the principal, r = Rate / payments per year the rate per payment and Payment the annuity payment of `get_loan_payment`. US mortgage rates are quoted as a nominal annual rate compounded monthly. The rate is the weekly average 30-year fixed rate of Freddie Mac's Primary Mortgage Market Survey on the date (the last survey on or before it), from FRED when a FRED API key is set and from Freddie Mac otherwise. For a rate of your own, use `loan_model.get_amortization_schedule`.
-
-**Also known as:** amortization table, mortgage schedule, repayment schedule, interest and principal per payment, remaining balance.
-
-**Args:**
-
-- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
-- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
-fixed mortgage rate for another term. Defaults to 30.
-- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
-- <u>date (str &#124; None, optional):</u> The date of the rate (YYYY-MM-DD). Defaults to None, the
-latest rate up to the end date.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per payment number (1 to years * payments per year) the Rate (a
-decimal), the Payment, the Interest, the Principal repaid and the Balance after it.
-
-**As an example:**
-
-```python
-from financetoolkit import FixedIncome
-
-fixedincome = FixedIncome(start_date='2026-01-01', end_date='2026-11-06')
-
-fixedincome.get_amortization_schedule().iloc[[0, 1, 2, 119, 239, 359]]
-```
-
-Which returns:
-
-|   Payment Number |   Rate |   Payment |   Interest |   Principal |     Balance |
-|-----------------:|-------:|----------:|-----------:|------------:|------------:|
-|                1 | 0.0718 | 2709.7393 |  2393.3333 |    316.4060 | 399683.5940 |
-|                2 | 0.0718 | 2709.7393 |  2391.4402 |    318.2992 | 399365.2948 |
-|                3 | 0.0718 | 2709.7393 |  2389.5357 |    320.2036 | 399045.0912 |
-|              120 | 0.0718 | 2709.7393 |  2066.2399 |    643.4995 | 344689.0688 |
-|              240 | 0.0718 | 2709.7393 |  1393.1739 |   1316.5655 | 231525.8632 |
-|              360 | 0.0718 | 2709.7393 |    16.1168 |   2693.6225 |      0.0000 |
+|   Years |   Mean |     5% |    25% |    50% |    75% |    95% |
+|--------:|-------:|-------:|-------:|-------:|-------:|-------:|
+|       0 | 0.0425 | 0.0425 | 0.0425 | 0.0425 | 0.0425 | 0.0425 |
+|       1 | 0.0489 | 0.0393 | 0.0449 | 0.0489 | 0.0529 | 0.0587 |
+|       2 | 0.0483 | 0.035  | 0.0429 | 0.0483 | 0.0537 | 0.0614 |
+|       3 | 0.0485 | 0.0332 | 0.0421 | 0.0484 | 0.0547 | 0.0643 |
+|       4 | 0.0493 | 0.0324 | 0.0423 | 0.0492 | 0.0563 | 0.0666 |
+|       5 | 0.0503 | 0.0322 | 0.0427 | 0.0503 | 0.0579 | 0.0689 |
 
 ---
 

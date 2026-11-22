@@ -242,7 +242,7 @@ Which returns:
 ---
 
 ## get_profile
-Get the profile of every fund: its name, issuer, asset class, domicile, inception date, expense ratio, assets under management, net asset value (NAV), latest price and the premium or discount of that price to the NAV, the number of holdings and the average daily volume and dollar volume. The expense ratio is what holding the fund costs every year; a premium means buying it costs more than the holdings are worth, which happens in stress for funds of less liquid assets such as bonds. The NAV is the latest Financial Modeling Prep publishes and the NAV Date the New York close it was struck at (the last 16:00 close before its update), so the premium compares the close on the NAV Date with the NAV (SEC Rule 6c-11), not the latest Price. It is empty without a close within three days before the NAV Date (an end date in the past), when the NAV is in another currency than the listing (a close in pence, GBp or GBX, is compared in pounds) and, with a logged warning, when it exceeds 50% either way, which is a data error rather than a price. With stale_nav=True the premium is given however old the NAV is: it compares the NAV with the last close on or before the NAV Date, or with the latest close when the prices end before the NAV Date or the NAV has no date. A NAV days older than the close then mostly shows how the market moved since, not what the fund trades at.
+Get the profile of every fund: its name, issuer, asset class, domicile, inception date, expense ratio, assets under management, net asset value (NAV), latest price and the premium or discount of that price to the NAV, the number of holdings and the average daily volume and dollar volume (in US dollars, at the exchange rate of every day for a fund listed in another currency). The expense ratio is what holding the fund costs every year; a premium means buying it costs more than the holdings are worth, which happens in stress for funds of less liquid assets such as bonds. The NAV is the latest Financial Modeling Prep publishes and the NAV Date the New York close it was struck at (the last 16:00 close before its update), so the premium compares the close on the NAV Date with the NAV (SEC Rule 6c-11), not the latest Price. It is empty without a close within three days before the NAV Date (an end date in the past), when the NAV is in another currency than the listing (a close in pence, GBp or GBX, is compared in pounds) and, with a logged warning, when it exceeds 50% either way, which is a data error rather than a price. With stale_nav=True the premium is given however old the NAV is: it compares the NAV with the last close on or before the NAV Date, or with the latest close when the prices end before the NAV Date or the NAV has no date. A NAV days older than the close then mostly shows how the market moved since, not what the fund trades at.
 
 **Also known as:** ETF profile, expense ratio, assets under management, premium discount.
 
@@ -308,6 +308,8 @@ Measure how closely every fund tracks the Benchmark of the Toolkit, which for an
 - Correlation, Beta and R Squared of the fund's returns with the Benchmark's.
 
 With yearly=True the tracking difference is given per calendar year instead, the return of the fund minus that of the Benchmark. Each fund is compared with the Benchmark on the dates both have a close, so a fund whose prices stop within a year (after a ticker change, for example) is measured up to its last close. The daily closes of two funds can differ by the timing of their last trade, which adds noise to a daily tracking error; fund reports usually measure it from monthly returns.
+
+A fund listed in another currency than the Benchmark (a London listing of an S&P 500 fund in pounds against SPY in dollars) is compared with the Benchmark converted into the fund's currency at the exchange rate of each date, as the fund's own returns include the move of that currency. The fund and the Benchmark still close at different hours, which adds noise to the daily measures; monthly returns are less affected. Without an exchange rate the prices are compared as they are, with a logged warning.
 
 **Also known as:** tracking difference, tracking error, index tracking.
 
@@ -401,6 +403,8 @@ Which returns:
 ## get_overlap
 Measure how much the funds hold of the same: for every pair of funds the sum, over the holdings they share, of the smaller of the two weights. An overlap of 0.8 means 80% of the two portfolios is the same, so holding both adds little diversification.
 
+The weights are taken as listed, not scaled to add up to one, so the overlap of a fund whose list of holdings is incomplete is at most the weight that list covers, also with itself on the diagonal (1 for a complete list). One minus the overlap equals the active share (see get_active_share, which scales the weights) only for funds whose listed weights each add up to one.
+
 **Also known as:** ETF overlap, portfolio overlap, holdings overlap.
 
 **Args:**
@@ -430,10 +434,10 @@ Which returns:
 
 |      |    VOO |    QQQ |    VTI |   SCHD |
 |:-----|-------:|-------:|-------:|-------:|
-| VOO  | 1.0017 | 0.556  | 0.8911 | 0.0764 |
-| QQQ  | 0.556  | 1.0014 | 0.4994 | 0.0516 |
-| VTI  | 0.8911 | 0.4994 | 1.0005 | 0.071  |
-| SCHD | 0.0764 | 0.0516 | 0.071  | 1      |
+| VOO  | 1      | 0.5186 | 0.8894 | 0.0845 |
+| QQQ  | 0.5186 | 1      | 0.4717 | 0.0557 |
+| VTI  | 0.8894 | 0.4717 | 1      | 0.0784 |
+| SCHD | 0.0845 | 0.0557 | 0.0784 | 1      |
 
 ---
 
@@ -499,7 +503,7 @@ Which returns:
 ---
 
 ## get_look_through_valuation
-Value every fund through its holdings: the price-to-earnings, price-to-book, price-to-sales and price-to-free-cash-flow ratio, the dividend yield and the net profit margin of its largest holdings, weighted by their weight in the fund. The multiples are weighted harmonic means, the multiple of the fund as a whole, so one holding with a very high multiple does not dominate. The coverage is the share of the fund's weight held in holdings with a usable, non-zero price-to-earnings ratio; more holdings raise it at the cost of more requests.
+Value every fund through its holdings: the price-to-earnings, price-to-book, price-to-sales and price-to-free-cash-flow ratio, the dividend yield and the net profit margin of its largest holdings, weighted by their weight in the fund. The multiples are weighted harmonic means, the multiple of the fund as a whole, so one holding with a very high multiple does not dominate. When the holdings' earnings (or book value, sales or free cash flow) add up to a loss or to about zero, the fund has no meaningful multiple, so it is NaN with a logged warning. The coverage is the share of the fund's weight held in holdings with a usable, non-zero price-to-earnings ratio (or, without price-to-earnings ratios, the first other multiple there is); more holdings raise it at the cost of more requests.
 
 The ratios are the trailing twelve month ratios Financial Modeling Prep calculates for every holding.
 
@@ -545,7 +549,7 @@ Which returns:
 ---
 
 ## get_liquidity
-Measure how liquid every fund is to trade over the last year of the period: its average daily volume and dollar volume, that dollar volume relative to the fund's assets under management, and the price impact of trading 100 million dollars in a day (the Amihud, 2002, illiquidity: the average absolute daily return per dollar traded, scaled to 100 million). An ETF can also be traded through its holdings, so a thinly traded fund of liquid holdings is easier to trade than its own volume suggests; a fund whose holdings are themselves illiquid (small companies, high yield bonds) is not.
+Measure how liquid every fund is to trade over the last year of the period: its average daily volume and dollar volume, that dollar volume relative to the fund's assets under management, and the price impact of trading 100 million dollars in a day (the Amihud, 2002, illiquidity: the average absolute daily return per dollar traded, scaled to 100 million). The dollar volume of a fund listed in another currency is its traded value in the major unit (pounds for a close in pence) converted at the exchange rate of every day, and its assets, published in the NAV's currency (the major unit of the listing currency when the NAV currency is not published), at the latest rate; without an exchange rate these measures are NaN, with a logged warning. An ETF can also be traded through its holdings, so a thinly traded fund of liquid holdings is easier to trade than its own volume suggests; a fund whose holdings are themselves illiquid (small companies, high yield bonds) is not.
 
 For more information, see the following paper:
 
@@ -589,7 +593,7 @@ Which returns:
 |:------------------------------|------------------:|-------------------:|-----------------:|
 | Average Volume                |    7734399.056000 |    48666218.588000 |  10799597.760000 |
 | Average Dollar Volume         | 4400329488.944520 | 26740006060.354679 | 719035298.234000 |
-| Dollar Volume to Assets       |          0.002588 |           0.057650 |         0.090822 |
+| Dollar Volume to Assets       |          0.004400 |           0.056257 |         0.117432 |
 | Price Impact per $100 Million |          0.000179 |           0.000036 |         0.002990 |
 
 ---
@@ -599,7 +603,7 @@ Calculate how much every holding (or sector) of a fund added to or took off its 
 
 The period runs from the close before the Toolkit's start date to the close on its end date, so a start date of January 1 gives the return so far this year. Returns are price returns of the split-adjusted close, as an index level such as the S&P 500 is a price index; dividends are not included.
 
-A fund publishes only its current holdings, so the weights are those of the close the holdings were last published for (the last close 16 hours or more before the update, as for the NAV), rolled back to the start of the period with every holding's own price change relative to the fund's: w_start = w × (P_start / P_holdings_date) × (F_holdings_date / F_start), with F the fund's price. That is exact for a market capitalization weighted index between rebalancings and drifts with every rebalancing, share issuance, buyback and index change in between, so the longer (or the further back) the period, the less precise the split. The Remainder row holds what the priced holdings do not explain: cash, holdings without a symbol or price (bonds, futures) and that drift. The Total row is the fund's own price return, so the rows add up to it.
+A fund publishes only its current holdings, so the weights are those of the close the holdings were last published for (the last close 16 hours or more before the update, as for the NAV), rolled back to the start of the period with every holding's own price change relative to the fund's: w_start = w × (P_start / P_holdings_date) × (F_holdings_date / F_start), with F the fund's price. That is exact for a market capitalization weighted index between rebalancings and drifts with every rebalancing, share issuance, buyback and index change in between, so the longer (or the further back) the period, the less precise the split. The Remainder row holds what the priced holdings do not explain: cash, holdings without a symbol or price (bonds, futures) and that drift. The Total row is the fund's own price return, so the rows add up to it. The prices of holdings listed in another currency than the fund are converted into the fund's currency at the exchange rate of every date, so their returns include the currency's move, as the fund earns them.
 
 **Also known as:** contribution to return, index contribution, attribution of an index move, points contribution, sector contribution.
 
@@ -653,18 +657,18 @@ Which returns:
 
 |                        |   Start Weight |   Return |   Contribution |    Points |
 |:-----------------------|---------------:|---------:|---------------:|----------:|
-| Healthcare             |         0.0918 |   0.0974 |         0.0089 |   68.4349 |
-| Financial Services     |         0.1122 |   0.0574 |         0.0064 |   49.3077 |
-| Consumer Defensive     |         0.0432 |   0.1157 |         0.005  |   38.2649 |
-| Energy                 |         0.0342 |   0.1384 |         0.0047 |   36.2639 |
-| Consumer Cyclical      |         0.0859 |   0.0418 |         0.0036 |   27.4788 |
-| Utilities              |         0.0188 |   0.1011 |         0.0019 |   14.5331 |
-| Basic Materials        |         0.0167 |   0.0555 |         0.0009 |    7.0788 |
-| Real Estate            |         0.017  |   0.0498 |         0.0008 |    6.4553 |
-| Industrials            |         0.0738 |  -0.0021 |        -0.0002 |   -1.1988 |
-| Communication Services |         0.0975 |  -0.1502 |        -0.0147 | -112.129  |
-| Technology             |         0.4082 |  -0.0662 |        -0.027  | -206.655  |
-| Remainder              |         0.0006 | nan      |         0.0004 |    2.8372 |
+| Healthcare             |         0.0918 |   0.0974 |         0.0089 |   68.4283 |
+| Financial Services     |         0.1122 |   0.0574 |         0.0064 |   49.2989 |
+| Consumer Defensive     |         0.0432 |   0.1157 |         0.005  |   38.2537 |
+| Energy                 |         0.0342 |   0.1383 |         0.0047 |   36.154  |
+| Consumer Cyclical      |         0.0859 |   0.0418 |         0.0036 |   27.4715 |
+| Utilities              |         0.0188 |   0.1011 |         0.0019 |   14.5172 |
+| Basic Materials        |         0.0167 |   0.0555 |         0.0009 |    7.0752 |
+| Real Estate            |         0.017  |   0.0498 |         0.0008 |    6.4549 |
+| Industrials            |         0.0738 |  -0.0022 |        -0.0002 |   -1.2299 |
+| Communication Services |         0.0977 |  -0.15   |        -0.0147 | -112.117  |
+| Technology             |         0.4081 |  -0.0662 |        -0.027  | -206.628  |
+| Remainder              |         0.0008 | nan      |         0.0004 |    2.9928 |
 | Total                  |         1      |  -0.0091 |        -0.0091 |  -69.3287 |
 
 ---
@@ -719,9 +723,9 @@ Which returns:
 |                        |     SPY |     QQQ |
 |:-----------------------|--------:|--------:|
 | Return                 | -0.0091 | -0.0666 |
-| Priced Holdings Return | -0.0094 | -0.0665 |
+| Priced Holdings Return | -0.0095 | -0.0665 |
 | Excluded Weight        |  0.1415 |  0.141  |
-| Excluded Contribution  | -0.0077 | -0.0077 |
+| Excluded Contribution  | -0.0077 | -0.0076 |
 | Return Excluding       | -0.002  | -0.0685 |
 
 ---

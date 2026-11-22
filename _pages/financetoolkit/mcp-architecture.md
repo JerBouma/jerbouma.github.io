@@ -2,7 +2,7 @@
 permalink: /projects/financetoolkit/mcp/architecture
 title: Finance Toolkit MCP Architecture
 seo_title: Finance Toolkit MCP Server Architecture
-excerpt: "How the Finance Toolkit MCP server is built: the router pattern that packs 600+ methods into 25 categorical tools, the startup sequence, dispatch categories, OAuth 2.1 with PKCE and API key handling."
+excerpt: "How the Finance Toolkit MCP server is built: the router pattern that packs 700+ methods into 25 categorical tools, the startup sequence, dispatch categories, OAuth 2.1 with PKCE and API key handling."
 description: "How the open-source Finance Toolkit MCP server works: the router pattern behind its 25 categorical tools, startup sequence, OAuth 2.1 and API key handling."
 classes: wide-sidebar
 author_profile: false
@@ -17,7 +17,7 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/tree/main/financetoolkit/mcp_server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 600+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 25 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
+The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 700+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 25 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
 
 **For developers.** If you just want to use the Finance Toolkit through your assistant, the [Finance Toolkit MCP Server](/projects/financetoolkit/mcp) page covers installation, example prompts and the available tools. Everything below is implementation detail for those who want to extend or contribute to the server.
 {: .notice--info}
@@ -28,15 +28,18 @@ The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structu
 | Module | Role |
 |:---|:---|
 | `mcp_controller.py` | Entry points (`main`, `setup`, `inspector`), config loading, server assembly, transport wiring |
-| `auth_model.py` | Per-request FMP API key resolution, token encryption and verification, OAuth 2.1 routes, HTTP auth middleware |
-| `registry_controller.py` | Builds and registers the categorical router tools on the FastMCP instance |
-| `inspection_controller.py` | Static introspection of controller classes: method discovery and signature building |
-| `provider_model.py` | Routes tool calls to the correct Finance Toolkit module; manages Toolkit instance caching |
-| `cache_model.py` | Thread-safe SQLite cache for DataFrame results with TTL-based eviction |
-| `tools_model.py` | Registers the three built-in search tools (categories, metrics per category, metric search) |
-| `formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to compact JSON, applies `limit` and `show_columns`, and cuts oversized answers to their most recent rows |
-| `coercion_model.py` | Best-effort type coercion for string values arriving from LLMs |
-| `setup_model.py` | Interactive and CLI setup wizard: writes client configs |
+| `auth/auth_model.py` | Per-request FMP API key resolution, token encryption and verification, OAuth 2.1 routes, HTTP auth middleware |
+| `registry/registry_controller.py` | Builds and registers the categorical router tools on the FastMCP instance |
+| `inspection/inspection_controller.py` | Static introspection of controller classes: method discovery and signature building |
+| `registry/provider_model.py` | Routes tool calls to the correct Finance Toolkit module; manages Toolkit instance caching |
+| `registry/tools_model.py` | Registers the three built-in search tools (categories, metrics per category, metric search) |
+| `registry/formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to compact JSON, applies `limit` and `show_columns`, and cuts oversized answers to their most recent rows |
+| `registry/coercion_model.py` | Best-effort type coercion for string values arriving from LLMs |
+| `registry/series_model.py` | Resolves the indicator references the econometrics tool takes as input series |
+| `setup/setup_model.py` | Interactive and CLI setup wizard: writes client configs |
+| `analytics/` | Optional usage counter and its `/stats` page for a hosted server, off unless `FT_MCP_ANALYTICS=1` |
+
+The data itself is cached by the Finance Toolkit's own SQLite cache (`financetoolkit/cache/`), the same one the Python package uses.
 
 ## Startup Sequence
 {: .heading-as-h3}

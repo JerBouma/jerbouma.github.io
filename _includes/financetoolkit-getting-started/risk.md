@@ -167,7 +167,8 @@ import random
 
 import pandas as pd
 
-from financetoolkit.risk import evar_model, risk_model, var_model
+from financetoolkit.risk import risk_model
+from financetoolkit.risk.value_at_risk import evar_model, var_model
 
 return_statistics = {}
 

@@ -27,6 +27,561 @@ pip install "financetoolkit[econometrics]" -U
 
 {% include financetoolkit-getting-started/econometrics.md %}
 
+## get_iv_2sls
+Fit an Instrumental Variables regression via Two-Stage Least Squares (2SLS) of `dependent_ticker` on `endogenous_ticker`, instrumented by `instrument_tickers`.
+
+**Also known as:** IV, 2SLS, IV-2SLS.
+
+For more information about the method, and why plain OLS on an asset suspected of reverse-causality/omitted-confounder bias against another asset is unreliable, see `causal_inference_model.get_iv_2sls`.
+
+A natural use case in a multi-asset return panel: suppose `endogenous_ticker`'s return is suspected to be simultaneously determined together with `dependent_ticker`'s return (e.g. two closely related assets that react to each other intraday, or one asset's return partly reflects news about the other) -- plain OLS of one on the other is then biased. An `instrument_tickers` asset that moves `endogenous_ticker` for reasons unrelated to `dependent_ticker`'s own error term (e.g. a supplier/peer whose moves affect `endogenous_ticker` but only reach `dependent_ticker`, if at all, THROUGH `endogenous_ticker`) allows recovering a cleaner estimate of the causal pass-through.
+
+The formula is as follows:
+
+$$
+Z = \left[1,\; \text{exogenous tickers},\; \text{instruments}\right]\;\;\text{and}\;\; X = \left[1,\; \text{exogenous tickers},\; \text{endogenous tickers}\right],\;\; \text{all in column (Return by default), the constant only with add\_constant=True}
+$$
+
+$$
+\text{Stage 1:}\;\; \hat{X} = Z(Z' Z)^{- 1} Z' X,\;\; \text{the fitted values of each endogenous ticker regressed on } Z
+$$
+
+$$
+\text{Stage 2:}\;\; \hat{\beta} = (\hat{X}' X)^{- 1} \hat{X}' y
+$$
+
+$$
+\operatorname{Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (\hat{X}' \hat{X})^{- 1},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum(y_{t} - x_{t}' \hat{\beta})^{2}}{n - k} \;(\text{linearmodels}\; \text{IV2SLS} \;\text{with}\; \text{cov\_type} = \text{"unadjusted"} \;\text{and debiased} = \text{True})
+$$
+
+**Args:**
+
+- <u>dependent_ticker (str):</u> The dependent (predicted) asset.
+- <u>endogenous_ticker (str &#124; list[str]):</u> The endogenous regressor asset(s) --
+suspected correlated with the error term.
+- <u>instrument_tickers (str &#124; list[str]):</u> The excluded instrument asset(s),
+correlated with `endogenous_ticker` but assumed uncorrelated with the error
+term. Must supply at least as many instruments as endogenous regressors.
+- <u>exogenous_tickers (str &#124; list[str] &#124; None, optional):</u> Other, non-instrumented
+control asset(s) included as-is in both stages. Defaults to None.
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to regress on. Defaults to
+"Return".
+- <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A coefficient table (Coefficient, CORRECTED Std. Error, t-Statistic,
+P-Value), indexed by regressor name -- see `causal_inference_model.get_iv_2sls` for
+why these standard errors differ from (and correct) what a naive two-OLS-calls
+approach would report.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["SMCI", "NVDA", "TSM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2025-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_iv_2sls(
+    dependent_ticker="SMCI", endogenous_ticker="NVDA", instrument_tickers="TSM"
+)
+```
+
+Which returns:
+
+|           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|:----------|--------------:|-------------:|--------------:|----------:|
+| Intercept |       -0.0008 |       0.0027 |       -0.2931 |    0.7697 |
+| NVDA      |        1.2518 |       0.1094 |       11.441  |    0      |
+
+---
+
+## get_difference_in_differences
+Fit a Difference-in-Differences (DiD) regression estimating the effect of some event on `treatment_date` for `treated_tickers`, relative to `control_tickers`.
+
+**Also known as:** DiD, DD, difference-in-differences estimator.
+
+For more information about the method, and why the `Treated x Post` interaction coefficient IS the DiD treatment-effect estimate, see `causal_inference_model.get_difference_in_differences`.
+
+Builds a stacked (ticker, date) panel from every ticker in `treated_tickers` and `control_tickers`: each observation's outcome is that ticker's return on that date, `Treated` is 1 for every observation belonging to a `treated_tickers` asset (regardless of date) and 0 for `control_tickers` assets, and `Post` is 1 for observations on or after `treatment_date` (regardless of asset). This answers "did `treated_tickers` behave differently after `treatment_date`, beyond both their normal average gap versus `control_tickers` and the common market-wide move over that same before/after window?" -- e.g. isolating the effect of an event (an index-inclusion announcement, a regulatory change affecting only some tickers, an earnings surprise) that hits `treated_tickers` but not `control_tickers`, at a known date.
+
+With returns as the outcome, the `Treated x Post` coefficient is the change in the average return per period after the event, not the price impact around it, which is what `get_event_study` measures. The panel stacks tickers observed on the same dates, whose returns are correlated, while the standard errors treat every observation as independent, so the p-value tends to be too low for closely related tickers. The estimate rests on parallel trends, so the first check is whether both groups moved alike before the event.
+
+The formula is as follows:
+
+$$
+y_{it} = \beta_{0} + \beta_{1} \cdot \text{Treated}_{i} + \beta_{2} \cdot \text{Post}_{t} + \delta \cdot (\text{Treated}_{i} \cdot \text{Post}_{t}) + \epsilon_{it},\;\; \text{fitted by OLS with classical standard errors on the stacked (ticker, date) panel of column (Return by default)}
+$$
+
+$$
+\text{Treated}_{i} = 1 \;\text{for} \;\text{treated\_tickers},\;\; \text{Post}_{t} = 1 \;\text{on or after} \;\text{treatment\_date}
+$$
+
+$$
+\hat{\delta} = (\operatorname{mean}(y_{\text{treated},\text{post}}) - \operatorname{mean}(y_{\text{treated},\text{pre}})) - (\operatorname{mean}(y_{\text{control},\text{post}}) - \operatorname{mean}(y_{\text{control},\text{pre}}))
+$$
+
+**Args:**
+
+- <u>treated_tickers (str &#124; list[str]):</u> The asset(s) subject to the event/treatment.
+- <u>treatment_date (str):</u> The date the event/treatment occurs, in the same format
+accepted by `pd.Timestamp`. Observations on or after this date are `Post = 1`; with
+periods longer than a day, a period counts from its last day, so the period that holds the
+treatment date is the first treated one.
+- <u>control_tickers (str &#124; list[str] &#124; None, optional):</u> The untreated comparison
+asset(s). Defaults to None, which uses every ticker NOT in `treated_tickers`,
+excluding "Benchmark" (pass `control_tickers="Benchmark"` to use the benchmark as
+the control group).
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to use as the outcome.
+Defaults to "Return".
+- <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A coefficient table (Coefficient, Std. Error, t-Statistic, P-Value)
+with rows `Intercept`, `Treated`, `Post` and `Treated x Post` -- the last of
+which is the DiD treatment-effect estimate.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["NVDA", "INTC"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_difference_in_differences(
+    treated_tickers="NVDA",
+    control_tickers="INTC",
+    treatment_date="2023-06-01",
+    period="monthly",
+)
+```
+
+Which returns:
+
+|                |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|:---------------|--------------:|-------------:|--------------:|----------:|
+| Intercept      |       -0.0126 |       0.0262 |       -0.4796 |    0.6324 |
+| Treated        |        0.0669 |       0.0371 |        1.8059 |    0.0736 |
+| Post           |        0.0291 |       0.0362 |        0.8043 |    0.4229 |
+| Treated x Post |       -0.0246 |       0.0511 |       -0.4813 |    0.6312 |
+
+---
+
+## get_regression_discontinuity
+Estimate a Sharp Regression Discontinuity (RDD): the jump in `dependent_ticker` exactly where `running_variable_ticker` crosses `cutoff`.
+
+**Also known as:** RDD, sharp RD.
+
+For more information about the method, see `causal_inference_model.get_regression_discontinuity`.
+
+Treats `running_variable_ticker`'s value as the running variable that (hypothetically) triggers some discrete change once it crosses `cutoff` -- e.g. testing whether `dependent_ticker`'s return behaves discontinuously around a round-number/threshold level of another asset or indicator (a psychological price level, an index-inclusion market-cap threshold, a macro indicator's policy-relevant threshold) fed in as `running_variable_ticker`. Fits separate local linear regressions of `dependent_ticker`'s return on the (cutoff-centered) `running_variable_ticker` value, one on each side of `cutoff`, and reports the gap between the two fitted lines exactly at the cutoff.
+
+The formula is as follows:
+
+$$
+\tilde{x}_{t} = x_{t} - \text{cutoff},\;\; \text{keeping the observations with} \;\left|\tilde{x}_{t}\right| < h,\;\; \text{where}\;\; x_{t} \;\text{is the running ticker's} \;\text{column} \;(\text{Return by default}) \;\text{and}\; h = \text{bandwidth},\;\; \text{or half the range of } x_{t} \text{ by default}
+$$
+
+$$
+\text{Each side (} \tilde{x}_{t} < 0 \text{ and } \tilde{x}_{t} \geq 0 \text{):}\;\; y_{t} = a + b \cdot \tilde{x}_{t} + e_{t},\;\; \text{fitted by OLS} \;(\text{kernel} = \text{"uniform"},\; \text{the default}) \;\text{or by WLS with weights}\; 1 - \frac{\left|\tilde{x}_{t}\right|}{h} \;(\text{kernel} = \text{"triangular"})
+$$
+
+$$
+\text{Discontinuity} = a_{\text{right}} - a_{\text{left}},\;\; \text{with}\;\; \text{SE} = \sqrt{\operatorname{SE}(a_{\text{right}})^{2} + \operatorname{SE}(a_{\text{left}})^{2}}
+$$
+
+$$
+t = \frac{\text{Discontinuity}}{\text{SE}},\;\; \text{with a Student-t distribution on the two sides' residual degrees of freedom combined}
+$$
+
+**Args:**
+
+- <u>dependent_ticker (str):</u> The outcome asset.
+- <u>running_variable_ticker (str):</u> The asset (or column) whose value determines
+which side of `cutoff` an observation falls on.
+- <u>cutoff (float):</u> The threshold value of `running_variable_ticker` at which the
+discontinuity is estimated.
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to use for both series.
+Defaults to "Return".
+- <u>bandwidth (float &#124; None, optional):</u> The maximum distance from `cutoff` an
+observation may be to be included in either local regression. Defaults to
+None, which uses half of the running variable's observed range -- see
+`causal_inference_model.get_regression_discontinuity` for why this is a
+deliberately naive default.
+- <u>kernel (str, optional):</u> One of "uniform" or "triangular". Defaults to "uniform".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A one-column results table with the discontinuity estimate, its
+standard error/t-statistic/p-value, and the cutoff/bandwidth/sample sizes used.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["COIN", "BTCUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2022-01-01",
+    end_date="2025-12-31",
+)
+
+# COIN's return on days Bitcoin rises versus days it falls
+toolkit.econometrics.get_regression_discontinuity(
+    dependent_ticker="COIN", running_variable_ticker="BTCUSD", cutoff=0
+)
+```
+
+Which returns:
+
+|               |    Value |
+|:--------------|---------:|
+| Discontinuity |   0.0031 |
+| Std. Error    |   0.0027 |
+| t-Statistic   |   1.1191 |
+| P-Value       |   0.2633 |
+| Cutoff        |   0      |
+| Bandwidth     |   0.1497 |
+| N Left        | 729      |
+| N Right       | 728      |
+
+---
+
+## get_propensity_score_matching
+Estimate the Average Treatment effect on the Treated (ATT) of `treatment_ticker` exceeding `treatment_threshold` on `dependent_ticker`'s return, via Propensity Score Matching (PSM) on `covariate_tickers`.
+
+**Also known as:** PSM, nearest-neighbor propensity matching.
+
+For more information about the method, see `causal_inference_model.get_propensity_score_matching`.
+
+Derives a binary "treatment" indicator the same way `get_logistic_regression` derives its binary outcome: 1 if `treatment_ticker`'s return in a given period exceeds `treatment_threshold` (0.0, i.e. a positive return, by default), else 0. This lets PSM answer e.g. "on periods where `treatment_ticker` has an outsized/positive move, is `dependent_ticker`'s return different than it would otherwise be -- comparing only periods that LOOK similar on `covariate_tickers` (to control for the possibility that `treatment_ticker` tends to move on the same periods/regimes that also independently affect `dependent_ticker`)?"
+
+The formula is as follows:
+
+$$
+D_{t} = 1 \;\text{if the treatment ticker's} \;\text{column} \;(\text{Return by default}) \;\text{is above} \;\text{treatment\_threshold} \;(0 \;\text{by default}),\;\; \text{else 0}
+$$
+
+$$
+e(x_{t}) = \frac{1}{1 + \exp(- x_{t}' \beta)},\;\; \text{a logit of } D_{t} \text{ on the covariate tickers (plus a constant)}
+$$
+
+$$
+\text{Matching on}\; \ell_{t} = \ln\left(\frac{e}{1 - e}\right) \;\text{:} \;\text{each treated period},\;\; \text{in order},\;\; \text{takes the nearest unmatched control period} \;(\text{one-to-one},\; \text{without replacement}) \;\text{if} \;\left|\ell_{\text{treated}} - \ell_{\text{control}}\right| \leq \text{caliper},\;\; \text{which defaults to 0.2 × the standard deviation (ddof=1) of ℓ}
+$$
+
+$$
+\text{ATT} = \frac{1}{m} \cdot \sum(y_{\text{treated}} - y_{\text{control}}) \;\text{over the}\; m \;\text{matched pairs}
+$$
+
+$$
+\text{SE} = \frac{\operatorname{std}(y_{\text{treated}} - y_{\text{control}},\; \text{ddof} = 1)}{\sqrt{m}},\;\; \text{with a Student-t distribution with}\; m - 1 \;\text{degrees of freedom}
+$$
+
+**Args:**
+
+- <u>dependent_ticker (str):</u> The outcome asset.
+- <u>treatment_ticker (str):</u> The asset whose return, once it exceeds
+`treatment_threshold`, defines the treatment indicator.
+- <u>covariate_tickers (str &#124; list[str]):</u> The asset(s) used as covariates to
+estimate the propensity score -- should include asset(s) believed to drive
+selection into "treatment".
+- <u>treatment_threshold (float, optional):</u> The return threshold defining
+treatment. Defaults to 0.0.
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
+- <u>caliper (float &#124; None, optional):</u> The maximum allowed logit-propensity-score
+matching distance. Defaults to None, which uses Austin's (2011) rule of thumb
+-- see `causal_inference_model.get_propensity_score_matching`.
+- <u>add_constant (bool, optional):</u> Whether to include an intercept in the
+propensity score model. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.Series: The ATT estimate, its standard error/t-statistic/p-value, and the
+number of matched pairs/treated/control observations.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["XOM", "USO"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+# XOM's return on days USO rises more than 2%, matched on the Benchmark's return
+toolkit.econometrics.get_propensity_score_matching(
+    dependent_ticker="XOM",
+    treatment_ticker="USO",
+    covariate_tickers="Benchmark",
+    treatment_threshold=0.02,
+)
+```
+
+Which returns:
+
+|               |     Value |
+|:--------------|----------:|
+| ATT           |    0.0163 |
+| Std. Error    |    0.0016 |
+| t-Statistic   |    9.9366 |
+| P-Value       |    0      |
+| Matched Pairs |  181      |
+| N Treated     |  185      |
+| N Control     | 1069      |
+
+---
+
+## get_synthetic_control
+Construct a Synthetic Control for `treated_ticker` from a weighted combination of `donor_tickers` (Abadie, Diamond & Hainmueller, 2010), and estimate the effect of an event/intervention as the post-`treatment_period` gap between `treated_ticker`'s actual and synthetic counterfactual return path.
+
+When a single company or market experiences an event (an acquisition, a regulatory change, an index inclusion) and there is no single obvious comparison, the synthetic control builds one from the data: a weighted average of unaffected "donor" tickers, with weights chosen so it tracks the treated ticker as closely as possible before the event. If that pre-event fit is good, the synthetic control's path after the event estimates what would have happened without it, and the gap is the estimated effect.
+
+The formula is as follows:
+
+$$
+\text{Weights:}\;\; w^{*} = \operatorname*{arg\,min}_{w} \left\|\text{treated\_pre} - \text{donors\_pre} \, w\right\|^{2},\;\; \text{subject to}\; w \geq 0 \;\text{and sum}(w) = 1 (\text{SLSQP}),\;\; \text{with pre the dates before treatment\_period}
+$$
+
+$$
+\text{Synthetic control:}\;\; \text{synthetic}_{t} = \text{donors}_{t} \, w^{*},\;\; \text{for every period } t
+$$
+
+$$
+\text{Treatment effect:}\;\; \text{gap}_{t} = \text{treated}_{t} - \text{synthetic}_{t},\;\; \text{for every post-event period } t
+$$
+
+$$
+\text{Average Treatment Effect} = \text{mean of}\; \text{gap}_{t} \;\text{over the post-event periods}
+$$
+
+$$
+\text{RMSPE ratio} = \frac{\sqrt{\operatorname{mean}(\text{gap\_post}^{2})}}{\sqrt{\operatorname{mean}(\text{gap\_pre}^{2})}}
+$$
+
+$$
+\text{P-Value} = \text{the share of the treated ticker's and every placebo donor's RMSPE ratios that are at least the treated ticker's ratio}
+$$
+
+- All series are the tickers' `column` (Return by default)
+
+Unlike difference-in-differences, this does not require the treated and comparison units to follow parallel trends, as the synthetic control is built to match the treated ticker's own pre-event path. Because there is only one treated unit, the p-value comes from placebo tests: the procedure is rerun with each donor as if it were treated, and the treated ticker's post/pre fit ratio is compared with theirs. Matching is done on the pre-event outcome path only, a common simplification of the original method.
+
+For more information about the method, see the following papers:
+
+- Abadie, A., Diamond, A., & Hainmueller, J. (2010). "Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program." Journal of the American Statistical Association, 105(490), 493-505.
+- Abadie, A. (2021). "Using Synthetic Controls: Feasibility, Data Requirements, and Methodological Aspects." Journal of Economic Literature, 59(2), 391-425.
+
+**Also known as:** SCM, synthetic control method.
+
+**Args:**
+
+- <u>treated_ticker (str):</u> The asset believed to be affected by an event/
+intervention starting at `treatment_period`.
+- <u>treatment_period (str):</u> The first post-treatment period -- periods at or
+after this value (within `period`'s index) are treated as post-treatment,
+everything before as pre-treatment (used to fit the synthetic control's
+weights).
+- <u>donor_tickers (str &#124; list[str] &#124; None, optional):</u> The ticker(s) forming
+the donor pool the synthetic control is built from. Defaults to None,
+meaning every other Toolkit ticker (subject to `include_benchmark`).
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
+default donor pool (has no effect when donor_tickers is given explicitly).
+Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.Series: The average post-treatment effect, pre/post RMSPE and their
+ratio, the placebo-based p-value, and the donor pool/period counts.
+
+**Notes:**
+
+- Needs at least 2 donor tickers -- with only 1-2 Toolkit tickers loaded,
+pass `donor_tickers` explicitly (e.g. including "Benchmark") or (better)
+construct the Toolkit with more tickers, since small donor pools give both a
+poorly-identified synthetic control and a very coarse placebo p-value (with
+`k` donors, the smallest achievable p-value is `1 / (k + 1)`).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["BA", "AIR.PA", "LMT", "GD", "RTX", "NOC"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2023-01-01",
+    end_date="2024-12-31",
+)
+
+# Boeing after the 737 MAX 9 grounding, with the other aerospace companies as donors
+toolkit.econometrics.get_synthetic_control(treated_ticker="BA", treatment_period="2024-01-08")
+```
+
+Which returns:
+
+|                          |    Value |
+|:-------------------------|---------:|
+| Average Treatment Effect |  -0.0017 |
+| Pre-Treatment RMSPE      |   0.0156 |
+| Post-Treatment RMSPE     |   0.0204 |
+| RMSPE Ratio              |   1.3094 |
+| P-Value                  |   0.5    |
+| N Donors                 |   5      |
+| N Pre-Periods            | 260      |
+| N Post-Periods           | 255      |
+
+---
+
+## get_event_study
+Perform a market-model event study around a single event date, following the methodology in MacKinlay, A.C. (1997), "Event Studies in Economics and Finance," Journal of Economic Literature, 35(1), 13-39 -- the canonical reference and still the dominant approach used to measure the stock-price impact of corporate events (earnings announcements, M&A deals, index additions/deletions, dividend changes, regulatory actions, etc.).
+
+A market model (`Return_t = alpha + beta * Benchmark_Return_t + e_t`) is fit via OLS over a clean "estimation window" ending `gap_days` before the event, then the Abnormal Return on each day of the "event window" around the event is the actual return minus the market-model-predicted expected return. These are cumulated into the Cumulative Abnormal Return (CAR) -- the stock-price impact attributable to the event, after stripping out what would have been expected from general market movements alone -- along with a t-test of whether CAR is significantly different from zero.
+
+The `event_date` is the first trading day on which the news can be priced, so for results released after the close it is the next trading day. The CAR runs from `pre_event_days` before to `post_event_days` after it (21 trading days by default), which also captures any leak ahead of the announcement. The t-test treats the abnormal returns as independent and uses the residual Variance of the estimation window, so a single event is weak evidence; studies average the CARs of many events of the same kind.
+
+The formula is as follows:
+
+$$
+\text{Market model:}\;\; R_{t} = \alpha + \beta \cdot R_{m,t} + \epsilon_{t},\;\; \text{fitted by OLS on the daily column (Return by default) of the ticker and the Benchmark over the estimation\_window (250) trading days that end gap\_days (30) trading days before the event}
+$$
+
+$$
+\text{AR}_{t} = R_{t} - (\hat{\alpha} + \hat{\beta} \cdot R_{m,t}),\;\; \text{for}\;\; t = - \text{pre\_event\_days} \;\ldots + \text{post\_event\_days} \;(10 \;\text{and}\; 10)
+$$
+
+$$
+\text{CAR} = \sum \;\text{AR}_{t} \;\text{over the}\; L = \text{pre\_event\_days} + \text{post\_event\_days} + 1 \;\text{event-window days}
+$$
+
+$$
+t = \frac{\text{CAR}}{\sqrt{L \cdot \hat{\sigma}^{2}}},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum \hat{\epsilon}_{t}^{2}}{N - 2} \;\text{over the}\; N \;\text{estimation-window days and a Student-t distribution with}\; N - 2 \;\text{degrees of freedom}
+$$
+
+**Also known as:** CAR analysis, abnormal returns analysis, market model event study.
+
+**Args:**
+
+- <u>event_date (str):</u> The date of the event (e.g. "2023-05-04"). Must fall
+within the Toolkit instance's daily historical data; a date without
+trading (a weekend or holiday) moves to the next trading day.
+- <u>dependent_ticker (str &#124; None, optional):</u> The ticker being studied.
+Defaults to the first ticker in the Toolkit instance.
+- <u>column (str, optional):</u> The historical data column to use. Defaults to
+"Return".
+- <u>estimation_window (int, optional):</u> Number of trading days used to
+estimate the market model. Defaults to 250 (~one trading year).
+- <u>gap_days (int, optional):</u> Number of trading days between the end of the
+estimation window and the event date. Defaults to 30.
+- <u>pre_event_days (int, optional):</u> Number of trading days before the event
+date included in the event window. Defaults to 10.
+- <u>post_event_days (int, optional):</u> Number of trading days after the event
+date included in the event window. Defaults to 10.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.Series: The Cumulative Abnormal Return (CAR), its t-statistic and
+p-value, the market-model alpha and beta, and the number of estimation-
+window observations used.
+
+**Notes:**
+
+- Always uses daily data -- event windows are measured in trading days, so
+quarterly/yearly granularity would not be meaningful here.
+- The market/benchmark return series is the Toolkit instance's `"Benchmark"`
+column.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["NVDA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2022-01-01",
+    end_date="2023-12-31",
+)
+
+# NVDA's abnormal return around its May 2023 earnings release
+toolkit.econometrics.get_event_study(event_date="2023-05-25")
+```
+
+Which returns:
+
+|                                |    Value |
+|:-------------------------------|---------:|
+| Cumulative Abnormal Return     |   0.2041 |
+| CAR t-statistic                |   1.9464 |
+| CAR p-value                    |   0.0527 |
+| Alpha                          |   0.0018 |
+| Beta                           |   2.0762 |
+| Estimation Window Observations | 250      |
+
+---
+
 ## get_arch_lm_test
 Calculate Engle's Lagrange Multiplier (LM) test for ARCH effects.
 
@@ -411,44 +966,49 @@ Which returns:
 
 ---
 
-## get_augmented_dickey_fuller
-Calculate the Augmented Dickey-Fuller (ADF) test for a unit root, per asset.
+## get_markov_regime_switching
+Fit a Markov regime switching model to every asset: the mean and volatility of its returns depend on a regime that is not observed and switches from one period to the next with fixed probabilities (Hamilton, 1989). With two regimes the model typically separates calm markets (a higher mean and a low volatility) from turbulent ones (a lower mean and a high volatility), and it says which regime the market is most likely in today, how persistent each regime is and how long it lasts on average.
 
-The test regresses the first difference of the series on its own lagged level and `p` lags of its own first difference. The null hypothesis is that the series has a unit root (is a random walk, not mean-reverting); the alternative is that it is stationary. This is a standard first step before modeling a price series or spread with mean-reverting methods, since those methods assume stationarity.
+The regimes are ordered from the lowest to the highest volatility, so Regime 1 is the calmest. With switching_variance=False all regimes share one volatility, and they are ordered from the lowest to the highest mean instead, so Regime 1 is the one with the lowest mean. The expected duration of a regime is 1 / (1 - p), with p the probability of staying in it, in periods. The share is the part of the periods in which the regime was the most likely one.
+
+The likelihood of a mixture of regimes has local optima, so the model is fitted from its default starting values and from the best of 20 random perturbations of them, and the fit with the highest likelihood is kept. The random perturbations come from NumPy's global random state, so when competing optima are close, repeated calls can differ slightly; call np.random.seed beforehand for results that can be reproduced.
 
 The formula is as follows:
 
 $$
-\Delta Y_{t} = \alpha + \gamma \cdot Y_{t-1} + \sum_{i=1}^{p} \delta_{i} \cdot \Delta Y_{t-i} + \epsilon_{t},\;\; \text{with}\; Y_{t} \;\text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{and regression} = \text{"c"} \;(\text{the default});\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t \;\text{and}\; \text{"n"} \;\text{drops}\; \alpha
+y_{t} = \mu_{S_{t}} + \sigma_{S_{t}} \cdot \epsilon_{t},\;\; \text{with } y_{t} \text{ the column series (Return by default)},\;\; \epsilon_{t} \;\text{standard normal and}\; S_{t} \in \{1,\; \ldots,\; K\} \;\text{the regime},\;\; K = \text{regimes} \;(2 \;\text{by default});\;\; \sigma_{S_{t}} = \sigma \;\text{for every regime when}\; \text{switching\_variance} = \text{False}
 $$
 
 $$
-\text{ADF} = \frac{\hat{\gamma}}{\operatorname{SE}(\hat{\gamma})},\;\; \text{compared with MacKinnon (1994, 2010) critical values and p-values}
+P(S_{t} = j \mid S_{t-1} = i) = p_{ij},\;\; \text{a first-order Markov chain with constant transition probabilities}
 $$
 
+- $$\mu$$, $$\sigma$$ and $$p_{ij}$$ are fitted by Maximum Likelihood with the Hamilton filter (statsmodels MarkovRegression), keeping the best of the default start and 20 random perturbations
+
 $$
-p = \text{the number of lags that minimises the AIC},\;\; \text{searched from 0 up to max\_lag},\;\; \text{which defaults to} \;\min\left(\left\lceil 12 \cdot \left(\frac{n}{100}\right)^{\frac{1}{4}} \right\rceil,\; \left\lfloor \frac{n - 5}{3} \right\rfloor\right)
+\text{Smoothed probabilities} \;P(S_{t} = j \mid y_{1} \ldots y_{T}) \;\text{per date};\;\; \text{Expected Duration} = \frac{1}{1 - p_{jj}} \;\text{periods};\;\; \text{Share} = \text{the fraction of dates where regime}\; j \;\text{has the highest smoothed probability};\;\; \text{Current Regime} = \text{that regime on the last date},\;\; \text{with its smoothed probability}
 $$
 
-For more information about the method, see the following paper:
+For more information, see the following paper:
 
-- Dickey, D.A. and Fuller, W.A. (1979). "Distribution of the Estimators for Autoregressive Time Series with a Unit Root." Journal of the American Statistical Association, 74(366a), 427-431.
+- Hamilton, J.D. (1989). "A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle." Econometrica, 57(2), 357-384.
 
-**Also known as:** ADF test, unit root test, stationarity test.
+**Also known as:** Markov switching model, hidden Markov model, regime detection, bull and bear regimes.
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
-- <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider. Defaults to
-the Schwert (1989) rule of thumb, capped at (n - 5) // 3 for short samples.
-- <u>regression (str, optional):</u> Which deterministic terms to include, one of "n" (none), "c"
-(constant) or "ct" (constant and trend). Defaults to "c".
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
+yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The historical data column to model. Defaults to "Return".
+- <u>regimes (int, optional):</u> The number of regimes. Defaults to 2.
+- <u>switching_variance (bool, optional):</u> Whether the volatility switches with the
+regime as well as the mean. Defaults to True.
+- <u>probabilities (bool, optional):</u> Whether to return the smoothed probability of
+every regime per date instead of the summary. Defaults to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets tested. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
+assets. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -456,14 +1016,9 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The ADF statistic, its p-value, lags used, observations used, 1%/5%/10%
-critical values, and whether the unit root is rejected at the 5% level, per asset.
-An asset with fewer than 10 observations has NaN values.
-
-**Notes:**
-
-- The method retrieves historical price data based on the specified `period` and runs the ADF
-test for each asset in the Toolkit instance.
+pd.DataFrame: Per asset the Mean, Volatility, Probability of Staying, Expected
+Duration and Share of every regime, and the Current Regime with its probability;
+or, with probabilities=True, the probability of every regime per date.
 
 **As an example:**
 
@@ -471,75 +1026,80 @@ test for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["EURUSD", "USDJPY", "GBPUSD"],
+    ["AAPL", "MSFT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2015-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.econometrics.get_augmented_dickey_fuller()
+toolkit.econometrics.get_markov_regime_switching(period="weekly")
 ```
 
 Which returns:
 
-|                       |      EURUSD |     USDJPY |      GBPUSD |
-|:----------------------|------------:|-----------:|------------:|
-| ADF Statistic         |   -1.83568  |   -1.68762 |   -1.81162  |
-| P-Value               |    0.362896 |    0.4375  |    0.374708 |
-| Lags Used             |    5        |    0       |    2        |
-| Observations          | 1345        | 1351       | 1349        |
-| Critical Value 1%     |   -3.43522  |   -3.4352  |   -3.43521  |
-| Critical Value 5%     |   -2.86369  |   -2.86368 |   -2.86368  |
-| Critical Value 10%    |   -2.56792  |   -2.56791 |   -2.56791  |
-| Reject Unit Root (5%) |    0        |    0       |    0        |
+|                                 |    AAPL |    MSFT |
+|:--------------------------------|--------:|--------:|
+| Regime 1 Mean                   |  0.009  |  0.0065 |
+| Regime 1 Volatility             |  0.0236 |  0.0217 |
+| Regime 1 Probability of Staying |  0.917  |  0.9528 |
+| Regime 1 Expected Duration      | 12.0479 | 21.194  |
+| Regime 1 Share                  |  0.5436 |  0.6411 |
+| Regime 2 Mean                   |  0.0006 |  0.0021 |
+| Regime 2 Volatility             |  0.0488 |  0.0455 |
+| Regime 2 Probability of Staying |  0.91   |  0.9209 |
+| Regime 2 Expected Duration      | 11.1105 | 12.6346 |
+| Regime 2 Share                  |  0.4564 |  0.3589 |
+| Current Regime                  |  1      |  1      |
+| Current Regime Probability      |  0.8877 |  0.8087 |
 
 ---
 
-## get_kpss_test
-Calculate the Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test for stationarity, per asset.
+## get_structural_breaks
+Find the dates at which the mean of every asset's series shifts, with the Bai and Perron (1998, 2003) method for multiple structural breaks. For every number of breaks the break dates that minimize the sum of squared residuals around a mean per segment are found exactly (by dynamic programming), and the number of breaks is chosen by the Bayesian information criterion. Every segment covers at least a share of the observations (the integer part of that share times the number of observations, as in Bai and Perron), so a break is not fitted to a few outliers.
 
-KPSS is the natural complement to the Augmented Dickey-Fuller test: where the ADF null hypothesis is that the series HAS a unit root, the KPSS null hypothesis is that the series IS stationary, with a unit root as the alternative. Running both together is standard practice to triangulate a confident conclusion -- ADF rejecting a unit root and KPSS failing to reject stationarity together give a confident stationarity conclusion, while the two tests disagreeing flags an ambiguous case.
+The BIC works well for series without serial correlation, such as returns, but tends to choose too many breaks when the series is serially correlated (Bai and Perron, 2003), as levels such as inflation or interest rates are: a persistent swing then looks like a shift in the mean. For such series, compare the segments for a few values of breaks rather than relying on the chosen number alone.
+
+Breaks show when a series changed character, such as the regimes of inflation or of interest rates, or a change in the average return of an asset. Unlike the Chow test, the break dates do not have to be known in advance.
 
 The formula is as follows:
 
 $$
-Y_{t} = \alpha + e_{t} \;\text{fitted by OLS on the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}),\;\; \text{with regression="c" (the default)};\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t
+y_{t} = \mu_{j} + \epsilon_{t} \;\text{for the dates of segment}\; j = 1,\; \ldots,\; m + 1,\;\; \text{with } y_{t} \text{ the column series (Return by default) and } m \text{ breaks}
 $$
 
 $$
-S_{t} = \sum_{i=1}^{t} \hat{e}_{i}
+\operatorname{SSR}(m) = \min \;\text{over the break dates of} \;\sum_{j} \sum_{t \in \text{segment j}}(y_{t} - \bar{y}_{j})^{2},\;\; \text{found exactly by dynamic programming},\;\; \text{with}\;\; \text{every segment at least}\; h = \max(\lfloor \;\text{minimum\_segment} \cdot T \rfloor,\; 2) \;\text{observations} \;(\text{minimum\_segment} = 0.15 \;\text{by default})
 $$
 
 $$
-\text{KPSS} = \frac{\sum_{t=1}^{n} S_{t}^{2}}{n^{2} \cdot \lambda^{2}}
+\operatorname{BIC}(m) = T \cdot \ln\left(\frac{\operatorname{SSR}(m)}{T}\right) + (2m + 1) \cdot \ln(T),\;\; \text{for}\;\; m = 0,\; \ldots,\; \text{max\_breaks} \;(5 \;\text{by default});\;\; \text{the } m \text{ with the lowest BIC is chosen unless breaks is given}
 $$
 
-$$
-\lambda^{2} = \frac{1}{n} \cdot \sum \hat{e}_{t}^{2} + \frac{2}{n} \cdot \sum_{s=1}^{l}\left(1 - \frac{s}{l + 1}\right) \cdot \sum_{t=s+1}^{n} \hat{e}_{t} \cdot \hat{e}_{t-s},\;\; \text{with}\;\; l = \text{lags} \;\text{or},\;\; \text{by default, the Hobijn, Franses and Ooms (2004) automatic bandwidth}
-$$
+- Per segment: its Start, End, Observations, Mean $$\bar{y}_{j}$$ and Standard Deviation (ddof=1)
 
-- The p-value is interpolated from the KPSS (1992) critical value table, so it is bounded between 0.01 and 0.10
+For more information, see the following papers:
 
-For more information about the method, see the following paper:
+- Bai, J. and Perron, P. (1998). "Estimating and Testing Linear Models with Multiple Structural Changes." Econometrica, 66(1), 47-78.
+- Bai, J. and Perron, P. (2003). "Computation and Analysis of Multiple Structural Change Models." Journal of Applied Econometrics, 18(1), 1-22.
 
-- Kwiatkowski, D., Phillips, P.C.B., Schmidt, P., & Shin, Y. (1992). "Testing the Null Hypothesis of Stationarity against the Alternative of a Unit Root." Journal of Econometrics, 54(1-3), 159-178.
-
-**Also known as:** KPSS test, stationarity test.
+**Also known as:** Bai-Perron test, multiple structural breaks, change point detection, regime shifts.
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
-- <u>regression (str, optional):</u> Which deterministic term to remove before testing, one of "c"
-(constant, level-stationarity) or "ct" (constant and trend, trend-stationarity).
-Defaults to "c".
-- <u>lags (int, optional):</u> The truncation lag for the long-run variance estimate. Defaults
-to `statsmodels`' automatic (Hobijn, Franses & Ooms, 2004) bandwidth selection.
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
+yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The historical data column to analyze. Defaults to
+"Return"; use "Adj Close" (or "Level" with standalone data) for the series
+itself, such as an inflation rate.
+- <u>max_breaks (int, optional):</u> The most breaks considered. Defaults to 5.
+- <u>minimum_segment (float, optional):</u> The smallest segment as a share of the
+observations (the trimming). Defaults to 0.15.
+- <u>breaks (int &#124; None, optional):</u> The number of breaks to find instead of choosing
+it by the BIC. Defaults to None.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets tested. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
+assets. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -547,14 +1107,80 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The KPSS statistic, its p-value, truncation lag used, observations used,
-1%/2.5%/5%/10% critical values, and whether stationarity is rejected at the 5% level,
-per asset. An asset with fewer than 10 observations has NaN values.
+pd.DataFrame: Per asset and segment the Start, End, Observations, Mean and
+Standard Deviation, with the BIC of the chosen number of breaks.
 
-**Notes:**
+**As an example:**
 
-- The method retrieves historical price data based on the specified `period` and runs the
-KPSS test for each asset in the Toolkit instance.
+```python
+from financetoolkit import Economics, Econometrics
+
+economics = Economics(start_date="1960-01-01", end_date="2025-12-31")
+
+inflation = economics.get_inflation_rate(countries="United States", period="yearly")
+
+econometrics = Econometrics(data=inflation)
+
+econometrics.get_structural_breaks(column="Level", max_breaks=3)
+```
+
+Which returns:
+
+|                      | Start      | End        |   Observations |   Mean |   Standard Deviation |      BIC |
+|:---------------------|:-----------|:-----------|---------------:|-------:|---------------------:|---------:|
+| ('United States', 1) | 1960-12-31 | 1972-12-31 |             13 | 0.0282 |               0.0169 | -519.037 |
+| ('United States', 2) | 1973-12-31 | 1982-12-31 |             10 | 0.0876 |               0.0269 | -519.037 |
+| ('United States', 3) | 1983-12-31 | 2025-12-31 |             43 | 0.0285 |               0.0143 | -519.037 |
+
+---
+
+## get_time_varying_beta
+Estimate the alpha and beta of every asset as they change over time, with the Kalman filter. The regression $$y_{t} = \alpha_{t} + \beta_{t} x_{t} + \epsilon_{t}$$ lets both coefficients take a random step every period; how large those steps are, and how much noise surrounds the regression, is estimated by maximum likelihood. A beta that drifts, such as a stock becoming more sensitive to the market, shows up without choosing the window of a rolling regression, while a beta that is constant stays flat.
+
+Every alpha and beta is the filtered estimate, updated with the observations up to its date only. The three variances that set how fast the estimates adapt are estimated on the whole sample, however, so the path is not entirely what would have been known at the time. The filter starts without prior knowledge of the coefficients, so the first date (or the first few, when the independent series starts with zeros) cannot separate the alpha from the beta and is NaN.
+
+By default every asset is regressed on the Benchmark of the Toolkit (or, with standalone data, on the second series).
+
+The formula is as follows:
+
+$$
+y_{t} = \alpha_{t} + \beta_{t} \cdot x_{t} + \epsilon_{t},\;\; \epsilon_{t} \sim N(0,\; \sigma_{\epsilon}^{2}),\;\; \text{with } y_{t} \text{ the asset's and } x_{t} \text{ the independent asset's column series (Return by default), on the dates both have}
+$$
+
+$$
+\alpha_{t} = \alpha_{t-1} + \eta_{t}\;\;\text{and}\;\; \beta_{t} = \beta_{t-1} + \zeta_{t},\;\; \eta_{t} \sim N(0,\; \sigma_{\alpha}^{2}) \;\text{and}\; \zeta_{t} \sim N(0,\; \sigma_{\beta}^{2}) \;\text{:} \;\text{random walks}
+$$
+
+- $$\sigma_{\epsilon}^{2}$$, $$\sigma_{\alpha}^{2}$$ and $$\sigma_{\beta}^{2}$$ are fitted by Maximum Likelihood with the Kalman filter (diffusely initialized) on the series divided by their standard deviations, and scaled back
+
+- Alpha and Beta are the filtered states $$E [\alpha_{t} , \beta_{t} \vert y_{1} \ldots y_{t}]$$; the Beta Standard Error is the square root of the filtered variance of $$\beta_{t}$$
+
+For more information, see the following book:
+
+- Durbin, J. and Koopman, S.J. (2012). "Time Series Analysis by State Space Methods." Oxford University Press, 2nd edition.
+
+**Also known as:** Kalman filter beta, rolling beta, dynamic beta, state space regression.
+
+**Args:**
+
+- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The assets whose beta is
+estimated. Defaults to None, which uses every asset except the independent one.
+- <u>independent_ticker (str &#124; None, optional):</u> The asset the beta is measured
+against. Defaults to None, which uses the Benchmark or the second series.
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
+yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per date and asset the Alpha, the Beta and the standard error of
+the beta, NaN on the first date(s) where they are not yet identified.
 
 **As an example:**
 
@@ -562,77 +1188,66 @@ KPSS test for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["^GSPC", "^N225"],
+    ["AAPL", "MSFT"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2015-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.econometrics.get_kpss_test()
+beta = toolkit.econometrics.get_time_varying_beta(period="monthly")
+
+beta.xs("Beta", axis=1, level=1).iloc[12::24]
 ```
 
 Which returns:
 
-|                          |      ^GSPC |      ^N225 |
-|:-------------------------|-----------:|-----------:|
-| KPSS Statistic           |    4.73448 |    4.79639 |
-| P-Value                  |    0.01    |    0.01    |
-| Lags Used                |   21       |   21       |
-| Observations             | 1299       | 1298       |
-| Critical Value 1%        |    0.739   |    0.739   |
-| Critical Value 2.5%      |    0.574   |    0.574   |
-| Critical Value 5%        |    0.463   |    0.463   |
-| Critical Value 10%       |    0.347   |    0.347   |
-| Reject Stationarity (5%) |    1       |    1       |
+| Date    |   AAPL |   MSFT |
+|:--------|-------:|-------:|
+| 2016-02 | 1.2708 | 1.5813 |
+| 2018-02 | 1.1427 | 1.3183 |
+| 2020-02 | 1.3197 | 1.1153 |
+| 2022-02 | 1.2496 | 0.9853 |
+| 2024-02 | 1.2526 | 0.9525 |
 
 ---
 
-## get_phillips_perron_test
-Calculate the Phillips-Perron (PP) test for a unit root, per asset.
-
-Phillips-Perron tests the same null hypothesis as the Augmented Dickey-Fuller test (a unit root), but corrects for heteroskedasticity and serial correlation in the errors nonparametrically via a Newey-West long-run variance estimate, rather than by adding lagged-difference terms to the regression as ADF does. PP and ADF should broadly agree on the same series since they test the same null with different correction methods.
+## get_dcc_garch
+Estimate the correlation between every pair of assets as it changes over time, with the dynamic conditional correlation (DCC) GARCH(1,1) model of Engle (2002). Every asset gets its own GARCH(1,1) volatility, and the correlation of the standardized returns follows a GARCH-like recursion around their long-run correlation. Correlations between assets tend to rise in crises, exactly when diversification is needed most. A rolling correlation sees that late and depends on its window; the DCC model updates the correlation every period, with a (how strongly it reacts to news) and b (how persistent it is) estimated by maximum likelihood.
 
 The formula is as follows:
 
 $$
-Y_{t} = \alpha + \rho \cdot Y_{t-1} + u_{t} \;\text{fitted by OLS on the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}),\;\; \text{with regression="c" (the default)};\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t
+z_{i,t} = \frac{r_{i,t} - \operatorname{mean}(r_{i})}{\sigma_{i,t}},\;\; \text{with}\;\; r_{i,t} \;\text{the} \;\text{column} \;\text{series} \;(\text{Return by default}) \;\text{on the dates all assets have and}\; \sigma_{i,t}^{2} = \omega + \alpha \cdot u_{i,t-1}^{2} + \beta \cdot \sigma_{i,t-1}^{2} \;\text{each asset's GARCH}(1,\; 1) \;\text{variance of the demeaned returns}\; u (\text{GARCH Persistence} = \alpha + \beta)
 $$
 
 $$
-t_{\rho} = \frac{\hat{\rho} - 1}{\operatorname{SE}(\hat{\rho})},\;\; \gamma_{0} = \frac{\sum \hat{u}_{t}^{2}}{n}\;\;\text{and}\;\; s^{2} = \frac{\sum \hat{u}_{t}^{2}}{n - k},\;\; \text{with } k \text{ the number of coefficients}
+Q_{t} = (1 - a - b) \cdot \bar{Q} + a \cdot z_{t-1} \cdot z_{t-1}' + b \cdot Q_{t-1},\;\; \text{with}\;\; \bar{Q} \;\text{the sample correlation of}\; z \;\text{and}\; Q_{0} = \bar{Q}
 $$
 
 $$
-\lambda^{2} = \gamma_{0} + 2 \cdot \sum_{j=1}^{l}\left(1 - \frac{j}{l + 1}\right) \cdot \gamma_{j},\;\; \text{with}\;\; \gamma_{j} = \frac{1}{n} \cdot \sum_{t=j+1}^{n} \hat{u}_{t} \cdot \hat{u}_{t-j}\;\;\text{and}\;\; l = \text{lags},\;\; \text{which defaults to int}\left(12 \cdot \left(\frac{n}{100}\right)^{\frac{1}{4}}\right)
+R_{t} = \operatorname{diag}(Q_{t})^{- \frac{1}{2}} \cdot Q_{t} \cdot \operatorname{diag}(Q_{t})^{- \frac{1}{2}},\;\; \text{the conditional correlations}
 $$
 
-$$
-Z_{t} = \sqrt{\frac{\gamma_{0}}{\lambda^{2}}} \cdot t_{\rho} - \frac{\lambda^{2} - \gamma_{0}}{2 \cdot \lambda \cdot s} \cdot n \cdot \operatorname{SE}(\hat{\rho})
-$$
+- a and b maximize the correlation log-likelihood $$- \tfrac{1}{2} \cdot \sum_{t} (\ln \vert R_{t} \vert + z_{t}' \cdot R_{t}^{- 1} \cdot z_{t})$$, with a, $$b \geq 0$$ and $$a + b < 1$$
 
-- The unit root is rejected at 5% when $$Z_{t}$$ is below the MacKinnon (1996) asymptotic critical value (-2.86 for "c", -3.41 for "ct"); no p-value is reported
+For more information, see the following paper:
 
-For more information about the method, see the following paper:
+- Engle, R. (2002). "Dynamic Conditional Correlation: A Simple Class of Multivariate Generalized Autoregressive Conditional Heteroskedasticity Models." Journal of Business & Economic Statistics, 20(3), 339-350.
 
-- Phillips, P.C.B., & Perron, P. (1988). "Testing for a Unit Root in Time Series Regression." Biometrika, 75(2), 335-346.
-
-**Also known as:** PP test, Z_t test.
+**Also known as:** DCC-GARCH, dynamic conditional correlation, time-varying correlation, multivariate GARCH.
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
-- <u>regression (str, optional):</u> Which deterministic term to include, one of "c" (constant) or
-"ct" (constant and trend). Defaults to "c". Note "n" (no constant) is not supported, see
-`econometrics.unitroot_model.get_phillips_perron_test` for why.
-- <u>lags (int, optional):</u> The truncation lag for the Newey-West long-run variance estimate.
-Defaults to None, meaning the Schwert (1989) rule ceil(12 * (n / 100) ** 0.25), capped
-for short samples as the ADF lag search is.
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
+yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
+- <u>parameters (bool, optional):</u> Whether to return the estimated parameters (a, b and
+the GARCH persistence of every asset) instead of the correlations. Defaults
+to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets tested. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
+assets. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -640,14 +1255,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The Phillips-Perron $$Z_{t}$$ statistic, its MacKinnon (1994) p-value, truncation
-lag used, observations used, the finite-sample MacKinnon (2010) 1%/5%/10% critical values,
-and whether the unit root is rejected at the 5% level, per asset.
-
-**Notes:**
-
-- The method retrieves historical price data based on the specified `period` and runs the
-Phillips-Perron test for each asset in the Toolkit instance.
+pd.DataFrame: The conditional correlation of every pair of assets per date, or
+the parameters of the model.
 
 **As an example:**
 
@@ -655,76 +1264,83 @@ Phillips-Perron test for each asset in the Toolkit instance.
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["GCUSD", "SIUSD"],
+    ["AAPL", "MSFT", "XOM"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2018-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.econometrics.get_phillips_perron_test()
+correlations = toolkit.econometrics.get_dcc_garch()
+
+correlations.resample("Y").mean().round(4)
 ```
 
 Which returns:
 
-|                           |      GCUSD |      SIUSD |
-|:--------------------------|-----------:|-----------:|
-| Phillips-Perron Statistic |    3.39009 |    4.5285  |
-| P-Value                   |    1       |    1       |
-| Lags Used                 |   23       |   23       |
-| Observations              | 1300       | 1300       |
-| Critical Value 1%         |   -3.43539 |   -3.43539 |
-| Critical Value 5%         |   -2.86377 |   -2.86377 |
-| Critical Value 10%        |   -2.56796 |   -2.56796 |
-| Reject Unit Root (5%)     |    0       |    0       |
+| Date   |   AAPL / MSFT |   AAPL / XOM |   MSFT / XOM |
+|:-------|--------------:|-------------:|-------------:|
+| 2018   |        0.6047 |       0.2794 |       0.2729 |
+| 2019   |        0.578  |       0.2982 |       0.2641 |
+| 2020   |        0.6665 |       0.2879 |       0.226  |
+| 2021   |        0.6199 |       0.1384 |       0.0786 |
+| 2022   |        0.7084 |       0.2283 |       0.1692 |
+| 2023   |        0.5802 |       0.1706 |       0.0386 |
+| 2024   |        0.5378 |       0.1018 |       0.0237 |
+| 2025   |        0.4636 |       0.1991 |       0.114  |
 
 ---
 
-## get_zivot_andrews_test
-Calculate the Zivot-Andrews test for a unit root, per asset, allowing for a single structural break at an unknown (endogenously estimated) date.
+## get_pairs_trading
+Calculate the statistics of trading the spread between every pair of assets. The hedge ratio follows from regressing one log price on the other; what remains is the spread, and when the two are cointegrated the spread reverts to its mean. Its z-score says how far it is from that mean in standard deviations, and threshold rules trade on it: short the spread (sell the first asset, buy the hedge ratio of the second) once the z-score rises above the entry threshold, buy it once it falls below minus the threshold, and close the position once the z-score crosses the exit threshold on its way back (below it for a short, above minus it for a long). A z-score that jumps past the band in one period still closes the position, and one that lands beyond the entry threshold on the other side reverses it. The half-life says how many periods the spread takes to close half its gap to the mean.
 
-The (A)DF/KPSS/PP tests above all assume the deterministic component of the series (its constant and/or trend) is stable throughout the sample. If a series instead has a single one-time break -- e.g. a permanent level shift or a change in trend slope, such as a stock split, spin-off, or a structural shift in the business -- the ordinary ADF test is biased towards not rejecting the unit root even for a genuinely (trend-)stationary series with a break. The Zivot-Andrews test corrects for this by adding a break dummy to the ADF regression and choosing, for each asset, the break date that is most favorable to the stationary alternative -- which is why it needs its own (more negative) critical values rather than the ordinary ADF ones.
+Gatev, Goetzmann and Rouwenhorst (2006) open a position when the normalized prices of a pair drift two standard deviations (of their formation period) apart and close it when the prices cross, which is an exit threshold of 0; closing at 0.5 is a common variant that takes profits before the spread is fully back at its mean.
+
+The hedge ratio and intercept are estimated on the whole period, so the spread, and with it every z-score and signal, uses information from after its date. A rolling window only makes the mean and standard deviation of the z-score backward-looking; a backtest without look-ahead estimates the hedge ratio on a formation period and trades in the period after it. The Engle-Granger p-value says whether there is a mean-reverting relationship to trade at all (below 0.05).
 
 The formula is as follows:
 
 $$
-\Delta Y_{t} = \mu + \theta \cdot \text{DU}_{t} + \beta \cdot t + \alpha \cdot Y_{t-1} + \sum_{i=1}^{p} c_{i} \cdot \Delta Y_{t-i} + \epsilon_{t},\;\; \text{with}\;\; Y_{t} \;\text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{and}\; \text{DU}_{t} = 1 \;\text{after the break date}\; T_{B} \;\text{and 0 before it} \;(\text{regression} = \text{"c"},\; \text{the default})
+y_{t} = c + h \cdot x_{t} + s_{t},\;\; \text{fitted by OLS on the dates both have},\;\; \text{with}\; y_{t} \;\text{and}\; x_{t} \;\text{the} \;(\log,\; \text{when}\; \text{log\_prices} = \text{True}) \;\text{column} \;\text{levels} \;(\text{Adj Close by default}) \;\text{:} h \;\text{the Hedge Ratio},\;\; c \text{ the Intercept and } s_{t} \text{ the Spread}
 $$
 
 $$
-\text{regression} = \text{"t"} \;\text{replaces}\; \theta \cdot \text{DU}_{t} \;\text{by a trend break}\; \gamma \cdot \text{DT}_{t},\;\; \text{with}\;\; \text{DT}_{t} = t - T_{B} \;\text{after the break and 0 before it},\;\; \text{and regression="ct" includes both}
+\text{Z-Score}_{t} = \frac{s_{t} - \operatorname{mean}(s)}{\operatorname{std}(s) (\text{ddof} = 1)},\;\; \text{over the full sample or a rolling window}
 $$
 
-$$
-\text{ZA} = \min \;\text{over}\; T_{B} \;\text{of} \;\frac{\hat{\alpha}}{\operatorname{SE}(\hat{\alpha})},\;\; \text{searching every break date outside the first and last trim (15\% by default) of the sample}
-$$
+- Signal: -1 from Z > `entry_z_score` until Z < `exit_z_score`, +1 from Z < -`entry_z_score` until Z > -`exit_z_score`, 0 otherwise (2.0 and 0.5 by default)
 
 $$
-p = \text{the number of lags that minimises the AIC},\;\; \text{up to max\_lag (same default as get\_augmented\_dickey\_fuller)}
+\text{Half-Life} = - \frac{\ln(2)}{\ln(1 + \lambda)},\;\; \text{with}\;\; \lambda \;\text{from}\; \Delta s_{t} = a + \lambda \cdot s_{t-1} + \epsilon_{t} (\text{infinite when}\; \lambda \;\text{is} \;(\text{nearly}) \;\text{zero or positive})
 $$
 
-For more information about the method, see the following papers:
+- Cointegration P-Value: the Engle-Granger test of $$y_{t}$$ on $$x_{t}$$
 
-- Zivot, E., & Andrews, D.W.K. (1992). "Further Evidence on the Great Crash, the Oil-Price Shock, and the Unit-Root Hypothesis." Journal of Business & Economic Statistics, 10(3), 251-270.
-- Perron, P. (1989). "The Great Crash, the Oil Price Shock, and the Unit Root Hypothesis." Econometrica, 57(6), 1361-1401.
+For more information, see the following papers:
 
-**Also known as:** ZA test, structural break unit root test.
+- Gatev, E., Goetzmann, W.N. and Rouwenhorst, K.G. (2006). "Pairs Trading: Performance of a Relative-Value Arbitrage Rule." The Review of Financial Studies, 19(3), 797-827.
+- Engle, R.F. and Granger, C.W.J. (1987). "Co-Integration and Error Correction: Representation, Estimation, and Testing." Econometrica, 55(2), 251-276.
+
+**Also known as:** statistical arbitrage, spread trading, z-score strategy, half-life of mean reversion.
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
-- <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider when
-selecting the (single, reused) lag length. Defaults to the Schwert (1989) rule of thumb,
-capped at (n - 5) // 3 for short samples.
-- <u>regression (str, optional):</u> Which break to allow for, one of "c" (a break in the
-level/intercept), "t" (a break in the trend slope) or "ct" (both). Defaults to "c".
-- <u>trim (float, optional):</u> The fraction of observations excluded from the candidate break
-date search at the start and end of the sample. Must be in [0, 1/3). Defaults to 0.15.
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
+yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The price column. Defaults to "Adj Close".
+- <u>window (int &#124; None, optional):</u> The rolling window of the z-score. Defaults to
+None, which uses the full sample.
+- <u>entry_z_score (float, optional):</u> The z-score at which a position is opened.
+Defaults to 2.0.
+- <u>exit_z_score (float, optional):</u> The z-score whose crossing on the way back closes
+a position (0 closes when the spread is back at its mean). Defaults to 0.5.
+- <u>log_prices (bool, optional):</u> Whether to use log prices, so the hedge ratio is an
+elasticity. Defaults to True.
+- <u>time_series (bool, optional):</u> Whether to return the Spread, Z-Score and Signal
+per date instead of the summary. Defaults to False.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets tested. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
+assets. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -732,107 +1348,10 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The Zivot-Andrews statistic, its p-value, the (0-indexed) position of the
-selected break date within the used sample, the number of lags and observations used,
-the 1%/5%/10% critical values, and whether the unit root is rejected at the 5% level, per
-asset.
-
-**Notes:**
-
-- The method retrieves historical price data based on the specified `period` and runs the
-Zivot-Andrews test for each asset in the Toolkit instance.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["CLUSD"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_zivot_andrews_test()
-```
-
-Which returns:
-
-|                         |       CLUSD |
-|:------------------------|------------:|
-| Zivot-Andrews Statistic |   -4.1369   |
-| P-Value                 |    0.271885 |
-| Break Index             |  243        |
-| Observations            | 1280        |
-| Lags Used               |   10        |
-| Critical Value 1%       |   -5.27644  |
-| Critical Value 5%       |   -4.81067  |
-| Critical Value 10%      |   -4.56618  |
-| Reject Unit Root (5%)   |    0        |
-
----
-
-## get_engle_granger_cointegration
-Calculate the Engle-Granger test for cointegration between every ordered pair of tickers in the Toolkit instance.
-
-Two individually non-stationary series (e.g. two stock prices, each following a random walk) are cointegrated if some linear combination of them is stationary, i.e. they share a long-run equilibrium relationship even though each wanders on its own in the short run. This is the classic statistical foundation for pairs-trading: if two assets are cointegrated, deviations of the spread from its equilibrium level tend to revert, making the spread itself tradeable.
-
-In pairs trading the slope of the regression of the dependent on the independent ticker is the hedge ratio, and its residual is the spread that is traded. Cointegration found in one window often breaks down in the next, so the relationship is usually tested again on a later sample before it is relied on. The result depends on which ticker is the dependent one, so the two orderings can disagree; `get_johansen_cointegration` tests the pair without that choice.
-
-The formula is as follows:
-
-$$
-\text{Step 1:}\;\; A_{t} = \alpha + \beta \cdot B_{t} + u_{t},\;\; \text{the OLS regression of the dependent on the independent column level (Adj Close by default)}
-$$
-
-$$
-\text{Step 2:}\;\; \Delta \hat{u}_{t} = \gamma \cdot \hat{u}_{t-1} + \sum_{i=1}^{p} \delta_{i} \cdot \Delta \hat{u}_{t-i} + \epsilon_{t},\;\; \text{an ADF regression without constant on the residuals}
-$$
-
-$$
-\text{EG} = \frac{\hat{\gamma}}{\operatorname{SE}(\hat{\gamma})},\;\; \text{compared with the MacKinnon (1994, 2010) cointegration critical values and p-values for two variables}
-$$
-
-$$
-p = \text{the number of lags that minimises the AIC},\;\; \text{up to max\_lag (same default as get\_augmented\_dickey\_fuller)}
-$$
-
-For more information about the method, see the following paper:
-
-- Engle, R.F. and Granger, C.W.J. (1987). "Co-integration and Error Correction: Representation, Estimation, and Testing." Econometrica, 55(2), 251-276.
-
-**Also known as:** EG test, residual-based cointegration test, pairs-trading test.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
-- <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider in the
-underlying ADF test on the residuals. Defaults to the Schwert (1989) rule of thumb,
-capped at (n - 5) // 3 for short samples.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-tickers paired up. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: One row per ordered `(Dependent, Independent)` ticker pair, with the
-Engle-Granger statistic, its p-value, 1%/5%/10% critical values, and whether
-cointegration is found at the 5% level -- the test is not symmetric (normalizing on
-the dependent ticker matters), so both orderings of every pair are included. A pair
-with fewer than 10 common observations has NaN values.
-
-**Notes:**
-
-- The method retrieves historical price data based on the specified `period` for every
-ticker in the Toolkit instance and runs the Engle-Granger test on every ordered pair.
+pd.DataFrame: Per pair the Hedge Ratio, Intercept, Half-Life (in periods),
+Cointegration P-Value, the latest Z-Score and Signal (1 long, -1 short, 0 flat)
+and the Number of Trades (positions opened, a reversal counting as a new one);
+or, with time_series=True, the Spread, Z-Score and Signal per date.
 
 **As an example:**
 
@@ -842,199 +1361,18 @@ from financetoolkit import Toolkit
 toolkit = Toolkit(
     ["KO", "PEP"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
+    start_date="2015-01-01",
     end_date="2025-12-31",
 )
 
-engle_granger = toolkit.econometrics.get_engle_granger_cointegration()
-
-# The 1% and 10% critical values follow the same pattern as the 5% one.
-engle_granger[["Engle-Granger Statistic", "P-Value", "Critical Value 5%", "Cointegrated (5%)"]]
+toolkit.econometrics.get_pairs_trading(window=60)
 ```
 
 Which returns:
 
-|               |   Engle-Granger Statistic |   P-Value |   Critical Value 5% | Cointegrated (5%)   |
-|:--------------|--------------------------:|----------:|--------------------:|:--------------------|
-| ('KO', 'PEP') |                   -1.0266 |    0.8977 |              -3.341 | False               |
-| ('PEP', 'KO') |                   -2.0565 |    0.4991 |              -3.341 | False               |
-
----
-
-## get_johansen_cointegration
-Calculate the Johansen test for cointegration among every ticker in the Toolkit instance.
-
-The Engle-Granger test only handles two assets and imposes an arbitrary normalization (which asset is "dependent"). Johansen's test generalizes this to `N >= 2` assets at once by testing the rank of the long-run coefficient matrix in a Vector Error Correction Model (VECM) fit to all assets jointly. The estimated rank equals the number of independent cointegrating (long-run equilibrium) relationships among the assets: rank 0 means none of them are cointegrated, rank `N` means the whole system is already stationary in levels, and a rank in between means that many independent stationary combinations exist among the `N` individually non-stationary price series.
-
-The formula is as follows:
-
-$$
-\Delta Y_{t} = \Pi \cdot Y_{t-1} + \sum_{i=1}^{k} \Gamma_{i} \cdot \Delta Y_{t-i} + \mu + \epsilon_{t},\;\; \text{with } Y_{t} \text{ the vector of column levels (Adj Close by default)},\;\; k = \text{k\_ar\_diff} \;(1 \;\text{by default}) \;\text{and the deterministic term}\; \mu \;\text{set by} \;\text{det\_order} \;\text{:} \;\text{none} \;(- 1,\; \text{Johansen's case}\; 1),\;\; \text{an unrestricted constant } \mu_{0} \text{ (0, the default, case 3) or a linear trend (1: the levels are linearly detrended before the test, evaluated against the case 5 critical values)}
-$$
-
-- $$\lambda_{1} \geq \ldots \geq \lambda_{N}$$: the eigenvalues of the reduced-rank regression of $$\Delta Y_{t}$$ on $$Y_{t - 1}$$, both corrected for the lagged differences and $$\mu$$
-
-$$
-\operatorname{Trace}(r) = - T \cdot \sum_{i=r+1}^{N} \ln(1 - \lambda_{i})
-$$
-
-$$
-\operatorname{Max-Eigenvalue}(r) = - T \cdot \ln(1 - \lambda_{r+1})
-$$
-
-- Each statistic rejects "rank ≤ r" at the 5% level when it exceeds its 95% critical value
-
-For more information about the method, see the following papers:
-
-- Johansen, S. (1988). "Statistical Analysis of Cointegration Vectors." Journal of Economic Dynamics and Control, 12(2-3), 231-254.
-- Johansen, S. (1991). "Estimation and Hypothesis Testing of Cointegration Vectors in Gaussian Vector Autoregressive Models." Econometrica, 59(6), 1551-1580.
-- MacKinnon, J.G., Haug, A.A., & Michelis, L. (1999). "Numerical Distribution Functions of Likelihood Ratio Tests for Cointegration." Journal of Applied Econometrics, 14(5), 563-577.
-
-**Also known as:** Johansen test, Johansen procedure, VECM rank test.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
-- <u>det_order (int, optional):</u> Which deterministic term to include: -1 (none,
-Johansen's case 1), 0 (an unrestricted constant, case 3) or 1 (a linear trend,
-evaluated against the case 5 critical values). The critical values are those of
-MacKinnon, Haug & Michelis (1999). Defaults to 0.
-- <u>k_ar_diff (int, optional):</u> The number of lagged first differences to include as
-short-run dynamics. Defaults to 1.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-tickers tested jointly. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: One row per candidate cointegration rank `r = 0, ..., N-1`, with the
-corresponding eigenvalue, trace statistic, max-eigenvalue statistic, their 90%/95%/99%
-critical values, and whether each is rejected at the 5% level. The estimated rank is the
-first row (in rank order) that is NOT rejected. With fewer observations than the
-VECM needs (the tickers times k_ar_diff + 1, plus the tickers, plus 3) every row
-is NaN.
-
-**Notes:**
-
-- The method retrieves historical price data based on the specified `period` for every ticker
-in the Toolkit instance and runs the Johansen test jointly across all of them.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["V", "MA"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-johansen = toolkit.econometrics.get_johansen_cointegration()
-
-# The maximum eigenvalue statistic columns follow the same pattern as the trace ones.
-johansen[["Eigenvalue", "Trace Statistic", "Trace Critical Value 95%", "Reject (Trace, 5%)"]]
-```
-
-Which returns:
-
-|        |   Eigenvalue |   Trace Statistic |   Trace Critical Value 95% | Reject (Trace, 5%)   |
-|:-------|-------------:|------------------:|---------------------------:|:---------------------|
-| r <= 0 |       0.0107 |           13.9015 |                    15.4943 | False                |
-| r <= 1 |       0.0003 |            0.3612 |                     3.8415 | False                |
-
----
-
-## get_granger_causality
-Calculate the Granger causality test, for every ordered pair of tickers in the Toolkit instance, of whether the second helps predict the first.
-
-"Granger causality" is a statement about predictive power, not true causation: one asset is said to Granger-cause another if past values of the first, combined with past values of the second itself, predict the second significantly better than past values of the second alone.
-
-On daily data a significant result can reflect trading hours rather than information: of two markets that close at different times, the one that closes later already contains news the other only prices the next day, so it appears to predict it. The result also depends on `max_lag`, so it is usually checked at a few lag lengths, and across many pairs some significant results arise by chance alone.
-
-The formula is as follows:
-
-$$
-\text{Restricted:}\;\; A_{t} = c + \sum_{i=1}^{p} a_{i} \cdot A_{t-i} + e_{t}
-$$
-
-$$
-\text{Unrestricted:}\;\; A_{t} = c + \sum_{i=1}^{p} a_{i} \cdot A_{t-i} + \sum_{i=1}^{p} b_{i} \cdot B_{t-i} + u_{t}
-$$
-
-$$
-F = \frac{\frac{\text{RSS}_{r} - \text{RSS}_{u}}{p}}{\frac{\text{RSS}_{u}}{T - 2p - 1}},\;\; \text{F-distributed with} \;(p,\; T - 2p - 1) \;\text{degrees of freedom}
-$$
-
-$$
-\text{A is the dependent and } B \text{ the independent ticker's column (Return by default)},\;\; p = \text{max\_lag} \;(5 \;\text{by default}) \;\text{and}\; T \;\text{the number of observations after the lags}
-$$
-
-For more information about the method, see the following paper:
-
-- Granger, C.W.J. (1969). "Investigating Causal Relations by Econometric Models and Cross-Spectral Methods." Econometrica, 37(3), 424-438.
-
-**Also known as:** Granger causality test, predictive causality, lead-lag test.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to test. Defaults to "Return", since
-Granger causality assumes a stationary series (unlike the ADF/Engle-Granger tests, which
-operate on price levels on purpose).
-- <u>max_lag (int, optional):</u> The number of lags of both assets to include in the regressions.
-Defaults to 5.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-tickers paired up. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: One row per ordered `(Dependent, Independent)` ticker pair, with the
-F-statistic, its p-value, and whether the independent ticker is found to
-Granger-cause the dependent ticker at the 5% level -- Granger causality is inherently
-directional, so both orderings of every pair are included.
-
-**Notes:**
-
-- The method retrieves historical return data based on the specified `period` for every
-ticker in the Toolkit instance and runs the Granger causality test on every ordered pair.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["CLUSD", "XLE"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_granger_causality()
-```
-
-Which returns:
-
-|                  |   F-Statistic |   P-Value | Granger-Causes (5%)   |
-|:-----------------|--------------:|----------:|:----------------------|
-| ('CLUSD', 'XLE') |        4.2749 |    0.0007 | True                  |
-| ('XLE', 'CLUSD') |        1.5533 |    0.1705 | False                 |
+|               |   Hedge Ratio |   Intercept |   Half-Life |   Cointegration P-Value |   Z-Score |   Signal |   Number of Trades |
+|:--------------|--------------:|------------:|------------:|------------------------:|----------:|---------:|-------------------:|
+| ('KO', 'PEP') |        0.8685 |     -0.3098 |     290.448 |                  0.8345 |     0.684 |        0 |                 42 |
 
 ---
 
@@ -1138,6 +1476,686 @@ Which returns:
 
 ---
 
+## get_arima_forecast
+Fit an ARIMA(p, d, q) model to every ticker's price series in the Toolkit instance and forecast `forecast_steps` periods ahead.
+
+**Also known as:** Box-Jenkins model, autoregressive integrated moving average.
+
+An ARIMA(p, d, q) model differences the series `d` times to remove a (stochastic) trend, then fits an autoregressive-moving-average model to the result -- see `time_series_model.get_arima_forecast` for the full formula, estimation method (exact Maximum Likelihood via the Kalman filter) and its practical caveats.
+
+The formula is as follows:
+
+$$
+y'_{t} = \Delta^{d} Y_{t},\;\; \text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{differenced}\; d \;\text{times} \;(d = 1 \;\text{by default})
+$$
+
+$$
+y'_{t} - \mu = \sum_{i=1}^{p} \phi_{i} \cdot (y'_{t-i} - \mu) + \epsilon_{t} + \sum_{j=1}^{q} \theta_{j} \cdot \epsilon_{t-j},\;\; \text{with}\;\; p = q = 1 \;\text{by default}\;\;\text{and}\;\; \mu \;\text{the mean} \;(d = 0) \;\text{or drift} \;(d \geq 1) \;\text{of}\; y'_{t} \;\text{when}\; \text{include\_constant} = \text{True},\;\; \text{and}\;\; \mu = 0 \;\text{otherwise}
+$$
+
+- Fitted by exact Maximum Likelihood via the Kalman filter (statsmodels ARIMA)
+
+$$
+\text{Forecast:}\;\; \text{the conditional mean}\; E\left[Y_{T+h} \mid Y_{1} \ldots Y_{T}\right] \;\text{for}\; h = 1 \ldots \;\text{forecast\_steps},\;\; \text{in levels}
+$$
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to fit. Defaults to
+"Adj Close".
+- <u>p (int, optional):</u> The autoregressive order. Defaults to 1.
+- <u>d (int, optional):</u> The number of times to difference the series. Defaults
+to 1 (the typical choice for a non-stationary price level series).
+- <u>q (int, optional):</u> The moving-average order. Defaults to 1.
+- <u>forecast_steps (int, optional):</u> The number of periods ahead to forecast.
+Defaults to 5.
+- <u>include_constant (bool, optional):</u> Whether to estimate the mean of the
+differenced series (its drift for `d >= 1`). Defaults to True -- see
+`time_series_model.get_arima_forecast` for when to set this to False.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
+the tickers forecast. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The `forecast_steps`-ahead forecast, one column per ticker,
+indexed `1, ..., forecast_steps` (periods ahead, not a continuation of the
+historical date index). Each ticker's ARIMA model is fit independently on
+its own history; a ticker without enough data has an empty (NaN) column.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period`
+for every ticker in the Toolkit instance and fits an ARIMA model to each.
+- See `time_series_model.get_arima_forecast`'s `Notes` for this estimator's
+practical limitations (in particular, keep `p + q` small).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["GCUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_arima_forecast(forecast_steps=10)
+```
+
+Which returns:
+
+|   Step |   GCUSD |
+|-------:|--------:|
+|      1 | 4348.34 |
+|      2 | 4348.38 |
+|      3 | 4350.82 |
+|      4 | 4352.47 |
+|      5 | 4354.38 |
+|      6 | 4356.2  |
+|      7 | 4358.05 |
+|      8 | 4359.89 |
+|      9 | 4361.73 |
+|     10 | 4363.57 |
+
+---
+
+## get_var_forecast
+Fit a Vector Autoregression (VAR) across every ticker in the Toolkit instance and forecast `forecast_steps` periods ahead.
+
+A VAR models several series jointly: each ticker's value is regressed on `lags` past values of all tickers, including its own. Each asset's future can therefore depend on its own history and on the history of the others, without deciding in advance which one drives which.
+
+The formula is as follows:
+
+$$
+Y_{t} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot Y_{t-l}) + e_{t},\;\; \text{with}\;\; Y_{t} \;\text{every ticker's} \;\text{column} \;(\text{Return by default}) \;\text{and} \;\text{lags} = 1 \;\text{by default}
+$$
+
+- Each equation is an OLS regression on a constant and the `lags` lagged values of all tickers
+
+$$
+\text{Forecast:}\;\; \hat{Y}_{T+h} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot \hat{Y}_{T+h-l}),\;\; \text{with}\;\; \hat{Y}_{s} = Y_{s} \;\text{for}\; s \leq T
+$$
+
+Where `Y_t` holds the values of all tickers at time `t` and each `Phi_l` is a matrix of coefficients. Because every equation has the same regressors, the model is estimated exactly by a separate OLS regression per ticker. Forecasts are produced by running the fitted equations forward one step at a time, feeding each forecast back in as the most recent lag. The coefficients show how shocks spread between assets; `get_impulse_response_function` and `get_variance_decomposition` summarise that, and `get_granger_causality` tests whether one ticker helps predict another. A VAR assumes stationary series, so returns are generally more suitable than prices (see `get_augmented_dickey_fuller`).
+
+For more information about the method, see the following paper:
+
+- Sims, C.A. (1980). "Macroeconomics and Reality." Econometrica, 48(1), 1-48.
+
+**Also known as:** VAR model, vector autoregressive model.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to model. Defaults to
+"Return".
+- <u>lags (int, optional):</u> The VAR order. Defaults to 1.
+- <u>forecast_steps (int, optional):</u> The number of periods ahead to forecast.
+Defaults to 5.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
+the tickers modeled jointly. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The `forecast_steps`-ahead forecast, one column per ticker,
+indexed `1, ..., forecast_steps` (periods ahead).
+
+**Notes:**
+
+- The method retrieves historical data based on the specified `period` for every
+ticker in the Toolkit instance and fits the VAR model jointly across all of them.
+- Unlike `get_vecm_forecast`, this operates on `column` directly (typically
+"Return", a stationary series) rather than price levels -- a VAR in levels is
+misspecified for non-stationary series (see
+`cointegration_model.get_johansen_cointegration`); use `get_vecm_forecast`
+instead if the assets' price levels are cointegrated.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["^VIX", "^VIX3M"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_var_forecast(column="Adj Close", forecast_steps=20)
+```
+
+Which returns:
+
+|   Step |    ^VIX |   ^VIX3M |
+|-------:|--------:|---------:|
+|      1 | 15.2712 |  18.3667 |
+|      2 | 15.5578 |  18.5342 |
+|      3 | 15.8138 |  18.6846 |
+|      4 | 16.0425 |  18.82   |
+|      5 | 16.2471 |  18.9418 |
+|      6 | 16.4301 |  19.0517 |
+|      7 | 16.5941 |  19.1509 |
+|      8 | 16.7411 |  19.2406 |
+|      9 | 16.873  |  19.322  |
+|     10 | 16.9915 |  19.3958 |
+|     11 | 17.0981 |  19.4629 |
+|     12 | 17.1942 |  19.5241 |
+|     13 | 17.2808 |  19.58   |
+|     14 | 17.359  |  19.6311 |
+|     15 | 17.4298 |  19.6781 |
+|     16 | 17.494  |  19.7213 |
+|     17 | 17.5523 |  19.7611 |
+|     18 | 17.6053 |  19.7979 |
+|     19 | 17.6536 |  19.8321 |
+|     20 | 17.6978 |  19.8639 |
+
+---
+
+## get_impulse_response_function
+Fit a Vector Autoregression (VAR) across every ticker in the Toolkit instance and trace out the Impulse Response Function (IRF) -- how a shock to each ticker propagates through the whole system over `periods` periods ahead. The shock is one standard deviation of the orthogonalized innovation when `orthogonalized=True` (the default) and a unit shock to the reduced-form residual when `orthogonalized=False`.
+
+**Also known as:** IRF.
+
+A natural companion to `get_var_forecast`: rather than forecasting the levels forward, this traces out each ticker's dynamic response to a shock in every ticker (including itself) -- see `time_series_model.get_impulse_response_function` for the full formula, the Cholesky-orthogonalization used to identify the shocks, and why the ordering of tickers is an identifying assumption.
+
+The formula is as follows:
+
+$$
+\Psi_{0} = I\;\;\text{and}\;\; \Psi_{n} = \sum_{l=1}^{\min(n,p)} \Phi_{l} \cdot \Psi_{n-l},\;\; \text{the moving-average matrices of the VAR(} p \text{) fitted on every ticker's column (Return by default)},\;\; p = \text{lags} \;(1 \;\text{by default})
+$$
+
+$$
+\Sigma_{u} = \frac{\hat{U}' \hat{U}}{T - k \cdot p - 1} = P \cdot P',\;\; \text{with } P \text{ the lower-triangular Cholesky factor}
+$$
+
+$$
+\Theta_{n} = \Psi_{n} \cdot P (\text{orthogonalized} = \text{True},\; \text{a one-standard-deviation shock}) \;\text{or}\; \Theta_{n} = \Psi_{n} (\text{orthogonalized} = \text{False},\; \text{a unit reduced-form shock})
+$$
+
+$$
+\text{Response of ticker } i \text{, } n \text{ periods after a shock to ticker } j \text{:}\;\; \Theta_{n} [i , j],\;\; \text{for}\;\; n = 0 \ldots \;\text{periods}
+$$
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to model. Defaults to
+"Return".
+- <u>lags (int, optional):</u> The VAR order. Defaults to 1.
+- <u>periods (int, optional):</u> The number of periods ahead to trace the response
+out to. Defaults to 10.
+- <u>orthogonalized (bool, optional):</u> Whether to orthogonalize the shocks via a
+Cholesky decomposition of the residual covariance matrix -- see
+`time_series_model.get_impulse_response_function`. Defaults to True.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
+the tickers modeled jointly. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Each shock ticker's response table, one column per response
+ticker, concatenated side by side under a top-level column per shock
+ticker, indexed `0, ..., periods` (horizon, `0` = impact response).
+
+**Notes:**
+
+- The ordering of the tickers modeled determines which ticker is treated as
+contemporaneously prior to the others. That ordering follows the Toolkit
+instance's own ticker order and is not configurable here -- reorder the
+Toolkit instance's tickers themselves to change the Cholesky identification
+order -- see `time_series_model.get_impulse_response_function`'s `Notes`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["^VIX", "^OVX"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_impulse_response_function(column="Adj Close", periods=20)
+```
+
+Which returns:
+
+|   Horizon |   ('^VIX', '^VIX') |   ('^VIX', '^OVX') |   ('^OVX', '^VIX') |   ('^OVX', '^OVX') |
+|----------:|-------------------:|-------------------:|-------------------:|-------------------:|
+|         0 |             1.7975 |             1.1106 |             0      |             2.4048 |
+|         1 |             1.6806 |             1.1595 |             0.022  |             2.2148 |
+|         2 |             1.5725 |             1.1956 |             0.0407 |             2.0416 |
+|         3 |             1.4723 |             1.2207 |             0.0565 |             1.8834 |
+|         4 |             1.3794 |             1.2361 |             0.0698 |             1.7389 |
+|         5 |             1.2933 |             1.2433 |             0.0807 |             1.6069 |
+|         6 |             1.2133 |             1.2434 |             0.0897 |             1.4861 |
+|         7 |             1.1389 |             1.2374 |             0.097  |             1.3755 |
+|         8 |             1.0698 |             1.2262 |             0.1027 |             1.2743 |
+|         9 |             1.0054 |             1.2106 |             0.1071 |             1.1814 |
+|        10 |             0.9454 |             1.1914 |             0.1104 |             1.0963 |
+|        11 |             0.8895 |             1.1691 |             0.1126 |             1.0181 |
+|        12 |             0.8374 |             1.1444 |             0.114  |             0.9462 |
+|        13 |             0.7887 |             1.1176 |             0.1146 |             0.8801 |
+|        14 |             0.7432 |             1.0893 |             0.1145 |             0.8193 |
+|        15 |             0.7006 |             1.0597 |             0.1139 |             0.7633 |
+|        16 |             0.6608 |             1.0292 |             0.1129 |             0.7117 |
+|        17 |             0.6236 |             0.9981 |             0.1114 |             0.664  |
+|        18 |             0.5886 |             0.9667 |             0.1096 |             0.6201 |
+|        19 |             0.5559 |             0.9351 |             0.1075 |             0.5794 |
+|        20 |             0.5252 |             0.9034 |             0.1052 |             0.5418 |
+
+---
+
+## get_variance_decomposition
+Fit a Vector Autoregression (VAR) across every ticker in the Toolkit instance and compute the (orthogonalized) Forecast Error Variance Decomposition (FEVD) -- what fraction of each ticker's `h`-step-ahead forecast error variance is attributable to each ticker's own structural shock, for `h = 1, ..., periods`.
+
+**Also known as:** FEVD, variance decomposition.
+
+The other natural companion to `get_var_forecast` (alongside `get_impulse_response_function`, which the FEVD is built from) -- see `time_series_model.get_variance_decomposition` for the full formula. A large own-shock share at short horizons that decays as the horizon grows is the classic signature of a ticker that is initially self-driven but increasingly explained by the rest of the system over time.
+
+The formula is as follows:
+
+$$
+\Theta_{n} = \Psi_{n} \cdot P,\;\; \text{the orthogonalized moving-average matrices of get\_impulse\_response\_function, from a VAR(} p \text{) on every ticker's column (Return by default)},\;\; p = \text{lags} \;(1 \;\text{by default})
+$$
+
+$$
+\text{Share of ticker j's shock in ticker i's h-step forecast error variance:}\;\; \omega_{ij}(h) = \frac{\sum_{n=0}^{h-1} \Theta_{n}\left[i,\; j\right]^{2}}{\sum_{m=1}^{k} \sum_{n=0}^{h-1} \Theta_{n}\left[i,\; m\right]^{2}},\;\; \text{for}\;\; h = 1 \ldots \;\text{periods}
+$$
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to model. Defaults to
+"Return".
+- <u>lags (int, optional):</u> The VAR order. Defaults to 1.
+- <u>periods (int, optional):</u> The forecast horizon to decompose out to.
+Defaults to 10.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
+the tickers modeled jointly. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Each response ticker's variance-share table (one column per
+shock ticker, rows summing to 1), concatenated side by side under a
+top-level column per response ticker, indexed `1, ..., periods` (horizon).
+
+**Notes:**
+
+- See `get_impulse_response_function`'s `Notes` on the Cholesky ordering --
+the same identifying assumption applies here.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["^VIX", "^GVZ"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_variance_decomposition(column="Adj Close", periods=20)
+```
+
+Which returns:
+
+|   Horizon |   ('^VIX', '^VIX') |   ('^VIX', '^GVZ') |   ('^GVZ', '^VIX') |   ('^GVZ', '^GVZ') |
+|----------:|-------------------:|-------------------:|-------------------:|-------------------:|
+|         1 |             1      |             0      |             0.1832 |             0.8168 |
+|         2 |             1      |             0      |             0.1925 |             0.8075 |
+|         3 |             0.9999 |             0.0001 |             0.2016 |             0.7984 |
+|         4 |             0.9998 |             0.0002 |             0.2104 |             0.7896 |
+|         5 |             0.9997 |             0.0003 |             0.219  |             0.781  |
+|         6 |             0.9996 |             0.0004 |             0.2273 |             0.7727 |
+|         7 |             0.9995 |             0.0005 |             0.2354 |             0.7646 |
+|         8 |             0.9993 |             0.0007 |             0.2432 |             0.7568 |
+|         9 |             0.9991 |             0.0009 |             0.2506 |             0.7494 |
+|        10 |             0.9989 |             0.0011 |             0.2578 |             0.7422 |
+|        11 |             0.9987 |             0.0013 |             0.2647 |             0.7353 |
+|        12 |             0.9985 |             0.0015 |             0.2714 |             0.7286 |
+|        13 |             0.9983 |             0.0017 |             0.2777 |             0.7223 |
+|        14 |             0.9981 |             0.0019 |             0.2837 |             0.7163 |
+|        15 |             0.9978 |             0.0022 |             0.2895 |             0.7105 |
+|        16 |             0.9976 |             0.0024 |             0.2949 |             0.7051 |
+|        17 |             0.9974 |             0.0026 |             0.3002 |             0.6998 |
+|        18 |             0.9971 |             0.0029 |             0.3051 |             0.6949 |
+|        19 |             0.9969 |             0.0031 |             0.3098 |             0.6902 |
+|        20 |             0.9967 |             0.0033 |             0.3142 |             0.6858 |
+
+---
+
+## get_vecm_forecast
+Fit a Vector Error Correction Model (VECM) across every (cointegrated) ticker in the Toolkit instance and forecast `forecast_steps` periods ahead.
+
+**Also known as:** VECM, error correction model (for the multivariate/cointegrated case).
+
+A VECM keeps a VAR's short-run dynamics while ALSO letting each asset's price change react to how far the system currently sits from its long-run equilibrium (the cointegrating relationship(s) among the tickers, taken from `cointegration_model.get_johansen_cointegration`) -- see `time_series_model.get_vecm_forecast` for the full formula, estimation method and verification notes.
+
+The formula is as follows:
+
+$$
+\text{Rank}\; r = \text{the number of leading Johansen trace statistics} \;(\text{det\_order} = 0,\; \text{k\_ar\_diff} \;\text{lags}) \;\text{that exceed their critical value at} \;\text{significance} \;(5\% \;\text{by default});\;\; r = 0 \;\text{raises an error}
+$$
+
+$$
+\Delta Y_{t} = \alpha \cdot \beta' \cdot Y_{t-1} + \sum_{i=1}^{k} \Gamma_{i} \cdot \Delta Y_{t-i} + c + \epsilon_{t},\;\; \text{with } Y_{t} \text{ every ticker's column level (Adj Close by default)},\;\; k = \text{k\_ar\_diff} \;(1 \;\text{by default}) \;\text{and}\; c \;\text{a constant outside the cointegrating relation} \;(\text{statsmodels VECM with deterministic} = \text{"co"}),\;\; \text{fitted by Maximum Likelihood}
+$$
+
+- Forecast: the fitted recursion run forward `forecast_steps` periods, in levels
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to model. Defaults to
+"Adj Close" -- a VECM needs price LEVELS (non-stationary, cointegrated
+series), not returns, the same input `get_johansen_cointegration` expects.
+- <u>k_ar_diff (int, optional):</u> The number of lagged first differences to
+include as short-run dynamics. Defaults to 1.
+- <u>forecast_steps (int, optional):</u> The number of periods ahead to forecast.
+Defaults to 5.
+- <u>significance (float, optional):</u> The significance level (one of 0.01, 0.05,
+0.10) at which the Johansen trace test determines the cointegrating rank.
+Defaults to 0.05.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
+the tickers modeled jointly. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The `forecast_steps`-ahead forecast, on the price-level
+scale, one column per ticker, indexed `1, ..., forecast_steps` (periods
+ahead).
+
+**Raises:**
+
+ValueError: If the Johansen test does not reject a cointegrating rank of 0
+for the Toolkit instance's tickers at `significance` -- a VECM is not
+appropriate for non-cointegrated assets; use `get_var_forecast` on their
+returns instead.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period`
+for every ticker in the Toolkit instance and fits the VECM jointly across all
+of them.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["GOOGL", "GOOG"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+# The two share classes of Alphabet are cointegrated: their prices cannot drift apart.
+toolkit.econometrics.get_vecm_forecast()
+```
+
+Which returns:
+
+|   Step |   GOOGL |    GOOG |
+|-------:|--------:|--------:|
+|      1 | 312.569 | 313.352 |
+|      2 | 312.75  | 313.553 |
+|      3 | 312.929 | 313.747 |
+|      4 | 313.109 | 313.941 |
+|      5 | 313.289 | 314.135 |
+
+---
+
+## get_rmse
+Calculate the Root Mean Squared Error (RMSE) between every unordered pair of tickers' series in the Toolkit instance.
+
+**Also known as:** RMSD (Root Mean Squared Deviation).
+
+This controller method compares two ASSETS' series directly, treating one as a naive "forecast" proxy for the other -- a simple, tracking-error style measure of how closely two series move together in absolute deviation terms (e.g. a portfolio versus a benchmark, or one asset as a naive stand-in forecast for a similar one). For evaluating an actual FORECASTING MODEL (ARIMA/VAR) rather than one asset as a naive proxy for another, use `get_out_of_sample_validation` instead.
+
+For a fund against its index the RMSE comes close to the tracking error but is not the same: the tracking error (`Performance.get_tracking_error`) is the Standard Deviation of the return differences, which leaves out their average, while the RMSE includes it. The RMSE is per period, so a daily figure is usually multiplied by the square root of 252 to annualize it.
+
+The formula is as follows:
+
+$$
+\text{RMSE} = \sqrt{\frac{1}{n} \cdot \sum(a_{t} - b_{t})^{2}},\;\; \text{with } a_{t} \text{ and } b_{t} \text{ the two tickers' column (Return by default) on the } n \text{ dates where both have data}
+$$
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to compare. Defaults to
+"Return".
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+tickers paired up. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.Series: The RMSE, indexed by unordered `(Ticker A, Ticker B)` pair.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["IVV", "VOO"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2025-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_rmse(include_benchmark=True)
+```
+
+Which returns:
+
+|                      |   RMSE |
+|:---------------------|-------:|
+| ('IVV', 'VOO')       | 0.0004 |
+| ('IVV', 'Benchmark') | 0.0009 |
+| ('VOO', 'Benchmark') | 0.001  |
+
+---
+
+## get_mae
+Calculate the Mean Absolute Error (MAE) between every unordered pair of tickers' series in the Toolkit instance.
+
+MAE is the average absolute difference between two series.
+
+The formula is as follows:
+
+$$
+\text{MAE} = \frac{1}{n} \cdot \sum\left|a_{t} - b_{t}\right|,\;\; \text{with } a_{t} \text{ and } b_{t} \text{ the two tickers' column (Return by default) on the } n \text{ dates where both have data}
+$$
+
+It is expressed in the units of the series itself (e.g. a return difference) and answers "how far apart are the two series in a typical period". Every difference counts in proportion to its size, so unlike `get_rmse`, which squares the differences and is therefore dominated by a few large gaps, MAE is robust to occasional outliers. A lower value means the two tickers track each other more closely.
+
+This method compares two assets directly, for example how closely a fund tracks its index or how two related stocks move together, rather than an asset against a model's forecast; see `get_rmse` for the reasoning, and `get_out_of_sample_validation` for evaluating actual forecasts.
+
+**Also known as:** MAD (Mean Absolute Deviation).
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to compare. Defaults to
+"Return".
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+tickers paired up. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.Series: The MAE, indexed by unordered `(Ticker A, Ticker B)` pair.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["GLD", "IAU", "GLDM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2025-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_mae()
+```
+
+Which returns:
+
+|                 |    MAE |
+|:----------------|-------:|
+| ('GLD', 'IAU')  | 0.0002 |
+| ('GLD', 'GLDM') | 0.0003 |
+| ('IAU', 'GLDM') | 0.0003 |
+
+---
+
+## get_out_of_sample_validation
+Out-of-sample validate an ARIMA or VAR forecast of every ticker in the Toolkit instance -- fit only on a training portion of the history, forecast the held-out remainder, and score the forecast against what actually happened.
+
+**Also known as:** hold-out validation, train/test split validation.
+
+See `forecast_evaluation_model.get_out_of_sample_validation` for the general harness this wraps. Since that function takes a raw Python callable (not serializable for e.g. the MCP-facing tool layer), this controller method instead hardcodes the choice between the two Part-1 forecasting models via the `model` string:
+
+- `model="arima"`: `time_series_model.get_arima_forecast` is fit on each ticker's own training-period series (`p`, `d`, `q`, `include_constant` control the model, same as `get_arima_forecast`).
+- `model="var"`: `time_series_model.get_var_forecast` is fit on the training-period series of each ticker together with `other_tickers` (`lags` controls the VAR order, defaulting to every other ticker in the Toolkit instance if not given); only that ticker's own forecast column is scored against its holdout.
+
+The formula is as follows:
+
+- Training sample: the first int(`train_fraction`·n) observations (80% by default) of the `column` level (Adj Close by default); the remaining H observations are the holdout
+
+- $$\hat{Y}_{t}$$: the H-step forecast of the model fitted on the training sample only, an ARIMA(p, d, q) (model="arima", ARIMA(1, 1, 1) by default) or a VAR(`lags`) on the ticker and `other_tickers` (model="var")
+
+$$
+\text{RMSE} = \sqrt{\frac{1}{H} \cdot \sum(Y_{t} - \hat{Y}_{t})^{2}}\;\;\text{and}\;\; \text{MAE} = \frac{1}{H} \cdot \sum\left|Y_{t} - \hat{Y}_{t}\right|,\;\; \text{over the holdout}
+$$
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to validate. Defaults
+to "Adj Close".
+- <u>model (str, optional):</u> Either "arima" or "var". Defaults to "arima".
+- <u>train_fraction (float, optional):</u> The fraction of observations used for
+training; the remainder is the holdout. Defaults to 0.8.
+- <u>p (int, optional):</u> The ARIMA autoregressive order (`model="arima"` only).
+Defaults to 1.
+- <u>d (int, optional):</u> The ARIMA differencing order (`model="arima"` only).
+Defaults to 1.
+- <u>q (int, optional):</u> The ARIMA moving-average order (`model="arima"` only).
+Defaults to 1.
+- <u>include_constant (bool, optional):</u> Whether the ARIMA model estimates a
+free intercept (`model="arima"` only). Defaults to True.
+- <u>lags (int, optional):</u> The VAR order (`model="var"` only). Defaults to 1.
+- <u>other_tickers (list[str] &#124; None, optional):</u> The other assets to include in
+the VAR system alongside the ticker being validated (`model="var"` only).
+Defaults to None, meaning every other ticker in the Toolkit instance.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
+the tickers validated (and, for `model="var"`, among the default
+`other_tickers`). Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: `RMSE`, `MAE` and `Holdout Observations`, one column per
+ticker. With `model="arima"` each ticker uses its own history and a ticker
+without enough data has an empty (NaN) column.
+
+**Raises:**
+
+ValueError: If `model` is not "arima" or "var", or (for `model="var"`)
+fewer than 2 tickers are available to form a VAR system.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["BTCUSD", "ETHUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_out_of_sample_validation()
+```
+
+Which returns:
+
+|                      |   BTCUSD |   ETHUSD |
+|:---------------------|---------:|---------:|
+| RMSE                 | 11424.9  |  1003.11 |
+| MAE                  |  9896.95 |   842.37 |
+| Holdout Observations |   366    |   366    |
+
+---
+
 ## get_ols
 Fit an Ordinary Least Squares (OLS) regression of `dependent_ticker` on `independent_tickers`, using the selected `column` (returns by default) of each ticker.
 
@@ -1154,12 +2172,14 @@ $$
 $$
 
 $$
-t = \frac{\hat{\beta}_{j}}{\operatorname{SE}(\hat{\beta}_{j})},\;\; \text{with p-values from a Student-t distribution with}\; n - k \;\text{degrees of freedom}
+t = \frac{\hat{\beta}_{j}}{\operatorname{SE}(\hat{\beta}_{j})},\;\; \text{with p-values from a Student-t distribution with}\; n - k \;\text{degrees of freedom for}\; \text{cov\_type} = \text{"nonrobust"} \;\text{and from the standard normal distribution for the robust estimators} \;(\text{"HC0"} \;\text{to}\; \text{"HC3"},\; \text{"cluster"} \;\text{and}\; \text{"HAC"}),\;\; \text{which are asymptotic results}
 $$
 
 $$
 R^{2} = 1 - \frac{e' e}{\sum(y_{t} - \operatorname{mean}(y))^{2}}
 $$
+
+The "HAC" covariance is the Newey-West (Bartlett) estimator without a small-sample degrees-of-freedom correction (statsmodels' default), so its standard errors are slightly smaller than those of software that scales them by n / (n - k).
 
 Each coefficient is the expected change in `dependent_ticker` for a one-unit change in that independent ticker, holding the others fixed, and the intercept is what remains when all of them are zero. With returns this is the familiar way to estimate how strongly one asset moves with others (e.g. a beta against an index).
 
@@ -1254,6 +2274,10 @@ $$
 
 $$
 \operatorname{Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (X' W X)^{- 1},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum w_{t} \cdot e_{t}^{2}}{n - k} \;(\text{cov\_type} = \text{"nonrobust"})
+$$
+
+$$
+t = \frac{\hat{\beta}_{j}}{\operatorname{SE}(\hat{\beta}_{j})},\;\; \text{with p-values from a Student-t distribution with}\; n - k \;\text{degrees of freedom for}\; \text{cov\_type} = \text{"nonrobust"} \;\text{and from the standard normal distribution for the robust estimators};\;\; \text{"HAC" is the Newey-West estimator without a small-sample correction}
 $$
 
 - y is the dependent ticker's `column` (Return by default) and X the independent tickers' `column` plus a constant, on the dates where the returns and `weights` all have data
@@ -1774,6 +2798,1375 @@ Which returns:
 |:----------|---------------:|-------------:|--------------:|----------:|
 | Intercept |         0.0066 |       0.0058 |        1.1505 |    0.2547 |
 | Benchmark |         0.0101 |       0.008  |        1.2668 |    0.2103 |
+
+---
+
+## get_fixed_effects
+Fit a Fixed Effects ("within") estimator explaining a panel of `dependent_tickers` (the entities) by a regressor `x`, controlling for entity-specific (and/or time-specific) fixed effects.
+
+**Also known as:** within estimator, FE, least squares dummy variable (LSDV) estimator.
+
+Unlike this module's other regression methods (`get_ols`, `get_wls`, ...), which each compare a handful of individual ticker return series on equal footing, this treats `dependent_tickers` as a genuine panel of entities -- e.g. every stock in the `Toolkit` instance -- observed over time. The regressor `x` is built in exactly one of two ways (provide exactly one of the two arguments below):
+
+- `independent_tickers`: a COMMON factor (or factors) applied identically to every entity at each date (e.g. a market benchmark, mirroring a Fama-French-style factor regression).
+- `independent_column`: a PER-ENTITY regressor -- each entity's own value of a *different* historical data column (e.g. does `"Volume"` explain `"Return"`, across the panel).
+
+Fixed Effects removes any purely entity-specific, time-invariant characteristic (e.g. a stock's typical risk premium) before estimating the regressor's coefficient(s), by demeaning every variable by its entity's mean. See `panel_data_model.get_fixed_effects` for the full formula and references.
+
+The formula is as follows:
+
+$$
+\tilde{y}_{it} = y_{it} - \text{mean}_{t}(y_{it})\;\;\text{and}\;\; \tilde{x}_{it} = x_{it} - \text{mean}_{t}(x_{it}) (\text{entity\_effects} = \text{True},\; \text{the default});\;\; \text{time\_effects=True also removes each date's mean (two-way fixed effects)}
+$$
+
+$$
+\hat{\beta}_{\text{FE}} = (\tilde{X}' \tilde{X})^{- 1} \tilde{X}' \tilde{y},\;\; \text{without a separate constant (linearmodels PanelOLS, unadjusted covariance)}
+$$
+
+$$
+\text{Entity Effect:}\;\; \alpha_{i} = \text{mean}_{t}(y_{it} - x_{it}' \hat{\beta}_{\text{FE}});\;\; \text{Time Effect:}\;\; \lambda_{t} = \text{mean}_{i}(y_{it} - x_{it}' \hat{\beta}_{\text{FE}})
+$$
+
+- $$y_{it}$$ is each dependent ticker's `column` (Return by default)
+
+**Args:**
+
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
+ticker(s), whose `column` values are broadcast identically to every
+entity at each date. Mutually exclusive with `independent_column`.
+- <u>independent_column (str &#124; None, optional):</u> A different historical data
+column, taken per-entity from each of `dependent_tickers`' own data, to
+use as the regressor. Mutually exclusive with `independent_tickers`.
+- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
+entity tickers to explain. Defaults to None, meaning every ticker in
+the `Toolkit` instance (other than `independent_tickers`, if given).
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
+quarterly, or yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The dependent variable's historical data
+column. Defaults to "Return".
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+entities. Defaults to False.
+- <u>entity_effects (bool, optional):</u> Whether to control for time-invariant
+entity-specific characteristics. Defaults to True.
+- <u>time_effects (bool, optional):</u> Whether to control for entity-invariant,
+time-specific shocks. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A coefficient table (Coefficient, Std. Error,
+t-Statistic, P-Value) for the regressor(s), indexed by name, with the
+recovered entity (and/or time) fixed-effect intercepts appended as
+additional rows (only the Coefficient column is populated for those).
+
+**Raises:**
+
+ValueError: If both or neither of `independent_tickers`/
+`independent_column` are given, or (see `panel_data_model.
+get_fixed_effects`) if there are not enough observations for the
+requested fixed effects, or the fixed effects absorb the regressor: the
+common factor of `independent_tickers` is identical for every entity at
+each date, so it cannot be combined with `time_effects=True`.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["XOM", "CVX", "SHEL", "BP", "TTE"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_fixed_effects(independent_tickers="Benchmark")
+```
+
+Which returns:
+
+|                     |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|:--------------------|--------------:|-------------:|--------------:|----------:|
+| Benchmark           |        0.5795 |       0.0183 |       31.7272 |         0 |
+| Entity Effect: BP   |        0.0004 |     nan      |      nan      |       nan |
+| Entity Effect: CVX  |        0.0004 |     nan      |      nan      |       nan |
+| Entity Effect: SHEL |        0.0005 |     nan      |      nan      |       nan |
+| Entity Effect: TTE  |        0.0004 |     nan      |      nan      |       nan |
+| Entity Effect: XOM  |        0.0008 |     nan      |      nan      |       nan |
+
+---
+
+## get_random_effects
+Fit a Random Effects estimator explaining a panel of `dependent_tickers` (the entities) by a regressor `x`, via Swamy-Arora feasible Generalized Least Squares.
+
+**Also known as:** RE, GLS panel estimator, Swamy-Arora estimator.
+
+See `get_fixed_effects` for how `dependent_tickers`/`independent_tickers`/ `independent_column` are shaped into a panel, and `panel_data_model.get_random_effects` for the full estimator formula, references, and how it compares to Fixed Effects. Unlike Fixed Effects, Random Effects retains and estimates a single, population-average intercept rather than one intercept per entity -- more efficient than Fixed Effects if entity effects are indeed uncorrelated with the regressor(s) (see `get_hausman_test` to check that assumption).
+
+The formula is as follows:
+
+$$
+\theta_{i} = 1 - \sqrt{\frac{\sigma_{\epsilon}^{2}}{\sigma_{\epsilon}^{2} + T_{i} \cdot \sigma_{u}^{2}}},\;\; \text{with the Swamy-Arora estimates of the idiosyncratic (} \sigma_{\epsilon}^{2} \text{) and entity (} \sigma_{u}^{2} \text{) variance components}
+$$
+
+$$
+y^{*}_{it} = y_{it} - \theta_{i} \cdot \text{mean}_{t}(y_{it})\;\;\text{and}\;\; x^{*}_{it} = x_{it} - \theta_{i} \cdot \text{mean}_{t}(x_{it}),\;\; \text{the constant becoming}\; 1 - \theta_{i}
+$$
+
+$$
+\hat{\beta}_{\text{RE}} = \text{OLS of} \;y^{*} \;\text{on} \;x^{*} \;(\text{linearmodels RandomEffects}),\;\; \text{with } y_{it} \text{ each dependent ticker's column (Return by default)}
+$$
+
+**Args:**
+
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
+ticker(s), whose `column` values are broadcast identically to every
+entity at each date. Mutually exclusive with `independent_column`.
+Since this `Toolkit` instance's historical data is aligned onto a
+common calendar across tickers, a broadcast factor's entity mean is
+identical for every entity, leaving no between-entity variation to
+identify Random Effects' between-regression step -- prefer
+`independent_column` here unless `dependent_tickers` genuinely differ
+in their date coverage (e.g. different listing histories).
+- <u>independent_column (str &#124; None, optional):</u> A different historical data
+column, taken per-entity from each of `dependent_tickers`' own data, to
+use as the regressor. Mutually exclusive with `independent_tickers`.
+- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
+entity tickers to explain. Defaults to None, meaning every ticker in
+the `Toolkit` instance (other than `independent_tickers`, if given).
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
+quarterly, or yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The dependent variable's historical data
+column. Defaults to "Return".
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+entities. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: A coefficient table (Coefficient, Std. Error,
+t-Statistic, P-Value), indexed by regressor name plus "Intercept".
+
+**Raises:**
+
+ValueError: If both or neither of `independent_tickers`/
+`independent_column` are given, or (see `panel_data_model.
+get_random_effects`) if there are not enough entities or observations
+to estimate the model.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["JPM", "BAC", "C", "WFC"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_random_effects(independent_tickers="Benchmark")
+```
+
+Which returns:
+
+|           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|:----------|--------------:|-------------:|--------------:|----------:|
+| Intercept |        0.0003 |       0.0002 |        1.7192 |    0.0856 |
+| Benchmark |        0.9788 |       0.0183 |       53.4931 |    0      |
+
+---
+
+## get_hausman_test
+Calculate the Hausman specification test comparing a Fixed Effects and a Random Effects fit of `dependent_tickers` (the panel of entities) on a regressor `x`.
+
+**Also known as:** Hausman specification test, fixed versus random effects test.
+
+Random Effects is more efficient than Fixed Effects but relies on entity effects being uncorrelated with the regressor(s) -- if that assumption is violated, Random Effects is inconsistent while Fixed Effects remains consistent regardless. See `panel_data_model.get_hausman_test` for the full formula and references, and `get_fixed_effects`/`get_random_effects` for how the two models being compared are estimated (including how `independent_tickers`/`independent_column` shape the panel, and why `independent_column` is generally the more reliable choice here).
+
+The formula is as follows:
+
+$$
+H = (\hat{\beta}_{\text{FE}} - \hat{\beta}_{\text{RE}})' \cdot \left[\operatorname{Var}(\hat{\beta}_{\text{FE}}) - \operatorname{Var}(\hat{\beta}_{\text{RE}})\right]^{- 1} \cdot (\hat{\beta}_{\text{FE}} - \hat{\beta}_{\text{RE}}),\;\; \text{over the } k \text{ slope coefficients the two models share (a pseudo-inverse when the difference is singular, and } H \text{ floored at 0)}
+$$
+
+- H is chi-squared with k degrees of freedom; Random Effects is rejected when the p-value is below 0.05
+
+- $$\hat{\beta}_{\text{FE}}$$ comes from `get_fixed_effects` with entity effects only and $$\hat{\beta}_{\text{RE}}$$ from `get_random_effects`
+
+**Args:**
+
+- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
+ticker(s), whose `column` values are broadcast identically to every
+entity at each date. Mutually exclusive with `independent_column`.
+- <u>independent_column (str &#124; None, optional):</u> A different historical data
+column, taken per-entity from each of `dependent_tickers`' own data, to
+use as the regressor. Mutually exclusive with `independent_tickers`.
+- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
+entity tickers to explain. Defaults to None, meaning every ticker in
+the `Toolkit` instance (other than `independent_tickers`, if given).
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
+quarterly, or yearly). Defaults to "daily".
+- <u>column (str, optional):</u> The dependent variable's historical data
+column. Defaults to "Return".
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+entities. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
+results to. Defaults to None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.Series: The Hausman statistic, its degrees of freedom, its p-value,
+and whether Fixed Effects is preferred over Random Effects at the 5%
+level.
+
+**Raises:**
+
+ValueError: If both or neither of `independent_tickers`/
+`independent_column` are given, or (see `panel_data_model.
+get_hausman_test`) if there are not enough observations or entities to
+fit either model, or the two estimators share no common regressors to
+compare.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "AMZN"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_hausman_test(independent_column="Volume", period="weekly")
+```
+
+Which returns:
+
+|                           |   Value |
+|:--------------------------|--------:|
+| Hausman Statistic         |  0.5866 |
+| Degrees of Freedom        |  1      |
+| P-Value                   |  0.4438 |
+| Prefer Fixed Effects (5%) |  0      |
+
+---
+
+## get_level_significance
+Calculate how unusual the latest value of every series is: its percentile in the series' own history and the last dates the series was at least as high ("the highest since") and at least as low ("the lowest since"), next to its change since the first observation and the highest and lowest values of the range with their dates and the change from them.
+
+Where `get_move_significance` (Risk) measures how unusual a move is, this measures how unusual a level is, which is the question for rates and macroeconomic series: a 10-year yield of 5.13% is "the highest since May 2002" when no month since then was as high, and an unemployment rate can be the lowest in decades without any single large move. Through the Toolkit it measures the prices of the tickers ("the highest close since"); with `Econometrics(data=...)` any series, such as the interest rates, inflation or unemployment of `Economics` and the yield curves of `FixedIncome`.
+
+The formula is as follows:
+
+$$
+\text{Percentile} = \frac{\operatorname{Count}(x(s) < x(T)) + 0.5 \cdot \operatorname{Count}(x(s) = x(T))}{\operatorname{Count}(s)},\;\; \text{over}\; s < T
+$$
+
+$$
+\text{Rank} = 1 + \operatorname{Count}(x(s) > x(T)),\;\; \text{over}\; s < \text{T:} 1 \;\text{for the highest of the history}
+$$
+
+$$
+\text{Highest Since} = \text{the last date}\; s < T \;\text{with} \;x(s) \geq x(T)
+$$
+
+$$
+\text{Lowest Since} = \text{the last date}\; s < T \;\text{with} \;x(s) \leq x(T)
+$$
+
+$$
+\text{Change Since Start} = \frac{x(T) - x(0)}{\left|x(0)\right|}
+$$
+
+$$
+\text{Change From Highest} = \frac{x(T) - \max(x)}{\left|\max(x)\right|}
+$$
+
+$$
+\text{Change From Lowest} = \frac{x(T) - \min(x)}{\left|\min(x)\right|}
+$$
+
+$$
+\text{Multiple Since Start} = \frac{x(T)}{x(0)}
+$$
+
+$$
+\text{Annualised Change} = \left(\frac{x(T)}{x(0)}\right)^{\frac{1}{\text{years}}} - 1,\;\; \text{years between the two dates}
+$$
+
+$$
+\text{Largest Drawdown} = \min \;\text{over}\; t \;\text{of} \;\frac{x(t) - \max(x(s),\; s \leq t)}{\left|\max(x(s),\; s \leq t)\right|}
+$$
+
+$$
+\text{Recovery Date} = \text{the first date after the trough with}\; x \geq \text{the peak before it}
+$$
+
+$$
+\text{First Above Level} = \text{the first date}\; s \;\text{with} \;x(s) > \text{level}
+$$
+
+$$
+\text{Above Level Since} = \text{the first date of the run above the level the latest value is in}
+$$
+
+$$
+\text{Last Above Level} = \text{the last date}\; s < T \;\text{with} \;x(s) > \text{level}
+$$
+
+$$
+\text{Last At Or Below Level} = \text{the last date}\; s < T \;\text{with} \;x(s) \leq \text{level}
+$$
+
+$$
+\text{Observations Above Level} = \operatorname{Count}(x(s) > \text{level}),\;\; \text{over}\; s \leq T
+$$
+
+$$
+\text{Observations At Or Below Level} = \operatorname{Count}(x(s) \leq \text{level}),\;\; \text{over}\; s \leq T
+$$
+
+Where x(T) is the latest value of a series, x(0) its first observation and s runs over its earlier observations. An earlier value equal to the latest one counts as half (the percentile rank), so a policy rate that has not changed for years sits in the middle of its own ties. Highest Since is NaN when no earlier value was as high, which makes the latest value the highest of the history; Lowest Since likewise. The Change Since Start is the change between the first and the latest observation in the range, so the start and end date choose the two dates to compare (housing starts from January 2021 to their latest month with period="monthly"); it is relative to the absolute first value, so a rise from a negative value is positive, and NaN when the first value is zero. The Highest and Lowest are the peak and trough of the range, the latest value included, with the first dates they were reached, so the start date works as the anchor of an event window: the rise from the start to the peak, the date of the peak and the fall from it to the latest value. The changes from them are relative to their absolute values, and NaN when they are zero. With `Econometrics(data=..., changes="difference")` every change, the Largest Drawdown included, is a difference in the unit of the series instead (percentage points for a rate: a 10-year yield from 5.29% to 4.94% is -0.0035), and the Multiple Since Start and Annualised Change are NaN.
+
+**Also known as:** highest since, lowest since, record high, multi-year high, level percentile, historical percentile, how unusual is the latest value, change since, change between two dates, cumulative change, event window, peak, trough, drawdown from the peak, change from the high, change from the low, multiple, compound annual growth rate (CAGR), annualised change, peak to trough, time to recover the peak, change in percentage points, how often at or below a level, the last time above a level.
+
+**Args:**
+
+- <u>period (str &#124; None, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
+yearly); the weekly to yearly periods take the last value of each period. Defaults to
+None, which is "daily": the series at the dates they are observed, so a monthly
+series is compared month by month.
+- <u>column (str, optional):</u> The historical data column to measure. Defaults to "Close", the
+traded close of the tickers and the series themselves with data=.
+- <u>spread_over (str &#124; None, optional):</u> The name of a series to subtract from every
+other series, so the spreads over it are measured instead (named "<series> -
+<spread_over>"), e.g. producer price inflation over consumer price inflation.
+The spread exists on the dates both series have, so with period="daily" a weekly
+series minus a daily one is measured on the weekly dates. Defaults to None, which
+measures the series themselves.
+- <u>ratio (bool, optional):</u> Whether to divide every other series by the spread_over
+series instead of subtracting it (named "<series> / <spread_over>"), e.g.
+exports over GDP or one country's yield over another's. Defaults to False.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
+Defaults to False.
+- <u>level (float &#124; None, optional):</u> A level to compare every series with, such as an
+earlier peak, which adds the Level, the First Above Level (the first date the
+series exceeded it), Above Level Since (the date it has been above it since
+without a break, empty when the latest value is not above it), the Last Above
+Level and Last At Or Below Level (the last date before the latest observation
+on either side of it, empty when there is none) and the Observations Above
+Level and Observations At Or Below Level (how many observations of the range,
+the latest included, are on either side of it: "6 weeks at or below 203,000
+between 1970 and 2020"). Defaults to None, which leaves them out.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per series the Start Date, Start Value and number of Observations of its
+history, the Latest Date and Latest Value, the Change Since Start (decimal), the
+Multiple Since Start and Annualised Change (decimal, the compound annual rate, NaN
+unless both values are positive), the Percentile (decimal), the Rank (1 for the
+highest of the history: "the 3rd highest since" the Start Date), the Highest Since and
+Lowest Since dates, the Highest and Lowest with their Highest Date and Lowest Date
+and the Change From Highest and Change From Lowest (decimals), and the Largest
+Drawdown (decimal) with its Drawdown Peak Date, Drawdown Trough Date and Recovery
+Date (NaN while it has not recovered), and with a level the Level, First Above
+Level, Above Level Since, Last Above Level, Last At Or Below Level, Observations
+Above Level and Observations At Or Below Level. The dates are text: the dates of the observations, e.g.
+2002-05-31 for a monthly series, or the periods, e.g. 2002-05 with period="monthly".
+
+**Notes:**
+
+- The answer depends on the history it is measured against: the history starts at the start
+date of the data, so "the highest since" can at most reach back to that date, and a
+later start date gives a higher percentile for a value near the top. Choose a start date
+far enough back, and read the Start Date column to see where each history begins.
+- Each series uses its own history, so a series that starts later has a shorter one.
+- The latest value is the last observation up to the end date, which can be older than the
+end date for a series published with a lag; Latest Date says which it is.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics, Econometrics
+
+economics = Economics(start_date='2000-01-01', end_date='2026-10-31', rounding=None)
+
+long_term_rates = economics.get_long_term_interest_rate(
+    countries=['United States', 'Germany', 'Japan'], period='monthly'
+)
+
+econometrics = Econometrics(data=long_term_rates)
+
+econometrics.get_level_significance(level=0.05).T
+```
+
+Which returns:
+
+|                                | United States   | Germany    | Japan      |
+|:-------------------------------|:----------------|:-----------|:-----------|
+| Start Date                     | 2000-01-31      | 2000-01-31 | 2000-01-31 |
+| Start Value                    | 0.0666          | 0.0554     | 0.0169     |
+| Observations                   | 322             | 322        | 322        |
+| Latest Date                    | 2026-10-31      | 2026-10-31 | 2026-10-31 |
+| Latest Value                   | 0.0513          | 0.0342     | 0.0276     |
+| Change Since Start             | -0.2297         | -0.3834    | 0.6292     |
+| Multiple Since Start           | 0.7703          | 0.6166     | 1.6292     |
+| Annualised Change              | -0.0097         | -0.0179    | 0.0184     |
+| Percentile                     | 0.9377          | 0.6854     | 0.9907     |
+| Rank                           | 21              | 102        | 4          |
+| Highest Since                  | 2002-05-31      | 2026-09-30 | 2026-09-30 |
+| Lowest Since                   | 2026-09-30      | 2026-08-31 | 2026-06-30 |
+| Highest                        | 0.0666          | 0.0554     | 0.0305     |
+| Highest Date                   | 2000-01-31      | 2000-01-31 | 2026-09-30 |
+| Change From Highest            | -0.2297         | -0.3834    | -0.0967    |
+| Lowest                         | 0.0062          | -0.0065    | -0.0028    |
+| Lowest Date                    | 2020-07-31      | 2019-08-31 | 2019-08-31 |
+| Change From Lowest             | 7.2742          | 6.2626     | 10.8393    |
+| Largest Drawdown               | -0.9069         | -1.1172    | -1.1431    |
+| Drawdown Peak Date             | 2000-01-31      | 2000-01-31 | 2006-04-30 |
+| Drawdown Trough Date           | 2020-07-31      | 2019-08-31 | 2019-08-31 |
+| Recovery Date                  | nan             | nan        | 2025-12-31 |
+| Level                          | 0.05            | 0.05       | 0.05       |
+| First Above Level              | 2000-01-31      | 2000-01-31 | nan        |
+| Above Level Since              | 2026-10-31      | nan        | nan        |
+| Last Above Level               | 2007-06-30      | 2002-06-30 | nan        |
+| Last At Or Below Level         | 2026-09-30      | 2026-09-30 | 2026-09-30 |
+| Observations Above Level       | 28              | 17         | 0          |
+| Observations At Or Below Level | 294             | 305        | 322        |
+
+---
+
+## get_move_significance
+Calculate how unusual each move of every series is: the change in units of its trailing volatility and of its trailing Value at Risk, its percentile among the earlier moves and the date of the last move at least as large in the same direction ("the largest one-day rise since").
+
+This is `get_move_significance` (Risk) for any series rather than the returns of the Toolkit's tickers: with `Econometrics(data=..., changes="difference")` a yield, rate or spread moves in points, so a rise of the 2-year Treasury yield from 4.56% to 4.73% is a move of 0.0017, measured against the earlier daily moves of the same yield. Where `get_level_significance` asks how unusual a level is, this asks how unusual a change is.
+
+The formula is as follows:
+
+$$
+\text{Volatility Multiple}(t) = \frac{\operatorname{Change}(t)}{\sigma(\operatorname{Change}(t - \text{window}),\; \ldots,\; \operatorname{Change}(t - 1))}
+$$
+
+$$
+\text{VaR Multiple}(t) = \frac{\operatorname{Change}(t)}{\left|\operatorname{Quantile}(\operatorname{Change}(t - \text{window}),\; \ldots,\; \operatorname{Change}(t - 1) ; \alpha)\right|}
+$$
+
+$$
+\operatorname{Percentile}(t) = \frac{\operatorname{Count}(\left|\operatorname{Change}(s)\right| < \left|\operatorname{Change}(t)\right|) + 0.5 \cdot \operatorname{Count}(\left|\operatorname{Change}(s)\right| = \left|\operatorname{Change}(t)\right|)}{\operatorname{Count}(s)},\;\; \text{over}\; s < t
+$$
+
+$$
+\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Change}(s) \leq \operatorname{Change}(t)) \;\text{if Change}(t) < 0
+$$
+
+$$
+\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Change}(s) \geq \operatorname{Change}(t)) \;\text{if Change}(t) > 0
+$$
+
+The Change is the series' change as `changes` defines it: a percentage change by default, the difference with `changes="difference"` and the series itself with `changes="none"`. The volatility $$\sigma$$ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly. Each measure only uses the changes before the period itself (no look-ahead), and Largest Since compares falls with falls and rises with rises, as a headline does. An earlier change of the same size counts as half in the percentile (the mid-rank, as in `get_level_significance`), so a rate that is unchanged on most days puts an unchanged day in the middle of its ties. The VaR Multiple is NaN when the trailing alpha quantile is zero or positive, as there is no loss to scale the change by.
+
+**Also known as:** sigma move, largest move since, biggest daily rise since, standardized change, yield move significance.
+
+**Args:**
+
+- <u>period (str &#124; None, optional):</u> The data frequency (daily, weekly, monthly, quarterly
+or yearly). Defaults to None, which is daily.
+- <u>window (int &#124; None, optional):</u> The number of earlier changes the volatility is
+measured over, which the percentile also needs at least. Defaults to None, which
+uses a year of observations with a minimum of 20 (252 daily, 52 weekly and 20
+monthly, quarterly or yearly changes). With `Econometrics(data=...)` and the
+"daily" period, a year is counted in each series' own observations, from the
+median spacing of its dates: 20 changes for a monthly or quarterly series and
+52 for a weekly one.
+- <u>alpha (float, optional):</u> The tail probability of the trailing historic Value at Risk
+the VaR Multiple divides by (0.05 for the 95% VaR). Defaults to 0.05.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark of a Toolkit.
+Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Return (the change), Volatility Multiple, VaR Multiple, Percentile and
+Largest Since (the date as text, NaN when there is none) per series, with time as the
+index and the measures and series as the column levels.
+
+**Notes:**
+
+- The history a move is compared with starts at the start of the data: the volatility,
+the VaR and the percentile are NaN until `window` changes are available, and Largest
+Since is NaN when no earlier move was as large, which makes the move the largest since
+the start. Choose an early start date for a long history.
+- Each series uses its own history and only the dates it has a value for, so a market
+holiday is not a move of zero.
+
+**As an example:**
+
+```python
+from financetoolkit import Econometrics, FixedIncome
+
+fixedincome = FixedIncome(start_date='2025-01-01', end_date='2026-11-10', rounding=None)
+
+treasury_rates = fixedincome.get_treasury_rates(maturities=['2Y', '10Y'])
+
+econometrics = Econometrics(data=treasury_rates, changes='difference')
+
+econometrics.get_move_significance().loc['2026-11-10'].unstack(level=0)
+```
+
+Which returns:
+
+|         |   Return |   Volatility Multiple |   VaR Multiple |   Percentile | Largest Since   |
+|:--------|---------:|----------------------:|---------------:|-------------:|:----------------|
+| 2 Year  |   0.0017 |                3.5345 |         2.4286 |       0.9935 | 2025-04-09      |
+| 10 Year |   0.001  |                2.2808 |         1.6667 |       0.9654 | 2026-09-23      |
+
+---
+
+## get_window_change_by_year
+Calculate the change of every series over the same months of every year, such as February to October, with the rank of every year's change and the last earlier year with a change at least as large ("the largest since").
+
+Where `get_level_significance` measures one window, from the start date to the latest value, this compares the same window across years: "US consumer prices rose 3.3% from February to October, the most since 2022" is the Change, Rank and Largest Since of the latest year. Through the Toolkit it measures the prices of the tickers (a seasonal pattern, such as the return from May to October); with `Econometrics(data=...)` any series, such as the consumer price indices of `Economics`.
+
+The formula is as follows:
+
+$$
+\text{Change} \;(y) = \frac{x(\text{to\_month},\; y) - x(\text{from\_month},\; y)}{\left|x(\text{from\_month},\; y)\right|}
+$$
+
+$$
+\text{Rank} \;(y) = \text{the position of Change} \;(y) \;\text{among the changes of every year},\;\; \text{1 for the largest}
+$$
+
+$$
+\text{Largest Since} \;(y) = \text{the last year}\; s < y \;\text{with Change} \;(s) \geq \text{Change} \;(y)
+$$
+
+Where x(m, y) is the value of month m in year y, the last value of the month for a daily series. A window that ends in an earlier month than it starts (November to February) runs into the next year and is labelled by the year it ends; the same month for both gives the change over twelve months. A year without the value of either month has no change, so the current year is empty until its last month is published. Largest Since is empty (<NA>) when no earlier year had a change as large. With `Econometrics(data=..., changes="difference")` the Change is x(to_month, y) - x(from_month, y), in percentage points for a rate.
+
+**Also known as:** same period each year, seasonal change, year-to-date comparison, change from February to October, largest since, fastest since, seasonality.
+
+**Args:**
+
+- <u>from_month (int, optional):</u> The month the window starts, 1 (January) to 12
+(December). Defaults to 1.
+- <u>to_month (int, optional):</u> The month the window ends, 1 to 12. Defaults to 12,
+which with from_month=1 is the change from January to December.
+- <u>column (str, optional):</u> The historical data column to measure. Defaults to
+"Close", the traded close of the tickers and the series themselves with data=.
+- <u>spread_over (str &#124; None, optional):</u> The name of a series to subtract from every
+other series, so the spreads over it are measured instead. Defaults to None.
+- <u>ratio (bool, optional):</u> Whether to divide every other series by the spread_over
+series instead of subtracting it (named "<series> / <spread_over>"). Defaults
+to False.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+assets. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class (4 unless set
+otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per year (rows) and series the Start Value, End Value, Change
+(decimal), Rank and Largest Since (columns, a level per series); the Rank and
+Largest Since are whole numbers, <NA> when there is none.
+
+**Notes:**
+
+- The ranks and "largest since" depend on the history: start the data early enough,
+as a year before the start date is not compared.
+- The change uses the levels, so the series should be an index or a price, not a
+rate: the change in an inflation rate is a relative change of a rate.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics, Econometrics
+
+economics = Economics(start_date='2019-01-01', end_date='2026-10-31')
+
+consumer_price_index = economics.get_consumer_price_index(
+    countries=['United States', 'Euro Area']
+)
+
+econometrics = Econometrics(data=consumer_price_index)
+
+econometrics.get_window_change_by_year(from_month=2, to_month=10)['United States']
+```
+
+Which returns:
+
+|   Year |   Start Value |   End Value |   Change | Rank   | Largest Since   |
+|-------:|--------------:|------------:|---------:|:-------|:----------------|
+|   2019 |       115.923 |     118.019 |   0.0181 | 5      | <NA>            |
+|   2020 |       118.629 |     119.414 |   0.0066 | 7      | 2019            |
+|   2021 |       120.618 |     126.843 |   0.0516 | 1      | <NA>            |
+|   2022 |       130.112 |     136.668 |   0.0504 | 2      | 2021            |
+|   2023 |       137.965 |     141.098 |   0.0227 | 4      | 2022            |
+|   2024 |       142.315 |     144.763 |   0.0172 | 6      | 2023            |
+|   2025 |       146.331 |     nan     | nan      | <NA>   | <NA>            |
+|   2026 |       149.863 |     154.782 |   0.0328 | 3      | 2022            |
+
+---
+
+## get_streaks
+Calculate the streak every series is on: whether its latest value is positive, negative or zero, since when it has been without a break and how long that is, the run before it, and the longest earlier run of the same sign.
+
+Where `get_level_significance` measures how unusual the latest level is, this measures how long a series has been on one side of zero, which is the question for inflation, growth and spreads: producer prices that fell year over year for 41 months in a row, a spread between two series that turned positive after three years, or a yield curve that has been inverted since a given month. With column="Return" it measures the changes instead: a price that rose for eight days in a row, or with `Econometrics(data=..., changes="difference")` an unemployment rate that rose for six months in a row. Through the Toolkit it measures the prices of the tickers; with `Econometrics(data=...)` any series, such as the economic calendar of `Economics` with as_series=True, its inflation rates or the yield curves of `FixedIncome`.
+
+A run is a stretch of consecutive observations with the same sign (positive, negative or zero), counted in observations: months for a monthly series. The current run is the one the latest observation belongs to, the previous run the one just before it and the longest earlier run the longest run of the current sign before the current one (the most recent of them when several are as long).
+
+**Also known as:** streak, run length, consecutive months, months in a row, how long has it been negative, first positive since.
+
+**Args:**
+
+- <u>period (str &#124; None, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
+yearly); the weekly to yearly periods take the last value of each period. Defaults to
+None, which is "daily": the series at the dates they are observed, so a monthly
+series is counted month by month.
+- <u>column (str, optional):</u> The historical data column to measure. Defaults to "Close", the
+traded close of the tickers and the series themselves with data=; "Return" measures
+their changes.
+- <u>spread_over (str &#124; None, optional):</u> The name of a series to subtract from every
+other series, so the streaks of the spreads over it are measured instead (named
+"<series> - <spread_over>"), e.g. producer price inflation over consumer price
+inflation. The spread exists on the dates both series have, so with
+period="daily" a weekly series minus a daily one is measured on the weekly dates.
+Defaults to None, which measures the series themselves.
+- <u>ratio (bool, optional):</u> Whether to divide every other series by the spread_over
+series instead of subtracting it (named "<series> / <spread_over>"). Defaults
+to False.
+- <u>level (float &#124; None, optional):</u> The level the runs are measured against, so the
+runs are above or below it ("27 years below 2%") with the signs "Above Level",
+"Below Level" and "At Level". Defaults to None, which is zero: the sign of the
+values.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
+Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the rounding of the class (4 unless set otherwise).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per series the Start Date and number of Observations of its history,
+the Latest Date and Latest Value, the Sign of the current run with its Run Start and
+Run Length, the Previous Sign, Previous Run Start, Previous Run End and Previous Run
+Length, and the Longest Earlier Run Start, End and Length. The dates are text (the
+dates of the observations, or the periods, e.g. 2022-10 with period="monthly"), the
+lengths are numbers of observations and a run that does not exist is NaN.
+
+**Notes:**
+
+- The runs are counted within the history, which starts at the start date of the data:
+a run that began before it is counted from the first observation, which the Run Start
+or Previous Run Start then equals.
+- A value of exactly zero is a run of its own, so it ends a positive or negative run.
+- Each series uses its own history, and the latest value is the last observation up to
+the end date, which Latest Date shows.
+
+**As an example:**
+
+```python
+from financetoolkit import Economics, Econometrics
+
+economics = Economics(api_key="FINANCIAL_MODELING_PREP_KEY")
+
+prices = economics.get_economic_calendar(
+    start_date="2021-06-01",
+    end_date="2026-11-09",
+    countries="China",
+    events="Producer Price Index YoY,Inflation Rate YoY",
+    impact="All",
+    as_series=True,
+)
+
+econometrics = Econometrics(
+    data=prices["China"][["Producer Price Index YoY", "Inflation Rate YoY"]]
+)
+
+econometrics.get_streaks(period="monthly").T
+```
+
+Which returns:
+
+|                            | Producer Price Index YoY   | Inflation Rate YoY   |
+|:---------------------------|:---------------------------|:---------------------|
+| Start Date                 | 2021-05                    | 2021-05              |
+| Observations               | 66                         | 66                   |
+| Latest Date                | 2026-10                    | 2026-10              |
+| Latest Value               | 0.057                      | 0.007                |
+| Sign                       | Positive                   | Positive             |
+| Run Start                  | 2026-03                    | 2025-10              |
+| Run Length                 | 8                          | 13                   |
+| Previous Sign              | Negative                   | Negative             |
+| Previous Run Start         | 2022-10                    | 2025-08              |
+| Previous Run End           | 2026-02                    | 2025-09              |
+| Previous Run Length        | 41                         | 2                    |
+| Longest Earlier Run Start  | 2021-05                    | 2021-05              |
+| Longest Earlier Run End    | 2022-09                    | 2023-05              |
+| Longest Earlier Run Length | 17                         | 25                   |
+
+---
+
+## get_augmented_dickey_fuller
+Calculate the Augmented Dickey-Fuller (ADF) test for a unit root, per asset.
+
+The test regresses the first difference of the series on its own lagged level and `p` lags of its own first difference. The null hypothesis is that the series has a unit root (is a random walk, not mean-reverting); the alternative is that it is stationary. This is a standard first step before modeling a price series or spread with mean-reverting methods, since those methods assume stationarity.
+
+The formula is as follows:
+
+$$
+\Delta Y_{t} = \alpha + \gamma \cdot Y_{t-1} + \sum_{i=1}^{p} \delta_{i} \cdot \Delta Y_{t-i} + \epsilon_{t},\;\; \text{with}\; Y_{t} \;\text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{and regression} = \text{"c"} \;(\text{the default});\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t \;\text{and}\; \text{"n"} \;\text{drops}\; \alpha
+$$
+
+$$
+\text{ADF} = \frac{\hat{\gamma}}{\operatorname{SE}(\hat{\gamma})},\;\; \text{compared with MacKinnon (1994, 2010) critical values and p-values}
+$$
+
+$$
+p = \text{the number of lags that minimises the AIC},\;\; \text{searched from 0 up to max\_lag},\;\; \text{which defaults to} \;\min\left(\left\lceil 12 \cdot \left(\frac{n}{100}\right)^{\frac{1}{4}} \right\rceil,\; \left\lfloor \frac{n - 5}{3} \right\rfloor\right)
+$$
+
+For more information about the method, see the following paper:
+
+- Dickey, D.A. and Fuller, W.A. (1979). "Distribution of the Estimators for Autoregressive Time Series with a Unit Root." Journal of the American Statistical Association, 74(366a), 427-431.
+
+**Also known as:** ADF test, unit root test, stationarity test.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
+- <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider. Defaults to
+the Schwert (1989) rule of thumb, capped at (n - 5) // 3 for short samples.
+- <u>regression (str, optional):</u> Which deterministic terms to include, one of "n" (none), "c"
+(constant) or "ct" (constant and trend). Defaults to "c".
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+assets tested. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The ADF statistic, its p-value, lags used, observations used, 1%/5%/10%
+critical values, and whether the unit root is rejected at the 5% level, per asset.
+An asset with fewer than 10 observations has NaN values.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period` and runs the ADF
+test for each asset in the Toolkit instance.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["EURUSD", "USDJPY", "GBPUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_augmented_dickey_fuller()
+```
+
+Which returns:
+
+|                       |      EURUSD |     USDJPY |      GBPUSD |
+|:----------------------|------------:|-----------:|------------:|
+| ADF Statistic         |   -1.83568  |   -1.68762 |   -1.81162  |
+| P-Value               |    0.362896 |    0.4375  |    0.374708 |
+| Lags Used             |    5        |    0       |    2        |
+| Observations          | 1345        | 1351       | 1349        |
+| Critical Value 1%     |   -3.43522  |   -3.4352  |   -3.43521  |
+| Critical Value 5%     |   -2.86369  |   -2.86368 |   -2.86368  |
+| Critical Value 10%    |   -2.56792  |   -2.56791 |   -2.56791  |
+| Reject Unit Root (5%) |    0        |    0       |    0        |
+
+---
+
+## get_kpss_test
+Calculate the Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test for stationarity, per asset.
+
+KPSS is the natural complement to the Augmented Dickey-Fuller test: where the ADF null hypothesis is that the series HAS a unit root, the KPSS null hypothesis is that the series IS stationary, with a unit root as the alternative. Running both together is standard practice to triangulate a confident conclusion -- ADF rejecting a unit root and KPSS failing to reject stationarity together give a confident stationarity conclusion, while the two tests disagreeing flags an ambiguous case.
+
+The formula is as follows:
+
+$$
+Y_{t} = \alpha + e_{t} \;\text{fitted by OLS on the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}),\;\; \text{with regression="c" (the default)};\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t
+$$
+
+$$
+S_{t} = \sum_{i=1}^{t} \hat{e}_{i}
+$$
+
+$$
+\text{KPSS} = \frac{\sum_{t=1}^{n} S_{t}^{2}}{n^{2} \cdot \lambda^{2}}
+$$
+
+$$
+\lambda^{2} = \frac{1}{n} \cdot \sum \hat{e}_{t}^{2} + \frac{2}{n} \cdot \sum_{s=1}^{l}\left(1 - \frac{s}{l + 1}\right) \cdot \sum_{t=s+1}^{n} \hat{e}_{t} \cdot \hat{e}_{t-s},\;\; \text{with}\;\; l = \text{lags} \;\text{or},\;\; \text{by default, the Hobijn, Franses and Ooms (2004) automatic bandwidth}
+$$
+
+- The p-value is interpolated from the KPSS (1992) critical value table, so it is bounded between 0.01 and 0.10
+
+For more information about the method, see the following paper:
+
+- Kwiatkowski, D., Phillips, P.C.B., Schmidt, P., & Shin, Y. (1992). "Testing the Null Hypothesis of Stationarity against the Alternative of a Unit Root." Journal of Econometrics, 54(1-3), 159-178.
+
+**Also known as:** KPSS test, stationarity test.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
+- <u>regression (str, optional):</u> Which deterministic term to remove before testing, one of "c"
+(constant, level-stationarity) or "ct" (constant and trend, trend-stationarity).
+Defaults to "c".
+- <u>lags (int, optional):</u> The truncation lag for the long-run variance estimate. Defaults
+to `statsmodels`' automatic (Hobijn, Franses & Ooms, 2004) bandwidth selection.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+assets tested. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The KPSS statistic, its p-value, truncation lag used, observations used,
+1%/2.5%/5%/10% critical values, and whether stationarity is rejected at the 5% level,
+per asset. An asset with fewer than 10 observations has NaN values.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period` and runs the
+KPSS test for each asset in the Toolkit instance.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["^GSPC", "^N225"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_kpss_test()
+```
+
+Which returns:
+
+|                          |      ^GSPC |      ^N225 |
+|:-------------------------|-----------:|-----------:|
+| KPSS Statistic           |    4.73448 |    4.79639 |
+| P-Value                  |    0.01    |    0.01    |
+| Lags Used                |   21       |   21       |
+| Observations             | 1299       | 1298       |
+| Critical Value 1%        |    0.739   |    0.739   |
+| Critical Value 2.5%      |    0.574   |    0.574   |
+| Critical Value 5%        |    0.463   |    0.463   |
+| Critical Value 10%       |    0.347   |    0.347   |
+| Reject Stationarity (5%) |    1       |    1       |
+
+---
+
+## get_phillips_perron_test
+Calculate the Phillips-Perron (PP) test for a unit root, per asset.
+
+Phillips-Perron tests the same null hypothesis as the Augmented Dickey-Fuller test (a unit root), but corrects for heteroskedasticity and serial correlation in the errors nonparametrically via a Newey-West long-run variance estimate, rather than by adding lagged-difference terms to the regression as ADF does. PP and ADF should broadly agree on the same series since they test the same null with different correction methods.
+
+The formula is as follows:
+
+$$
+Y_{t} = \alpha + \rho \cdot Y_{t-1} + u_{t} \;\text{fitted by OLS on the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}),\;\; \text{with regression="c" (the default)};\;\; \text{"ct"} \;\text{adds a trend}\; \beta \cdot t
+$$
+
+$$
+t_{\rho} = \frac{\hat{\rho} - 1}{\operatorname{SE}(\hat{\rho})},\;\; \gamma_{0} = \frac{\sum \hat{u}_{t}^{2}}{n}\;\;\text{and}\;\; s^{2} = \frac{\sum \hat{u}_{t}^{2}}{n - k},\;\; \text{with } k \text{ the number of coefficients}
+$$
+
+$$
+\lambda^{2} = \gamma_{0} + 2 \cdot \sum_{j=1}^{l}\left(1 - \frac{j}{l + 1}\right) \cdot \gamma_{j},\;\; \text{with}\;\; \gamma_{j} = \frac{1}{n} \cdot \sum_{t=j+1}^{n} \hat{u}_{t} \cdot \hat{u}_{t-j}\;\;\text{and}\;\; l = \text{lags},\;\; \text{which defaults to int}\left(12 \cdot \left(\frac{n}{100}\right)^{\frac{1}{4}}\right)
+$$
+
+$$
+Z_{t} = \sqrt{\frac{\gamma_{0}}{\lambda^{2}}} \cdot t_{\rho} - \frac{\lambda^{2} - \gamma_{0}}{2 \cdot \lambda \cdot s} \cdot n \cdot \operatorname{SE}(\hat{\rho})
+$$
+
+- The p-value is the MacKinnon (1994) approximation of the Dickey-Fuller distribution and the unit root is rejected at 5% when it is below 0.05, as in the ADF test; the critical values are the finite-sample MacKinnon (2010) ones for the number of observations
+
+For more information about the method, see the following paper:
+
+- Phillips, P.C.B., & Perron, P. (1988). "Testing for a Unit Root in Time Series Regression." Biometrika, 75(2), 335-346.
+
+**Also known as:** PP test, Z_t test.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
+- <u>regression (str, optional):</u> Which deterministic term to include, one of "c" (constant) or
+"ct" (constant and trend). Defaults to "c". Note "n" (no constant) is not supported, see
+`econometrics.unitroot_model.get_phillips_perron_test` for why.
+- <u>lags (int, optional):</u> The truncation lag for the Newey-West long-run variance estimate.
+Defaults to None, meaning the Schwert (1989) rule ceil(12 * (n / 100) ** 0.25), capped
+for short samples as the ADF lag search is.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+assets tested. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The Phillips-Perron $$Z_{t}$$ statistic, its MacKinnon (1994) p-value, truncation
+lag used, observations used, the finite-sample MacKinnon (2010) 1%/5%/10% critical values,
+and whether the unit root is rejected at the 5% level, per asset.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period` and runs the
+Phillips-Perron test for each asset in the Toolkit instance.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["GCUSD", "SIUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_phillips_perron_test()
+```
+
+Which returns:
+
+|                           |     GCUSD |     SIUSD |
+|:--------------------------|----------:|----------:|
+| Phillips-Perron Statistic |    3.3901 |    4.5297 |
+| P-Value                   |    1      |    1      |
+| Lags Used                 |   23      |   23      |
+| Observations              | 1300      | 1300      |
+| Critical Value 1%         |   -3.4354 |   -3.4354 |
+| Critical Value 5%         |   -2.8638 |   -2.8638 |
+| Critical Value 10%        |   -2.568  |   -2.568  |
+| Reject Unit Root (5%)     |    0      |    0      |
+
+---
+
+## get_zivot_andrews_test
+Calculate the Zivot-Andrews test for a unit root, per asset, allowing for a single structural break at an unknown (endogenously estimated) date.
+
+The (A)DF/KPSS/PP tests above all assume the deterministic component of the series (its constant and/or trend) is stable throughout the sample. If a series instead has a single one-time break -- e.g. a permanent level shift or a change in trend slope, such as a stock split, spin-off, or a structural shift in the business -- the ordinary ADF test is biased towards not rejecting the unit root even for a genuinely (trend-)stationary series with a break. The Zivot-Andrews test corrects for this by adding a break dummy to the ADF regression and choosing, for each asset, the break date that is most favorable to the stationary alternative -- which is why it needs its own (more negative) critical values rather than the ordinary ADF ones.
+
+The formula is as follows:
+
+$$
+\Delta Y_{t} = \mu + \theta \cdot \text{DU}_{t} + \beta \cdot t + \alpha \cdot Y_{t-1} + \sum_{i=1}^{p} c_{i} \cdot \Delta Y_{t-i} + \epsilon_{t},\;\; \text{with}\;\; Y_{t} \;\text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{and}\; \text{DU}_{t} = 1 \;\text{after the break date}\; T_{B} \;\text{and 0 before it} \;(\text{regression} = \text{"c"},\; \text{the default})
+$$
+
+$$
+\text{regression} = \text{"t"} \;\text{replaces}\; \theta \cdot \text{DU}_{t} \;\text{by a trend break}\; \gamma \cdot \text{DT}_{t},\;\; \text{with}\;\; \text{DT}_{t} = t - T_{B} \;\text{after the break and 0 before it},\;\; \text{and regression="ct" includes both}
+$$
+
+$$
+\text{ZA} = \min \;\text{over}\; T_{B} \;\text{of} \;\frac{\hat{\alpha}}{\operatorname{SE}(\hat{\alpha})},\;\; \text{searching every break date outside the first and last trim (15\% by default) of the sample}
+$$
+
+$$
+p = \text{the number of lags that minimises the AIC},\;\; \text{up to max\_lag (same default as get\_augmented\_dickey\_fuller)}
+$$
+
+For more information about the method, see the following papers:
+
+- Zivot, E., & Andrews, D.W.K. (1992). "Further Evidence on the Great Crash, the Oil-Price Shock, and the Unit-Root Hypothesis." Journal of Business & Economic Statistics, 10(3), 251-270.
+- Perron, P. (1989). "The Great Crash, the Oil Price Shock, and the Unit Root Hypothesis." Econometrica, 57(6), 1361-1401.
+
+**Also known as:** ZA test, structural break unit root test.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
+- <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider when
+selecting the (single, reused) lag length. Defaults to the Schwert (1989) rule of thumb,
+capped at (n - 5) // 3 for short samples.
+- <u>regression (str, optional):</u> Which break to allow for, one of "c" (a break in the
+level/intercept), "t" (a break in the trend slope) or "ct" (both). Defaults to "c".
+- <u>trim (float, optional):</u> The fraction of observations excluded from the candidate break
+date search at the start and end of the sample. Must be in [0, 1/3). Defaults to 0.15.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+assets tested. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The Zivot-Andrews statistic, its p-value, the (0-indexed) position of the
+selected break date within the used sample, the number of lags and observations used,
+the 1%/5%/10% critical values, and whether the unit root is rejected at the 5% level, per
+asset.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period` and runs the
+Zivot-Andrews test for each asset in the Toolkit instance.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["CLUSD"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_zivot_andrews_test()
+```
+
+Which returns:
+
+|                         |       CLUSD |
+|:------------------------|------------:|
+| Zivot-Andrews Statistic |   -4.1369   |
+| P-Value                 |    0.271885 |
+| Break Index             |  243        |
+| Observations            | 1280        |
+| Lags Used               |   10        |
+| Critical Value 1%       |   -5.27644  |
+| Critical Value 5%       |   -4.81067  |
+| Critical Value 10%      |   -4.56618  |
+| Reject Unit Root (5%)   |    0        |
+
+---
+
+## get_engle_granger_cointegration
+Calculate the Engle-Granger test for cointegration between every ordered pair of tickers in the Toolkit instance.
+
+Two individually non-stationary series (e.g. two stock prices, each following a random walk) are cointegrated if some linear combination of them is stationary, i.e. they share a long-run equilibrium relationship even though each wanders on its own in the short run. This is the classic statistical foundation for pairs-trading: if two assets are cointegrated, deviations of the spread from its equilibrium level tend to revert, making the spread itself tradeable.
+
+In pairs trading the slope of the regression of the dependent on the independent ticker is the hedge ratio, and its residual is the spread that is traded. Cointegration found in one window often breaks down in the next, so the relationship is usually tested again on a later sample before it is relied on. The result depends on which ticker is the dependent one, so the two orderings can disagree; `get_johansen_cointegration` tests the pair without that choice.
+
+The formula is as follows:
+
+$$
+\text{Step 1:}\;\; A_{t} = \alpha + \beta \cdot B_{t} + u_{t},\;\; \text{the OLS regression of the dependent on the independent column level (Adj Close by default)}
+$$
+
+$$
+\text{Step 2:}\;\; \Delta \hat{u}_{t} = \gamma \cdot \hat{u}_{t-1} + \sum_{i=1}^{p} \delta_{i} \cdot \Delta \hat{u}_{t-i} + \epsilon_{t},\;\; \text{an ADF regression without constant on the residuals}
+$$
+
+$$
+\text{EG} = \frac{\hat{\gamma}}{\operatorname{SE}(\hat{\gamma})},\;\; \text{compared with the MacKinnon (1994, 2010) cointegration critical values and p-values for two variables}
+$$
+
+$$
+p = \text{the number of lags that minimises the AIC},\;\; \text{up to max\_lag (same default as get\_augmented\_dickey\_fuller)}
+$$
+
+For more information about the method, see the following paper:
+
+- Engle, R.F. and Granger, C.W.J. (1987). "Co-integration and Error Correction: Representation, Estimation, and Testing." Econometrica, 55(2), 251-276.
+
+**Also known as:** EG test, residual-based cointegration test, pairs-trading test.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
+- <u>max_lag (int, optional):</u> The maximum number of lagged differences to consider in the
+underlying ADF test on the residuals. Defaults to the Schwert (1989) rule of thumb,
+capped at (n - 5) // 3 for short samples.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+tickers paired up. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per ordered `(Dependent, Independent)` ticker pair, with the
+Engle-Granger statistic, its p-value, 1%/5%/10% critical values, and whether
+cointegration is found at the 5% level -- the test is not symmetric (normalizing on
+the dependent ticker matters), so both orderings of every pair are included. A pair
+with fewer than 10 common observations has NaN values.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period` for every
+ticker in the Toolkit instance and runs the Engle-Granger test on every ordered pair.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "PEP"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+engle_granger = toolkit.econometrics.get_engle_granger_cointegration()
+
+# The 1% and 10% critical values follow the same pattern as the 5% one.
+engle_granger[["Engle-Granger Statistic", "P-Value", "Critical Value 5%", "Cointegrated (5%)"]]
+```
+
+Which returns:
+
+|               |   Engle-Granger Statistic |   P-Value |   Critical Value 5% | Cointegrated (5%)   |
+|:--------------|--------------------------:|----------:|--------------------:|:--------------------|
+| ('KO', 'PEP') |                   -1.0266 |    0.8977 |              -3.341 | False               |
+| ('PEP', 'KO') |                   -2.0565 |    0.4991 |              -3.341 | False               |
+
+---
+
+## get_johansen_cointegration
+Calculate the Johansen test for cointegration among every ticker in the Toolkit instance.
+
+The Engle-Granger test only handles two assets and imposes an arbitrary normalization (which asset is "dependent"). Johansen's test generalizes this to `N >= 2` assets at once by testing the rank of the long-run coefficient matrix in a Vector Error Correction Model (VECM) fit to all assets jointly. The estimated rank equals the number of independent cointegrating (long-run equilibrium) relationships among the assets: rank 0 means none of them are cointegrated, rank `N` means the whole system is already stationary in levels, and a rank in between means that many independent stationary combinations exist among the `N` individually non-stationary price series.
+
+The formula is as follows:
+
+$$
+\Delta Y_{t} = \Pi \cdot Y_{t-1} + \sum_{i=1}^{k} \Gamma_{i} \cdot \Delta Y_{t-i} + \mu + \epsilon_{t},\;\; \text{with } Y_{t} \text{ the vector of column levels (Adj Close by default)},\;\; k = \text{k\_ar\_diff} \;(1 \;\text{by default}) \;\text{and the deterministic term}\; \mu \;\text{set by} \;\text{det\_order} \;\text{:} \;\text{none} \;(- 1,\; \text{Johansen's case}\; 1),\;\; \text{an unrestricted constant } \mu_{0} \text{ (0, the default, case 3) or a linear trend (1: the levels are linearly detrended before the test, evaluated against the case 5 critical values)}
+$$
+
+- $$\lambda_{1} \geq \ldots \geq \lambda_{N}$$: the eigenvalues of the reduced-rank regression of $$\Delta Y_{t}$$ on $$Y_{t - 1}$$, both corrected for the lagged differences and $$\mu$$
+
+$$
+\operatorname{Trace}(r) = - T \cdot \sum_{i=r+1}^{N} \ln(1 - \lambda_{i})
+$$
+
+$$
+\operatorname{Max-Eigenvalue}(r) = - T \cdot \ln(1 - \lambda_{r+1})
+$$
+
+- Each statistic rejects "rank ≤ r" at the 5% level when it exceeds its 95% critical value
+
+For more information about the method, see the following papers:
+
+- Johansen, S. (1988). "Statistical Analysis of Cointegration Vectors." Journal of Economic Dynamics and Control, 12(2-3), 231-254.
+- Johansen, S. (1991). "Estimation and Hypothesis Testing of Cointegration Vectors in Gaussian Vector Autoregressive Models." Econometrica, 59(6), 1551-1580.
+- MacKinnon, J.G., Haug, A.A., & Michelis, L. (1999). "Numerical Distribution Functions of Likelihood Ratio Tests for Cointegration." Journal of Applied Econometrics, 14(5), 563-577.
+
+**Also known as:** Johansen test, Johansen procedure, VECM rank test.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to test. Defaults to "Adj Close".
+- <u>det_order (int, optional):</u> Which deterministic term to include: -1 (none,
+Johansen's case 1), 0 (an unrestricted constant, case 3) or 1 (a linear trend,
+evaluated against the case 5 critical values). The critical values are those of
+MacKinnon, Haug & Michelis (1999). Defaults to 0.
+- <u>k_ar_diff (int, optional):</u> The number of lagged first differences to include as
+short-run dynamics. Defaults to 1.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+tickers tested jointly. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per candidate cointegration rank `r = 0, ..., N-1`, with the
+corresponding eigenvalue, trace statistic, max-eigenvalue statistic, their 90%/95%/99%
+critical values, and whether each is rejected at the 5% level. The estimated rank is the
+first row (in rank order) that is NOT rejected. With fewer observations than the
+VECM needs (the tickers times k_ar_diff + 1, plus the tickers, plus 3) every row
+is NaN.
+
+**Notes:**
+
+- The method retrieves historical price data based on the specified `period` for every ticker
+in the Toolkit instance and runs the Johansen test jointly across all of them.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["V", "MA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+johansen = toolkit.econometrics.get_johansen_cointegration()
+
+# The maximum eigenvalue statistic columns follow the same pattern as the trace ones.
+johansen[["Eigenvalue", "Trace Statistic", "Trace Critical Value 95%", "Reject (Trace, 5%)"]]
+```
+
+Which returns:
+
+|        |   Eigenvalue |   Trace Statistic |   Trace Critical Value 95% | Reject (Trace, 5%)   |
+|:-------|-------------:|------------------:|---------------------------:|:---------------------|
+| r <= 0 |       0.0107 |           13.9015 |                    15.4943 | False                |
+| r <= 1 |       0.0003 |            0.3612 |                     3.8415 | False                |
+
+---
+
+## get_granger_causality
+Calculate the Granger causality test, for every ordered pair of tickers in the Toolkit instance, of whether the second helps predict the first.
+
+"Granger causality" is a statement about predictive power, not true causation: one asset is said to Granger-cause another if past values of the first, combined with past values of the second itself, predict the second significantly better than past values of the second alone.
+
+On daily data a significant result can reflect trading hours rather than information: of two markets that close at different times, the one that closes later already contains news the other only prices the next day, so it appears to predict it. The result also depends on `max_lag`, so it is usually checked at a few lag lengths, and across many pairs some significant results arise by chance alone.
+
+The formula is as follows:
+
+$$
+\text{Restricted:}\;\; A_{t} = c + \sum_{i=1}^{p} a_{i} \cdot A_{t-i} + e_{t}
+$$
+
+$$
+\text{Unrestricted:}\;\; A_{t} = c + \sum_{i=1}^{p} a_{i} \cdot A_{t-i} + \sum_{i=1}^{p} b_{i} \cdot B_{t-i} + u_{t}
+$$
+
+$$
+F = \frac{\frac{\text{RSS}_{r} - \text{RSS}_{u}}{p}}{\frac{\text{RSS}_{u}}{T - 2p - 1}},\;\; \text{F-distributed with} \;(p,\; T - 2p - 1) \;\text{degrees of freedom}
+$$
+
+$$
+\text{A is the dependent and } B \text{ the independent ticker's column (Return by default)},\;\; p = \text{max\_lag} \;(5 \;\text{by default}) \;\text{and}\; T \;\text{the number of observations after the lags}
+$$
+
+For more information about the method, see the following paper:
+
+- Granger, C.W.J. (1969). "Investigating Causal Relations by Econometric Models and Cross-Spectral Methods." Econometrica, 37(3), 424-438.
+
+**Also known as:** Granger causality test, predictive causality, lead-lag test.
+
+**Args:**
+
+- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
+"daily".
+- <u>column (str, optional):</u> The historical data column to test. Defaults to "Return", since
+Granger causality assumes a stationary series (unlike the ADF/Engle-Granger tests, which
+operate on price levels on purpose).
+- <u>max_lag (int, optional):</u> The number of lags of both assets to include in the regressions.
+Defaults to 5.
+- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
+tickers paired up. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
+None.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per ordered `(Dependent, Independent)` ticker pair, with the
+F-statistic, its p-value, and whether the independent ticker is found to
+Granger-cause the dependent ticker at the 5% level -- Granger causality is inherently
+directional, so both orderings of every pair are included.
+
+**Notes:**
+
+- The method retrieves historical return data based on the specified `period` for every
+ticker in the Toolkit instance and runs the Granger causality test on every ordered pair.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["CLUSD", "XLE"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.econometrics.get_granger_causality()
+```
+
+Which returns:
+
+|                  |   F-Statistic |   P-Value | Granger-Causes (5%)   |
+|:-----------------|--------------:|----------:|:----------------------|
+| ('CLUSD', 'XLE') |        4.2749 |    0.0007 | True                  |
+| ('XLE', 'CLUSD') |        1.5533 |    0.1705 | False                 |
 
 ---
 
@@ -2576,7 +4969,7 @@ $$
 F = \frac{\frac{\text{RSS}_{\text{pooled}} - (\text{RSS}_{1} + \text{RSS}_{2})}{k}}{\frac{\text{RSS}_{1} + \text{RSS}_{2}}{n - 2k}}
 $$
 
-- The second sub-period starts at the first date on or after `break_date`, and `k` includes the constant when add_constant=True
+- The second sub-period starts at the first period that ends on or after `break_date` (the date itself with daily data, the month that contains it with period="monthly"), and `k` includes the constant when add_constant=True
 
 Where `RSS_pooled` is the residual sum of squares of the full-sample regression, `RSS_1` and `RSS_2` those of the two sub-periods, `k` the number of parameters and `n` the total number of observations. Under the null hypothesis of no structural break (the same coefficients apply throughout), `F` follows an F(k, n - 2k) distribution. A low p-value means the relationship changed at `break_date`, for example an asset's beta shifting after a merger, a regulatory change or a market regime change, so a single regression over the full sample is misspecified. The break date must be chosen in advance; testing many candidate dates and keeping the most significant overstates the evidence.
 
@@ -2589,8 +4982,8 @@ For more information about the method, see the following paper:
 **Args:**
 
 - <u>break_date (str):</u> The date (e.g. "2021-06-30") at which to split the sample -- all
-periods starting on or after this date form the "after" sub-sample, everything
-before it forms the "before" sub-sample.
+periods ending on or after this date, the period that contains it included, form
+the "after" sub-sample, everything before it forms the "before" sub-sample.
 - <u>dependent_ticker (str &#124; None, optional):</u> The dependent (predicted) asset.
 Defaults to None, meaning the Toolkit instance's first ticker.
 - <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The independent
@@ -2641,2356 +5034,9 @@ Which returns:
 
 |                                 |   Value |
 |:--------------------------------|--------:|
-| Chow F-Statistic                |  0.811  |
-| P-Value                         |  0.4447 |
+| Chow F-Statistic                |  0.8161 |
+| P-Value                         |  0.4424 |
 | Reject No Structural Break (5%) |  0      |
-
----
-
-## get_iv_2sls
-Fit an Instrumental Variables regression via Two-Stage Least Squares (2SLS) of `dependent_ticker` on `endogenous_ticker`, instrumented by `instrument_tickers`.
-
-**Also known as:** IV, 2SLS, IV-2SLS.
-
-For more information about the method, and why plain OLS on an asset suspected of reverse-causality/omitted-confounder bias against another asset is unreliable, see `causal_inference_model.get_iv_2sls`.
-
-A natural use case in a multi-asset return panel: suppose `endogenous_ticker`'s return is suspected to be simultaneously determined together with `dependent_ticker`'s return (e.g. two closely related assets that react to each other intraday, or one asset's return partly reflects news about the other) -- plain OLS of one on the other is then biased. An `instrument_tickers` asset that moves `endogenous_ticker` for reasons unrelated to `dependent_ticker`'s own error term (e.g. a supplier/peer whose moves affect `endogenous_ticker` but only reach `dependent_ticker`, if at all, THROUGH `endogenous_ticker`) allows recovering a cleaner estimate of the causal pass-through.
-
-The formula is as follows:
-
-$$
-Z = \left[1,\; \text{exogenous tickers},\; \text{instruments}\right]\;\;\text{and}\;\; X = \left[1,\; \text{exogenous tickers},\; \text{endogenous tickers}\right],\;\; \text{all in column (Return by default), the constant only with add\_constant=True}
-$$
-
-$$
-\text{Stage 1:}\;\; \hat{X} = Z(Z' Z)^{- 1} Z' X,\;\; \text{the fitted values of each endogenous ticker regressed on } Z
-$$
-
-$$
-\text{Stage 2:}\;\; \hat{\beta} = (\hat{X}' X)^{- 1} \hat{X}' y
-$$
-
-$$
-\operatorname{Cov}(\hat{\beta}) = \hat{\sigma}^{2} \cdot (\hat{X}' \hat{X})^{- 1},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum(y_{t} - x_{t}' \hat{\beta})^{2}}{n - k} \;(\text{linearmodels}\; \text{IV2SLS} \;\text{with}\; \text{cov\_type} = \text{"unadjusted"} \;\text{and debiased} = \text{True})
-$$
-
-**Args:**
-
-- <u>dependent_ticker (str):</u> The dependent (predicted) asset.
-- <u>endogenous_ticker (str &#124; list[str]):</u> The endogenous regressor asset(s) --
-suspected correlated with the error term.
-- <u>instrument_tickers (str &#124; list[str]):</u> The excluded instrument asset(s),
-correlated with `endogenous_ticker` but assumed uncorrelated with the error
-term. Must supply at least as many instruments as endogenous regressors.
-- <u>exogenous_tickers (str &#124; list[str] &#124; None, optional):</u> Other, non-instrumented
-control asset(s) included as-is in both stages. Defaults to None.
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to regress on. Defaults to
-"Return".
-- <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A coefficient table (Coefficient, CORRECTED Std. Error, t-Statistic,
-P-Value), indexed by regressor name -- see `causal_inference_model.get_iv_2sls` for
-why these standard errors differ from (and correct) what a naive two-OLS-calls
-approach would report.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["SMCI", "NVDA", "TSM"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2025-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_iv_2sls(
-    dependent_ticker="SMCI", endogenous_ticker="NVDA", instrument_tickers="TSM"
-)
-```
-
-Which returns:
-
-|           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |       -0.0008 |       0.0027 |       -0.2931 |    0.7697 |
-| NVDA      |        1.2518 |       0.1094 |       11.441  |    0      |
-
----
-
-## get_difference_in_differences
-Fit a Difference-in-Differences (DiD) regression estimating the effect of some event on `treatment_date` for `treated_tickers`, relative to `control_tickers`.
-
-**Also known as:** DiD, DD, difference-in-differences estimator.
-
-For more information about the method, and why the `Treated x Post` interaction coefficient IS the DiD treatment-effect estimate, see `causal_inference_model.get_difference_in_differences`.
-
-Builds a stacked (ticker, date) panel from every ticker in `treated_tickers` and `control_tickers`: each observation's outcome is that ticker's return on that date, `Treated` is 1 for every observation belonging to a `treated_tickers` asset (regardless of date) and 0 for `control_tickers` assets, and `Post` is 1 for observations on or after `treatment_date` (regardless of asset). This answers "did `treated_tickers` behave differently after `treatment_date`, beyond both their normal average gap versus `control_tickers` and the common market-wide move over that same before/after window?" -- e.g. isolating the effect of an event (an index-inclusion announcement, a regulatory change affecting only some tickers, an earnings surprise) that hits `treated_tickers` but not `control_tickers`, at a known date.
-
-With returns as the outcome, the `Treated x Post` coefficient is the change in the average return per period after the event, not the price impact around it, which is what `get_event_study` measures. The panel stacks tickers observed on the same dates, whose returns are correlated, while the standard errors treat every observation as independent, so the p-value tends to be too low for closely related tickers. The estimate rests on parallel trends, so the first check is whether both groups moved alike before the event.
-
-The formula is as follows:
-
-$$
-y_{it} = \beta_{0} + \beta_{1} \cdot \text{Treated}_{i} + \beta_{2} \cdot \text{Post}_{t} + \delta \cdot (\text{Treated}_{i} \cdot \text{Post}_{t}) + \epsilon_{it},\;\; \text{fitted by OLS with classical standard errors on the stacked (ticker, date) panel of column (Return by default)}
-$$
-
-$$
-\text{Treated}_{i} = 1 \;\text{for} \;\text{treated\_tickers},\;\; \text{Post}_{t} = 1 \;\text{on or after} \;\text{treatment\_date}
-$$
-
-$$
-\hat{\delta} = (\operatorname{mean}(y_{\text{treated},\text{post}}) - \operatorname{mean}(y_{\text{treated},\text{pre}})) - (\operatorname{mean}(y_{\text{control},\text{post}}) - \operatorname{mean}(y_{\text{control},\text{pre}}))
-$$
-
-**Args:**
-
-- <u>treated_tickers (str &#124; list[str]):</u> The asset(s) subject to the event/treatment.
-- <u>treatment_date (str):</u> The date the event/treatment occurs, in the same format
-accepted by `pd.Timestamp`. Observations on or after this date are `Post = 1`.
-- <u>control_tickers (str &#124; list[str] &#124; None, optional):</u> The untreated comparison
-asset(s). Defaults to None, which uses every ticker NOT in `treated_tickers`,
-excluding "Benchmark" (pass `control_tickers="Benchmark"` to use the benchmark as
-the control group).
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to use as the outcome.
-Defaults to "Return".
-- <u>add_constant (bool, optional):</u> Whether to include an intercept. Defaults to True.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A coefficient table (Coefficient, Std. Error, t-Statistic, P-Value)
-with rows `Intercept`, `Treated`, `Post` and `Treated x Post` -- the last of
-which is the DiD treatment-effect estimate.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["NVDA", "INTC"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_difference_in_differences(
-    treated_tickers="NVDA",
-    control_tickers="INTC",
-    treatment_date="2023-06-01",
-    period="monthly",
-)
-```
-
-Which returns:
-
-|                |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:---------------|--------------:|-------------:|--------------:|----------:|
-| Intercept      |       -0.0126 |       0.0262 |       -0.4794 |    0.6325 |
-| Treated        |        0.0669 |       0.0371 |        1.8061 |    0.0735 |
-| Post           |        0.0291 |       0.0362 |        0.8044 |    0.4229 |
-| Treated x Post |       -0.0246 |       0.0511 |       -0.4817 |    0.6309 |
-
----
-
-## get_regression_discontinuity
-Estimate a Sharp Regression Discontinuity (RDD): the jump in `dependent_ticker` exactly where `running_variable_ticker` crosses `cutoff`.
-
-**Also known as:** RDD, sharp RD.
-
-For more information about the method, see `causal_inference_model.get_regression_discontinuity`.
-
-Treats `running_variable_ticker`'s value as the running variable that (hypothetically) triggers some discrete change once it crosses `cutoff` -- e.g. testing whether `dependent_ticker`'s return behaves discontinuously around a round-number/threshold level of another asset or indicator (a psychological price level, an index-inclusion market-cap threshold, a macro indicator's policy-relevant threshold) fed in as `running_variable_ticker`. Fits separate local linear regressions of `dependent_ticker`'s return on the (cutoff-centered) `running_variable_ticker` value, one on each side of `cutoff`, and reports the gap between the two fitted lines exactly at the cutoff.
-
-The formula is as follows:
-
-$$
-\tilde{x}_{t} = x_{t} - \text{cutoff},\;\; \text{keeping the observations with} \;\left|\tilde{x}_{t}\right| < h,\;\; \text{where}\;\; x_{t} \;\text{is the running ticker's} \;\text{column} \;(\text{Return by default}) \;\text{and}\; h = \text{bandwidth},\;\; \text{or half the range of } x_{t} \text{ by default}
-$$
-
-$$
-\text{Each side (} \tilde{x}_{t} < 0 \text{ and } \tilde{x}_{t} \geq 0 \text{):}\;\; y_{t} = a + b \cdot \tilde{x}_{t} + e_{t},\;\; \text{fitted by OLS} \;(\text{kernel} = \text{"uniform"},\; \text{the default}) \;\text{or by WLS with weights}\; 1 - \frac{\left|\tilde{x}_{t}\right|}{h} \;(\text{kernel} = \text{"triangular"})
-$$
-
-$$
-\text{Discontinuity} = a_{\text{right}} - a_{\text{left}},\;\; \text{with}\;\; \text{SE} = \sqrt{\operatorname{SE}(a_{\text{right}})^{2} + \operatorname{SE}(a_{\text{left}})^{2}}
-$$
-
-$$
-t = \frac{\text{Discontinuity}}{\text{SE}},\;\; \text{with a Student-t distribution on the two sides' residual degrees of freedom combined}
-$$
-
-**Args:**
-
-- <u>dependent_ticker (str):</u> The outcome asset.
-- <u>running_variable_ticker (str):</u> The asset (or column) whose value determines
-which side of `cutoff` an observation falls on.
-- <u>cutoff (float):</u> The threshold value of `running_variable_ticker` at which the
-discontinuity is estimated.
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to use for both series.
-Defaults to "Return".
-- <u>bandwidth (float &#124; None, optional):</u> The maximum distance from `cutoff` an
-observation may be to be included in either local regression. Defaults to
-None, which uses half of the running variable's observed range -- see
-`causal_inference_model.get_regression_discontinuity` for why this is a
-deliberately naive default.
-- <u>kernel (str, optional):</u> One of "uniform" or "triangular". Defaults to "uniform".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A one-column results table with the discontinuity estimate, its
-standard error/t-statistic/p-value, and the cutoff/bandwidth/sample sizes used.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["COIN", "BTCUSD"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2022-01-01",
-    end_date="2025-12-31",
-)
-
-# COIN's return on days Bitcoin rises versus days it falls
-toolkit.econometrics.get_regression_discontinuity(
-    dependent_ticker="COIN", running_variable_ticker="BTCUSD", cutoff=0
-)
-```
-
-Which returns:
-
-|               |    Value |
-|:--------------|---------:|
-| Discontinuity |   0.0031 |
-| Std. Error    |   0.0027 |
-| t-Statistic   |   1.1191 |
-| P-Value       |   0.2633 |
-| Cutoff        |   0      |
-| Bandwidth     |   0.1497 |
-| N Left        | 729      |
-| N Right       | 728      |
-
----
-
-## get_propensity_score_matching
-Estimate the Average Treatment effect on the Treated (ATT) of `treatment_ticker` exceeding `treatment_threshold` on `dependent_ticker`'s return, via Propensity Score Matching (PSM) on `covariate_tickers`.
-
-**Also known as:** PSM, nearest-neighbor propensity matching.
-
-For more information about the method, see `causal_inference_model.get_propensity_score_matching`.
-
-Derives a binary "treatment" indicator the same way `get_logistic_regression` derives its binary outcome: 1 if `treatment_ticker`'s return in a given period exceeds `treatment_threshold` (0.0, i.e. a positive return, by default), else 0. This lets PSM answer e.g. "on periods where `treatment_ticker` has an outsized/positive move, is `dependent_ticker`'s return different than it would otherwise be -- comparing only periods that LOOK similar on `covariate_tickers` (to control for the possibility that `treatment_ticker` tends to move on the same periods/regimes that also independently affect `dependent_ticker`)?"
-
-The formula is as follows:
-
-$$
-D_{t} = 1 \;\text{if the treatment ticker's} \;\text{column} \;(\text{Return by default}) \;\text{is above} \;\text{treatment\_threshold} \;(0 \;\text{by default}),\;\; \text{else 0}
-$$
-
-$$
-e(x_{t}) = \frac{1}{1 + \exp(- x_{t}' \beta)},\;\; \text{a logit of } D_{t} \text{ on the covariate tickers (plus a constant)}
-$$
-
-$$
-\text{Matching on}\; \ell_{t} = \ln\left(\frac{e}{1 - e}\right) \;\text{:} \;\text{each treated period},\;\; \text{in order},\;\; \text{takes the nearest unmatched control period} \;(\text{one-to-one},\; \text{without replacement}) \;\text{if} \;\left|\ell_{\text{treated}} - \ell_{\text{control}}\right| \leq \text{caliper},\;\; \text{which defaults to 0.2 × the standard deviation (ddof=1) of ℓ}
-$$
-
-$$
-\text{ATT} = \frac{1}{m} \cdot \sum(y_{\text{treated}} - y_{\text{control}}) \;\text{over the}\; m \;\text{matched pairs}
-$$
-
-$$
-\text{SE} = \frac{\operatorname{std}(y_{\text{treated}} - y_{\text{control}},\; \text{ddof} = 1)}{\sqrt{m}},\;\; \text{with a Student-t distribution with}\; m - 1 \;\text{degrees of freedom}
-$$
-
-**Args:**
-
-- <u>dependent_ticker (str):</u> The outcome asset.
-- <u>treatment_ticker (str):</u> The asset whose return, once it exceeds
-`treatment_threshold`, defines the treatment indicator.
-- <u>covariate_tickers (str &#124; list[str]):</u> The asset(s) used as covariates to
-estimate the propensity score -- should include asset(s) believed to drive
-selection into "treatment".
-- <u>treatment_threshold (float, optional):</u> The return threshold defining
-treatment. Defaults to 0.0.
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>caliper (float &#124; None, optional):</u> The maximum allowed logit-propensity-score
-matching distance. Defaults to None, which uses Austin's (2011) rule of thumb
--- see `causal_inference_model.get_propensity_score_matching`.
-- <u>add_constant (bool, optional):</u> Whether to include an intercept in the
-propensity score model. Defaults to True.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.Series: The ATT estimate, its standard error/t-statistic/p-value, and the
-number of matched pairs/treated/control observations.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["XOM", "USO"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-# XOM's return on days USO rises more than 2%, matched on the Benchmark's return
-toolkit.econometrics.get_propensity_score_matching(
-    dependent_ticker="XOM",
-    treatment_ticker="USO",
-    covariate_tickers="Benchmark",
-    treatment_threshold=0.02,
-)
-```
-
-Which returns:
-
-|               |     Value |
-|:--------------|----------:|
-| ATT           |    0.0163 |
-| Std. Error    |    0.0016 |
-| t-Statistic   |    9.9366 |
-| P-Value       |    0      |
-| Matched Pairs |  181      |
-| N Treated     |  185      |
-| N Control     | 1069      |
-
----
-
-## get_synthetic_control
-Construct a Synthetic Control for `treated_ticker` from a weighted combination of `donor_tickers` (Abadie, Diamond & Hainmueller, 2010), and estimate the effect of an event/intervention as the post-`treatment_period` gap between `treated_ticker`'s actual and synthetic counterfactual return path.
-
-When a single company or market experiences an event (an acquisition, a regulatory change, an index inclusion) and there is no single obvious comparison, the synthetic control builds one from the data: a weighted average of unaffected "donor" tickers, with weights chosen so it tracks the treated ticker as closely as possible before the event. If that pre-event fit is good, the synthetic control's path after the event estimates what would have happened without it, and the gap is the estimated effect.
-
-The formula is as follows:
-
-$$
-\text{Weights:}\;\; w^{*} = \operatorname*{arg\,min}_{w} \left\|\text{treated\_pre} - \text{donors\_pre} \, w\right\|^{2},\;\; \text{subject to}\; w \geq 0 \;\text{and sum}(w) = 1 (\text{SLSQP}),\;\; \text{with pre the dates before treatment\_period}
-$$
-
-$$
-\text{Synthetic control:}\;\; \text{synthetic}_{t} = \text{donors}_{t} \, w^{*},\;\; \text{for every period } t
-$$
-
-$$
-\text{Treatment effect:}\;\; \text{gap}_{t} = \text{treated}_{t} - \text{synthetic}_{t},\;\; \text{for every post-event period } t
-$$
-
-$$
-\text{Average Treatment Effect} = \text{mean of}\; \text{gap}_{t} \;\text{over the post-event periods}
-$$
-
-$$
-\text{RMSPE ratio} = \frac{\sqrt{\operatorname{mean}(\text{gap\_post}^{2})}}{\sqrt{\operatorname{mean}(\text{gap\_pre}^{2})}}
-$$
-
-$$
-\text{P-Value} = \text{the share of the treated ticker's and every placebo donor's RMSPE ratios that are at least the treated ticker's ratio}
-$$
-
-- All series are the tickers' `column` (Return by default)
-
-Unlike difference-in-differences, this does not require the treated and comparison units to follow parallel trends, as the synthetic control is built to match the treated ticker's own pre-event path. Because there is only one treated unit, the p-value comes from placebo tests: the procedure is rerun with each donor as if it were treated, and the treated ticker's post/pre fit ratio is compared with theirs. Matching is done on the pre-event outcome path only, a common simplification of the original method.
-
-For more information about the method, see the following papers:
-
-- Abadie, A., Diamond, A., & Hainmueller, J. (2010). "Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program." Journal of the American Statistical Association, 105(490), 493-505.
-- Abadie, A. (2021). "Using Synthetic Controls: Feasibility, Data Requirements, and Methodological Aspects." Journal of Economic Literature, 59(2), 391-425.
-
-**Also known as:** SCM, synthetic control method.
-
-**Args:**
-
-- <u>treated_ticker (str):</u> The asset believed to be affected by an event/
-intervention starting at `treatment_period`.
-- <u>treatment_period (str):</u> The first post-treatment period -- periods at or
-after this value (within `period`'s index) are treated as post-treatment,
-everything before as pre-treatment (used to fit the synthetic control's
-weights).
-- <u>donor_tickers (str &#124; list[str] &#124; None, optional):</u> The ticker(s) forming
-the donor pool the synthetic control is built from. Defaults to None,
-meaning every other Toolkit ticker (subject to `include_benchmark`).
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" in the
-default donor pool (has no effect when donor_tickers is given explicitly).
-Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to
-None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.Series: The average post-treatment effect, pre/post RMSPE and their
-ratio, the placebo-based p-value, and the donor pool/period counts.
-
-**Notes:**
-
-- Needs at least 2 donor tickers -- with only 1-2 Toolkit tickers loaded,
-pass `donor_tickers` explicitly (e.g. including "Benchmark") or (better)
-construct the Toolkit with more tickers, since small donor pools give both a
-poorly-identified synthetic control and a very coarse placebo p-value (with
-`k` donors, the smallest achievable p-value is `1 / (k + 1)`).
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["BA", "AIR.PA", "LMT", "GD", "RTX", "NOC"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2023-01-01",
-    end_date="2024-12-31",
-)
-
-# Boeing after the 737 MAX 9 grounding, with the other aerospace companies as donors
-toolkit.econometrics.get_synthetic_control(treated_ticker="BA", treatment_period="2024-01-08")
-```
-
-Which returns:
-
-|                          |    Value |
-|:-------------------------|---------:|
-| Average Treatment Effect |  -0.0017 |
-| Pre-Treatment RMSPE      |   0.0156 |
-| Post-Treatment RMSPE     |   0.0204 |
-| RMSPE Ratio              |   1.3094 |
-| P-Value                  |   0.5    |
-| N Donors                 |   5      |
-| N Pre-Periods            | 260      |
-| N Post-Periods           | 255      |
-
----
-
-## get_fixed_effects
-Fit a Fixed Effects ("within") estimator explaining a panel of `dependent_tickers` (the entities) by a regressor `x`, controlling for entity-specific (and/or time-specific) fixed effects.
-
-**Also known as:** within estimator, FE, least squares dummy variable (LSDV) estimator.
-
-Unlike this module's other regression methods (`get_ols`, `get_wls`, ...), which each compare a handful of individual ticker return series on equal footing, this treats `dependent_tickers` as a genuine panel of entities -- e.g. every stock in the `Toolkit` instance -- observed over time. The regressor `x` is built in exactly one of two ways (provide exactly one of the two arguments below):
-
-- `independent_tickers`: a COMMON factor (or factors) applied identically to every entity at each date (e.g. a market benchmark, mirroring a Fama-French-style factor regression).
-- `independent_column`: a PER-ENTITY regressor -- each entity's own value of a *different* historical data column (e.g. does `"Volume"` explain `"Return"`, across the panel).
-
-Fixed Effects removes any purely entity-specific, time-invariant characteristic (e.g. a stock's typical risk premium) before estimating the regressor's coefficient(s), by demeaning every variable by its entity's mean. See `panel_data_model.get_fixed_effects` for the full formula and references.
-
-The formula is as follows:
-
-$$
-\tilde{y}_{it} = y_{it} - \text{mean}_{t}(y_{it})\;\;\text{and}\;\; \tilde{x}_{it} = x_{it} - \text{mean}_{t}(x_{it}) (\text{entity\_effects} = \text{True},\; \text{the default});\;\; \text{time\_effects=True also removes each date's mean (two-way fixed effects)}
-$$
-
-$$
-\hat{\beta}_{\text{FE}} = (\tilde{X}' \tilde{X})^{- 1} \tilde{X}' \tilde{y},\;\; \text{without a separate constant (linearmodels PanelOLS, unadjusted covariance)}
-$$
-
-$$
-\text{Entity Effect:}\;\; \alpha_{i} = \text{mean}_{t}(y_{it} - x_{it}' \hat{\beta}_{\text{FE}});\;\; \text{Time Effect:}\;\; \lambda_{t} = \text{mean}_{i}(y_{it} - x_{it}' \hat{\beta}_{\text{FE}})
-$$
-
-- $$y_{it}$$ is each dependent ticker's `column` (Return by default)
-
-**Args:**
-
-- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
-ticker(s), whose `column` values are broadcast identically to every
-entity at each date. Mutually exclusive with `independent_column`.
-- <u>independent_column (str &#124; None, optional):</u> A different historical data
-column, taken per-entity from each of `dependent_tickers`' own data, to
-use as the regressor. Mutually exclusive with `independent_tickers`.
-- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
-entity tickers to explain. Defaults to None, meaning every ticker in
-the `Toolkit` instance (other than `independent_tickers`, if given).
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
-quarterly, or yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The dependent variable's historical data
-column. Defaults to "Return".
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-entities. Defaults to False.
-- <u>entity_effects (bool, optional):</u> Whether to control for time-invariant
-entity-specific characteristics. Defaults to True.
-- <u>time_effects (bool, optional):</u> Whether to control for entity-invariant,
-time-specific shocks. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A coefficient table (Coefficient, Std. Error,
-t-Statistic, P-Value) for the regressor(s), indexed by name, with the
-recovered entity (and/or time) fixed-effect intercepts appended as
-additional rows (only the Coefficient column is populated for those).
-
-**Raises:**
-
-ValueError: If both or neither of `independent_tickers`/
-`independent_column` are given, or (see `panel_data_model.
-get_fixed_effects`) if there are not enough observations for the
-requested fixed effects, or the fixed effects absorb the regressor: the
-common factor of `independent_tickers` is identical for every entity at
-each date, so it cannot be combined with `time_effects=True`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["XOM", "CVX", "SHEL", "BP", "TTE"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_fixed_effects(independent_tickers="Benchmark")
-```
-
-Which returns:
-
-|                     |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:--------------------|--------------:|-------------:|--------------:|----------:|
-| Benchmark           |        0.5795 |       0.0183 |       31.7272 |         0 |
-| Entity Effect: BP   |        0.0004 |     nan      |      nan      |       nan |
-| Entity Effect: CVX  |        0.0004 |     nan      |      nan      |       nan |
-| Entity Effect: SHEL |        0.0005 |     nan      |      nan      |       nan |
-| Entity Effect: TTE  |        0.0004 |     nan      |      nan      |       nan |
-| Entity Effect: XOM  |        0.0008 |     nan      |      nan      |       nan |
-
----
-
-## get_random_effects
-Fit a Random Effects estimator explaining a panel of `dependent_tickers` (the entities) by a regressor `x`, via Swamy-Arora feasible Generalized Least Squares.
-
-**Also known as:** RE, GLS panel estimator, Swamy-Arora estimator.
-
-See `get_fixed_effects` for how `dependent_tickers`/`independent_tickers`/ `independent_column` are shaped into a panel, and `panel_data_model.get_random_effects` for the full estimator formula, references, and how it compares to Fixed Effects. Unlike Fixed Effects, Random Effects retains and estimates a single, population-average intercept rather than one intercept per entity -- more efficient than Fixed Effects if entity effects are indeed uncorrelated with the regressor(s) (see `get_hausman_test` to check that assumption).
-
-The formula is as follows:
-
-$$
-\theta_{i} = 1 - \sqrt{\frac{\sigma_{\epsilon}^{2}}{\sigma_{\epsilon}^{2} + T_{i} \cdot \sigma_{u}^{2}}},\;\; \text{with the Swamy-Arora estimates of the idiosyncratic (} \sigma_{\epsilon}^{2} \text{) and entity (} \sigma_{u}^{2} \text{) variance components}
-$$
-
-$$
-y^{*}_{it} = y_{it} - \theta_{i} \cdot \text{mean}_{t}(y_{it})\;\;\text{and}\;\; x^{*}_{it} = x_{it} - \theta_{i} \cdot \text{mean}_{t}(x_{it}),\;\; \text{the constant becoming}\; 1 - \theta_{i}
-$$
-
-$$
-\hat{\beta}_{\text{RE}} = \text{OLS of} \;y^{*} \;\text{on} \;x^{*} \;(\text{linearmodels RandomEffects}),\;\; \text{with } y_{it} \text{ each dependent ticker's column (Return by default)}
-$$
-
-**Args:**
-
-- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
-ticker(s), whose `column` values are broadcast identically to every
-entity at each date. Mutually exclusive with `independent_column`.
-Since this `Toolkit` instance's historical data is aligned onto a
-common calendar across tickers, a broadcast factor's entity mean is
-identical for every entity, leaving no between-entity variation to
-identify Random Effects' between-regression step -- prefer
-`independent_column` here unless `dependent_tickers` genuinely differ
-in their date coverage (e.g. different listing histories).
-- <u>independent_column (str &#124; None, optional):</u> A different historical data
-column, taken per-entity from each of `dependent_tickers`' own data, to
-use as the regressor. Mutually exclusive with `independent_tickers`.
-- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
-entity tickers to explain. Defaults to None, meaning every ticker in
-the `Toolkit` instance (other than `independent_tickers`, if given).
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
-quarterly, or yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The dependent variable's historical data
-column. Defaults to "Return".
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-entities. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: A coefficient table (Coefficient, Std. Error,
-t-Statistic, P-Value), indexed by regressor name plus "Intercept".
-
-**Raises:**
-
-ValueError: If both or neither of `independent_tickers`/
-`independent_column` are given, or (see `panel_data_model.
-get_random_effects`) if there are not enough entities or observations
-to estimate the model.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["JPM", "BAC", "C", "WFC"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_random_effects(independent_tickers="Benchmark")
-```
-
-Which returns:
-
-|           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
-|:----------|--------------:|-------------:|--------------:|----------:|
-| Intercept |        0.0003 |       0.0002 |        1.7192 |    0.0856 |
-| Benchmark |        0.9788 |       0.0183 |       53.4931 |    0      |
-
----
-
-## get_hausman_test
-Calculate the Hausman specification test comparing a Fixed Effects and a Random Effects fit of `dependent_tickers` (the panel of entities) on a regressor `x`.
-
-**Also known as:** Hausman specification test, fixed versus random effects test.
-
-Random Effects is more efficient than Fixed Effects but relies on entity effects being uncorrelated with the regressor(s) -- if that assumption is violated, Random Effects is inconsistent while Fixed Effects remains consistent regardless. See `panel_data_model.get_hausman_test` for the full formula and references, and `get_fixed_effects`/`get_random_effects` for how the two models being compared are estimated (including how `independent_tickers`/`independent_column` shape the panel, and why `independent_column` is generally the more reliable choice here).
-
-The formula is as follows:
-
-$$
-H = (\hat{\beta}_{\text{FE}} - \hat{\beta}_{\text{RE}})' \cdot \left[\operatorname{Var}(\hat{\beta}_{\text{FE}}) - \operatorname{Var}(\hat{\beta}_{\text{RE}})\right]^{- 1} \cdot (\hat{\beta}_{\text{FE}} - \hat{\beta}_{\text{RE}}),\;\; \text{over the } k \text{ slope coefficients the two models share (a pseudo-inverse when the difference is singular, and } H \text{ floored at 0)}
-$$
-
-- H is chi-squared with k degrees of freedom; Random Effects is rejected when the p-value is below 0.05
-
-- $$\hat{\beta}_{\text{FE}}$$ comes from `get_fixed_effects` with entity effects only and $$\hat{\beta}_{\text{RE}}$$ from `get_random_effects`
-
-**Args:**
-
-- <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
-ticker(s), whose `column` values are broadcast identically to every
-entity at each date. Mutually exclusive with `independent_column`.
-- <u>independent_column (str &#124; None, optional):</u> A different historical data
-column, taken per-entity from each of `dependent_tickers`' own data, to
-use as the regressor. Mutually exclusive with `independent_tickers`.
-- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
-entity tickers to explain. Defaults to None, meaning every ticker in
-the `Toolkit` instance (other than `independent_tickers`, if given).
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly,
-quarterly, or yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The dependent variable's historical data
-column. Defaults to "Return".
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-entities. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.Series: The Hausman statistic, its degrees of freedom, its p-value,
-and whether Fixed Effects is preferred over Random Effects at the 5%
-level.
-
-**Raises:**
-
-ValueError: If both or neither of `independent_tickers`/
-`independent_column` are given, or (see `panel_data_model.
-get_hausman_test`) if there are not enough observations or entities to
-fit either model, or the two estimators share no common regressors to
-compare.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["AAPL", "MSFT", "AMZN"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_hausman_test(independent_column="Volume", period="weekly")
-```
-
-Which returns:
-
-|                           |   Value |
-|:--------------------------|--------:|
-| Hausman Statistic         |  0.5866 |
-| Degrees of Freedom        |  1      |
-| P-Value                   |  0.4438 |
-| Prefer Fixed Effects (5%) |  0      |
-
----
-
-## get_arima_forecast
-Fit an ARIMA(p, d, q) model to every ticker's price series in the Toolkit instance and forecast `forecast_steps` periods ahead.
-
-**Also known as:** Box-Jenkins model, autoregressive integrated moving average.
-
-An ARIMA(p, d, q) model differences the series `d` times to remove a (stochastic) trend, then fits an autoregressive-moving-average model to the result -- see `time_series_model.get_arima_forecast` for the full formula, estimation method (exact Maximum Likelihood via the Kalman filter) and its practical caveats.
-
-The formula is as follows:
-
-$$
-y'_{t} = \Delta^{d} Y_{t},\;\; \text{the} \;\text{column} \;\text{level} \;(\text{Adj Close by default}) \;\text{differenced}\; d \;\text{times} \;(d = 1 \;\text{by default})
-$$
-
-$$
-y'_{t} - \mu = \sum_{i=1}^{p} \phi_{i} \cdot (y'_{t-i} - \mu) + \epsilon_{t} + \sum_{j=1}^{q} \theta_{j} \cdot \epsilon_{t-j},\;\; \text{with}\;\; p = q = 1 \;\text{by default}\;\;\text{and}\;\; \mu \;\text{the mean} \;(d = 0) \;\text{or drift} \;(d \geq 1) \;\text{of}\; y'_{t} \;\text{when}\; \text{include\_constant} = \text{True},\;\; \text{and}\;\; \mu = 0 \;\text{otherwise}
-$$
-
-- Fitted by exact Maximum Likelihood via the Kalman filter (statsmodels ARIMA)
-
-$$
-\text{Forecast:}\;\; \text{the conditional mean}\; E\left[Y_{T+h} \mid Y_{1} \ldots Y_{T}\right] \;\text{for}\; h = 1 \ldots \;\text{forecast\_steps},\;\; \text{in levels}
-$$
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to fit. Defaults to
-"Adj Close".
-- <u>p (int, optional):</u> The autoregressive order. Defaults to 1.
-- <u>d (int, optional):</u> The number of times to difference the series. Defaults
-to 1 (the typical choice for a non-stationary price level series).
-- <u>q (int, optional):</u> The moving-average order. Defaults to 1.
-- <u>forecast_steps (int, optional):</u> The number of periods ahead to forecast.
-Defaults to 5.
-- <u>include_constant (bool, optional):</u> Whether to estimate the mean of the
-differenced series (its drift for `d >= 1`). Defaults to True -- see
-`time_series_model.get_arima_forecast` for when to set this to False.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
-the tickers forecast. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The `forecast_steps`-ahead forecast, one column per ticker,
-indexed `1, ..., forecast_steps` (periods ahead, not a continuation of the
-historical date index). Each ticker's ARIMA model is fit independently on
-its own history; a ticker without enough data has an empty (NaN) column.
-
-**Notes:**
-
-- The method retrieves historical price data based on the specified `period`
-for every ticker in the Toolkit instance and fits an ARIMA model to each.
-- See `time_series_model.get_arima_forecast`'s `Notes` for this estimator's
-practical limitations (in particular, keep `p + q` small).
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["GCUSD"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_arima_forecast(forecast_steps=10)
-```
-
-Which returns:
-
-|   Step |   GCUSD |
-|-------:|--------:|
-|      1 | 4348.34 |
-|      2 | 4348.38 |
-|      3 | 4350.82 |
-|      4 | 4352.47 |
-|      5 | 4354.38 |
-|      6 | 4356.2  |
-|      7 | 4358.05 |
-|      8 | 4359.89 |
-|      9 | 4361.73 |
-|     10 | 4363.57 |
-
----
-
-## get_var_forecast
-Fit a Vector Autoregression (VAR) across every ticker in the Toolkit instance and forecast `forecast_steps` periods ahead.
-
-A VAR models several series jointly: each ticker's value is regressed on `lags` past values of all tickers, including its own. Each asset's future can therefore depend on its own history and on the history of the others, without deciding in advance which one drives which.
-
-The formula is as follows:
-
-$$
-Y_{t} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot Y_{t-l}) + e_{t},\;\; \text{with}\;\; Y_{t} \;\text{every ticker's} \;\text{column} \;(\text{Return by default}) \;\text{and} \;\text{lags} = 1 \;\text{by default}
-$$
-
-- Each equation is an OLS regression on a constant and the `lags` lagged values of all tickers
-
-$$
-\text{Forecast:}\;\; \hat{Y}_{T+h} = c + \sum_{l=1}^{\text{lags}}(\Phi_{l} \cdot \hat{Y}_{T+h-l}),\;\; \text{with}\;\; \hat{Y}_{s} = Y_{s} \;\text{for}\; s \leq T
-$$
-
-Where `Y_t` holds the values of all tickers at time `t` and each `Phi_l` is a matrix of coefficients. Because every equation has the same regressors, the model is estimated exactly by a separate OLS regression per ticker. Forecasts are produced by running the fitted equations forward one step at a time, feeding each forecast back in as the most recent lag. The coefficients show how shocks spread between assets; `get_impulse_response_function` and `get_variance_decomposition` summarise that, and `get_granger_causality` tests whether one ticker helps predict another. A VAR assumes stationary series, so returns are generally more suitable than prices (see `get_augmented_dickey_fuller`).
-
-For more information about the method, see the following paper:
-
-- Sims, C.A. (1980). "Macroeconomics and Reality." Econometrica, 48(1), 1-48.
-
-**Also known as:** VAR model, vector autoregressive model.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to model. Defaults to
-"Return".
-- <u>lags (int, optional):</u> The VAR order. Defaults to 1.
-- <u>forecast_steps (int, optional):</u> The number of periods ahead to forecast.
-Defaults to 5.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
-the tickers modeled jointly. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The `forecast_steps`-ahead forecast, one column per ticker,
-indexed `1, ..., forecast_steps` (periods ahead).
-
-**Notes:**
-
-- The method retrieves historical data based on the specified `period` for every
-ticker in the Toolkit instance and fits the VAR model jointly across all of them.
-- Unlike `get_vecm_forecast`, this operates on `column` directly (typically
-"Return", a stationary series) rather than price levels -- a VAR in levels is
-misspecified for non-stationary series (see
-`cointegration_model.get_johansen_cointegration`); use `get_vecm_forecast`
-instead if the assets' price levels are cointegrated.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["^VIX", "^VIX3M"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_var_forecast(column="Adj Close", forecast_steps=20)
-```
-
-Which returns:
-
-|   Step |    ^VIX |   ^VIX3M |
-|-------:|--------:|---------:|
-|      1 | 15.2712 |  18.3667 |
-|      2 | 15.5578 |  18.5342 |
-|      3 | 15.8138 |  18.6846 |
-|      4 | 16.0425 |  18.82   |
-|      5 | 16.2471 |  18.9418 |
-|      6 | 16.4301 |  19.0517 |
-|      7 | 16.5941 |  19.1509 |
-|      8 | 16.7411 |  19.2406 |
-|      9 | 16.873  |  19.322  |
-|     10 | 16.9915 |  19.3958 |
-|     11 | 17.0981 |  19.4629 |
-|     12 | 17.1942 |  19.5241 |
-|     13 | 17.2808 |  19.58   |
-|     14 | 17.359  |  19.6311 |
-|     15 | 17.4298 |  19.6781 |
-|     16 | 17.494  |  19.7213 |
-|     17 | 17.5523 |  19.7611 |
-|     18 | 17.6053 |  19.7979 |
-|     19 | 17.6536 |  19.8321 |
-|     20 | 17.6978 |  19.8639 |
-
----
-
-## get_impulse_response_function
-Fit a Vector Autoregression (VAR) across every ticker in the Toolkit instance and trace out the Impulse Response Function (IRF) -- how a shock to each ticker propagates through the whole system over `periods` periods ahead. The shock is one standard deviation of the orthogonalized innovation when `orthogonalized=True` (the default) and a unit shock to the reduced-form residual when `orthogonalized=False`.
-
-**Also known as:** IRF.
-
-A natural companion to `get_var_forecast`: rather than forecasting the levels forward, this traces out each ticker's dynamic response to a shock in every ticker (including itself) -- see `time_series_model.get_impulse_response_function` for the full formula, the Cholesky-orthogonalization used to identify the shocks, and why the ordering of tickers is an identifying assumption.
-
-The formula is as follows:
-
-$$
-\Psi_{0} = I\;\;\text{and}\;\; \Psi_{n} = \sum_{l=1}^{\min(n,p)} \Phi_{l} \cdot \Psi_{n-l},\;\; \text{the moving-average matrices of the VAR(} p \text{) fitted on every ticker's column (Return by default)},\;\; p = \text{lags} \;(1 \;\text{by default})
-$$
-
-$$
-\Sigma_{u} = \frac{\hat{U}' \hat{U}}{T - k \cdot p - 1} = P \cdot P',\;\; \text{with } P \text{ the lower-triangular Cholesky factor}
-$$
-
-$$
-\Theta_{n} = \Psi_{n} \cdot P (\text{orthogonalized} = \text{True},\; \text{a one-standard-deviation shock}) \;\text{or}\; \Theta_{n} = \Psi_{n} (\text{orthogonalized} = \text{False},\; \text{a unit reduced-form shock})
-$$
-
-$$
-\text{Response of ticker } i \text{, } n \text{ periods after a shock to ticker } j \text{:}\;\; \Theta_{n} [i , j],\;\; \text{for}\;\; n = 0 \ldots \;\text{periods}
-$$
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to model. Defaults to
-"Return".
-- <u>lags (int, optional):</u> The VAR order. Defaults to 1.
-- <u>periods (int, optional):</u> The number of periods ahead to trace the response
-out to. Defaults to 10.
-- <u>orthogonalized (bool, optional):</u> Whether to orthogonalize the shocks via a
-Cholesky decomposition of the residual covariance matrix -- see
-`time_series_model.get_impulse_response_function`. Defaults to True.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
-the tickers modeled jointly. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Each shock ticker's response table, one column per response
-ticker, concatenated side by side under a top-level column per shock
-ticker, indexed `0, ..., periods` (horizon, `0` = impact response).
-
-**Notes:**
-
-- The ordering of the tickers modeled determines which ticker is treated as
-contemporaneously prior to the others. That ordering follows the Toolkit
-instance's own ticker order and is not configurable here -- reorder the
-Toolkit instance's tickers themselves to change the Cholesky identification
-order -- see `time_series_model.get_impulse_response_function`'s `Notes`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["^VIX", "^OVX"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_impulse_response_function(column="Adj Close", periods=20)
-```
-
-Which returns:
-
-|   Horizon |   ('^VIX', '^VIX') |   ('^VIX', '^OVX') |   ('^OVX', '^VIX') |   ('^OVX', '^OVX') |
-|----------:|-------------------:|-------------------:|-------------------:|-------------------:|
-|         0 |             1.7975 |             1.1106 |             0      |             2.4048 |
-|         1 |             1.6806 |             1.1595 |             0.022  |             2.2148 |
-|         2 |             1.5725 |             1.1956 |             0.0407 |             2.0416 |
-|         3 |             1.4723 |             1.2207 |             0.0565 |             1.8834 |
-|         4 |             1.3794 |             1.2361 |             0.0698 |             1.7389 |
-|         5 |             1.2933 |             1.2433 |             0.0807 |             1.6069 |
-|         6 |             1.2133 |             1.2434 |             0.0897 |             1.4861 |
-|         7 |             1.1389 |             1.2374 |             0.097  |             1.3755 |
-|         8 |             1.0698 |             1.2262 |             0.1027 |             1.2743 |
-|         9 |             1.0054 |             1.2106 |             0.1071 |             1.1814 |
-|        10 |             0.9454 |             1.1914 |             0.1104 |             1.0963 |
-|        11 |             0.8895 |             1.1691 |             0.1126 |             1.0181 |
-|        12 |             0.8374 |             1.1444 |             0.114  |             0.9462 |
-|        13 |             0.7887 |             1.1176 |             0.1146 |             0.8801 |
-|        14 |             0.7432 |             1.0893 |             0.1145 |             0.8193 |
-|        15 |             0.7006 |             1.0597 |             0.1139 |             0.7633 |
-|        16 |             0.6608 |             1.0292 |             0.1129 |             0.7117 |
-|        17 |             0.6236 |             0.9981 |             0.1114 |             0.664  |
-|        18 |             0.5886 |             0.9667 |             0.1096 |             0.6201 |
-|        19 |             0.5559 |             0.9351 |             0.1075 |             0.5794 |
-|        20 |             0.5252 |             0.9034 |             0.1052 |             0.5418 |
-
----
-
-## get_variance_decomposition
-Fit a Vector Autoregression (VAR) across every ticker in the Toolkit instance and compute the (orthogonalized) Forecast Error Variance Decomposition (FEVD) -- what fraction of each ticker's `h`-step-ahead forecast error variance is attributable to each ticker's own structural shock, for `h = 1, ..., periods`.
-
-**Also known as:** FEVD, variance decomposition.
-
-The other natural companion to `get_var_forecast` (alongside `get_impulse_response_function`, which the FEVD is built from) -- see `time_series_model.get_variance_decomposition` for the full formula. A large own-shock share at short horizons that decays as the horizon grows is the classic signature of a ticker that is initially self-driven but increasingly explained by the rest of the system over time.
-
-The formula is as follows:
-
-$$
-\Theta_{n} = \Psi_{n} \cdot P,\;\; \text{the orthogonalized moving-average matrices of get\_impulse\_response\_function, from a VAR(} p \text{) on every ticker's column (Return by default)},\;\; p = \text{lags} \;(1 \;\text{by default})
-$$
-
-$$
-\text{Share of ticker j's shock in ticker i's h-step forecast error variance:}\;\; \omega_{ij}(h) = \frac{\sum_{n=0}^{h-1} \Theta_{n}\left[i,\; j\right]^{2}}{\sum_{m=1}^{k} \sum_{n=0}^{h-1} \Theta_{n}\left[i,\; m\right]^{2}},\;\; \text{for}\;\; h = 1 \ldots \;\text{periods}
-$$
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to model. Defaults to
-"Return".
-- <u>lags (int, optional):</u> The VAR order. Defaults to 1.
-- <u>periods (int, optional):</u> The forecast horizon to decompose out to.
-Defaults to 10.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
-the tickers modeled jointly. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Each response ticker's variance-share table (one column per
-shock ticker, rows summing to 1), concatenated side by side under a
-top-level column per response ticker, indexed `1, ..., periods` (horizon).
-
-**Notes:**
-
-- See `get_impulse_response_function`'s `Notes` on the Cholesky ordering --
-the same identifying assumption applies here.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["^VIX", "^GVZ"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_variance_decomposition(column="Adj Close", periods=20)
-```
-
-Which returns:
-
-|   Horizon |   ('^VIX', '^VIX') |   ('^VIX', '^GVZ') |   ('^GVZ', '^VIX') |   ('^GVZ', '^GVZ') |
-|----------:|-------------------:|-------------------:|-------------------:|-------------------:|
-|         1 |             1      |             0      |             0.1832 |             0.8168 |
-|         2 |             1      |             0      |             0.1925 |             0.8075 |
-|         3 |             0.9999 |             0.0001 |             0.2016 |             0.7984 |
-|         4 |             0.9998 |             0.0002 |             0.2104 |             0.7896 |
-|         5 |             0.9997 |             0.0003 |             0.219  |             0.781  |
-|         6 |             0.9996 |             0.0004 |             0.2273 |             0.7727 |
-|         7 |             0.9995 |             0.0005 |             0.2354 |             0.7646 |
-|         8 |             0.9993 |             0.0007 |             0.2432 |             0.7568 |
-|         9 |             0.9991 |             0.0009 |             0.2506 |             0.7494 |
-|        10 |             0.9989 |             0.0011 |             0.2578 |             0.7422 |
-|        11 |             0.9987 |             0.0013 |             0.2647 |             0.7353 |
-|        12 |             0.9985 |             0.0015 |             0.2714 |             0.7286 |
-|        13 |             0.9983 |             0.0017 |             0.2777 |             0.7223 |
-|        14 |             0.9981 |             0.0019 |             0.2837 |             0.7163 |
-|        15 |             0.9978 |             0.0022 |             0.2895 |             0.7105 |
-|        16 |             0.9976 |             0.0024 |             0.2949 |             0.7051 |
-|        17 |             0.9974 |             0.0026 |             0.3002 |             0.6998 |
-|        18 |             0.9971 |             0.0029 |             0.3051 |             0.6949 |
-|        19 |             0.9969 |             0.0031 |             0.3098 |             0.6902 |
-|        20 |             0.9967 |             0.0033 |             0.3142 |             0.6858 |
-
----
-
-## get_vecm_forecast
-Fit a Vector Error Correction Model (VECM) across every (cointegrated) ticker in the Toolkit instance and forecast `forecast_steps` periods ahead.
-
-**Also known as:** VECM, error correction model (for the multivariate/cointegrated case).
-
-A VECM keeps a VAR's short-run dynamics while ALSO letting each asset's price change react to how far the system currently sits from its long-run equilibrium (the cointegrating relationship(s) among the tickers, taken from `cointegration_model.get_johansen_cointegration`) -- see `time_series_model.get_vecm_forecast` for the full formula, estimation method and verification notes.
-
-The formula is as follows:
-
-$$
-\text{Rank}\; r = \text{the number of leading Johansen trace statistics} \;(\text{det\_order} = 0,\; \text{k\_ar\_diff} \;\text{lags}) \;\text{that exceed their critical value at} \;\text{significance} \;(5\% \;\text{by default});\;\; r = 0 \;\text{raises an error}
-$$
-
-$$
-\Delta Y_{t} = \alpha \cdot \beta' \cdot Y_{t-1} + \sum_{i=1}^{k} \Gamma_{i} \cdot \Delta Y_{t-i} + c + \epsilon_{t},\;\; \text{with } Y_{t} \text{ every ticker's column level (Adj Close by default)},\;\; k = \text{k\_ar\_diff} \;(1 \;\text{by default}) \;\text{and}\; c \;\text{a constant outside the cointegrating relation} \;(\text{statsmodels VECM with deterministic} = \text{"co"}),\;\; \text{fitted by Maximum Likelihood}
-$$
-
-- Forecast: the fitted recursion run forward `forecast_steps` periods, in levels
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to model. Defaults to
-"Adj Close" -- a VECM needs price LEVELS (non-stationary, cointegrated
-series), not returns, the same input `get_johansen_cointegration` expects.
-- <u>k_ar_diff (int, optional):</u> The number of lagged first differences to
-include as short-run dynamics. Defaults to 1.
-- <u>forecast_steps (int, optional):</u> The number of periods ahead to forecast.
-Defaults to 5.
-- <u>significance (float, optional):</u> The significance level (one of 0.01, 0.05,
-0.10) at which the Johansen trace test determines the cointegrating rank.
-Defaults to 0.05.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
-the tickers modeled jointly. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The `forecast_steps`-ahead forecast, on the price-level
-scale, one column per ticker, indexed `1, ..., forecast_steps` (periods
-ahead).
-
-**Raises:**
-
-ValueError: If the Johansen test does not reject a cointegrating rank of 0
-for the Toolkit instance's tickers at `significance` -- a VECM is not
-appropriate for non-cointegrated assets; use `get_var_forecast` on their
-returns instead.
-
-**Notes:**
-
-- The method retrieves historical price data based on the specified `period`
-for every ticker in the Toolkit instance and fits the VECM jointly across all
-of them.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["GOOGL", "GOOG"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-# The two share classes of Alphabet are cointegrated: their prices cannot drift apart.
-toolkit.econometrics.get_vecm_forecast()
-```
-
-Which returns:
-
-|   Step |   GOOGL |    GOOG |
-|-------:|--------:|--------:|
-|      1 | 312.569 | 313.352 |
-|      2 | 312.75  | 313.553 |
-|      3 | 312.929 | 313.747 |
-|      4 | 313.109 | 313.941 |
-|      5 | 313.289 | 314.135 |
-
----
-
-## get_rmse
-Calculate the Root Mean Squared Error (RMSE) between every unordered pair of tickers' series in the Toolkit instance.
-
-**Also known as:** RMSD (Root Mean Squared Deviation).
-
-This controller method compares two ASSETS' series directly, treating one as a naive "forecast" proxy for the other -- a simple, tracking-error style measure of how closely two series move together in absolute deviation terms (e.g. a portfolio versus a benchmark, or one asset as a naive stand-in forecast for a similar one). For evaluating an actual FORECASTING MODEL (ARIMA/VAR) rather than one asset as a naive proxy for another, use `get_out_of_sample_validation` instead.
-
-For a fund against its index the RMSE comes close to the tracking error but is not the same: the tracking error (`Performance.get_tracking_error`) is the Standard Deviation of the return differences, which leaves out their average, while the RMSE includes it. The RMSE is per period, so a daily figure is usually multiplied by the square root of 252 to annualize it.
-
-The formula is as follows:
-
-$$
-\text{RMSE} = \sqrt{\frac{1}{n} \cdot \sum(a_{t} - b_{t})^{2}},\;\; \text{with } a_{t} \text{ and } b_{t} \text{ the two tickers' column (Return by default) on the } n \text{ dates where both have data}
-$$
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to compare. Defaults to
-"Return".
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-tickers paired up. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.Series: The RMSE, indexed by unordered `(Ticker A, Ticker B)` pair.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["IVV", "VOO"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2025-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_rmse(include_benchmark=True)
-```
-
-Which returns:
-
-|                      |   RMSE |
-|:---------------------|-------:|
-| ('IVV', 'VOO')       | 0.0004 |
-| ('IVV', 'Benchmark') | 0.0009 |
-| ('VOO', 'Benchmark') | 0.001  |
-
----
-
-## get_mae
-Calculate the Mean Absolute Error (MAE) between every unordered pair of tickers' series in the Toolkit instance.
-
-MAE is the average absolute difference between two series.
-
-The formula is as follows:
-
-$$
-\text{MAE} = \frac{1}{n} \cdot \sum\left|a_{t} - b_{t}\right|,\;\; \text{with } a_{t} \text{ and } b_{t} \text{ the two tickers' column (Return by default) on the } n \text{ dates where both have data}
-$$
-
-It is expressed in the units of the series itself (e.g. a return difference) and answers "how far apart are the two series in a typical period". Every difference counts in proportion to its size, so unlike `get_rmse`, which squares the differences and is therefore dominated by a few large gaps, MAE is robust to occasional outliers. A lower value means the two tickers track each other more closely.
-
-This method compares two assets directly, for example how closely a fund tracks its index or how two related stocks move together, rather than an asset against a model's forecast; see `get_rmse` for the reasoning, and `get_out_of_sample_validation` for evaluating actual forecasts.
-
-**Also known as:** MAD (Mean Absolute Deviation).
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to compare. Defaults to
-"Return".
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-tickers paired up. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.Series: The MAE, indexed by unordered `(Ticker A, Ticker B)` pair.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["GLD", "IAU", "GLDM"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2025-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_mae()
-```
-
-Which returns:
-
-|                 |    MAE |
-|:----------------|-------:|
-| ('GLD', 'IAU')  | 0.0002 |
-| ('GLD', 'GLDM') | 0.0003 |
-| ('IAU', 'GLDM') | 0.0003 |
-
----
-
-## get_out_of_sample_validation
-Out-of-sample validate an ARIMA or VAR forecast of every ticker in the Toolkit instance -- fit only on a training portion of the history, forecast the held-out remainder, and score the forecast against what actually happened.
-
-**Also known as:** hold-out validation, train/test split validation.
-
-See `forecast_evaluation_model.get_out_of_sample_validation` for the general harness this wraps. Since that function takes a raw Python callable (not serializable for e.g. the MCP-facing tool layer), this controller method instead hardcodes the choice between the two Part-1 forecasting models via the `model` string:
-
-- `model="arima"`: `time_series_model.get_arima_forecast` is fit on each ticker's own training-period series (`p`, `d`, `q`, `include_constant` control the model, same as `get_arima_forecast`).
-- `model="var"`: `time_series_model.get_var_forecast` is fit on the training-period series of each ticker together with `other_tickers` (`lags` controls the VAR order, defaulting to every other ticker in the Toolkit instance if not given); only that ticker's own forecast column is scored against its holdout.
-
-The formula is as follows:
-
-- Training sample: the first int(`train_fraction`·n) observations (80% by default) of the `column` level (Adj Close by default); the remaining H observations are the holdout
-
-- $$\hat{Y}_{t}$$: the H-step forecast of the model fitted on the training sample only, an ARIMA(p, d, q) (model="arima", ARIMA(1, 1, 1) by default) or a VAR(`lags`) on the ticker and `other_tickers` (model="var")
-
-$$
-\text{RMSE} = \sqrt{\frac{1}{H} \cdot \sum(Y_{t} - \hat{Y}_{t})^{2}}\;\;\text{and}\;\; \text{MAE} = \frac{1}{H} \cdot \sum\left|Y_{t} - \hat{Y}_{t}\right|,\;\; \text{over the holdout}
-$$
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or yearly). Defaults to
-"daily".
-- <u>column (str, optional):</u> The historical data column to validate. Defaults
-to "Adj Close".
-- <u>model (str, optional):</u> Either "arima" or "var". Defaults to "arima".
-- <u>train_fraction (float, optional):</u> The fraction of observations used for
-training; the remainder is the holdout. Defaults to 0.8.
-- <u>p (int, optional):</u> The ARIMA autoregressive order (`model="arima"` only).
-Defaults to 1.
-- <u>d (int, optional):</u> The ARIMA differencing order (`model="arima"` only).
-Defaults to 1.
-- <u>q (int, optional):</u> The ARIMA moving-average order (`model="arima"` only).
-Defaults to 1.
-- <u>include_constant (bool, optional):</u> Whether the ARIMA model estimates a
-free intercept (`model="arima"` only). Defaults to True.
-- <u>lags (int, optional):</u> The VAR order (`model="var"` only). Defaults to 1.
-- <u>other_tickers (list[str] &#124; None, optional):</u> The other assets to include in
-the VAR system alongside the ticker being validated (`model="var"` only).
-Defaults to None, meaning every other ticker in the Toolkit instance.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among
-the tickers validated (and, for `model="var"`, among the default
-`other_tickers`). Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: `RMSE`, `MAE` and `Holdout Observations`, one column per
-ticker. With `model="arima"` each ticker uses its own history and a ticker
-without enough data has an empty (NaN) column.
-
-**Raises:**
-
-ValueError: If `model` is not "arima" or "var", or (for `model="var"`)
-fewer than 2 tickers are available to form a VAR system.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["BTCUSD", "ETHUSD"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_out_of_sample_validation()
-```
-
-Which returns:
-
-|                      |   BTCUSD |   ETHUSD |
-|:---------------------|---------:|---------:|
-| RMSE                 | 11424.9  |  1003.11 |
-| MAE                  |  9896.95 |   842.37 |
-| Holdout Observations |   366    |   366    |
-
----
-
-## get_event_study
-Perform a market-model event study around a single event date, following the methodology in MacKinlay, A.C. (1997), "Event Studies in Economics and Finance," Journal of Economic Literature, 35(1), 13-39 -- the canonical reference and still the dominant approach used to measure the stock-price impact of corporate events (earnings announcements, M&A deals, index additions/deletions, dividend changes, regulatory actions, etc.).
-
-A market model (`Return_t = alpha + beta * Benchmark_Return_t + e_t`) is fit via OLS over a clean "estimation window" ending `gap_days` before the event, then the Abnormal Return on each day of the "event window" around the event is the actual return minus the market-model-predicted expected return. These are cumulated into the Cumulative Abnormal Return (CAR) -- the stock-price impact attributable to the event, after stripping out what would have been expected from general market movements alone -- along with a t-test of whether CAR is significantly different from zero.
-
-The `event_date` is the first trading day on which the news can be priced, so for results released after the close it is the next trading day. The CAR runs from `pre_event_days` before to `post_event_days` after it (21 trading days by default), which also captures any leak ahead of the announcement. The t-test treats the abnormal returns as independent and uses the residual Variance of the estimation window, so a single event is weak evidence; studies average the CARs of many events of the same kind.
-
-The formula is as follows:
-
-$$
-\text{Market model:}\;\; R_{t} = \alpha + \beta \cdot R_{m,t} + \epsilon_{t},\;\; \text{fitted by OLS on the daily column (Return by default) of the ticker and the Benchmark over the estimation\_window (250) trading days that end gap\_days (30) trading days before the event}
-$$
-
-$$
-\text{AR}_{t} = R_{t} - (\hat{\alpha} + \hat{\beta} \cdot R_{m,t}),\;\; \text{for}\;\; t = - \text{pre\_event\_days} \;\ldots + \text{post\_event\_days} \;(10 \;\text{and}\; 10)
-$$
-
-$$
-\text{CAR} = \sum \;\text{AR}_{t} \;\text{over the}\; L = \text{pre\_event\_days} + \text{post\_event\_days} + 1 \;\text{event-window days}
-$$
-
-$$
-t = \frac{\text{CAR}}{\sqrt{L \cdot \hat{\sigma}^{2}}},\;\; \text{with}\;\; \hat{\sigma}^{2} = \frac{\sum \hat{\epsilon}_{t}^{2}}{N - 2} \;\text{over the}\; N \;\text{estimation-window days and a Student-t distribution with}\; N - 2 \;\text{degrees of freedom}
-$$
-
-**Also known as:** CAR analysis, abnormal returns analysis, market model event study.
-
-**Args:**
-
-- <u>event_date (str):</u> The date of the event (e.g. "2023-05-04"). Must fall
-within the Toolkit instance's daily historical data.
-- <u>dependent_ticker (str &#124; None, optional):</u> The ticker being studied.
-Defaults to the first ticker in the Toolkit instance.
-- <u>column (str, optional):</u> The historical data column to use. Defaults to
-"Return".
-- <u>estimation_window (int, optional):</u> Number of trading days used to
-estimate the market model. Defaults to 250 (~one trading year).
-- <u>gap_days (int, optional):</u> Number of trading days between the end of the
-estimation window and the event date. Defaults to 30.
-- <u>pre_event_days (int, optional):</u> Number of trading days before the event
-date included in the event window. Defaults to 10.
-- <u>post_event_days (int, optional):</u> Number of trading days after the event
-date included in the event window. Defaults to 10.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the
-results to. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.Series: The Cumulative Abnormal Return (CAR), its t-statistic and
-p-value, the market-model alpha and beta, and the number of estimation-
-window observations used.
-
-**Notes:**
-
-- Always uses daily data -- event windows are measured in trading days, so
-quarterly/yearly granularity would not be meaningful here.
-- The market/benchmark return series is the Toolkit instance's `"Benchmark"`
-column.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["NVDA"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2022-01-01",
-    end_date="2023-12-31",
-)
-
-# NVDA's abnormal return around its May 2023 earnings release
-toolkit.econometrics.get_event_study(event_date="2023-05-25")
-```
-
-Which returns:
-
-|                                |    Value |
-|:-------------------------------|---------:|
-| Cumulative Abnormal Return     |   0.2044 |
-| CAR t-statistic                |   1.9468 |
-| CAR p-value                    |   0.0527 |
-| Alpha                          |   0.0018 |
-| Beta                           |   2.0781 |
-| Estimation Window Observations | 250      |
-
----
-
-## get_markov_regime_switching
-Fit a Markov regime switching model to every asset: the mean and volatility of its returns depend on a regime that is not observed and switches from one period to the next with fixed probabilities (Hamilton, 1989). With two regimes the model typically separates calm markets (a higher mean and a low volatility) from turbulent ones (a lower mean and a high volatility), and it says which regime the market is most likely in today, how persistent each regime is and how long it lasts on average.
-
-The regimes are ordered from the lowest to the highest volatility, so Regime 1 is the calmest. With switching_variance=False all regimes share one volatility, and they are ordered from the lowest to the highest mean instead, so Regime 1 is the one with the lowest mean. The expected duration of a regime is 1 / (1 - p), with p the probability of staying in it, in periods. The share is the part of the periods in which the regime was the most likely one.
-
-The likelihood of a mixture of regimes has local optima, so the model is fitted from its default starting values and from the best of 20 random perturbations of them, and the fit with the highest likelihood is kept. The random perturbations come from NumPy's global random state, so when competing optima are close, repeated calls can differ slightly; call np.random.seed beforehand for results that can be reproduced.
-
-The formula is as follows:
-
-$$
-y_{t} = \mu_{S_{t}} + \sigma_{S_{t}} \cdot \epsilon_{t},\;\; \text{with } y_{t} \text{ the column series (Return by default)},\;\; \epsilon_{t} \;\text{standard normal and}\; S_{t} \in \{1,\; \ldots,\; K\} \;\text{the regime},\;\; K = \text{regimes} \;(2 \;\text{by default});\;\; \sigma_{S_{t}} = \sigma \;\text{for every regime when}\; \text{switching\_variance} = \text{False}
-$$
-
-$$
-P(S_{t} = j \mid S_{t-1} = i) = p_{ij},\;\; \text{a first-order Markov chain with constant transition probabilities}
-$$
-
-- $$\mu$$, $$\sigma$$ and $$p_{ij}$$ are fitted by Maximum Likelihood with the Hamilton filter (statsmodels MarkovRegression), keeping the best of the default start and 20 random perturbations
-
-$$
-\text{Smoothed probabilities} \;P(S_{t} = j \mid y_{1} \ldots y_{T}) \;\text{per date};\;\; \text{Expected Duration} = \frac{1}{1 - p_{jj}} \;\text{periods};\;\; \text{Share} = \text{the fraction of dates where regime}\; j \;\text{has the highest smoothed probability};\;\; \text{Current Regime} = \text{that regime on the last date},\;\; \text{with its smoothed probability}
-$$
-
-For more information, see the following paper:
-
-- Hamilton, J.D. (1989). "A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle." Econometrica, 57(2), 357-384.
-
-**Also known as:** Markov switching model, hidden Markov model, regime detection, bull and bear regimes.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
-yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The historical data column to model. Defaults to "Return".
-- <u>regimes (int, optional):</u> The number of regimes. Defaults to 2.
-- <u>switching_variance (bool, optional):</u> Whether the volatility switches with the
-regime as well as the mean. Defaults to True.
-- <u>probabilities (bool, optional):</u> Whether to return the smoothed probability of
-every regime per date instead of the summary. Defaults to False.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per asset the Mean, Volatility, Probability of Staying, Expected
-Duration and Share of every regime, and the Current Regime with its probability;
-or, with probabilities=True, the probability of every regime per date.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["AAPL", "MSFT"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2015-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_markov_regime_switching(period="weekly")
-```
-
-Which returns:
-
-|                                 |    AAPL |    MSFT |
-|:--------------------------------|--------:|--------:|
-| Regime 1 Mean                   |  0.009  |  0.0065 |
-| Regime 1 Volatility             |  0.0236 |  0.0217 |
-| Regime 1 Probability of Staying |  0.917  |  0.9528 |
-| Regime 1 Expected Duration      | 12.0479 | 21.194  |
-| Regime 1 Share                  |  0.5436 |  0.6411 |
-| Regime 2 Mean                   |  0.0006 |  0.0021 |
-| Regime 2 Volatility             |  0.0488 |  0.0455 |
-| Regime 2 Probability of Staying |  0.91   |  0.9209 |
-| Regime 2 Expected Duration      | 11.1105 | 12.6346 |
-| Regime 2 Share                  |  0.4564 |  0.3589 |
-| Current Regime                  |  1      |  1      |
-| Current Regime Probability      |  0.8877 |  0.8087 |
-
----
-
-## get_structural_breaks
-Find the dates at which the mean of every asset's series shifts, with the Bai and Perron (1998, 2003) method for multiple structural breaks. For every number of breaks the break dates that minimize the sum of squared residuals around a mean per segment are found exactly (by dynamic programming), and the number of breaks is chosen by the Bayesian information criterion. Every segment covers at least a share of the observations (the integer part of that share times the number of observations, as in Bai and Perron), so a break is not fitted to a few outliers.
-
-The BIC works well for series without serial correlation, such as returns, but tends to choose too many breaks when the series is serially correlated (Bai and Perron, 2003), as levels such as inflation or interest rates are: a persistent swing then looks like a shift in the mean. For such series, compare the segments for a few values of breaks rather than relying on the chosen number alone.
-
-Breaks show when a series changed character, such as the regimes of inflation or of interest rates, or a change in the average return of an asset. Unlike the Chow test, the break dates do not have to be known in advance.
-
-The formula is as follows:
-
-$$
-y_{t} = \mu_{j} + \epsilon_{t} \;\text{for the dates of segment}\; j = 1,\; \ldots,\; m + 1,\;\; \text{with } y_{t} \text{ the column series (Return by default) and } m \text{ breaks}
-$$
-
-$$
-\operatorname{SSR}(m) = \min \;\text{over the break dates of} \;\sum_{j} \sum_{t \in \text{segment j}}(y_{t} - \bar{y}_{j})^{2},\;\; \text{found exactly by dynamic programming},\;\; \text{with}\;\; \text{every segment at least}\; h = \max(\lfloor \;\text{minimum\_segment} \cdot T \rfloor,\; 2) \;\text{observations} \;(\text{minimum\_segment} = 0.15 \;\text{by default})
-$$
-
-$$
-\operatorname{BIC}(m) = T \cdot \ln\left(\frac{\operatorname{SSR}(m)}{T}\right) + (2m + 1) \cdot \ln(T),\;\; \text{for}\;\; m = 0,\; \ldots,\; \text{max\_breaks} \;(5 \;\text{by default});\;\; \text{the } m \text{ with the lowest BIC is chosen unless breaks is given}
-$$
-
-- Per segment: its Start, End, Observations, Mean $$\bar{y}_{j}$$ and Standard Deviation (ddof=1)
-
-For more information, see the following papers:
-
-- Bai, J. and Perron, P. (1998). "Estimating and Testing Linear Models with Multiple Structural Changes." Econometrica, 66(1), 47-78.
-- Bai, J. and Perron, P. (2003). "Computation and Analysis of Multiple Structural Change Models." Journal of Applied Econometrics, 18(1), 1-22.
-
-**Also known as:** Bai-Perron test, multiple structural breaks, change point detection, regime shifts.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
-yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The historical data column to analyze. Defaults to
-"Return"; use "Adj Close" (or "Level" with standalone data) for the series
-itself, such as an inflation rate.
-- <u>max_breaks (int, optional):</u> The most breaks considered. Defaults to 5.
-- <u>minimum_segment (float, optional):</u> The smallest segment as a share of the
-observations (the trimming). Defaults to 0.15.
-- <u>breaks (int &#124; None, optional):</u> The number of breaks to find instead of choosing
-it by the BIC. Defaults to None.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per asset and segment the Start, End, Observations, Mean and
-Standard Deviation, with the BIC of the chosen number of breaks.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics, Econometrics
-
-economics = Economics(start_date="1960-01-01", end_date="2025-12-31")
-
-inflation = economics.get_inflation_rate(countries="United States", period="yearly")
-
-econometrics = Econometrics(data=inflation)
-
-econometrics.get_structural_breaks(column="Level", max_breaks=3)
-```
-
-Which returns:
-
-|                      | Start      | End        |   Observations |   Mean |   Standard Deviation |      BIC |
-|:---------------------|:-----------|:-----------|---------------:|-------:|---------------------:|---------:|
-| ('United States', 1) | 1960-12-31 | 1972-12-31 |             13 | 0.0282 |               0.0169 | -519.037 |
-| ('United States', 2) | 1973-12-31 | 1982-12-31 |             10 | 0.0876 |               0.0269 | -519.037 |
-| ('United States', 3) | 1983-12-31 | 2025-12-31 |             43 | 0.0285 |               0.0143 | -519.037 |
-
----
-
-## get_time_varying_beta
-Estimate the alpha and beta of every asset as they change over time, with the Kalman filter. The regression $$y_{t} = \alpha_{t} + \beta_{t} x_{t} + \epsilon_{t}$$ lets both coefficients take a random step every period; how large those steps are, and how much noise surrounds the regression, is estimated by maximum likelihood. A beta that drifts, such as a stock becoming more sensitive to the market, shows up without choosing the window of a rolling regression, while a beta that is constant stays flat.
-
-Every alpha and beta is the filtered estimate, updated with the observations up to its date only. The three variances that set how fast the estimates adapt are estimated on the whole sample, however, so the path is not entirely what would have been known at the time. The filter starts without prior knowledge of the coefficients, so the first date (or the first few, when the independent series starts with zeros) cannot separate the alpha from the beta and is NaN.
-
-By default every asset is regressed on the Benchmark of the Toolkit (or, with standalone data, on the second series).
-
-The formula is as follows:
-
-$$
-y_{t} = \alpha_{t} + \beta_{t} \cdot x_{t} + \epsilon_{t},\;\; \epsilon_{t} \sim N(0,\; \sigma_{\epsilon}^{2}),\;\; \text{with } y_{t} \text{ the asset's and } x_{t} \text{ the independent asset's column series (Return by default), on the dates both have}
-$$
-
-$$
-\alpha_{t} = \alpha_{t-1} + \eta_{t}\;\;\text{and}\;\; \beta_{t} = \beta_{t-1} + \zeta_{t},\;\; \eta_{t} \sim N(0,\; \sigma_{\alpha}^{2}) \;\text{and}\; \zeta_{t} \sim N(0,\; \sigma_{\beta}^{2}) \;\text{:} \;\text{random walks}
-$$
-
-- $$\sigma_{\epsilon}^{2}$$, $$\sigma_{\alpha}^{2}$$ and $$\sigma_{\beta}^{2}$$ are fitted by Maximum Likelihood with the Kalman filter (diffusely initialized) on the series divided by their standard deviations, and scaled back
-
-- Alpha and Beta are the filtered states $$E [\alpha_{t} , \beta_{t} \vert y_{1} \ldots y_{t}]$$; the Beta Standard Error is the square root of the filtered variance of $$\beta_{t}$$
-
-For more information, see the following book:
-
-- Durbin, J. and Koopman, S.J. (2012). "Time Series Analysis by State Space Methods." Oxford University Press, 2nd edition.
-
-**Also known as:** Kalman filter beta, rolling beta, dynamic beta, state space regression.
-
-**Args:**
-
-- <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The assets whose beta is
-estimated. Defaults to None, which uses every asset except the independent one.
-- <u>independent_ticker (str &#124; None, optional):</u> The asset the beta is measured
-against. Defaults to None, which uses the Benchmark or the second series.
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
-yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per date and asset the Alpha, the Beta and the standard error of
-the beta, NaN on the first date(s) where they are not yet identified.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["AAPL", "MSFT"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2015-01-01",
-    end_date="2025-12-31",
-)
-
-beta = toolkit.econometrics.get_time_varying_beta(period="monthly")
-
-beta.xs("Beta", axis=1, level=1).iloc[12::24]
-```
-
-Which returns:
-
-| Date    |   AAPL |   MSFT |
-|:--------|-------:|-------:|
-| 2016-02 | 1.2708 | 1.5813 |
-| 2018-02 | 1.1427 | 1.3183 |
-| 2020-02 | 1.3197 | 1.1153 |
-| 2022-02 | 1.2496 | 0.9853 |
-| 2024-02 | 1.2526 | 0.9525 |
-
----
-
-## get_dcc_garch
-Estimate the correlation between every pair of assets as it changes over time, with the dynamic conditional correlation (DCC) GARCH(1,1) model of Engle (2002). Every asset gets its own GARCH(1,1) volatility, and the correlation of the standardized returns follows a GARCH-like recursion around their long-run correlation. Correlations between assets tend to rise in crises, exactly when diversification is needed most. A rolling correlation sees that late and depends on its window; the DCC model updates the correlation every period, with a (how strongly it reacts to news) and b (how persistent it is) estimated by maximum likelihood.
-
-The formula is as follows:
-
-$$
-z_{i,t} = \frac{r_{i,t} - \operatorname{mean}(r_{i})}{\sigma_{i,t}},\;\; \text{with}\;\; r_{i,t} \;\text{the} \;\text{column} \;\text{series} \;(\text{Return by default}) \;\text{on the dates all assets have and}\; \sigma_{i,t}^{2} = \omega + \alpha \cdot u_{i,t-1}^{2} + \beta \cdot \sigma_{i,t-1}^{2} \;\text{each asset's GARCH}(1,\; 1) \;\text{variance of the demeaned returns}\; u (\text{GARCH Persistence} = \alpha + \beta)
-$$
-
-$$
-Q_{t} = (1 - a - b) \cdot \bar{Q} + a \cdot z_{t-1} \cdot z_{t-1}' + b \cdot Q_{t-1},\;\; \text{with}\;\; \bar{Q} \;\text{the sample correlation of}\; z \;\text{and}\; Q_{0} = \bar{Q}
-$$
-
-$$
-R_{t} = \operatorname{diag}(Q_{t})^{- \frac{1}{2}} \cdot Q_{t} \cdot \operatorname{diag}(Q_{t})^{- \frac{1}{2}},\;\; \text{the conditional correlations}
-$$
-
-- a and b maximize the correlation log-likelihood $$- \tfrac{1}{2} \cdot \sum_{t} (\ln \vert R_{t} \vert + z_{t}' \cdot R_{t}^{- 1} \cdot z_{t})$$, with a, $$b \geq 0$$ and $$a + b < 1$$
-
-For more information, see the following paper:
-
-- Engle, R. (2002). "Dynamic Conditional Correlation: A Simple Class of Multivariate Generalized Autoregressive Conditional Heteroskedasticity Models." Journal of Business & Economic Statistics, 20(3), 339-350.
-
-**Also known as:** DCC-GARCH, dynamic conditional correlation, time-varying correlation, multivariate GARCH.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
-yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The historical data column to use. Defaults to "Return".
-- <u>parameters (bool, optional):</u> Whether to return the estimated parameters (a, b and
-the GARCH persistence of every asset) instead of the correlations. Defaults
-to False.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: The conditional correlation of every pair of assets per date, or
-the parameters of the model.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["AAPL", "MSFT", "XOM"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2018-01-01",
-    end_date="2025-12-31",
-)
-
-correlations = toolkit.econometrics.get_dcc_garch()
-
-correlations.resample("Y").mean().round(4)
-```
-
-Which returns:
-
-| Date   |   AAPL / MSFT |   AAPL / XOM |   MSFT / XOM |
-|:-------|--------------:|-------------:|-------------:|
-| 2018   |        0.6047 |       0.2794 |       0.2729 |
-| 2019   |        0.578  |       0.2982 |       0.2641 |
-| 2020   |        0.6665 |       0.2879 |       0.226  |
-| 2021   |        0.6199 |       0.1384 |       0.0786 |
-| 2022   |        0.7084 |       0.2283 |       0.1692 |
-| 2023   |        0.5802 |       0.1706 |       0.0386 |
-| 2024   |        0.5378 |       0.1018 |       0.0237 |
-| 2025   |        0.4636 |       0.1991 |       0.114  |
-
----
-
-## get_pairs_trading
-Calculate the statistics of trading the spread between every pair of assets. The hedge ratio follows from regressing one log price on the other; what remains is the spread, and when the two are cointegrated the spread reverts to its mean. Its z-score says how far it is from that mean in standard deviations, and threshold rules trade on it: short the spread (sell the first asset, buy the hedge ratio of the second) once the z-score rises above the entry threshold, buy it once it falls below minus the threshold, and close the position once the z-score crosses the exit threshold on its way back (below it for a short, above minus it for a long). A z-score that jumps past the band in one period still closes the position, and one that lands beyond the entry threshold on the other side reverses it. The half-life says how many periods the spread takes to close half its gap to the mean.
-
-Gatev, Goetzmann and Rouwenhorst (2006) open a position when the normalized prices of a pair drift two standard deviations (of their formation period) apart and close it when the prices cross, which is an exit threshold of 0; closing at 0.5 is a common variant that takes profits before the spread is fully back at its mean.
-
-The hedge ratio and intercept are estimated on the whole period, so the spread, and with it every z-score and signal, uses information from after its date. A rolling window only makes the mean and standard deviation of the z-score backward-looking; a backtest without look-ahead estimates the hedge ratio on a formation period and trades in the period after it. The Engle-Granger p-value says whether there is a mean-reverting relationship to trade at all (below 0.05).
-
-The formula is as follows:
-
-$$
-y_{t} = c + h \cdot x_{t} + s_{t},\;\; \text{fitted by OLS on the dates both have},\;\; \text{with}\; y_{t} \;\text{and}\; x_{t} \;\text{the} \;(\log,\; \text{when}\; \text{log\_prices} = \text{True}) \;\text{column} \;\text{levels} \;(\text{Adj Close by default}) \;\text{:} h \;\text{the Hedge Ratio},\;\; c \text{ the Intercept and } s_{t} \text{ the Spread}
-$$
-
-$$
-\text{Z-Score}_{t} = \frac{s_{t} - \operatorname{mean}(s)}{\operatorname{std}(s) (\text{ddof} = 1)},\;\; \text{over the full sample or a rolling window}
-$$
-
-- Signal: -1 from Z > `entry_z_score` until Z < `exit_z_score`, +1 from Z < -`entry_z_score` until Z > -`exit_z_score`, 0 otherwise (2.0 and 0.5 by default)
-
-$$
-\text{Half-Life} = - \frac{\ln(2)}{\ln(1 + \lambda)},\;\; \text{with}\;\; \lambda \;\text{from}\; \Delta s_{t} = a + \lambda \cdot s_{t-1} + \epsilon_{t} (\text{infinite when}\; \lambda \;\text{is} \;(\text{nearly}) \;\text{zero or positive})
-$$
-
-- Cointegration P-Value: the Engle-Granger test of $$y_{t}$$ on $$x_{t}$$
-
-For more information, see the following papers:
-
-- Gatev, E., Goetzmann, W.N. and Rouwenhorst, K.G. (2006). "Pairs Trading: Performance of a Relative-Value Arbitrage Rule." The Review of Financial Studies, 19(3), 797-827.
-- Engle, R.F. and Granger, C.W.J. (1987). "Co-Integration and Error Correction: Representation, Estimation, and Testing." Econometrica, 55(2), 251-276.
-
-**Also known as:** statistical arbitrage, spread trading, z-score strategy, half-life of mean reversion.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
-yearly). Defaults to "daily".
-- <u>column (str, optional):</u> The price column. Defaults to "Adj Close".
-- <u>window (int &#124; None, optional):</u> The rolling window of the z-score. Defaults to
-None, which uses the full sample.
-- <u>entry_z_score (float, optional):</u> The z-score at which a position is opened.
-Defaults to 2.0.
-- <u>exit_z_score (float, optional):</u> The z-score whose crossing on the way back closes
-a position (0 closes when the spread is back at its mean). Defaults to 0.5.
-- <u>log_prices (bool, optional):</u> Whether to use log prices, so the hedge ratio is an
-elasticity. Defaults to True.
-- <u>time_series (bool, optional):</u> Whether to return the Spread, Z-Score and Signal
-per date instead of the summary. Defaults to False.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per pair the Hedge Ratio, Intercept, Half-Life (in periods),
-Cointegration P-Value, the latest Z-Score and Signal (1 long, -1 short, 0 flat)
-and the Number of Trades (positions opened, a reversal counting as a new one);
-or, with time_series=True, the Spread, Z-Score and Signal per date.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["KO", "PEP"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2015-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.econometrics.get_pairs_trading(window=60)
-```
-
-Which returns:
-
-|               |   Hedge Ratio |   Intercept |   Half-Life |   Cointegration P-Value |   Z-Score |   Signal |   Number of Trades |
-|:--------------|--------------:|------------:|------------:|------------------------:|----------:|---------:|-------------------:|
-| ('KO', 'PEP') |        0.8685 |     -0.3098 |     290.448 |                  0.8345 |     0.684 |        0 |                 42 |
-
----
-
-## get_level_significance
-Calculate how unusual the latest value of every series is: its percentile in the series' own history and the last dates the series was at least as high ("the highest since") and at least as low ("the lowest since"), next to its change since the first observation and the highest and lowest values of the range with their dates and the change from them.
-
-Where `get_move_significance` (Risk) measures how unusual a move is, this measures how unusual a level is, which is the question for rates and macroeconomic series: a 10-year yield of 5.13% is "the highest since May 2002" when no month since then was as high, and an unemployment rate can be the lowest in decades without any single large move. Through the Toolkit it measures the prices of the tickers ("the highest close since"); with `Econometrics(data=...)` any series, such as the interest rates, inflation or unemployment of `Economics` and the yield curves of `FixedIncome`.
-
-The formula is as follows:
-
-$$
-\text{Percentile} = \frac{\operatorname{Count}(x(s) < x(T)) + 0.5 \cdot \operatorname{Count}(x(s) = x(T))}{\operatorname{Count}(s)},\;\; \text{over}\; s < T
-$$
-
-$$
-\text{Rank} = 1 + \operatorname{Count}(x(s) > x(T)),\;\; \text{over}\; s < \text{T:} 1 \;\text{for the highest of the history}
-$$
-
-$$
-\text{Highest Since} = \text{the last date}\; s < T \;\text{with} \;x(s) \geq x(T)
-$$
-
-$$
-\text{Lowest Since} = \text{the last date}\; s < T \;\text{with} \;x(s) \leq x(T)
-$$
-
-$$
-\text{Change Since Start} = \frac{x(T) - x(0)}{\left|x(0)\right|}
-$$
-
-$$
-\text{Change From Highest} = \frac{x(T) - \max(x)}{\left|\max(x)\right|}
-$$
-
-$$
-\text{Change From Lowest} = \frac{x(T) - \min(x)}{\left|\min(x)\right|}
-$$
-
-$$
-\text{Multiple Since Start} = \frac{x(T)}{x(0)}
-$$
-
-$$
-\text{Annualised Change} = \left(\frac{x(T)}{x(0)}\right)^{\frac{1}{\text{years}}} - 1,\;\; \text{years between the two dates}
-$$
-
-$$
-\text{Largest Drawdown} = \min \;\text{over}\; t \;\text{of} \;\frac{x(t) - \max(x(s),\; s \leq t)}{\left|\max(x(s),\; s \leq t)\right|}
-$$
-
-$$
-\text{Recovery Date} = \text{the first date after the trough with}\; x \geq \text{the peak before it}
-$$
-
-Where x(T) is the latest value of a series, x(0) its first observation and s runs over its earlier observations. An earlier value equal to the latest one counts as half (the percentile rank), so a policy rate that has not changed for years sits in the middle of its own ties. Highest Since is NaN when no earlier value was as high, which makes the latest value the highest of the history; Lowest Since likewise. The Change Since Start is the change between the first and the latest observation in the range, so the start and end date choose the two dates to compare (housing starts from January 2021 to their latest month with period="monthly"); it is relative to the absolute first value, so a rise from a negative value is positive, and NaN when the first value is zero. The Highest and Lowest are the peak and trough of the range, the latest value included, with the first dates they were reached, so the start date works as the anchor of an event window: the rise from the start to the peak, the date of the peak and the fall from it to the latest value. The changes from them are relative to their absolute values, and NaN when they are zero. With `Econometrics(data=..., changes="difference")` every change, the Largest Drawdown included, is a difference in the unit of the series instead (percentage points for a rate: a 10-year yield from 5.29% to 4.94% is -0.0035), and the Multiple Since Start and Annualised Change are NaN.
-
-**Also known as:** highest since, lowest since, record high, multi-year high, level percentile, historical percentile, how unusual is the latest value, change since, change between two dates, cumulative change, event window, peak, trough, drawdown from the peak, change from the high, change from the low, multiple, compound annual growth rate (CAGR), annualised change, peak to trough, time to recover the peak, change in percentage points.
-
-**Args:**
-
-- <u>period (str &#124; None, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
-yearly); the weekly to yearly periods take the last value of each period. Defaults to
-None, which is "daily": the series at the dates they are observed, so a monthly
-series is compared month by month.
-- <u>column (str, optional):</u> The historical data column to measure. Defaults to "Close", the
-traded close of the tickers and the series themselves with data=.
-- <u>spread_over (str &#124; None, optional):</u> The name of a series to subtract from every
-other series, so the spreads over it are measured instead (named "<series> -
-<spread_over>"), e.g. producer price inflation over consumer price inflation.
-The spread exists on the dates both series have, so with period="daily" a weekly
-series minus a daily one is measured on the weekly dates. Defaults to None, which
-measures the series themselves.
-- <u>ratio (bool, optional):</u> Whether to divide every other series by the spread_over
-series instead of subtracting it (named "<series> / <spread_over>"), e.g.
-exports over GDP or one country's yield over another's. Defaults to False.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
-Defaults to False.
-- <u>level (float &#124; None, optional):</u> A level to compare every series with, such as an
-earlier peak, which adds the Level, the First Above Level (the first date the
-series exceeded it) and Above Level Since (the date it has been above it since
-without a break, empty when the latest value is not above it). Defaults to
-None, which leaves them out.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class (4 unless set otherwise).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per series the Start Date, Start Value and number of Observations of its
-history, the Latest Date and Latest Value, the Change Since Start (decimal), the
-Multiple Since Start and Annualised Change (decimal, the compound annual rate, NaN
-unless both values are positive), the Percentile (decimal), the Rank (1 for the
-highest of the history: "the 3rd highest since" the Start Date), the Highest Since and
-Lowest Since dates, the Highest and Lowest with their Highest Date and Lowest Date
-and the Change From Highest and Change From Lowest (decimals), and the Largest
-Drawdown (decimal) with its Drawdown Peak Date, Drawdown Trough Date and Recovery
-Date (NaN while it has not recovered). The dates are text: the dates of the observations, e.g.
-2002-05-31 for a monthly series, or the periods, e.g. 2002-05 with period="monthly".
-
-**Notes:**
-
-- The answer depends on the history it is measured against: the history starts at the start
-date of the data, so "the highest since" can at most reach back to that date, and a
-later start date gives a higher percentile for a value near the top. Choose a start date
-far enough back, and read the Start Date column to see where each history begins.
-- Each series uses its own history, so a series that starts later has a shorter one.
-- The latest value is the last observation up to the end date, which can be older than the
-end date for a series published with a lag; Latest Date says which it is.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics, Econometrics
-
-economics = Economics(start_date='2000-01-01', end_date='2026-10-31')
-
-long_term_rates = economics.get_long_term_interest_rate(
-    countries=['United States', 'Germany', 'Japan'], period='monthly'
-)
-
-econometrics = Econometrics(data=long_term_rates)
-
-econometrics.get_level_significance().T
-```
-
-Which returns:
-
-|                      | United States   | Germany    | Japan      |
-|:---------------------|:----------------|:-----------|:-----------|
-| Start Date           | 2000-01-31      | 2000-01-31 | 2000-01-31 |
-| Start Value          | 0.0666          | 0.0554     | 0.0169     |
-| Observations         | 322             | 322        | 322        |
-| Latest Date          | 2026-10-31      | 2026-10-31 | 2026-10-31 |
-| Latest Value         | 0.0513          | 0.0342     | 0.0276     |
-| Change Since Start   | -0.2297         | -0.3827    | 0.6331     |
-| Multiple Since Start | 0.7703          | 0.6173     | 1.6331     |
-| Annualised Change    | -0.0097         | -0.0179    | 0.0185     |
-| Percentile           | 0.9377          | 0.6854     | 0.9907     |
-| Rank                 | 21              | 102        | 4          |
-| Highest Since        | 2002-05-31      | 2026-09-30 | 2026-09-30 |
-| Lowest Since         | 2026-09-30      | 2026-08-31 | 2026-06-30 |
-| Highest              | 0.0666          | 0.0554     | 0.0305     |
-| Highest Date         | 2000-01-31      | 2000-01-31 | 2026-09-30 |
-| Change From Highest  | -0.2297         | -0.3827    | -0.0951    |
-| Lowest               | 0.0062          | -0.0065    | -0.0028    |
-| Lowest Date          | 2020-07-31      | 2019-08-31 | 2019-08-31 |
-| Change From Lowest   | 7.2742          | 6.2615     | 10.8571    |
-| Largest Drawdown     | -0.9069         | -1.1173    | -1.1429    |
-| Drawdown Peak Date   | 2000-01-31      | 2000-01-31 | 2006-04-30 |
-| Drawdown Trough Date | 2020-07-31      | 2019-08-31 | 2019-08-31 |
-| Recovery Date        | nan             | nan        | 2025-12-31 |
-
----
-
-## get_move_significance
-Calculate how unusual each move of every series is: the change in units of its trailing volatility and of its trailing Value at Risk, its percentile among the earlier moves and the date of the last move at least as large in the same direction ("the largest one-day rise since").
-
-This is `get_move_significance` (Risk) for any series rather than the returns of the Toolkit's tickers: with `Econometrics(data=..., changes="difference")` a yield, rate or spread moves in points, so a rise of the 2-year Treasury yield from 4.56% to 4.73% is a move of 0.0017, measured against the earlier daily moves of the same yield. Where `get_level_significance` asks how unusual a level is, this asks how unusual a change is.
-
-The formula is as follows:
-
-$$
-\text{Volatility Multiple}(t) = \frac{\operatorname{Change}(t)}{\sigma(\operatorname{Change}(t - \text{window}),\; \ldots,\; \operatorname{Change}(t - 1))}
-$$
-
-$$
-\text{VaR Multiple}(t) = \frac{\operatorname{Change}(t)}{\left|\operatorname{Quantile}(\operatorname{Change}(t - \text{window}),\; \ldots,\; \operatorname{Change}(t - 1) ; \alpha)\right|}
-$$
-
-$$
-\operatorname{Percentile}(t) = \frac{\operatorname{Count}(\left|\operatorname{Change}(s)\right| < \left|\operatorname{Change}(t)\right|,\; s < t)}{\operatorname{Count}(s < t)}
-$$
-
-$$
-\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Change}(s) \leq \operatorname{Change}(t)) \;\text{if Change}(t) < 0
-$$
-
-$$
-\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Change}(s) \geq \operatorname{Change}(t)) \;\text{if Change}(t) > 0
-$$
-
-The Change is the series' change as `changes` defines it: a percentage change by default, the difference with `changes="difference"` and the series itself with `changes="none"`. The volatility $$\sigma$$ uses ddof=1 and the quantile is the historic Value at Risk, interpolated linearly. Each measure only uses the changes before the period itself (no look-ahead), and Largest Since compares falls with falls and rises with rises, as a headline does.
-
-**Also known as:** sigma move, largest move since, biggest daily rise since, standardized change, yield move significance.
-
-**Args:**
-
-- <u>period (str &#124; None, optional):</u> The data frequency (daily, weekly, monthly, quarterly
-or yearly). Defaults to None, which is daily.
-- <u>window (int &#124; None, optional):</u> The number of earlier changes the volatility is
-measured over, which the percentile also needs at least. Defaults to None, which
-uses a year of observations with a minimum of 20 (252 daily, 52 weekly and 20
-monthly, quarterly or yearly changes).
-- <u>alpha (float, optional):</u> The tail probability of the trailing historic Value at Risk
-the VaR Multiple divides by (0.05 for the 95% VaR). Defaults to 0.05.
-- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark of a Toolkit.
-Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class (4 unless set otherwise).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Return (the change), Volatility Multiple, VaR Multiple, Percentile and
-Largest Since (the date as text) per series, with time as the index and the measures
-and series as the column levels.
-
-**Notes:**
-
-- The history a move is compared with starts at the start of the data: the volatility,
-the VaR and the percentile are NaN until `window` changes are available, and Largest
-Since is NaN when no earlier move was as large, which makes the move the largest since
-the start. Choose an early start date for a long history.
-- Each series uses its own history and only the dates it has a value for, so a market
-holiday is not a move of zero.
-
-**As an example:**
-
-```python
-from financetoolkit import Econometrics, FixedIncome
-
-fixedincome = FixedIncome(start_date='2025-01-01', end_date='2026-11-10')
-
-treasury_rates = fixedincome.get_treasury_rates(maturities=['2Y', '10Y'])
-
-econometrics = Econometrics(data=treasury_rates, changes='difference')
-
-econometrics.get_move_significance().loc['2026-11-10'].unstack(level=0)
-```
-
-Which returns:
-
-|         |   Return |   Volatility Multiple |   VaR Multiple |   Percentile | Largest Since   |
-|:--------|---------:|----------------------:|---------------:|-------------:|:----------------|
-| 2 Year  |   0.0017 |                3.5345 |         2.4286 |       0.9935 | 2025-04-09      |
-| 10 Year |   0.001  |                2.2808 |         1.6667 |       0.9546 | 2026-09-23      |
-|         |   Return |   Volatility Multiple |   VaR Multiple |   Percentile | Largest Since   |
-|:--------|---------:|----------------------:|---------------:|-------------:|:----------------|
-| 2 Year  |   0.0017 |                3.5345 |         2.4286 |       0.9935 | 2025-04-09      |
-| 10 Year |   0.001  |                2.2808 |         1.6667 |       0.9546 | 2026-09-23      |
-
----
-
-## get_window_change_by_year
-Calculate the change of every series over the same months of every year, such as February to October, with the rank of every year's change and the last earlier year with a change at least as large ("the largest since").
-
-Where `get_level_significance` measures one window, from the start date to the latest value, this compares the same window across years: "US consumer prices rose 3.3% from February to October, the most since 2022" is the Change, Rank and Largest Since of the latest year. Through the Toolkit it measures the prices of the tickers (a seasonal pattern, such as the return from May to October); with `Econometrics(data=...)` any series, such as the consumer price indices of `Economics`.
-
-The formula is as follows:
-
-$$
-\text{Change} \;(y) = \frac{x(\text{to\_month},\; y) - x(\text{from\_month},\; y)}{\left|x(\text{from\_month},\; y)\right|}
-$$
-
-$$
-\text{Rank} \;(y) = \text{the position of Change} \;(y) \;\text{among the changes of every year},\;\; \text{1 for the largest}
-$$
-
-$$
-\text{Largest Since} \;(y) = \text{the last year}\; s < y \;\text{with Change} \;(s) \geq \text{Change} \;(y)
-$$
-
-Where x(m, y) is the value of month m in year y, the last value of the month for a daily series. A window that ends in an earlier month than it starts (November to February) runs into the next year and is labelled by the year it ends; the same month for both gives the change over twelve months. A year without the value of either month has no change, so the current year is empty until its last month is published. Largest Since is NaN when no earlier year had a change as large. With `Econometrics(data=..., changes="difference")` the Change is x(to_month, y) - x(from_month, y), in percentage points for a rate.
-
-**Also known as:** same period each year, seasonal change, year-to-date comparison, change from February to October, largest since, fastest since, seasonality.
-
-**Args:**
-
-- <u>from_month (int, optional):</u> The month the window starts, 1 (January) to 12
-(December). Defaults to 1.
-- <u>to_month (int, optional):</u> The month the window ends, 1 to 12. Defaults to 12,
-which with from_month=1 is the change from January to December.
-- <u>column (str, optional):</u> The historical data column to measure. Defaults to
-"Close", the traded close of the tickers and the series themselves with data=.
-- <u>spread_over (str &#124; None, optional):</u> The name of a series to subtract from every
-other series, so the spreads over it are measured instead. Defaults to None.
-- <u>ratio (bool, optional):</u> Whether to divide every other series by the spread_over
-series instead of subtracting it (named "<series> / <spread_over>"). Defaults
-to False.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the
-assets. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class (4 unless set
-otherwise).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per year (rows) and series the Start Value, End Value, Change
-(decimal), Rank and Largest Since (columns, a level per series).
-
-**Notes:**
-
-- The ranks and "largest since" depend on the history: start the data early enough,
-as a year before the start date is not compared.
-- The change uses the levels, so the series should be an index or a price, not a
-rate: the change in an inflation rate is a relative change of a rate.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics, Econometrics
-
-economics = Economics(start_date='2019-01-01', end_date='2026-10-31')
-
-consumer_price_index = economics.get_consumer_price_index(
-    countries=['United States', 'Euro Area']
-)
-
-econometrics = Econometrics(data=consumer_price_index)
-
-econometrics.get_window_change_by_year(from_month=2, to_month=10)['United States']
-```
-
-Which returns:
-
-|   Year |   Start Value |   End Value |   Change |   Rank |   Largest Since |
-|-------:|--------------:|------------:|---------:|-------:|----------------:|
-|   2019 |       115.923 |     118.019 |   0.0181 |      5 |             nan |
-|   2020 |       118.629 |     119.414 |   0.0066 |      7 |            2019 |
-|   2021 |       120.618 |     126.843 |   0.0516 |      1 |             nan |
-|   2022 |       130.112 |     136.668 |   0.0504 |      2 |            2021 |
-|   2023 |       137.965 |     141.098 |   0.0227 |      4 |            2022 |
-|   2024 |       142.315 |     144.763 |   0.0172 |      6 |            2023 |
-|   2025 |       146.331 |     nan     | nan      |    nan |             nan |
-|   2026 |       149.863 |     154.782 |   0.0328 |      3 |            2022 |
-
----
-
-## get_streaks
-Calculate the streak every series is on: whether its latest value is positive, negative or zero, since when it has been without a break and how long that is, the run before it, and the longest earlier run of the same sign.
-
-Where `get_level_significance` measures how unusual the latest level is, this measures how long a series has been on one side of zero, which is the question for inflation, growth and spreads: producer prices that fell year over year for 41 months in a row, a spread between two series that turned positive after three years, or a yield curve that has been inverted since a given month. With column="Return" it measures the changes instead: a price that rose for eight days in a row, or with `Econometrics(data=..., changes="difference")` an unemployment rate that rose for six months in a row. Through the Toolkit it measures the prices of the tickers; with `Econometrics(data=...)` any series, such as the economic calendar of `Economics` with as_series=True, its inflation rates or the yield curves of `FixedIncome`.
-
-A run is a stretch of consecutive observations with the same sign (positive, negative or zero), counted in observations: months for a monthly series. The current run is the one the latest observation belongs to, the previous run the one just before it and the longest earlier run the longest run of the current sign before the current one (the most recent of them when several are as long).
-
-**Also known as:** streak, run length, consecutive months, months in a row, how long has it been negative, first positive since.
-
-**Args:**
-
-- <u>period (str &#124; None, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
-yearly); the weekly to yearly periods take the last value of each period. Defaults to
-None, which is "daily": the series at the dates they are observed, so a monthly
-series is counted month by month.
-- <u>column (str, optional):</u> The historical data column to measure. Defaults to "Close", the
-traded close of the tickers and the series themselves with data=; "Return" measures
-their changes.
-- <u>spread_over (str &#124; None, optional):</u> The name of a series to subtract from every
-other series, so the streaks of the spreads over it are measured instead (named
-"<series> - <spread_over>"), e.g. producer price inflation over consumer price
-inflation. The spread exists on the dates both series have, so with
-period="daily" a weekly series minus a daily one is measured on the weekly dates.
-Defaults to None, which measures the series themselves.
-- <u>ratio (bool, optional):</u> Whether to divide every other series by the spread_over
-series instead of subtracting it (named "<series> / <spread_over>"). Defaults
-to False.
-- <u>level (float &#124; None, optional):</u> The level the runs are measured against, so the
-runs are above or below it ("27 years below 2%") with the signs "Above Level",
-"Below Level" and "At Level". Defaults to None, which is zero: the sign of the
-values.
-- <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
-Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the class (4 unless set otherwise).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per series the Start Date and number of Observations of its history,
-the Latest Date and Latest Value, the Sign of the current run with its Run Start and
-Run Length, the Previous Sign, Previous Run Start, Previous Run End and Previous Run
-Length, and the Longest Earlier Run Start, End and Length. The dates are text (the
-dates of the observations, or the periods, e.g. 2022-10 with period="monthly"), the
-lengths are numbers of observations and a run that does not exist is NaN.
-
-**Notes:**
-
-- The runs are counted within the history, which starts at the start date of the data:
-a run that began before it is counted from the first observation, which the Run Start
-or Previous Run Start then equals.
-- A value of exactly zero is a run of its own, so it ends a positive or negative run.
-- Each series uses its own history, and the latest value is the last observation up to
-the end date, which Latest Date shows.
-
-**As an example:**
-
-```python
-from financetoolkit import Economics, Econometrics
-
-economics = Economics(api_key="FINANCIAL_MODELING_PREP_KEY")
-
-prices = economics.get_economic_calendar(
-    start_date="2021-06-01",
-    end_date="2026-11-09",
-    countries="China",
-    events="Producer Price Index YoY,Inflation Rate YoY",
-    impact="All",
-    as_series=True,
-)
-
-econometrics = Econometrics(
-    data=prices["China"][["Producer Price Index YoY", "Inflation Rate YoY"]]
-)
-
-econometrics.get_streaks(period="monthly").T
-```
-
-Which returns:
-
-|                            | Producer Price Index YoY   | Inflation Rate YoY   |
-|:---------------------------|:---------------------------|:---------------------|
-| Start Date                 | 2021-05                    | 2021-05              |
-| Observations               | 66                         | 66                   |
-| Latest Date                | 2026-10                    | 2026-10              |
-| Latest Value               | 0.057                      | 0.007                |
-| Sign                       | Positive                   | Positive             |
-| Run Start                  | 2026-03                    | 2025-10              |
-| Run Length                 | 8                          | 13                   |
-| Previous Sign              | Negative                   | Negative             |
-| Previous Run Start         | 2022-10                    | 2025-08              |
-| Previous Run End           | 2026-02                    | 2025-09              |
-| Previous Run Length        | 41                         | 2                    |
-| Longest Earlier Run Start  | 2021-05                    | 2021-05              |
-| Longest Earlier Run End    | 2022-09                    | 2023-05              |
-| Longest Earlier Run Length | 17                         | 25                   |
 
 ---
 

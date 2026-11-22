@@ -2,7 +2,7 @@
 title: Binomial Trees in the Finance Toolkit
 seo_title: "Binomial Option Pricing in Python"
 date: 2024-02-09
-last_modified_at: 2026-11-18
+last_modified_at: 2026-11-22
 permalink: /articles/binomial-trees
 excerpt: "Binomial trees are a popular method for pricing options and other derivatives. The Finance Toolkit includes a function for binomial trees, which can price European and American options. This article provides an overview of the binomial tree module and demonstrates its use in option pricing."
 description: "How binomial trees price European and American options, step by step, with worked examples and Python code from the Finance Toolkit."
@@ -290,7 +290,7 @@ Three steps keep the trees readable, but three steps is a coarse picture of a ye
 {% capture code_convergence %}
 ```python
 # pip install financetoolkit
-from financetoolkit.options import binomial_trees_model, black_scholes_model
+from financetoolkit.options.pricing import binomial_trees_model, black_scholes_model
 
 inputs = dict(stock_price=100, strike_price=90, years=1, risk_free_rate=0.02,
               volatility=0.25, dividend_yield=0.005)
@@ -324,7 +324,7 @@ pip install financetoolkit -U
 The core model function takes every parameter by hand, which makes it easy to reproduce the four trees above before moving on to real company data:
 
 ```python
-from financetoolkit.options import binomial_trees_model
+from financetoolkit.options.pricing import binomial_trees_model
 
 # Calculate European Call option payoffs
 option_pay_off_ec = binomial_trees_model.get_option_payoffs(

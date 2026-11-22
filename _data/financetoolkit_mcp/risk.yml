@@ -360,3 +360,53 @@ get_tail_dependence_coefficient:
     tickers: "AAPL,JPM,XOM,^STOXX50E"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_marginal_expected_shortfall:
+  question: What was the marginal expected shortfall of JPMorgan Chase, Bank of America, Citigroup and Goldman Sachs, their average return on the market's worst 5% of days, in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: JPM,BAC,C,GS
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_srisk:
+  question: How much capital would JPMorgan Chase, Bank of America and Citigroup each have needed in a severe market decline, and what share of their combined shortfall was Citigroup's, in each year from 2021 to 2025, according to SRISK?
+  tool: risk
+  arguments:
+    tickers: JPM,BAC,C
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    quarterly: true
+get_corwin_schultz_spread:
+  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily highs and lows with the Corwin-Schultz method?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+get_abdi_ranaldo_spread:
+  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily closes, highs and lows with the Abdi-Ranaldo method?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+get_edge_spread:
+  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily open, high, low and close prices with the EDGE method?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+get_share_turnover:
+  question: What share of their outstanding shares did Snap, Etsy and Lyft trade in each month of the first half of 2025?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+get_idiosyncratic_volatility:
+  question: How volatile were Apple, Tesla and Coca-Cola apart from the market's moves in each month of the first half of 2025?
+  tool: risk
+  arguments:
+    tickers: AAPL,TSLA,KO
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"

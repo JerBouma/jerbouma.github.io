@@ -2,7 +2,7 @@
 
 import pandas as pd
 from financetoolkit import Economics
-from financetoolkit.economics import oecd_model
+from financetoolkit.economics.sources import oecd_model
 
 from .common import frame_chart, label, line
 

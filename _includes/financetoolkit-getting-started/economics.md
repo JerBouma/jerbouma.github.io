@@ -133,7 +133,7 @@ The index is nominal, so high inflation shows up in it directly: Turkey's index 
 The Economics class is a thin layer over the models that collect the data, so you can also call those models yourself. That is useful when you want the full history rather than the window set by `start_date`, as the models return everything the source has. To get the quarterly unemployment rate for all countries straight from the OECD model:
 
 ```python
-from financetoolkit.economics import oecd_model
+from financetoolkit.economics.sources import oecd_model
 
 unemployment_rate = oecd_model.get_unemployment_rate(period="quarterly")
 

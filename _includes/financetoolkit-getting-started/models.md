@@ -257,7 +257,7 @@ None of the four comes close to Graham's limit: Tesla's price of $373.71 is 15.8
 Every model is also available as a plain function in `financetoolkit.models`, so you can run it on your own numbers without the `Toolkit` class. This is useful when you have data from another source or want to test a scenario. The example below fills the DuPont analysis with Apple's reported figures for fiscal 2018 to 2022:
 
 ```python
-from financetoolkit.models import dupont_model
+from financetoolkit.models.profitability import dupont_model
 
 years = [2018, 2019, 2020, 2021, 2022]
 

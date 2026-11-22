@@ -438,7 +438,7 @@ def black_death_charts() -> dict:
 def binomial_charts() -> dict:
     """The convergence chart of /articles/binomial-trees: the article's option priced
     with 1 to 200 steps, against Black-Scholes, and the early-exercise value of the put."""
-    from financetoolkit.options import binomial_trees_model, black_scholes_model
+    from financetoolkit.options.pricing import binomial_trees_model, black_scholes_model
 
     inputs = {"stock_price": 100, "strike_price": 90, "years": 1, "risk_free_rate": 0.02,
               "volatility": 0.25, "dividend_yield": 0.005}

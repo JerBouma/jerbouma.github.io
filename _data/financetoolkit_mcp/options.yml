@@ -371,3 +371,16 @@ get_implied_move:
   arguments:
     tickers: AAPL,NVDA
     around_earnings: true
+get_risk_neutral_moments:
+  question: What volatility, skewness and kurtosis do the option prices of the S&P 500 and Apple imply for their three nearest expirations?
+  tool: options
+  arguments:
+    tickers: ^SPX,AAPL
+    number_of_expirations: 3
+    show_columns: Volatility,Skewness,Kurtosis
+get_skew_index:
+  question: What is the SKEW index of the S&P 500 and Apple, and which near-term and next-term expirations is it based on?
+  tool: options
+  arguments:
+    tickers: ^SPX,AAPL
+    show_columns: Near-Term Expiration,Next-Term Expiration,Skewness,SKEW Index

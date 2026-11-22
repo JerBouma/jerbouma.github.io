@@ -1,9 +1,14 @@
 """Charts for the External Datasets guide (/projects/financetoolkit/docs/external-datasets).
 
 The statements and normalisation files are the ones in examples/external_datasets of the
-Finance Toolkit repository, read here from the local mirror of that repository.
+Finance Toolkit repository. That folder was removed in FinanceToolkit #271, so extract it from
+the commit before and point FT_EXTERNAL_DATASETS at it:
+
+    git -C /sources/finance-toolkit archive 5b2ccab^ examples/external_datasets | tar -x -C <dir>
+    FT_EXTERNAL_DATASETS=<dir>/examples/external_datasets
 """
 
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -12,7 +17,7 @@ from financetoolkit.utilities import dataframe_model
 
 from .common import API_KEY, frame_chart, label, line, values
 
-FOLDER = Path("/sources/finance-toolkit/examples/external_datasets")
+FOLDER = Path(os.environ.get("FT_EXTERNAL_DATASETS", "/sources/finance-toolkit/examples/external_datasets"))
 NAMES = {"TSLA": "Tesla", "GOOGL": "Alphabet", "Benchmark": "S&P 500"}
 
 # the frames behind the charts, kept for checking the numbers in the text
@@ -37,7 +42,6 @@ def build() -> dict:
         income=income,
         cash=cash,
         format_location=str(FOLDER),
-        reverse_dates=True,
     )
     charts = {}
 
@@ -121,7 +125,6 @@ def build() -> dict:
             cash=cash,
             api_key=API_KEY,
             format_location=str(FOLDER),
-            reverse_dates=True,
         )
         estimates = with_key.get_analyst_estimates()
         LAST["estimates"] = estimates

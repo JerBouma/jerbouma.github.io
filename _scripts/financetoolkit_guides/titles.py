@@ -115,6 +115,8 @@ TITLES = {
     "getting-started-surprise": "Revenue Surprise",
     "getting-started-esg": "ESG Scores",
     "getting-started-segments": "Apple's Revenue per Product and Region",
+    "getting-started-parameters": "Trailing, Standardized and Rolling Metrics",
+    "getting-started-earnings": "Revenue Surprise and ESG Scores",
     # ETF
     "etf-sectors": "Sector Weightings",
     "etf-concentration": "Concentration and Overlap",

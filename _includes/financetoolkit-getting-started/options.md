@@ -177,12 +177,12 @@ The at-the-money option has the highest Gamma, Vega and Theta: it is the most se
 
 ### Greeks Against the Stock Price
 
-The Toolkit calculates the Greeks over a range of strike prices, but every formula is also available as a plain function in `financetoolkit.options.greeks_model`. That makes it straightforward to vary any other input instead, such as the stock price.
+The Toolkit calculates the Greeks over a range of strike prices, but every formula is also available as a plain function in `financetoolkit.options.greeks.greeks_model`. That makes it straightforward to vary any other input instead, such as the stock price.
 
 To calculate the Delta of a call and a put and the Gamma of a $100 strike option with six months to expiration, for stock prices from $50 to $150 in steps of $2:
 
 ```python
-from financetoolkit.options import greeks_model
+from financetoolkit.options.greeks import greeks_model
 
 STRIKE_PRICE = 100
 RISK_FREE_RATE = 0.05

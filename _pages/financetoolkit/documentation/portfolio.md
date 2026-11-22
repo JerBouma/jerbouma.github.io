@@ -489,13 +489,15 @@ The following columns are included:
 - Benchmark Volatility: The annualized volatility of the benchmark's daily returns over the most recent 252 trading days.
 - Alpha: The alpha is based on the difference between the asset's return and the benchmark return.
 - Beta: The beta of the asset's daily returns against the benchmark's over the most recent 252 trading days, the window of the Volatility column. A beta >1 indicates that the asset is more volatile than the benchmark and a beta <1 indicates that the asset is less volatile than the benchmark.
-- Weight: The weight of the asset in the portfolio based on the latest market value and the total market value of the portfolio.
+- Weight: The weight of the asset in the portfolio based on the latest market value and the total market value of the portfolio. With short positions the total is the net value, so a weight can be negative or above 1.
 
 Positions are valued at the traded closing price, the basis of the transaction prices, and dividends are added as cash, for the asset and the benchmark alike, so Return and Benchmark Return are total returns on the same basis.
 
 No inventory method (FIFO, LIFO or average cost) is applied here: "Return" measures the result of every unit of currency put into the position rather than the basis of the units that happen to remain. The inventory methods drive the realized PnL in get_transactions_overview instead.
 
 The "Portfolio" row sums or averages units of different assets for "Volume", "Price" and "Latest Price", so those three carry no economic meaning at the portfolio level.
+
+Units held of an asset without a price, such as a ticker without data, are worth an unknown amount rather than nothing. The value of the portfolio is then unknown, so every "Weight" and the "Portfolio" row's value, return, alpha, volatility and beta are NaN; its "Invested", "Costs" and "Dividends" remain.
 
 When recalculating these numbers, it is important to note that results are calculated before the rounding parameter is applied which can lead to some discrepancies in the results.
 
@@ -505,8 +507,9 @@ This method computes a detailed overview of the portfolio, calculating various k
 
 - <u>include_portfolio (bool):</u> A boolean flag indicating whether the portfolio itself should be included
 in the overview. Defaults to `True`.
-- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions from the overview. Defaults
-to True.
+- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions from the overview,
+those whose sales add up to their purchases. Open positions stay, long or short, and so does the
+Portfolio row while any position is open. Defaults to True.
 - <u>rounding (int &#124; None):</u> An optional integer specifying the number of decimal places to round the data.
 If None, the default rounding precision is used.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -546,16 +549,16 @@ Which returns:
 
 | Identifier   |   Volume |   Costs |    Price |   Invested |   Latest Price |   Latest Value |   Dividends |   Return |   Return Value |   Benchmark Return |   Volatility |   Benchmark Volatility |   Alpha |    Beta |   Weight |
 |:-------------|---------:|--------:|---------:|-----------:|---------------:|---------------:|------------:|---------:|---------------:|-------------------:|-------------:|-----------------------:|--------:|--------:|---------:|
-| MPWR         |      116 |     -27 | 250.893  |  30636     |       1140.12  |      132254    |    3301.39  |   3.4394 |      105369    |             0.7644 |       0.5485 |                 0.1274 |  2.675  |  2.5783 |   0.1365 |
-| MSFT         |      105 |     -11 |  50.1726 |   5529.99  |        524.51  |       55073.6  |    3367.52  |   9.5947 |       53058.8  |             3.3786 |       0.3292 |                 0.1274 |  6.2161 |  1.0354 |   0.0569 |
-| NFLX         |      114 |     -32 |  13.0791 |   1666.89  |         65.85  |        7506.9  |       0     |   3.6304 |        6051.53 |             1.3813 |       0.3572 |                 0.1274 |  2.2491 |  0.2488 |   0.0077 |
-| NVDA         |       69 |     -27 |   2.1717 |    202.909 |        210.96  |       14556.2  |      49.646 |  71.138  |       14434.5  |             1.0556 |       0.3761 |                 0.1274 | 70.0824 |  1.9435 |   0.015  |
-| OXY          |       27 |     -15 |  52.3833 |   2005.56  |         64.17  |        1732.59 |     876.077 |   0.5181 |        1039    |             2.7097 |       0.3494 |                 0.1274 | -2.1916 | -0.7819 |   0.0018 |
-| SKY          |      126 |     -23 |  24.4134 |   3343.23  |         78.92  |        9943.92 |     901.062 |   2.3234 |        7767.74 |             4.8301 |       0.4542 |                 0.1274 | -2.5067 |  1.0893 |   0.0103 |
-| VOO          |       77 |     -12 | 256.027  |  20238.2   |        698.58  |       53790.7  |    3863.3   |   1.867  |       37784.6  |             1.6782 |       0.1268 |                 0.1274 |  0.1888 |  0.9928 |   0.0555 |
-| VSS          |       98 |     -21 |  94.9125 |  10366.5   |        149.35  |       14636.3  |    3122.51  |   0.8093 |        8390.01 |             2.4396 |       0.1664 |                 0.1274 | -1.6303 |  1.0607 |   0.0151 |
-| WMT          |       92 |     -18 |  22.2477 |   2265.02  |        119.89  |       11029.9  |     965.758 |   4.37   |        9898.01 |             3.409  |       0.2626 |                 0.1274 |  0.9609 | -0.0971 |   0.0114 |
-| Portfolio    |     2142 |    -532 |  55.8595 | 134818     |        452.235 |      968688    |   35730.9   |   8.8928 |      878276    |             2.5365 |       0.2752 |                 0.1274 |  6.3563 |  1.7913 |   1      |
+| MPWR         |      116 |     -27 | 250.893  |  30636     |       1314     |      152424    |   3301.39   |   4.0978 |     125539     |             0.7169 |       0.5874 |                 0.1374 |  3.3809 |  2.6395 |   0.163  |
+| MSFT         |      105 |     -11 |  50.1726 |   5529.99  |        517.99  |       54388.9  |   3367.52   |   9.4709 |      52374.2   |             3.2604 |       0.3393 |                 0.1374 |  6.2105 |  1.0243 |   0.0582 |
+| NFLX         |      114 |     -32 |  13.0791 |   1666.89  |         60.75  |        6925.5  |      0      |   3.2816 |       5470.13  |             1.3201 |       0.3632 |                 0.1374 |  1.9616 |  0.292  |   0.0074 |
+| NVDA         |       69 |     -27 |   2.1717 |    202.909 |        156.14  |       10773.7  |     49.6373 |  52.4962 |      10651.9   |             1.004  |       0.388  |                 0.1374 | 51.4922 |  1.7966 |   0.0115 |
+| OXY          |       27 |     -15 |  52.3833 |   2005.56  |         57.36  |        1548.72 |    876.061  |   0.4264 |        855.115 |             2.6148 |       0.3558 |                 0.1374 | -2.1884 | -0.6839 |   0.0017 |
+| SKY          |      126 |     -23 |  24.4134 |   3343.23  |         92.02  |       11594.5  |    901.062  |   2.8171 |       9418.34  |             4.6739 |       0.4394 |                 0.1374 | -1.8567 |  1.1355 |   0.0124 |
+| VOO          |       77 |     -12 | 256.027  |  20238.2   |        680.26  |       52380    |   3925.88   |   1.8004 |      36436.5   |             1.606  |       0.1368 |                 0.1374 |  0.1944 |  0.994  |   0.056  |
+| VSS          |       98 |     -21 |  94.9125 |  10366.5   |        144.89  |       14199.2  |   3069.98   |   0.7621 |       7900.4   |             2.3488 |       0.175  |                 0.1374 | -1.5867 |  1.0539 |   0.0152 |
+| WMT          |       92 |     -18 |  22.2477 |   2265.02  |        128.41  |       11813.7  |    965.737  |   4.716  |      10681.8   |             3.2913 |       0.2686 |                 0.1374 |  1.4248 | -0.06   |   0.0126 |
+| Portfolio    |     2142 |    -532 |  55.8595 | 134818     |        436.564 |      935121    |  31003.8    |   8.0831 |     839982     |             2.3122 |       0.2971 |                 0.1374 |  5.7709 |  1.7916 |   1      |
 
 ---
 
@@ -570,7 +573,8 @@ This method calculates key performance metrics, such as returns, for the portfol
 It can be one of the following: 'yearly', 'quarterly', 'monthly', 'weekly', or 'daily'.
 If None, the default period is 'quarterly' (if the 'quarterly' attribute is set to True),
 otherwise, it defaults to 'yearly'.
-- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude sold positions. Defaults to True.
+- <u>exclude_sold_positions (bool):</u> A flag indicating whether to exclude the periods in which a position was
+sold, its sales adding up to its purchases. Open positions stay, long or short. Defaults to True.
 - <u>rounding (int &#124; None):</u> The number of decimal places to round the output to.
 If None, it defaults to the rounding precision specified in the configuration.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -609,16 +613,16 @@ Which returns:
 
 |                                                    |   Volume |   Costs |   Invested Amount |   Realized Proceeds |   Dividends |   Current Value |   Invested Weight |   Current Weight |   Return |
 |:---------------------------------------------------|---------:|--------:|------------------:|--------------------:|------------:|----------------:|------------------:|-----------------:|---------:|
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'META') |       15 |      -1 |          4813.61  |               0     |      81.125 |        10780    |            0.0357 |           0.0099 |   1.2563 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'MPWR') |      116 |     -27 |         30636     |             449.4   |    3301.39  |       160810    |            0.2272 |           0.147  |   4.3715 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'MSFT') |      105 |     -11 |          5529.99  |             147.7   |    3367.52  |        56182.3  |            0.041  |           0.0513 |   9.7952 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'NFLX') |      114 |     -32 |          1666.89  |             211.515 |       0     |         8014.2  |            0.0124 |           0.0073 |   3.9348 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'NVDA') |       69 |     -27 |           202.909 |              31.547 |      49.646 |        15820.3  |            0.0015 |           0.0145 |  77.3678 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'OXY')  |       27 |     -15 |          2005.56  |             435.898 |     876.077 |         1622.97 |            0.0149 |           0.0015 |   0.4634 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'SKY')  |      126 |     -23 |          3343.23  |             265.99  |     901.062 |        10033.4  |            0.0248 |           0.0092 |   2.3502 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'VOO')  |       77 |     -12 |         20238.2   |             368.76  |    3863.3   |        55100.4  |            0.1501 |           0.0504 |   1.9317 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'VSS')  |       98 |     -21 |         10366.5   |             997.66  |    3122.51  |        15201.8  |            0.0769 |           0.0139 |   0.8639 |
-| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'WMT')  |       92 |     -18 |          2265.02  |             167.39  |     965.758 |        10244.2  |            0.0168 |           0.0094 |   4.0231 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'META') |       15 |      -1 |          4813.61  |               0     |     81.125  |        10780    |            0.0357 |           0.0099 |   1.2563 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'MPWR') |      116 |     -27 |         30636     |             449.4   |   3301.39   |       160810    |            0.2272 |           0.147  |   4.3715 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'MSFT') |      105 |     -11 |          5529.99  |             147.7   |   3367.52   |        56182.4  |            0.041  |           0.0513 |   9.7952 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'NFLX') |      114 |     -32 |          1666.89  |             211.515 |      0      |         8014.2  |            0.0124 |           0.0073 |   3.9348 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'NVDA') |       69 |     -27 |           202.909 |              31.547 |     49.6373 |        15820.3  |            0.0015 |           0.0145 |  77.3678 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'OXY')  |       27 |     -15 |          2005.56  |             435.898 |    876.061  |         1622.97 |            0.0149 |           0.0015 |   0.4634 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'SKY')  |      126 |     -23 |          3343.23  |             265.99  |    901.062  |        10033.4  |            0.0248 |           0.0092 |   2.3502 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'VOO')  |       77 |     -12 |         20238.2   |             368.76  |   3925.88   |        55100.4  |            0.1501 |           0.0504 |   1.9348 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'VSS')  |       98 |     -21 |         10366.5   |             997.66  |   3069.98   |        15201.8  |            0.0769 |           0.0139 |   0.8588 |
+| (Period('2026-10-05/2026-10-11', 'W-SUN'), 'WMT')  |       92 |     -18 |          2265.02  |             167.39  |    965.737  |        10244.2  |            0.0168 |           0.0094 |   4.0231 |
 
 ---
 
@@ -754,6 +758,9 @@ with creating the transaction performance metrics.
 configuration.
 - The end-of-period prices and dividends are taken from the daily data, in the currency of
 each ticker's transactions for the asset and the benchmark alike.
+- A transaction on a day without a price, such as a weekend, belongs to the period of the
+next trading day, the day it is priced on and receives dividends from; a transaction after
+the last date belongs to the period of the last date.
 - If no rounding is specified, the rounding precision from the configuration is used.
 
 **As an example:**
@@ -770,7 +777,7 @@ Which returns:
 
 |                                      |   Volume |   Price |   Costs |   Invested Amount |   Realized Proceeds |   Current Value |   Dividends |   Return |   Benchmark Return |   Alpha |
 |:-------------------------------------|---------:|--------:|--------:|------------------:|--------------------:|----------------:|------------:|---------:|-------------------:|--------:|
-| (Period('2023Q4', 'Q-DEC'), 'MCHI')  |       15 |   43.29 |      -3 |            652.35 |                   0 |          611.1  |     14.9115 |  -0.0404 |             0.0856 | -0.1259 |
+| (Period('2023Q4', 'Q-DEC'), 'MCHI')  |       15 |   43.29 |      -3 |            652.35 |                   0 |          611.1  |     14.912  |  -0.0404 |             0.0856 | -0.1259 |
 | (Period('2024Q1', 'Q-DEC'), 'BAC')   |        5 |   33.62 |      -3 |            171.1  |                   0 |          189.6  |      1.2    |   0.1151 |             0.028  |  0.0872 |
 | (Period('2024Q1', 'Q-DEC'), 'GOOGL') |       14 |  141.16 |       0 |           1976.24 |                   0 |         2113.02 |      0      |   0.0692 |             0.071  | -0.0018 |
 | (Period('2024Q1', 'Q-DEC'), 'MCHI')  |        7 |   39.77 |      -1 |            279.39 |                   0 |          278.11 |      0      |  -0.0046 |             0.0292 | -0.0338 |
@@ -778,7 +785,7 @@ Which returns:
 | (Period('2024Q2', 'Q-DEC'), 'CAMT')  |        4 |   94.11 |       0 |            376.44 |                   0 |          500.96 |      0      |   0.3308 |             0.0407 |  0.29   |
 | (Period('2024Q2', 'Q-DEC'), 'META')  |        8 |  507.47 |       0 |           4059.76 |                   0 |         4033.76 |      4      |  -0.0054 |             0.0158 | -0.0213 |
 | (Period('2024Q2', 'Q-DEC'), 'MPWR')  |       14 |  852.56 |      -1 |          11936.8  |                   0 |        11503.5  |     17.5    |  -0.0348 |            -0.0049 | -0.0299 |
-| (Period('2024Q4', 'Q-DEC'), 'MCHI')  |        6 |   49.85 |       0 |            299.1  |                   0 |          281.16 |      5.3466 |  -0.0421 |             0.0127 | -0.0548 |
+| (Period('2024Q4', 'Q-DEC'), 'MCHI')  |        6 |   49.85 |       0 |            299.1  |                   0 |          281.16 |      5.3464 |  -0.0421 |             0.0127 | -0.0548 |
 | (Period('2024Q4', 'Q-DEC'), 'VOO')   |       11 |  549.03 |       0 |           6039.33 |                   0 |         5926.91 |     19.1235 |  -0.0154 |            -0.0173 |  0.0019 |
 
 ---
@@ -825,33 +832,33 @@ Which returns:
 
 |           |   Invested |   Received |   Dividends |   Latest Value | First Transaction   |   Money-Weighted Return |
 |:----------|-----------:|-----------:|------------:|---------------:|:--------------------|------------------------:|
-| ASML      |   6348.35  |    736.149 |    8610.47  |      202762    | 2000-01-07          |                  0.2123 |
-| SKY       |   3339.23  |    261.99  |     901.062 |        9943.92 | 2000-01-10          |                  0.0652 |
-| AMZN      |   5042.91  |    192.851 |       0     |       28768    | 2000-01-28          |                  0.2054 |
-| FIX       |   1976.93  |     18.43  |    1294.06  |      141625    | 2000-02-23          |                  0.2513 |
-| MSFT      |   5529.99  |    147.7   |    3367.52  |       55073.6  | 2000-02-28          |                  0.1359 |
-| AMD       |   2384.36  |   1431.84  |       0     |       40309.6  | 2000-04-27          |                  0.1462 |
-| AAPL      |   5750.96  |    266.963 |    1246.48  |       47639    | 2000-05-08          |                  0.2784 |
-| FICO      |   4917.94  |    576.42  |     102.122 |       94576    | 2000-06-01          |                  0.1659 |
-| BAC       |   2401.58  |    303.8   |     888.08  |        4044.8  | 2000-11-16          |                  0.0672 |
-| ALGN      |   9918     |    324.77  |       0     |       12515.3  | 2001-09-18          |                  0.0334 |
-| CWST      |   1373.89  |     91.95  |       0     |        6149.43 | 2001-10-15          |                  0.1339 |
-| OXY       |   1994.56  |    424.898 |     876.077 |        1732.59 | 2001-11-16          |                  0.0404 |
-| WMT       |   2261.02  |    163.39  |     965.758 |       11029.9  | 2001-12-28          |                  0.1285 |
-| CAMT      |    546.73  |    104.06  |      67.87  |        5088.72 | 2002-08-07          |                  0.2856 |
-| NVDA      |    201.303 |     29.941 |      49.646 |       14556.2  | 2002-09-20          |                  0.3245 |
-| NFLX      |   1662.85  |    207.478 |       0     |        7506.9  | 2002-11-18          |                  0.207  |
-| GOOGL     |   4668.1   |    359.26  |     304.08  |       46750.7  | 2004-08-24          |                  0.2196 |
-| MPWR      |  30633     |    446.4   |    3301.39  |      132254    | 2005-09-16          |                  0.2745 |
-| BLDR      |   1682.82  |    121.254 |       0     |        2728.8  | 2006-12-22          |                  0.1004 |
-| VSS       |  10364.5   |    995.66  |    3122.51  |       14636.3  | 2009-06-05          |                  0.0765 |
-| AVGO      |   1568.81  |    134.64  |    6096.41  |       21230.9  | 2009-11-02          |                  0.5773 |
-| MCHI      |   2965.43  |    139.96  |     336.097 |        2646    | 2011-04-26          |                  0.0093 |
-| VOO       |  20238.2   |    368.76  |    3863.3   |       53790.7  | 2011-12-20          |                  0.1506 |
-| META      |   4813.61  |      0     |      81.125 |        9639.3  | 2012-06-20          |                  0.1931 |
-| KHC       |    722.41  |    242.21  |     108.25  |         223.2  | 2017-03-07          |                 -0.0525 |
-| EMXC      |   1403.3   |    477.33  |     148.616 |        1467.36 | 2019-05-03          |                  0.0893 |
-| Portfolio | 134711     |   8568.1   |   35730.9   |      968688    | 2000-01-07          |                  0.1763 |
+| ASML      |   6348.35  |    736.149 |   8880.87   |      181476    | 2000-01-07          |                  0.2066 |
+| SKY       |   3339.23  |    261.99  |    901.062  |       11594.5  | 2000-01-10          |                  0.0718 |
+| AMZN      |   5042.91  |    192.851 |      0      |       29899    | 2000-01-28          |                  0.2079 |
+| FIX       |   1976.93  |     18.43  |   1416.06   |      129037    | 2000-02-23          |                  0.2456 |
+| MSFT      |   5529.99  |    147.7   |   3367.52   |       54388.9  | 2000-02-28          |                  0.1349 |
+| AMD       |   2384.36  |   1431.84  |      0      |       39333.8  | 2000-04-27          |                  0.1447 |
+| AAPL      |   5750.96  |    266.963 |   1283.5    |       48330.9  | 2000-05-08          |                  0.2783 |
+| FICO      |   4917.94  |    576.42  |    102.132  |       83204.5  | 2000-06-01          |                  0.1585 |
+| BAC       |   2401.58  |    303.8   |    888.08   |        4006.4  | 2000-11-16          |                  0.0665 |
+| ALGN      |   9918     |    324.77  |      0      |       13444.4  | 2001-09-18          |                  0.0419 |
+| CWST      |   1373.89  |     91.95  |      0      |        6465.06 | 2001-10-15          |                  0.1368 |
+| OXY       |   1994.56  |    424.898 |    876.061  |        1548.72 | 2001-11-16          |                  0.0352 |
+| WMT       |   2261.02  |    163.39  |    965.737  |       11813.7  | 2001-12-28          |                  0.132  |
+| CAMT      |    546.73  |    104.06  |     67.87   |        3916.5  | 2002-08-07          |                  0.2678 |
+| NVDA      |    201.303 |     29.941 |     49.6373 |       10773.7  | 2002-09-20          |                  0.3045 |
+| NFLX      |   1662.85  |    207.478 |      0      |        6925.5  | 2002-11-18          |                  0.1972 |
+| GOOGL     |   4668.1   |    359.26  |    304.08   |       41423.1  | 2004-08-24          |                  0.2094 |
+| MPWR      |  30633     |    446.4   |   3301.39   |      152424    | 2005-09-16          |                  0.2877 |
+| BLDR      |   1682.82  |    121.254 |      0      |        2887.2  | 2006-12-22          |                  0.1084 |
+| VSS       |  10364.5   |    995.66  |   3069.98   |       14199.2  | 2009-06-05          |                  0.0725 |
+| AVGO      |   1568.81  |    134.64  |    935.747  |       22004.4  | 2009-11-02          |                  0.375  |
+| MCHI      |   2965.43  |    139.96  |    327.316  |        2648.7  | 2011-04-26          |                  0.0088 |
+| VOO       |  20238.2   |    368.76  |   3925.88   |       52380    | 2011-12-20          |                  0.1475 |
+| META      |   4813.61  |      0     |     81.125  |        9396.15 | 2012-06-20          |                  0.1842 |
+| KHC       |    722.41  |    242.21  |    108.25   |         225.63 | 2017-03-07          |                 -0.0511 |
+| EMXC      |   1403.3   |    477.33  |    151.542  |        1373.76 | 2019-05-03          |                  0.079  |
+| Portfolio | 134711     |   8568.1   |  31003.8    |      935121    | 2000-01-07          |                  0.1728 |
 
 ---
 
