@@ -71,13 +71,13 @@ classes: custom-splash home-v2
   <div class="hp-spotlight__text">
     <p class="hp-kicker">Featured project</p>
     <h2 class="hp-h2">The Finance Toolkit</h2>
-    <p>An open-source Python library with 500+ financial methods, from ratios and valuation models to risk, performance and econometrics. Every formula is written out, so you can see exactly how a number is calculated. The MCP server makes all of it available to AI assistants such as Claude and ChatGPT.</p>
+    <p>An open-source Python library with 700+ financial methods, from ratios and valuation models to risk, performance and econometrics. Every formula is written out, so you can see exactly how a number is calculated. The MCP server makes all of it available to AI assistants such as Claude and ChatGPT.</p>
     <div class="hp-stats">
       {%- assign ft = site.data.projects.maintained | where: "name", "Finance Toolkit" | first %}
       {%- assign ft_stars = ft.stats | where: "icon", "fa-star" | first %}
       {%- assign ft_dl = ft.stats | where: "icon", "fa-download" | first %}
       <div><strong data-count>{{ ft_stars.value }}</strong><span>GitHub stars</span></div>
-      <div><strong data-count>500+</strong><span>metrics</span></div>
+      <div><strong data-count>700+</strong><span>metrics</span></div>
       <div><strong data-count>{{ ft_dl.value }}</strong><span>downloads</span></div>
     </div>
     <div class="hp-actions">

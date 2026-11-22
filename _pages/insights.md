@@ -88,7 +88,7 @@ I write about the economy, financial markets and how financial theory is applied
 
 <section class="hp-cta" data-reveal>
   <h2 class="hp-h2">Run the analysis yourself</h2>
-  <p>Every calculation in these insights is done with the Finance Toolkit, an open-source Python library with 500+ financial methods. You can also ask an AI assistant to run it for you through its MCP server.</p>
+  <p>Every calculation in these insights is done with the Finance Toolkit, an open-source Python library with 700+ financial methods. You can also ask an AI assistant to run it for you through its MCP server.</p>
   <div class="hp-actions hp-actions--center">
     <a href="/projects/financetoolkit" class="hp-btn hp-btn--primary">Explore the Toolkit <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
     <a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--ghost">Use it with AI</a>

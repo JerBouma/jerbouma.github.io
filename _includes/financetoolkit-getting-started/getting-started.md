@@ -1,6 +1,6 @@
 ## Getting Started
 
-The Finance Toolkit computes 500+ financial ratios, indicators and models from the underlying data with one transparent formula each, so a margin or a Sharpe ratio means the same thing for every company and every period. This section covers the basics: loading a set of companies, retrieving their prices and financial statements, the options that work across nearly every function, and the company data beyond the statements. Each module's own documentation page opens with a Getting Started section of its own.
+The Finance Toolkit computes 700+ financial ratios, indicators and models from the underlying data with one transparent formula each, so a margin or a Sharpe ratio means the same thing for every company and every period. This section covers the basics: loading a set of companies, retrieving their prices and financial statements, the options that work across nearly every function, and the company data beyond the statements. Each module's own documentation page opens with a Getting Started section of its own.
 
 ### Data and API Keys
 
