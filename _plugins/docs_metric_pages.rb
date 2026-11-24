@@ -174,6 +174,37 @@ module DocsMetricPages
     [functions, groups, collectors]
   end
 
+  # the first sentence of a function's description, for the module overview
+  def summary_for(desc)
+    para = desc.split(/\n\s*\n/).map { |p| plain(p) }.find { |p| !p.empty? && !p.start_with?("- ", "|") }.to_s
+    first = para[/\A.+?[.!?](?=\s+[A-Z(]|\z)/m] || para
+    # a sentence that lists every variant is cut at a word, before the list
+    first.length > 200 ? first[0, 200].sub(/[\s,:;(]+\S*\z/, "") + "…" : first
+  end
+
+  # The module page lists every function with a page of its own, grouped as in
+  # the sidebar (the package's topic folders), each with its first sentence.
+  def overview(cls, groups, functions, urls, summaries)
+    listed = groups.reject { |g, _| g == "Modules" }
+                   .map { |g, anchors| [g, anchors.select { |a| urls[a] }] }
+                   .reject { |_, anchors| anchors.empty? }
+    return "" if listed.empty?
+    count = listed.sum { |_, anchors| anchors.size }
+    out = +"## All Methods\n\nThe #{cls[:name]} module has #{count} methods, each with a page of its own:\n\n"
+    out << "<div class=\"docs-overview\">\n"
+    listed.each do |group, anchors|
+      out << "<section class=\"docs-overview__group\">\n<h3>#{CGI.escapeHTML(group)}</h3>\n<ul>\n"
+      anchors.each do |a|
+        summary = summaries[a].to_s
+        out << "<li><a href=\"#{urls[a]}\">#{CGI.escapeHTML(functions[a][:title])}</a>"
+        out << "<span>#{CGI.escapeHTML(summary)}</span>" unless summary.empty?
+        out << "</li>\n"
+      end
+      out << "</ul>\n</section>\n"
+    end
+    out << "</div>\n\n"
+  end
+
   # split a function section into its parts
   def parse(body)
     body = body.sub(/\n---\s*\z/, "").strip
@@ -773,6 +804,7 @@ module DocsMetricPages
       sections = class_page.content.scan(SECTION).to_h { |fn, body| [fn.downcase, [fn, body]] }
 
       urls = {}
+      summaries = {}
       used = CLASSES.keys.to_h { |k| [k, true] } # toolkit pages share /docs/ with the classes
       functions.each do |anchor, info|
         next unless sections.key?(anchor.split("--").first)
@@ -803,6 +835,7 @@ module DocsMetricPages
         related = related_for(anchor, pool, urls).map { |a| { :title => functions[a][:title], :url => urls[a], :group => group } }
 
         description = unique_description(info[:title], description_for(parts[:description]), seen_descriptions)
+        summaries[anchor] = summary_for(parts[:description])
         page = Page.new(site, site.source, url.delete_prefix("/").sub(%r{/[^/]+\z}, ""), "#{url.split('/').last}.md")
         # a variant's page has no MCP question of its own (the function's asks for the default)
         page.content = content_for(site, info[:title], key, fn_name, parts, related, variant ? anchor + "--variant" : fn_name)
@@ -876,7 +909,7 @@ module DocsMetricPages
                 ([paragraphs.first, hint.strip] + paragraphs.drop(1)).join("\n\n")
               end
       class_page.data["sidebar"] = sidebar_data(cls[:nav], "Every function has its own page #{examples_phrase(key)}. Pick one below.")
-      class_page.content = intro.rstrip + "\n\n" + started + "\n" + remaining + <<~HTML
+      class_page.content = intro.rstrip + "\n\n" + started + "\n" + overview(cls, groups, functions, urls, summaries) + remaining + <<~HTML
 
         <script>
           (function () {

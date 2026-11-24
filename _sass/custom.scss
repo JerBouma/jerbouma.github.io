@@ -7276,3 +7276,35 @@ body.article-document {
     margin-right: auto !important;
   }
 }
+
+// Finance Toolkit module pages: every method with a page of its own, by topic
+.page__content .docs-overview {
+  columns: 2;
+  column-gap: 40px;
+  margin: 0 0 2em;
+
+  @media (max-width: 900px) { columns: 1; }
+
+  .docs-overview__group {
+    break-inside: avoid;
+    padding-top: 0.2em;
+
+    h3 {
+      margin: 0.9em 0 0.5em !important;
+      font-size: 1.05rem !important;
+    }
+    ul { margin: 0 !important; padding: 0 !important; list-style: none; }
+    li {
+      margin: 0 0 10px !important;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    a { font-weight: 600; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+  }
+}
