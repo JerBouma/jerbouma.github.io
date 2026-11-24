@@ -334,6 +334,34 @@ module DocsMetricPages
     HTML
   end
 
+  # The example's full result as a scrollable table with a fixed header.
+  def full_output(site, key, fn_name)
+    path = File.join(site.source, "_financetoolkit_docs_outputs", key, "#{fn_name}.json")
+    return nil unless File.exist?(path)
+    data = JSON.parse(File.read(path))
+    rows = data["rows"]
+    # each column with one number of decimals (at most four), as a table of results reads
+    decimals = (1...(data["columns"].size + 1)).map do |i|
+      rows.map { |r| r[i].is_a?(Float) ? (r[i].to_s[/\.(\d+)\z/, 1] || "").sub(/\A0\z/, "").size : 0 }.max.to_i.clamp(0, 4)
+    end
+    cell = lambda do |v, d|
+      return "" if v.nil?
+      return CGI.escapeHTML(v.to_s) unless v.is_a?(Numeric)
+      whole, frac = format("%.#{d}f", v).split(".")
+      whole = whole.reverse.scan(/\d{1,3}/).join(",").reverse.then { |w| v.negative? ? "-#{w}" : w }
+      frac ? "#{whole}.#{frac}" : whole
+    end
+    head = "<th>#{CGI.escapeHTML(data['index'].to_s)}</th>" + data["columns"].map { |c| "<th>#{CGI.escapeHTML(c)}</th>" }.join
+    body = rows.map { |r| "<tr><th scope=\"row\">#{CGI.escapeHTML(r[0].to_s)}</th>" + r[1..].each_with_index.map { |v, i| "<td>#{cell.(v, decimals[i])}</td>" }.join + "</tr>" }
+    total = data["total"] || rows.size
+    count = total > rows.size ? "The first #{commas(rows.size)} of #{commas(total)} rows" : "#{commas(total)} rows"
+    %(<div class="docs-output"><table><thead><tr>#{head}</tr></thead><tbody>\n#{body.join("\n")}\n</tbody></table></div>\n<p class="docs-output__count">#{count}</p>)
+  end
+
+  def commas(n)
+    n.to_s.reverse.scan(/\d{1,3}/).join(",").reverse
+  end
+
   # Tabs (Chart and Table, Python and the MCP question): the first panel shows,
   # the buttons switch (assets/js/docs-tabs.js). Panels hold Markdown.
   def tabs(id, panels)
@@ -481,6 +509,13 @@ module DocsMetricPages
     if has_example
       code, returns, rest = parts[:example].partition(/^Which returns:/)
       result = returns.empty? ? "" : rest.strip
+      # the docstring shows the end of a long result; the page shows all of it
+      # (_scripts/financetoolkit_docs_charts.py runs the example in full)
+      full = full_output(site, key, fn_name) if mcp_key == fn_name
+      if full
+        code = code.sub(/(?:\.(?:tail|head)\(\d*\)|\.iloc\[(?:\[[^\]]*\]|[^\],\[]*)\])(\s*```\s*)\z/, '\1')
+        result = full
+      end
       # the code in Python or the question through the Finance Toolkit MCP,
       # then what both return: a chart where one fits, and the table
       python = +"Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"

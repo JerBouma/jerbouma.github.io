@@ -443,54 +443,54 @@ get_banking_crisis:
     start_date: "2005-01-01"
     end_date: "2025-12-31"
 get_nonfarm_payrolls:
-  question: How did total US nonfarm payroll employment develop from August to December 2025?
+  question: How did total US nonfarm payroll employment develop in 2025?
   tool: jobs
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -12
 get_initial_jobless_claims:
-  question: How many initial jobless claims were filed in the United States in each week from 29 November to 27 December 2025?
+  question: How many initial jobless claims were filed in the United States in each week in 2025?
   tool: jobs
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -52
 get_retail_sales:
-  question: How did monthly US retail and food services sales develop from August to December 2025?
+  question: How did monthly US retail and food services sales develop in 2025?
   tool: macroeconomics
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -12
 get_industrial_production_index:
-  question: How did US industrial production develop each month from August to December 2025?
+  question: How did US industrial production develop each month in 2025?
   tool: macroeconomics
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -12
 get_housing_starts:
-  question: How many new homes were started in the United States, at an annual rate, in each month from August to December 2025?
+  question: How many new homes were started in the United States, at an annual rate, in each month in 2025?
   tool: macroeconomics
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -12
 get_real_personal_income:
-  question: How did US real personal income excluding government transfers develop each month from August to December 2025?
+  question: How did US real personal income excluding government transfers develop each month in 2025?
   tool: macroeconomics
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -12
 get_mortgage_rate_30_year:
-  question: What was the average 30-year fixed US mortgage rate in each week of December 2025?
+  question: What was the average 30-year fixed US mortgage rate in each week of 2025?
   tool: rates
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -53
 get_recession_indicator:
   question: Did the NBER date any month from August to December 2025 as a US recession?
   tool: macroeconomics
@@ -771,12 +771,12 @@ get_continuing_jobless_claims:
     period: monthly
     limit: -5
 get_insured_unemployment_rate:
-  question: What was the insured unemployment rate in the United States in the last five weeks of 2025?
+  question: What was the insured unemployment rate in the United States in 2025?
   tool: jobs
   arguments:
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -52
 get_net_international_investment_position:
   question: How did the net international investment position of the United States, the Netherlands, Spain and Japan, in millions of national currency, develop from 2015 to 2025?
   tool: macroeconomics

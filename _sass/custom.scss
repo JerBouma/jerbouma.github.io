@@ -7312,3 +7312,20 @@ body.article-document {
 
   .docs-tabs__panel > :last-child { margin-bottom: 0; }
 }
+
+// The full result of an example: every row, scrolling in a box with a fixed header
+.page__content .docs-output {
+  max-height: 460px;
+  overflow: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+
+  // the site wraps every table in a scroller of its own; here the box scrolls, so the header sticks to it
+  .table-scroll { overflow: visible !important; border: 0 !important; margin: 0 !important; border-radius: 0 !important; }
+  table { margin: 0 !important; border: 0; font-size: 13px; width: 100%; display: table; overflow: visible !important; }
+  // a solid header (the card colour is see-through) so rows don't show through it
+  thead th { position: sticky; top: 0; z-index: 1; background: var(--masthead-bg) !important; white-space: nowrap; }
+  th, td { padding: 6px 12px !important; text-align: right; white-space: nowrap !important; }
+  th:first-child { text-align: left; }
+}
+.page__content p.docs-output__count { margin: 6px 0 0; color: var(--text-muted); font-size: 13px; }

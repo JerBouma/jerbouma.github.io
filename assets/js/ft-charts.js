@@ -965,7 +965,127 @@
     show(0);
   }
 
+  // A technical analysis chart as the indicator is usually drawn: the price as
+  // candlesticks with the overlays on it (bands, averages, stops), and an
+  // indicator in its own panel underneath with its usual levels, on one time
+  // axis that zooms both. spec: x, ohlc ([open, close, low, high] per day),
+  // overlays [{name, data, color, dashed, dots}], fill [upper, lower] (the band
+  // between two overlays), lower {series [{name, data, bar, color}], levels,
+  // format, min, max}, zoom (the number of days shown at first).
+  function renderTa(box, chart) {
+    box.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'ft-chart__head';
+    var title = document.createElement('p');
+    title.className = 'ft-chart__title';
+    title.textContent = chart.title || '';
+    head.appendChild(title);
+    if (chart.subtitle) {
+      var sub = document.createElement('p');
+      sub.className = 'ft-chart__subtitle';
+      sub.textContent = chart.subtitle;
+      head.appendChild(sub);
+    }
+    box.appendChild(head);
+    var canvas = document.createElement('div');
+    canvas.className = 'ft-chart__canvas';
+    canvas.style.height = (chart.lower ? 600 : 440) + 'px';
+    box.appendChild(canvas);
+    var inst = initChart(canvas);
+    var UP = '#22c55e', DOWN = '#ef4444';
+    function draw() {
+      var text = css('--text-secondary', '#cbd5e1'), muted = css('--text-muted', '#94a3b8'), grid = css('--card-border', 'rgba(255,255,255,0.1)');
+      var fmt = formatter(chart.format), lowFmt = formatter(chart.lower && chart.lower.format || 'ratio');
+      var lower = chart.lower;
+      var grids = lower ? [{ left: 8, right: 16, top: 40, height: '48%', containLabel: true }, { left: 8, right: 16, top: '63%', bottom: 56, containLabel: true }]
+                        : [{ left: 8, right: 16, top: 40, bottom: 56, containLabel: true }];
+      var axisX = function (i) {
+        return { type: 'category', data: chart.x, gridIndex: i, boundaryGap: true, axisLine: { lineStyle: { color: grid } }, axisTick: { show: false },
+          axisLabel: { show: !lower || i === 1, color: muted, hideOverlap: true, fontSize: 12 }, axisPointer: { label: { show: false } } };
+      };
+      // the price as candlesticks (left out for indicators of a whole market, such as breadth)
+      var series = chart.ohlc ? [{
+        name: chart.priceName || 'Price', type: 'candlestick', data: chart.ohlc.map(function (d) { return d || ['-', '-', '-', '-']; }), xAxisIndex: 0, yAxisIndex: 0, barMaxWidth: 8,
+        itemStyle: { color: UP, color0: DOWN, borderColor: UP, borderColor0: DOWN }
+      }] : [];
+      var names = chart.ohlc ? [chart.priceName || 'Price'] : [];
+      (chart.overlays || []).forEach(function (o, i) {
+        var color = o.color || PALETTE[(i + 1) % PALETTE.length];
+        series.push({ name: o.name, type: 'line', data: o.data, xAxisIndex: 0, yAxisIndex: 0, symbol: 'circle',
+          showSymbol: !!o.dots, showAllSymbol: !!o.dots, symbolSize: o.dots ? 3 : 4, connectNulls: false, step: o.step ? 'end' : false,
+          itemStyle: { color: color }, lineStyle: { width: o.dots ? 0 : 1.6, color: color, type: o.dashed ? 'dashed' : 'solid' } });
+        names.push(o.name);
+      });
+      // the band between two overlays, shaded (Bollinger Bands, channels, the Ichimoku cloud)
+      if (chart.fill) {
+        var up = chart.overlays.filter(function (o) { return o.name === chart.fill[0]; })[0];
+        var dn = chart.overlays.filter(function (o) { return o.name === chart.fill[1]; })[0];
+        if (up && dn) {
+          // one colour for the band, or two (fill_colors): the first where fill[0] is on top
+          var colors = chart.fill_colors || [up.color || PALETTE[1], up.color || PALETTE[1]];
+          [0, 1].forEach(function (side) {
+            if (side === 1 && !chart.fill_colors) return;
+            var on = function (i) {
+              var a = up.data[i], b = dn.data[i];
+              if (a === null || b === null) return false;
+              return chart.fill_colors ? (side === 0 ? a >= b : a < b) : true;
+            };
+            var low = dn.data.map(function (v, i) { return on(i) ? Math.min(v, up.data[i]) : null; });
+            var width = dn.data.map(function (v, i) { return on(i) ? Math.abs(up.data[i] - v) : null; });
+            var stack = 'band' + side;
+            series.unshift(
+              { name: '_low' + side, type: 'line', data: low, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 },
+              { name: '_band' + side, type: 'line', data: width, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: fade(colors[side], 0.14) }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 });
+          });
+        }
+      }
+      var yAxes = [{ type: 'value', scale: true, gridIndex: 0, splitLine: { lineStyle: { color: grid } }, axisLabel: { color: muted, formatter: fmt, fontSize: 12 } }];
+      if (lower) {
+        yAxes.push({ type: 'value', scale: lower.min === undefined, min: lower.min, max: lower.max, gridIndex: 1, splitNumber: 3,
+          splitLine: { lineStyle: { color: grid } }, axisLabel: { color: muted, formatter: lowFmt, fontSize: 12 } });
+        lower.series.forEach(function (l, i) {
+          var color = l.color || PALETTE[(i + (chart.overlays || []).length + 1) % PALETTE.length];
+          var item = { name: l.name, type: l.bar ? 'bar' : 'line', data: l.data, xAxisIndex: 1, yAxisIndex: 1, symbol: 'none', connectNulls: false,
+            itemStyle: { color: color }, lineStyle: { width: 1.6, color: color } };
+          // a histogram above and below zero: positive bars green, negative red
+          if (l.bar && l.signed) item.data = l.data.map(function (v) { return v === null ? null : { value: v, itemStyle: { color: v >= 0 ? fade(UP, 0.7) : fade(DOWN, 0.7) } }; });
+          if (i === 0 && lower.levels) {
+            item.markLine = { silent: true, symbol: 'none', label: { show: true, position: 'end', color: muted, fontSize: 11, formatter: function (p) { return lowFmt(p.value); } },
+              lineStyle: { color: muted, type: 'dashed', width: 1 }, data: lower.levels.map(function (v) { return { yAxis: v }; }) };
+          }
+          series.push(item);
+          names.push(l.name);
+        });
+      }
+      // half the period at first on a phone, where a year of candles is too dense to read
+      var zoom = chart.zoom && canvas.clientWidth < 600 ? Math.round(chart.zoom / 2) : chart.zoom;
+      var start = zoom && chart.x.length > zoom ? 100 * (1 - zoom / chart.x.length) : 0;
+      inst.setOption({
+        animation: false,
+        textStyle: { fontFamily: 'inherit', color: text, fontSize: 13 },
+        legend: { data: names, top: 0, left: 0, textStyle: { color: text, fontSize: 12.5 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll' },
+        tooltip: { trigger: 'axis', axisPointer: { type: 'cross', link: [{ xAxisIndex: 'all' }], lineStyle: { color: muted } },
+          backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: grid, textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 12.5 },
+          valueFormatter: function (v) { return typeof v === 'number' ? fmt(v) : v; } },
+        axisPointer: { link: [{ xAxisIndex: 'all' }] },
+        grid: grids,
+        xAxis: lower ? [axisX(0), axisX(1)] : [axisX(0)],
+        yAxis: yAxes,
+        dataZoom: [
+          { type: 'inside', xAxisIndex: lower ? [0, 1] : [0], start: start, end: 100 },
+          { type: 'slider', xAxisIndex: lower ? [0, 1] : [0], start: start, end: 100, bottom: 8, height: 22, borderColor: grid,
+            textStyle: { color: muted }, fillerColor: 'rgba(56, 189, 248, 0.12)', dataBackground: { lineStyle: { color: muted }, areaStyle: { color: 'rgba(148,163,184,0.15)' } } }
+        ],
+        series: series
+      }, true);
+    }
+    draw();
+    instances.push({ instance: inst, draw: draw });
+    if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
+  }
+
   function render(box, chart) {
+    if (chart.type === 'ta') return renderTa(box, chart);
     if (chart.type === 'panels') return renderPanels(box, chart);
     if (asCards(chart)) return renderCards(box, chart);
     if (chart.type === 'dupont') return renderDupont(box, chart);

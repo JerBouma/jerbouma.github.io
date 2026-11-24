@@ -8,6 +8,10 @@ assets/data/financetoolkit-docs-charts/<module>/<function>.json, which the page
 draws next to the table (Chart and Table tabs).
 
     FINANCIAL_MODELING_PREP_KEY=... python _scripts/financetoolkit_docs_charts.py [module.function ...]
+    FINANCIAL_MODELING_PREP_KEY=... python _scripts/financetoolkit_docs_charts.py --outputs [module.function ...]
+
+The second form writes only the full result of every other example that its
+docstring shortens (.tail(), .head() or a slice of rows at the end).
 
 The chart keys in the YAML:
 
@@ -25,6 +29,14 @@ The chart keys in the YAML:
     split     {column, by, names: {value: name}}: one series per state of `by`
     format    the number format (see assets/js/ft-charts.js)
     title     the chart title; subtitle: a line under it on how to read it
+
+A technical indicator is drawn the way it usually is (chart: ta): the price of
+`price` as candlesticks with `overlays` on it ([{column, color, dashed, dots}],
+`fill` shading between two of them), and `lower`: the indicator in its own panel
+({series: [{column, bar, signed, color}], levels, min, max, format}). `derive`
+adds columns from the result ({name: "f['A'] - f['B']"}) and `zoom` sets how
+many days show at first. The full result is also written to
+_financetoolkit_docs_outputs/<module>/<function>.json for the page's table.
 """
 
 import json
@@ -46,7 +58,12 @@ ROOT = Path(__file__).resolve().parent.parent
 SPECS = ROOT / "_data" / "financetoolkit_docs_charts.yml"
 DOCS = ROOT / "_pages" / "financetoolkit" / "documentation"
 OUTPUT = ROOT / "assets" / "data" / "financetoolkit-docs-charts"
+TABLES = ROOT / "_financetoolkit_docs_outputs"
 API_KEY = os.environ.get("FINANCIAL_MODELING_PREP_KEY", "")
+# how a docstring shortens its example's result: the last rows, the first rows or a
+# slice of rows at the end of the call (the same pattern is in _plugins/docs_metric_pages.rb)
+ROW_CUT = re.compile(r"\.(?:tail|head)\(\d*\)\s*$|\.iloc\[(?:\[[^\]]*\]|[^\],\[]*)\]\s*$")
+MAX_ROWS = 2000
 
 
 def example_code(module: str, function: str) -> str:
@@ -71,7 +88,7 @@ def run(code: str, expr: str | None):
     scope = {"__API_KEY__": API_KEY}
     exec(body, scope)
     if expr is None:
-        expr = re.sub(r"\.tail\(\d*\)\s*$", "", last.strip())
+        expr = ROW_CUT.sub("", last.strip())
         if re.match(r"^\w+\s*=", expr):  # an assignment: plot the variable it sets
             exec(expr, scope)
             expr = expr.split("=", 1)[0].strip()
@@ -90,8 +107,66 @@ def numbers(series: pd.Series) -> list:
     return [None if pd.isna(v) or np.isinf(v) else float(f"{float(v):.6g}") for v in series]
 
 
+def table(result) -> dict:
+    """The example's full result as rows for the docs page's table (at most MAX_ROWS)."""
+    frame = result.to_frame() if isinstance(result, pd.Series) else result
+    total = len(frame)
+    frame = frame.iloc[:MAX_ROWS]
+    columns = [" / ".join(map(str, c)) if isinstance(c, tuple) else str(c) for c in frame.columns]
+    rows = [[label(i)] + [None if pd.isna(v) else (float(f"{float(v):.6g}") if isinstance(v, (int, float, np.number)) else str(v)) for v in row]
+            for i, row in zip(frame.index, frame.itertuples(index=False))]
+    return {"index": frame.index.name or "", "columns": columns, "rows": rows, "total": total}
+
+
+def ta_chart(spec: dict, result, scope) -> dict:
+    """Price candles with overlays, and an indicator panel below (the usual way to draw technicals)."""
+    frame = result.to_frame() if isinstance(result, pd.Series) else result
+    if spec.get("ticker") and isinstance(frame.columns, pd.MultiIndex):
+        frame = frame.xs(spec["ticker"], level=1, axis="columns")
+    frame = frame.rename(columns=spec.get("rename", {})).copy()
+    # columns drawn from the result, such as the MACD histogram or the Supertrend per trend
+    for name, expression in spec.get("derive", {}).items():
+        frame[name] = eval(expression, {"f": frame, "pd": pd, "np": np})
+    ohlc = None
+    if spec.get("price"):
+        ticker = spec["price"]
+        history = scope["toolkit"].get_historical_data(period=spec.get("price_period", "daily"))
+        pick = lambda column: history[column][ticker] if isinstance(history[column], pd.DataFrame) else history[column]
+        ohlc = pd.DataFrame({c: pick(c) for c in ["Open", "Close", "Low", "High"]}).reindex(frame.index)
+        # days the instrument did not trade (another market's holiday) would break every line;
+        # days after its last price stay, for indicators projected forward (the Ichimoku cloud)
+        traded = ohlc.notna().all(axis=1)
+        keep = traded | (frame.index > traded[traded].index.max())
+        frame, ohlc = frame[keep], ohlc[keep]
+    start = frame.notna().any(axis=1).idxmax()
+    frame = frame[start:]
+    # a missing value inside a line breaks it; fill short interior gaps
+    frame = frame.apply(lambda c: c.interpolate(limit=5, limit_area="inside") if pd.api.types.is_numeric_dtype(c) and c.notna().sum() > 1 else c)
+    out = {"type": "ta", "title": spec["title"], "x": [label(v) for v in frame.index], "format": spec.get("format", "ratio")}
+    if ohlc is not None:
+        ohlc = ohlc[start:]
+        out["priceName"] = spec.get("price_name", spec["price"])
+        out["ohlc"] = [None if r.isna().any() else [float(f"{v:.6g}") for v in r] for _, r in ohlc.iterrows()]
+
+    def series(items):
+        return [dict({"name": i.get("name", i["column"]), "data": numbers(frame[i["column"]])},
+                     **{k: v for k, v in i.items() if k not in ("column", "name")}) for i in items]
+
+    out["overlays"] = series(spec.get("overlays", []))
+    if spec.get("lower"):
+        low = spec["lower"]
+        out["lower"] = {k: v for k, v in low.items() if k != "series"}
+        out["lower"]["series"] = series(low["series"])
+    for key in ("fill", "fill_colors", "subtitle", "zoom"):
+        if key in spec:
+            out[key] = spec[key]
+    return out
+
+
 def chart(module: str, function: str, spec: dict) -> dict:
     result, scope = run(example_code(module, function), spec.get("expr"))
+    if spec.get("chart") == "ta":
+        return ta_chart(spec, result, scope), table(result)
     frame = result.to_frame() if isinstance(result, pd.Series) else result
     if spec.get("ticker") and isinstance(frame.columns, pd.MultiIndex):
         frame = frame.xs(spec["ticker"], level=1, axis="columns")
@@ -143,7 +218,39 @@ def chart(module: str, function: str, spec: dict) -> dict:
     for key in ("subtitle", "cloud", "log", "stack"):
         if key in spec:
             out[key] = spec[key]
-    return out
+    return out, table(result)
+
+
+def shortened_examples() -> list[tuple[str, str]]:
+    """Every (module, function) whose docstring example ends by shortening its result."""
+    found = []
+    for page in sorted(DOCS.glob("*.md")):
+        for section in re.split(r"(?m)^## ", page.read_text())[1:]:
+            code = re.search(r"```python\n(.*?)```", section, re.S)
+            if code and ROW_CUT.search(code.group(1).rstrip()):
+                found.append((page.stem, section.split("\n", 1)[0].strip()))
+    return found
+
+
+def outputs(only: list[str], specs: dict) -> None:
+    """The full result of the shortened examples without a chart of their own."""
+    failed = []
+    for module, function in shortened_examples():
+        key = f"{module}.{function}"
+        if key in specs or (only and key not in only):
+            continue
+        try:
+            result, _ = run(example_code(module, function), None)
+            rows = table(result)
+        except Exception as error:
+            failed.append(f"{key}: {type(error).__name__}: {str(error)[:200]}")
+            continue
+        path = TABLES / module / f"{function}.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(rows, separators=(",", ":")))
+        print(f"{key}: {rows['total']} rows")
+    for line in failed:
+        print("FAILED", line, file=sys.stderr)
 
 
 def main(only: list[str]) -> None:
@@ -154,17 +261,24 @@ def main(only: list[str]) -> None:
             continue
         module, function = key.split(".")
         try:
-            data = chart(module, function, spec)
+            data, rows = chart(module, function, spec)
         except Exception as error:  # keep the previous file when a call fails
             failed.append(f"{key}: {type(error).__name__}: {error}")
             continue
         path = OUTPUT / module / f"{function}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps({"charts": {function: data}}, separators=(",", ":")))
-        print(f"{key}: {len(data['x'])} points, {len(data['series'])} series")
+        # the full result, which the docs page shows as its table (the docstring shows its end)
+        full = TABLES / module / f"{function}.json"
+        full.parent.mkdir(parents=True, exist_ok=True)
+        full.write_text(json.dumps(rows, separators=(",", ":")))
+        print(f"{key}: {len(data['x'])} points")
     for line in failed:
         print("FAILED", line, file=sys.stderr)
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    if sys.argv[1:2] == ["--outputs"]:
+        outputs(sys.argv[2:], yaml.safe_load(SPECS.read_text()))
+    else:
+        main(sys.argv[1:])
