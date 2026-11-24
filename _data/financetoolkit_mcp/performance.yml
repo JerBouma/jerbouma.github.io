@@ -66,13 +66,6 @@ get_alpha:
     tickers: COST,WMT,TGT
     start_date: "2020-01-01"
     end_date: "2025-12-31"
-get_jensens_alpha:
-  question: What was Jensen's alpha of UnitedHealth, Johnson & Johnson and Pfizer in each year from 2021 to 2025?
-  tool: performance
-  arguments:
-    tickers: UNH,JNJ,PFE
-    start_date: "2020-01-01"
-    end_date: "2025-12-31"
 get_treynor_ratio:
   question: What was the Treynor ratio of Union Pacific, UPS and FedEx in each year from 2021 to 2025?
   tool: performance

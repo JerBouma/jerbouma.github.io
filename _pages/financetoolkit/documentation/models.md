@@ -31,7 +31,39 @@ pip install financetoolkit -U
 ## get_factor_analysis
 Factor analysis (predictive power) of the models: whether the tickers that score high on a model, such as the Piotroski F-Score or the Altman Z-Score, go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the model score of the tickers at the end of the period and their return over the following horizon: 1 means the score ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
-The summary has a row per model and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the score from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single model.
+The summary has a row per model and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the skewness and excess kurtosis of the IC, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the annualized alpha and the beta of the factor-weighted long-short portfolio against the equally weighted tickers, the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the score from one period to the next. With detail, it returns one part of the analysis per period, quantile or group for a single model.
+
+The formula is as follows:
+
+$$
+\operatorname{IC}(t) = \text{Spearman rank correlation of} \;f(i,\; t) \;\text{and} \;R(i,\; t,\; t + h) \;\text{over the tickers}\; i,\;\; \text{with } f \text{ the factor and } R \text{ the forward return over the horizon } h
+$$
+
+- Demeaned return: R(i, t) − mean R(j, t) over the tickers j (of the group of i)
+
+$$
+\text{Portfolio weight:}\;\; w(i,\; t) = \frac{f(i,\; t) - \text{mean} \;f(t)}{\Sigma_{j} \left|f(j,\; t) - \text{mean} \;f(t)\right|}
+$$
+
+$$
+\text{Portfolio return:}\;\; R_{F}(t) = \Sigma_{i} w(i,\; t) \cdot R(i,\; t,\; t + h)
+$$
+
+$$
+\text{Alpha and beta:}\;\; R_{F}(t) = \alpha + \beta \cdot R_{U}(t) + \epsilon(t),\;\; \text{with}\;\; R_{U}(t) = \text{mean} \;R(i,\; t,\; t + h)
+$$
+
+$$
+\text{Annualized Alpha} = (1 + \alpha)^{\frac{\text{periods per year}}{h}} - 1
+$$
+
+$$
+\text{Per period:}\;\; (1 + \text{mean return})^{\frac{1}{h}} - \frac{1 \;\text{and standard error}}{\sqrt{h}}
+$$
+
+$$
+\text{Standard error of a quantile} = \text{standard deviation over the periods} \;/ \sqrt{\text{periods}}
+$$
 
 The models are calculated per statement period and each period's score applies from the end of the fiscal period, or with point_in_time from the day it was filed, never earlier, so no day uses figures that were not known yet. The returns use the dividend and split adjusted close and start at the close of the period the score belongs to. Each ticker keeps its own history: a ticker without a score or a return in a period is left out of that period only.
 
@@ -41,10 +73,11 @@ The models are calculated per statement period and each period's score applies f
 ticker and period, e.g. "get_piotroski_score", a list of them, or a
 collection: "scores" or "all". Defaults to "scores", the Piotroski, Altman Z,
 Beneish M, Ohlson O, Zmijewski, Springate, Grover, Fulmer H, Taffler z,
-Dechow F, Montier C and Mohanram G scores. "all" adds the accruals ratio, Tobin's Q, the
-sustainable and internal growth rates, the magic formula and the Merton
-distance to default. The valuation models and the analyses with several
-components and no score are not in the collections.
+Campbell-Hilscher-Szilagyi, Shumway, Dechow F, Montier C and Mohanram G
+scores. "all" adds the accruals ratio, Tobin's Q, the sustainable and internal
+growth rates, the magic formula and the Merton distance to default. The
+valuation models and the analyses with several components and no score are not
+in the collections.
 - <u>period (str, optional):</u> The frequency at which the models are evaluated: daily,
 weekly, monthly, quarterly or yearly. Defaults to "monthly".
 - <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
@@ -56,12 +89,38 @@ period. Defaults to 5.
 quantile turnover and the rank autocorrelation compare. Defaults to 1.
 - <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single model
 instead of the summary: "information_coefficient" (per period and horizon),
-"quantile_returns" (the mean forward return per quantile and horizon),
-"quantile_turnover" (per period and quantile) or "rank_autocorrelation" (per
-period). Defaults to None.
+"information_coefficient_by_month" or "information_coefficient_by_year" (the mean IC
+per calendar month or year), "group_information_coefficient" (the IC statistics
+within each group, needs group), "quantile_returns" (the mean forward return per
+quantile and horizon), "quantile_returns_by_date" (per period),
+"quantile_return_statistics" (the mean, its standard error and both per single
+period), "quantile_statistics" (the range, mean and count of the factor values in
+each quantile), "quantile_turnover" (per period and quantile),
+"rank_autocorrelation" (per period), "factor_weights" (the weights of the
+factor-weighted long-short portfolio per period and ticker), "factor_returns" (its
+return per period and horizon), "cumulative_returns" (the growth of 1 in it and in
+each quantile) or "event_returns" (the mean price path of each quantile from the
+longest horizon before to the longest horizon after the periods it is formed).
+Defaults to None.
 - <u>column (str &#124; None, optional):</u> The component to use of a model, e.g.
 "Working Capital to Total Assets" of the Altman Z-Score. Defaults to None,
 which uses the model's score (its last row).
+- <u>group (str &#124; dict &#124; None, optional):</u> The group of each ticker for the group options:
+"sector" or "industry" (or another company profile item) from the company profiles
+of Financial Modeling Prep, or a dictionary of tickers and their groups. Defaults to
+None.
+- <u>demeaned (bool, optional):</u> Whether to compare the forward returns with the mean of
+the tickers in each period, or with group with the mean of the ticker's group:
+a group-neutral analysis, in which the IC is group-adjusted and the
+factor-weighted portfolio neutral within each group. Without group the IC
+stays the same, as subtracting one mean from every ticker keeps their ranks.
+Defaults to False.
+- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period:
+"quantile" (equally sized), "equal_width" (bins of equal width between the lowest
+and highest value), "zero_aware" (half of the quantiles for the negative and half
+for the zero and positive values, for a signal centred on zero; needs an even number
+of quantiles) or "group" (equally sized within each group, needs group). Defaults to
+"quantile".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the models that take them, e.g. trailing=4 or
@@ -89,8 +148,28 @@ preferably twenty or more for a meaningful rank correlation and quantiles.
 - A horizon longer than one period makes consecutive returns overlap, which
 inflates the t-statistic; judge those horizons by their mean IC and IC
 information ratio.
-- Based on alphalens (Quantopian) and on Grinold and Kahn (2000), Active Portfolio
-Management.
+- The groups from the company profiles are today's sector or industry, applied
+to every period.
+- The factor-weighted portfolio is long-short: its weights sum to zero and their
+absolute values to one. A horizon longer than one period makes its returns
+overlap too, so its alpha and beta are averages rather than tests.
+- The cumulative returns split the capital over as many portfolios as the horizon
+has periods, started on consecutive periods and each rebalanced once per
+horizon; a value shows when its holding period ends, so the series starts at 1.
+- The IC is that of Grinold, R.C. and Kahn, R.N. (2000). "Active Portfolio
+Management." 2nd ed. McGraw-Hill; the factor-weighted portfolio, the demeaned
+and group-neutral returns that of Qian, E., Hua, R. and Sorensen, E. (2007).
+"Quantitative Equity Portfolio Management." Chapman & Hall/CRC; the alpha that
+of Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period
+1945-1964." Journal of Finance 23(2); the event returns follow MacKinlay, A.C.
+(1997). "Event Studies in Economics and Finance." Journal of Economic Literature
+35(1).
+- Referenced against alphalens-reloaded
+([https://github.com/stefan-jansen/alphalens-reloaded](https://github.com/stefan-jansen/alphalens-reloaded){:target="_blank"}). Its top minus bottom
+spread is half of the one here (a gross exposure of one rather than two), it
+drops a period and ticker without every horizon's return where each horizon
+here uses its own, and its event returns average the single-period returns at
+each offset where these are the price paths rebased to the period itself.
 
 Also known as: predictive power, information coefficient, factor testing, alpha signal
 
@@ -114,10 +193,10 @@ toolkit.models.get_factor_analysis(
 
 Which returns:
 
-|                                      |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
-|:-------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('get_piotroski_score', '12 Months') |   -0.1352 |                  0.3684 |                -0.3669 |       -3.6691 |    0.0004 |             0.31 |            100 |            -0.1482 |              0.0787 |                 0.93   |
-| ('get_altman_z_score', '12 Months')  |    0.118  |                  0.3915 |                 0.3015 |        3.0149 |    0.0033 |             0.66 |            100 |             0.1563 |              0.0258 |                 0.9939 |
+|                                      |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |    Beta |   Quantile Turnover |   Rank Autocorrelation |
+|:-------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|--------------:|--------------:|-----------------:|---------------:|-------------------:|-------------------:|--------:|--------------------:|-----------------------:|
+| ('get_piotroski_score', '12 Months') |   -0.1353 |                  0.3685 |                -0.3672 |       -3.6724 |    0.0004 |        0.3723 |       -0.1763 |             0.31 |            100 |            -0.1482 |             0.0279 | -0.3828 |              0.0787 |                 0.93   |
+| ('get_altman_z_score', '12 Months')  |    0.1179 |                  0.3915 |                 0.3011 |        3.0112 |    0.0033 |       -0.657  |       -0.2792 |             0.66 |            100 |             0.1564 |            -0.1619 |  1.2913 |              0.0258 |                 0.9939 |
 
 ---
 
@@ -1238,11 +1317,19 @@ $$
 \text{Probability of Default} = N(- \text{Distance to Default})
 $$
 
-where E is the market capitalization, $$\sigma_{E}$$ the volatility of the share price over the year before, D the default point (short-term debt plus half of the long-term debt, the KMV convention), r the risk free rate and T the time horizon. The distance to default is the number of standard deviations the asset value is above the default point; it reacts to the share price immediately, long before a rating changes.
+$$
+\text{Debt Value} = V - E
+$$
+
+$$
+\text{Credit Spread} = - \frac{\ln\left(\frac{\text{Debt Value}}{D}\right)}{T} - r
+$$
+
+where E is the market capitalization, $$\sigma_{E}$$ the volatility of the share price over the year before, D the default point (short-term debt plus half of the long-term debt, the KMV convention), r the risk free rate and T the time horizon. The distance to default is the number of standard deviations the asset value is above the default point; it reacts to the share price immediately, long before a rating changes. The debt is a risk-free bond with face value D less a put on the assets, so its value is what the assets are worth beyond the equity, and the credit spread is the yield it pays over the risk free rate, both continuously compounded.
 
 The market capitalization, the equity volatility and the risk free rate are measured on the last trading day of each fiscal period (the filing day with point_in_time), the date of the balance sheet the default point comes from.
 
-The risk free rate is the Toolkit's (the 10-year Treasury yield unless set otherwise with `risk_free_rate`) on that day, where Vassalou and Xing (2004) and Bharath and Shumway (2008) use the one-year rate for a one-year horizon; the difference moves the distance to default only slightly.
+The risk free rate is the Toolkit's (the 10-year Treasury yield unless set otherwise with `risk_free_rate`) on that day, converted from its semi-annual bond-equivalent quote to continuous compounding, where Vassalou and Xing (2004) and Bharath and Shumway (2008) use the one-year rate for a one-year horizon; the difference moves the distance to default only slightly.
 
 For more information, see the following papers:
 
@@ -1251,7 +1338,9 @@ For more information, see the following papers:
 - Vassalou, M. and Xing, Y. (2004). "Default Risk in Equity Returns." The Journal of Finance, 59(2), 831-868.
 - Bharath, S.T. and Shumway, T. (2008). "Forecasting Default with the Merton Distance to Default Model." The Review of Financial Studies, 21(3), 1339-1369.
 
-**Also known as:** KMV model, structural credit model, expected default frequency.
+The debt value and credit spread are referenced against FinancePy's MertonFirm.
+
+**Also known as:** KMV model, structural credit model, expected default frequency, Merton credit spread.
 
 **Args:**
 
@@ -1267,8 +1356,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per ticker and period the Equity Value, Equity Volatility, Default
-Point, Asset Value, Asset Volatility, Distance to Default and Probability of
-Default (a decimal).
+Point, Asset Value, Asset Volatility, Debt Value, Credit Spread (a decimal),
+Distance to Default and Probability of Default (a decimal).
 
 **Notes:**
 
@@ -1276,6 +1365,9 @@ Default (a decimal).
 credit risk well but tends to understate the actual default rate of safe ones.
 - Financial companies, whose debt is their raw material, are outside the model's
 intended use.
+- The credit spread of a one-year horizon is close to zero for all but the riskiest
+companies, well below the spreads their bonds trade at, a known shortfall of the
+model (Jones, Mason and Rosenfeld, 1984, The Journal of Finance, 39(3)).
 
 **As an example:**
 
@@ -1297,11 +1389,13 @@ Which returns:
 |                        |        2021 |        2022 |        2023 |        2024 |        2025 |
 |:-----------------------|------------:|------------:|------------:|------------:|------------:|
 | Equity Value           | 8.37862e+10 | 4.66828e+10 | 4.92598e+10 | 3.98079e+10 | 5.22045e+10 |
-| Equity Volatility      | 0.4163      | 0.4912      | 0.3552      | 0.3595      | 0.3312      |
+| Equity Volatility      | 0.4163      | 0.4912      | 0.3551      | 0.3601      | 0.3313      |
 | Default Point          | 9.3892e+10  | 9.45665e+10 | 9.945e+10   | 1.07294e+11 | 1.1133e+11  |
-| Asset Value            | 1.76267e+11 | 1.37609e+11 | 1.44937e+11 | 1.42304e+11 | 1.58997e+11 |
-| Asset Volatility       | 0.1979      | 0.1675      | 0.1208      | 0.1006      | 0.1088      |
-| Distance to Default    | 3.1593      | 2.3871      | 3.379       | 3.2114      | 3.6053      |
+| Asset Value            | 1.76273e+11 | 1.37643e+11 | 1.44969e+11 | 1.42359e+11 | 1.59043e+11 |
+| Asset Volatility       | 0.1979      | 0.1675      | 0.1207      | 0.1007      | 0.1088      |
+| Debt Value             | 9.24864e+10 | 9.09604e+10 | 9.57091e+10 | 1.02551e+11 | 1.06838e+11 |
+| Credit Spread          | 0           | 0.0005      | 0           | 0           | 0           |
+| Distance to Default    | 3.1593      | 2.387       | 3.3801      | 3.2055      | 3.6038      |
 | Probability of Default | 0.0008      | 0.0085      | 0.0004      | 0.0007      | 0.0002      |
 
 ---
@@ -1455,6 +1549,127 @@ Which returns:
 
 ---
 
+## get_shumway_score
+Calculate the bankruptcy probability of Shumway's (2001) hazard model, which combines two accounting ratios of Zmijewski's model with three market variables: the company's size relative to the market, its excess return over the past year and the volatility of its returns that the market does not explain. Shumway estimated it as a discrete-time hazard model (a logit on every firm year), which uses every year a company is observed rather than one per company, and found that the market variables predict bankruptcy better than most accounting ratios.
+
+The model is Table 6 of the paper, panel B (model="combined") or panel A (model="market"):
+
+$$
+\text{Combined:}\;\; H = - 13.303 - \frac{1.982 \;\text{NI}}{\text{TA}} + \frac{3.593 \;\text{TL}}{\text{TA}} - 0.467 \;\text{RELSIZE} - 1.809 \;\text{EXRET} + 5.791 \;\text{SIGMA}
+$$
+
+$$
+\text{Market:}\;\; H = - 12.027 - 0.503 \;\text{RELSIZE} - 2.072 \;\text{EXRET} + 9.834 \;\text{SIGMA}
+$$
+
+$$
+\text{Bankruptcy Probability} = \frac{e^{H}}{1 + e^{H}}
+$$
+
+with:
+
+$$
+\frac{\text{NI}}{\text{TA}} = \frac{\text{Net Income}}{\text{Total Assets}}
+$$
+
+$$
+\frac{\text{TL}}{\text{TA}} = \frac{\text{Total Liabilities}}{\text{Total Assets}}
+$$
+
+$$
+\text{RELSIZE} = \ln\left(\frac{\text{Market Value of Equity}}{\text{Total Market Value of the S\&P}\; 500}\right)
+$$
+
+$$
+\text{EXRET} = \text{the return of the shares over the past twelve months} \;(\text{cumulated from the monthly returns}) \;\text{minus that of the S\&P 500 total return index}
+$$
+
+$$
+\text{SIGMA} = \text{the standard deviation of the residuals of a regression of the twelve monthly returns of the shares on those of the S\&P}\; 500 \left(\text{the standard error of the regression},\; \sqrt{\frac{\sum e^{2}}{12 - 2}}\right),\;\; \text{a monthly figure}
+$$
+
+The probability is that of a bankruptcy filing in the year after the period, the statements and market data being known at its end. For comparison, 300 of the 39,745 firm years in Shumway's sample ended in bankruptcy (0.75%).
+
+For more information, see the following sources:
+
+- Shumway, T. (2001). "Forecasting Bankruptcy More Accurately: A Simple Hazard Model." The Journal of Business, 74(1), 101-124.
+- Zmijewski, M. E. (1984). "Methodological Issues Related to the Estimation of Financial Distress Prediction Models." Journal of Accounting Research, 22, 59-82.
+
+**Also known as:** Shumway hazard model, hazard model bankruptcy probability, Shumway score.
+
+**Args:**
+
+- <u>model (str, optional):</u> "combined" for the market and accounting variables (Table 6,
+panel B) or "market" for the market variables only (panel A), which also works
+for companies without statements. Defaults to "combined".
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker and period the variables as they enter the model (NI/TA and
+TL/TA only for the combined model), the Shumway Score (H) and the Bankruptcy
+Probability (a decimal).
+
+**Notes:**
+
+- Truncation: Shumway truncates every variable at the 1st and 99th percentiles of his
+sample, which a calculation per company cannot repeat. Each variable is clipped instead
+to the range it spans in the paper's sample after - <u>truncation (Table 1, minimum and
+maximum):</u> NI/TA -0.329 to 0.231, TL/TA 0.090 to 1.028, RELSIZE -13.616 to -6.115,
+EXRET -0.817 to 2.181 and SIGMA 0.030 to 0.325. A company larger than about 0.2% of the
+S&P 500 has the largest RELSIZE the paper used.
+- The market: Shumway compares with all NYSE and AMEX companies (the value-weighted CRSP
+index and their total market value); this uses the S&P 500, its total return index
+(^SP500TR) and the total market value of its companies (see
+`get_campbell_hilscher_szilagyi_score`), which holds most of the US market value. As
+RELSIZE enters with -0.467, a total market value 25% too low moves the score by about
+-0.1. Without an API key that has access to the constituents, RELSIZE and the
+probability are NaN.
+- The market value of equity is the closing price times the diluted weighted average
+shares, the returns are total returns (Adj Close), and every market variable is
+measured up to the day each period's figures apply - <u>from (the fiscal period end, or the
+filing day with point_in_time):</u> no later data is used. Shumway lags the statements by
+at least six months so they are known; set point_in_time on the Toolkit to measure on
+the filing day instead.
+- On quarterly statements the net income is that of the trailing twelve months, as the
+model was estimated on yearly figures.
+- A month without a price leaves EXRET and SIGMA NaN, where Shumway substitutes the
+market return for a missing month.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["F", "AAPL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_shumway_score().loc["F"]
+```
+
+Which returns:
+
+|                                     |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:------------------------------------|--------:|--------:|--------:|--------:|--------:|
+| Net Income to Total Assets (NI/TA)  |  0.0698 | -0.0077 |  0.0159 |  0.0206 | -0.0283 |
+| Liabilities to Total Assets (TL/TA) |  0.8108 |  0.8313 |  0.8434 |  0.8427 |  0.8756 |
+| Relative Size (RELSIZE)             | -6.2444 | -6.6131 | -6.7763 | -7.1989 | -7.0795 |
+| Excess Return (EXRET)               |  1.0878 | -0.2407 | -0.1047 | -0.3812 |  0.2447 |
+| Idiosyncratic Volatility (SIGMA)    |  0.111  |  0.0861 |  0.1102 |  0.0533 |  0.036  |
+| Shumway Score                       | -8.9366 | -6.2785 | -6.3123 | -5.9556 | -7.0292 |
+| Bankruptcy Probability              |  0.0001 |  0.0019 |  0.0018 |  0.0026 |  0.0009 |
+
+---
+
 ## get_synthetic_credit_rating
 Calculate a synthetic credit rating and the cost of debt that comes with it, from the interest coverage ratio (EBIT divided by interest expense), following Aswath Damodaran. Most companies have no traded bonds or rating of their own; the coverage ratio is the measure that explains ratings best, so it is mapped to the rating that companies with a similar ratio have, and to that rating's default spread over the risk free rate:
 
@@ -1491,11 +1706,14 @@ Spread, Risk Free Rate and Pre-tax Cost of Debt.
 
 **Notes:**
 
-- A company without debt that reports an interest expense of zero and a positive EBIT
-gets the best rating; its coverage ratio, which is infinite, shows as NaN. A period
-without a reported interest expense, with an interest expense of zero next to debt
-(interest the statements do not report) or with an interest expense of zero and an
-operating loss gets no rating.
+- A period without interest expense (reported as zero or not reported) and with a
+positive EBIT has an infinite coverage ratio, which Damodaran's tables map to the
+highest - <u>rating (Aaa/AAA):</u> there is no interest the operating income has to cover.
+Its coverage ratio shows as NaN. This also holds for a company with debt whose
+statements do not report its interest separately, such as Apple from its fiscal
+year 2024. The rating is NaN where the EBIT (Operating Income) is missing, and for
+an operating loss without interest expense, as the coverage ratio then says
+nothing about the rating the company would get if it borrowed.
 - A coverage ratio below the lowest bound of the table gets the worst rating.
 - The market capitalization is compared with five billion in the reporting
 currency; for companies that do not report in US dollars, pass the firm type.
@@ -1540,9 +1758,11 @@ Which returns:
 ## get_dupont_analysis
 Perform a Dupont analysis to breakdown the return on equity (ROE) into its components.
 
-The Dupont analysis is a method used to dissect and understand the factors that drive a company's return on equity (ROE). It breaks down the ROE into three key components: Net Profit Margin, Asset Turnover, and Equity Multiplier.
+The Dupont analysis is a method used to dissect and understand the factors that drive a company's return on equity (ROE). It breaks down the ROE into three key components: Net Profit Margin, Asset Turnover, and Equity Multiplier. The extended (five-factor) Dupont analysis, method="extended", splits the Net Profit Margin further into three separate drivers - the Tax Burden, the Interest Burden and the Operating Profit Margin - so that the effect of taxation, of financing costs and of operating performance on the return on equity can be read separately.
 
 The formula is as follows:
+
+With method="standard":
 
 $$
 \text{Net Profit Margin} = \frac{\text{Net Income}}{\text{Revenue}}
@@ -1560,79 +1780,7 @@ $$
 \text{ROE} = \text{Net Profit Margin} \cdot \text{Asset Turnover} \cdot \text{Equity Multiplier}
 $$
 
-The value of the decomposition is in comparing the three factors with peers and over time: a retailer earns its return on equity through asset turnover, a software company through its margin and a bank through leverage. A rising return on equity driven only by the Equity Multiplier, for example through share buybacks that shrink equity, is of lower quality than one driven by margin or turnover, and with negative equity the decomposition stops being meaningful.
-
-**Also known as:** DuPont, ROE decomposition, three-factor DuPont.
-
-**Args:**
-
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>trailing (int &#124; None, optional):</u> The number of periods to sum flows (income statement items)
-over, with the Total Assets and Total Shareholder Equity averaged over the trailing + 1
-period ends that open and close those periods, so trailing=1 equals the default average
-of the opening and closing balance. E.g. 4 with quarterly data gives the trailing twelve
-months (TTM). The window counts calendar periods, so a period without a report makes it
-NaN. Defaults to None.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: DataFrame containing Dupont analysis results, including Net Profit Margin, Asset
-Turnover, Equity Multiplier, and the calculated ROE values.
-
-**Notes:**
-
-- The Net Profit Margin is the ratio of Net Income to Total Revenue, indicating the percentage
-of revenue that translates into profit.
-- Asset Turnover measures the efficiency of a company's use of its assets to generate sales
-revenue.
-- The Equity Multiplier measures financial leverage, the use of debt to finance a company's
-operations, which can amplify returns as well as risks.
-- The equity is the Total Shareholder Equity, which excludes minority interests, as the
-Net Income is the income attributable to the shareholders; this is the Return on Equity
-of the Ratios module.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["GOOGL"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.models.get_dupont_analysis()
-```
-
-Which returns:
-
-|                   |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:------------------|-------:|-------:|-------:|-------:|-------:|
-| Net Profit Margin | 0.2951 | 0.212  | 0.2401 | 0.286  | 0.3281 |
-| Asset Turnover    | 0.759  | 0.7807 | 0.8009 | 0.821  | 0.7706 |
-| Equity Multiplier | 1.4317 | 1.4269 | 1.4228 | 1.4013 | 1.4122 |
-| Return on Equity  | 0.3207 | 0.2362 | 0.2736 | 0.3291 | 0.357  |
-
----
-
-## get_extended_dupont_analysis
-Perform an Extended Dupont analysis to breakdown the return on equity (ROE) into its components, while considering additional financial metrics.
-
-The Extended Dupont analysis splits the three-factor decomposition's Net Profit Margin into three separate drivers - the Tax Burden, the Interest Burden and the Operating Profit Margin - so that the effect of taxation, of financing costs and of operating performance on the return on equity (ROE) can be read separately.
-
-The formula is as follows:
+With method="extended":
 
 $$
 \text{Interest Burden Ratio} = \frac{\text{Income Before Tax}}{\text{Operating Income}}
@@ -1658,7 +1806,9 @@ $$
 \text{ROE} = \text{Interest Burden Ratio} \cdot \text{Tax Burden Ratio} \cdot \text{Operating Profit Margin} \cdot \text{Asset Turnover} \cdot \text{Equity Multiplier}
 $$
 
-**Also known as:** extended DuPont, five-factor DuPont, ROE breakdown.
+The value of the decomposition is in comparing the factors with peers and over time: a retailer earns its return on equity through asset turnover, a software company through its margin and a bank through leverage. A rising return on equity driven only by the Equity Multiplier, for example through share buybacks that shrink equity, is of lower quality than one driven by margin or turnover, and with negative equity the decomposition stops being meaningful.
+
+**Also known as:** DuPont, ROE decomposition, three-factor DuPont, extended DuPont, five-factor DuPont, ROE breakdown.
 
 **Args:**
 
@@ -1675,6 +1825,8 @@ period ends that open and close those periods, so trailing=1 equals the default 
 of the opening and closing balance. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM). The window counts calendar periods, so a period without a report makes it
 NaN. Defaults to None.
+- <u>method (str, optional):</u> "standard" for the three-factor decomposition or "extended" for the
+five-factor decomposition. Defaults to "standard".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1682,12 +1834,15 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: DataFrame containing Extended Dupont analysis results, including the Interest
-Burden Ratio, Tax Burden Ratio, Operating Profit Margin, Asset Turnover, Equity
-Multiplier, and the calculated ROE values.
+pd.DataFrame: DataFrame containing Dupont analysis results, including Net Profit Margin, Asset
+Turnover, Equity Multiplier, and the calculated ROE values. With
+method="extended" the Interest Burden Ratio, Tax Burden Ratio and Operating
+Profit Margin take the place of the Net Profit Margin.
 
 **Notes:**
 
+- The Net Profit Margin is the ratio of Net Income to Total Revenue, indicating the percentage
+of revenue that translates into profit.
 - The Interest Burden Ratio (Income Before Tax / Operating Income) measures how much of
 operating profit survives the cost of debt financing. It equals 1 for a company with no
 net interest expense and falls as interest costs rise.
@@ -1695,15 +1850,15 @@ net interest expense and falls as interest costs rise.
 profit survives taxation, i.e. it equals (1 - Effective Tax Rate).
 - The Operating Profit Margin measures operating performance before financing and tax
 effects.
-- Asset Turnover measures the efficiency of a company's use of its assets to generate
-sales revenue.
-- The Equity Multiplier represents the use of debt to finance a company's operations,
-which can amplify returns as well as risks.
+- Asset Turnover measures the efficiency of a company's use of its assets to generate sales
+revenue.
+- The Equity Multiplier measures financial leverage, the use of debt to finance a company's
+operations, which can amplify returns as well as risks.
 - The equity is the Total Shareholder Equity, which excludes minority interests, as the
 Net Income is the income attributable to the shareholders; this is the Return on Equity
 of the Ratios module.
-- Multiplying the first three components back together reproduces the Net Profit Margin
-of the three-factor `get_dupont_analysis`, so both decompositions resolve to the same ROE.
+- Multiplying the Interest Burden Ratio, Tax Burden Ratio and Operating Profit Margin back
+together reproduces the Net Profit Margin, so both decompositions resolve to the same ROE.
 
 **As an example:**
 
@@ -1711,25 +1866,23 @@ of the three-factor `get_dupont_analysis`, so both decompositions resolve to the
 from financetoolkit import Toolkit
 
 toolkit = Toolkit(
-    ["MSFT"],
+    ["GOOGL"],
     api_key="FINANCIAL_MODELING_PREP_KEY",
     start_date="2021-01-01",
     end_date="2025-12-31",
 )
 
-toolkit.models.get_extended_dupont_analysis()
+toolkit.models.get_dupont_analysis()
 ```
 
 Which returns:
 
-|                         |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:------------------------|-------:|-------:|-------:|-------:|-------:|
-| Interest Burden Ratio   | 1.017  | 1.004  | 1.0089 | 0.985  | 0.9619 |
-| Tax Burden Ratio        | 0.8617 | 0.8689 | 0.8102 | 0.8177 | 0.8237 |
-| Operating Profit Margin | 0.4159 | 0.4206 | 0.4177 | 0.4464 | 0.4562 |
-| Asset Turnover          | 0.5293 | 0.5676 | 0.5456 | 0.5305 | 0.4981 |
-| Equity Multiplier       | 2.4399 | 2.2643 | 2.0839 | 1.9468 | 1.8484 |
-| Return on Equity        | 0.4708 | 0.4715 | 0.3882 | 0.3713 | 0.3328 |
+|                   |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:------------------|-------:|-------:|-------:|-------:|-------:|
+| Net Profit Margin | 0.2951 | 0.212  | 0.2401 | 0.286  | 0.3281 |
+| Asset Turnover    | 0.759  | 0.7807 | 0.8009 | 0.821  | 0.7706 |
+| Equity Multiplier | 1.4317 | 1.4269 | 1.4228 | 1.4013 | 1.4122 |
+| Return on Equity  | 0.3207 | 0.2362 | 0.2736 | 0.3291 | 0.357  |
 
 ---
 
@@ -2139,6 +2292,204 @@ Which returns:
 
 ---
 
+## get_fundamental_growth_rate
+Calculate Damodaran's fundamental growth rate of operating income: the growth that a company's reinvestment produces at its return on capital, with the reinvestment rate and the sales-to-capital ratio it is built from. Where the sustainable growth rate grows the equity with the retained net income, this grows the operating income with the capital reinvested in the operations, the growth a discounted cash flow valuation of the firm assumes.
+
+The formula is as follows:
+
+$$
+\text{NOPAT} = \text{EBIT} \cdot (1 - \text{Tax Rate})
+$$
+
+$$
+\text{Net Capital Expenditure} = \text{Capital Expenditure} - \text{Depreciation and Amortization}
+$$
+
+$$
+\text{Reinvestment} = \text{Net Capital Expenditure} + \text{Change in Working Capital}
+$$
+
+$$
+\text{Reinvestment Rate} = \frac{\text{Reinvestment}}{\text{NOPAT}}
+$$
+
+$$
+\text{Invested Capital} = \text{Total Equity} + \text{Total Debt} - \text{Cash and Short Term Investments}
+$$
+
+$$
+\text{Return on Invested Capital} = \frac{\text{NOPAT}}{\text{Invested Capital at the beginning of the period}}
+$$
+
+$$
+\text{Fundamental Growth Rate} = \text{Reinvestment Rate} \cdot \text{Return on Invested Capital}
+$$
+
+$$
+\text{Sales to Capital} = \frac{\text{Revenue}}{\text{Invested Capital at the beginning of the period}}
+$$
+
+The reinvestment is NOPAT minus the Free Cash Flow to Firm of `get_free_cash_flow_to_firm`, so a company that reinvests less than its depreciation has a negative reinvestment rate and a negative fundamental growth. The sales-to-capital ratio links revenue growth to the reinvestment it needs: Reinvestment = Change in Revenue / Sales to Capital.
+
+For more information, see the following sources:
+
+- Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 11 (Estimating Growth) and chapter 12 (Closure in Valuation).
+
+**Also known as:** Damodaran reinvestment rate, fundamental growth, expected growth in EBIT, reinvestment rate times return on capital, sales to capital ratio, sales to invested capital.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int &#124; None, optional):</u> The number of periods to sum the flows over, with the
+invested capital taken `trailing` periods back. The window counts calendar periods, so
+a period without a report makes it NaN. Defaults to None, which is 4 on quarterly data
+(a trailing twelve months against the capital a year earlier) and single years on
+yearly data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the NOPAT, Net Capital Expenditure, Change in Working Capital,
+Reinvestment, Reinvestment Rate, Invested Capital (at the beginning of the period), Return
+on Invested Capital, Fundamental Growth Rate and Sales to Capital, rates as decimals.
+
+**Notes:**
+
+- The tax rate is the effective tax rate kept within 0 and 1 (0 without a pre-tax profit), as
+in `get_economic_value_added`, and EBIT the reported Operating Income.
+- The Capital Expenditure is the purchase of property, plant and equipment of the cash flow
+statement; Damodaran also counts acquisitions, which are lumpy and left out here. The Change
+in Working Capital is that of the cash flow statement (an increase is positive here), the
+non-cash working capital Damodaran uses.
+- The Invested Capital is Damodaran's: the book value of equity and debt net of cash, at the
+beginning of the period, as the return on capital measures the income on the capital already
+in place. A non-positive invested capital leaves the return and the ratio NaN, and a
+non-positive NOPAT the reinvestment rate.
+- This is a different measure from the retention ratio of the Ratios module
+(`get_retention_ratio`, 1 minus the dividend payout), the equity counterpart that the
+sustainable growth rate multiplies with the return on equity.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["MSFT", "GOOGL", "META"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_fundamental_growth_rate().loc["MSFT"]
+```
+
+Which returns:
+
+|                                  |       2021 |         2022 |        2023 |         2024 |        2025 |
+|:---------------------------------|-----------:|-------------:|------------:|-------------:|------------:|
+| Net Operating Profit After Taxes | 6.0249e+10 |  7.24487e+10 | 7.17226e+10 |  8.94819e+10 | 1.05869e+11 |
+| Net Capital Expenditure          | 8.936e+09  |  9.426e+09   | 1.4246e+10  |  2.219e+10   | 3.0398e+10  |
+| Change in Working Capital        | 9.36e+08   | -4.46e+08    | 2.388e+09   | -1.824e+09   | 5.35e+09    |
+| Reinvestment                     | 9.872e+09  |  8.98e+09    | 1.6634e+10  |  2.0366e+10  | 3.5748e+10  |
+| Reinvestment Rate                | 0.1639     |  0.1239      | 0.2319      |  0.2276      | 0.3377      |
+| Invested Capital                 | 6.3887e+10 |  9.401e+10   | 1.40193e+11 |  1.74408e+11 | 2.90798e+11 |
+| Return on Invested Capital       | 0.9431     |  0.7706      | 0.5116      |  0.5131      | 0.3641      |
+| Fundamental Growth Rate          | 0.1545     |  0.0955      | 0.1187      |  0.1168      | 0.1229      |
+| Sales to Capital                 | 2.631      |  2.109       | 1.5116      |  1.4055      | 0.9688      |
+
+---
+
+## get_rule_of_40
+Calculate the Rule of 40 score: the revenue growth plus the profit margin, the measure of software and other subscription companies that trade growth against profitability. A score of 40% (0.40) or more is seen as healthy: a company growing 30% a year should keep a margin of at least 10%, one that grows 10% a margin of 30%.
+
+The formula is as follows:
+
+$$
+\text{Revenue Growth} = \frac{\text{Revenue}}{\text{Revenue a year earlier}} - 1
+$$
+
+$$
+\text{Free Cash Flow Margin} = \frac{\text{Free Cash Flow}}{\text{Revenue} \;\left(\text{or EBITDA Margin} = \frac{\text{EBITDA}}{\text{Revenue}}\right)}
+$$
+
+$$
+\text{Rule of 40 Score} = \text{Revenue Growth} + \text{Free Cash Flow Margin} \;(\text{or EBITDA Margin})
+$$
+
+The rule comes from venture capital practice for software companies (attributed to Brad Feld, 2015) and has no academic source; investors use the free cash flow margin and the EBITDA margin, which the `margin` parameter chooses between.
+
+For more information, see the following sources:
+
+- Feld, B. (2015). "The Rule of 40% For a Healthy SaaS Company." Feld Thoughts ([https://feld.com/archives/2015/02/rule-40-healthy-saas-company/](https://feld.com/archives/2015/02/rule-40-healthy-saas-company/){:target="_blank"}).
+
+**Also known as:** Rule of 40, 40% rule, growth plus margin, SaaS rule of 40.
+
+**Args:**
+
+- <u>margin (str, optional):</u> The margin to add: "free_cash_flow" (Free Cash Flow / Revenue) or
+"ebitda" (EBITDA / Revenue). Defaults to "free_cash_flow".
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int &#124; None, optional):</u> The number of periods to sum the revenue and cash flows
+over. The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which is 4 on quarterly data (a trailing twelve months, its growth
+against the trailing twelve months a year earlier) and single years on yearly data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the Revenue Growth, the margin (Free Cash Flow Margin or EBITDA
+Margin) and the Rule of 40 Score, as decimals.
+
+**Notes:**
+
+- The revenue growth compares with the same period a year earlier (four quarters back on
+quarterly data), so the first year has no score. Growth from a negative or zero revenue is
+NaN.
+- The Free Cash Flow is that of the cash flow statement (Operating Cash Flow minus Capital
+Expenditure).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["CRM", "NOW", "ADBE"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_rule_of_40().xs("Rule of 40 Score", level=1)
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |     2025 |
+|:-----|-------:|-------:|-------:|-------:|---------:|
+| ADBE | 0.6627 | 0.5354 | 0.4601 | 0.4741 |   0.5198 |
+| CRM  | 0.446  | 0.3848 | 0.3843 | 0.4153 | nan      |
+| NOW  | 0.6097 | 0.5287 | 0.5396 | 0.5353 |   0.5535 |
+
+---
+
 ## get_piotroski_score
 Calculate the Piotroski Score, a comprehensive financial assessment tool that helps investors and analysts evaluate a company's financial health and fundamental strength.
 
@@ -2309,12 +2660,21 @@ $$
 
 With `trailing`, the flows are summed over the trailing periods, while the balance sheet items are taken at the end of each period.
 
-The -1.78 threshold belongs to this eight-variable model; the five-variable version uses -2.22. Fast-growing companies are flagged more often because sales growth itself raises the score, and the model was estimated without financial companies and is not suited to banks and insurers, so a score above the threshold is a prompt to read the accounts, not a finding.
+The five-variable model of Beneish (1997), with model="five", leaves out SGAI, LVGI and TATA:
+
+$$
+\text{M-Score} \;(\text{five variables}) = - 6.065 + 0.823 \cdot \text{DSRI} + 0.906 \cdot \text{GMI} + 0.593 \cdot \text{AQI} + 0.717 \cdot \text{SGI} + 0.107 \cdot \text{DEPI}
+$$
+
+The -1.78 threshold belongs to the eight-variable model; the five-variable version uses -2.22. Fast-growing companies are flagged more often because sales growth itself raises the score, and the model was estimated without financial companies and is not suited to banks and insurers, so a score above the threshold is a prompt to read the accounts, not a finding.
 
 **Also known as:** Beneish M-Score, earnings manipulation score.
 
 **Args:**
 
+- <u>model (str, optional):</u> The model: "eight" for the eight-variable model of Beneish (1999) or
+"five" for the five-variable model of Beneish (1997), which returns its five indices
+and score. Defaults to "eight".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2348,6 +2708,9 @@ Beneish, Lee and Nichols (2013), rather than the balance sheet form of Beneish (
 as one line, where Beneish (1999) uses depreciation alone.
 
 References:
+- Beneish, Messod D. "Detecting GAAP Violation: Implications for Assessing Earnings
+Management among Firms with Extreme Financial Performance." Journal of Accounting and
+Public Policy, Vol. 16, No. 3, 1997, pp. 271-309.
 - Beneish, Messod D. "The Detection of Earnings Manipulation." Financial Analysts Journal,
 Vol. 55, No. 5, 1999, pp. 24-36.
 - Beneish, Messod D., Charles M. C. Lee, and D. Craig Nichols. "Earnings Manipulation and
@@ -2771,6 +3134,265 @@ Which returns:
 | MSFT  |  0.2041 |  1.0206 |  0.6124 |  1.0206 |  0.2041 | -0.2041 |  -0.8018 |
 | NVDA  |  1.4289 |  0.2041 | -0.2041 | -0.2041 |  1.4289 |  1.4289 | nan      |
 | ORCL  | -0.2041 | -0.2041 | -1.4289 | -1.0206 | -1.0206 | -1.0206 | nan      |
+
+---
+
+## get_accrual_quality
+Calculate the accrual quality of Dechow and Dichev (2002): how well a company's working capital accruals map into its operating cash flows of the year before, the year itself and the year after. Accruals anticipate cash flows (a sale on credit is collected next year), so accruals that the cash flows do not explain are estimation errors; their standard deviation measures the quality of the accruals and of the earnings they are part of. A higher value means lower quality. Francis et al. (2005) found that companies with poor accrual quality have a higher cost of capital.
+
+The regression is estimated per company over the `window` years before the period:
+
+$$
+\text{Delta WC} \;(t) = b_{0} + b_{1} \;\text{CFO} \;(t - 1) + b_{2} \;\text{CFO} \;(t) + b_{3} \;\text{CFO} \;(t + 1) + e (t)
+$$
+
+$$
+\text{McNichols (2002)},\;\; \text{method} = \text{"mcnichols":} \;\text{Delta WC} \;(t) = b_{0} + b_{1} \;\text{CFO} \;(t - 1) + b_{2} \;\text{CFO} \;(t) + b_{3} \;\text{CFO} \;(t + 1) + b_{4} \Delta \;\text{Revenue} \;(t) + b_{5} \;\text{PP\&E} \;(t) + e (t)
+$$
+
+$$
+\text{Accrual Quality} = \sigma(e),\;\; \text{the standard deviation of the residuals (ddof=1)}
+$$
+
+with ΔWC the increase in working capital (minus the Change in Working Capital of the cash flow statement: the change in receivables and inventory less the change in payables, taxes payable and other working capital) and every variable divided by the average total assets of its year.
+
+For more information, see the following sources:
+
+- Dechow, P. M. and Dichev, I. D. (2002). "The Quality of Accruals and Earnings: The Role of Accrual Estimation Errors." The Accounting Review, 77(Supplement), 35-59.
+- McNichols, M. F. (2002). "Discussion of The Quality of Accruals and Earnings: The Role of Accrual Estimation Errors." The Accounting Review, 77(Supplement), 61-69.
+- Francis, J., LaFond, R., Olsson, P. and Schipper, K. (2005). "The Market Pricing of Accruals Quality." Journal of Accounting and Economics, 39(2), 295-327.
+
+**Also known as:** Dechow-Dichev model, accruals quality, AQ, DD model, McNichols model.
+
+**Args:**
+
+- <u>method (str, optional):</u> "dechow_dichev" or "mcnichols" (adds the change in revenue and
+the property, plant and equipment). Defaults to "dechow_dichev".
+- <u>window (int, optional):</u> The number of years every regression is estimated on. Dechow
+and Dichev required at least 8 years per company. Defaults to 8.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker and period the Working Capital Accruals and the Cash Flow from
+Operations (both over the average total assets) and the Accrual Quality.
+
+**Notes:**
+
+- No look-ahead: the regression needs the cash flow of the year after each accrual, so the
+Accrual Quality of period T uses the accruals of the `window` years up to T - 1, whose
+next-year cash flow is known at T at the latest. It therefore needs `window` + 2 years of
+statements: set a start_date at least that many years back.
+- Dechow and Dichev estimate one regression per company over its whole history and
+Francis et al. (2005) estimate them per industry and year; this rolls a regression per
+company over the window, so the measure is known at each period.
+- On quarterly data the flows are summed over the trailing twelve months and the years of
+the regression are four quarters apart.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2010-01-01",
+    end_date="2025-12-31",
+)
+
+# The last six years, each estimated on the eight years before it
+toolkit.models.get_accrual_quality().xs("Accrual Quality", level=1).iloc[:, -6:]
+```
+
+Which returns:
+
+|      |   2020 |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|-------:|
+| AAPL | 0.0295 | 0.0282 | 0.0291 | 0.0199 | 0.0216 | 0.0216 |
+| MSFT | 0.0546 | 0.054  | 0.0346 | 0.0352 | 0.0225 | 0.0197 |
+
+---
+
+## get_earnings_attributes
+Calculate the accounting-based earnings attributes of Francis, LaFond, Olsson and Schipper (2004): the persistence, predictability and smoothness of a company's earnings over the past years. Persistent and predictable earnings are more useful to forecast with, and the paper finds that companies with less favourable attributes have a higher cost of equity. Together with the accrual quality (`get_accrual_quality`) they are the paper's accounting attributes.
+
+The formula is as follows, each over the `window` years up to the period:
+
+$$
+\text{Persistence} = \phi 1 \;\text{of the regression EPS} \;(t) = \phi 0 + \phi 1 \;\text{EPS} \;(t - 1) + \nu (t)
+$$
+
+$$
+\text{Predictability} = \sqrt{\sigma^{2}(\nu)},\;\; \text{the square root of the error variance of that regression},\;\; \sqrt{\frac{\sum \nu^{2}}{N - 2}}
+$$
+
+$$
+\text{Smoothness} = \frac{\sigma\left(\frac{\text{Net Income} \;(t)}{\text{Total Assets} \;(t - 1)}\right)}{\sigma\left(\frac{\text{Cash Flow from Operations} \;(t)}{\text{Total Assets} \;(t - 1)}\right)},\;\; \text{the standard deviations with ddof=1}
+$$
+
+with EPS the net income from continuing operations (the earnings before extraordinary items of the paper) over the weighted average shares. A persistence near 1 means earnings shocks last; larger predictability and smoothness values mean less predictable and less smooth earnings (as in the paper, larger values are less desirable).
+
+For more information, see the following sources:
+
+- Francis, J., LaFond, R., Olsson, P. M. and Schipper, K. (2004). "Costs of Equity and Earnings Attributes." The Accounting Review, 79(4), 967-1010.
+
+**Also known as:** earnings persistence, earnings predictability, earnings smoothness, earnings quality attributes, Francis LaFond Olsson Schipper.
+
+**Args:**
+
+- <u>window (int, optional):</u> The number of years of every window; the paper uses 10.
+Defaults to 10.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker and period the Persistence, Predictability and Smoothness.
+
+**Notes:**
+
+- The windows only use the years up to the period (no look-ahead) and need every one of
+them, plus the year before for the lagged EPS and the beginning total assets: set a
+start_date at least `window` + 1 years back.
+- The net income from continuing operations falls back on the net income where the
+statements do not report it.
+- On quarterly data the flows are summed over the trailing twelve months and the years of
+the window are four quarters apart.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2010-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_earnings_attributes()
+```
+
+Which returns:
+
+|                            |    2018 |    2019 |   2020 |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:---------------------------|--------:|--------:|-------:|-------:|-------:|-------:|-------:|-------:|
+| ('AAPL', 'Persistence')    |  0.9719 |  0.8779 | 0.8644 | 1.3562 | 1.1528 | 0.9926 | 0.9229 | 1.015  |
+| ('AAPL', 'Predictability') |  0.3459 |  0.3408 | 0.3384 | 0.7336 | 0.7608 | 0.7721 | 0.7744 | 0.8457 |
+| ('AAPL', 'Smoothness')     |  0.7622 |  0.7474 | 0.7391 | 0.8799 | 0.8643 | 0.9365 | 0.9284 | 1.1048 |
+| ('MSFT', 'Persistence')    | -0.0581 | -0.3582 | 0.6982 | 1.1725 | 1.1663 | 1.0312 | 1.0803 | 1.0464 |
+| ('MSFT', 'Predictability') |  0.5798 |  1.0244 | 1.2588 | 1.4298 | 1.3595 | 1.4282 | 1.4569 | 1.2686 |
+| ('MSFT', 'Smoothness')     |  1.2413 |  1.2008 | 1.2202 | 1.1846 | 1.5726 | 1.616  | 1.4189 | 1.3102 |
+
+---
+
+## get_graham_criteria
+Calculate the seven criteria Benjamin Graham sets for the stocks of the defensive investor in The Intelligent Investor (chapter 14), with the number met: an adequate size, a strong financial condition, earnings stability, a dividend record, earnings growth, a moderate price to earnings and a moderate price to assets. Graham meant them as a minimum of quality and a maximum of price for an investor who does not want to analyse companies in depth.
+
+The formula is as follows:
+
+$$
+\text{Adequate Size:}\;\; \text{Revenue} \geq \text{minimum\_revenue}
+$$
+
+$$
+\text{Strong Financial Condition:}\;\; \text{Current Assets} \geq 2 \cdot \text{Current Liabilities and Long Term Debt} \leq \text{Current Assets} - \text{Current Liabilities} \;(\text{net current assets})
+$$
+
+- Earnings Stability: a positive Net Income in each of the past 10 years
+
+- Dividend Record: dividends paid in each of the past 20 years
+
+- Earnings Growth: the average EPS of the last 3 years at least a third above the average EPS of the 3 years ending ten years earlier
+
+$$
+\text{Moderate Price to Earnings:}\;\; \text{Price} \leq 15 \cdot \text{the average EPS of the last 3 years}
+$$
+
+$$
+\text{Moderate Price to Assets:}\;\; \frac{\frac{\text{Price}}{\text{Earnings}} \cdot \text{Price}}{\text{Book Value}} \leq 22.5,\;\; \text{with the earnings the average EPS of the last 3 years (Graham's 15 times earnings and 1.5 times book value, a lower multiple of the one allowing a higher multiple of the other)}
+$$
+
+$$
+\text{Criteria Met} = \text{the number of criteria met};\;\; \text{Criteria Evaluated} = \text{the number that could be evaluated}
+$$
+
+Every criterion is 1 when met, 0 when not and NaN when the statements do not go back far enough (the dividend record needs 20 years of statements, the earnings growth 13).
+
+For more information, see the following sources:
+
+- Graham, B. (1973). "The Intelligent Investor." Harper & Row, 4th revised edition, chapter 14 (Stock Selection for the Defensive Investor).
+
+**Also known as:** Graham defensive investor criteria, Graham screen, Graham's seven criteria, defensive stock selection.
+
+**Args:**
+
+- <u>minimum_revenue (float, optional):</u> The yearly revenue of the size criterion, in the
+reporting currency. Graham asked for at least $100 million of sales for an
+industrial company in 1971, about $800 million in 2025 prices (the US consumer price
+index rose about eightfold). Defaults to 800,000,000.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker and period the seven criteria (1, 0 or NaN), Criteria Met and
+Criteria Evaluated.
+
+**Notes:**
+
+- Graham's criteria for public utilities differ (debt below twice the equity at book
+value instead of the current ratio); these are the criteria for industrial companies.
+- The price is the close at the end of the fiscal period (traded, adjusted for splits),
+the EPS the diluted EPS and the book value the Total Shareholder Equity over the diluted
+weighted average shares. The dividend record counts a year with dividends paid on the
+cash flow statement.
+- On quarterly data the flows are summed over the trailing twelve months and the years
+are four quarters apart.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "JNJ", "PG"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2000-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_graham_criteria().loc["KO"].iloc[:, -3:]
+```
+
+Which returns:
+
+|                            |   2023 |   2024 |   2025 |
+|:---------------------------|-------:|-------:|-------:|
+| Adequate Size              |      1 |      1 |      1 |
+| Strong Financial Condition |      0 |      0 |      0 |
+| Earnings Stability         |      1 |      1 |      1 |
+| Dividend Record            |      1 |      1 |      1 |
+| Earnings Growth            |      0 |      0 |      1 |
+| Moderate Price to Earnings |      0 |      0 |      0 |
+| Moderate Price to Assets   |      0 |      0 |      0 |
+| Criteria Met               |      3 |      3 |      4 |
+| Criteria Evaluated         |      7 |      7 |      7 |
 
 ---
 
@@ -3291,7 +3913,7 @@ Where $$\text{EPS}_{1}$$ and $$\text{EPS}_{2}$$ are the analyst consensus (avera
 
 See: Easton, P. D. (2004). PE Ratios, PEG Ratios, and Estimating the Implied Expected Rate of Return on Equity Capital. The Accounting Review, 79(1), 73-95.
 
-The estimates are the analysts' consensus from FinancialModelingPrep, the same estimates as `get_forward_price_earnings_ratio` of the Ratios module uses, which requires an `api_key` and a Premium FMP subscription. They are fetched once per Toolkit instance.
+The estimates are the analysts' consensus from FinancialModelingPrep, the same estimates as `get_forward_price_earnings_ratio` of the Ratios module uses, which requires an `api_key` and a Premium FMP subscription. They are fetched once per Toolkit instance. These are the current analyst estimates, also for past periods, so the result of every period, the example below included, changes as analysts revise their estimates.
 
 **Also known as:** implied cost of capital, ICC, PEG / MPEG cost of equity, Easton model.
 
@@ -3364,9 +3986,9 @@ Which returns:
 
 |      |   2021 |   2022 |     2023 |   2024 |   2025 |
 |:-----|-------:|-------:|---------:|-------:|-------:|
-| KO   | 0.0736 | 0.0665 |   0.0665 | 0.0921 | 0.0685 |
+| KO   | 0.0736 | 0.0665 |   0.0665 | 0.0927 | 0.0679 |
 | MDLZ | 0.0793 | 0.0653 | nan      | 0.0695 | 0.0944 |
-| PEP  | 0.0803 | 0.071  | nan      | 0.0639 | 0.0588 |
+| PEP  | 0.0803 | 0.071  | nan      | 0.0641 | 0.0589 |
 
 ---
 
@@ -3384,12 +4006,27 @@ $$
 $$
 
 $$
-\text{EVA} = \text{NOPAT} - (\text{Weighted Average Cost of Capital} \cdot \text{Invested Capital})
+\text{Return on Invested Capital} = \frac{\text{NOPAT}}{\text{Invested Capital}}
+$$
+
+$$
+\text{EVA Spread} = \text{Return on Invested Capital} - \text{Weighted Average Cost of Capital}
+$$
+
+$$
+\text{EVA} = \text{NOPAT} - (\text{Weighted Average Cost of Capital} \cdot \text{Invested Capital}) = \text{EVA Spread} \cdot \text{Invested Capital}
 $$
 
 EVA is mostly used to compare value creation across business units or companies and over time, and as a basis for management compensation. It is equivalent to (Return on Invested Capital - WACC) * Invested Capital, so a company with a high return on capital but a small capital base can create less EVA than a larger, less profitable one.
 
-**Also known as:** EVA, economic profit.
+The EVA Spread, the return on capital above its cost (Stewart, 1991), compares value creation between companies of different sizes.
+
+For more information, see the following sources:
+
+- Stewart, G. B. (1991). "The Quest for Value." HarperBusiness.
+- Stern, J. M., Stewart, G. B. and Chew, D. H. (1995). "The EVA Financial Management System." Journal of Applied Corporate Finance, 8(2), 32-46.
+
+**Also known as:** EVA, economic profit, EVA spread, economic spread, ROIC minus WACC.
 
 **Args:**
 
@@ -3416,7 +4053,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: DataFrame containing the EVA and its components.
+pd.DataFrame: DataFrame containing the EVA and its components: NOPAT, Invested Capital, the
+WACC, the Return on Invested Capital, the EVA Spread and the EVA.
 
 **Notes:**
 
@@ -3455,11 +4093,11 @@ toolkit.models.get_economic_value_added().xs("Economic Value Added", level=1)
 
 Which returns:
 
-|    |        2022 |        2023 |        2024 |          2025 |
-|:---|------------:|------------:|------------:|--------------:|
-| HD | 1.51586e+10 | 1.23634e+10 | 1.21182e+10 | nan           |
-| MA | 8.78616e+09 | 9.83484e+09 | 1.15047e+10 |   1.32979e+10 |
-| V  | 1.14346e+10 | 1.30385e+10 | 1.54653e+10 |   1.5322e+10  |
+|    |        2022 |        2023 |        2024 |         2025 |
+|:---|------------:|------------:|------------:|-------------:|
+| HD | 1.51589e+10 | 1.23635e+10 | 1.2118e+10  | nan          |
+| MA | 8.7863e+09  | 9.8349e+09  | 1.15046e+10 |   1.3298e+10 |
+| V  | 1.1435e+10  | 1.30387e+10 | 1.5465e+10  |   1.5322e+10 |
 
 ---
 
@@ -3545,6 +4183,465 @@ Which returns:
 | JNJ | 3.83418e+11 | 3.93774e+11 | 3.32543e+11 | 2.80894e+11 | 4.22872e+11 |
 | LLY | 2.4267e+11  | 3.2017e+11  | 5.15679e+11 | 6.83662e+11 | 9.3853e+11  |
 | MRK | 1.56255e+11 | 2.35977e+11 | 2.40039e+11 | 2.06407e+11 | 2.11225e+11 |
+
+---
+
+## get_return_on_incremental_invested_capital
+Calculate the Return on Incremental Invested Capital (ROIIC): the growth in after-tax operating profit over the capital invested to produce it. Where the Return on Invested Capital measures the return on all the capital in place, ROIIC measures the return on the newest investments, which shows whether growth creates value: growth adds value only while the ROIIC exceeds the cost of capital.
+
+The formula is as follows, with n the number of years:
+
+$$
+\text{NOPAT} = \text{EBIT} \cdot (1 - \text{Tax Rate})
+$$
+
+$$
+\text{Invested Capital} = \text{Total Equity} + \text{Total Debt}
+$$
+
+$$
+\text{ROIIC} \;(t) = \frac{\text{NOPAT} \;(t) - \text{NOPAT} \;(t - n)}{\text{Invested Capital} \;(t - 1) - \text{Invested Capital} \;(t - 1 - n)}
+$$
+
+Following Mauboussin and Callahan, the invested capital is lagged by a year: the capital invested in a year earns its profit in the years after. A longer span (`years`, often 3 or 5) smooths the lumpy year-to-year changes.
+
+For more information, see the following sources:
+
+- Mauboussin, M. J. and Callahan, D. (2014). "Calculating Return on Invested Capital." Credit Suisse Global Financial Strategies.
+- Koller, T., Goedhart, M. and Wessels, D. (2020). "Valuation: Measuring and Managing the Value of Companies." Wiley, 7th edition.
+
+**Also known as:** ROIIC, incremental ROIC, return on new invested capital, RONIC.
+
+**Args:**
+
+- <u>years (int, optional):</u> The number of years n the changes span. Defaults to 1.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int &#124; None, optional):</u> The number of periods to sum the NOPAT over. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to None,
+which is 4 on quarterly data (a trailing twelve months, with every lag counted in
+years of four quarters) and single years on yearly data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the Net Operating Profit After Taxes, the Change in NOPAT, the
+Invested Capital (a year earlier), the Change in Invested Capital and the Return on
+Incremental Invested Capital (a decimal).
+
+**Notes:**
+
+- NOPAT and the Invested Capital are those of `get_economic_value_added` (the effective tax
+rate kept within 0 and 1, EBIT the reported Operating Income), with the Invested Capital at
+the period end rather than averaged, as its change is what was invested.
+- The ROIIC is NaN where the invested capital did not grow: a ratio on shrinking capital
+has no meaning as a return (a fall in NOPAT on less capital would show as a positive return).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["COST", "WMT", "TGT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_return_on_incremental_invested_capital().xs(
+    "Return on Incremental Invested Capital", level=1
+)
+```
+
+Which returns:
+
+|      |   2021 |   2022 |     2023 |    2024 |   2025 |
+|:-----|-------:|-------:|---------:|--------:|-------:|
+| COST |    nan |    nan |   0.0657 |  0.2493 |    nan |
+| TGT  |    nan |    nan |   1.3141 | -0.0469 |    nan |
+| WMT  |    nan |    nan | nan      |  0.264  |    nan |
+
+---
+
+## get_owner_earnings
+Calculate Warren Buffett's owner earnings: the cash a business could pay its owners while keeping its competitive position and unit volume. Buffett defines them in the 1986 Berkshire Hathaway letter as the reported earnings plus depreciation, depletion and amortization and other non-cash charges, less the average yearly capital expenditure the business needs to keep its position (and any additional working capital that requires).
+
+The formula is as follows:
+
+$$
+\text{Owner Earnings} = \text{Net Income} + \text{Depreciation and Amortization} - \text{Maintenance Capital Expenditure} - \text{Change in Working Capital}
+$$
+
+$$
+\text{Owner Earnings per Share} = \frac{\text{Owner Earnings}}{\text{Weighted Average Shares Diluted}}
+$$
+
+The statements do not split the capital expenditure into maintenance and growth, which Buffett himself calls a guess. `method` chooses the estimate of the maintenance part:
+
+- "total": all the capital expenditure, the conservative estimate (owner earnings then differ from the free cash flow only by the non-cash items other than depreciation).
+- "greenwald": the capital expenditure minus the growth capital expenditure, the investment the growth in revenue required at the company's ratio of property, plant and equipment to revenue a year earlier (Greenwald et al., 2001): Maintenance Capital Expenditure = Capital Expenditure - PP&E / Revenue (t - 1) * max(Change in Revenue, 0), at least 0.
+
+For more information, see the following sources:
+
+- Buffett, W. E. (1986). "Chairman's Letter." Berkshire Hathaway Inc. Annual Report 1986, appendix on purchase-price accounting adjustments and owner earnings.
+- Greenwald, B. C. N., Kahn, J., Sonkin, P. D. and van Biema, M. (2001). "Value Investing: From Graham to Buffett and Beyond." Wiley, chapter 6.
+
+**Also known as:** owner earnings, Buffett owner earnings, maintenance free cash flow.
+
+**Args:**
+
+- <u>method (str, optional):</u> The estimate of the maintenance capital expenditure: "total" or
+"greenwald". Defaults to "total".
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int &#124; None, optional):</u> The number of periods to sum the flows over. The window
+counts calendar periods, so a period without a report makes it NaN. Defaults to None,
+which uses single periods (per quarter on quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the Net Income, Depreciation and Amortization, Capital
+Expenditure, Maintenance Capital Expenditure, Change in Working Capital, Owner Earnings
+and Owner Earnings per Share.
+
+**Notes:**
+
+- The Change in Working Capital is that of the cash flow statement with its sign turned, so
+an increase in working capital (a use of cash) is positive and lowers the owner earnings.
+- Depreciation and Amortization is that of the cash flow statement; other non-cash charges
+(such as share-based compensation) are not added back, as Buffett adds back only the
+charges that do not reflect an economic cost.
+- With method="greenwald" on quarterly data, the change in revenue is measured against the
+same period a year earlier and divided over the four quarters of that year when `trailing`
+is not set.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["KO", "PEP", "MDLZ"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_owner_earnings().xs("Owner Earnings", level=1)
+```
+
+Which returns:
+
+|      |       2021 |      2022 |      2023 |      2024 |      2025 |
+|:-----|-----------:|----------:|----------:|----------:|----------:|
+| KO   | 1.1181e+10 | 8.713e+09 | 9.144e+09 | 3.408e+09 | 4.837e+09 |
+| MDLZ | 3.799e+09  | 2.405e+09 | 4.553e+09 | 3.557e+09 | 1.556e+09 |
+| PEP  | 6.926e+09  | 6.095e+09 | 6.737e+09 | 6.379e+09 | 6.358e+09 |
+
+---
+
+## get_unlevered_beta
+Calculate the unlevered (asset) beta of Hamada (1972): the beta each company's shares would have without debt, its business risk apart from its financial leverage. Unlevered betas can be compared across companies with different amounts of debt, averaged over an industry and relevered at a company's own leverage (Damodaran's bottom-up beta, see `wacc_model.get_relevered_beta`).
+
+The formula is as follows:
+
+$$
+\text{Levered Beta} = \text{the regression}\; \beta \;\text{of the shares against the benchmark over the period}
+$$
+
+$$
+\text{Debt to Equity} = \frac{\text{Total Debt}}{\text{Market Value of Equity}}
+$$
+
+$$
+\text{Unlevered Beta} = \frac{\text{Levered Beta}}{1 + (1 - \text{Tax Rate}) \cdot \text{Debt to Equity}}
+$$
+
+For more information, see the following sources:
+
+- Hamada, R. S. (1972). "The Effect of the Firm's Capital Structure on the Systematic Risk of Common Stocks." The Journal of Finance, 27(2), 435-452.
+- Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 8.
+
+**Also known as:** asset beta, unlevered beta, Hamada equation, business risk beta.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int &#124; None, optional):</u> The number of periods the beta is measured over (and the
+taxes summed over). The window counts calendar periods, so a period without a report
+makes it NaN. Defaults to None, which is a single period.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the Levered Beta, Debt to Equity, Tax Rate and Unlevered Beta.
+
+**Notes:**
+
+- The Levered Beta, the market value of equity and the tax rate are those of
+`get_weighted_average_cost_of_capital`: the beta of the daily returns within the period
+against the benchmark, the closing price at the fiscal period end times the diluted
+weighted average shares, and the effective tax rate kept within 0 and 1 (0 without a
+pre-tax profit). The debt is the book value of Total Debt, the usual stand-in for its
+market value.
+- The debt is assumed to carry no market risk (a debt beta of zero), as Hamada and
+Damodaran's bottom-up betas do. Damodaran also corrects the unlevered beta for the cash a
+company holds (Unlevered Beta / (1 - Cash / Firm Value)), which this leaves out.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["F", "GM", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_unlevered_beta().xs("Unlevered Beta", level=1)
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| F    | 0.4549 | 0.3568 | 0.3472 | 0.2686 | 0.1996 |
+| GM   | 0.6333 | 0.4549 | 0.4088 | 0.3555 | 0.3454 |
+| TSLA | 1.9416 | 1.7191 | 2.223  | 2.3614 | 2.2258 |
+
+---
+
+## get_capitalized_research_and_development
+Capitalize the research and development expenses as Aswath Damodaran does: accounting treats R&D as an expense, while it is an investment whose benefit lasts several years. Every year's R&D becomes an asset amortized straight-line over its amortizable life, which changes the operating income, the net income, the book equity, the invested capital and with them the return on capital of research-intensive companies.
+
+The formula is as follows, with n the amortizable life in years:
+
+$$
+\text{Research Asset} \;(t) = \frac{\sum(k = 0 \ldots n - 1) \;\text{R\&D} \;(t - k) \cdot (n - k)}{n}
+$$
+
+$$
+\text{Amortization} \;(t) = \frac{\sum(k = 1 \ldots n) \;\text{R\&D} \;(t - k)}{n}
+$$
+
+$$
+\text{Adjusted Operating Income} = \text{Operating Income} + \text{R\&D} - \text{Amortization}
+$$
+
+$$
+\text{Adjusted Net Income} = \text{Net Income} + \text{R\&D} - \text{Amortization}
+$$
+
+$$
+\text{Adjusted Total Equity} = \text{Total Equity} + \text{Research Asset}
+$$
+
+$$
+\text{Adjusted Invested Capital} = \text{Total Equity} + \text{Total Debt} + \text{Research Asset}
+$$
+
+$$
+\text{Adjusted Return on Invested Capital} = \frac{\text{Adjusted Operating Income} \cdot (1 - \text{Tax Rate})}{\text{Adjusted Invested Capital at the beginning of the period}}
+$$
+
+The expense of the current year is not amortized yet, and that of n years ago is written off in full this year, as in Damodaran's R&D converter.
+
+For more information, see the following sources:
+
+- Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 9.
+- Damodaran, A. "R&D Converter" (R&D.xls), [https://pages.stern.nyu.edu/~adamodar/New_Home_Page/spreadsh.htm](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/spreadsh.htm){:target="_blank"}
+- Lev, B. and Sougiannis, T. (1996). "The Capitalization, Amortization, and Value-Relevance of R&D." Journal of Accounting and Economics, 21(1), 107-138.
+
+**Also known as:** R&D capitalization, research asset, capitalized R&D, adjusted operating income for R&D.
+
+**Args:**
+
+- <u>amortization_years (int, optional):</u> The amortizable life n of the research asset in
+years. Damodaran uses 2 years for software, 3 to 5 for most industries and up to 10
+for pharmaceuticals (the life it takes to turn research into products). Defaults to 5.
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the Research and Development Expenses, Research Asset,
+Amortization of Research Asset, Adjusted Operating Income, Adjusted Net Income,
+Adjusted Total Equity, Adjusted Invested Capital and Adjusted Return on Invested Capital.
+
+**Notes:**
+
+- The asset needs the expenses of the n years before: with a start date less than n years
+back the results are NaN (set an earlier start_date). A year without a reported R&D expense
+leaves the years that include it NaN rather than counting it as zero.
+- On quarterly data every quarter holds the expenses of the trailing year, the asset and
+amortization are those of the years ending with the quarter, and the adjusted incomes are
+trailing twelve months figures.
+- The tax rate is the effective tax rate kept within 0 and 1 (0 without a pre-tax profit),
+as in `get_economic_value_added`. Damodaran notes that the tax benefit of R&D stays that of
+the expense, which these adjustments keep by not changing the taxes.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["MRK", "PFE", "LLY"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2015-01-01",
+    end_date="2025-12-31",
+)
+
+# The last four years, the first with ten years of spending behind them
+toolkit.models.get_capitalized_research_and_development(
+    amortization_years=10
+).loc["MRK"].iloc[:, -4:]
+```
+
+Which returns:
+
+|                                     |         2022 |          2023 |        2024 |        2025 |
+|:------------------------------------|-------------:|--------------:|------------:|------------:|
+| Research and Development Expenses   |   1.3548e+10 |   3.0531e+10  | 1.7938e+10  | 1.2514e+10  |
+| Research Asset                      | nan          |   8.18812e+10 | 8.74511e+10 | 8.65212e+10 |
+| Amortization of Research Asset      | nan          |   1.00653e+10 | 1.23681e+10 | 1.34439e+10 |
+| Adjusted Operating Income           | nan          |   2.34197e+10 | 2.57909e+10 | 2.25561e+10 |
+| Adjusted Net Income                 | nan          |   2.08307e+10 | 2.26869e+10 | 1.73241e+10 |
+| Adjusted Total Equity               | nan          |   1.19516e+11 | 1.33823e+11 | 1.39183e+11 |
+| Adjusted Invested Capital           | nan          |   1.55784e+11 | 1.72093e+11 | 1.89717e+11 |
+| Adjusted Return on Invested Capital | nan          | nan           | 0.1423      | 0.1136      |
+
+---
+
+## get_cash_flow_return_on_investment
+Calculate the Cash Flow Return on Investment (CFROI) of Bartley Madden (the HOLT model): the internal rate of return of a company's assets seen as one project. The gross investment buys a gross cash flow for every year of the life of the depreciating assets, and the non-depreciating assets (working capital) come back at the end. Where the return on invested capital divides an accounting profit by depreciated book values, the CFROI compares cash flows with the original cost of the assets, which makes companies with old and new assets comparable.
+
+The formula is as follows, solved for the CFROI:
+
+$$
+\text{Gross Cash Flow} = \text{Net Income} + \text{Depreciation and Amortization} + \text{Interest Expense}
+$$
+
+$$
+\text{Depreciating Assets} = \text{Gross Property, Plant and Equipment} \;(\text{Net Property, Plant and Equipment where the gross amount is not reported})
+$$
+
+$$
+\text{Non-Depreciating Assets} = \text{Total Current Assets} - (\text{Total Current Liabilities} - \text{Short Term Debt})
+$$
+
+$$
+\text{Gross Investment} = \text{Depreciating Assets} + \text{Non-Depreciating Assets}
+$$
+
+$$
+\text{Asset Life} = \frac{\text{Depreciating Assets}}{\text{Depreciation and Amortization}}
+$$
+
+$$
+\text{Gross Investment} = \frac{\sum(t = 1 \ldots \;\text{Asset Life}) \;\text{Gross Cash Flow}}{(1 + \text{CFROI})^{t}} + \frac{\text{Non-Depreciating Assets}}{(1 + \text{CFROI})^{\text{Asset Life}}}
+$$
+
+This is the simplified, nominal form of Madden's model that the statements allow. HOLT's CFROI also restates the gross investment and the cash flows for inflation (a real return), capitalizes operating leases and R&D and adds the rental expense to the cash flow; practitioner versions differ in these choices, so the levels are best compared between companies and over time rather than with a published CFROI.
+
+For more information, see the following sources:
+
+- Madden, B. J. (1999). "CFROI Valuation: A Total System Approach to Valuing the Firm." Butterworth-Heinemann.
+- Madden, B. J. (2010). "Wealth Creation: A Systems Mindset for Building and Investing in Businesses for the Long Term." Wiley.
+
+**Also known as:** CFROI, HOLT CFROI, cash flow return on investment, Madden CFROI.
+
+**Args:**
+
+- <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per ticker the Gross Cash Flow, Depreciating Assets, Non-Depreciating
+Assets, Gross Investment, Asset Life (years) and the Cash Flow Return on Investment (a
+decimal per year, annually compounded).
+
+**Notes:**
+
+- The balance sheet items are averaged over the period ends that open and close the year,
+as the invested capital of `get_economic_value_added`. On quarterly data the flows are
+those of the trailing twelve months, so the CFROI stays a yearly rate.
+- FinancialModelingPrep reports the property, plant and equipment net of depreciation. The
+net amount understates the original cost and its life (Net PP&E / Depreciation) is the
+remaining life of the assets, which gives a remaining-life CFROI. Where the statements
+report the gross amount (Yahoo Finance), the gross amount and the full life are used.
+- The CFROI is NaN where the life or the gross investment is not positive or no rate
+between -99% and 1,000% solves the equation (such as a gross cash flow that never
+returns the investment).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["HD", "LOW"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.models.get_cash_flow_return_on_investment().loc["HD"]
+```
+
+Which returns:
+
+|                                |         2021 |         2022 |        2023 |       2024 |
+|:-------------------------------|-------------:|-------------:|------------:|-----------:|
+| Gross Cash Flow                |  2.0642e+10  |  2.1697e+10  |  2.0333e+10 | 2.0888e+10 |
+| Depreciating Assets            |  3.0917e+10  |  3.18695e+10 |  3.3305e+10 | 3.4666e+10 |
+| Non-Depreciating Assets        |  5.2855e+09  |  7.218e+09   |  9.86e+09   | 8.524e+09  |
+| Gross Investment               |  3.62025e+10 |  3.90875e+10 |  4.3165e+10 | 4.319e+10  |
+| Asset Life                     | 10.8026      | 10.7124      | 10.2572     | 9.2172     |
+| Cash Flow Return on Investment |  0.5664      |  0.551       |  0.4637     | 0.4726     |
 
 ---
 
@@ -4563,7 +5660,7 @@ $$
 
 For more information, see the following book:
 
-- Mauboussin, M.J. and Rappaport, A. (2001). "Expectations Investing: Reading Stock Prices for Better Returns." Harvard Business School Press.
+- Rappaport, A. and Mauboussin, M.J. (2001). "Expectations Investing: Reading Stock Prices for Better Returns." Harvard Business School Press.
 
 **Also known as:** reverse DCF, market-implied growth, expectations investing.
 

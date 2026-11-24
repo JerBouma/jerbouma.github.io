@@ -25,22 +25,24 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/portfolio-optimization.md %}
 
 ## get_risk_contributions
-Calculate how much each asset contributes to the risk of a portfolio, measured as its volatility, expected shortfall (CVaR), semideviation, mean absolute deviation or Conditional Drawdown at Risk (CDaR). The marginal contribution is the change in the portfolio's risk from a small increase in an asset's weight; the risk contribution is the weight times that, and the contributions add up to the portfolio's risk (Euler allocation). A large position in a calm asset can contribute less risk than a small one in a volatile asset.
+Calculate how much each asset contributes to the risk of a portfolio, measured as its volatility, expected shortfall (CVaR), semideviation, mean absolute deviation, Conditional Drawdown at Risk (CDaR) or one of the Risk module's tail, dispersion and drawdown measures. The marginal contribution is the change in the portfolio's risk from a small increase in an asset's weight; the risk contribution is the weight times that, and the contributions add up to the portfolio's risk (Euler allocation). A large position in a calm asset can contribute less risk than a small one in a volatile asset.
 
 - risk_measure="volatility": the marginal contribution is $$(\Sigma w)_{i} / \sigma_{p}$$, with $$\Sigma$$ the annualized covariance matrix.
 - risk_measure="cvar": the expected shortfall is the average loss in the periods in which the portfolio's return is at or below its Value at Risk, and the marginal contribution of an asset is its average loss in those same periods, $$- E [r_{i} \vert r_{p} \leq \text{VaR}]$$, so the contributions show which assets lose in the portfolio's worst periods. These are per period (e.g. daily), like the Finance Toolkit's historical CVaR, and not annualized.
 - risk_measure="semideviation": the downside deviation of the portfolio's return below zero, $$\text{SD}^{-} = \sqrt{\sum \min (r_{p,t} , 0)^{2} / T}$$, with the marginal contribution $$\sum \min (r_{p,t} , 0) r_{i,t} / (T \text{SD}^{-})$$: an asset contributes by losing in the periods in which the portfolio loses. Per period, not annualized.
 - risk_measure="mad": the mean absolute deviation of the portfolio's return, $$\sum \vert r_{p,t} - \mu_{p} \vert / T$$, with the marginal contribution $$\sum \operatorname{sign} (r_{p,t} - \mu_{p}) (r_{i,t} - \mu_{i}) / T$$. Per period, not annualized.
 - risk_measure="cdar": the Conditional Drawdown at Risk, the average of the worst $$1 - \alpha$$ share of the drawdowns of the uncompounded cumulative return (the drawdowns the minimum drawdown optimization minimizes). Each drawdown is the sum of the assets' drawdowns from the portfolio's peak, so the marginal contribution of an asset is its average drawdown over the portfolio's worst drawdown periods (Goldberg and Mahmoud, 2017).
+- risk_measure="var", "evar", "worst_realization", "gini_mean_difference", "tail_gini", "lower_partial_moment", "kurtosis", "maximum_drawdown", "average_drawdown", "drawdown_at_risk", "entropic_drawdown_at_risk" or "ulcer_index": the historical Value at Risk and Entropic Value at Risk, the worst return, the Gini mean difference, the Tail Gini, the first lower partial moment below zero, the square root of the fourth central moment, and the maximum and average drawdown, Drawdown at Risk, Entropic Drawdown at Risk and Ulcer Index of the uncompounded cumulative return, as the Risk module calculates them, losses positive. The marginal contribution is found by central finite differences, $$(\rho (w + h e_{i}) - \rho (w - h e_{i})) / 2 h$$ with $$h = 1 e - 7$$ (1e-4 for the entropic measures), as in Riskfolio-Lib's Risk_Contribution; the risk contribution is the weight times that (half of it for "kurtosis", whose square root of the fourth moment doubles when the weights double twice over), so the contributions add up to the measure. Per period, not annualized.
 
 For more information, see the following papers:
 
-- Litterman, R. (1996). "Hot Spots and Hedges." The Journal of Portfolio Management, 23(5), 52-75.
+- Litterman, R. (1997). "Hot Spots and Hedges." The Journal of Portfolio Management, 23(5), 52-75.
 - Tasche, D. (2000). "Conditional Expectations as Quantile Derivatives." Working paper, arXiv math/0104190.
 - Scaillet, O. (2004). "Nonparametric Estimation and Sensitivity Analysis of Expected Shortfall." Mathematical Finance, 14(1), 115-129.
 - Sortino, F. A. and Price, L. N. (1994). "Performance Measurement in a Downside Risk Framework." The Journal of Investing, 3(3), 59-64.
 - Konno, H. and Yamazaki, H. (1991). "Mean-Absolute Deviation Portfolio Optimization Model and Its Applications to Tokyo Stock Market." Management Science, 37(5), 519-531.
 - Goldberg, L. R. and Mahmoud, O. (2017). "Drawdown: From Practice to Theory and Back Again." Mathematics and Financial Economics, 11(3), 275-297.
+- Riskfolio-Lib: Risk_Contribution, Risk_Margin ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
 
 **Also known as:** risk decomposition, marginal contribution to risk, risk budget, component expected shortfall, component CVaR, downside risk contribution, drawdown contribution.
 
@@ -51,11 +53,15 @@ None, which uses the latest weights of the Portfolio the Toolkit came from,
 or equal weights.
 - <u>risk_measure (str, optional):</u> "volatility", "cvar" (the expected shortfall),
 "semideviation" (below a return of zero), "mad" (the mean absolute
-deviation) or "cdar" (the Conditional Drawdown at Risk). Defaults to
-"volatility".
-- <u>confidence_level (float, optional):</u> The confidence level of the expected
-shortfall and the CDaR, e.g. 0.95 for the average of the worst 5% of
-periods or drawdowns. Defaults to 0.95.
+deviation), "cdar" (the Conditional Drawdown at Risk), "var", "evar",
+"worst_realization", "gini_mean_difference", "tail_gini",
+"lower_partial_moment", "kurtosis", "maximum_drawdown",
+"average_drawdown", "drawdown_at_risk", "entropic_drawdown_at_risk" or
+"ulcer_index". Defaults to "volatility".
+- <u>confidence_level (float, optional):</u> The confidence level of the tail
+measures (the expected shortfall, CDaR, VaR, EVaR, Tail Gini, Drawdown at
+Risk and EDaR), e.g. 0.95 for the worst 5% of periods or drawdowns.
+Defaults to 0.95.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
 - <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
@@ -63,13 +69,31 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -87,9 +111,19 @@ exist the result is returned in full. Defaults to None, which keeps every column
 pd.DataFrame: Per asset and in total, the Weight, Marginal Contribution, Risk
 Contribution and Percentage Contribution: annualized volatility terms, or
 per period terms of the other measures, with losses and drawdowns positive.
+For "kurtosis" the marginal contribution is the derivative of the measure and
+the risk contribution half the weight times it.
 The assets held (a weight other than zero) are listed, over the periods in
 which each of them has a return; a loaded asset without weight does not
 shorten the sample.
+
+**Notes:**
+
+- The Value at Risk and Drawdown at Risk are the Risk module's quantiles,
+interpolated between two periods, where Riskfolio-Lib takes a single period (the
+$$\text{⌈} \alpha T \text{⌉} - th$$ worst), so their contributions mix two periods and differ from
+Riskfolio-Lib's; the other measures match Riskfolio-Lib's ("EVaR", "WR", "GMD",
+"TG", "FLPM", "KT", "MDD", "ADD", "EDaR", "UCI") to 1e-8.
 
 **As an example:**
 
@@ -148,13 +182,31 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -363,9 +415,12 @@ Backtest the portfolio optimizers out of sample against equal weights (1/N) and 
 
 Each rebalancing trades from the drifted weights to the new ones. Its turnover is $$\sum \vert w_{i,\text{new}} - w_{i,\text{drifted}} \vert$$ and its cost the transaction cost times the turnover, taken from the portfolio's value, so the returns shown are after costs (DeMiguel, Garlappi and Uppal, 2009). With a maximum turnover, a portfolio trades towards its new weights only as far as the limit allows. DeMiguel et al. found that none of fourteen optimizers consistently beat 1/N out of sample, because the estimation error in the expected returns outweighs the gain from optimizing; a backtest shows whether that holds for these assets.
 
-For more information, see the following paper:
+For more information, see the following papers:
 
 - DeMiguel, V., Garlappi, L. and Uppal, R. (2009). "Optimal Versus Naive Diversification: How Inefficient Is the 1/N Portfolio Strategy?" The Review of Financial Studies, 22(5), 1915-1953.
+- Konno, H. and Yamazaki, H. (1991). "Mean-Absolute Deviation Portfolio Optimization Model and Its Applications to Tokyo Stock Market." Management Science, 37(5), 519-531.
+- Estrada, J. (2008). "Mean-Semivariance Optimization: A Heuristic Approach." Journal of Applied Finance, 18(1), 57-72.
+- Rubin, D. B. (1981). "The Bayesian Bootstrap." The Annals of Statistics, 9(1), 130-134.
 
 **Also known as:** walk-forward backtest, out-of-sample backtest, rolling optimization, 1/N comparison.
 
@@ -378,8 +433,13 @@ list or comma separated: "minimum_variance", "maximum_sharpe",
 "nested_clustered_optimization" (minimum variance within and across
 the clusters), "inverse_volatility", "maximum_diversification",
 "minimum_cvar" (95%), "minimum_drawdown" (the 95% CDaR),
-"maximum_omega" (a minimum acceptable return of 0) and
-"maximum_cvar_ratio" (95%). Equal weights and the benchmark are always
+"maximum_omega" (a minimum acceptable return of 0),
+"maximum_cvar_ratio" (95%), "minimum_mad" (the lowest mean absolute
+deviation, Konno and Yamazaki, 1991), "minimum_semideviation" (the
+lowest semideviation below a return of 0, Estrada, 2008) and "random"
+(weights drawn uniformly from all long-only portfolios, a flat
+Dirichlet, with a generator seeded at 0 so the backtest is
+reproducible). Equal weights and the benchmark are always
 included. Defaults to None, which backtests
 minimum variance, maximum Sharpe, risk parity, Hierarchical Risk Parity,
 maximum diversification and inverse volatility.
@@ -398,28 +458,51 @@ rebalancing, e.g. 0.2. Defaults to None, no limit.
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
 every asset, or per asset, for the optimizers that take weight bounds (all
-but inverse volatility and nested clustered optimization). Defaults to 0.
+but inverse volatility, nested clustered optimization and random).
+Defaults to 0.
 - <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
 every asset, or per asset, for the optimizers that take weight bounds.
 Defaults to 1.
@@ -449,11 +532,21 @@ output="weights", the weights each optimizer set on each rebalancing date.
 - The returns are daily total returns (from adjusted closing prices). The
 estimates use the days on which every asset has a return; the portfolios earn
 the returns of every day, so a day on which one market is closed (its assets
-return 0%, the next day covers both) still counts for the others. Each
-portfolio and the benchmark are measured over the days they have a return.
+return 0%, the next day covers both) still counts for the others, up to the
+last day of the data. An asset whose returns end earlier (delisted or
+acquired) ends the estimates and rebalancing on its last return; the portfolios
+then hold it at 0% up to the end, and a warning says so. Each portfolio and the
+benchmark are measured over the days they have a return.
+- Returns on every calendar day (such as those of cryptocurrencies, with returns
+on Saturdays and Sundays) are annualized with 365 days a year, returns on
+trading days with 252, for the estimates and for each portfolio and the
+benchmark on its own.
 - When an optimizer finds no weights on a rebalancing date (e.g. the maximum Sharpe
 ratio when no asset beat the risk free rate over the lookback), the portfolio
 keeps its drifted weights until the next date, and a warning says how often.
+Before its first weights it holds nothing and has no returns, so it starts
+later than the others, and with weight bounds no portfolio meets it has no
+returns at all.
 - The In-Sample Return is the average over the rebalancing dates of w · mu, the
 annualized return the weights set on a date expected from the estimates of
 their own window (with the chosen expected return and covariance estimators),
@@ -490,6 +583,1177 @@ Which returns:
 | Inverse Volatility       |              0.122  |                  0.151  |         0.5798 |            -0.1484 |             0.0415 |             0.0005 |             0.1408 |                   0.7745 |
 | Equal Weight             |              0.1407 |                  0.1624 |         0.6519 |            -0.1594 |             0.0388 |             0.0005 |             0.1582 |                   0.8381 |
 | Benchmark                |              0.1285 |                  0.1799 |         0.545  |            -0.221  |           nan      |           nan      |           nan      |                 nan      |
+
+---
+
+## get_expected_returns_estimate
+Estimate the annualized expected return of every asset with the estimators the optimizers take as expected_returns=, side by side, to see how much the choice moves the input that mean-variance weights are most sensitive to.
+
+- Mean: the historical average return per period times P, the number of periods in a year.
+- Geometric: the compounded average, $$(\Pi (1 + r_{t}))^{P / T} - 1$$ over the T periods (PyPortfolioOpt's mean_historical_return, its default).
+- Exponential: the exponentially weighted average with $$\alpha = 2$$ / (span + 1), times P (PyPortfolioOpt's ema_historical_return with compounding=False; Riskfolio-Lib's mean_vector "ewma1", or "ewma2" with adjust=False).
+- Exponential Geometric: that average compounded, (1 + m)^P - 1 (PyPortfolioOpt's ema_historical_return).
+- CAPM: $$r_{f} + \beta_{i} (E [r_{m}] - r_{f})$$ with the benchmark as the market (Sharpe, 1964).
+- Bayes-Stein: the averages shrunk towards the average return of the minimum variance portfolio, $$\mu = (1 - \phi) \hat{\mu} + \phi \mu_{0} 1$$ with $$\phi = (N + 2) / ((N + 2) + T (\hat{\mu} - \mu_{0} 1)' \Sigma^{- 1} (\hat{\mu} - \mu_{0} 1))$$ and $$\Sigma = S (T - 1) / (T - N - 2)$$ (Jorion, 1986).
+- James-Stein: the averages shrunk towards their grand mean $$\bar{\mu}$$, $$\mu = (1 - \beta) \hat{\mu} + \beta \bar{\mu} 1$$ with $$\beta = (\sum \lambda_{k} - 2 \max \lambda_{k}) / (T \text{‖} \hat{\mu} - \bar{\mu} 1 \text{‖}^{2})$$ clipped to [0, 1] and $$\lambda_{k}$$ the eigenvalues of the sample covariance (skfolio's ShrunkMu JAMES_STEIN).
+- Bodnar-Okhrin-Parolya: $$\mu = \alpha \hat{\mu} + \beta b$$ with the grand mean as the target b and the weights $$\alpha$$ and $$\beta$$ of Bodnar, Okhrin and Parolya (2019) (skfolio's ShrunkMu BODNAR_OKHRIN, Riskfolio-Lib's mean_vector "BOP").
+- Centroid: the returns that only an ordering of the assets implies (Almgren and Chriss, 2006), $$\mu_{i} = c_{i} \sigma_{i}$$ with $$\sigma_{i}$$ the annualized volatility and $$c_{i}$$ the expected value of the i-th largest of N standard normal draws, approximated by $$c_{j} = \Phi^{- 1} ((N + 1 - j - \alpha) / (N - 2 \alpha + 1))$$ with $$\alpha = 0.4424 - 0.1185 N^{- 0.21}$$; assets ranked together share the average c of their positions. It takes the ranking, from the highest expected return to the lowest, from anywhere: a view, or the scores of any metric of the Toolkit.
+
+For more information, see the following papers:
+
+- James, W. and Stein, C. (1961). "Estimation with Quadratic Loss." Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability, 1, 361-379.
+- Jorion, P. (1986). "Bayes-Stein Estimation for Portfolio Analysis." Journal of Financial and Quantitative Analysis, 21(3), 279-292.
+- Bodnar, T., Okhrin, O. and Parolya, N. (2019). "Optimal Shrinkage Estimator for High-Dimensional Mean Vector." Journal of Multivariate Analysis, 170, 63-79.
+- Almgren, R. and Chriss, N. (2006). "Optimal Portfolios from Ordering Information." Journal of Risk, 9(1), 1-47.
+- skfolio: ShrunkMu, EmpiricalMu, EWMu ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+- PortfolioAnalytics: ac.ranking, centroid.complete.mc ([https://github.com/braverock/PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics){:target="_blank"}).
+- PyPortfolioOpt: expected_returns ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}).
+- Riskfolio-Lib: mean_vector ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+
+**Also known as:** shrunk mu, shrinkage expected returns, CAGR, geometric mean return, centroid returns, ranking returns, returns from an ordering.
+
+**Args:**
+
+- <u>method (str &#124; list[str] &#124; None, optional):</u> The estimators: "mean",
+"geometric", "exponential", "exponential_geometric", "capm",
+"bayes_stein", "james_stein", "bodnar_okhrin_parolya" or "centroid".
+Defaults to None, all of them (CAPM only when there is a benchmark,
+Centroid only with a ranking).
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>span (int, optional):</u> The span in periods of the exponential averages.
+Defaults to 180.
+- <u>adjust (bool, optional):</u> Whether the exponential averages normalize the
+weights over the whole history (pandas' adjust=True) rather than follow
+the recursion $$m_{t} = \alpha r_{t} + (1 - \alpha) m_{t - 1}$$. Defaults to True.
+- <u>ranking (list &#124; dict &#124; pd.Series &#124; None, optional):</u> The ordering of "centroid", from the
+highest expected return to the lowest: a list of every asset
+(["MSFT", "AAPL", ...]), whose entries can be lists of assets ranked
+together (["MSFT", ["AAPL", "JNJ"], "XOM"]), or a score per asset
+({"AAPL": 2.1, ...} or a pd.Series, higher is better, equal scores ranked
+together). Defaults to None.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The annualized expected return per asset (rows) and estimator
+(columns), from the periods in which every asset has a return.
+
+**Notes:**
+
+- "Geometric" and "Exponential Geometric" are compounded annual returns; the
+others are arithmetic returns per period times P, without compounding.
+- James-Stein needs at least three assets to shrink (with two, its $$\beta$$ is negative
+and clipped to 0); skfolio and Riskfolio-Lib leave $$\beta$$ unclipped. Bayes-Stein
+uses Jorion's Σ, where skfolio (BAYES_STEIN) and Riskfolio-Lib ("BS") use S.
+- The centroid values match, within 0.01, the mean of sorted normal draws that
+PortfolioAnalytics' centroid.complete.mc simulates. PortfolioAnalytics takes the
+order from the lowest return up and rescales the centroid to lie between -0.05
+and 0.05 (ac.ranking), where here it is scaled by each asset's volatility, so
+every asset's return over its volatility is its centroid value.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_expected_returns_estimate(
+    show_columns=["Mean", "Geometric", "Bayes-Stein", "James-Stein", "Bodnar-Okhrin-Parolya"]
+)
+```
+
+Which returns:
+
+|      |   Mean |   Geometric |   Bayes-Stein |   James-Stein |   Bodnar-Okhrin-Parolya |
+|:-----|-------:|------------:|--------------:|--------------:|------------------------:|
+| AAPL | 0.1932 |      0.1672 |        0.1673 |        0.1932 |                  0.1291 |
+| MSFT | 0.2017 |      0.1838 |        0.1695 |        0.2017 |                  0.1222 |
+| JNJ  | 0.0987 |      0.0884 |        0.1418 |        0.0987 |                  0.2051 |
+| XOM  | 0.2911 |      0.2898 |        0.1937 |        0.2911 |                  0.0503 |
+
+---
+
+## get_covariance_estimate
+Estimate the annualized covariance matrix of the assets with one of the estimators the optimizers take as covariance=, with its parameters, or as a correlation matrix.
+
+- "sample": the sample covariance (ddof=1).
+- "ledoit_wolf", "ledoit_wolf_constant_correlation", "ledoit_wolf_single_factor", "oas": shrinkage with an estimated intensity (Ledoit and Wolf, 2003, 2004; Chen et al., 2010).
+- "shrunk": $$\Sigma = (1 - \delta) S + \delta$$ (tr(S) / N) I with a fixed intensity $$\delta$$ = shrinkage (PyPortfolioOpt's shrunk_covariance, skfolio's ShrunkCovariance).
+- "semicovariance": the co-movement below a zero return (Estrada, 2008).
+- "exponential": exponentially weighted with $$\alpha = 2$$ / (span + 1) (RiskMetrics).
+- "denoised", "denoised_spectral", "denoised_shrink": the eigenvalues of the correlation matrix below the Marčenko-Pastur upper edge averaged, set to zero, or their part of the correlation shrunk towards its diagonal, C_signal + $$\alpha$$ C_noise + ($$1 - \alpha$$) diag(C_noise) with $$\alpha$$ = denoise_alpha (López de Prado, 2020; Riskfolio-Lib's denoiseCov, skfolio's DenoiseCovariance).
+- "gerber": $$\Sigma = D G D$$ with G the Gerber statistic of the moves beyond gerber_threshold standard deviations: statistic $$0 (n_{c} - n_{d}) / (n_{c} + n_{d})$$, $$1 (n_{c} - n_{d}) / (T - n_{n})$$ or 2 H / √(diag(H) diag(H)') (Gerber et al., 2022; skfolio's GerberCovariance, Riskfolio-Lib's gerber_cov_stat0/1/2).
+- "detoned": the first `components` principal components of the correlation matrix, the market, removed and the rest rescaled to a unit diagonal (López de Prado, 2020; skfolio's DetoneCovariance). It is singular, so the optimizers do not take it; it suits clustering (codependence="detoned").
+- "factor": $$\Sigma = B \sum_{f} B' + D$$, the covariance a time series factor model implies, with B the loadings of the assets on the factors (the Fama and French five factors by default), $$\sum_{f}$$ the covariance of the factors and D the variances of the residuals, all with ddof=1 (Fama and French, 1993; Connor, 1995; Riskfolio-Lib's risk_factors, skfolio's TimeSeriesFactorModel). The loadings come from OLS on every factor, a stepwise selection or a principal components regression (factor_selection, see get_factor_loadings), on the periods both the assets and the factors have.
+- "minimum_covariance_determinant": the covariance of the h = ⌈(T + N + 1) / 2⌉ periods whose covariance matrix has the smallest determinant, found with the C-steps of FAST-MCD from random subsets (seed), made consistent at the normal distribution and reweighted: the periods with a Mahalanobis distance below the 97.5% quantile of $$\chi_{N}^{2}$$ are kept and their covariance is multiplied by $$c = 0.975 / F_{N + 2} (\chi_{N}^{2} (0.975))$$ (Rousseeuw and Van Driessen, 1999; Croux and Haesbroeck, 1999; referenced against scikit-learn's MinCovDet). Crashes and data errors barely move it.
+- "jlogo": $$\Sigma = J^{- 1}$$ with $$J = \Sigma_{C} [S_{\text{CC}}]^{- 1} - \Sigma_{S} [S_{\text{SS}}]^{- 1}$$ the sparse inverse covariance over the 4-cliques C and separators S of the Triangulated Maximally Filtered Graph of the similarities $$(1 + \rho) / 2$$, a planar graph with 3(N - 2) links (Massara et al., 2017; Barfuss et al., 2016; similar logic as Riskfolio-Lib's covar_matrix(method="jlogo")). With four or fewer assets every pair is linked and it is the sample covariance.
+- "geodesic": $$\Sigma = S^{\tfrac{1}{2}} (S^{- \tfrac{1}{2}} T S^{- \tfrac{1}{2}})^{\delta} S^{\tfrac{1}{2}}$$ with T = (tr(S) / N) I and $$\delta$$ = shrinkage, which keeps the eigenvectors of S and interpolates its eigenvalues geometrically, $$\lambda^{1 - \delta}$$ (tr(S) / N)^δ (Bhatia, 2007; Musolas et al., 2021; skfolio's GeodesicShrinkageCovariance).
+- "regime_adjusted_ew": $$\phi^{2} S_{T}$$ with $$S_{t} = \lambda S_{t - 1} + (1 - \lambda) r_{t} r_{t}'$$ (around zero, bias-corrected, $$\lambda$$ = 2^(-1 / half_life)) and $$\phi$$ the exponential average (half-life half_life / 2) of $$\vert w' r_{t} \vert / \sqrt{w' S_{t - 1} w} / \sqrt{2 / \pi}$$ for the inverse volatility portfolio w, clipped to [0.7, 1.6] (Paleologo, 2025; skfolio's RegimeAdjustedEWCovariance).
+- "denoised_detoned": the denoised correlation ("denoised") with its first `components` principal components removed and rescaled to a unit diagonal, the order of López de Prado (2020, section 2.6). Singular, like "detoned".
+- "nercome": $$\Sigma = (1 / M) \sum_{s} P_{1}$$ diag(P_1' $$S_{2} P_{1}$$) P_1' over $$M = 50$$ random splits of the periods into a first part of m and the rest, with $$P_{1}$$ the eigenvectors of the first part's sample covariance and $$S_{2}$$ the second part's: eigenvalues that are not fitted to the same noise as the eigenvectors (Abadir, Distaso and Žikeš, 2014; Lam, 2016). m is chosen from $$2 \sqrt{T}$$, 0.2T, ..., 0.8T, $$T - 2.5 \sqrt{T}$$ and $$T - 1.5 \sqrt{T}$$ by the smallest $$\text{‖} \text{avg} (\sum_{m} - S_{2}) \text{‖}^{2}$$ (Lam, 2016), and the splits drawn with the seed.
+- "ccc_garch": the next-period covariance of the constant conditional correlation model of Bollerslev (1990), $$\Sigma_{T} + 1 = D R D$$ with D the GARCH(1, 1) volatilities forecast for the next period, $$\sigma_{i,T}^{2} + 1 = \omega_{i} + \alpha_{i} \epsilon_{i,T}^{2} + \beta_{i} \sigma_{i,T}^{2}$$, and R the correlation of the standardized residuals $$\epsilon_{t} / \sigma_{t}$$ of the returns around their average. It follows the volatility now, not its average over the history.
+- "mm": the MM-estimator, robust to almost half the periods being outliers and 95% as efficient in its shape (the correlations and variance ratios) as the sample covariance for normal returns: an S-estimator with Tukey's bisquare $$\rho (d) = 1 - (1 - (d / c)^{2})^{3}$$ (the scatter with the smallest scale s solving avg $$\rho (d_{t} / \sqrt{s}) = (1 - N / T) / 2$$), followed by a bisquare M-step with a larger c at that scale (Tatsuoka and Tyler, 2000; Salibián-Barrera, Van Aelst and Willems, 2006). Both are iteratively reweighted means and covariances, with weights that fall to zero for periods far from the bulk.
+- "rocke": the S-estimator with the translated biweight of Rocke (1996) on the squared distances, $$\rho (x) = ((x - 1) / (4 \gamma)) (3 - ((x - 1) / \gamma)^{2})$$ + ½ within $$\gamma$$ of 1 (0 below, 1 above), with $$\gamma = \min (\chi_{N}^{2} (0.995) / N - 1 , 1)$$, made consistent at the normal distribution through the median distance, which keeps its robustness for many assets (Maronna, Martin, Yohai and Salibián-Barrera, 2019).
+
+For more information, see the following papers:
+
+- Ledoit, O. and Wolf, M. (2004). "A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices." Journal of Multivariate Analysis, 88(2), 365-411.
+- Gerber, S., Markowitz, H. M., Ernst, P. A., Miao, Y., Javid, B. and Sargen, P. (2022). "The Gerber Statistic: A Robust Co-Movement Measure for Portfolio Optimization." The Journal of Portfolio Management, 48(3), 87-102.
+- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, chapter 2.
+- Fama, E. F. and French, K. R. (1993). "Common Risk Factors in the Returns on Stocks and Bonds." Journal of Financial Economics, 33(1), 3-56.
+- Connor, G. (1995). "The Three Types of Factor Models: A Comparison of Their Explanatory Power." Financial Analysts Journal, 51(3), 42-46.
+- Rousseeuw, P. J. and Van Driessen, K. (1999). "A Fast Algorithm for the Minimum Covariance Determinant Estimator." Technometrics, 41(3), 212-223.
+- Croux, C. and Haesbroeck, G. (1999). "Influence Function and Efficiency of the Minimum Covariance Determinant Scatter Matrix Estimator." Journal of Multivariate Analysis, 71(2), 161-190.
+- Massara, G. P., Di Matteo, T. and Aste, T. (2017). "Network Filtering for Big Data: Triangulated Maximally Filtered Graph." Journal of Complex Networks, 5(2), 161-178.
+- Barfuss, W., Massara, G. P., Di Matteo, T. and Aste, T. (2016). "Parsimonious Modeling with Information Filtering Networks." Physical Review E, 94(6), 062306.
+- Bhatia, R. (2007). "Positive Definite Matrices." Princeton University Press.
+- Musolas, A., Smith, S. T. and Marzouk, Y. (2021). "Geodesically Parameterized Covariance Estimation." SIAM Journal on Matrix Analysis and Applications, 42(2), 528-556.
+- Paleologo, G. A. (2025). "The Elements of Quantitative Investing." Wiley Finance.
+- Abadir, K. M., Distaso, W. and Žikeš, F. (2014). "Design-Free Estimation of Variance Matrices." Journal of Econometrics, 181(2), 165-180.
+- Lam, C. (2016). "Nonparametric Eigenvalue-Regularized Precision or Covariance Matrix Estimator." The Annals of Statistics, 44(3), 928-953.
+- Bollerslev, T. (1990). "Modelling the Coherence in Short-Run Nominal Exchange Rates: A Multivariate Generalized ARCH Model." The Review of Economics and Statistics, 72(3), 498-505.
+- Rocke, D. M. (1996). "Robustness Properties of S-Estimators of Multivariate Location and Shape in High Dimension." The Annals of Statistics, 24(3), 1327-1345.
+- Tatsuoka, K. S. and Tyler, D. E. (2000). "On the Uniqueness of S-Functionals and M-Functionals under Nonelliptical Distributions." The Annals of Statistics, 28(4), 1219-1243.
+- Salibián-Barrera, M., Van Aelst, S. and Willems, G. (2006). "Principal Components Analysis Based on Multivariate MM Estimators with Fast and Robust Bootstrap." Journal of the American Statistical Association, 101(475), 1198-1211.
+- Maronna, R. A., Martin, R. D., Yohai, V. J. and Salibián-Barrera, M. (2019). "Robust Statistics: Theory and Methods (with R)." 2nd edition, Wiley.
+- skfolio: ShrunkCovariance, GerberCovariance, DenoiseCovariance, DetoneCovariance ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+- PyPortfolioOpt: risk_models.CovarianceShrinkage ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}).
+- Riskfolio-Lib: covar_matrix, denoiseCov, gerber_cov_stat0/1/2, risk_factors ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+- skfolio: TimeSeriesFactorModel ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+- scikit-learn: covariance.MinCovDet ([https://scikit-learn.org/stable/modules/generated/sklearn.covariance.MinCovDet.html](https://scikit-learn.org/stable/modules/generated/sklearn.covariance.MinCovDet.html){:target="_blank"}).
+- PyPortfolioOpt: risk_models.min_cov_determinant, the raw estimate before the consistency factor and the reweighting ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}).
+- Riskfolio-Lib: covar_matrix(method="jlogo"), $$j_{\text{LoGo}}$$ and PMFG_T2s, which share similar logic for the TMFG and j-LoGo ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+- skfolio: GeodesicShrinkageCovariance, RegimeAdjustedEWCovariance ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+- RiskLabAI: nercome_denoised_covariance ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
+- PortfolioAnalytics: CCCgarch.MM, custom.covRob.MM, custom.covRob.Rocke ([https://github.com/braverock/PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics){:target="_blank"}).
+
+**Also known as:** covariance estimator, risk model, shrunk covariance, Gerber covariance, denoised covariance, detoned correlation, factor covariance, factor risk model, robust covariance, MCD, FastMCD, TMFG, LoGo, sparse inverse covariance, geodesic shrinkage, regime adjusted EWMA covariance, short-term volatility update, NERCOME, split-sample covariance, CCC-GARCH, constant conditional correlation, MM-estimator, S-estimator, Rocke estimator, translated biweight.
+
+**Args:**
+
+- <u>method (str, optional):</u> The estimator: "sample", "ledoit_wolf",
+"ledoit_wolf_constant_correlation", "ledoit_wolf_single_factor", "oas",
+"shrunk", "semicovariance", "exponential", "denoised",
+"denoised_spectral", "denoised_shrink", "gerber", "detoned", "factor",
+"minimum_covariance_determinant", "jlogo", "geodesic",
+"regime_adjusted_ew", "denoised_detoned", "nercome", "ccc_garch", "mm" or
+"rocke". Defaults to "sample".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>span (int, optional):</u> The span in periods of "exponential". Defaults to 180.
+- <u>shrinkage (float, optional):</u> The fixed intensity $$\delta$$ of "shrunk" and "geodesic",
+between 0 and 1. Defaults to 0.1 (PyPortfolioOpt defaults to 0.2 for
+"shrunk").
+- <u>gerber_threshold (float, optional):</u> The threshold of "gerber" in standard
+deviations, between 0 and 1. Defaults to 0.5.
+- <u>gerber_statistic (int, optional):</u> The Gerber statistic: 0, 1 or 2. Defaults
+to 1.
+- <u>denoise_alpha (float, optional):</u> The share $$\alpha$$ of the noise correlations
+"denoised_shrink" keeps, between 0 and 1. Defaults to 0.
+- <u>components (int, optional):</u> The number of principal components "detoned" and
+"denoised_detoned" remove. Defaults to 1.
+- <u>factor_selection (str, optional):</u> How "factor" estimates the loadings: "ols"
+(every factor), "forward" or "backward" (stepwise by the p-values, 0.05) or
+"pcr" (principal components regression keeping 95% of the variance).
+Defaults to "ols".
+- <u>factors (pd.DataFrame &#124; None, optional):</u> The factor returns of "factor", one
+column per factor, at the frequency of the period. Defaults to None, the
+Fama and French five factors of the region.
+- <u>region (str, optional):</u> The region of the Fama and French factors: "United
+States", "Developed", "Developed ex US", "Europe", "Japan", "Asia Pacific
+ex Japan" or "North America". Defaults to "United States".
+- <u>half_life (float, optional):</u> The half-life in periods of the exponential
+weights of "regime_adjusted_ew". Defaults to 40, skfolio's default as well.
+- <u>seed (int &#124; None, optional):</u> The seed of the random subsets of
+"minimum_covariance_determinant", which also starts "mm" and "rocke", and
+of the random splits of "nercome" (numpy's default generator), so the
+same returns give the same estimate. Defaults to 0.
+- <u>correlation (bool, optional):</u> Whether to return the correlation matrix of
+the estimate instead. Defaults to False.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The annualized covariance matrix (the covariance per period
+times the number of periods in a year), or the correlation matrix, from the
+periods in which every asset has a return.
+
+**Notes:**
+
+- The Gerber thresholds and D use standard deviations with ddof=1, where skfolio
+and Riskfolio-Lib use ddof=0; their result equals this one with the threshold
+multiplied by $$\sqrt{T / (T - 1)}$$ and the covariance by T / (T - 1).
+- "shrunk" shrinks the sample covariance with ddof=1 (as PyPortfolioOpt);
+skfolio, scikit-learn and Riskfolio-Lib shrink the one divided by T.
+- "minimum_covariance_determinant" divides by the number of periods kept (ddof=0),
+as in scikit-learn, since the consistency factors assume it. Its random subsets
+differ from scikit-learn's, so the two can end in different local minima of the
+determinant, a few percent apart on small samples. PyPortfolioOpt's
+min_cov_determinant returns the raw estimate (scikit-learn's fast_mcd), without
+the consistency factor and the reweighting.
+- "jlogo", "geodesic" and "regime_adjusted_ew" are referenced against
+Riskfolio-Lib's and skfolio's estimates, which they match. "regime_adjusted_ew"
+takes the returns around zero, as skfolio does by default, and uses the whole
+history, where "exponential" takes a span of 180 periods.
+- "nercome" estimates the covariance itself, as Lam (2016) does; RiskLabAI's
+nercome_denoised_covariance splits at 2T / 3 and estimates the correlation of the
+standardized returns, so its variances are the sample ones.
+- "ccc_garch" fits every GARCH(1, 1) by Gaussian likelihood from the arch package's
+backcast (see get_garch); PortfolioAnalytics' CCCgarch.MM uses fGarch and a
+constant volatility for an asset whose $$\alpha$$ is below 0.01. A GARCH fit takes a few
+seconds per asset on daily returns.
+- "mm" and "rocke" start from the minimum covariance determinant (with the seed)
+and from the sample covariance and keep the smaller S scale; RobStatTM's
+covRobMM and covRobRocke, which PortfolioAnalytics calls, start from the
+kurtosis-based estimate of Peña and Prieto (2007), so on small samples the two
+can end in different local minima. Rocke's estimator suits ten or more assets;
+with fewer, $$\gamma = 1$$ and its weights are low for many ordinary periods, so "mm" is
+the more efficient there (Maronna et al., 2019).
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_covariance_estimate(method="gerber")
+```
+
+Which returns:
+
+|      |   AAPL |   MSFT |    JNJ |    XOM |
+|:-----|-------:|-------:|-------:|-------:|
+| AAPL | 0.0776 | 0.0288 | 0.0044 | 0.0054 |
+| MSFT | 0.0288 | 0.0661 | 0.0021 | 0.0015 |
+| JNJ  | 0.0044 | 0.0021 | 0.028  | 0.0041 |
+| XOM  | 0.0054 | 0.0015 | 0.0041 | 0.073  |
+
+---
+
+## get_random_matrix_statistics
+Fit the Marčenko-Pastur distribution to the eigenvalues of the correlation matrix of the assets, to see how much of it random returns alone could produce. The eigenvalues of the correlation matrix of T periods of N unrelated returns with variance $$\sigma^{2}$$ fall between the edges $$\lambda -$$ and $$\lambda +$$ of the Marčenko-Pastur distribution; an eigenvalue above $$\lambda +$$ is signal (the market, sectors, styles), the ones below it are indistinguishable from noise and are what the "denoised" covariance estimators average, remove or shrink (López de Prado, 2020, chapter 2).
+
+The formula is as follows:
+
+$$
+f(\lambda) = \frac{q}{(2 \pi \sigma^{2} \lambda) \sqrt{(\lambda + - \lambda) (\lambda - \lambda -)}} \;\text{for}\; \lambda - \leq \lambda \leq \lambda +,\;\; \text{with}\;\; q = \frac{T}{N}
+$$
+
+$$
+\lambda \pm = \sigma^{2}\left(1 \pm \sqrt{\frac{1}{q}}\right)^{2}
+$$
+
+$$
+\sigma^{2} \;\text{minimizes}\; \Sigma_{x} (f(x) - k(x))^{2} \;\text{over}\; \text{1,000} \;\text{points}\; x \;\text{between}\; \lambda - \text{and}\; \lambda +,\;\; \text{with } k \text{ a Gaussian kernel density of the eigenvalues (bandwidth 0.01)},\;\; \text{from}\; \sigma^{2} = 0.5 \;\text{and between}\; 0.00001 \;\text{and}\; 0.99999 (\text{López} \,\mathrm{d}e \;\text{Prado},\; 2020,\; \text{section}\; 2.4)
+$$
+
+- signal eigenvalues: $$\lambda_{k} > \lambda +$$
+
+For more information, see the following sources:
+
+- Marčenko, V. A. and Pastur, L. A. (1967). "Distribution of Eigenvalues for Some Sets of Random Matrices." Mathematics of the USSR-Sbornik, 1(4), 457-483.
+- Laloux, L., Cizeau, P., Potters, M. and Bouchaud, J.-P. (2000). "Random Matrix Theory and Financial Correlations." International Journal of Theoretical and Applied Finance, 3(3), 391-397.
+- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, chapter 2.
+- RiskLabAI: find_max_eval, marcenko_pastur_pdf ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
+
+**Also known as:** Marchenko-Pastur, Marcenko-Pastur fit, random matrix theory, RMT, eigenvalue spectrum, noise eigenvalues, signal eigenvalues.
+
+**Args:**
+
+- <u>output (str, optional):</u> "summary" (one row: the Periods, Assets, Noise
+Variance $$\sigma^{2}$$, Lower Edge $$\lambda -$$, Upper Edge $$\lambda +$$, Largest Eigenvalue, the number of
+Signal Eigenvalues and their Signal Share of the trace N) or
+"eigenvalues" (every eigenvalue from the largest, its Explained Variance
+$$\lambda / N$$ and whether it is Signal). Defaults to "summary".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The summary of the fit or the table of eigenvalues, from the
+periods in which every asset has a return.
+
+**Notes:**
+
+- The fit is the one the "denoised" covariance estimators use; $$\sigma^{2}$$ and $$\lambda +$$ are
+referenced against RiskLabAI's find_max_eval, which fits the same density with
+scikit-learn's KernelDensity and matches to 1e-9 when it evaluates the densities
+at the book's 1,000 points (it uses as many points as there are eigenvalues,
+which moves $$\sigma^{2}$$ by a few percent for 30 assets). With few assets the eigenvalues
+are too few to pin the density down, so $$\sigma^{2}$$ is a rough guide there; the
+distribution describes many assets.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM", "JPM", "PG", "KO", "NVDA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_random_matrix_statistics(output="eigenvalues")
+```
+
+Which returns:
+
+|              |   Eigenvalue |   Explained Variance | Signal   |
+|:-------------|-------------:|---------------------:|:---------|
+| Eigenvalue 1 |       2.8514 |               0.3564 | True     |
+| Eigenvalue 2 |       1.7917 |               0.224  | True     |
+| Eigenvalue 3 |       1.0929 |               0.1366 | False    |
+| Eigenvalue 4 |       0.6159 |               0.077  | False    |
+| Eigenvalue 5 |       0.5604 |               0.0701 | False    |
+| Eigenvalue 6 |       0.4081 |               0.051  | False    |
+| Eigenvalue 7 |       0.3617 |               0.0452 | False    |
+| Eigenvalue 8 |       0.3178 |               0.0397 | False    |
+
+---
+
+## get_codependence_matrix
+Calculate how much every pair of assets moves together, by the codependence that the hierarchical optimizers (HRP, HERC, NCO) and get_asset_clusters take as codependence=, or the distance they cluster on.
+
+- "pearson": the correlation of the covariance estimate (skfolio's CovarianceDistance), distance $$\sqrt{(1 - \rho) / 2}$$.
+- "spearman", "kendall": the rank correlations of the returns, distance $$\sqrt{(1 - \rho) / 2}$$.
+- "gerber": the Gerber statistic (see get_covariance_estimate), distance $$\sqrt{(1 - \rho) / 2}$$.
+- "detoned": the correlation without its first `components` principal components, distance $$\sqrt{(1 - \rho) / 2}$$.
+- "distance": the distance correlation, dCor = √(dCov²(x, y) / √(dCov²(x, x) dCov²(y, y))) from the doubly centred distances $$\vert x_{s} - x_{t} \vert$$ (Székely, Rizzo and Bakirov, 2007), zero only for independent returns; distance √(1 - dCor).
+- "mutual_information": I(X, Y) / min(H(X), H(Y)) from histograms with `bins` bins (natural logarithms); distance the variation of information (H(X) + H(Y) - 2 I(X, Y)) / H(X, Y) (Meilă, 2007).
+- "lower_tail": the lower tail dependence, $$P (r_{j} \leq q_{j} (\alpha) \vert r_{i} \leq q_{i} (\alpha))$$ with $$\alpha$$ = tail_level; distance -ln $$\lambda$$ (λ at least 1e-8).
+- "absolute_angular": $$\vert \rho \vert$$ of the "pearson" correlation, distance $$\sqrt{1 - \vert \rho \vert}$$ (López de Prado, 2020, chapter 3), and "squared_angular": $$\rho^{2}$$, distance $$\sqrt{1 - \rho^{2}}$$, the same construction on the squared correlation, which put assets that move strongly against each other close together, as hedges of one another.
+- "gnpr": the Generic Non-Parametric Representation distance of Marti et al. (2016), $$d^{2} = \theta d_{1}^{2} + (1 - \theta) d_{0}^{2}$$ with $$\theta$$ = gnpr_theta, $$d_{1}^{2} = 3 / (T (T^{2} - 1)) \sum_{t} (R_{i,t} - R_{j,t})^{2}$$ of the ranks R of the returns ($$(1 - \rho_{S}) / 2$$ without ties) and $$d_{0}^{2}$$ = ½ $$\sum_{b} (\sqrt{g_{i,b}} - \sqrt{g_{j,b}})^{2}$$ the squared Hellinger distance between the histograms g of the returns, with bins gnpr_bandwidth wide; codependence $$1 - d^{2}$$. $$\theta = 1$$ compares only how the assets move together, $$\theta = 0$$ only how their returns are distributed.
+
+For more information, see the following papers:
+
+- Mantegna, R. N. (1999). "Hierarchical Structure in Financial Markets." The European Physical Journal B, 11(1), 193-197.
+- Székely, G. J., Rizzo, M. L. and Bakirov, N. K. (2007). "Measuring and Testing Dependence by Correlation of Distances." The Annals of Statistics, 35(6), 2769-2794.
+- Meilă, M. (2007). "Comparing Clusterings - An Information Based Distance." Journal of Multivariate Analysis, 98(5), 873-895.
+- Marti, G., Andler, S., Nielsen, F. and Donnat, P. (2016). "Clustering Financial Time Series: How Long Is Enough?" Proceedings of the Twenty-Fifth International Joint Conference on Artificial Intelligence (IJCAI-16), 2583-2589.
+- Hacine-Gharbi, A. and Ravier, P. (2018). "A Binning Formula of Bi-histogram for Joint Entropy Estimation Using Mean Square Error Minimization." Pattern Recognition Letters, 101, 21-28.
+- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, chapter 3.
+- skfolio: DistanceCorrelation, MutualInformation, CovarianceDistance ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+- Riskfolio-Lib: dcorr_matrix, mutual_info_matrix, var_info_matrix, ltdi_matrix, codep_dist ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+
+**Also known as:** codependence, distance correlation, mutual information, variation of information, tail dependence matrix, correlation distance, angular distance, absolute angular distance, squared angular distance, GNPR, copula distance.
+
+**Args:**
+
+- <u>method (str, optional):</u> The codependence: "pearson", "spearman", "kendall",
+"gerber", "detoned", "distance", "mutual_information", "lower_tail",
+"absolute_angular", "squared_angular" or "gnpr". Defaults to "pearson".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The covariance estimator whose correlation
+"pearson" is (see get_covariance_estimate). Defaults to "sample".
+- <u>distance (bool, optional):</u> Whether to return the distance matrix the
+clustering works on instead. Defaults to False.
+- <u>gerber_threshold (float, optional):</u> The threshold of "gerber" in standard
+deviations. Defaults to 0.5.
+- <u>gerber_statistic (int, optional):</u> The Gerber statistic: 0, 1 or 2. Defaults
+to 1.
+- <u>components (int, optional):</u> The number of principal components "detoned"
+removes. Defaults to 1.
+- <u>bins (str &#124; int, optional):</u> The number of histogram bins of
+"mutual_information", or the rule per pair: "freedman" (Freedman and
+Diaconis, skfolio's default) or "hacine_gharbi" (Riskfolio-Lib's numBins,
+López de Prado). Defaults to "freedman".
+- <u>tail_level (float, optional):</u> The share of the lowest returns that forms the
+tail of "lower_tail". Defaults to 0.05.
+- <u>gnpr_theta (float, optional):</u> The weight $$\theta$$ of the co-movement in "gnpr",
+between 0 and 1. Defaults to 0.5.
+- <u>gnpr_bandwidth (float, optional):</u> The width of the histogram bins of "gnpr",
+in returns per period. Defaults to 0.01.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The codependence (or distance) matrix of the assets, from the
+periods in which every asset has a return.
+
+**Notes:**
+
+- The distance correlation builds a matrix of $$T \times T$$ distances per asset, so it
+takes longer on many daily periods.
+- Riskfolio-Lib's mutual information defaults to Knuth's bins, skfolio's to
+Freedman-Diaconis; with the same bins, both equal this one.
+- The absolute and squared angular distances take the whole of $$1 - \vert \rho \vert$$ and $$1 - \rho^{2}$$;
+half of them, as the correlation distance takes of $$1 - \rho$$, gives a distance √2 times
+smaller with the same clusters.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_codependence_matrix(method="distance")
+```
+
+Which returns:
+
+|      |   AAPL |   MSFT |    JNJ |    XOM |
+|:-----|-------:|-------:|-------:|-------:|
+| AAPL | 1      | 0.5974 | 0.1659 | 0.1473 |
+| MSFT | 0.5974 | 1      | 0.1173 | 0.0876 |
+| JNJ  | 0.1659 | 0.1173 | 1      | 0.1513 |
+| XOM  | 0.1473 | 0.0876 | 0.1513 | 1      |
+
+---
+
+## get_asset_clusters
+Group the assets into clusters of assets that move together, the clusters that HERC and NCO allocate across.
+
+- "hierarchical": a hierarchical clustering on the distance of the codependence (see get_codependence_matrix), cut into `clusters` clusters or, without a number, at the sharpest bend of the within-cluster dispersion (the two-order difference of the gap statistic, Yue, Wang and Wei, 2008), as HERC and NCO do, or at the highest standardized silhouette (López de Prado, 2020).
+- "ftca": the Fast Threshold Clustering Algorithm of Varadi (2013). Among the assets not yet clustered, take the one with the highest average codependence (H) and the lowest (L). If H and L are codependent above the threshold, they form a cluster with every remaining asset whose average codependence with H and L is above it; otherwise H forms a cluster with the remaining assets above the threshold with H, and then L with those above it with L. This repeats until every asset belongs to a cluster. It needs no number of clusters and is referenced against ffn's calc_ftca, which it matches on the Pearson correlation.
+- "onc": the Optimal Number of Clusters algorithm of López de Prado and Lewis (2019). Every asset is the point given by its row of the distance matrix. For $$k = 2$$ to N - 1 clusters, k-means runs ten times (from k-means++ starts drawn with the seed), and the clustering with the highest quality $$E [S] / \sqrt{V} [S]$$ of the silhouette coefficients $$S_{i} = (b_{i} - a_{i}) / \max (a_{i} , b_{i})$$ is kept. The clusters of below-average quality are then clustered again on their own, and their new clusters kept when they raise the average quality above that of the clusters they replace (López de Prado, 2020, snippets 4.1 and 4.2). It finds the number of clusters itself, needs no tree and suits uneven groups of assets.
+
+For more information, see the following papers:
+
+- Varadi, D. (2013). "The Fast Threshold Clustering Algorithm (FTCA)." CSS Analytics.
+- López de Prado, M. and Lewis, M. J. (2019). "Detection of False Investment Strategies Using Unsupervised Learning Methods." Quantitative Finance, 19(9), 1555-1565.
+- Yue, S., Wang, X. and Wei, M. (2008). "Application of Two-Order Difference to Gap Statistic." Transactions of Tianjin University, 14(3), 217-221.
+- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press.
+- ffn: calc_ftca ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
+- RiskLabAI: cluster_k_means_top ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
+
+**Also known as:** asset clustering, FTCA, correlation clusters, ONC, optimal number of clusters, k-means clustering.
+
+**Args:**
+
+- <u>method (str, optional):</u> "hierarchical", "ftca" or "onc". Defaults to
+"hierarchical".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>codependence (str, optional):</u> The codependence the assets are clustered on
+(see get_codependence_matrix). Defaults to "pearson".
+- <u>covariance (str, optional):</u> The covariance estimator whose correlation
+"pearson" is. Defaults to "sample".
+- <u>linkage_method (str, optional):</u> The linkage of "hierarchical": "single",
+"complete", "average", "ward" or "dbht" (the Directed Bubble Hierarchical
+Tree of Song, Di Matteo and Aste, 2012, which finds the number of clusters
+itself in the TMFG planar graph of the codependence). Defaults to "ward".
+- <u>clusters (int &#124; None, optional):</u> The number of clusters of "hierarchical", or
+the most clusters "onc" tries. Defaults to None, chosen by the two-order
+difference of the gap statistic (by the DBHT itself for "dbht"; up to
+N - 1 for "onc").
+- <u>cluster_criterion (str, optional):</u> How "hierarchical" chooses the number of
+clusters when it is not given: "two_difference_gap" or
+"standardized_silhouette" (the highest mean over standard deviation of
+the silhouette coefficients). Defaults to "two_difference_gap".
+- <u>threshold (float, optional):</u> The codependence above which "ftca" puts assets
+in one cluster. Defaults to 0.5.
+- <u>seed (int &#124; None, optional):</u> The seed of the k-means starts of "onc" (numpy's
+default generator), so the same returns give the same clusters. Defaults
+to 0.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The Cluster of every asset, numbered from 1 (for "ftca" in the
+order the clusters are formed, for "onc" in the order of their first asset).
+
+**Notes:**
+
+- "onc" follows the comparisons of López de - <u>Prado (2020, snippet 4.2):</u> it clusters
+again when at least two clusters are below the average quality and keeps the new
+clusters when their quality is the higher one. A cluster whose silhouettes are
+all equal (one asset alone) has no quality and is left as it is. Across seeds the
+clusters of well-separated groups agree; where groups overlap, a k-means start can
+settle elsewhere, which the seed fixes.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_asset_clusters(method="ftca")
+```
+
+Which returns:
+
+|      |   Cluster |
+|:-----|----------:|
+| AAPL |         1 |
+| MSFT |         1 |
+| JNJ  |         2 |
+| XOM  |         3 |
+
+---
+
+## get_coskewness_matrix
+Calculate the coskewness matrix M3 of the assets, the third co-moments of their returns: how the return of one asset moves with the joint variation of two others. The skewness of a portfolio with weights w is w'M3(w ⊗ w) / σ_p³, so M3 is the input of mean-variance-skewness optimizations and the modified (Cornish-Fisher) VaR of a portfolio.
+
+The formula is as follows:
+
+$$
+m_{ijk} = \Sigma_{t} w_{t} (r_{ti} - \mu_{i}) (r_{tj} - \mu_{j}) (r_{tk} - \mu_{k})
+$$
+
+$$
+\text{"sample":}\;\; w_{t} = \frac{1}{T};\;\; \text{"exponential":}\;\; w_{t} = \frac{\lambda^{T - t}}{\sum \lambda^{T - s}} \;\text{with}\; \lambda = 1 - \frac{2}{\text{span} + 1};\;\; \text{"semi":}\;\; w_{t} = 1 / T \;\text{with} \;\min(r_{ti} - \mu_{i},\; 0) \;\text{in place of every deviation} \;(\text{only returns below the average count});\;\; \text{"ccc\_garch":}\;\; w_{t} = \frac{1}{T \;\text{on the standardized residuals of the CCC-GARCH}(1,\; 1) \;\text{model at the next-period volatilities}},\;\; z_{i,t} \sigma_{i,T} + \frac{1}{s(z_{i}) (\text{Bollerslev},\; 1990 ; \;\text{see}\; \text{get\_covariance\_estimate})},\;\; \text{the next-period coskewness of the model}
+$$
+
+$$
+\text{standardized:}\;\; \frac{m_{ijk}}{\sigma_{i} \sigma_{j} \sigma_{k}} \;\text{with}\; \sigma^{2} = \Sigma_{t} w_{t} (r_{t} - \mu)^{2}
+$$
+
+For more information, see the following papers:
+
+- Jondeau, E. and Rockinger, M. (2006). "Optimal Portfolio Allocation under Higher Moments." European Financial Management, 12(1), 29-55.
+- Martellini, L. and Ziemann, V. (2010). "Improved Estimates of Higher-Order Comoments and Implications for Portfolio Selection." The Review of Financial Studies, 23(4), 1467-1502.
+- PerformanceAnalytics: M3.MM, M3.ewma, CoSkewnessMatrix ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+
+**Also known as:** coskewness, third co-moment matrix, M3.
+
+**Args:**
+
+- <u>method (str, optional):</u> "sample", "exponential", "semi" or "ccc_garch".
+Defaults to "sample".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>span (int, optional):</u> The span in periods of "exponential". Defaults to 180.
+- <u>standardize (bool, optional):</u> Whether to divide by the product of the
+standard deviations, so the diagonal $$m_{\text{iii}}$$ is the skewness of each asset
+and the entries are comparable across frequencies. Defaults to True.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per asset i and one column per pair of assets (j, k), from
+the periods in which every asset has a return, per period (not annualized).
+
+**Notes:**
+
+- The unstandardized "sample" matrix agrees with PerformanceAnalytics' M3.MM
+(unbiased=FALSE). Its M3.ewma (default $$\lambda = 0.97$$, a span of about 65.7) assumes
+returns with a zero mean; "exponential" takes the deviations from the average
+return and matches M3.ewma on the demeaned returns.
+- Unstandardized co-moments of daily returns are of the order of 1e-6, below the
+default rounding of 4 decimals; pass rounding= to see them.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+# The coskewness of each pair of assets with AAPL
+toolkit.portfolio.get_coskewness_matrix().loc[:, "AAPL"]
+```
+
+Which returns:
+
+|      |   AAPL |    MSFT |     JNJ |
+|:-----|-------:|--------:|--------:|
+| AAPL | 0.4539 |  0.3026 |  0.0257 |
+| MSFT | 0.3026 |  0.198  | -0.0169 |
+| JNJ  | 0.0257 | -0.0169 | -0.168  |
+
+---
+
+## get_cokurtosis_matrix
+Calculate the cokurtosis matrix M4 of the assets, the fourth co-moments of their returns: how often assets have extreme returns at the same time. The kurtosis of a portfolio with weights w is w'M4(w ⊗ w ⊗ w) / σ_p⁴, the input of kurtosis-aware optimizations and the modified (Cornish-Fisher) VaR of a portfolio.
+
+The formula is as follows:
+
+$$
+m_{\text{ijkl}} = \Sigma_{t} w_{t} (r_{ti} - \mu_{i}) (r_{tj} - \mu_{j}) (r_{tk} - \mu_{k}) (r_{tl} - \mu_{l})
+$$
+
+$$
+\text{"sample":}\;\; w_{t} = \frac{1}{T};\;\; \text{"exponential":}\;\; w_{t} = \frac{\lambda^{T - t}}{\sum \lambda^{T - s}} \;\text{with}\; \lambda = 1 - \frac{2}{\text{span} + 1};\;\; \text{"semi":}\;\; w_{t} = 1 / T \;\text{with} \;\min(r_{ti} - \mu_{i},\; 0) \;\text{in place of every deviation},\;\; \text{the lower semi cokurtosis};\;\; \text{"ccc\_garch":}\;\; w_{t} = \frac{1}{T \;\text{on the standardized residuals of the CCC-GARCH}(1,\; 1) \;\text{model at the next-period volatilities}} \;(\text{see}\; \text{get\_coskewness\_matrix}),\;\; \text{the next-period cokurtosis of the model}
+$$
+
+$$
+\text{standardized:}\;\; \frac{m_{\text{ijkl}}}{\sigma_{i} \sigma_{j} \sigma_{k} \sigma_{l}} \;\text{with}\; \sigma^{2} = \Sigma_{t} w_{t} (r_{t} - \mu)^{2}
+$$
+
+For more information, see the following papers:
+
+- Jondeau, E. and Rockinger, M. (2006). "Optimal Portfolio Allocation under Higher Moments." European Financial Management, 12(1), 29-55.
+- Cajas, D. (2022). "Convex Optimization of Portfolio Kurtosis." SSRN 4202967.
+- PerformanceAnalytics: M4.MM, M4.ewma, CoKurtosisMatrix ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- Riskfolio-Lib: cokurt_matrix ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+
+**Also known as:** cokurtosis, fourth co-moment matrix, M4, semi cokurtosis.
+
+**Args:**
+
+- <u>method (str, optional):</u> "sample", "exponential", "semi" or "ccc_garch".
+Defaults to "sample".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>span (int, optional):</u> The span in periods of "exponential". Defaults to 180.
+- <u>standardize (bool, optional):</u> Whether to divide by the product of the
+standard deviations, so the diagonal $$m_{\text{iiii}}$$ is the kurtosis of each asset
+(3 for a normal distribution, not the excess). Defaults to True.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per asset i and one column per triple of assets
+(j, k, l), $$N \times N^{3}$$, from the periods in which every asset has a return, per
+period (not annualized).
+
+**Notes:**
+
+- The unstandardized "sample" matrix agrees with PerformanceAnalytics' M4.MM;
+Riskfolio-Lib's cokurt_matrix ("hist", "semi") holds the same numbers as an
+$$N^{2} \times N^{2}$$ matrix. "exponential" matches M4.ewma on the demeaned returns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+# The cokurtosis of each pair of assets with AAPL twice
+toolkit.portfolio.get_cokurtosis_matrix().loc[:, ("AAPL", "AAPL")]
+```
+
+Which returns:
+
+|      |   AAPL |   MSFT |
+|:-----|-------:|-------:|
+| AAPL | 9.5182 | 6.0896 |
+| MSFT | 6.0896 | 4.8517 |
+
+---
+
+## get_estimation_uncertainty
+Calculate how uncertain the estimates of the expected returns and the covariance matrix are: both are estimated again on many simulated histories of the same length, and the spread of those estimates gives a confidence interval for every expected return and covariance and a standard error for every expected return. These are the box uncertainty sets of robust (worst-case) mean-variance optimization.
+
+- "stationary": the stationary bootstrap of Politis and Romano (1994), blocks of a random length with a geometric distribution of mean block_size, wrapping from the last period to the first.
+- "circular": blocks of block_size periods that wrap around.
+- "moving": blocks of block_size periods that start where a whole block fits (Künsch, 1989).
+- "normal": histories drawn from a multivariate normal distribution with the average returns and the sample covariance.
+
+Block bootstraps keep the dependence between consecutive returns, such as volatility clustering, that drawing single periods would break.
+
+For more information, see the following papers:
+
+- Politis, D. N. and Romano, J. P. (1994). "The Stationary Bootstrap." Journal of the American Statistical Association, 89(428), 1303-1313.
+- Künsch, H. R. (1989). "The Jackknife and the Bootstrap for General Stationary Observations." The Annals of Statistics, 17(3), 1217-1241.
+- Tütüncü, R. H. and Koenig, M. (2004). "Robust Asset Allocation." Annals of Operations Research, 132, 157-187.
+- Riskfolio-Lib: bootstrapping, normal_simulation ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+- skfolio: BootstrapMuUncertaintySet, BootstrapCovarianceUncertaintySet ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+
+**Also known as:** bootstrapped expected returns, uncertainty set, estimation error, block bootstrap.
+
+**Args:**
+
+- <u>method (str, optional):</u> "stationary", "circular", "moving" or "normal".
+Defaults to "stationary".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>simulations (int, optional):</u> The number of simulated histories. Defaults to
+1000 (as skfolio; Riskfolio-Lib draws 6000).
+- <u>block_size (int, optional):</u> The (average) number of periods in a block.
+Defaults to 3 (as Riskfolio-Lib's window).
+- <u>confidence_level (float, optional):</u> The confidence level of the bounds, the
+(1 - c) / 2 and (1 + c) / 2 percentiles of the estimates. Defaults to 0.95.
+- <u>seed (int &#124; None, optional):</u> The seed of the random draws, so the result
+repeats; None draws a new one every time. Defaults to 0.
+- <u>output (str, optional):</u> "expected_returns" for the Expected Return, Lower,
+Upper and Standard Error per asset, or "covariance" for the Lower and
+Upper bound of every covariance. Defaults to "expected_returns".
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The annualized estimates and their bounds (the averages per
+period, their bounds and standard errors and the covariances times the number
+of periods in a year, without compounding).
+
+**Notes:**
+
+- The bounds of the covariances hold per entry and are not adjusted to form
+positive semidefinite matrices. Riskfolio-Lib draws with the arch package, so
+its bounds agree with these in distribution, not draw for draw.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_estimation_uncertainty()
+```
+
+Which returns:
+
+|      |   Expected Return |   Lower |   Upper |   Standard Error |
+|:-----|------------------:|--------:|--------:|-----------------:|
+| AAPL |            0.1932 | -0.0568 |  0.4194 |           0.1207 |
+| MSFT |            0.2017 | -0.0032 |  0.3985 |           0.1045 |
+| JNJ  |            0.0987 | -0.0518 |  0.2328 |           0.0756 |
+| XOM  |            0.2911 |  0.063  |  0.5191 |           0.1179 |
+
+---
+
+## get_factor_loadings
+Estimate the loadings of a time series factor model: the regression of every asset's returns on factor returns, by default the five factors of Fama and French (market, size, value, profitability and investment), $$r_{i,t} = \alpha_{i} + \sum_{f} \beta_{i,f} F_{f,t} + \epsilon_{i,t}$$. The loadings are what the factor covariance (covariance="factor"), the factor risk contributions, the factor attribution and the augmented and Bayesian Black-Litterman models build on.
+
+- selection="ols": every factor, by ordinary least squares.
+- selection="forward": starting without factors, add the factor with the lowest p-value as long as every p-value stays at or below the threshold (or, with another criterion, as long as it improves); the factors left out load zero.
+- selection="backward": starting with every factor, drop the one with the highest p-value until all are at or below the threshold (or as long as dropping one improves the criterion). Both stepwise selections keep at least the single best factor with criterion="pvalue".
+- selection="pcr": a principal components regression: the standardized factors' first principal components that explain the share `components` of their variance as regressors, mapped back to loadings on the factors, which removes the instability that correlated factors give OLS (Jolliffe, 1982).
+
+The Alpha is the annualized intercept, $$\alpha$$ times the number of periods in a year. The R Squared is the share of an asset's variance the factors explain and the Residual Volatility (ddof=1, annualized) what they leave, the idiosyncratic risk the factor covariance keeps on the diagonal.
+
+For more information, see the following sources:
+
+- Fama, E. F. and French, K. R. (1993). "Common Risk Factors in the Returns on Stocks and Bonds." Journal of Financial Economics, 33(1), 3-56.
+- Fama, E. F. and French, K. R. (2015). "A Five-Factor Asset Pricing Model." Journal of Financial Economics, 116(1), 1-22.
+- Connor, G. (1995). "The Three Types of Factor Models: A Comparison of Their Explanatory Power." Financial Analysts Journal, 51(3), 42-46.
+- Jolliffe, I. T. (1982). "A Note on the Use of Principal Components in Regression." Journal of the Royal Statistical Society, Series C, 31(3), 300-303.
+- Riskfolio-Lib: loadings_matrix, forward_regression, backward_regression, PCR ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+- skfolio: TimeSeriesFactorModel, LoadingMatrixRegression ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+
+**Also known as:** factor exposures, factor betas, loadings matrix, stepwise regression, principal components regression.
+
+**Args:**
+
+- <u>selection (str, optional):</u> "ols", "forward", "backward" or "pcr". Defaults to
+"ols".
+- <u>criterion (str, optional):</u> What the stepwise selections compare: "pvalue",
+"aic", "bic", "r_squared" or "adjusted_r_squared". Defaults to "pvalue".
+- <u>threshold (float, optional):</u> The highest p-value a selected factor may have.
+Defaults to 0.05.
+- <u>components (float, optional):</u> The principal components "pcr" keeps: a number
+of 1 or more, or between 0 and 1 the share of the variance of the
+standardized factors to explain. Defaults to 0.95.
+- <u>factors (pd.DataFrame &#124; None, optional):</u> The factor returns, one column per
+factor, at the frequency of the period. Defaults to None, the Fama and
+French five factors of the region.
+- <u>region (str, optional):</u> The region of the Fama and French factors: "United
+States", "Developed", "Developed ex US", "Europe", "Japan", "Asia Pacific
+ex Japan" or "North America". Defaults to "United States".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per asset the Alpha (annualized), the loading on every factor,
+the R Squared and the Residual Volatility (annualized), from the periods in
+which every asset and every factor has a return.
+
+**Notes:**
+
+- The Fama and French factors are excess returns while the asset returns are
+total returns, so the Alpha holds the risk free rate. Ken French publishes the
+factors about a month after each month ends, so the latest weeks are left out.
+- The loadings match Riskfolio-Lib's loadings_matrix (with OLS as a backward
+selection at a threshold of 1) for every selection and criterion; AIC and BIC
+are statsmodels' (Riskfolio-Lib's "AIC" and "SIC").
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_factor_loadings(selection="forward")
+```
+
+Which returns:
+
+|      |   Alpha |   Mkt-RF |     SMB |     HML |     RMW |     CMA |   R Squared |   Residual Volatility |
+|:-----|--------:|---------:|--------:|--------:|--------:|--------:|------------:|----------------------:|
+| AAPL |  0.0726 |   1.1791 | -0.2683 | -0.3519 |  0      |  0.3824 |      0.6004 |                0.1761 |
+| MSFT |  0.0851 |   1.0449 | -0.321  | -0.3811 |  0.3329 | -0.2635 |      0.6806 |                0.1453 |
+| JNJ  |  0.0387 |   0.2901 | -0.1045 |  0.1992 |  0.1657 |  0      |      0.0868 |                0.1599 |
+| XOM  |  0.1409 |   0.7905 | -0.2442 |  1.0268 | -0.4884 |  0.2562 |      0.3934 |                0.2105 |
+
+---
+
+## get_factor_risk_contributions
+Calculate how much each factor, by default the five factors of Fama and French, contributes to the risk of a portfolio, rather than each asset. The portfolio's exposure to the factors is y = B'w, with B the loadings of the assets on the factors (see get_factor_loadings), and the marginal risk of the factors follows from that of the assets $$m = \partial \rho / \partial w$$ (see get_risk_contributions) through the pseudo-inverse of B': $$\partial \rho / \partial y$$ = pinv(B')'m. A factor contributes its exposure times its marginal risk, and the part of the weights the factors cannot span forms an Other factor, so the contributions add up to the risk measure (Meucci, 2009; Roncalli and Weisang, 2016). With fewer assets than factors the factors span every portfolio and Other is zero.
+
+The risk measure is any of get_risk_contributions: the volatility (annualized), the expected shortfall, the drawdowns or the other measures of the Risk module (per period).
+
+For more information, see the following sources:
+
+- Meucci, A. (2009). "Managing Diversification." Risk, 22(5), 74-79.
+- Roncalli, T. and Weisang, G. (2016). "Risk Parity Portfolios with Risk Factors." Quantitative Finance, 16(3), 377-388.
+- Fama, E. F. and French, K. R. (2015). "A Five-Factor Asset Pricing Model." Journal of Financial Economics, 116(1), 1-22.
+- Riskfolio-Lib: Factors_Risk_Contribution ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+
+**Also known as:** factor risk decomposition, factor risk budget, risk factor contributions.
+
+**Args:**
+
+- <u>weights (dict[str, float] &#124; None, optional):</u> The weight per asset. Defaults to
+None, which uses the latest weights of the Portfolio the Toolkit came from,
+or equal weights.
+- <u>risk_measure (str, optional):</u> A risk measure of get_risk_contributions, e.g.
+"volatility", "cvar" or "maximum_drawdown". Defaults to "volatility".
+- <u>confidence_level (float, optional):</u> The confidence level of the tail
+measures. Defaults to 0.95.
+- <u>selection (str, optional):</u> How the loadings are estimated: "ols", "forward",
+"backward" or "pcr" (see get_factor_loadings). Defaults to "ols".
+- <u>factors (pd.DataFrame &#124; None, optional):</u> The factor returns, one column per
+factor, at the frequency of the period. Defaults to None, the Fama and
+French five factors of the region.
+- <u>region (str, optional):</u> The region of the Fama and French factors. Defaults to
+"United States".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per factor, Other and in total, the Exposure, Marginal
+Contribution, Risk Contribution and Percentage Contribution, on the periods in
+which the assets held and the factors all have a return.
+
+**Notes:**
+
+- Matches Riskfolio-Lib's Factors_Risk_Contribution with OLS loadings: the
+volatility uses the sample covariance (ddof=1) of the asset returns, annualized,
+and the other measures their historical returns.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_factor_risk_contributions(
+    weights={"AAPL": 0.4, "MSFT": 0.3, "JNJ": 0.2, "XOM": 0.1}
+)
+```
+
+Which returns:
+
+| Factor   |   Exposure |   Marginal Contribution |   Risk Contribution |   Percentage Contribution |
+|:---------|-----------:|------------------------:|--------------------:|--------------------------:|
+| Mkt-RF   |     0.9376 |                  0.1727 |              0.1619 |                    0.873  |
+| SMB      |    -0.1694 |                 -0.0254 |              0.0043 |                    0.0232 |
+| HML      |    -0.1765 |                 -0.0437 |              0.0077 |                    0.0415 |
+| RMW      |     0.2806 |                  0.0337 |              0.0095 |                    0.051  |
+| CMA      |     0.1144 |                  0.0184 |              0.0021 |                    0.0113 |
+| Other    |   nan      |                nan      |              0      |                    0      |
+| Total    |   nan      |                nan      |              0.1855 |                    1      |
+
+---
+
+## get_entropy_pooling
+Reweight the historical periods so that they agree with views on the assets, by Entropy Pooling (Meucci, 2008): the probabilities of the periods closest to equal probabilities in relative entropy, $$\sum p_{t} \ln (p_{t} T)$$, under which the views hold. The returns themselves stay as they were, so the posterior keeps the fat tails and co-movements of the history; only how much each period counts changes. The posterior expected returns and covariance matrix follow from the probabilities.
+
+Views are annualized, like those of get_black_litterman_weights:
+
+- views: the expected return of an asset ({"AAPL": 0.10}, an arithmetic return a year) or the difference of two ({"AAPL-MSFT": 0.02}).
+- volatility_views: the annualized volatility of an asset ({"AAPL": 0.25}).
+- correlation_views: the correlation of two assets ({"AAPL-MSFT": 0.5}).
+- ranking: an ordering of the expected returns, from the highest to the lowest (["XOM", "MSFT", "AAPL"]), the ranking views of Meucci (2008): the inequalities $$E_{p} [r_{k + 1}] \leq E_{p} [r_{k}]$$ for every pair of neighbours, imposed with the views on the expected returns. Only the order is stated, not by how much.
+
+A view is an equality (a number) or an inequality, a pair (">=", 0.10) or ("<=", 0.10). The views on volatilities hold the means found with the mean views, and the views on correlations hold both the means and the volatilities, the sequential treatment of Meucci, Ardia and Keel (2011), in the order skfolio's EntropyPooling takes them. The problem is solved through its dual with SciPy's L-BFGS-B.
+
+With opinions, a list of views of several experts, each a dictionary with the keys "views", "volatility_views", "correlation_views" and "ranking", every opinion gets its own posterior and these are pooled with the opinion weights (equal by default; any weight left to sum to one goes to the equal prior probabilities): linearly, $$p = \sum \pi_{k} p_{k}$$ (Stone, 1961), or logarithmically, p ∝ $$\Pi p_{k,k}^{\pi}$$ (Genest and Zidek, 1986), optionally weighing down opinions far from the consensus by exp(-α KL(p_k ‖ c)) with $$\alpha$$ the divergence penalty.
+
+For more information, see the following sources:
+
+- Meucci, A. (2008). "Fully Flexible Views: Theory and Practice." Risk, 21(10), 97-102.
+- Stone, M. (1961). "The Opinion Pool." The Annals of Mathematical Statistics, 32(4), 1339-1342.
+- Genest, C. and Zidek, J. V. (1986). "Combining Probability Distributions: A Critique and an Annotated Bibliography." Statistical Science, 1(1), 114-135.
+- skfolio: EntropyPooling, OpinionPooling ([https://github.com/skfolio/skfolio](https://github.com/skfolio/skfolio){:target="_blank"}).
+- Riskfolio-Lib: entropy_pooling ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
+- PortfolioAnalytics: meucci.ranking ([https://github.com/braverock/PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics){:target="_blank"}).
+
+**Also known as:** fully flexible views, fully flexible probabilities, opinion pooling, views on scenarios, ranking views, ordering views.
+
+**Args:**
+
+- <u>views (dict &#124; None, optional):</u> The annualized expected return views. Defaults
+to None.
+- <u>volatility_views (dict &#124; None, optional):</u> The annualized volatility views.
+Defaults to None.
+- <u>correlation_views (dict &#124; None, optional):</u> The correlation views. Defaults to
+None.
+- <u>ranking (list[str] &#124; None, optional):</u> Assets from the highest expected return
+to the lowest, at least two. Defaults to None.
+- <u>opinions (list[dict] &#124; None, optional):</u> The views of several experts to pool,
+instead of views, volatility_views, correlation_views and ranking. Defaults
+to None.
+- <u>opinion_weights (list[float] &#124; None, optional):</u> The weight of every opinion,
+summing to at most one. Defaults to None, equal weights.
+- <u>pooling (str, optional):</u> "linear" or "logarithmic". Defaults to "linear".
+- <u>divergence_penalty (float, optional):</u> The penalty $$\alpha$$ on an opinion's relative
+entropy to the consensus. Defaults to 0.
+- <u>output (str, optional):</u> "moments" (the prior and posterior expected return and
+volatility per asset), "covariance" (the posterior covariance matrix),
+"probabilities" (the prior and posterior probability of every period) or
+"summary" (the relative entropy and the effective number of periods).
+Defaults to "moments".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: The output chosen: the expected returns (arithmetic averages
+times the number of periods in a year) and volatilities (annualized), the
+annualized covariance matrix, the probabilities, or the Relative Entropy,
+Effective Number of Scenarios (exp of the entropy of the probabilities, T for
+equal ones) and the number of Scenarios.
+
+**Notes:**
+
+- The posterior covariance is the probability-weighted covariance $$\sum p_{t} (r_{t} - \mu)$$
+$$(r_{t} - \mu)'$$ with $$\mu = \sum p_{t} r_{t}$$, without a small-sample correction, the basis on
+which the views are imposed, so a volatility view comes back exactly. skfolio
+applies numpy's correction for weights, $$1 / (1 - \sum p_{t}^{2})$$, on top, which raises
+the variance by about 1 / T (0.1% for daily data, 3% for 36 monthly returns).
+- The prior volatility is the sample standard deviation of the returns (ddof=1),
+as elsewhere in the Finance Toolkit. With equal probabilities the posterior's
+basis gives a volatility $$\sqrt{(T - 1) / T}$$ times the prior's, so without views
+the two columns differ by that factor.
+- Referenced against skfolio's EntropyPooling: with mean and volatility views the
+probabilities agree to 1e-9; with correlation views the views are met here more
+tightly and the posterior lies at least as close to the prior (a lower relative
+entropy).
+- A ranking is the set of relative views ("MSFT-XOM": ("<=", 0)) that
+PortfolioAnalytics' meucci.ranking imposes, which takes the order from the lowest
+expected return to the highest. A ranking the history already follows leaves the
+probabilities equal.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_entropy_pooling(
+    views={"AAPL": 0.05, "XOM-JNJ": (">=", 0.02)},
+    volatility_views={"MSFT": 0.30},
+)
+```
+
+Which returns:
+
+|      |   Prior Return |   Posterior Return |   Prior Volatility |   Posterior Volatility |
+|:-----|---------------:|-------------------:|-------------------:|-----------------------:|
+| AAPL |         0.1932 |             0.05   |             0.2786 |                 0.3151 |
+| MSFT |         0.2017 |             0.118  |             0.2571 |                 0.3    |
+| JNJ  |         0.0987 |             0.0698 |             0.1673 |                 0.1696 |
+| XOM  |         0.2911 |             0.264  |             0.2702 |                 0.2762 |
+
+---
+
+## get_return_contributions
+Calculate how much each asset added to the portfolio's return in every period (week, month, quarter or year), so the contributions of the assets add up to the portfolio's return of that period.
+
+Every day an asset contributes its weight at the start of the day times its return, $$c_{i,t} = w_{i,t} - 1 r_{i,t}$$, which add up to the portfolio's daily return $$R_{t} = \sum c_{i,t}$$. Over a longer period the daily contributions are carried by the growth of the portfolio since the period began: $$C_{i} = \sum_{t} c_{i,t} \Pi_{s < t} (1 + R_{s})$$, the contribution in money divided by the value at the start of the period, so the contributions add up to the compounded return $$\Pi (1 + R_{t}) - 1$$ (Bacon, 2008; PerformanceAnalytics' to.period.contributions).
+
+The weights are the latest weights of the Portfolio the Toolkit came from, as they moved from day to day, or, when weights are given (or there is no Portfolio), those weights restored every day.
+
+For more information, see the following sources:
+
+- Bacon, C. R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, Wiley, chapter 5.
+- PerformanceAnalytics: to.period.contributions, Return.portfolio with contribution=TRUE ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+
+**Also known as:** contribution to return, return attribution by asset, performance contribution.
+
+**Args:**
+
+- <u>weights (dict[str, float] &#124; None, optional):</u> The weight per asset. Defaults to
+None, which uses the weights of the Portfolio the Toolkit came from over
+time, or equal weights.
+- <u>period (str, optional):</u> The period to add the contributions up over: daily,
+weekly, monthly, quarterly or yearly. Defaults to "monthly".
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per period the contribution of every asset held and the
+Portfolio return, compounded within the period.
+
+**Notes:**
+
+- Matches PerformanceAnalytics' to.period.contributions of the daily contributions;
+with given weights these are rebalanced every day (Return.portfolio with
+rebalance_on="days"), not left to drift.
+- With fixed weights (given, or equal ones) the periods start on the first day on
+which every asset held has a return, so an asset that was not listed yet does not
+count as a return of 0, as in get_portfolio_risk_metrics. Within the sample a day
+on which an asset has no return (it did not trade) is a contribution of 0.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_return_contributions(
+    weights={"AAPL": 0.4, "MSFT": 0.3, "JNJ": 0.2, "XOM": 0.1}, period="yearly"
+)
+```
+
+Which returns:
+
+| Date   |    AAPL |    MSFT |     JNJ |     XOM |   Portfolio |
+|:-------|--------:|--------:|--------:|--------:|------------:|
+| 2021   |  0.1698 |  0.1574 |  0.0289 |  0.0514 |      0.4074 |
+| 2022   | -0.1049 | -0.0914 |  0.0105 |  0.0655 |     -0.1204 |
+| 2023   |  0.1833 |  0.1649 | -0.0136 | -0.0046 |      0.3301 |
+| 2024   |  0.1263 |  0.0396 | -0.0087 |  0.0116 |      0.1689 |
+| 2025   |  0.0598 |  0.04   |  0.0889 |  0.0187 |      0.2074 |
 
 ---
 
@@ -664,7 +1928,7 @@ For more information, see the following papers:
 
 - Brinson, G.P. and Fachler, N. (1985). "Measuring Non-US Equity Portfolio Performance." The Journal of Portfolio Management, 11(3), 73-76.
 - Brinson, G.P., Hood, L.R. and Beebower, G.L. (1986). "Determinants of Portfolio Performance." Financial Analysts Journal, 42(4), 39-44.
-- Cariño, D.R. (1999). "Combining Attribution Effects Over Time." The Journal of Performance Measurement, 4(1), 5-14.
+- Cariño, D.R. (1999). "Combining Attribution Effects Over Time." The Journal of Performance Measurement, 3(4), 5-14.
 - Menchero, J. (2000). "An Optimized Approach to Linking Attribution Effects Over Time." The Journal of Performance Measurement, 5(1), 36-42.
 - Bacon, C. (2004). Practical Portfolio Performance Measurement and Attribution. Wiley, pp. 191-196.
 
@@ -755,14 +2019,112 @@ Which returns:
 
 ---
 
+## get_factor_attribution
+Attribute the return of a portfolio in every period to factors, by default the five factors of Fama and French (market, size, value, profitability and investment): the part of the return its exposure to each factor explains, and the specific return that is left. The loadings of the assets on the factors come from a regression over the whole period (see get_factor_loadings), and the portfolio's exposure to a factor is the weighted sum of its assets' loadings.
+
+- Exposure_f,t = $$\sum_{i} w_{i,t} \beta_{i,f}$$
+- Contribution_f,t = Exposure_f,t × Factor Return_f,t
+- Common Return = $$\sum_{f}$$ Contribution_f,t
+- Specific Return = Total Return - Common Return
+- Tilt Return = $$\sum_{f}$$ Average Exposure_f × Factor Return_f,t
+- Timing Return = Common Return - Tilt Return
+
+The Specific Return holds the alphas of the assets (and the risk free rate, as the Fama and French factors are excess returns) and their residual returns. The Tilt Return is what the average exposure earned and the Timing Return what moving the exposures around it added, which is zero for weights that stay the same.
+
+The weights are those of the Portfolio the Toolkit came from at the end of the period before, or, when weights are given (or there is no Portfolio), those weights restored every period.
+
+For more information, see the following sources:
+
+- Grinold, R. C. and Kahn, R. N. (2000). "Active Portfolio Management." 2nd edition, McGraw-Hill, chapter 17.
+- Fama, E. F. and French, K. R. (2015). "A Five-Factor Asset Pricing Model." Journal of Financial Economics, 116(1), 1-22.
+- empyrical: perf_attrib, compute_exposures ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
+- pyfolio: perf_attrib ([https://github.com/stefan-jansen/pyfolio-reloaded](https://github.com/stefan-jansen/pyfolio-reloaded){:target="_blank"}).
+
+**Also known as:** performance attribution to risk factors, factor return attribution, returns-based attribution, common and specific returns.
+
+**Args:**
+
+- <u>weights (dict[str, float] &#124; None, optional):</u> The weight per asset. Defaults to
+None, which uses the weights of the Portfolio the Toolkit came from over
+time, or equal weights.
+- <u>selection (str, optional):</u> How the loadings are estimated: "ols", "forward",
+"backward" or "pcr" (see get_factor_loadings). Defaults to "ols".
+- <u>factors (pd.DataFrame &#124; None, optional):</u> The factor returns, one column per
+factor, at the frequency of the period. Defaults to None, the Fama and
+French five factors of the region.
+- <u>region (str, optional):</u> The region of the Fama and French factors. Defaults to
+"United States".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per period the contribution of every factor and the Common,
+Specific, Total, Tilt and Timing Return, on the periods in which the assets and
+the factors all have a return.
+
+**Notes:**
+
+- Equals empyrical's perf_attrib with the regression loadings for every period.
+The loadings are estimated on the whole period, so the attribution of an early
+period uses information from later ones; it explains the past, it does not
+forecast.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_factor_attribution(
+    weights={"AAPL": 0.4, "MSFT": 0.3, "JNJ": 0.2, "XOM": 0.1}, period="monthly"
+).tail(4).T
+```
+
+Which returns:
+
+|                 |   2025-09 |   2025-10 |   2025-11 |   2025-12 |
+|:----------------|----------:|----------:|----------:|----------:|
+| Mkt-RF          |    0.0297 |    0.017  |   -0.0012 |   -0.003  |
+| SMB             |    0.0043 |    0.0028 |   -0.0033 |    0.0004 |
+| HML             |    0.0019 |    0.0058 |   -0.0068 |   -0.0042 |
+| RMW             |   -0.005  |   -0.013  |    0.0032 |    0.0006 |
+| CMA             |   -0.003  |   -0.0055 |    0.0008 |    0.0005 |
+| Common Return   |    0.0278 |    0.0071 |   -0.0072 |   -0.0058 |
+| Specific Return |    0.0256 |    0.0227 |    0.0284 |   -0.0055 |
+| Total Return    |    0.0534 |    0.0298 |    0.0213 |   -0.0113 |
+| Tilt Return     |    0.0278 |    0.0071 |   -0.0072 |   -0.0058 |
+| Timing Return   |    0      |    0      |    0      |    0      |
+
+---
+
 ## get_minimum_variance_weights
 Calculate the weights of the minimum variance portfolio: the fully invested portfolio of the Toolkit's assets with the lowest volatility. It uses only the covariance matrix, not the expected returns, which makes it the most robust of the mean-variance portfolios to estimation error.
 
 The weights minimize $$w' \Sigma w$$ subject to the weights summing to one and lying between the minimum and maximum weight, where $$\Sigma$$ is the annualized covariance matrix of the returns.
 
-For more information, see the following paper:
+An L2 regularization $$\gamma$$ adds the penalty $$\gamma$$ w'w, so the weights minimize $$w' (\Sigma + \gamma I) w$$, a ridge on the weights. With the weights summing to one, w'w is the squared distance from the equal weights plus 1/N, so a higher $$\gamma$$ moves the portfolio towards equal weights, which tempers the estimation error in $$\Sigma$$.
+
+For more information, see the following papers:
 
 - Markowitz, H. (1952). "Portfolio Selection." The Journal of Finance, 7(1), 77-91.
+- DeMiguel, V., Garlappi, L., Nogales, F. J. and Uppal, R. (2009). "A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms." Management Science, 55(5), 798-812.
+- Hoerl, A. E. and Kennard, R. W. (1970). "Ridge Regression: Biased Estimation for Nonorthogonal Problems." Technometrics, 12(1), 55-67.
+- PyPortfolioOpt: $$\text{objective}_{\text{functions}} \text{.} L_{2,\text{reg}}$$ ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}), which the L2 regularization shares similar logic with and is referenced against.
 
 **Also known as:** global minimum variance portfolio, GMV, lowest risk portfolio.
 
@@ -776,13 +2138,31 @@ estimated from (daily, weekly, monthly, quarterly or yearly). Defaults to
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -799,10 +2179,12 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). At 0 the portfolio with the lowest variance holds
-nothing, so all weights are 0. Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). At 0 the portfolio with the lowest variance holds nothing,
+so all weights are 0. The rest, 1 minus the net exposure, is a Cash row at
+the risk free rate (negative when borrowed above one), which the Portfolio's
+Expected Return and Sharpe Ratio include. Defaults to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -815,6 +2197,12 @@ turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
 $$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
+- <u>l2_regularization (float, optional):</u> The weight $$\gamma$$ of the L2 penalty $$\gamma$$ w'w on
+the weights, in annualized variance units, which pulls the portfolio
+towards equal weights and spreads it over more assets, e.g. 0.05. It is
+PyPortfolioOpt's $$L_{2,\text{reg}}$$ gamma on an annualized covariance matrix; on a
+covariance matrix per period, that gamma is $$\gamma$$ divided by the number of
+periods in a year. Defaults to 0, no penalty.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -880,10 +2268,15 @@ Calculate the weights of the maximum Sharpe ratio portfolio: the fully invested 
 
 The weights maximize $$(w' \mu - r_{f}) / \sqrt{w' \Sigma w}$$ subject to the weights summing to one and lying between the minimum and maximum weight, with $$\mu$$ the annualized expected returns, $$\Sigma$$ the annualized covariance matrix and $$r_{f}$$ the risk free rate.
 
+An L2 regularization $$\gamma$$ adds the penalty $$\gamma$$ w'w to the variance in the denominator, $$(w' \mu - r_{f}) / \sqrt{w' (\Sigma + \gamma I) w}$$, which moves the portfolio towards equal weights.
+
 For more information, see the following papers:
 
 - Tobin, J. (1958). "Liquidity Preference as Behavior Towards Risk." The Review of Economic Studies, 25(2), 65-86.
 - Sharpe, W.F. (1966). "Mutual Fund Performance." The Journal of Business, 39(1), 119-138.
+- DeMiguel, V., Garlappi, L., Nogales, F. J. and Uppal, R. (2009). "A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms." Management Science, 55(5), 798-812.
+- Hoerl, A. E. and Kennard, R. W. (1970). "Ridge Regression: Biased Estimation for Nonorthogonal Problems." Technometrics, 12(1), 55-67.
+- PyPortfolioOpt: $$\text{objective}_{\text{functions}} \text{.} L_{2,\text{reg}}$$ ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}), which the L2 regularization shares similar logic with and is referenced against.
 
 **Also known as:** tangency portfolio, optimal risky portfolio, max Sharpe.
 
@@ -896,23 +2289,45 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -928,9 +2343,11 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). The rest, 1 minus the net exposure, is a Cash row at the
+risk free rate (negative when borrowed above one), which the Portfolio's
+Expected Return and Sharpe Ratio include. Defaults to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -945,7 +2362,16 @@ $$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade
 of the portfolio each way. Defaults to None, no limit.
 - <u>transaction_cost (float, optional):</u> The cost per unit of weight traded
 from the current weights, e.g. 0.001 for 10 basis points, subtracted once
-from the portfolio's annualized expected return. Defaults to 0.
+from the portfolio's annualized expected return. It adds a Transaction
+Cost column, the cost times $$\vert w_{i} - w_{0,i} \vert$$ per asset and their sum for the
+portfolio, whose Expected Return and Sharpe Ratio are after it. Defaults
+to 0.
+- <u>l2_regularization (float, optional):</u> The weight $$\gamma$$ of the L2 penalty $$\gamma$$ w'w on
+the weights, in annualized variance units, which pulls the portfolio
+towards equal weights and spreads it over more assets, e.g. 0.05. It is
+PyPortfolioOpt's $$L_{2,\text{reg}}$$ gamma on an annualized covariance matrix; on a
+covariance matrix per period, that gamma is $$\gamma$$ divided by the number of
+periods in a year. Defaults to 0, no penalty.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -965,13 +2391,15 @@ annualized.
 
 - The expected returns are the noisiest input of the optimization, so with the
 historical averages the weights tend to concentrate in the assets that happened
-to do best. A maximum weight, the CAPM or James-Stein expected returns or the
-Black-Litterman returns temper that.
+to do best. A maximum weight, the CAPM or shrunk (Bayes-Stein, James-Stein,
+Bodnar-Okhrin-Parolya) expected returns or the Black-Litterman returns temper
+that.
 - A transaction cost lowers the expected return of the portfolio by the cost
 times the turnover from the current weights, so the optimizer only trades when
 the gain in Sharpe ratio pays for it. The cost
 is taken once from an annualized return, which spreads it over a year of
-holding the portfolio.
+holding the portfolio. The Portfolio row shows the expected return and Sharpe
+ratio after the cost, the ones the optimizer maximized.
 
 **As an example:**
 
@@ -1005,17 +2433,23 @@ Calculate the weights of a mean-variance efficient portfolio. With a target retu
 
 A risk aversion of 2 to 4 is typical; 2.5 is the value commonly used for the market as a whole.
 
+An L2 regularization $$\gamma$$ adds the penalty $$\gamma$$ w'w, which moves the portfolio towards equal weights: with a target return the weights minimize $$w' (\Sigma + \gamma I) w$$, the utility becomes $$w' \mu - (\lambda / 2) w' \Sigma w - \gamma$$ w'w and with a target volatility the weights maximize $$w' \mu - \gamma$$ w'w, with the volatility limit still on $$w' \Sigma w$$.
+
 For more information, see the following papers:
 
 - Markowitz, H. (1952). "Portfolio Selection." The Journal of Finance, 7(1), 77-91.
 - Merton, R. C. (1972). "An Analytic Derivation of the Efficient Portfolio Frontier." Journal of Financial and Quantitative Analysis, 7(4), 1851-1872.
+- DeMiguel, V., Garlappi, L., Nogales, F. J. and Uppal, R. (2009). "A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms." Management Science, 55(5), 798-812.
+- Hoerl, A. E. and Kennard, R. W. (1970). "Ridge Regression: Biased Estimation for Nonorthogonal Problems." Technometrics, 12(1), 55-67.
+- PyPortfolioOpt: $$\text{objective}_{\text{functions}} \text{.} L_{2,\text{reg}}$$ ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}), which the L2 regularization shares similar logic with and is referenced against.
 
 **Also known as:** Markowitz portfolio, efficient portfolio, quadratic utility portfolio.
 
 **Args:**
 
 - <u>target_return (float &#124; None, optional):</u> The annualized return the portfolio must
-expect, e.g. 0.12 for 12%. Defaults to None, which uses the target
+expect, e.g. 0.12 for 12%, with the cash of a net exposure other than one
+at the risk free rate. Defaults to None, which uses the target
 volatility or the risk aversion.
 - <u>risk_aversion (float, optional):</u> The investor's risk aversion $$\lambda$$; higher values
 give less risky portfolios. Not used with a target return or target
@@ -1027,23 +2461,45 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -1059,9 +2515,11 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). The rest, 1 minus the net exposure, is a Cash row at the
+risk free rate (negative when borrowed above one), which the Portfolio's
+Expected Return and Sharpe Ratio include. Defaults to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -1076,12 +2534,21 @@ $$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade
 of the portfolio each way. Defaults to None, no limit.
 - <u>transaction_cost (float, optional):</u> The cost per unit of weight traded
 from the current weights, e.g. 0.001 for 10 basis points, subtracted once
-from the portfolio's annualized expected return. Defaults to 0.
+from the portfolio's annualized expected return. It adds a Transaction
+Cost column, the cost times $$\vert w_{i} - w_{0,i} \vert$$ per asset and their sum for the
+portfolio, whose Expected Return and Sharpe Ratio are after it. Defaults
+to 0.
 - <u>target_volatility (float &#124; None, optional):</u> The highest annualized volatility
 of the portfolio (the volatility per period times the square root of the
 number of periods in a year), e.g. 0.15 for 15%. Cannot be combined with
 a target return. Defaults to None, which uses the target return or the
 risk aversion.
+- <u>l2_regularization (float, optional):</u> The weight $$\gamma$$ of the L2 penalty $$\gamma$$ w'w on
+the weights, in annualized variance units, which pulls the portfolio
+towards equal weights and spreads it over more assets, e.g. 0.05. It is
+PyPortfolioOpt's $$L_{2,\text{reg}}$$ gamma on an annualized covariance matrix; on a
+covariance matrix per period, that gamma is $$\gamma$$ divided by the number of
+periods in a year. Defaults to 0, no penalty.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -1139,9 +2606,14 @@ Which returns:
 ## get_efficient_frontier
 Calculate the efficient frontier: the portfolios with the lowest volatility for each level of expected return, from the minimum variance portfolio up to the highest return the weight bounds allow. Every portfolio below the frontier takes more risk than needed for its return.
 
-For more information, see the following paper:
+An L2 regularization $$\gamma$$ minimizes $$w' (\Sigma + \gamma I) w$$ for each target return, which moves every portfolio towards equal weights; the volatility shown stays $$\sqrt{w' \Sigma w}$$.
+
+For more information, see the following papers:
 
 - Markowitz, H. (1952). "Portfolio Selection." The Journal of Finance, 7(1), 77-91.
+- DeMiguel, V., Garlappi, L., Nogales, F. J. and Uppal, R. (2009). "A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms." Management Science, 55(5), 798-812.
+- Hoerl, A. E. and Kennard, R. W. (1970). "Ridge Regression: Biased Estimation for Nonorthogonal Problems." Technometrics, 12(1), 55-67.
+- PyPortfolioOpt: $$\text{objective}_{\text{functions}} \text{.} L_{2,\text{reg}}$$ ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}), which the L2 regularization shares similar logic with and is referenced against.
 
 **Also known as:** Markowitz frontier, mean-variance frontier, risk-return frontier.
 
@@ -1155,23 +2627,45 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -1187,11 +2681,13 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). At 0 the portfolio with the lowest variance holds
-nothing, so the first portfolio of the frontier has all weights 0 and no
-Sharpe ratio (NaN). Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). At 0 the portfolio with the lowest variance holds nothing,
+so the first portfolio of the frontier has all weights 0 and no Sharpe ratio
+(NaN). The rest, 1 minus the net exposure, earns the risk free rate
+(borrowed at it above one) in the Expected Return and Sharpe Ratio. Defaults
+to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -1204,6 +2700,12 @@ turnover or transaction cost needs them.
 - <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
 $$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
 of the portfolio each way. Defaults to None, no limit.
+- <u>l2_regularization (float, optional):</u> The weight $$\gamma$$ of the L2 penalty $$\gamma$$ w'w on
+the weights, in annualized variance units, which pulls the portfolio
+towards equal weights and spreads it over more assets, e.g. 0.05. It is
+PyPortfolioOpt's $$L_{2,\text{reg}}$$ gamma on an annualized covariance matrix; on a
+covariance matrix per period, that gamma is $$\gamma$$ divided by the number of
+periods in a year. Defaults to 0, no penalty.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -1250,18 +2752,27 @@ Calculate the risk parity weights: the portfolio in which every asset contribute
 
 The weights solve $$w_{i} (\Sigma w)_{i} / \sigma_{p} = b_{i} \sigma_{p}$$ for every asset, found by minimizing the convex function $$\tfrac{1}{2} w' \Sigma w - \sum b_{i} \ln (w_{i})$$ and scaling the result to sum to one.
 
+With another risk measure $$\rho$$ of the historical returns, every asset contributes its share of that measure instead, $$w_{i} \partial \rho / \partial w_{i} = b_{i} \rho (w)$$: the solution of $$\min \rho (y)$$ subject to $$\sum b_{i} \ln (y_{i}) \geq 0$$ and $$y \geq 0$$, scaled to $$w = y / \sum y$$ (Roncalli, 2013). The measures that are linear programmes, and the Gini mean difference and Tail Gini measures, are solved exactly with cutting planes (Kelley, 1960): the concave $$\sum b_{i} \ln (y_{i})$$ lies below each of its tangents, which are added as linear constraints where the linear programme's solution needs them. The semideviation and the Ulcer Index are minimized with SLSQP as $$\rho (y) - \sum b_{i} \ln (y_{i})$$. The measures are those of get_mean_risk_weights plus "cvar", the Conditional Value at Risk (Rockafellar and Uryasev, 2000), and "cdar", the Conditional Drawdown at Risk of the uncompounded cumulative return (Chekhlov, Uryasev and Zabarankin, 2005), without the worst realization and the range, whose contributions come from a single period.
+
 For more information, see the following papers:
 
 - Maillard, S., Roncalli, T. and Teïletche, J. (2010). "The Properties of Equally Weighted Risk Contribution Portfolios." The Journal of Portfolio Management, 36(4), 60-70.
 - Spinu, F. (2013). "An Algorithm for Computing Risk Parity Weights." SSRN Working Paper.
 - Richard, J.-C. and Roncalli, T. (2019). "Constrained Risk Budgeting Portfolios: Theory, Algorithms, Applications & Puzzles." arXiv:1902.05710.
+- Roncalli, T. (2013). "Introduction to Risk Parity and Budgeting." Chapman & Hall/CRC, Boca Raton.
+- Rockafellar, R. T. and Uryasev, S. (2000). "Optimization of Conditional Value-at-Risk." Journal of Risk, 2(3), 21-41.
+- Chekhlov, A., Uryasev, S. and Zabarankin, M. (2005). "Drawdown Measure in Portfolio Optimization." International Journal of Theoretical and Applied Finance, 8(1), 13-58.
+- Kelley, J. E. (1960). "The Cutting-Plane Method for Solving Convex Programs." Journal of the Society for Industrial and Applied Mathematics, 8(4), 703-712.
+- Riskfolio-Lib: Portfolio.rp_optimization ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}) and skfolio: RiskBudgeting ([https://skfolio.org](https://skfolio.org){:target="_blank"}), which the weights of the other risk measures are referenced against.
 
 **Also known as:** equal risk contribution, ERC, risk budgeting.
 
 **Args:**
 
 - <u>risk_budget (dict[str, float] &#124; None, optional):</u> The share of the risk per
-asset, e.g. {"AAPL": 0.4, "MSFT": 0.2, ...}; it is scaled to sum to one.
+asset, e.g. {"AAPL": 0.4, "MSFT": 0.2, ...}, positive for every asset;
+it is scaled to sum to one. A budget that names an asset outside the
+portfolio or leaves an asset out raises a ValueError that lists them.
 Defaults to None, an equal share for every asset.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
@@ -1270,13 +2781,31 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -1293,6 +2822,14 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
+- <u>risk_measure (str, optional):</u> The risk the assets share: "volatility" (of the
+covariance estimator), or of the historical returns "mad",
+"semideviation" (below a zero return), "lower_partial_moment" (below a
+zero return), "gini_mean_difference", "tail_gini", "cvar_range",
+"tail_gini_range", "ulcer_index", "cvar" or "cdar". Defaults to
+"volatility".
+- <u>confidence_level (float, optional):</u> The confidence level of the CVaR, CDaR,
+CVaR range and Tail Gini measures. Defaults to 0.95.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -1305,7 +2842,11 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
-Volatility, Sharpe Ratio and Risk Contribution.
+Volatility, Sharpe Ratio and Risk Contribution (of the volatility). With
+another risk measure, also that measure (per period, positive for a loss,
+named after it, e.g. "CVaR") of every asset on its own and of the portfolio,
+and each asset's share of the portfolio's measure, e.g. "CVaR Contribution"
+($$w_{i} \partial \rho / \partial w_{i} / \rho (w)$$ with central finite differences).
 
 **Notes:**
 
@@ -1315,6 +2856,12 @@ so the problem stays convex. Where a bound
 binds, the risk contributions can no longer all match the budget.
 - Risk parity holds long positions only and is fully invested, so it takes no
 negative minimum weight and no net or gross exposure.
+- The other risk measures are per period of the chosen frequency and taken of the
+historical returns, not of the covariance estimator. The CVaR, the CDaR, the
+Ulcer Index and the Tail Gini measures follow a few periods and have kinks: at
+the optimum the budget holds for one of the slopes on either side of a kink,
+while the central finite differences of the contribution column average them,
+so that column can differ from the budget by a few percent.
 
 **As an example:**
 
@@ -1348,23 +2895,43 @@ Calculate the Hierarchical Risk Parity (HRP) weights. The assets are clustered b
 
 As in the paper, the clustering uses the Euclidean distance between the columns of the correlation distance matrix $$\sqrt{(1 - \rho) / 2}$$: two assets are close when they relate to all the other assets in the same way. Some libraries cluster on the correlation distance itself, which can order the assets differently.
 
-For more information, see the following paper:
+The risk of each half is that of its inverse risk portfolio, every asset weighted by the inverse of its own risk: the variance by default, as in the paper, or another risk measure of the historical returns, such as the CVaR, which splits by the losses in the worst periods, or the CDaR, which splits by the drawdowns. Raffinot (2017, 2018) allocates across hierarchical clusters with such measures, and Riskfolio-Lib (Cajas) and skfolio (Delatte) offer them for HRP.
+
+For more information, see the following papers:
 
 - López de Prado, M. (2016). "Building Diversified Portfolios that Outperform Out of Sample." The Journal of Portfolio Management, 42(4), 59-69.
+- Raffinot, T. (2017). "Hierarchical Clustering-Based Asset Allocation." The Journal of Portfolio Management, 44(2), 89-99.
+- Raffinot, T. (2018). "The Hierarchical Equal Risk Contribution Portfolio." SSRN 3237540.
+- Riskfolio-Lib: HCPortfolio(model="HRP", rm=...) ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}), which the weights with every risk measure are referenced against.
+- skfolio: HierarchicalRiskParity(risk_measure=...) ([https://skfolio.org](https://skfolio.org){:target="_blank"}), referenced against for the measures it has.
 
 **Also known as:** HRP, hierarchical clustering portfolio.
 
 **Args:**
 
 - <u>linkage_method (str, optional):</u> The linkage of the hierarchical clustering:
-"single", "complete", "average" or "ward". Defaults to "single", as in the
-paper.
-- <u>codependence (str, optional):</u> The correlation the assets are clustered on,
-through the distance $$\sqrt{(1 - \rho) / 2}$$: "pearson" (the linear correlation of
-the covariance matrix), "spearman" (the rank correlation of the returns,
-Spearman, 1904) or "kendall" (the rank correlation $$\tau_{b}$$ of the returns,
-Kendall, 1938). The rank correlations depend only on the order of the
-returns, so a few extreme returns weigh less. Defaults to "pearson".
+"single", "complete", "average", "ward" or "dbht" (the Directed Bubble
+Hierarchical Tree of Song, Di Matteo and Aste, 2012, on the TMFG planar
+graph of the codependence, ordered by the distance itself). Defaults to
+"single", as in the paper.
+- <u>codependence (str, optional):</u> The codependence the assets are clustered on:
+"pearson" (the linear correlation of the covariance matrix), "spearman"
+(the rank correlation of the returns, Spearman, 1904), "kendall" (the
+rank correlation $$\tau_{b}$$ of the returns, Kendall, 1938), "gerber"
+(co-movements beyond half a standard deviation, Gerber et al., 2022) or
+"detoned" (the correlation without the market component, López de Prado,
+2020), all through the distance $$\sqrt{(1 - \rho) / 2}$$, "distance" (the distance
+correlation, Székely et al., 2007, through √(1 - dCor)),
+"mutual_information" (through the variation of information, Meilă, 2007)
+"lower_tail" (how often two assets fall into their lowest 5% of returns
+together, through -ln $$\lambda$$), "absolute_angular" or "squared_angular" ($$\vert \rho \vert$$ or
+$$\rho^{2}$$ through $$\sqrt{1 - \vert \rho \vert}$$ or $$\sqrt{1 - \rho^{2}}$$, which puts assets that hedge each other
+together, López de Prado, 2020) or "gnpr" (the rank co-movement and the
+difference between the return distributions, $$\theta = 0.5$$, Marti et al., 2016).
+The rank correlations depend only on
+the order of the returns, so a few extreme returns weigh less; the
+distance correlation and mutual information also capture non-linear
+co-movement. Defaults to "pearson".
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
 - <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
@@ -1372,13 +2939,31 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -1388,6 +2973,20 @@ cannot be negative. Defaults to 0.
 - <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
 every asset, or per asset, e.g. {"AAPL": 0.3} (the others keep 1).
 Defaults to 1.
+- <u>risk_measure (str, optional):</u> The risk measure of the splits: "variance"
+(of the covariance matrix), "volatility", or one of the historical
+returns: "mad" (mean absolute deviation, Konno and Yamazaki, 1991),
+"semideviation" (below the minimum acceptable return), "lower_partial_moment"
+(first order), "worst_realization", "gini_mean_difference" (Yitzhaki,
+1982), "tail_gini" (Furman et al., 2017), "range", "cvar_range",
+"tail_gini_range", "ulcer_index" (of the uncompounded cumulative return),
+"cvar" (Rockafellar and Uryasev, 2002) or "cdar" (Chekhlov et al., 2005).
+Defaults to "variance".
+- <u>confidence_level (float, optional):</u> The confidence level of "cvar", "cdar",
+"cvar_range" and the Tail Gini measures. Defaults to 0.95.
+- <u>minimum_acceptable_return (float &#124; str, optional):</u> The threshold of
+"semideviation" and "lower_partial_moment", as a return per period of the
+chosen frequency, or "mean" for each asset's average return. Defaults to 0.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -1400,12 +2999,19 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
-Volatility, Sharpe Ratio and Risk Contribution.
+Volatility, Sharpe Ratio and Risk Contribution, and with a risk measure of the
+returns, that measure per period (e.g. "CVaR").
 
 **Notes:**
 
 - Weight bounds move each split just enough to keep both halves within the sum of
 their assets' bounds.
+- The risk measures of the returns are per period of the chosen frequency and not
+annualized, and only their ratios between the halves matter. They equal
+Riskfolio-Lib's HCPortfolio(model="HRP", rm=...) and skfolio's
+HierarchicalRiskParity(risk_measure=...) on the same asset order; those cluster
+on the correlation distance itself rather than the distance between its columns,
+which can order the assets differently.
 - A split only moves weight between the two halves of a cluster, so sector and
 country bounds, which cut across the clusters, do not apply; neither do short
 positions or a net or gross exposure, as HRP is long only and fully invested.
@@ -1437,31 +3043,267 @@ Which returns:
 
 ---
 
+## get_schur_complementary_weights
+Calculate the Schur Complementary Allocation weights, which run from Hierarchical Risk Parity ($$\gamma = 0$$) towards the minimum variance portfolio ($$\gamma$$ near 1). HRP splits every cluster between its two halves by their own variances and ignores how the two halves move together; the minimum variance portfolio uses exactly that, through the Schur complements of the inverse covariance matrix, but becomes unstable when the covariance matrix is noisy. Schur Complementary Allocation augments the covariance block of each half with a share $$\gamma$$ of what the other half tells about it, and then splits as HRP does on the augmented blocks.
+
+For a cluster split into halves with covariance blocks A and D and the block B between them, the formula is as follows:
+
+$$
+A_{c} = A - \gamma B D^{- 1} B'
+$$
+
+$$
+\tilde{A} = (I - \gamma B D^{- 1} M')^{- 1} A_{c},\;\; \text{made symmetric, with } M \text{ the step-up matrix that spreads the assets of the other half over those of this one (the identity for halves of equal size)},\;\; \text{so that}\; \tilde{A}^{- 1} 1 = A_{c}^{- 1}(1 - \gamma B D^{- 1} \;\text{M'1}),\;\; \text{the minimum variance weights of the half up to a scale}
+$$
+
+$$
+\alpha = 1 - \frac{\nu(\tilde{A})}{\nu(\tilde{A}) + \nu(\tilde{D})},\;\; \text{the share of the first half, with } \nu \text{ the variance of the inverse variance portfolio of a block}
+$$
+
+The halves are then split further on Ã and D̃. The assets are clustered and ordered as in Hierarchical Risk Parity, so $$\gamma = 0$$ gives its weights.
+
+For more information, see the following papers:
+
+- Cotton, P. (2024). "Schur Complementary Allocation: A Unification of Hierarchical Risk Parity and Minimum Variance Portfolios." arXiv 2411.05807.
+- López de Prado, M. (2016). "Building Diversified Portfolios that Outperform Out of Sample." The Journal of Portfolio Management, 42(4), 59-69.
+- skfolio: SchurComplementary(keep_monotonic=False) ([https://skfolio.org](https://skfolio.org){:target="_blank"}), which the weights are referenced against.
+
+**Also known as:** Schur complementary portfolio, Schur allocation.
+
+**Args:**
+
+- <u>gamma (float, optional):</u> How much of the covariance between the halves of a
+cluster the splits use, between 0 (Hierarchical Risk Parity) and 1.
+Defaults to 0.5.
+- <u>linkage_method (str, optional):</u> The linkage of the hierarchical clustering:
+"single", "complete", "average", "ward" or "dbht" (the Directed Bubble
+Hierarchical Tree, Song, Di Matteo and Aste, 2012). Defaults to "single",
+as in Hierarchical Risk Parity.
+- <u>codependence (str, optional):</u> The codependence the assets are clustered on
+(see get_hierarchical_risk_parity_weights). Defaults to "pearson".
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix (see
+get_hierarchical_risk_parity_weights). A shrinkage estimator such as
+"ledoit_wolf" keeps the augmented blocks positive definite at a higher
+gamma. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance. Defaults to 180.
+- <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
+every asset, or per asset, e.g. {"AAPL": 0.05} (the others keep 0); it
+cannot be negative. Defaults to 0.
+- <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
+every asset, or per asset, e.g. {"AAPL": 0.3} (the others keep 1).
+Defaults to 1.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
+Volatility, Sharpe Ratio and Risk Contribution. Returns and volatilities are
+annualized.
+
+**Notes:**
+
+- Weight bounds move each split just enough to keep both halves within the sum of
+their assets' bounds, as in Hierarchical Risk Parity; the method is long only
+and fully invested.
+- The portfolio's variance need not fall as gamma rises: the augmented blocks can
+make a split worse when the covariance matrix is poorly conditioned. skfolio
+by default caps gamma where the variance stops falling (keep_monotonic=True);
+here gamma is used as given, so compare the Volatility with that of a lower
+gamma. When an augmented block is not positive definite, the method returns an
+error that asks for a lower gamma or a shrinkage covariance estimator.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_schur_complementary_weights(gamma=0.5)
+```
+
+Which returns:
+
+|           |   Weight |   Expected Return |   Volatility |   Sharpe Ratio |   Risk Contribution |
+|:----------|---------:|------------------:|-------------:|---------------:|--------------------:|
+| AAPL      |   0.1146 |            0.1932 |       0.2786 |         0.5725 |              0.136  |
+| MSFT      |   0.1448 |            0.2017 |       0.2571 |         0.6534 |              0.1365 |
+| JNJ       |   0.5231 |            0.0987 |       0.1673 |         0.3884 |              0.479  |
+| XOM       |   0.2175 |            0.2911 |       0.2702 |         0.9526 |              0.2485 |
+| Portfolio |   1      |            0.1663 |       0.1372 |         0.9663 |              1      |
+
+---
+
+## get_stacking_weights
+Calculate the weights of a stacked portfolio: several optimizers each give their portfolio, and a final optimizer divides the weight over those portfolios as if they were assets, judged by the returns each earns out of sample. Each optimizer has its own strengths (inverse volatility is robust, maximum diversification spreads the risk, HRP avoids inverting the covariance matrix, minimum CVaR guards the tail); stacking combines them by how they hold up rather than choosing one.
+
+The formula is as follows:
+
+$$
+w = W v,\;\; \text{with } W \text{ the } N \times K \text{ matrix whose column } k \text{ holds the weights of method } k \text{ optimized on all periods, and } v \text{ the weights the final method gives the } K \text{ portfolios}
+$$
+
+- The final method is optimized on the returns of the K portfolios. With folds, the periods are cut into that many consecutive blocks; for each block the methods are optimized on the other periods and their portfolios earn the block's returns, so every return the final method sees is out of sample (a K-fold cross-validation without shuffling). With folds=None it uses the in-sample returns R W, which favours the methods that fit the past best.
+
+For more information, see the following sources:
+
+- Wolpert, D. H. (1992). "Stacked Generalization." Neural Networks, 5(2), 241-259.
+- skfolio: StackingOptimization ([https://skfolio.org](https://skfolio.org){:target="_blank"}), which the weights are referenced against with cv=KFold(folds) and cv="ignore".
+
+**Also known as:** stacking, stacked generalization, ensemble optimization.
+
+**Args:**
+
+- <u>methods (str &#124; list[str] &#124; None, optional):</u> The optimizers to combine, a list
+or a comma-separated string of "minimum_variance", "maximum_sharpe",
+"risk_parity", "inverse_volatility", "maximum_diversification",
+"hierarchical_risk_parity", "hierarchical_equal_risk_contribution",
+"nested_clustered_optimization", "schur_complementary", "minimum_cvar",
+"minimum_drawdown", "minimum_mad", "minimum_semideviation" and
+"equal_weight", each with its default settings. Defaults to None, which
+uses "inverse_volatility", "maximum_diversification",
+"hierarchical_risk_parity" and "minimum_cvar".
+- <u>final_method (str, optional):</u> The optimizer that weights the methods'
+portfolios, one of the methods above. Defaults to "minimum_variance".
+- <u>folds (int &#124; None, optional):</u> The number of consecutive blocks of the
+cross-validation, at least 2, or None to use the in-sample returns.
+Defaults to 5.
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix of the
+methods that use one (see get_minimum_variance_weights). Defaults to
+"sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance. Defaults to 180.
+- <u>expected_returns (str, optional):</u> The estimator of the expected returns of
+"maximum_sharpe" (see get_maximum_sharpe_weights). Defaults to "mean".
+- <u>expected_returns_span (int, optional):</u> The span in periods of the
+"exponential" expected returns. Defaults to 180.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
+Volatility, Sharpe Ratio and Risk Contribution of the stacked portfolio, and a
+column per method with its weights, whose Portfolio row is the method's weight
+in the stacked portfolio. Returns and volatilities are annualized.
+
+**Notes:**
+
+- Every method and the final method are long only and fully invested and use their
+default settings; the risk free rate of "maximum_sharpe" is the Toolkit's
+average over the periods it is optimized on.
+- skfolio's StackingOptimization uses 5-fold cross-validation by default as well;
+its blocks follow scikit-learn's KFold, the same consecutive blocks with the
+first ones one period longer when the periods do not divide evenly.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_stacking_weights()[
+    [
+        "Weight",
+        "Maximum Diversification",
+        "Hierarchical Risk Parity",
+        "Minimum CVaR",
+    ]
+]
+```
+
+Which returns:
+
+|           |   Weight |   Maximum Diversification |   Hierarchical Risk Parity |   Minimum CVaR |
+|:----------|---------:|--------------------------:|---------------------------:|---------------:|
+| AAPL      |   0.1287 |                    0.0922 |                     0.1287 |         0      |
+| MSFT      |   0.1511 |                    0.2349 |                     0.1511 |         0.1823 |
+| JNJ       |   0.5207 |                    0.4195 |                     0.5207 |         0.5968 |
+| XOM       |   0.1995 |                    0.2534 |                     0.1995 |         0.2209 |
+| Portfolio |   1      |                    0      |                     1      |         0      |
+
+---
+
 ## get_hierarchical_equal_risk_contribution_weights
 Calculate the Hierarchical Equal Risk Contribution (HERC) weights. The assets are clustered by their correlations and the dendrogram is cut into clusters. Within a cluster every asset gets a weight in inverse proportion to its variance; between clusters the weight is split top-down along the dendrogram, each branch getting a weight in inverse proportion to its risk, the sum of the variances of its clusters. Unlike Hierarchical Risk Parity, which halves the ordered list of assets, the splits follow the tree, so assets that belong together are never split up, and the weight is allocated over the clusters rather than over the assets: riskier clusters get less.
 
-The clustering uses the correlation distance $$\sqrt{(1 - \rho) / 2}$$ with Ward linkage, as in the paper. Without a number of clusters, it is the one at the sharpest bend of the pooled within-cluster dispersion, the two-order difference of the gap statistic (Yue, Wang and Wei, 2008; Tibshirani, Walther and Hastie, 2001).
+The clustering uses the correlation distance $$\sqrt{(1 - \rho) / 2}$$ with Ward linkage, as in the paper. Without a number of clusters, it is the one at the sharpest bend of the pooled within-cluster dispersion, the two-order difference of the gap statistic (Yue, Wang and Wei, 2008; Tibshirani, Walther and Hastie, 2001), or with cluster_criterion="standardized_silhouette" the one whose clusters have the highest mean over standard deviation of the silhouette coefficients (López de Prado, 2020; Rousseeuw, 1987).
+
+The risk of a cluster is that of its inverse risk portfolio: the variance by default, or, as in the paper, another risk measure of the historical returns, such as the CVaR or the CDaR. With within_clusters="equal", the assets of a cluster share its weight equally while the clusters are still split by the risk of their inverse risk portfolios, the HERC2 variant of Riskfolio-Lib (Cajas).
 
 For more information, see the following papers:
 
 - Raffinot, T. (2018). "The Hierarchical Equal Risk Contribution Portfolio." SSRN 3237540.
 - Raffinot, T. (2017). "Hierarchical Clustering-Based Asset Allocation." The Journal of Portfolio Management, 44(2), 89-99.
+- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press.
+- Rousseeuw, P. J. (1987). "Silhouettes: A Graphical Aid to the Interpretation and Validation of Cluster Analysis." Journal of Computational and Applied Mathematics, 20, 53-65.
+- Riskfolio-Lib: HCPortfolio(model="HERC" or "HERC2", rm=...) ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}), which the weights with every risk measure are referenced against.
+- skfolio: HierarchicalEqualRiskContribution(risk_measure=...) ([https://skfolio.org](https://skfolio.org){:target="_blank"}), referenced against for the measures it has.
 
 **Also known as:** HERC, hierarchical clustering-based risk parity.
 
 **Args:**
 
 - <u>linkage_method (str, optional):</u> The linkage of the hierarchical clustering:
-"single", "complete", "average" or "ward". Defaults to "ward", as in the
-paper.
+"single", "complete", "average", "ward" or "dbht" (the Directed Bubble
+Hierarchical Tree of Song, Di Matteo and Aste, 2012, whose own clusters,
+the converging bubbles of the TMFG planar graph of the codependence, are
+used without a number of clusters). Defaults to "ward", as in the paper.
 - <u>clusters (int &#124; None, optional):</u> The number of clusters. Defaults to None,
 chosen by the two-order difference of the gap statistic.
-- <u>codependence (str, optional):</u> The correlation the assets are clustered on,
-through the distance $$\sqrt{(1 - \rho) / 2}$$: "pearson" (the linear correlation of
-the covariance matrix), "spearman" (the rank correlation of the returns,
-Spearman, 1904) or "kendall" (the rank correlation $$\tau_{b}$$ of the returns,
-Kendall, 1938). The rank correlations depend only on the order of the
-returns, so a few extreme returns weigh less. Defaults to "pearson".
+- <u>cluster_criterion (str, optional):</u> How the number of clusters is chosen when
+it is not given: "two_difference_gap" (the sharpest bend of the
+within-cluster dispersion, Yue, Wang and Wei, 2008) or
+"standardized_silhouette" (the highest mean over standard deviation of the
+silhouette coefficients, López de Prado, 2020). Defaults to
+"two_difference_gap".
+- <u>codependence (str, optional):</u> The codependence the assets are clustered on:
+"pearson" (the linear correlation of the covariance matrix), "spearman"
+(the rank correlation of the returns, Spearman, 1904), "kendall" (the
+rank correlation $$\tau_{b}$$ of the returns, Kendall, 1938), "gerber"
+(co-movements beyond half a standard deviation, Gerber et al., 2022) or
+"detoned" (the correlation without the market component, López de Prado,
+2020), all through the distance $$\sqrt{(1 - \rho) / 2}$$, "distance" (the distance
+correlation, Székely et al., 2007, through √(1 - dCor)),
+"mutual_information" (through the variation of information, Meilă, 2007)
+"lower_tail" (how often two assets fall into their lowest 5% of returns
+together, through -ln $$\lambda$$), "absolute_angular" or "squared_angular" ($$\vert \rho \vert$$ or
+$$\rho^{2}$$ through $$\sqrt{1 - \vert \rho \vert}$$ or $$\sqrt{1 - \rho^{2}}$$, which puts assets that hedge each other
+together, López de Prado, 2020) or "gnpr" (the rank co-movement and the
+difference between the return distributions, $$\theta = 0.5$$, Marti et al., 2016).
+The rank correlations depend only on
+the order of the returns, so a few extreme returns weigh less; the
+distance correlation and mutual information also capture non-linear
+co-movement. Defaults to "pearson".
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
 - <u>covariance (str, optional):</u> The estimator of the covariance matrix, which
@@ -1470,13 +3312,31 @@ also gives the correlations that are clustered: "sample" (ddof=1),
 "ledoit_wolf_constant_correlation" (towards the average correlation,
 Ledoit and Wolf, 2004), "ledoit_wolf_single_factor" (towards the
 covariance that the benchmark as a single factor implies, Ledoit and
-Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the clusters
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10% towards
+the scaled identity), "semicovariance" (the co-movement below a zero
+return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+clusters when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -1493,6 +3353,20 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
+- <u>risk_measure (str, optional):</u> The risk measure of the clusters: "variance"
+(of the covariance matrix), "volatility", or one of the historical
+returns: "mad", "semideviation", "lower_partial_moment",
+"worst_realization", "gini_mean_difference", "tail_gini", "range",
+"cvar_range", "tail_gini_range", "ulcer_index", "cvar" or "cdar" (see
+get_hierarchical_risk_parity_weights). Defaults to "variance".
+- <u>confidence_level (float, optional):</u> The confidence level of "cvar", "cdar",
+"cvar_range" and the Tail Gini measures. Defaults to 0.95.
+- <u>minimum_acceptable_return (float &#124; str, optional):</u> The threshold of
+"semideviation" and "lower_partial_moment", as a return per period of the
+chosen frequency, or "mean" for each asset's average return. Defaults to 0.
+- <u>within_clusters (str, optional):</u> The weights within a cluster:
+"inverse_risk" (inverse to each asset's risk) or "equal" (HERC2). Defaults
+to "inverse_risk".
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -1505,7 +3379,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
-Volatility, Sharpe Ratio and Risk Contribution, with the Cluster of every asset
+Volatility, Sharpe Ratio and Risk Contribution, with a risk measure of the
+returns that measure per period (e.g. "CDaR"), and the Cluster of every asset
 (numbered from 1). Returns and volatilities are annualized.
 
 **Notes:**
@@ -1513,6 +3388,12 @@ Volatility, Sharpe Ratio and Risk Contribution, with the Cluster of every asset
 - Weight, sector and country bounds are applied after the allocation: when the
 weights fall outside them, they move to the weights within the bounds with the
 smallest relative change, $$\sum (w_{i} / w_{\text{HERC},i} - 1)^{2}$$.
+- The risk measures of the returns are per period of the chosen frequency and not
+annualized. With the same clusters, the weights equal Riskfolio-Lib's
+HCPortfolio(model="HERC", rm=...) and skfolio's
+HierarchicalEqualRiskContribution(risk_measure=...). Riskfolio-Lib's own
+two-order difference sums the standard deviation of the distances within each
+cluster, which can pick another number of clusters.
 - HERC is long only and fully invested, so short positions and a net or gross
 exposure do not apply.
 
@@ -1548,12 +3429,13 @@ Which returns:
 ## get_nested_clustered_optimization_weights
 Calculate the Nested Clustered Optimization (NCO) weights. The assets are clustered by their correlations, the objective is optimized within every cluster, and then once more across the clusters, each cluster acting as one asset that holds its own optimal portfolio. Estimation noise in the covariance matrix mostly sits among correlated assets, which is what makes mean-variance weights unstable; by optimizing within and across clusters separately, NCO keeps that noise contained and the weights steadier out of sample.
 
-With W the matrix whose column k holds the optimal weights within cluster k, the clusters have the expected returns $$W' \mu$$ and the covariance matrix $$W' \Sigma W$$; the weights across the clusters v are optimal for those, and the weight of every asset is $$w = W v$$. The clusters are found as in HERC (correlation distance, Ward linkage, the number of clusters from the two-order difference of the gap statistic) and the covariance matrix is denoised by default, as in the paper.
+With W the matrix whose column k holds the optimal weights within cluster k, the clusters have the expected returns $$W' \mu$$ and the covariance matrix $$W' \Sigma W$$; the weights across the clusters v are optimal for those, and the weight of every asset is $$w = W v$$. The clusters are found as in HERC (correlation distance, Ward linkage, the number of clusters from the two-order difference of the gap statistic) and the covariance matrix is denoised by default, as in the paper. With another risk measure than the variance, "minimum_variance" minimizes that measure of the historical returns and "risk_parity" equalizes its risk contributions, within the clusters and across them on the returns of the clusters' portfolios, as Riskfolio-Lib's HCPortfolio(model="NCO", rm=...) does.
 
 For more information, see the following papers:
 
 - López de Prado, M. (2019). "A Robust Estimator of the Efficient Frontier." SSRN 3469961.
 - López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, chapter 7.
+- Riskfolio-Lib: HCPortfolio(model="NCO", rm=...) ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}), which the weights with the other risk measures are referenced against.
 
 **Also known as:** NCO, nested clustered optimisation.
 
@@ -1563,15 +3445,38 @@ For more information, see the following papers:
 "maximum_sharpe" or "risk_parity" (equal risk contribution). Defaults to
 "minimum_variance".
 - <u>linkage_method (str, optional):</u> The linkage of the hierarchical clustering:
-"single", "complete", "average" or "ward". Defaults to "ward".
+"single", "complete", "average", "ward" or "dbht" (the Directed Bubble
+Hierarchical Tree of Song, Di Matteo and Aste, 2012, whose own clusters,
+the converging bubbles of the TMFG planar graph of the codependence, are
+used without a number of clusters). Defaults to "ward".
 - <u>clusters (int &#124; None, optional):</u> The number of clusters. Defaults to None,
 chosen by the two-order difference of the gap statistic.
-- <u>codependence (str, optional):</u> The correlation the assets are clustered on,
-through the distance $$\sqrt{(1 - \rho) / 2}$$: "pearson" (the linear correlation of
-the covariance matrix), "spearman" (the rank correlation of the returns,
-Spearman, 1904) or "kendall" (the rank correlation $$\tau_{b}$$ of the returns,
-Kendall, 1938). The rank correlations depend only on the order of the
-returns, so a few extreme returns weigh less. Defaults to "pearson".
+- <u>cluster_criterion (str, optional):</u> How the number of clusters is chosen when
+it is not given: "two_difference_gap" (the sharpest bend of the
+within-cluster dispersion, Yue, Wang and Wei, 2008),
+"standardized_silhouette" (the highest mean over standard deviation of the
+silhouette coefficients, López de Prado, 2020) or "onc" (the clusters of the
+Optimal Number of Clusters algorithm, k-means with its own choice of their
+number, López de Prado and Lewis, 2019, as in the paper; see
+get_asset_clusters). Defaults to "two_difference_gap".
+- <u>codependence (str, optional):</u> The codependence the assets are clustered on:
+"pearson" (the linear correlation of the covariance matrix), "spearman"
+(the rank correlation of the returns, Spearman, 1904), "kendall" (the
+rank correlation $$\tau_{b}$$ of the returns, Kendall, 1938), "gerber"
+(co-movements beyond half a standard deviation, Gerber et al., 2022) or
+"detoned" (the correlation without the market component, López de Prado,
+2020), all through the distance $$\sqrt{(1 - \rho) / 2}$$, "distance" (the distance
+correlation, Székely et al., 2007, through √(1 - dCor)),
+"mutual_information" (through the variation of information, Meilă, 2007)
+"lower_tail" (how often two assets fall into their lowest 5% of returns
+together, through -ln $$\lambda$$), "absolute_angular" or "squared_angular" ($$\vert \rho \vert$$ or
+$$\rho^{2}$$ through $$\sqrt{1 - \vert \rho \vert}$$ or $$\sqrt{1 - \rho^{2}}$$, which puts assets that hedge each other
+together, López de Prado, 2020) or "gnpr" (the rank co-movement and the
+difference between the return distributions, $$\theta = 0.5$$, Marti et al., 2016).
+The rank correlations depend only on
+the order of the returns, so a few extreme returns weigh less; the
+distance correlation and mutual information also capture non-linear
+co-movement. Defaults to "pearson".
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
 - <u>covariance (str, optional):</u> The estimator of the covariance matrix, which
@@ -1582,22 +3487,43 @@ averaged, Laloux et al., 2000), "sample" (ddof=1), "ledoit_wolf"
 "ledoit_wolf_constant_correlation" (towards the average correlation,
 Ledoit and Wolf, 2004), "ledoit_wolf_single_factor" (towards the
 covariance that the benchmark as a single factor implies, Ledoit and
-Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007) or "exponential" (recent
-periods weigh most, RiskMetrics). Defaults to "denoised", as in the
-paper.
+Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10% towards
+the scaled identity), "semicovariance" (the co-movement below a zero
+return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics), "denoised_spectral", "denoised_shrink" (López de Prado,
+2020), "gerber" (Gerber et al., 2022), "minimum_covariance_determinant"
+(Rousseeuw and Van Driessen, 1999), "jlogo" (Barfuss et al., 2016), "geodesic"
+(Bhatia, 2007), "regime_adjusted_ew" (Paleologo, 2025), "nercome" (Lam, 2016),
+"ccc_garch" (Bollerslev, 1990), "mm" or "rocke" (Maronna et al., 2019).
+Defaults to "denoised", as in the paper.
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns of
 the "maximum_sharpe" objective: "mean" (the historical average),
-"exponential" (the exponentially weighted average, recent periods weigh
-most), "capm" (the returns the Capital Asset Pricing Model implies from
-each asset's beta to the benchmark, Sharpe, 1964) or "james_stein" (the
-averages shrunk towards that of the minimum variance portfolio, Jorion,
-1986). Defaults to "mean".
+"geometric" (the compounded average), "exponential" (the exponentially
+weighted average, recent periods weigh most), "exponential_geometric"
+(that average compounded over a year), "capm" (the returns the Capital
+Asset Pricing Model implies from each asset's beta to the benchmark,
+Sharpe, 1964) "bayes_stein" (the averages shrunk towards that of the
+minimum variance portfolio, Jorion, 1986), "james_stein" (the averages
+shrunk towards their grand mean, James and Stein, 1961) or
+"bodnar_okhrin_parolya" (the averages and their grand mean combined with
+optimal weights, Bodnar, Okhrin and Parolya, 2019). Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
+- <u>risk_measure (str, optional):</u> The risk measure of "minimum_variance" and
+"risk_parity": "variance" (of the covariance matrix), or one of the
+historical returns: "mad", "semideviation", "lower_partial_moment",
+"worst_realization", "gini_mean_difference", "tail_gini", "range",
+"cvar_range", "tail_gini_range", "ulcer_index", "cvar" or "cdar" (see
+get_mean_risk_weights). "volatility" gives the weights of "variance", and
+"maximum_sharpe" takes the variance only. Defaults to "variance".
+- <u>confidence_level (float, optional):</u> The confidence level of "cvar", "cdar",
+"cvar_range" and the Tail Gini measures. Defaults to 0.95.
+- <u>minimum_acceptable_return (float &#124; str, optional):</u> The threshold of
+"semideviation" and "lower_partial_moment", as a return per period of the
+chosen frequency, or "mean" for each asset's average return. Defaults to 0.
 - <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
 asset. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -1610,7 +3536,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
-Volatility, Sharpe Ratio and Risk Contribution, with the Cluster of every asset
+Volatility, Sharpe Ratio and Risk Contribution, with a risk measure of the
+returns that measure per period (e.g. "MAD"), and the Cluster of every asset
 (numbered from 1). Returns and volatilities are annualized.
 
 **Notes:**
@@ -1669,13 +3596,31 @@ quarterly or yearly). Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -1720,199 +3665,6 @@ Which returns:
 
 ---
 
-## get_minimum_cvar_weights
-Calculate the weights of the minimum Conditional Value at Risk (CVaR) portfolio: the fully invested portfolio whose average loss in the worst periods is the smallest. Unlike variance, CVaR only looks at the losses in the tail, so it accounts for skewed and fat-tailed returns.
-
-The problem is solved as a linear programme over the historical returns: minimize $$\text{VaR} + 1 / ((1 - \alpha) T) \sum \max (0 , - r_{t}' w - \text{VaR})$$, with $$\alpha$$ the confidence level and T the number of periods.
-
-For more information, see the following paper:
-
-- Rockafellar, R.T. and Uryasev, S. (2000). "Optimization of Conditional Value-at-Risk." Journal of Risk, 2(3), 21-41.
-
-**Also known as:** minimum expected shortfall portfolio, mean-CVaR, tail risk optimization.
-
-**Args:**
-
-- <u>confidence_level (float, optional):</u> The confidence level of the CVaR, e.g. 0.95
-for the average of the worst 5% of periods. Defaults to 0.95.
-- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
-quarterly or yearly). Defaults to "daily".
-- <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
-every asset, or per asset, e.g. {"AAPL": 0.05} (the others keep 0); a
-negative value allows short positions. Defaults to 0.
-- <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
-every asset, or per asset, e.g. {"AAPL": 0.3} (the others keep 1).
-Defaults to 1.
-- <u>sector_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
-and maximum total weight per sector, e.g. {"Technology": (0, 0.4)}, with
-the sector of each asset from its company profile. Defaults to None.
-- <u>country_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
-and maximum total weight per country, named in full or by its two-letter
-code, e.g. {"United States": (0, 0.6)}, with the country of each asset
-from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). At 0 the portfolio with the lowest CVaR holds
-nothing, so all weights are 0. Defaults to 1.
-- <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
-weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
-a 130/30 portfolio. Defaults to None, no limit.
-- <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
-e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
-per asset and its sum for the portfolio. Defaults to None, which uses
-the latest weights of the Portfolio the Toolkit came from when a maximum
-turnover or transaction cost needs them.
-- <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
-of the portfolio each way. Defaults to None, no limit.
-- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
-asset. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
-Volatility, Sharpe Ratio and Risk Contribution, with the CVaR of every asset
-on its own and of the portfolio (per period, as a loss) in the CVaR column.
-
-**Notes:**
-
-- The CVaR column is the value the linear programme minimizes: the average of the
-worst $$1 - \alpha$$ share of the periods, with a fraction of the boundary period when
-$$(1 - \alpha) T$$ is not a whole number (Rockafellar and Uryasev, 2002), as in the
-maximum CVaR ratio weights and the expected shortfall contributions.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["AAPL", "MSFT", "JNJ", "XOM"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.portfolio.get_minimum_cvar_weights()
-```
-
-Which returns:
-
-|           |   Weight |   Expected Return |   Volatility |   Sharpe Ratio |   Risk Contribution |   CVaR |
-|:----------|---------:|------------------:|-------------:|---------------:|--------------------:|-------:|
-| AAPL      |   0      |            0.1932 |       0.2786 |         0.5725 |              0      | 0.039  |
-| MSFT      |   0.1827 |            0.2017 |       0.2571 |         0.6534 |              0.1513 | 0.0356 |
-| JNJ       |   0.5965 |            0.0987 |       0.1673 |         0.3884 |              0.6005 | 0.0227 |
-| XOM       |   0.2208 |            0.2911 |       0.2702 |         0.9524 |              0.2482 | 0.0373 |
-| Portfolio |   1      |            0.16   |       0.136  |         0.9287 |              1      | 0.0191 |
-
----
-
-## get_minimum_drawdown_weights
-Calculate the weights of the portfolio with the lowest drawdown risk over the historical returns: the lowest Conditional Drawdown at Risk (CDaR, the average of the worst drawdowns), the lowest maximum drawdown or the lowest average drawdown. Drawdowns are what investors feel and what ends strategies, and unlike volatility or CVaR they account for losses that build up over consecutive periods.
-
-The problem is a linear programme over the uncompounded cumulative returns $$y_{t} = \sum_{s \leq t} r_{s}' w$$, with the running peak $$u_{t} \geq y_{t}$$, $$u_{t} \geq u_{t - 1}$$ from $$u_{0} = 0$$ and the drawdown $$u_{t} - y_{t}$$. It minimizes $$\zeta + \sum \max (0 , u_{t} - y_{t} - \zeta) / ((1 - \alpha) T)$$ for the CDaR with $$\alpha$$ the confidence level and T the number of periods, the largest drawdown for the maximum and the average over all periods for the average.
-
-For more information, see the following paper:
-
-- Chekhlov, A., Uryasev, S. and Zabarankin, M. (2005). "Drawdown Measure in Portfolio Optimization." International Journal of Theoretical and Applied Finance, 8(1), 13-58.
-
-**Also known as:** minimum CDaR, minimum maximum drawdown, minimum average drawdown, drawdown optimization.
-
-**Args:**
-
-- <u>measure (str, optional):</u> The drawdown measure to minimize: "cdar", "maximum" or
-"average". Defaults to "cdar".
-- <u>confidence_level (float, optional):</u> The confidence level of the CDaR, e.g. 0.95
-for the average of the worst 5% of drawdowns. Defaults to 0.95.
-- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
-quarterly or yearly). Defaults to "daily".
-- <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
-every asset, or per asset, e.g. {"AAPL": 0.05} (the others keep 0); a
-negative value allows short positions. Defaults to 0.
-- <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
-every asset, or per asset, e.g. {"AAPL": 0.3} (the others keep 1).
-Defaults to 1.
-- <u>sector_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
-and maximum total weight per sector, e.g. {"Technology": (0, 0.4)}, with
-the sector of each asset from its company profile. Defaults to None.
-- <u>country_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
-and maximum total weight per country, named in full or by its two-letter
-code, e.g. {"United States": (0, 0.6)}, with the country of each asset
-from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio. A net exposure of 0 is refused, as holding nothing
-has no drawdown. Defaults to 1.
-- <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
-weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
-a 130/30 portfolio. Defaults to None, no limit.
-- <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
-e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
-the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
-per asset and its sum for the portfolio. Defaults to None, which uses
-the latest weights of the Portfolio the Toolkit came from when a maximum
-turnover needs them.
-- <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
-$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
-of the portfolio each way. Defaults to None, no limit.
-- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
-asset. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the Toolkit's rounding.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
-Volatility, Sharpe Ratio and Risk Contribution, with the drawdown measure that
-was minimized (CDaR, Maximum Drawdown or Average Drawdown) of every asset on its
-own and of the portfolio.
-
-**Notes:**
-
-- The drawdowns are on uncompounded returns (the cumulative sum of the returns, as
-in the paper), which keeps the problem
-linear: they are absolute drawdowns of a portfolio that keeps its invested amount
-constant. The compounded drawdowns of the risk module, relative to the peak
-value, are close for small drawdowns and smaller for large ones.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["AAPL", "MSFT", "JNJ", "XOM"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.portfolio.get_minimum_drawdown_weights()
-```
-
-Which returns:
-
-|           |   Weight |   Expected Return |   Volatility |   Sharpe Ratio |   Risk Contribution |   CDaR |
-|:----------|---------:|------------------:|-------------:|---------------:|--------------------:|-------:|
-| AAPL      |   0.152  |            0.1932 |       0.2786 |         0.5725 |              0.2007 | 0.2553 |
-| MSFT      |   0.1761 |            0.2017 |       0.2571 |         0.6534 |              0.1887 | 0.3173 |
-| JNJ       |   0.4312 |            0.0987 |       0.1673 |         0.3884 |              0.3284 | 0.1573 |
-| XOM       |   0.2407 |            0.2911 |       0.2702 |         0.9524 |              0.2822 | 0.178  |
-| Portfolio |   1      |            0.1775 |       0.1412 |         1.0185 |              1      | 0.0769 |
-
----
-
 ## get_maximum_omega_weights
 Calculate the weights of the portfolio with the highest Omega ratio over the historical returns: the gains above a minimum acceptable return divided by the losses below it. The Omega ratio uses the whole return distribution instead of its mean and variance, so it rewards positive skew and penalizes fat left tails that a Sharpe ratio overlooks.
 
@@ -1933,12 +3685,16 @@ Defaults to 0.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -1954,8 +3710,11 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one. Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one. The rest, 1 minus the net exposure,
+is a Cash row at the risk free rate (negative when borrowed above one),
+which the Portfolio's Expected Return and Sharpe Ratio include. Defaults to
+1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -2018,31 +3777,95 @@ Which returns:
 
 ---
 
-## get_maximum_cvar_ratio_weights
-Calculate the weights of the portfolio with the highest CVaR ratio: the average return above the risk free rate divided by the Conditional Value at Risk, the average loss in the worst periods. It is the maximum Sharpe ratio portfolio with the tail loss in place of the volatility, so upside swings are not penalized and crash risk is.
+## get_mean_risk_weights
+Calculate the weights of a mean-risk portfolio with a risk measure other than the volatility: the portfolio with the lowest risk, the lowest risk at a target return, or the highest ratio of the average excess return to the risk. The risk is measured on the historical returns, so measures that only count losses (the semideviation, the lower partial moment, the worst realization, the CVaR, the Tail Gini) leave upside swings unpenalized, and the Ulcer Index and the drawdown measures penalize deep and long drawdowns, which are what investors feel and what ends strategies. The minimum CVaR portfolio (risk_measure="cvar") only looks at the losses in the tail, so it accounts for skewed and fat-tailed returns; its maximum ratio portfolio is the maximum STARR (CVaR ratio) portfolio of Martin, Rachev and Siboulet (2003), the maximum Sharpe ratio portfolio with the tail loss in place of the volatility.
 
-The ratio $$(\bar{r} - r_{f})' w / \text{CVaR}_{\alpha} (w)$$, with the CVaR of Rockafellar and Uryasev (2000), is maximized exactly as a linear programme with the Charnes-Cooper transformation $$y = \kappa w$$, $$\kappa > 0$$: maximize $$(\bar{r} - r_{f})' y$$ subject to $$\zeta + \sum \max (0 , - r_{t}' y - \zeta) / ((1 - \alpha) T) \leq 1$$ and the weight constraints, then $$w = y / \kappa$$.
+The risk measures $$\rho (w)$$ of the portfolio's returns $$X_{t} = r_{t}' w$$ over T periods, with $$\alpha$$ the confidence level and $$\tau$$ the minimum acceptable return, are:
+
+- "mad": the mean absolute deviation $$\sum \vert X_{t} - \bar{X} \vert / T$$ (Konno and Yamazaki, 1991).
+- "semideviation": $$\sqrt{\sum \min (X_{t} - \tau , 0)^{2} / T}$$, or $$\sqrt{\sum \min (X_{t} - \bar{X} , 0)^{2} / (T - 1)}$$ below the mean (Markowitz, 1959; Estrada, 2008).
+- "lower_partial_moment": the first lower partial moment $$\sum \max (\tau - X_{t} , 0) / T$$ (Bawa, 1975), or below each asset's mean.
+- "worst_realization": the largest loss -min $$X_{t}$$ (Young, 1998).
+- "gini_mean_difference": the average absolute difference between the returns of two periods, $$\sum_{i} \sum_{j} \vert X_{i} - X_{j} \vert / (T (T - 1))$$ (Yitzhaki, 1982).
+- "tail_gini": the Tail Gini of the losses beyond the $$1 - \alpha$$ quantile (Furman, Wang and Zitikis, 2017; Cajas, 2021).
+- "range": the largest gain plus the largest loss, $$\max X_{t} - \min X_{t}$$.
+- "cvar_range": the CVaR of the losses plus that of the gains, the average of the best $$1 - \alpha$$ share of the returns minus the average of the worst (Cajas, 2021).
+- "tail_gini_range": the Tail Gini of the losses plus that of the gains.
+- "ulcer_index": $$\sqrt{\sum D_{t}^{2} / T}$$ with $$D_{t}$$ the drawdowns of the uncompounded cumulative return (Martin and McCann, 1989).
+- "cvar": the Conditional Value at Risk, the average loss in the worst $$1 - \alpha$$ share of the periods, $$\text{VaR} + \sum \max (0 , - X_{t} - \text{VaR}) / ((1 - \alpha) T)$$ at its minimum over the VaR (Rockafellar and Uryasev, 2000).
+- "cdar": the Conditional Drawdown at Risk, the average of the worst $$1 - \alpha$$ share of the drawdowns $$D_{t}$$, $$\zeta + \sum \max (0 , D_{t} - \zeta) / ((1 - \alpha) T)$$ at its minimum over $$\zeta$$ (Chekhlov, Uryasev and Zabarankin, 2005).
+- "maximum_drawdown": the largest drawdown $$\max D_{t}$$.
+- "average_drawdown": the average drawdown $$\sum D_{t} / T$$.
+
+The drawdowns $$D_{t} = u_{t} - Y_{t}$$ are those of the uncompounded cumulative return $$Y_{t} = \sum_{s \leq t} X_{s}$$ below its running peak $$u_{t} = \max (0 , \max_{s \leq t} Y_{s})$$, from $$u_{0} = 0$$.
+
+The objectives are:
+
+$$
+\text{"minimum\_risk":}\;\; \text{minimize } \rho (w),\;\; \text{at the target return}\; \mu' w = \text{target when given}
+$$
+
+$$
+\text{"maximum\_ratio":}\;\; \frac{\text{maximize} \;(\mu - r_{f}) \;\text{'w}}{\rho(w)} \;\text{with the Charnes-Cooper transformation}\; y = \kappa w,\;\; \kappa > 0 \;(\text{Charnes and Cooper},\; 1962) \;\text{:} \;\text{maximize} \;(\mu - r_{f}) \;\text{'y} \;\text{subject to} \;\rho(y) \leq 1 \;\text{and the weight constraints},\;\; \text{then}\; w = \frac{y}{\kappa}
+$$
+
+The mean absolute deviation, the lower partial moment, the worst realization, the ranges, the CVaR range, the CVaR and the drawdown measures are solved exactly as linear programmes with HiGHS. The Gini mean difference and the Tail Gini measures are ordered weighted averages of the sorted returns, convex because their weights rise with the rank (Cajas, 2021), and are solved exactly with cutting planes (Kelley, 1960) stabilized as in Ben-Ameur and Neto (2007): every sorted order of the returns gives a linear lower bound of the measure, which is added where the linear programme's solution needs it. The semideviation and the Ulcer Index have continuous gradients and are minimized with SLSQP.
 
 For more information, see the following papers:
 
-- Martin, R. D., Rachev, S. T. and Siboulet, F. (2003). "Phi-Alpha Optimal Portfolios and Extreme Risk Management." Wilmott Magazine, November, 70-83.
+- Konno, H. and Yamazaki, H. (1991). "Mean-Absolute Deviation Portfolio Optimization Model and Its Applications to Tokyo Stock Market." Management Science, 37(5), 519-531.
+- Markowitz, H. (1959). "Portfolio Selection: Efficient Diversification of Investments." John Wiley & Sons, New York.
+- Estrada, J. (2008). "Mean-Semivariance Optimization: A Heuristic Approach." Journal of Applied Finance, 18(1), 57-72.
+- Bawa, V. S. (1975). "Optimal Rules for Ordering Uncertain Prospects." Journal of Financial Economics, 2(1), 95-121.
+- Young, M. R. (1998). "A Minimax Portfolio Selection Rule with Linear Programming Solution." Management Science, 44(5), 673-683.
+- Yitzhaki, S. (1982). "Stochastic Dominance, Mean Variance, and Gini's Mean Difference." The American Economic Review, 72(1), 178-185.
+- Furman, E., Wang, R. and Zitikis, R. (2017). "Gini-Type Measures of Risk and Variability: Gini Shortfall, Capital Allocations, and Heavy-Tailed Risks." Journal of Banking & Finance, 83, 70-84.
+- Cajas, D. (2021). "OWA Portfolio Optimization: A Disciplined Convex Programming Framework." SSRN Working Paper 3988927.
+- Martin, P. G. and McCann, B. B. (1989). "The Investor's Guide to Fidelity Funds." John Wiley & Sons, New York.
 - Rockafellar, R. T. and Uryasev, S. (2000). "Optimization of Conditional Value-at-Risk." Journal of Risk, 2(3), 21-41.
+- Martin, R. D., Rachev, S. T. and Siboulet, F. (2003). "Phi-Alpha Optimal Portfolios and Extreme Risk Management." Wilmott Magazine, November, 70-83.
+- Chekhlov, A., Uryasev, S. and Zabarankin, M. (2005). "Drawdown Measure in Portfolio Optimization." International Journal of Theoretical and Applied Finance, 8(1), 13-58.
+- Charnes, A. and Cooper, W. W. (1962). "Programming with Linear Fractional Functionals." Naval Research Logistics Quarterly, 9(3-4), 181-186.
+- Kelley, J. E. (1960). "The Cutting-Plane Method for Solving Convex Programs." Journal of the Society for Industrial and Applied Mathematics, 8(4), 703-712.
+- Ben-Ameur, W. and Neto, J. (2007). "Acceleration of Cutting-Plane and Column Generation Algorithms: Applications to Network Design." Networks, 49(1), 3-17.
+- Riskfolio-Lib: Portfolio.optimization with rm="MAD", "MSV", "FLPM", "SLPM", "WR", "RG", "CVRG" and "UCI", and owa_optimization for the Gini mean difference and the Tail Gini measures ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}), which the weights are referenced against.
+- skfolio: MeanRisk ([https://skfolio.org](https://skfolio.org){:target="_blank"}), referenced against for the Gini mean difference, the mean absolute deviation, the lower partial moment below the mean, the semideviation, the worst realization and the Ulcer Index.
+- PyPortfolioOpt: EfficientSemivariance ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}), which shares similar logic with the semideviation below a fixed threshold.
 
-**Also known as:** maximum STARR, stable tail adjusted return ratio, maximum return-to-CVaR, mean-CVaR tangency portfolio.
+**Also known as:** mean-MAD, mean-semivariance, minimax, mean-Gini, mean-Ulcer, Sortino-optimal or Gini-optimal portfolio, minimum CVaR weights, minimum expected shortfall portfolio, mean-CVaR, tail risk optimization, maximum CVaR ratio weights, maximum STARR, stable tail adjusted return ratio, maximum return-to-CVaR, mean-CVaR tangency portfolio, minimum drawdown weights, minimum CDaR, minimum maximum drawdown, minimum average drawdown, drawdown optimization.
 
 **Args:**
 
-- <u>confidence_level (float, optional):</u> The confidence level of the CVaR, e.g. 0.95
-for the average of the worst 5% of periods. Defaults to 0.95.
+- <u>risk_measure (str, optional):</u> The risk measure: "mad", "semideviation",
+"lower_partial_moment", "worst_realization", "gini_mean_difference",
+"tail_gini", "range", "cvar_range", "tail_gini_range", "ulcer_index",
+"cvar", "cdar", "maximum_drawdown" or "average_drawdown". Defaults to "mad".
+- <u>objective (str, optional):</u> "minimum_risk" or "maximum_ratio" (the highest
+average excess return per unit of risk). Defaults to "minimum_risk".
+- <u>target_return (float &#124; None, optional):</u> The annualized expected return the
+minimum risk portfolio must have, e.g. 0.12 for 12%, with the cash of a
+net exposure other than one at the risk free rate. Defaults to None,
+no target.
+- <u>confidence_level (float, optional):</u> The confidence level of the CVaR, the CVaR
+range, the CDaR and the Tail Gini measures, e.g. 0.95 for the worst 5% of
+periods (or drawdowns). Defaults to 0.95.
+- <u>minimum_acceptable_return (float &#124; str, optional):</u> The threshold of the
+semideviation and the lower partial moment, as a return per period of the
+chosen frequency (e.g. 0.0002 a day), or "mean" for each asset's average
+return. Defaults to 0.
 - <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
 quarterly or yearly). Defaults to "daily".
-- <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+- <u>expected_returns (str, optional):</u> The estimator of the expected returns of
+the ratio and the target return: "mean" (the historical average),
+"geometric" (the compounded average), "exponential" (the exponentially
+weighted average, recent periods weigh most), "exponential_geometric"
+(that average compounded over a year), "capm" (the returns the Capital
+Asset Pricing Model implies from each asset's beta to the benchmark,
+Sharpe, 1964) "bayes_stein" (the averages shrunk towards that of the
+minimum variance portfolio, Jorion, 1986), "james_stein" (the averages
+shrunk towards their grand mean, James and Stein, 1961) or
+"bodnar_okhrin_parolya" (the averages and their grand mean combined with
+optimal weights, Bodnar, Okhrin and Parolya, 2019). Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -2058,8 +3881,14 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one. Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). At 0 the portfolio with the lowest CVaR holds nothing, so
+all weights are 0, and for the drawdown measures a net exposure of 0 is
+refused, as holding nothing has no drawdown. The rest, 1 minus the net
+exposure, is a Cash row at the risk free rate (negative when borrowed above
+one), which the Portfolio's Expected Return and Sharpe Ratio include.
+Defaults to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -2084,16 +3913,33 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
-Volatility, Sharpe Ratio and Risk Contribution, with the CVaR (per period, as a
-loss) and the CVaR Ratio (the average excess return per period over the CVaR)
-of every asset on its own and of the portfolio.
+Volatility, Sharpe Ratio and Risk Contribution (of the volatility), with the
+risk measure (per period, positive for a loss, named after it, e.g. "MAD")
+and its ratio (the average excess return per period over the measure, e.g.
+"MAD Ratio") of every asset on its own and of the portfolio.
 
 **Notes:**
 
+- The risk measures are per period of the chosen frequency and not annualized;
+the drawdowns of the Ulcer Index, the CDaR and the maximum and average drawdown
+are those of the uncompounded cumulative return (the sum of the returns, as in
+Chekhlov, Uryasev and Zabarankin), which scales with the weights and keeps the
+problem linear, as in Riskfolio-Lib and skfolio: they are absolute drawdowns of
+a portfolio that keeps its invested amount constant. The compounded drawdowns
+of the risk module, relative to the peak value, are close for small drawdowns
+and smaller for large ones.
+- The CVaR and the CDaR are the values the linear programmes minimize: the average
+of the worst $$1 - \alpha$$ share of the periods (or drawdowns), with a fraction of the
+boundary period when $$(1 - \alpha) T$$ is not a whole number (Rockafellar and Uryasev,
+2002), as in the expected shortfall contributions.
+- Riskfolio-Lib's MAD is half of the mean absolute deviation and its lower partial
+moments divide by T - 1, and skfolio's lower partial moment is below the mean;
+those scale the measure but leave the weights the same. The Gini mean
+difference here is that of the Risk module, $$\sum_{i} \sum_{j} \vert X_{i} - X_{j} \vert / (T (T - 1))$$.
 - The risk free rate is the Toolkit's, averaged over the returns and converted to
-a rate per period. Some portfolio within the constraints needs an average return
-above it; otherwise no CVaR ratio is positive and the method returns an error
-that says so.
+a rate per period. For the maximum ratio, some portfolio within the constraints
+needs an average return above it; otherwise the method returns an error that
+says so.
 
 **As an example:**
 
@@ -2107,20 +3953,427 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.portfolio.get_maximum_cvar_ratio_weights()[
-    ["Weight", "Expected Return", "Risk Contribution", "CVaR", "CVaR Ratio"]
+toolkit.portfolio.get_mean_risk_weights(
+    risk_measure="gini_mean_difference", objective="maximum_ratio"
+)[["Weight", "Expected Return", "Gini Mean Difference", "Gini Mean Difference Ratio"]]
+```
+
+Which returns:
+
+|           |   Weight |   Expected Return |   Gini Mean Difference |   Gini Mean Difference Ratio |
+|:----------|---------:|------------------:|-----------------------:|-----------------------------:|
+| AAPL      |   0.0562 |            0.1932 |                 0.0185 |                       0.0342 |
+| MSFT      |   0.307  |            0.2017 |                 0.0174 |                       0.0384 |
+| JNJ       |   0.1846 |            0.0987 |                 0.0112 |                       0.0231 |
+| XOM       |   0.4521 |            0.2911 |                 0.0187 |                       0.0545 |
+| Portfolio |   1      |            0.2226 |                 0.0113 |                       0.0662 |
+
+---
+
+## get_critical_line_weights
+Calculate the corner portfolios of the efficient frontier with the critical line algorithm of Markowitz (1956): the exact points where an asset enters or leaves the portfolio. Between two neighbouring corners the efficient weights move along a straight line, so the corners describe the whole long-only (or bounded) frontier without a grid of target returns. The minimum variance portfolio (the last corner) and the maximum Sharpe ratio portfolio follow from them exactly.
+
+Every efficient portfolio minimizes ½ $$w' \Sigma w - \lambda \mu' w$$ subject to the weights summing to one and lying between their bounds, for some $$\lambda \geq 0$$, the risk tolerance (the inverse of the risk aversion). The algorithm starts at the portfolio with the highest expected return ($$\lambda$$ = ∞) and lowers $$\lambda$$. For the assets strictly between their bounds (the free assets F, the others B are at a bound) the first-order conditions are a linear system:
+
+$$
+\Sigma_{\text{FF}} w_{F} + \gamma 1 = \lambda \mu_{F} - \Sigma_{\text{FB}} w_{B}
+$$
+
+$$
+\text{1'w}_{F} = 1 - \text{1'w}_{B}
+$$
+
+so the weights are affine in $$\lambda$$ until a free asset reaches a bound or the gradient $$(\Sigma w)_{j} - \lambda \mu_{j} + \gamma$$ of a bound asset changes sign, which frees it. That $$\lambda$$ is a corner. On the line between two corners the Sharpe ratio has a single stationary point, which gives the maximum Sharpe ratio portfolio in closed form.
+
+For more information, see the following papers:
+
+- Markowitz, H. (1956). "The Optimization of a Quadratic Function Subject to Linear Constraints." Naval Research Logistics Quarterly, 3(1-2), 111-133.
+- Bailey, D. H. and López de Prado, M. (2013). "An Open-Source Implementation of the Critical-Line Algorithm for Portfolio Optimization." Algorithms, 6(1), 169-196.
+- PyPortfolioOpt: CLA ([https://github.com/robertmartin8/PyPortfolioOpt](https://github.com/robertmartin8/PyPortfolioOpt){:target="_blank"}), which the corner portfolios, the minimum variance and the maximum Sharpe ratio portfolio are referenced against.
+
+**Also known as:** CLA, corner portfolios, turning points of the efficient frontier.
+
+**Args:**
+
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
+(ddof=1), "ledoit_wolf" (towards the scaled identity, Ledoit and Wolf,
+2004), "ledoit_wolf_constant_correlation" (towards the average
+correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
+(towards the covariance that the benchmark as a single factor implies,
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The algorithm needs a positive definite covariance matrix. Defaults to
+"sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance; the weight of a period halves after about span / 2.9
+periods. Defaults to 180.
+- <u>expected_returns (str, optional):</u> The estimator of the expected returns:
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
+- <u>expected_returns_span (int, optional):</u> The span in periods of the
+"exponential" expected returns. Defaults to 180.
+- <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
+every asset, or per asset, e.g. {"AAPL": 0.05} (the others keep 0); a
+negative value allows short positions. Defaults to 0.
+- <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
+every asset, or per asset, e.g. {"AAPL": 0.3} (the others keep 1).
+Defaults to 1.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: One row per corner portfolio, from "Corner 1" (the highest
+expected return) to the minimum variance portfolio, followed by the "Minimum
+Variance" and "Maximum Sharpe" portfolios, each with its Lambda (the risk
+tolerance $$\lambda$$ at which it is optimal), the annualized Expected Return,
+Volatility and Sharpe Ratio and the weight per asset.
+
+**Notes:**
+
+- The critical line algorithm takes the weight bounds and the budget only; for
+sector, country, gross exposure or turnover constraints use
+get_efficient_frontier, which solves each target return numerically.
+- $$\lambda$$ is in the units of the annualized expected returns and covariance. The first
+corner is optimal for every $$\lambda$$ at or above its own, and the last one, at $$\lambda = 0$$,
+is the minimum variance portfolio, so it is listed twice.
+- PyPortfolioOpt's CLA lists the first portfolio twice (at $$\lambda$$ = ∞ and at the first
+corner); here it appears once.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_critical_line_weights().drop(columns="Sharpe Ratio")
+```
+
+Which returns:
+
+| Portfolio        |   Lambda |   Expected Return |   Volatility |   AAPL |   MSFT |    JNJ |    XOM |
+|:-----------------|---------:|------------------:|-------------:|-------:|-------:|-------:|-------:|
+| Corner 1         |   0.7508 |            0.2911 |       0.2702 | 0      | 0      | 0      | 1      |
+| Corner 2         |   0.2405 |            0.2591 |       0.2031 | 0      | 0.3583 | 0      | 0.6417 |
+| Corner 3         |   0.224  |            0.2578 |       0.2016 | 0.0103 | 0.3619 | 0      | 0.6278 |
+| Corner 4         |   0      |            0.1577 |       0.135  | 0.0211 | 0.2167 | 0.5821 | 0.1801 |
+| Minimum Variance |   0      |            0.1577 |       0.135  | 0.0211 | 0.2167 | 0.5821 | 0.1801 |
+| Maximum Sharpe   |   0.147  |            0.2234 |       0.167  | 0.014  | 0.312  | 0.2    | 0.474  |
+
+---
+
+## get_worst_case_mean_variance_weights
+Calculate the weights of a worst-case (robust) mean-variance portfolio: the portfolio that is optimal for the least favourable expected returns within a confidence region around the estimates, instead of for the estimates themselves. The expected returns are the noisiest input of a mean-variance optimization, and the worst case penalizes the portfolios whose return rests most on them.
+
+With $$\mu$$ the annualized expected returns, $$\Sigma$$ the annualized covariance matrix, $$\sum_{\mu} = \Sigma$$ × (periods per year) / T the covariance of the annualized average over T periods and $$\alpha$$ the confidence level, the worst-case return R(w) is:
+
+$$
+\text{"ellipsoid":}\;\; \mu' w - \kappa \sqrt{w' \Sigma_{\mu} w} \;\text{with}\; \kappa^{2} = \chi_{n}^{2}(\alpha),\;\; \text{the lowest return over the joint confidence ellipsoid of the } n \text{ expected returns (Goldfarb and Iyengar, 2003)}
+$$
+
+$$
+\text{"box":}\;\; \mu' w - \delta' \left|w\right| \;\text{with}\; \delta_{i} = \frac{z_{1+\alpha}}{2 \sqrt{\Sigma_{\mu},\; \text{ii}}},\;\; \text{the lowest return when each expected return can lie anywhere in its own confidence interval (Tütüncü and Koenig, 2004)}
+$$
+
+The objectives replace the expected return $$\mu' w$$ by R(w):
+
+- "maximum_sharpe": maximize $$(R (w) - r_{f}) / \sqrt{w' \Sigma w}$$, solved with the Charnes-Cooper transformation (Charnes and Cooper, 1962).
+- "utility": maximize $$R (w) - (\lambda / 2) w' \Sigma w$$ with $$\lambda$$ the risk aversion.
+- "minimum_variance": minimize $$w' \Sigma w$$ subject to R(w) ≥ the target return.
+
+R(w) is concave, so every objective is a convex problem, solved with SLSQP.
+
+For more information, see the following papers:
+
+- Goldfarb, D. and Iyengar, G. (2003). "Robust Portfolio Selection Problems." Mathematics of Operations Research, 28(1), 1-38.
+- Tütüncü, R. H. and Koenig, M. (2004). "Robust Asset Allocation." Annals of Operations Research, 132, 157-187.
+- Charnes, A. and Cooper, W. W. (1962). "Programming with Linear Fractional Functionals." Naval Research Logistics Quarterly, 9(3-4), 181-186.
+- Riskfolio-Lib: Portfolio.wc_optimization with Umu="box" or "ellip" and Ucov=None ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}), which the weights are referenced against.
+- skfolio: MeanRisk with EmpiricalMuUncertaintySet ([https://skfolio.org](https://skfolio.org){:target="_blank"}), which shares the ellipsoid $$\kappa^{2} = \chi_{n}^{2} (\alpha)$$ and $$\sum_{\mu} = \Sigma / T$$ and is referenced against.
+
+**Also known as:** robust mean-variance, robust Markowitz, max-min portfolio, uncertainty set optimization.
+
+**Args:**
+
+- <u>uncertainty (str, optional):</u> The uncertainty set of the expected returns:
+"box" or "ellipsoid". Defaults to "box".
+- <u>confidence_level (float, optional):</u> The confidence level of the uncertainty
+set, e.g. 0.95. A higher level widens the set and gives more cautious
+weights. Defaults to 0.95.
+- <u>objective (str, optional):</u> "maximum_sharpe", "utility" or
+"minimum_variance" (which needs a target return). Defaults to
+"maximum_sharpe".
+- <u>risk_aversion (float, optional):</u> The risk aversion $$\lambda$$ of the utility; higher
+values give less risky portfolios. Defaults to 2.5.
+- <u>target_return (float &#124; None, optional):</u> The lowest annualized worst-case
+return of the minimum variance objective, e.g. 0.1 for 10%, with the cash
+of a net exposure other than one at the risk free rate. Defaults to
+None.
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>covariance (str, optional):</u> The estimator of the covariance matrix, as in
+get_maximum_sharpe_weights: "sample" (ddof=1), "ledoit_wolf",
+"ledoit_wolf_constant_correlation", "ledoit_wolf_single_factor", "oas",
+"shrunk", "semicovariance", "exponential", "denoised",
+"denoised_spectral", "denoised_shrink", "gerber", "factor",
+"minimum_covariance_determinant", "jlogo", "geodesic",
+"regime_adjusted_ew", "nercome", "ccc_garch", "mm" or "rocke". It also
+sets $$\sum_{\mu}$$. Defaults to "sample".
+- <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
+covariance. Defaults to 180.
+- <u>expected_returns (str, optional):</u> The estimator of the expected returns, as in
+get_maximum_sharpe_weights: "mean", "geometric", "exponential",
+"exponential_geometric", "capm", "bayes_stein", "james_stein" or
+"bodnar_okhrin_parolya". Defaults to "mean".
+- <u>expected_returns_span (int, optional):</u> The span in periods of the
+"exponential" expected returns. Defaults to 180.
+- <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
+every asset, or per asset, e.g. {"AAPL": 0.05} (the others keep 0); a
+negative value allows short positions. Defaults to 0.
+- <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
+every asset, or per asset, e.g. {"AAPL": 0.3} (the others keep 1).
+Defaults to 1.
+- <u>sector_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
+and maximum total weight per sector, e.g. {"Technology": (0, 0.4)}, with
+the sector of each asset from its company profile. Defaults to None.
+- <u>country_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
+and maximum total weight per country, named in full or by its two-letter
+code, e.g. {"United States": (0, 0.6)}, with the country of each asset
+from its company profile. Defaults to None.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio. The rest, 1 minus the net exposure, is a Cash row at the risk
+free rate (negative when borrowed above one), which the Portfolio's Expected
+Return and Sharpe Ratio include. Defaults to 1.
+- <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
+weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
+a 130/30 portfolio. Defaults to None, no limit.
+- <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
+e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
+per asset and its sum for the portfolio. Defaults to None, which uses
+the latest weights of the Portfolio the Toolkit came from when a maximum
+turnover needs them.
+- <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
+of the portfolio each way. Defaults to None, no limit.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
+Volatility, Sharpe Ratio and Risk Contribution, with the Worst-Case Return
+and the Worst-Case Sharpe Ratio of every asset on its own and of the
+portfolio. Returns and volatilities are annualized.
+
+**Notes:**
+
+- Only the uncertainty of the expected returns is modelled. Uncertainty sets on
+the covariance matrix (as in Riskfolio-Lib's Ucov="box" or "ellip") need
+semidefinite programming, which is not available with SciPy's solvers.
+- $$\sum_{\mu} = \Sigma / T$$ is the covariance of the historical average. For the other
+expected return estimators it is an approximation of their uncertainty.
+- The box of each expected return is its own two-sided confidence interval
+from the normal distribution. Riskfolio-Lib estimates its box and ellipsoid
+by bootstrapping by default; with the same $$\delta$$, $$\sum_{\mu}$$ and $$\kappa$$ the weights agree.
+- skfolio's EmpiricalMuUncertaintySet uses only the variances of $$\sum_{\mu}$$ by default
+(diagonal=True); the full $$\sum_{\mu}$$ here equals its diagonal=False.
+- With the ellipsoid, $$\sum_{\mu} = \Sigma$$ × (periods per year) / T is proportional to Σ, so
+every Sharpe ratio falls by the same $$\kappa$$ √((periods per year) / T) and the
+maximum Sharpe portfolio equals that of get_maximum_sharpe_weights. The
+ellipsoid changes the weights of the utility and minimum variance objectives,
+and the box changes those of all three.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_worst_case_mean_variance_weights(
+    confidence_level=0.9, maximum_weight=0.5
+)[["Weight", "Expected Return", "Worst-Case Return", "Worst-Case Sharpe Ratio"]]
+```
+
+Which returns:
+
+|           |   Weight |   Expected Return |   Worst-Case Return |   Worst-Case Sharpe Ratio |
+|:----------|---------:|------------------:|--------------------:|--------------------------:|
+| AAPL      |      0   |            0.1932 |             -0.0122 |                   -0.1649 |
+| MSFT      |      0.5 |            0.2017 |              0.0121 |                   -0.084  |
+| JNJ       |      0   |            0.0987 |             -0.0247 |                   -0.349  |
+| XOM       |      0.5 |            0.2911 |              0.0919 |                    0.2152 |
+| Portfolio |      1   |            0.2464 |              0.052  |                    0.0941 |
+
+---
+
+## get_distributionally_robust_cvar_weights
+Calculate the weights of the distributionally robust mean-CVaR portfolio: the portfolio that minimizes the expected loss plus the risk aversion times the Conditional Value at Risk (CVaR) under the least favourable distribution of the returns within a Wasserstein ball around the historical returns. The historical returns are one sample of the distribution; the ball holds every distribution that lies within a transport distance $$\epsilon$$ of it, so the portfolio is protected against distributions with heavier losses than the sample happened to show.
+
+With $$X = \xi' w$$ the portfolio return, $$\beta$$ the confidence level, $$\rho$$ the risk aversion and $$\epsilon$$ the radius, the weights minimize
+
+- sup over Q in the ball of $$E_{Q} [- X] + \rho \text{CVaR}_{\beta} , Q (- X)$$,
+
+where the distance between two distributions is the least average 1-norm change in the returns of the assets that turns one into the other (the type-1 Wasserstein distance), and returns stay at or above -100%. Mohajerin Esfahani and Kuhn (2018) show that this worst case is a linear programme: with the CVaR written as min over $$\tau$$ of $$\tau + E [\max (- X - \tau , 0)] / (1 - \beta)$$ the loss is the maximum of two linear pieces, and its worst case is $$\min \lambda \epsilon + \sum s_{t} / T$$ over $$\lambda \geq 0$$ with $$s_{t}$$ bounding each piece in period t after the most harmful shift of the returns. Per asset that shift is either none or down to -100%, so the programme has n + 2 + T + 2n variables and is solved exactly with HiGHS. At a radius of 0 it is the historical mean-CVaR portfolio.
+
+For more information, see the following papers:
+
+- Mohajerin Esfahani, P. and Kuhn, D. (2018). "Data-Driven Distributionally Robust Optimization Using the Wasserstein Metric: Performance Guarantees and Tractable Reformulations." Mathematical Programming, 171(1-2), 115-166.
+- Rockafellar, R. T. and Uryasev, S. (2000). "Optimization of Conditional Value-at-Risk." Journal of Risk, 2(3), 21-41.
+- skfolio: DistributionallyRobustCVaR ([https://skfolio.org](https://skfolio.org){:target="_blank"}), which has the same formulation (1-norm transport cost, returns of at least -100%) and the same $$\beta = 0.95$$ and $$\rho = 1$$ by default, and which the weights are referenced against.
+
+**Also known as:** Wasserstein robust CVaR, DRO CVaR, distributionally robust mean-CVaR.
+
+**Args:**
+
+- <u>confidence_level (float, optional):</u> The confidence level $$\beta$$ of the CVaR, e.g.
+0.95 for the average of the worst 5% of periods. Defaults to 0.95.
+- <u>wasserstein_radius (float, optional):</u> The radius $$\epsilon$$ of the Wasserstein ball, in
+returns per period of the chosen frequency: the average total change in
+the returns of all assets that the distributions considered may have.
+Defaults to 0.0005, which suits daily returns (see the Notes).
+- <u>risk_aversion (float, optional):</u> The weight $$\rho$$ of the CVaR against the
+expected loss; a high value gives the minimum worst-case CVaR portfolio.
+Defaults to 1.
+- <u>period (str, optional):</u> The frequency of the returns (daily, weekly, monthly,
+quarterly or yearly). Defaults to "daily".
+- <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
+every asset, or per asset, e.g. {"AAPL": 0.05} (the others keep 0); a
+negative value allows short positions. Defaults to 0.
+- <u>maximum_weight (float &#124; dict[str, float], optional):</u> The highest weight of
+every asset, or per asset, e.g. {"AAPL": 0.3} (the others keep 1).
+Defaults to 1.
+- <u>sector_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
+and maximum total weight per sector, e.g. {"Technology": (0, 0.4)}, with
+the sector of each asset from its company profile. Defaults to None.
+- <u>country_bounds (dict[str, tuple[float, float]] &#124; None, optional):</u> The minimum
+and maximum total weight per country, named in full or by its two-letter
+code, e.g. {"United States": (0, 0.6)}, with the country of each asset
+from its company profile. Defaults to None.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio. The rest, 1 minus the net exposure, is a Cash row at the risk
+free rate (negative when borrowed above one), which the Portfolio's Expected
+Return and Sharpe Ratio include. Defaults to 1.
+- <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
+weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
+a 130/30 portfolio. Defaults to None, no limit.
+- <u>current_weights (dict[str, float] &#124; None, optional):</u> The weights held now,
+e.g. {"AAPL": 0.5, "MSFT": 0.5} (an asset left out is not held), which
+the turnover is measured from; they add a Turnover column, $$\vert w_{i} - w_{0,i} \vert$$
+per asset and its sum for the portfolio. Defaults to None, which uses
+the latest weights of the Portfolio the Toolkit came from when a maximum
+turnover needs them.
+- <u>maximum_turnover (float &#124; None, optional):</u> The highest turnover
+$$\sum \vert w_{i} - w_{0,i} \vert$$ from the current weights, e.g. 0.2 to trade at most 10%
+of the portfolio each way. Defaults to None, no limit.
+- <u>include_benchmark (bool, optional):</u> Whether to include the benchmark as an
+asset. Defaults to False.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
+Defaults to None, which uses the Toolkit's rounding.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Per asset and for the portfolio, the Weight, Expected Return,
+Volatility, Sharpe Ratio and Risk Contribution, with the historical CVaR and
+the Worst-Case CVaR over the Wasserstein ball (per period, positive for a
+loss) of every asset on its own and of the portfolio.
+
+**Notes:**
+
+- The radius is in returns per period, so it depends on the frequency. For a
+long-only portfolio and a small radius the worst case adds
+$$\epsilon (1 + \rho / (1 - \beta))$$ max_i $$w_{i}$$ to the historical objective: the least
+favourable distribution moves the asset with the largest weight down in the
+tail periods, which favours spreading the weights. With daily returns a radius
+of about 0.002 or more already gives equal weights, so the default is 0.0005
+(skfolio's is 0.02).
+- The worst-case CVaR of an asset or portfolio is the same programme with the
+weights fixed, without the expected loss.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "JNJ", "XOM"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.portfolio.get_distributionally_robust_cvar_weights()[
+    ["Weight", "Expected Return", "CVaR", "Worst-Case CVaR"]
 ]
 ```
 
 Which returns:
 
-|           |   Weight |   Expected Return |   Risk Contribution |   CVaR |   CVaR Ratio |
-|:----------|---------:|------------------:|--------------------:|-------:|-------------:|
-| AAPL      |   0      |            0.1932 |              0      | 0.039  |       0.0162 |
-| MSFT      |   0.277  |            0.2017 |              0.2061 | 0.0356 |       0.0187 |
-| JNJ       |   0.1978 |            0.0987 |              0.064  | 0.0227 |       0.0113 |
-| XOM       |   0.5253 |            0.2911 |              0.7299 | 0.0373 |       0.0274 |
-| Portfolio |   1      |            0.2283 |              1      | 0.0237 |       0.0326 |
+|           |   Weight |   Expected Return |   CVaR |   Worst-Case CVaR |
+|:----------|---------:|------------------:|-------:|------------------:|
+| AAPL      |   0.0581 |            0.1932 | 0.039  |            0.049  |
+| MSFT      |   0.2543 |            0.2017 | 0.0356 |            0.0456 |
+| JNJ       |   0.4117 |            0.0987 | 0.0227 |            0.0327 |
+| XOM       |   0.2759 |            0.2911 | 0.0373 |            0.0473 |
+| Portfolio |   1      |            0.1835 | 0.0199 |            0.0241 |
 
 ---
 
@@ -2146,13 +4399,31 @@ estimated from (daily, weekly, monthly, quarterly or yearly). Defaults to
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -2169,9 +4440,11 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). The rest, 1 minus the net exposure, is a Cash row at the
+risk free rate (negative when borrowed above one), which the Portfolio's
+Expected Return and Sharpe Ratio include. Defaults to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -2238,7 +4511,7 @@ Which returns:
 ## get_minimum_tracking_error_weights
 Calculate the weights of the portfolio of the Toolkit's assets that follows the benchmark most closely: the fully invested portfolio with the lowest tracking error, the volatility of its return minus the benchmark's. With the objective "information_ratio" it is instead the portfolio with the highest information ratio, the expected return above the benchmark per unit of tracking error, which is what an active manager measured against the benchmark maximizes.
 
-The tracking error is $$\text{TE} (w) = \sqrt{\operatorname{Var} (R w - r_{b})} = \sqrt{w' \Sigma_{\text{AA}} w - 2 w' \Sigma_{\text{Ab}} + \sigma_{b}^{2}}$$, with $$\Sigma_{\text{AA}}$$ the annualized covariance matrix of the assets, $$\Sigma_{\text{Ab}}$$ their covariances with the benchmark and $$\sigma_{b}^{2}$$ the benchmark's variance. The information ratio is $$(w' \mu - \mu_{b}) / \text{TE} (w)$$, with $$\mu$$ and $$\mu_{b}$$ the annualized expected returns. The weights sum to one and lie between the minimum and maximum weight; the benchmark is the Toolkit's (SPY by default) and is not one of the assets.
+The tracking error is $$\text{TE} (w) = \sqrt{\operatorname{Var} (R w - r_{b})} = \sqrt{w' \Sigma_{\text{AA}} w - 2 w' \Sigma_{\text{Ab}} + \sigma_{b}^{2}}$$, with $$\Sigma_{\text{AA}}$$ the annualized covariance matrix of the assets, $$\Sigma_{\text{Ab}}$$ their covariances with the benchmark and $$\sigma_{b}^{2}$$ the benchmark's variance. The information ratio is $$(w' \mu + (1 - \Sigma w) r_{f} - \mu_{b}) / \text{TE} (w)$$, with $$\mu$$ and $$\mu_{b}$$ the annualized expected returns and the part not invested at the risk free rate $$r_{f}$$, which leaves the tracking error as it is. The weights sum to the net exposure, one by default, and lie between the minimum and maximum weight; the benchmark is the Toolkit's (SPY by default) and is not one of the assets.
 
 For more information, see the following papers:
 
@@ -2261,21 +4534,43 @@ scaled identity, Ledoit and Wolf, 2004),
 "ledoit_wolf_constant_correlation" (towards the average correlation,
 Ledoit and Wolf, 2004), "ledoit_wolf_single_factor" (towards the
 covariance that the benchmark as a single factor implies, Ledoit and
-Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). Defaults to "sample".
+Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10% towards
+the scaled identity), "semicovariance" (the co-movement below a zero
+return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -2291,9 +4586,11 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). The rest, 1 minus the net exposure, is a Cash row at the
+risk free rate (negative when borrowed above one), which the Portfolio's
+Expected Return and Sharpe Ratio include. Defaults to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -2386,21 +4683,43 @@ the "approximate" method and for the volatility and risk contributions:
 and Wolf, 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). Defaults to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns:
-"mean" (the historical average), "exponential" (the exponentially
-weighted average, recent periods weigh most), "capm" (the returns the
-Capital Asset Pricing Model implies from each asset's beta to the
-benchmark, Sharpe, 1964) or "james_stein" (the averages shrunk towards
-that of the minimum variance portfolio, Jorion, 1986). Defaults to
-"mean".
+"mean" (the historical average), "geometric" (the compounded average),
+"exponential" (the exponentially weighted average, recent periods weigh
+most), "exponential_geometric" (that average compounded over a year),
+"capm" (the returns the Capital Asset Pricing Model implies from each
+asset's beta to the benchmark, Sharpe, 1964) "bayes_stein" (the averages
+shrunk towards that of the minimum variance portfolio, Jorion, 1986),
+"james_stein" (the averages shrunk towards their grand mean, James and
+Stein, 1961) or "bodnar_okhrin_parolya" (the averages and their grand
+mean combined with optimal weights, Bodnar, Okhrin and Parolya, 2019).
+Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -2515,21 +4834,43 @@ quarterly or yearly). Defaults to "daily".
 "ledoit_wolf_constant_correlation" (towards the average correlation,
 Ledoit and Wolf, 2004), "ledoit_wolf_single_factor" (towards the
 covariance that the benchmark as a single factor implies, Ledoit and
-Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). Defaults to "sample".
+Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10% towards
+the scaled identity), "semicovariance" (the co-movement below a zero
+return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
 - <u>expected_returns (str, optional):</u> The estimator of the expected returns the
 "parametric" draws are centred on: "mean" (the historical average),
-"exponential" (the exponentially weighted average, recent periods weigh
-most), "capm" (the returns the Capital Asset Pricing Model implies from
-each asset's beta to the benchmark, Sharpe, 1964) or "james_stein" (the
-averages shrunk towards that of the minimum variance portfolio, Jorion,
-1986). Defaults to "mean".
+"geometric" (the compounded average), "exponential" (the exponentially
+weighted average, recent periods weigh most), "exponential_geometric"
+(that average compounded over a year), "capm" (the returns the Capital
+Asset Pricing Model implies from each asset's beta to the benchmark,
+Sharpe, 1964) "bayes_stein" (the averages shrunk towards that of the
+minimum variance portfolio, Jorion, 1986), "james_stein" (the averages
+shrunk towards their grand mean, James and Stein, 1961) or
+"bodnar_okhrin_parolya" (the averages and their grand mean combined with
+optimal weights, Bodnar, Okhrin and Parolya, 2019). Defaults to "mean".
 - <u>expected_returns_span (int, optional):</u> The span in periods of the
 "exponential" expected returns. Defaults to 180.
 - <u>minimum_weight (float &#124; dict[str, float], optional):</u> The lowest weight of
@@ -2545,8 +4886,11 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one. Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one. The rest, 1 minus the net exposure,
+is a Cash row at the risk free rate (negative when borrowed above one),
+which the Portfolio's Expected Return and Sharpe Ratio include. Defaults to
+1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -2625,6 +4969,11 @@ Views are absolute ({"AAPL": 0.10}: AAPL returns 10% a year in total, risk free 
 
 The risk aversion is 2.5 by default, the value He and Litterman (1999) use for the world market, or the one the benchmark implies with risk_aversion="market": $$\delta = (E [r_{m}] - r_{f}) / \sigma_{m}^{2}$$, the benchmark's annualized average excess return over its annualized variance on the same periods as the assets.
 
+Two variants put views on factors, by default the five factors of Fama and French (Mkt-RF, SMB, HML, RMW and CMA), with loadings from an OLS regression of the assets on the factors (see get_factor_loadings):
+
+- method="augmented" (Cheung, 2009): the assets and the factors form one vector with covariance [$$[\Sigma , B \Sigma_{f}] , [\sum_{f} B' , \sum_{f}]$$] and implied returns [$$\delta \Sigma w ; \delta \Sigma_{f}$$ B'w], the factor premiums the market implies, and the Black-Litterman update takes views on both, so a view on a factor ({"HML": 0.03}, value beats growth by 3% a year) moves every asset through its covariance with that factor. Factor views are premiums, without the risk free rate.
+- method="bayesian" (Kolm and Ritter, 2017): the prior is the factor model itself, the historical average factor returns $$\mu_{f}$$ with uncertainty $$\tau \Sigma_{f}$$, the views on the factors update them to $$\hat{\Pi}$$ with uncertainty Ŝ, and the assets follow: $$\mu = \alpha + B \hat{\Pi}$$ and $$\sum_{\text{post}} = B \Sigma_{f} B' + D$$ + BŜB', with $$\alpha$$ the intercepts and D the residual variances. It needs factor views and no market weights; the Prior Return is $$\alpha + B \mu_{f}$$, the average return of every asset, and the weights are the mean-variance portfolio of $$\mu$$ and $$\sum_{\text{post}}$$.
+
 The Posterior Volatility is the square root of the diagonal of the posterior covariance matrix $$\Sigma + M$$ (He and Litterman, 1999), with $$M = ((\tau \Sigma)^{- 1} + P' \Omega^{- 1} P)^{- 1}$$ the uncertainty that remains in the Black-Litterman returns: the volatility to expect for each asset once the estimation error of its return is counted too. The weights use $$\Sigma$$ itself, so that without views they are the market weights.
 
 For more information, see the following papers:
@@ -2633,8 +4982,11 @@ For more information, see the following papers:
 - He, G. and Litterman, R. (1999). "The Intuition Behind Black-Litterman Model Portfolios." Goldman Sachs Investment Management Research.
 - Idzorek, T. (2005). "A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified Confidence Levels." Working paper.
 - Walters, J. (2014). "The Black-Litterman Model in Detail." [https://ssrn.com/abstract=1314585](https://ssrn.com/abstract=1314585){:target="_blank"}
+- Cheung, W. (2009). "The Augmented Black-Litterman Model: A Ranking-Free Approach to Factor-Based Portfolio Construction and Beyond." [https://ssrn.com/abstract=1347648](https://ssrn.com/abstract=1347648){:target="_blank"}
+- Kolm, P. and Ritter, G. (2017). "On the Bayesian Interpretation of Black-Litterman." European Journal of Operational Research, 258(2), 564-572.
+- Riskfolio-Lib: black_litterman, augmented_black_litterman, black_litterman_bayesian ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
 
-**Also known as:** BL model, equilibrium returns with views.
+**Also known as:** BL model, equilibrium returns with views, augmented Black-Litterman, Bayesian Black-Litterman, factor views.
 
 **Args:**
 
@@ -2653,6 +5005,20 @@ period both annualized by the number of periods in a year. Defaults to
 2.5.
 - <u>tau (float, optional):</u> The uncertainty of the implied returns relative to the
 covariance matrix. Defaults to 0.05.
+- <u>method (str, optional):</u> "standard", "augmented" (views on assets and
+factors) or "bayesian" (views on factors of the factor model). Defaults to
+"standard".
+- <u>factor_views (dict[str, float] &#124; None, optional):</u> The annualized views on
+factors, a premium ({"HML": 0.03}) or the difference of two
+({"SMB-HML": 0.01}), for "augmented" and "bayesian". Defaults to None.
+- <u>factor_view_confidences (dict[str, float] &#124; None, optional):</u> The confidence per
+factor view, between 0 and 1. Defaults to None, which sets each view's
+uncertainty to the variance of the view scaled by tau.
+- <u>factors (pd.DataFrame &#124; None, optional):</u> The factor returns, one column per
+factor, at the frequency of the period. Defaults to None, the Fama and
+French five factors of the region.
+- <u>region (str, optional):</u> The region of the Fama and French factors. Defaults to
+"United States".
 - <u>period (str, optional):</u> The frequency of the returns the covariance matrix is
 estimated from. Defaults to "daily".
 - <u>covariance (str, optional):</u> The estimator of the covariance matrix: "sample"
@@ -2660,13 +5026,31 @@ estimated from. Defaults to "daily".
 2004), "ledoit_wolf_constant_correlation" (towards the average
 correlation, Ledoit and Wolf, 2004), "ledoit_wolf_single_factor"
 (towards the covariance that the benchmark as a single factor implies,
-Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "semicovariance" (the
-co-movement below a zero return, Estrada, 2007), "exponential" (recent
-periods weigh most, RiskMetrics) or "denoised" (the eigenvalues of the
-correlation matrix that random returns could produce averaged, Laloux et
-al., 2000). The shrinkage and denoised estimators stabilize the weights
-when there are many assets compared to the number of periods. Defaults
-to "sample".
+Ledoit and Wolf, 2003), "oas" (Chen et al., 2010), "shrunk" (a fixed 10%
+towards the scaled identity), "semicovariance" (the co-movement below a
+zero return, Estrada, 2008), "exponential" (recent periods weigh most,
+RiskMetrics) "denoised" (the eigenvalues of the correlation matrix that
+random returns could produce averaged, Laloux et al., 2000),
+"denoised_spectral" (those eigenvalues set to zero), "denoised_shrink"
+(the noise correlations shrunk towards their diagonal, López de Prado,
+2020), "gerber" (co-movements beyond half a standard deviation, Gerber
+et al., 2022), "factor" (the covariance of the Fama and French five factor
+model with OLS loadings, Fama and French, 1993), "minimum_covariance_determinant"
+(the reweighted covariance of the half of the periods with the smallest
+covariance determinant, robust to outliers, Rousseeuw and Van Driessen, 1999),
+"jlogo" (the sparse inverse covariance on the TMFG planar graph of the
+correlations, Barfuss et al., 2016), "geodesic" (10% towards the scaled identity
+along the geodesic of the positive definite matrices, Bhatia, 2007),
+"regime_adjusted_ew" (exponentially weighted with a half-life of 40 periods,
+rescaled by the recent realized against predicted risk, Paleologo, 2025),
+"nercome" (eigenvectors from one part of the periods and the variances along
+them from the other, averaged over random splits, Lam, 2016), "ccc_garch" (the
+next-period covariance of GARCH(1, 1) volatilities with constant correlations,
+Bollerslev, 1990), "mm" or "rocke" (the robust MM-estimator and Rocke's
+S-estimator, Maronna et al., 2019).
+The shrinkage and denoised estimators stabilize the
+weights when there are many assets compared to the number of periods.
+Defaults to "sample".
 - <u>covariance_span (int, optional):</u> The span in periods of the "exponential"
 covariance; the weight of a period halves after about span / 2.9
 periods. Defaults to 180.
@@ -2683,9 +5067,11 @@ the sector of each asset from its company profile. Defaults to None.
 and maximum total weight per country, named in full or by its two-letter
 code, e.g. {"United States": (0, 0.6)}, with the country of each asset
 from its company profile. Defaults to None.
-- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully
-invested portfolio, 0 for a market neutral one (which needs a negative
-minimum_weight). Defaults to 1.
+- <u>net_exposure (float, optional):</u> The sum of the weights: 1 for a fully invested
+portfolio, 0 for a market neutral one (which needs a negative
+minimum_weight). The rest, 1 minus the net exposure, is a Cash row at the
+risk free rate (negative when borrowed above one), which the Portfolio's
+Expected Return and Sharpe Ratio include. Defaults to 1.
 - <u>gross_exposure (float &#124; None, optional):</u> The highest sum of the absolute
 weights, which limits the leverage of a long-short portfolio, e.g. 1.6 for
 a 130/30 portfolio. Defaults to None, no limit.
@@ -2700,12 +5086,25 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.DataFrame: Per asset its Market Weight, Implied Return, Black-Litterman Return
 (both annualized total returns), Posterior Volatility (annualized) and the
-resulting Weight.
+resulting Weight; with method="bayesian" the Prior Return in place of the
+Market Weight and Implied Return.
 
 **Notes:**
 
 - risk_aversion="market" is refused when the benchmark earned no more than the
 risk free rate over the period, as that implies no positive risk aversion.
+- The factor models are estimated on the periods in which the assets and the
+factors all have a return.
+- The augmented model agrees with Riskfolio-Lib's augmented_black_litterman (with $$\tau$$ =
+1 / T, its choice) when the loadings hold no intercept: Riskfolio-Lib adds the
+intercepts to the posterior returns when they do, which Cheung (2009) does not.
+It does not invert the stacked covariance, which is singular when an asset is
+itself a factor (the benchmark and Mkt-RF), where Riskfolio-Lib's inverse
+loses its accuracy.
+- The Bayesian model takes the prior $$N (\mu_{f} , \tau \Sigma_{f})$$; Riskfolio-Lib's
+black_litterman_bayesian takes $$N (\mu_{f} , \sum_{f})$$ with views of uncertainty
+$$\tau p' \Sigma_{f} p$$, $$\tau = 1 / T$$, which gives the result here with tau=1 and a confidence
+of T / (T + 1) for every view.
 
 **As an example:**
 

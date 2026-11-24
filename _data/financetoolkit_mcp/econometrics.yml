@@ -34,32 +34,11 @@ get_cusum_test:
     tickers: BA,AIR.PA
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_augmented_dickey_fuller:
-  question: Were the euro against the dollar, the dollar against the yen and the pound against the dollar stationary from 2021 to 2025, according to the augmented Dickey-Fuller test?
-  tool: econometrics
-  arguments:
-    tickers: EURUSD,USDJPY,GBPUSD
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_kpss_test:
   question: Were the S&P 500 and the Nikkei 225 stationary from 2021 to 2025, according to the KPSS test?
   tool: econometrics
   arguments:
     tickers: ^GSPC,^N225
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_phillips_perron_test:
-  question: Did the prices of gold and silver have a unit root from 2021 to 2025, according to the Phillips-Perron test?
-  tool: econometrics
-  arguments:
-    tickers: GCUSD,SIUSD
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_zivot_andrews_test:
-  question: Did the price of WTI crude oil have a unit root from 2021 to 2025 once a single structural break is allowed for?
-  tool: econometrics
-  arguments:
-    tickers: CLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_engle_granger_cointegration:
@@ -117,21 +96,6 @@ get_gls:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     period: weekly
-get_logistic_regression:
-  question: How did the daily return of the S&P 500 change the odds of Apple rising on a day in 2025, according to a logit model?
-  tool: econometrics
-  arguments:
-    tickers: AAPL
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    include_benchmark: true
-get_probit_regression:
-  question: How well did the daily returns of the Invesco QQQ Trust predict whether Tesla rose on a day in 2025, according to a probit model?
-  tool: econometrics
-  arguments:
-    tickers: TSLA,QQQ
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
 get_quantile_regression:
   question: How did Bank of America's worst 5% of daily returns respond to those of the SPDR S&P Regional Banking ETF (KRE) and the S&P 500 from 2021 to 2025, according to a quantile regression?
   tool: econometrics
@@ -188,20 +152,6 @@ get_hausman_wu_test:
     dependent_ticker: SMCI
     suspect_ticker: NVDA
     instrument_tickers: TSM
-get_breusch_pagan_test:
-  question: Was a regression of Caterpillar's daily returns on Deere's heteroskedastic in 2025, according to the Breusch-Pagan test?
-  tool: econometrics
-  arguments:
-    tickers: CAT,DE
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-get_white_test:
-  question: Was a regression of Goldman Sachs' daily returns on Morgan Stanley's heteroskedastic in 2025, according to White's test?
-  tool: econometrics
-  arguments:
-    tickers: GS,MS
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
 get_durbin_watson_test:
   question: Did a regression of Home Depot's daily returns on Lowe's have autocorrelated residuals in 2025, according to Durbin-Watson?
   tool: econometrics
@@ -349,21 +299,6 @@ get_vecm_forecast:
   arguments:
     tickers: GOOGL,GOOG
     start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_rmse:
-  question: How closely did the daily returns of IVV, VOO and SPY track each other in 2025, measured by the root mean squared error?
-  tool: econometrics
-  arguments:
-    tickers: IVV,VOO
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    include_benchmark: true
-get_mae:
-  question: How closely did the daily returns of the gold ETFs GLD, IAU and GLDM track each other in 2025, measured by the mean absolute error?
-  tool: econometrics
-  arguments:
-    tickers: GLD,IAU,GLDM
-    start_date: "2025-01-01"
     end_date: "2025-12-31"
 get_out_of_sample_validation:
   question: How accurate was an ARIMA(1,1,1) forecast of the daily prices of Bitcoin and Ether over the last fifth of 2021 to 2025?

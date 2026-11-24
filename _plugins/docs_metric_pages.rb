@@ -70,18 +70,59 @@ module DocsMetricPages
   # links and anchors forward there.
   REMOVED = {
     "technicals"  => {
-      "get_exponential_moving_average"        => ["exponential-moving-average-ema", "get_moving_average"],
-      "get_double_exponential_moving_average" => ["double-exponential-moving-average-dema", "get_moving_average"],
-      "get_triangular_moving_average"         => ["triangular-moving-average-tma", "get_moving_average"],
-      "get_weighted_moving_average"           => ["weighted-moving-average-wma", "get_moving_average"],
-      "get_hull_moving_average"               => ["hull-moving-average-hma", "get_moving_average"],
-      "simple-moving-average-sma"             => ["simple-moving-average-sma", "get_moving_average"],
+      "get_exponential_moving_average"         => ["exponential-moving-average-ema", "get_moving_average"],
+      "get_double_exponential_moving_average"  => ["double-exponential-moving-average-dema", "get_moving_average"],
+      "get_triangular_moving_average"          => ["triangular-moving-average-tma", "get_moving_average"],
+      "get_weighted_moving_average"            => ["weighted-moving-average-wma", "get_moving_average"],
+      "get_hull_moving_average"                => ["hull-moving-average-hma", "get_moving_average"],
+      "simple-moving-average-sma"              => ["simple-moving-average-sma", "get_moving_average"],
+      "get_negative_volume_index"              => ["negative-volume-index-nvi", "get_volume_index"],
+      "get_positive_volume_index"              => ["positive-volume-index-pvi", "get_volume_index"],
+      "get_percentage_price_oscillator"        => ["percentage-price-oscillator", "get_moving_average_convergence_divergence"],
+      "get_stochastic_relative_strength_index" => ["stochastic-rsi", "get_stochastic_oscillator"],
+      "get_kaufman_adaptive_moving_average"    => ["kaufman-adaptive-moving-average-kama", "get_moving_average"],
     },
-    "models"      => { "get_gorden_growth_model" => ["gordon-growth-model-ggm", "get_gordon_growth_model"] },
+    "models" => {
+      "get_gorden_growth_model"      => ["gordon-growth-model-ggm", "get_gordon_growth_model"],
+      "get_extended_dupont_analysis" => ["extended-dupont-analysis", "get_dupont_analysis"],
+    },
     "economics"   => { "get_real_gross_domestic_product_usd" => ["real-gdp-usd", "get_gross_domestic_product"] },
     "fixedincome" => {
       "get_option_adjusted_spread" => ["option-adjusted-spread", nil],
       "get_derivative_price"       => ["black-model", nil],
+    },
+    "econometrics" => {
+      "get_rmse"                    => ["root-mean-squared-error-rmse", "get_forecast_error"],
+      "get_mae"                     => ["mean-absolute-error-mae", "get_forecast_error"],
+      "get_logistic_regression"     => ["logistic-regression", "get_binary_choice_regression"],
+      "get_probit_regression"       => ["probit-regression", "get_binary_choice_regression"],
+      "get_augmented_dickey_fuller" => ["augmented-dickey-fuller-adf", "get_unit_root_test"],
+      "get_phillips_perron_test"    => ["phillips-perron-test", "get_unit_root_test"],
+      "get_zivot_andrews_test"      => ["zivot-andrews-test", "get_unit_root_test"],
+      "get_breusch_pagan_test"      => ["breusch-pagan-test", "get_heteroskedasticity_test"],
+      "get_white_test"              => ["white-test", "get_heteroskedasticity_test"],
+    },
+    "performance" => {
+      "get_jensens_alpha" => ["jensen-s-alpha", "get_alpha"],
+    },
+    "portfolio-optimization" => {
+      "get_minimum_cvar_weights"       => ["minimum-cvar", "get_mean_risk_weights"],
+      "get_minimum_drawdown_weights"   => ["minimum-drawdown", "get_mean_risk_weights"],
+      "get_maximum_cvar_ratio_weights" => ["maximum-cvar-ratio", "get_mean_risk_weights"],
+    },
+    "ratios" => {
+      "get_reinvestment_rate" => ["reinvestment-rate", "get_retention_ratio"],
+    },
+    "risk" => {
+      "get_corwin_schultz_spread" => ["corwin-schultz-spread", "get_bid_ask_spread"],
+      "get_abdi_ranaldo_spread"   => ["abdi-ranaldo-spread", "get_bid_ask_spread"],
+      "get_edge_spread"           => ["edge-spread", "get_bid_ask_spread"],
+      "get_gjr_garch"             => ["gjr-garch-volatility-model", "get_garch"],
+      "get_gjr_garch_forecast"    => ["gjr-garch-volatility-forecast", "get_garch_forecast"],
+      "get_gjr_garch_parameters"  => ["gjr-garch-parameters", "get_garch_parameters"],
+      "get_egarch"                => ["egarch-volatility-model", "get_garch"],
+      "get_egarch_forecast"       => ["egarch-volatility-forecast", "get_garch_forecast"],
+      "get_egarch_parameters"     => ["egarch-parameters", "get_garch_parameters"],
     },
   }.freeze
 

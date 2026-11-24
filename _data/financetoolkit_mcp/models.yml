@@ -5,13 +5,6 @@ get_dupont_analysis:
     tickers: GOOGL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_extended_dupont_analysis:
-  question: What drove Microsoft's return on equity from 2021 to 2025, according to an extended DuPont analysis?
-  tool: models
-  arguments:
-    tickers: MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_enterprise_value_breakdown:
   question: How did Ford's enterprise value break down into market capitalization, debt and cash from 2021 to 2025?
   tool: models

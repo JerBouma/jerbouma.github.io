@@ -512,6 +512,12 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_net_operating_assets
       - title: Net Capital Expenditure
         url: /projects/financetoolkit/docs/ratios#get_net_capital_expenditure
+      - title: "Capex to Operating Cash Flow Ratio"
+        url: /projects/financetoolkit/docs/ratios#get_capex_to_operating_cash_flow_ratio
+      - title: "Revenue per Employee"
+        url: /projects/financetoolkit/docs/ratios#get_revenue_per_employee
+      - title: "Net Income per Employee"
+        url: /projects/financetoolkit/docs/ratios#get_net_income_per_employee
   - title: Liquidity Ratios
     children:
       - title: All Liquidity Ratios
@@ -600,6 +606,10 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_net_borrowing_cost
       - title: Financial Leverage
         url: /projects/financetoolkit/docs/ratios#get_financial_leverage
+      - title: "Continuing Operations Profit Margin"
+        url: /projects/financetoolkit/docs/ratios#get_continuing_operations_profit_margin
+      - title: "Operating Return on Assets"
+        url: /projects/financetoolkit/docs/ratios#get_operating_return_on_assets
   - title: Solvency Ratios
     children:
       - title: All Solvency Ratios
@@ -652,6 +662,14 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_degree_of_total_leverage
       - title: Net Debt to Equity Ratio
         url: /projects/financetoolkit/docs/ratios#get_net_debt_to_equity_ratio
+      - title: "Intangibles to Total Assets Ratio"
+        url: /projects/financetoolkit/docs/ratios#get_intangibles_to_total_assets_ratio
+      - title: "Long-Term Debt to Capitalization Ratio"
+        url: /projects/financetoolkit/docs/ratios#get_long_term_debt_to_capitalization_ratio
+      - title: "Debt to Market Cap Ratio"
+        url: /projects/financetoolkit/docs/ratios#get_debt_to_market_cap_ratio
+      - title: "Solvency Ratio"
+        url: /projects/financetoolkit/docs/ratios#get_solvency_ratio
   - title: Valuation Ratios
     children:
       - title: All Valuation Ratios
@@ -700,8 +718,6 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_earnings_yield
       - title: Dividend Payout Ratio
         url: /projects/financetoolkit/docs/ratios#get_dividend_payout_ratio
-      - title: Reinvestment Rate
-        url: /projects/financetoolkit/docs/ratios#get_reinvestment_rate
       - title: Tangible Asset Value
         url: /projects/financetoolkit/docs/ratios#get_tangible_asset_value
       - title: Net Current Asset Value
@@ -734,6 +750,18 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_cyclically_adjusted_price_to_earnings_ratio
       - title: Dividend-Adjusted PEG Ratio (PEGY)
         url: /projects/financetoolkit/docs/ratios#get_dividend_adjusted_price_to_earnings_growth_ratio
+      - title: "Operating Cash Flow per Share"
+        url: /projects/financetoolkit/docs/ratios#get_operating_cash_flow_per_share
+      - title: "Free Cash Flow per Share"
+        url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_per_share
+      - title: "Cash per Share"
+        url: /projects/financetoolkit/docs/ratios#get_cash_per_share
+      - title: "Tangible Book Value per Share"
+        url: /projects/financetoolkit/docs/ratios#get_tangible_book_value_per_share
+      - title: "Retention Ratio"
+        url: /projects/financetoolkit/docs/ratios#get_retention_ratio
+      - title: "Net-Net Working Capital per Share"
+        url: /projects/financetoolkit/docs/ratios#get_net_net_working_capital_per_share
   - title: Factor Analysis
     children:
       - title: Factor Analysis
@@ -775,8 +803,6 @@ financetoolkit-docs-models:
     children:
       - title: DuPont Analysis
         url:  /projects/financetoolkit/docs/models#get_dupont_analysis
-      - title: Extended DuPont Analysis
-        url:  /projects/financetoolkit/docs/models#get_extended_dupont_analysis
       - title: Enterprise Value Breakdown
         url:  /projects/financetoolkit/docs/models#get_enterprise_value_breakdown
       - title: Weighted Average Cost of Capital (WACC)
@@ -873,6 +899,28 @@ financetoolkit-docs-models:
         url: /projects/financetoolkit/docs/models#get_implied_cost_of_capital
       - title: Graham Intrinsic Value
         url: /projects/financetoolkit/docs/models#get_graham_intrinsic_value
+      - title: "Shumway Hazard Model"
+        url: /projects/financetoolkit/docs/models#get_shumway_score
+      - title: "Fundamental Growth Rate"
+        url: /projects/financetoolkit/docs/models#get_fundamental_growth_rate
+      - title: "Rule of 40"
+        url: /projects/financetoolkit/docs/models#get_rule_of_40
+      - title: "Accrual Quality"
+        url: /projects/financetoolkit/docs/models#get_accrual_quality
+      - title: "Earnings Attributes"
+        url: /projects/financetoolkit/docs/models#get_earnings_attributes
+      - title: "Graham Criteria"
+        url: /projects/financetoolkit/docs/models#get_graham_criteria
+      - title: "Return on Incremental Invested Capital (ROIIC)"
+        url: /projects/financetoolkit/docs/models#get_return_on_incremental_invested_capital
+      - title: "Owner Earnings"
+        url: /projects/financetoolkit/docs/models#get_owner_earnings
+      - title: "Unlevered Beta"
+        url: /projects/financetoolkit/docs/models#get_unlevered_beta
+      - title: "Capitalized R&D"
+        url: /projects/financetoolkit/docs/models#get_capitalized_research_and_development
+      - title: "Cash Flow Return on Investment (CFROI)"
+        url: /projects/financetoolkit/docs/models#get_cash_flow_return_on_investment
 financetoolkit-docs-options:
   - title: Modules
     children:
@@ -938,6 +986,24 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_risk_neutral_density
       - title: Strategy Payoff
         url: /projects/financetoolkit/docs/options#get_strategy_payoff
+      - title: "Exchange Options"
+        url: /projects/financetoolkit/docs/options#get_exchange_option
+      - title: "Spread Options"
+        url: /projects/financetoolkit/docs/options#get_spread_option
+      - title: "American Options"
+        url: /projects/financetoolkit/docs/options#get_american_option
+      - title: "Constant Elasticity of Variance (CEV) Model"
+        url: /projects/financetoolkit/docs/options#get_cev_model
+      - title: "Black-76 Model"
+        url: /projects/financetoolkit/docs/options#get_black_76_model
+      - title: "Lookback Options"
+        url: /projects/financetoolkit/docs/options#get_lookback_option
+      - title: "Touch Options"
+        url: /projects/financetoolkit/docs/options#get_touch_option
+      - title: "Chooser Options"
+        url: /projects/financetoolkit/docs/options#get_chooser_option
+      - title: "Forward-Start Options"
+        url: /projects/financetoolkit/docs/options#get_forward_start_option
   - title: Collect All Greeks
     url: /projects/financetoolkit/docs/options#collect_all_greeks
   - title: First-Order Greeks 
@@ -1009,6 +1075,20 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_risk_neutral_moments
       - title: SKEW Index
         url: /projects/financetoolkit/docs/options#get_skew_index
+      - title: "Variance Swap"
+        url: /projects/financetoolkit/docs/options#get_variance_swap
+      - title: "Delta Hedging Backtest"
+        url: /projects/financetoolkit/docs/options#get_delta_hedging_backtest
+      - title: "Delta Hedging Simulation"
+        url: /projects/financetoolkit/docs/options#get_delta_hedging_simulation
+  - title: Volatility Models
+    children:
+      - title: "Local Volatility Surface"
+        url: /projects/financetoolkit/docs/options#get_local_volatility_surface
+      - title: "Heston Model Calibration"
+        url: /projects/financetoolkit/docs/options#get_heston_parameters
+      - title: "Heston-Nandi GARCH Model"
+        url: /projects/financetoolkit/docs/options#get_heston_nandi_model
 financetoolkit-docs-technicals:
   - title: Modules
     children:
@@ -1066,14 +1146,36 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_chaikin_money_flow
       - title: Ease of Movement (EMV)
         url: /projects/financetoolkit/docs/technicals#get_ease_of_movement
-      - title: Positive Volume Index (PVI)
-        url: /projects/financetoolkit/docs/technicals#get_positive_volume_index
-      - title: Negative Volume Index (NVI)
-        url: /projects/financetoolkit/docs/technicals#get_negative_volume_index
       - title: Market Breadth
         url: /projects/financetoolkit/docs/technicals#get_market_breadth
       - title: Price Volume Trend (PVT)
         url: /projects/financetoolkit/docs/technicals#get_price_volume_trend
+      - title: "Negative and Positive Volume Index"
+        url: /projects/financetoolkit/docs/technicals#get_volume_index
+      - title: "Klinger Volume Oscillator (KVO)"
+        url: /projects/financetoolkit/docs/technicals#get_klinger_volume_oscillator
+      - title: "Market Facilitation Index (BW MFI)"
+        url: /projects/financetoolkit/docs/technicals#get_market_facilitation_index
+      - title: "Williams Accumulation/Distribution (WAD)"
+        url: /projects/financetoolkit/docs/technicals#get_williams_accumulation_distribution
+      - title: "Relative Volume (RVOL)"
+        url: /projects/financetoolkit/docs/technicals#get_relative_volume
+      - title: "Volume Flow Indicator (VFI)"
+        url: /projects/financetoolkit/docs/technicals#get_volume_flow_indicator
+      - title: "Finite Volume Elements (FVE)"
+        url: /projects/financetoolkit/docs/technicals#get_finite_volume_elements
+      - title: "Volume Zone Oscillator (VZO)"
+        url: /projects/financetoolkit/docs/technicals#get_volume_zone_oscillator
+      - title: "Price-Volume (Dollar Volume)"
+        url: /projects/financetoolkit/docs/technicals#get_price_volume
+      - title: "Price Volume Rank (PVR)"
+        url: /projects/financetoolkit/docs/technicals#get_price_volume_rank
+      - title: "Buying and Selling Pressure (BASP)"
+        url: /projects/financetoolkit/docs/technicals#get_buying_selling_pressure
+      - title: "Archer On-Balance Volume (AOBV)"
+        url: /projects/financetoolkit/docs/technicals#get_archer_on_balance_volume
+      - title: "Volume Profile"
+        url: /projects/financetoolkit/docs/technicals#get_volume_profile
   - title: Momentum Indicators
     children:
       - title: All Momentum Indicators
@@ -1092,8 +1194,6 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_force_index
       - title: Ultimate Oscillator
         url: /projects/financetoolkit/docs/technicals#get_ultimate_oscillator
-      - title: Percentage Price Oscillator
-        url: /projects/financetoolkit/docs/technicals#get_percentage_price_oscillator
       - title: Detrended Price Oscillator
         url: /projects/financetoolkit/docs/technicals#get_detrended_price_oscillator
       - title: Average Directional Index (ADX)
@@ -1126,12 +1226,68 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_relative_strength
       - title: Percentage Volume Oscillator (PVO)
         url: /projects/financetoolkit/docs/technicals#get_percentage_volume_oscillator
-      - title: Stochastic RSI
-        url: /projects/financetoolkit/docs/technicals#get_stochastic_relative_strength_index
       - title: True Strength Index (TSI)
         url: /projects/financetoolkit/docs/technicals#get_true_strength_index
       - title: Coppock Curve
         url: /projects/financetoolkit/docs/technicals#get_coppock_curve
+      - title: "Directional Movement Index (DMI)"
+        url: /projects/financetoolkit/docs/technicals#get_directional_movement_index
+      - title: "Internal Bar Strength (IBS)"
+        url: /projects/financetoolkit/docs/technicals#get_internal_bar_strength
+      - title: "Qstick"
+        url: /projects/financetoolkit/docs/technicals#get_qstick
+      - title: "Efficiency Ratio (ER)"
+        url: /projects/financetoolkit/docs/technicals#get_efficiency_ratio
+      - title: "Vertical Horizontal Filter (VHF)"
+        url: /projects/financetoolkit/docs/technicals#get_vertical_horizontal_filter
+      - title: "Fisher Transform"
+        url: /projects/financetoolkit/docs/technicals#get_fisher_transform
+      - title: "Inverse Fisher Transform of the RSI"
+        url: /projects/financetoolkit/docs/technicals#get_inverse_fisher_transform_rsi
+      - title: "KDJ Indicator"
+        url: /projects/financetoolkit/docs/technicals#get_kdj_indicator
+      - title: "Premier Stochastic Oscillator (PSO)"
+        url: /projects/financetoolkit/docs/technicals#get_premier_stochastic_oscillator
+      - title: "Stochastic Momentum Index (SMI)"
+        url: /projects/financetoolkit/docs/technicals#get_stochastic_momentum_index
+      - title: "Schaff Trend Cycle (STC)"
+        url: /projects/financetoolkit/docs/technicals#get_schaff_trend_cycle
+      - title: "WaveTrend Oscillator"
+        url: /projects/financetoolkit/docs/technicals#get_wavetrend_oscillator
+      - title: "Derivative Oscillator"
+        url: /projects/financetoolkit/docs/technicals#get_derivative_oscillator
+      - title: "Swing Index"
+        url: /projects/financetoolkit/docs/technicals#get_swing_index
+      - title: "Quantitative Qualitative Estimation (QQE)"
+        url: /projects/financetoolkit/docs/technicals#get_quantitative_qualitative_estimation
+      - title: "Price Zone Oscillator (PZO)"
+        url: /projects/financetoolkit/docs/technicals#get_price_zone_oscillator
+      - title: "Inertia"
+        url: /projects/financetoolkit/docs/technicals#get_inertia
+      - title: "Bias"
+        url: /projects/financetoolkit/docs/technicals#get_bias
+      - title: "AR and BR Sentiment (BRAR)"
+        url: /projects/financetoolkit/docs/technicals#get_brar
+      - title: "Pretty Good Oscillator (PGO)"
+        url: /projects/financetoolkit/docs/technicals#get_pretty_good_oscillator
+      - title: "Psychological Line (PSL)"
+        url: /projects/financetoolkit/docs/technicals#get_psychological_line
+      - title: "Volatility-Based Momentum (VBM)"
+        url: /projects/financetoolkit/docs/technicals#get_volatility_based_momentum
+      - title: "Archer Moving Averages Trends (AMAT)"
+        url: /projects/financetoolkit/docs/technicals#get_archer_moving_average_trends
+      - title: "TTM Trend"
+        url: /projects/financetoolkit/docs/technicals#get_ttm_trend
+      - title: "Correlation Trend Indicator (CTI)"
+        url: /projects/financetoolkit/docs/technicals#get_correlation_trend_indicator
+      - title: "Forecast Oscillator"
+        url: /projects/financetoolkit/docs/technicals#get_forecast_oscillator
+      - title: "Projection Oscillator"
+        url: /projects/financetoolkit/docs/technicals#get_projection_oscillator
+      - title: "Trend Detection Index (TDI)"
+        url: /projects/financetoolkit/docs/technicals#get_trend_detection_index
+      - title: "DV Intermediate Oscillator (DVI)"
+        url: /projects/financetoolkit/docs/technicals#get_dv_intermediate_oscillator
   - title: Overlap Indicators
     children:
       - title: All Overlap Indicators
@@ -1148,10 +1304,20 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_pivot_points
       - title: Support/Resistance Levels
         url: /projects/financetoolkit/docs/technicals#get_support_resistance_levels
-      - title: Kaufman Adaptive Moving Average (KAMA)
-        url: /projects/financetoolkit/docs/technicals#get_kaufman_adaptive_moving_average
       - title: Fibonacci Retracement Levels
         url: /projects/financetoolkit/docs/technicals#get_fibonacci_retracement_levels
+      - title: "Price Transform"
+        url: /projects/financetoolkit/docs/technicals#get_price_transform
+      - title: "Midpoint"
+        url: /projects/financetoolkit/docs/technicals#get_midpoint
+      - title: "Holt-Winters Channel"
+        url: /projects/financetoolkit/docs/technicals#get_holt_winters_channel
+      - title: "Gann HiLo Activator"
+        url: /projects/financetoolkit/docs/technicals#get_gann_hilo_activator
+      - title: "Zig Zag"
+        url: /projects/financetoolkit/docs/technicals#get_zigzag
+      - title: "Guppy Multiple Moving Averages (GMMA)"
+        url: /projects/financetoolkit/docs/technicals#get_guppy_multiple_moving_averages
   - title: Volatility Indicators
     children:
       - title: All Volatility Indicators
@@ -1176,6 +1342,50 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_mass_index
       - title: Chandelier Exit
         url: /projects/financetoolkit/docs/technicals#get_chandelier_exit
+      - title: "Chaikin Volatility"
+        url: /projects/financetoolkit/docs/technicals#get_chaikin_volatility
+      - title: "Relative Volatility Index (RVI)"
+        url: /projects/financetoolkit/docs/technicals#get_relative_volatility_index
+      - title: "Acceleration Bands"
+        url: /projects/financetoolkit/docs/technicals#get_acceleration_bands
+      - title: "Chande Kroll Stop"
+        url: /projects/financetoolkit/docs/technicals#get_chande_kroll_stop
+      - title: "Adaptive Price Zone (APZ)"
+        url: /projects/financetoolkit/docs/technicals#get_adaptive_price_zone
+      - title: "Price Distance"
+        url: /projects/financetoolkit/docs/technicals#get_price_distance
+      - title: "Market Thermometer"
+        url: /projects/financetoolkit/docs/technicals#get_market_thermometer
+      - title: "Squeeze Momentum (TTM Squeeze)"
+        url: /projects/financetoolkit/docs/technicals#get_squeeze_momentum
+      - title: "Standard Deviation Channel"
+        url: /projects/financetoolkit/docs/technicals#get_standard_deviation_channel
+      - title: "Signal-to-Noise Ratio (SNR)"
+        url: /projects/financetoolkit/docs/technicals#get_signal_to_noise_ratio
+  - title: Cycle Indicators
+    children:
+      - title: "Cycle Indicators"
+        url: /projects/financetoolkit/docs/technicals#collect_cycle_indicators
+      - title: "Hilbert Transform Dominant Cycle Period (HT_DCPERIOD)"
+        url: /projects/financetoolkit/docs/technicals#get_hilbert_dominant_cycle_period
+      - title: "Hilbert Transform Dominant Cycle Phase (HT_DCPHASE)"
+        url: /projects/financetoolkit/docs/technicals#get_hilbert_dominant_cycle_phase
+      - title: "Hilbert Transform Phasor Components (HT_PHASOR)"
+        url: /projects/financetoolkit/docs/technicals#get_hilbert_phasor_components
+      - title: "Hilbert Transform Sine Wave (HT_SINE)"
+        url: /projects/financetoolkit/docs/technicals#get_hilbert_sine_wave
+      - title: "Hilbert Transform Trend vs Cycle Mode (HT_TRENDMODE)"
+        url: /projects/financetoolkit/docs/technicals#get_hilbert_trend_mode
+      - title: "MESA Adaptive Moving Average (MAMA)"
+        url: /projects/financetoolkit/docs/technicals#get_mesa_adaptive_moving_average
+      - title: "Swiss Army Knife Filter"
+        url: /projects/financetoolkit/docs/technicals#get_swiss_army_knife_filter
+      - title: "Even Better Sinewave"
+        url: /projects/financetoolkit/docs/technicals#get_even_better_sinewave
+      - title: "Detrended Synthetic Price"
+        url: /projects/financetoolkit/docs/technicals#get_detrended_synthetic_price
+      - title: "Center of Gravity Oscillator (CG)"
+        url: /projects/financetoolkit/docs/technicals#get_center_of_gravity_oscillator
   - title: Seasonality
     children:
       - title: Seasonality
@@ -1190,6 +1400,34 @@ financetoolkit-docs-technicals:
         url: /projects/financetoolkit/docs/technicals#get_indicator_summary
       - title: Factor Analysis
         url: /projects/financetoolkit/docs/technicals#get_factor_analysis
+      - title: "Heikin-Ashi Candles"
+        url: /projects/financetoolkit/docs/technicals#get_heikin_ashi
+      - title: "Williams Fractals"
+        url: /projects/financetoolkit/docs/technicals#get_williams_fractal
+      - title: "TD Sequential"
+        url: /projects/financetoolkit/docs/technicals#get_td_sequential
+      - title: "Liquidity Sweep"
+        url: /projects/financetoolkit/docs/technicals#get_liquidity_sweep
+  - title: Labeling
+    children:
+      - title: "Event Filter"
+        url: /projects/financetoolkit/docs/technicals#get_event_filter
+      - title: "Triple-Barrier Labels"
+        url: /projects/financetoolkit/docs/technicals#get_triple_barrier_labels
+      - title: "Fixed-Horizon Labels"
+        url: /projects/financetoolkit/docs/technicals#get_fixed_horizon_labels
+      - title: "Trend Scanning Labels"
+        url: /projects/financetoolkit/docs/technicals#get_trend_scanning_labels
+      - title: "Tail-Set Labels"
+        url: /projects/financetoolkit/docs/technicals#get_tail_set_labels
+      - title: "Matrix Flag Labels"
+        url: /projects/financetoolkit/docs/technicals#get_matrix_flag_labels
+      - title: "Label Uniqueness"
+        url: /projects/financetoolkit/docs/technicals#get_label_uniqueness
+      - title: "Sample Weights"
+        url: /projects/financetoolkit/docs/technicals#get_sample_weights
+      - title: "Bet Sizes"
+        url: /projects/financetoolkit/docs/technicals#get_bet_sizes
 financetoolkit-docs-risk:
   - title: Modules
     children:
@@ -1255,6 +1493,12 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_marginal_expected_shortfall
       - title: SRISK
         url: /projects/financetoolkit/docs/risk#get_srisk
+      - title: "Entropic Risk Measure (ERM)"
+        url: /projects/financetoolkit/docs/risk#get_entropic_risk_measure
+      - title: "Higher Moment Coherent Risk (HMCR)"
+        url: /projects/financetoolkit/docs/risk#get_higher_moment_coherent_risk
+      - title: "Expected Quadratic Shortfall (EQS)"
+        url: /projects/financetoolkit/docs/risk#get_expected_quadratic_shortfall
   - title: Drawdowns
     children:
       - title: "Maximum Drawdown (MDD)"
@@ -1271,6 +1515,16 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_drawdown_table
       - title: Pain Index
         url: /projects/financetoolkit/docs/risk#get_pain_index
+      - title: "Conditional Expected Drawdown (CED)"
+        url: /projects/financetoolkit/docs/risk#get_conditional_expected_drawdown
+      - title: "Drawdown at Risk (DaR)"
+        url: /projects/financetoolkit/docs/risk#get_drawdown_at_risk
+      - title: "Entropic Drawdown at Risk (EDaR)"
+        url: /projects/financetoolkit/docs/risk#get_entropic_drawdown_at_risk
+      - title: "Drawdown Statistics"
+        url: /projects/financetoolkit/docs/risk#get_drawdown_statistics
+      - title: "Average Drawdown"
+        url: /projects/financetoolkit/docs/risk#get_average_drawdown
   - title: Volatility
     children:
       - title: "Variance"
@@ -1293,6 +1547,10 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_volatility--yang-zhang
       - title: Idiosyncratic Volatility
         url: /projects/financetoolkit/docs/risk#get_idiosyncratic_volatility
+      - title: "Upside Deviation"
+        url: /projects/financetoolkit/docs/risk#get_upside_deviation
+      - title: "Volatility Skewness"
+        url: /projects/financetoolkit/docs/risk#get_volatility_skewness
   - title: Volatility Models
     children:
       - title: "GARCH Volatility Model"
@@ -1301,20 +1559,12 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_garch_forecast
       - title: "GARCH Parameters"
         url: /projects/financetoolkit/docs/risk#get_garch_parameters
-      - title: "GJR-GARCH Volatility Model"
-        url: /projects/financetoolkit/docs/risk#get_gjr_garch
-      - title: "GJR-GARCH Volatility Forecast"
-        url: /projects/financetoolkit/docs/risk#get_gjr_garch_forecast
-      - title: "GJR-GARCH Parameters"
-        url: /projects/financetoolkit/docs/risk#get_gjr_garch_parameters
-      - title: "EGARCH Volatility Model"
-        url: /projects/financetoolkit/docs/risk#get_egarch
-      - title: "EGARCH Volatility Forecast"
-        url: /projects/financetoolkit/docs/risk#get_egarch_forecast
-      - title: "EGARCH Parameters"
-        url: /projects/financetoolkit/docs/risk#get_egarch_parameters
       - title: "HAR-RV Forecast"
         url: /projects/financetoolkit/docs/risk#get_har_rv_forecast
+      - title: "News Impact Curve"
+        url: /projects/financetoolkit/docs/risk#get_news_impact_curve
+      - title: "GARCH Simulation"
+        url: /projects/financetoolkit/docs/risk#get_garch_simulation
   - title: Distribution and Dependence
     children:
       - title: "Skewness"
@@ -1337,6 +1587,30 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_copula_simulation
       - title: "Tail Dependence Coefficient"
         url: /projects/financetoolkit/docs/risk#get_tail_dependence_coefficient
+      - title: "Fractal Dimension"
+        url: /projects/financetoolkit/docs/risk#get_fractal_dimension
+      - title: "Correlation Dimension"
+        url: /projects/financetoolkit/docs/risk#get_correlation_dimension
+      - title: "Lyapunov Exponent"
+        url: /projects/financetoolkit/docs/risk#get_lyapunov_exponent
+      - title: "Partial Moments"
+        url: /projects/financetoolkit/docs/risk#get_partial_moment
+      - title: "Central Moments"
+        url: /projects/financetoolkit/docs/risk#get_central_moment
+      - title: "Worst Realization"
+        url: /projects/financetoolkit/docs/risk#get_worst_realization
+      - title: "Gini Mean Difference (GMD)"
+        url: /projects/financetoolkit/docs/risk#get_gini_mean_difference
+      - title: "Tail Gini"
+        url: /projects/financetoolkit/docs/risk#get_tail_gini
+      - title: "Risk Range"
+        url: /projects/financetoolkit/docs/risk#get_risk_range
+      - title: "L-Moments"
+        url: /projects/financetoolkit/docs/risk#get_l_moment
+      - title: "L-Moment Risk Measure"
+        url: /projects/financetoolkit/docs/risk#get_l_moment_risk_measure
+      - title: "Skewness-Kurtosis Ratio"
+        url: /projects/financetoolkit/docs/risk#get_skewness_kurtosis_ratio
   - title: Liquidity
     children:
       - title: "Amihud Illiquidity"
@@ -1344,14 +1618,16 @@ financetoolkit-docs-risk:
       - title: "Roll Spread"
         url: /projects/financetoolkit/docs/risk#get_roll_spread
 
-      - title: Corwin-Schultz Spread
-        url: /projects/financetoolkit/docs/risk#get_corwin_schultz_spread
-      - title: Abdi-Ranaldo Spread
-        url: /projects/financetoolkit/docs/risk#get_abdi_ranaldo_spread
-      - title: EDGE Spread
-        url: /projects/financetoolkit/docs/risk#get_edge_spread
       - title: Share Turnover
         url: /projects/financetoolkit/docs/risk#get_share_turnover
+      - title: "Price Impact"
+        url: /projects/financetoolkit/docs/risk#get_price_impact
+      - title: "Bid-Ask Spread"
+        url: /projects/financetoolkit/docs/risk#get_bid_ask_spread
+      - title: "Bekker-Parkinson Volatility"
+        url: /projects/financetoolkit/docs/risk#get_bekker_parkinson_volatility
+      - title: "Volume-Synchronized Probability of Informed Trading (VPIN)"
+        url: /projects/financetoolkit/docs/risk#get_vpin
   - title: Factor Analysis
     children:
       - title: Factor Analysis
@@ -1407,8 +1683,6 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_factor_correlations
       - title: "Alpha"
         url: /projects/financetoolkit/docs/performance#get_alpha
-      - title: "Jensen's Alpha"
-        url: /projects/financetoolkit/docs/performance#get_jensens_alpha
       - title: "Treynor-Mazuy Model"
         url: /projects/financetoolkit/docs/performance#get_treynor_mazuy_model
       - title: "Henriksson-Merton Model"
@@ -1419,6 +1693,16 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_style_analysis
       - title: Beta-Implied Return
         url: /projects/financetoolkit/docs/performance#get_beta_implied_return
+      - title: "Bull and Bear Beta"
+        url: /projects/financetoolkit/docs/performance#get_bull_bear_beta
+      - title: "Beta Fragility"
+        url: /projects/financetoolkit/docs/performance#get_beta_fragility
+      - title: "R-Squared"
+        url: /projects/financetoolkit/docs/performance#get_r_squared
+      - title: "Risk Decomposition"
+        url: /projects/financetoolkit/docs/performance#get_risk_decomposition
+      - title: "Capital Market Line"
+        url: /projects/financetoolkit/docs/performance#get_capital_market_line
   - title: Risk-Adjusted
     children:
       - title: "Sharpe Ratio"
@@ -1457,6 +1741,26 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_safety_first_ratio
       - title: Upside Potential Ratio
         url: /projects/financetoolkit/docs/performance#get_upside_potential_ratio
+      - title: "Risk-Return Ratio"
+        url: /projects/financetoolkit/docs/performance#get_risk_return_ratio
+      - title: "d Ratio"
+        url: /projects/financetoolkit/docs/performance#get_d_ratio
+      - title: "Prospect Ratio"
+        url: /projects/financetoolkit/docs/performance#get_prospect_ratio
+      - title: "Omega Excess Return"
+        url: /projects/financetoolkit/docs/performance#get_omega_excess_return
+      - title: "Risk Measure Ratio"
+        url: /projects/financetoolkit/docs/performance#get_risk_measure_ratio
+      - title: "Probabilistic Momentum"
+        url: /projects/financetoolkit/docs/performance#get_probabilistic_momentum
+      - title: "Bootstrap Statistics"
+        url: /projects/financetoolkit/docs/performance#get_bootstrap_statistics
+      - title: "Probability of Backtest Overfitting (PBO)"
+        url: /projects/financetoolkit/docs/performance#get_probability_of_backtest_overfitting
+      - title: "Variability-Weighted Return (VWR)"
+        url: /projects/financetoolkit/docs/performance#get_variability_weighted_return
+      - title: "Strategy Risk"
+        url: /projects/financetoolkit/docs/performance#get_strategy_risk
   - title: Drawdown Ratios
     children:
       - title: "Calmar Ratio"
@@ -1471,6 +1775,8 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_gain_to_pain_ratio
       - title: Pain Ratio
         url: /projects/financetoolkit/docs/performance#get_pain_ratio
+      - title: "Serenity Index"
+        url: /projects/financetoolkit/docs/performance#get_serenity_index
   - title: Vs. Benchmark
     children:
       - title: "Tracking Error"
@@ -1483,6 +1789,12 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_downside_capture_ratio
       - title: "Win Rate"
         url: /projects/financetoolkit/docs/performance#get_win_rate
+      - title: "Capture Ratios"
+        url: /projects/financetoolkit/docs/performance#get_capture_ratios
+      - title: "Outperformance Probability"
+        url: /projects/financetoolkit/docs/performance#get_outperformance_probability
+      - title: "Sharpe Ratio Difference Test"
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio_difference_test
   - title: Returns
     children:
       - title: "Returns"
@@ -1503,7 +1815,18 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_coskewness
       - title: Cokurtosis
         url: /projects/financetoolkit/docs/performance#get_cokurtosis
-
+      - title: "Stability of Returns"
+        url: /projects/financetoolkit/docs/performance#get_stability_of_returns
+      - title: "Trailing Returns"
+        url: /projects/financetoolkit/docs/performance#get_trailing_returns
+      - title: "Calendar Returns"
+        url: /projects/financetoolkit/docs/performance#get_calendar_returns
+      - title: "Forecast Cone"
+        url: /projects/financetoolkit/docs/performance#get_forecast_cone
+      - title: "Smoothing Index"
+        url: /projects/financetoolkit/docs/performance#get_smoothing_index
+      - title: "Return Concentration"
+        url: /projects/financetoolkit/docs/performance#get_return_concentration
   - title: Factor Analysis
     children:
       - title: Factor Analysis
@@ -1567,6 +1890,10 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_bond_equivalent_yield
     - title: Taylor Series Price Change
       url: /projects/financetoolkit/docs/fixedincome#get_taylor_price_change
+    - title: "Bucketed Delta"
+      url: /projects/financetoolkit/docs/fixedincome#get_bucketed_delta
+    - title: "Rate Shift Ladder"
+      url: /projects/financetoolkit/docs/fixedincome#get_rate_shift_ladder
   - title: Government Bonds
     children:
     - title: 3-Month Government Bond Yield
@@ -1585,6 +1912,16 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_treasury_securities
     - title: Term Premium
       url: /projects/financetoolkit/docs/fixedincome#get_term_premium
+    - title: "Fitted Bond Curve"
+      url: /projects/financetoolkit/docs/fixedincome#get_fitted_bond_curve
+    - title: "Treasury Floating Rate Notes (FRNs)"
+      url: /projects/financetoolkit/docs/fixedincome#get_treasury_floating_rate_notes
+    - title: "Treasury Inflation-Protected Securities (TIPS)"
+      url: /projects/financetoolkit/docs/fixedincome#get_treasury_inflation_protected_securities
+    - title: "Treasury Forward Prices"
+      url: /projects/financetoolkit/docs/fixedincome#get_treasury_forward_prices
+    - title: "Treasury Futures Basis"
+      url: /projects/financetoolkit/docs/fixedincome#get_treasury_futures_basis
   - title: Corporate Bonds
     children:
     - title: Option Adjusted Spread (OAS)
@@ -1621,6 +1958,10 @@ financetoolkit-docs-fixedincome:
       url: /projects/financetoolkit/docs/fixedincome#get_financial_stress_index
     - title: Implied Default Probability
       url: /projects/financetoolkit/docs/fixedincome#get_implied_default_probability
+    - title: "Survival Curve"
+      url: /projects/financetoolkit/docs/fixedincome#get_survival_curve
+    - title: "Credit Default Swap (CDS) Spread"
+      url: /projects/financetoolkit/docs/fixedincome#get_credit_default_swap_spread
   - title: Regulatory Curves
     children:
     - title: EIOPA Risk-Free Rate
@@ -1657,12 +1998,36 @@ financetoolkit-docs-fixedincome:
         url: /projects/financetoolkit/docs/fixedincome#get_yield_curve_principal_components
       - title: Carry and Roll-Down
         url: /projects/financetoolkit/docs/fixedincome#get_carry_and_roll_down
+      - title: "Instantaneous Forward Curve"
+        url: /projects/financetoolkit/docs/fixedincome#get_instantaneous_forward_curve
+      - title: "Smith-Wilson Curve"
+        url: /projects/financetoolkit/docs/fixedincome#get_smith_wilson_curve
+  - title: Swaps & Forwards
+    children:
+      - title: "Swap Rates"
+        url: /projects/financetoolkit/docs/fixedincome#get_swap_rate
+      - title: "Forward Rate Agreements (FRAs)"
+        url: /projects/financetoolkit/docs/fixedincome#get_forward_rate_agreement
+      - title: "Asset Swap Spread"
+        url: /projects/financetoolkit/docs/fixedincome#get_asset_swap_spread
+      - title: "I-Spread"
+        url: /projects/financetoolkit/docs/fixedincome#get_i_spread
+      - title: "FX Forward Rates"
+        url: /projects/financetoolkit/docs/fixedincome#get_fx_forward_rates
+  - title: Inflation
+    children:
+      - title: "Inflation Swap Rate"
+        url: /projects/financetoolkit/docs/fixedincome#get_inflation_swap_rate
+      - title: "Forward Inflation Index"
+        url: /projects/financetoolkit/docs/fixedincome#get_forward_inflation_index
   - title: Short-Rate Models
     children:
       - title: Short-Rate Model
         url: /projects/financetoolkit/docs/fixedincome#get_short_rate_model
       - title: Short-Rate Simulation
         url: /projects/financetoolkit/docs/fixedincome#get_short_rate_simulation
+      - title: "Swaption Prices"
+        url: /projects/financetoolkit/docs/fixedincome#get_swaption_price
   - title: Loans
     children:
       - title: Loan Payment
@@ -1706,16 +2071,22 @@ financetoolkit-docs-econometrics:
       url: /projects/financetoolkit/docs/external-datasets
   - title: Unit Root & Stationarity
     children:
-      - title: Augmented Dickey-Fuller (ADF)
-        url: /projects/financetoolkit/docs/econometrics#get_augmented_dickey_fuller
       - title: KPSS Test
         url: /projects/financetoolkit/docs/econometrics#get_kpss_test
-      - title: Phillips-Perron Test
-        url: /projects/financetoolkit/docs/econometrics#get_phillips_perron_test
-      - title: Zivot-Andrews Test
-        url: /projects/financetoolkit/docs/econometrics#get_zivot_andrews_test
       - title: Variance Ratio Test
         url: /projects/financetoolkit/docs/econometrics#get_variance_ratio_test
+      - title: "Unit Root Test"
+        url: /projects/financetoolkit/docs/econometrics#get_unit_root_test
+      - title: "Fractional Difference"
+        url: /projects/financetoolkit/docs/econometrics#get_fractional_difference
+      - title: "Minimum Fractional Difference"
+        url: /projects/financetoolkit/docs/econometrics#get_minimum_fractional_difference
+      - title: "Bubble Test (GSADF)"
+        url: /projects/financetoolkit/docs/econometrics#get_bubble_test
+      - title: "Bubble Episodes"
+        url: /projects/financetoolkit/docs/econometrics#get_bubble_episodes
+      - title: "Chow-Dickey-Fuller Test"
+        url: /projects/financetoolkit/docs/econometrics#get_chow_dickey_fuller_test
   - title: Cointegration & Causality
     children:
       - title: Engle-Granger Cointegration
@@ -1734,16 +2105,14 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_wls
       - title: Generalised Least Squares (GLS)
         url: /projects/financetoolkit/docs/econometrics#get_gls
-      - title: Logistic Regression
-        url: /projects/financetoolkit/docs/econometrics#get_logistic_regression
-      - title: Probit Regression
-        url: /projects/financetoolkit/docs/econometrics#get_probit_regression
       - title: Quantile Regression
         url: /projects/financetoolkit/docs/econometrics#get_quantile_regression
       - title: Fama-MacBeth Regression
         url: /projects/financetoolkit/docs/econometrics#get_fama_macbeth_regression
       - title: Time-Varying Beta
         url: /projects/financetoolkit/docs/econometrics#get_time_varying_beta
+      - title: "Binary Choice Regression"
+        url: /projects/financetoolkit/docs/econometrics#get_binary_choice_regression
   - title: Panel Data
     children:
       - title: Fixed Effects
@@ -1774,14 +2143,20 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_ljung_box_test
       - title: CUSUM Test
         url: /projects/financetoolkit/docs/econometrics#get_cusum_test
-      - title: Breusch-Pagan Test
-        url: /projects/financetoolkit/docs/econometrics#get_breusch_pagan_test
-      - title: White Test
-        url: /projects/financetoolkit/docs/econometrics#get_white_test
       - title: Durbin-Watson Test
         url: /projects/financetoolkit/docs/econometrics#get_durbin_watson_test
       - title: Variance Inflation Factor (VIF)
         url: /projects/financetoolkit/docs/econometrics#get_vif
+      - title: "Sign Bias Test"
+        url: /projects/financetoolkit/docs/econometrics#get_sign_bias_test
+      - title: "Pearson Goodness-of-Fit Test"
+        url: /projects/financetoolkit/docs/econometrics#get_pearson_goodness_of_fit_test
+      - title: "Nyblom Test"
+        url: /projects/financetoolkit/docs/econometrics#get_nyblom_test
+      - title: "GMM Moment Test"
+        url: /projects/financetoolkit/docs/econometrics#get_gmm_moment_test
+      - title: "Heteroskedasticity Test"
+        url: /projects/financetoolkit/docs/econometrics#get_heteroskedasticity_test
   - title: Specification Tests
     children:
       - title: Ramsey RESET Test
@@ -1800,6 +2175,34 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_likelihood_ratio_test
       - title: Wald Test
         url: /projects/financetoolkit/docs/econometrics#get_wald_test
+  - title: Rolling Statistics & Complexity
+    children:
+      - title: "Linear Regression"
+        url: /projects/financetoolkit/docs/econometrics#get_linear_regression
+      - title: "Slope"
+        url: /projects/financetoolkit/docs/econometrics#get_slope
+      - title: "Rolling Correlation"
+        url: /projects/financetoolkit/docs/econometrics#get_rolling_correlation
+      - title: "Rolling Median"
+        url: /projects/financetoolkit/docs/econometrics#get_rolling_median
+      - title: "Rolling Percentile"
+        url: /projects/financetoolkit/docs/econometrics#get_rolling_percentile
+      - title: "Percent Rank"
+        url: /projects/financetoolkit/docs/econometrics#get_percent_rank
+      - title: "Rolling Z-Score"
+        url: /projects/financetoolkit/docs/econometrics#get_rolling_z_score
+      - title: "Rolling Mean Absolute Deviation"
+        url: /projects/financetoolkit/docs/econometrics#get_rolling_mean_absolute_deviation
+      - title: "Rolling Standard Error"
+        url: /projects/financetoolkit/docs/econometrics#get_rolling_standard_error
+      - title: "Rolling Entropy"
+        url: /projects/financetoolkit/docs/econometrics#get_rolling_entropy
+      - title: "Entropy"
+        url: /projects/financetoolkit/docs/econometrics#get_entropy
+      - title: "Lempel-Ziv Complexity"
+        url: /projects/financetoolkit/docs/econometrics#get_lempel_ziv_complexity
+      - title: "Hjorth Parameters"
+        url: /projects/financetoolkit/docs/econometrics#get_hjorth_parameters
   - title: Time Series Forecasting
     children:
       - title: ARIMA Forecast
@@ -1814,16 +2217,24 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_variance_decomposition
       - title: DCC-GARCH
         url: /projects/financetoolkit/docs/econometrics#get_dcc_garch
+      - title: "Optimal Trading Rule"
+        url: /projects/financetoolkit/docs/econometrics#get_optimal_trading_rule
   - title: Forecast Evaluation
     children:
-      - title: Root Mean Squared Error (RMSE)
-        url: /projects/financetoolkit/docs/econometrics#get_rmse
-      - title: Mean Absolute Error (MAE)
-        url: /projects/financetoolkit/docs/econometrics#get_mae
       - title: Out-of-Sample Validation
         url: /projects/financetoolkit/docs/econometrics#get_out_of_sample_validation
       - title: Diebold-Mariano Test
         url: /projects/financetoolkit/docs/econometrics#get_diebold_mariano_test
+      - title: "Forecast Error"
+        url: /projects/financetoolkit/docs/econometrics#get_forecast_error
+      - title: "Berkowitz Test"
+        url: /projects/financetoolkit/docs/econometrics#get_berkowitz_test
+      - title: "Hong-Li Test"
+        url: /projects/financetoolkit/docs/econometrics#get_hong_li_test
+      - title: "Directional Accuracy Test"
+        url: /projects/financetoolkit/docs/econometrics#get_directional_accuracy_test
+      - title: "Model Confidence Set"
+        url: /projects/financetoolkit/docs/econometrics#get_model_confidence_set
   - title: Event Study
     children:
       - title: Event Study
@@ -1834,6 +2245,8 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_markov_regime_switching
       - title: Structural Breaks (Bai-Perron)
         url: /projects/financetoolkit/docs/econometrics#get_structural_breaks
+      - title: "Change Points"
+        url: /projects/financetoolkit/docs/econometrics#get_change_points
   - title: Historical Context
     children:
       - title: Level Significance
@@ -2214,6 +2627,26 @@ financetoolkit-docs-portfolio-optimization:
       url: /projects/financetoolkit/docs/portfolio
     - title: "External Datasets"
       url: /projects/financetoolkit/docs/external-datasets
+  - title: Estimation
+    children:
+      - title: "Expected Returns Estimate"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_expected_returns_estimate
+      - title: "Covariance Estimate"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_covariance_estimate
+      - title: "Random Matrix Statistics"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_random_matrix_statistics
+      - title: "Codependence Matrix"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_codependence_matrix
+      - title: "Asset Clusters"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_asset_clusters
+      - title: "Coskewness Matrix"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_coskewness_matrix
+      - title: "Cokurtosis Matrix"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_cokurtosis_matrix
+      - title: "Estimation Uncertainty"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_estimation_uncertainty
+      - title: "Entropy Pooling"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_entropy_pooling
   - title: Portfolio Weights
     children:
       - title: Minimum Variance
@@ -2228,20 +2661,14 @@ financetoolkit-docs-portfolio-optimization:
         url: /projects/financetoolkit/docs/portfolio-optimization#get_hierarchical_risk_parity_weights
       - title: Inverse Volatility
         url: /projects/financetoolkit/docs/portfolio-optimization#get_inverse_volatility_weights
-      - title: Minimum CVaR
-        url: /projects/financetoolkit/docs/portfolio-optimization#get_minimum_cvar_weights
       - title: Black-Litterman
         url: /projects/financetoolkit/docs/portfolio-optimization#get_black_litterman_weights
       - title: Hierarchical Equal Risk Contribution (HERC)
         url: /projects/financetoolkit/docs/portfolio-optimization#get_hierarchical_equal_risk_contribution_weights
       - title: Nested Clustered Optimization (NCO)
         url: /projects/financetoolkit/docs/portfolio-optimization#get_nested_clustered_optimization_weights
-      - title: Minimum Drawdown
-        url: /projects/financetoolkit/docs/portfolio-optimization#get_minimum_drawdown_weights
       - title: Maximum Omega Ratio
         url: /projects/financetoolkit/docs/portfolio-optimization#get_maximum_omega_weights
-      - title: Maximum CVaR Ratio
-        url: /projects/financetoolkit/docs/portfolio-optimization#get_maximum_cvar_ratio_weights
       - title: Maximum Diversification
         url: /projects/financetoolkit/docs/portfolio-optimization#get_maximum_diversification_weights
       - title: Minimum Tracking Error
@@ -2250,10 +2677,22 @@ financetoolkit-docs-portfolio-optimization:
         url: /projects/financetoolkit/docs/portfolio-optimization#get_growth_optimal_weights
       - title: Resampled Efficient Frontier
         url: /projects/financetoolkit/docs/portfolio-optimization#get_resampled_efficient_weights
+      - title: "Schur Complementary Allocation"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_schur_complementary_weights
+      - title: "Stacking Weights"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_stacking_weights
+      - title: "Mean-Risk Weights"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_mean_risk_weights
+      - title: "Worst-Case Mean-Variance Weights"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_worst_case_mean_variance_weights
+      - title: "Distributionally Robust CVaR Weights"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_distributionally_robust_cvar_weights
   - title: Efficient Frontier
     children:
       - title: Efficient Frontier
         url: /projects/financetoolkit/docs/portfolio-optimization#get_efficient_frontier
+      - title: "Critical Line Weights"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_critical_line_weights
   - title: Risk & Attribution
     children:
       - title: Risk Contributions
@@ -2268,6 +2707,14 @@ financetoolkit-docs-portfolio-optimization:
         url: /projects/financetoolkit/docs/portfolio-optimization#get_look_through_exposure
       - title: Brinson Attribution
         url: /projects/financetoolkit/docs/portfolio-optimization#get_brinson_attribution
+      - title: "Factor Loadings"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_factor_loadings
+      - title: "Factor Risk Contributions"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_factor_risk_contributions
+      - title: "Return Contributions"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_return_contributions
+      - title: "Factor Attribution"
+        url: /projects/financetoolkit/docs/portfolio-optimization#get_factor_attribution
   - title: Allocation & Backtest
     children:
       - title: Discrete Allocation
@@ -2327,18 +2774,30 @@ financetoolkit-docs-portfolio:
         url: /projects/financetoolkit/docs/portfolio#get_positions_overview
       - title: Portfolio Overview
         url: /projects/financetoolkit/docs/portfolio#get_portfolio_overview
+      - title: "Gross Leverage"
+        url: /projects/financetoolkit/docs/portfolio#get_gross_leverage
+      - title: "Position Timing"
+        url: /projects/financetoolkit/docs/portfolio#get_position_timing
   - title: Performance
     children:
       - title: Portfolio Performance
         url: /projects/financetoolkit/docs/portfolio#get_portfolio_performance
       - title: Money-Weighted Return
         url: /projects/financetoolkit/docs/portfolio#get_money_weighted_return
+      - title: "Return Contributions"
+        url: /projects/financetoolkit/docs/portfolio#get_return_contributions
   - title: Transactions
     children:
       - title: Transactions Overview
         url: /projects/financetoolkit/docs/portfolio#get_transactions_overview
       - title: Transactions Performance
         url: /projects/financetoolkit/docs/portfolio#get_transactions_performance
+      - title: "Turnover"
+        url: /projects/financetoolkit/docs/portfolio#get_turnover
+      - title: "Trade List"
+        url: /projects/financetoolkit/docs/portfolio#get_trades
+      - title: "Trade Statistics"
+        url: /projects/financetoolkit/docs/portfolio#get_trade_statistics
   - title: Toolkit Integration
     children:
       - title: Load into the Toolkit

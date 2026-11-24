@@ -595,13 +595,6 @@ get_dividend_payout_ratio:
     tickers: JNJ,MCD,TXN
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_reinvestment_rate:
-  question: What share of their net income did Costco, Visa and Nike retain rather than pay out as dividends from 2021 to 2025?
-  tool: valuation
-  arguments:
-    tickers: COST,V,NKE
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_tangible_asset_value:
   question: How much tangible asset value, net of liabilities and goodwill, did Pfizer, AbbVie and Merck have from 2021 to 2025?
   tool: valuation

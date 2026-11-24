@@ -101,7 +101,7 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-dupont_analysis = toolkit.models.get_extended_dupont_analysis()
+dupont_analysis = toolkit.models.get_dupont_analysis(method="extended")
 
 dupont_analysis.loc['AMZN']
 ```
@@ -287,11 +287,11 @@ Which returns:
 ---
 
 ## econometrics
-This gives access to the Econometrics module, a thin wrapper that funnels this Toolkit's price/return data through `statsmodels` and `linearmodels` -- regression (OLS/WLS/GLS/ Logit/Probit/Quantile), panel data (Fixed/Random Effects, Hausman), causal inference (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching), specification/hypothesis tests (Breusch-Pagan, White, Durbin-Watson, VIF, RESET, Chow, t/F/LR/Wald tests), stationarity (Augmented Dickey-Fuller, KPSS, Phillips-Perron, Zivot-Andrews unit root tests), long-run equilibrium relationships (Engle-Granger and Johansen cointegration), predictive lead-lag relationships (Granger causality), model/ residual diagnostics (ARCH-LM, Jarque-Bera, Ljung-Box, Variance Ratio, CUSUM), forecast comparison (Diebold-Mariano), and time series forecasting (ARIMA, VAR, VECM).
+This gives access to the Econometrics module, which runs this Toolkit's price/return data through least squares and test statistics of its own and the estimators of `statsmodels` and `linearmodels` -- regression (OLS/WLS/GLS/Logit/Probit/Quantile), panel data (Fixed/Random Effects, Hausman), causal inference (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching), specification/hypothesis tests (Breusch-Pagan, White, Durbin-Watson, VIF, RESET, Chow, t/F/LR/Wald tests), stationarity (Augmented Dickey-Fuller, KPSS, Phillips-Perron, Zivot-Andrews unit root tests), long-run equilibrium relationships (Engle-Granger and Johansen cointegration), predictive lead-lag relationships (Granger causality), model/ residual diagnostics (ARCH-LM, Jarque-Bera, Ljung-Box, Variance Ratio, CUSUM), forecast comparison (Diebold-Mariano), and time series forecasting (ARIMA, VAR, VECM).
 
 This class is closely related to the Risk class, which houses the risk measures (VaR, CVaR, GARCH) that these tests often inform the choice of.
 
-Requires the optional `financetoolkit[econometrics]` extra (`statsmodels` and `linearmodels`) -- install with `pip install financetoolkit[econometrics]`.
+The module works without further installs. The methods built on `statsmodels` or `linearmodels` need the optional extra, `pip install financetoolkit[econometrics]`, and say so in their docstrings.
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics](https://www.jeroenbouma.com/projects/financetoolkit/docs/econometrics){:target="_blank"}
 
@@ -301,7 +301,7 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
 
-toolkit.econometrics.get_augmented_dickey_fuller(period='yearly')
+toolkit.econometrics.get_unit_root_test(period='yearly')
 ```
 
 ---
@@ -934,7 +934,7 @@ Returns historical data for the specified tickers. This contains the following c
 - Volume: The volume for the period.
 - Dividends: The dividends for the period.
 - Return: The return for the period.
-- Cumulative Return: The cumulative return for the period.
+- Cumulative Return: The growth of 1 invested at the start, the product of (1 + Return): 1.0 on the first date and 1.25 after a 25% gain.
 
 Volatility, Excess Return and Excess Volatility are not included here. These are available as dedicated calculations in the Risk module (e.g. toolkit.risk.get_volatility, toolkit.risk.get_excess_volatility) and the Performance module (e.g. toolkit.performance.get_excess_return) instead.
 
@@ -1012,7 +1012,7 @@ Returns intraday historical data for the specified tickers. This contains the fo
 - Close: The closing price for the period.
 - Volume: The volume for the period.
 - Return: The return for the period.
-- Cumulative Return: The cumulative return for the period.
+- Cumulative Return: The growth of 1 invested at the start, the product of (1 + Return): 1.0 on the first date and 1.25 after a 25% gain.
 
 Volatility is not included here. This is available as a dedicated calculation in the Risk module instead (e.g. toolkit.risk.get_volatility).
 
@@ -1460,7 +1460,14 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The employee count per reporting year (rows) and ticker (columns).
+pd.DataFrame: The employee count per reporting year (rows) and ticker (columns). The
+year is the calendar year in which the fiscal year ends, the period of the annual
+filing: Walmart's count at the end of January 2025 is 2025, a year after the label of
+its financial statements for that fiscal year (2024), which follow the calendar year
+holding most of it. A 52/53-week year ending in the first week of January
+(2 January 2021) counts as the year before (2020). The revenue and net income per
+employee match the counts on the period end dates, so they divide each year by the
+headcount of that year.
 
 **As an example:**
 

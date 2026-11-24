@@ -56,26 +56,6 @@ get_ease_of_movement:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     limit: -5
-get_negative_volume_index:
-  question: How did the Negative Volume Index of SPY and IWM, counted from the start of 2021, develop from 24 to 31 December 2025?
-  tool: breadth
-  arguments:
-    tickers: SPY,IWM
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: SPY,IWM
-    limit: -5
-    benchmark_ticker: None
-get_positive_volume_index:
-  question: How did the Positive Volume Index of SPY and IWM, counted from the start of 2021, develop from 24 to 31 December 2025?
-  tool: breadth
-  arguments:
-    tickers: SPY,IWM
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: SPY,IWM
-    limit: -5
-    benchmark_ticker: None
 get_money_flow_index:
   question: How did the Money Flow Index of the Nasdaq Composite move from 24 to 31 December 2025?
   tool: momentum
@@ -131,14 +111,6 @@ get_ultimate_oscillator:
   tool: momentum
   arguments:
     tickers: ^GDAXI
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    limit: -5
-get_percentage_price_oscillator:
-  question: How did the Percentage Price Oscillator of the Euro Stoxx 50 compare with that of the S&P 500 from 24 to 31 December 2025?
-  tool: momentum
-  arguments:
-    tickers: ^STOXX50E,^GSPC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     limit: -5
@@ -285,14 +257,6 @@ get_bollinger_bands:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: USDJPY
-    limit: -5
-get_kaufman_adaptive_moving_average:
-  question: How did the Kaufman adaptive moving average of the Euro Stoxx 50 move from 24 to 31 December 2025?
-  tool: overlap
-  arguments:
-    tickers: ^STOXX50E
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
     limit: -5
 get_volume_weighted_average_price:
   question: What was the volume weighted average price of SPY from 24 to 31 December 2025?
@@ -495,14 +459,6 @@ get_percentage_volume_oscillator:
   arguments:
     tickers: NVDA
     start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    limit: -5
-get_stochastic_relative_strength_index:
-  question: How did the Stochastic RSI of Nvidia move from 24 to 31 December 2025?
-  tool: momentum
-  arguments:
-    tickers: NVDA
-    start_date: "2024-01-01"
     end_date: "2025-12-31"
     limit: -5
 get_true_strength_index:

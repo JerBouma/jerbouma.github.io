@@ -64,13 +64,6 @@ get_inverse_volatility_weights:
     tickers: AAPL,MSFT,JNJ,XOM
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_minimum_cvar_weights:
-  question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil minimized the 95% conditional value at risk, based on 2021 to 2025?
-  tool: portfolio
-  arguments:
-    tickers: "AAPL,MSFT,JNJ,XOM"
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_black_litterman_weights:
   question: What Black-Litterman weights do Apple, Microsoft, Johnson & Johnson and ExxonMobil get with the views that ExxonMobil returns 10% and Apple beats Microsoft by 2 percentage points, based on 2021 to 2025?
   tool: portfolio
@@ -132,13 +125,6 @@ get_nested_clustered_optimization_weights:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: "Weight,Volatility,Sharpe Ratio,Risk Contribution,Cluster"
-get_minimum_drawdown_weights:
-  question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil minimized the conditional drawdown at risk, based on 2021 to 2025?
-  tool: portfolio
-  arguments:
-    tickers: "AAPL,MSFT,JNJ,XOM"
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_maximum_omega_weights:
   question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil maximized the Omega ratio, based on 2021 to 2025?
   tool: portfolio
@@ -147,14 +133,6 @@ get_maximum_omega_weights:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: "Weight,Expected Return,Volatility,Risk Contribution,Omega Ratio"
-get_maximum_cvar_ratio_weights:
-  question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil maximized the return per unit of conditional value at risk, based on 2021 to 2025?
-  tool: portfolio
-  arguments:
-    tickers: "AAPL,MSFT,JNJ,XOM"
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-    show_columns: "Weight,Expected Return,Risk Contribution,CVaR,CVaR Ratio"
 get_maximum_diversification_weights:
   question: Which weights in Apple, Microsoft, Johnson & Johnson and ExxonMobil maximized the diversification ratio, based on 2021 to 2025?
   tool: portfolio

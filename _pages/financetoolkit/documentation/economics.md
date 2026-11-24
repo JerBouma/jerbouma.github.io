@@ -6666,7 +6666,12 @@ Which returns:
 ## get_outstanding_mortgage_rates
 Get the distribution of the interest rates US homeowners pay on the mortgages they already have, from the National Mortgage Database (NMDB) of the Federal Housing Finance Agency (FHFA): the share of the mortgages outstanding at the end of each quarter with a contract interest rate below 3%, between 3% and 4%, 4% and 5%, 5% and 6%, and at or above 6%, next to their average rate.
 
-This is the measure of the mortgage rate "lock-in": a homeowner with a rate well below the rate on a new mortgage (see `get_mortgage_rate_30_year`) gives that rate up when moving, so the further the outstanding rates lie below the market rate, the fewer existing homes come up for sale. The share of mortgages below 3%, 4%, 5% and 6% (cumulative=True) is how the lock-in is usually reported, to be compared with the rate on a new mortgage.
+This is the measure of the mortgage rate "lock-in": a homeowner with a rate well below the rate on a new mortgage (see `get_mortgage_rate_30_year`) gives that rate up when moving, so the further the outstanding rates lie below the market rate, the fewer existing homes come up for sale. The share of mortgages below 3%, 4%, 5% and 6% (cumulative=True) is how the lock-in is usually reported, to be compared with the rate on a new mortgage. The Market Rate Gap makes that comparison: the 30-year fixed rate on a new mortgage (the quarterly average of Freddie Mac's weekly Primary Mortgage Market Survey, the rate of `get_mortgage_rate_30_year`) minus the average rate of the outstanding mortgages. Batzer, Coste, Doerner and Seiler (2024) measure the lock-in of a mortgage as the points by which the market rate exceeds its origination rate (each point lowers the probability of a sale by 18.1%); Fonseca and Liu (2024) use the same difference with the opposite sign, the mortgage rate delta. A positive gap means the average homeowner would pay more on a new mortgage.
+
+For more information, see the following papers:
+
+- Batzer, R.M., Coste, J.R., Doerner, W.M., & Seiler, M.J. (2024). "The Lock-In Effect of Rising Mortgage Rates." FHFA Working Paper 24-03.
+- Fonseca, J., & Liu, L. (2024). "Mortgage Lock-In, Mobility, and Labor Reallocation." The Journal of Finance, 79(6), 3729-3772.
 
 The NMDB is a 1-in-20 sample of the closed-end first-lien residential mortgages reported to one of the three national credit bureaus, quarterly from 2013 Q1 and published about three months after the quarter ends. The rate is the contract interest rate at origination, a nominal annual rate (compounded monthly for the usual monthly payments), so an adjustable rate mortgage counts at its initial rate. Each market is a subset of all mortgages, as the FHFA defines them:
 
@@ -6685,6 +6690,14 @@ The formula is as follows:
 
 $$
 \text{Share Below}\; \text{X\%} = \text{Share Below}\; 3\% + \ldots + \text{Share} \;(X - 1) \% \;\text{to}\; \text{X\%},\;\; \text{the sum of the published buckets below } X \text{\% (cumulative=True)}
+$$
+
+$$
+\text{Market Rate} = \operatorname{AVERAGE}(\text{weekly}\; \text{30-year} \;\text{fixed mortgage rates surveyed in the quarter})
+$$
+
+$$
+\text{Market Rate Gap} = \text{Market Rate} - \text{Average Rate}
 $$
 
 **Args:**
@@ -6721,14 +6734,26 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.DataFrame: The quarterly shares of the outstanding mortgages per rate bucket
 ("Below 3%", "3% to 4%", "4% to 5%", "5% to 6%" and "6% and Above", or "Below 3%"
-to "Below 6%" with cumulative=True) and their "Average Rate", all as decimals
-(0.192 for 19.2%).
+to "Below 6%" with cumulative=True), their "Average Rate", the "Market Rate" of a
+new 30-year fixed mortgage and the "Market Rate Gap" between the two, all as
+decimals (0.192 for 19.2%).
 
 **Notes:**
 
-The FHFA publishes the shares in percent with one decimal and the average rate
+- The FHFA publishes the shares in percent with one decimal and the average rate
 with one decimal (4.4%), so the buckets add up to 100% within rounding (100.1%
 for example) and a cumulative share is the sum of the rounded buckets below it.
+The average rate moves in steps of 0.1 point, so it can stay the same for several
+quarters, and the NMDB has no finer measure of it; the shares, such as the share
+below 4%, show the slower drift within such a step. The Market Rate Gap carries the
+same rounding of up to 0.05 point.
+- The Market Rate is the average of the weekly surveys dated (on a Thursday) in the
+quarter, 12 to 14 of them, and the Average Rate is that of the mortgages
+outstanding at the end of the quarter, so both belong to the same quarter. The
+Market Rate is that of a conventional conforming 30-year fixed mortgage for
+every market, region and weighting.
+- The NMDB is published about three months after a quarter ends, so the table, the
+Market Rate included, ends at the latest quarter of the NMDB.
 
 **As an example:**
 
@@ -6737,19 +6762,21 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2025-01-01', end_date="2026-06-30")
 
-economics.get_outstanding_mortgage_rates(cumulative=True)
+economics.get_outstanding_mortgage_rates(cumulative=True)[
+    ["Below 3%", "Below 4%", "Average Rate", "Market Rate", "Market Rate Gap"]
+]
 ```
 
 Which returns:
 
-| Date   |   Below 3% |   Below 4% |   Below 5% |   Below 6% |   Average Rate |
-|:-------|-----------:|-----------:|-----------:|-----------:|---------------:|
-| 2025Q1 |      0.205 |      0.531 |      0.707 |      0.81  |          0.043 |
-| 2025Q2 |      0.202 |      0.521 |      0.695 |      0.799 |          0.043 |
-| 2025Q3 |      0.198 |      0.51  |      0.681 |      0.786 |          0.044 |
-| 2025Q4 |      0.195 |      0.501 |      0.67  |      0.781 |          0.044 |
-| 2026Q1 |      0.193 |      0.494 |      0.66  |      0.778 |          0.044 |
-| 2026Q2 |      0.192 |      0.491 |      0.656 |      0.776 |          0.044 |
+| Date   |   Below 3% |   Below 4% |   Average Rate |   Market Rate |   Market Rate Gap |
+|:-------|-----------:|-----------:|---------------:|--------------:|------------------:|
+| 2025Q1 |      0.205 |      0.531 |          0.043 |        0.0683 |            0.0253 |
+| 2025Q2 |      0.202 |      0.521 |          0.043 |        0.0679 |            0.0249 |
+| 2025Q3 |      0.198 |      0.51  |          0.044 |        0.0657 |            0.0217 |
+| 2025Q4 |      0.195 |      0.501 |          0.044 |        0.0623 |            0.0183 |
+| 2026Q1 |      0.193 |      0.494 |          0.044 |        0.0611 |            0.0171 |
+| 2026Q2 |      0.192 |      0.491 |          0.044 |        0.0641 |            0.0201 |
 
 ---
 
