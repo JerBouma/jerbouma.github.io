@@ -1,5 +1,12 @@
 [
   {
+    "id": "5A9nZqpvzOo",
+    "title": "Market cap, explained: how Nvidia gained $947B in half an hour #Nvidia #Investing #Shorts",
+    "published": "2026-11-23T19:17:32+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nMarket capitalization (market cap) is the share price times the number of shares outstanding. On Monday 23 Nov 2026, Nvidia's market cap rose $947B in its first half hour of trading, from $3.08T at Friday's close to $4.02T at about 09:50 New York, after its board brought back Jensen Huang as CEO (CNBC). On Friday it had fallen $501B. Every $1 on the share price adds about $24.5B. Index funds hold stocks by market cap, so Nvidia alone added about 121 points to the S&P 500 that morning, more than Microsoft, Tesla, Micron, Apple and Amazon together (59). Nvidia's market cap equaled 15.7% of US GDP at the end of its fiscal year in January 2026, against 0.09% ten years earlier. Monday's figures are intraday, from about 09:50 New York.\n\nData: Finance Toolkit MCP (valuation get_market_cap, get_market_cap_to_gdp; etf get_contribution; econometrics get_move_significance), from FinancialModelingPrep, Yahoo Finance and the Global Macro Database. News: CNBC, 23 Nov 2026.\n\nhttps://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice. #Nvidia #Investing #Shorts",
+    "series": "finance"
+  },
+  {
     "id": "ZRemlzpsJL0",
     "title": "Free cash flow, explained: where big tech's cash went #FreeCashFlow #BigTech #Shorts",
     "published": "2026-11-22T21:09:15+00:00",
