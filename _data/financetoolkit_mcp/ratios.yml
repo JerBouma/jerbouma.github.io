@@ -285,13 +285,6 @@ get_return_on_capital_employed:
     tickers: XOM,CVX,SHEL,BP
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_net_income_per_ebt:
-  question: How much of their pretax earnings did SAP, Siemens and ASML keep as net income from 2021 to 2025?
-  tool: profitability
-  arguments:
-    tickers: SAP.DE,SIE.DE,ASML.AS
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_free_cash_flow_operating_cash_flow_ratio:
   question: How much of their operating cash flow did Amazon, Meta, Alphabet and Microsoft keep as free cash flow after capital expenditure from 2021 to 2025?
   tool: profitability
@@ -311,20 +304,6 @@ get_tax_burden_ratio:
   tool: profitability
   arguments:
     tickers: ACN,ORCL,CSCO
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_EBT_to_EBIT:
-  question: How much of their earnings before interest and taxes did Hilton, Marriott and Choice Hotels keep after interest expense from 2021 to 2025?
-  tool: profitability
-  arguments:
-    tickers: HLT,MAR,CHH
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_EBIT_to_revenue:
-  question: What were the EBIT margins of Lockheed Martin, General Dynamics and Northrop Grumman from 2021 to 2025?
-  tool: profitability
-  arguments:
-    tickers: LMT,GD,NOC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_cash_tax_rate:

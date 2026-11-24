@@ -29,12 +29,13 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/performance.md %}
 
 ## collect_all_metrics
-Calculates and collects all performance metrics.
+Calculate all performance metrics in one table: the Alpha, Beta, CAPM and the risk-adjusted return ratios of every ticker, to compare the tickers on each of them side by side.
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the
-Toolkit is initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -57,7 +58,7 @@ level is dropped. `Returns` and `Excess Return` are only included when `period` 
 **Notes:**
 
 - The method calculates various performance metrics for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
+- With growth, the method calculates the growth of the ratio values
 using the specified `lag`.
 
 **As an example:**
@@ -88,7 +89,7 @@ Which returns:
 ---
 
 ## get_beta
-Calculate the Beta, a measurement that assess the systematic risk of a stock or investment.
+Calculate the Beta: how strongly an asset's returns move with those of the benchmark, the systematic risk that diversification cannot remove.
 
 Beta is a financial metric used to assess the systematic risk of a stock or investment in relation to the overall market. It provides valuable insights into how a particular asset's returns tend to move in response to fluctuations in the broader market. A stock's Beta is calculated by analyzing its historical price movements and their correlation with the movements of a market index, typically the benchmark index like the S&P 500.
 
@@ -104,19 +105,26 @@ $$
 \text{Beta} = \frac{\text{Monthly Covariance of Asset Returns and Benchmark Returns}}{\text{Monthly Variance of Benchmark Returns}}
 $$
 
-Beta is read against 1, the benchmark's own beta: above 1 the asset tends to amplify market moves, below 1 to dampen them. Each period's Beta comes from the daily returns within that period, so a yearly figure rests on about 250 observations and can swing with a single turbulent month; a rolling window (for example period='monthly' with rolling=36) gives a steadier estimate for cost of capital work. A Beta close to zero can come from a low correlation with the market rather than from low volatility, so it is worth checking both before calling a stock defensive.
+Beta is read against 1, the benchmark's own beta: above 1 the asset tends to amplify market moves, below 1 to dampen them. Each period's Beta comes from the daily returns within that period, so a yearly figure rests on about 250 observations and can swing with a single turbulent month; a rolling window (for example monthly returns over a rolling window of 36) gives a steadier estimate for cost of capital work. A Beta close to zero can come from a low correlation with the market rather than from low volatility, so it is worth checking both before calling a stock defensive.
 
 **See definition:** [https://en.wikipedia.org/wiki/Beta_(finance)](https://en.wikipedia.org/wiki/Beta_(finance)){:target="_blank"}
 
 **Also known as:** market sensitivity, systematic risk.
 
+**References:**
+
+- library | Shares similar logic as empyrical's [roll_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1058){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.beta](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L89){:target="_blank"}
+- library | Shares similar logic as empyrical's [beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1314){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Beta. Defaults to None.
-- <u>method (str, optional):</u> The estimator of the Beta. Defaults to "ols". Choose from:
+- <u>method (str, optional):</u> The estimator of the Beta. Options are:
 - "ols": the covariance over the benchmark variance (the formula above).
 - "blume": the adjusted Beta of Bloomberg, 0.67 x OLS Beta + 0.33 (Blume, 1971, 1975).
 - "vasicek": the OLS Beta shrunk towards the mean Beta of the tickers by the precision of
@@ -126,6 +134,7 @@ each estimate (Vasicek, 1973).
 - "scholes_williams": the lagged, same and leading slopes over the benchmark's
 autocorrelation (Scholes and Williams, 1977).
 - "upside" or "downside": the OLS Beta on the days the benchmark rose or fell.
+Defaults to "ols".
 - <u>lags (int, optional):</u> The number of leads and lags of the Dimson Beta. Defaults to 1.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -148,15 +157,15 @@ pd.DataFrame: Beta values.
 - Daily Beta is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the Beta for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 - The OLS Beta of a stock that trades thinly or reacts to the market a day late understates its market
 risk, because part of the reaction falls on the next day. Dimson and Scholes-Williams add the slopes on
 the neighbouring benchmark returns to correct for that; their leads and lags come from the full history,
 so the first day of a period uses the benchmark return of the day before.
-- Blume found that Betas move towards 1 between estimation windows by about a third. Vasicek shrinks
-each Beta in proportion to its uncertainty: the prior is the mean and sample variance (ddof=1) of the
-OLS Betas of the tickers in the same period, so it depends on which tickers are passed. A single
-ticker gets a prior mean of 1 (the market's Beta) with a variance of 0.25.
+- Blume found that Betas move towards 1 between estimation windows by about a third. Vasicek shrinks each Beta
+in proportion to its uncertainty: the prior is the mean and sample variance (with n - 1 in the denominator) of
+the OLS Betas of the tickers in the same period, so it depends on which tickers are passed. A single ticker
+gets a prior mean of 1 (the market's Beta) with a variance of 0.25.
 - The upside and downside Betas show asymmetric market exposure: a stock with a downside Beta above
 its upside Beta falls harder in down markets than it rises in up markets. The benchmark's direction
 picks the observations: upside uses the periods the benchmark rose, downside those it fell.
@@ -235,8 +244,8 @@ Three measures put the Residual in context. The Residual Value is the Residual i
 
 **Args:**
 
-- <u>period (str, optional):</u> The period whose returns are explained: "daily", "weekly", "monthly",
-"quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The period whose returns are explained. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "daily".
 - <u>beta_window (int, optional):</u> The number of daily returns the Beta is estimated on. Defaults
 to 252, about one year of trading days, a common length for a market model's
 estimation window that is long enough for a stable Beta and short enough to follow
@@ -264,7 +273,7 @@ a few basis points per day, and is available through `get_capital_asset_pricing_
 data or a recent listing) has no Beta, so its Implied Return and Residual are empty. Start the
 Toolkit at least `beta_window` trading days before the first period of interest.
 - The Beta is the ordinary least squares Beta of `get_beta`, on the daily returns of the window.
-- The market cap is that of `get_market_cap` with show_daily=True: the traded split-adjusted Close
+- The market cap is that of the daily `get_market_cap`: the traded split-adjusted Close
 times the weighted average diluted shares of the latest fiscal period that ended on or before
 that day, so no shares are used before their period closes. It is in the currency the ticker
 trades in, and so is the Residual Value. Without shares, as for an ETF or an index, the Residual
@@ -305,7 +314,7 @@ Which returns:
 ---
 
 ## get_capital_asset_pricing_model
-CAPM, or the Capital Asset Pricing Model, is a financial model used to estimate the expected return on an investment, such as a stock or portfolio of stocks. It provides a framework for evaluating the risk and return trade-off of an asset or portfolio in relation to the overall market. CAPM is based on the following key components:
+Calculate the Capital Asset Pricing Model (CAPM): the return an asset should have earned given its Beta and what the market returned, the yardstick its actual return is judged against. The CAPM estimates the expected return of an investment, such as a stock or portfolio of stocks, from its risk and return trade-off with the overall market, and is based on the following key components:
 
 - Risk-Free Rate (Rf): This is the theoretical return an investor could earn from an investment with no risk of financial loss. It is typically based on the yield of a government bond.
 - Market Risk Premium (Rm - Rf): This represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset. It is calculated as the difference between the expected return of the market (Rm) and the risk-free rate (Rf).
@@ -325,10 +334,17 @@ The CAPM here uses the benchmark's realised return of each period, so the result
 
 **Also known as:** CAPM, expected return model.
 
+**References:**
+
+- library | Shares similar logic as empyrical's [roll_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1058){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.beta](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L89){:target="_blank"}
+- library | Shares similar logic as empyrical's [beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1314){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -353,10 +369,10 @@ pd.DataFrame: CAPM values.
 - Daily CAPM is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the CAPM for each asset in the Toolkit instance.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -386,7 +402,7 @@ Which returns:
 ---
 
 ## get_factor_asset_correlations
-Calculates factor exposures for each asset.
+Calculate the factor asset correlations: how closely each asset's excess returns move with each of the Fama and French five factors within each period.
 
 The major difference between the Fama and French Model here is that the correlation is taken as opposed to a Linear Regression in which the R-squared or Slope can be used to understand the exposure to each factor.
 
@@ -408,13 +424,14 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
-- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
-"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
-factors of Ken French's library for that region's stocks). Every region's factors are
+- <u>region (str, optional):</u> The region whose factors to use (the factors of Ken French's library
+for that region's stocks). Options are: "United States", "Developed", "Developed ex US",
+"Europe", "Japan", "Asia Pacific ex Japan", "North America". Every region's factors are
 U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF),
 so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
 otherwise the exchange rate's moves end up in the factor loadings, mostly the market
@@ -455,7 +472,7 @@ Which returns:
 ---
 
 ## get_factor_correlations
-Calculates factor correlations between each factor. This is useful to understand how correlated each factor is to each other. This is based off the Fama and French 5 Factor model which includes:
+Calculate the factor correlations: how closely the Fama and French five factors move with each other within each period, which shows how much of what one factor captures another one captures as well. The factors are:
 
 - Market Risk Premium (Mkt-RF): Represents the additional return that investors expect to earn for taking on the risk of investing in the overall market as opposed to a risk-free asset.
 - Size Premium (SMB): Reflects the historical excess return of small-cap stocks over large-cap stocks.
@@ -475,14 +492,15 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>exclude_risk_free (bool, optional):</u> Whether to exclude the risk-free rate from the results. Defaults to True.
-- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
-"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
-factors of Ken French's library for that region's stocks). Every region's factors are
+- <u>region (str, optional):</u> The region whose factors to use (the factors of Ken French's library
+for that region's stocks). Options are: "United States", "Developed", "Developed ex US",
+"Europe", "Japan", "Asia Pacific ex Japan", "North America". Every region's factors are
 U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF).
 Defaults to "United States".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -527,7 +545,7 @@ Which returns:
 ---
 
 ## get_fama_and_french_model
-Calculate Fama and French 5 Factor model scores and residuals for a set of financial assets.
+Calculate the Fama and French five factor model: how much of each asset's excess return the market, size, value, profitability and investment factors explain, and its exposure to each of them.
 
 The Fama and French 5 Factor model is a widely used financial model that helps estimate the expected return of financial assets, such as stocks or portfolios, based on five key factors:
 
@@ -563,19 +581,25 @@ The slopes are read as tilts: a positive HML slope is a value tilt and a negativ
 
 **Also known as:** Fama-French model, three-factor model, five-factor model, FF3, FF5.
 
+**References:**
+
+- library | Referenced against pyfolio's [rolling_regression](https://github.com/stefan-jansen/pyfolio-reloaded/blob/0.10.2/src/pyfolio/timeseries.py#L550){:target="_blank"}
+- library | Shares similar logic as statsmodels' [RollingOLS](https://www.statsmodels.org/stable/generated/statsmodels.regression.rolling.RollingOLS.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period for the calculation (e.g., "weekly", "monthly", "quarterly", "yearly").
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>method (str, optional):</u> "multi" for one regression on all factors together or "simple" for a
-separate regression per factor. Defaults to "multi".
+- <u>period (str, optional):</u> The period for the calculation. Options are: "weekly", "monthly",
+"quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> The regression. Options are: "multi" (one regression on all factors
+together), "simple" (a separate regression per factor). Defaults to "multi".
 - <u>factors_to_calculate (list of str, optional):</u> List of factors to calculate scores and residuals for.
 Defaults to ["Mkt-RF", "SMB", "HML", "RMW", "CMA"].
 - <u>include_daily_residuals (bool, optional):</u> Whether to also return the pointwise (daily)
 regression residuals as a second DataFrame. Defaults to False.
-- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
-"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
-factors of Ken French's library for that region's stocks). Every region's factors are
+- <u>region (str, optional):</u> The region whose factors to use (the factors of Ken French's library
+for that region's stocks). Options are: "United States", "Developed", "Developed ex US",
+"Europe", "Japan", "Asia Pacific ex Japan", "North America". Every region's factors are
 U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF),
 so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
 otherwise the exchange rate's moves end up in the factor loadings, mostly the market
@@ -583,7 +607,7 @@ beta. Defaults to "United States".
 - <u>rolling (int &#124; None, optional):</u> The number of trading days of a rolling regression: the multi
 linear regression is fitted on the last `rolling` daily observations at every date instead of
 once per period, so the factor loadings show how the exposures move over time (e.g. 126 for
-the six months pyfolio uses). Only with method="multi". Defaults to None.
+the six months pyfolio uses). Only with the multi method. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
@@ -613,7 +637,7 @@ It agrees with pyfolio's timeseries.rolling_regression of the excess returns on 
 rolling_window one shorter (pyfolio's windows hold rolling_window + 1 days).
 - The risk-free rate is typically represented by the return of a risk-free investment, such as a Treasury bond.
 In this case, the Risk Free Rate from the Fama and French dataset is used.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -644,7 +668,7 @@ Which returns:
 ---
 
 ## get_carhart_four_factor_model
-Calculate Carhart Four Factor model scores for a set of financial assets.
+Calculate the Carhart four factor model: how much of each asset's excess return the market, size, value and momentum factors explain, and its exposure to each of them.
 
 The Carhart Four Factor model extends the Fama and French Three Factor model with a momentum factor, based on the observation that stocks with high prior returns (winners) tend to keep outperforming stocks with low prior returns (losers) over the medium term:
 
@@ -665,19 +689,22 @@ $$
 \text{Excess Return} = \text{Intercept} + \text{Beta1} \cdot \text{Mkt-RF} + \text{Beta2} \cdot \text{SMB} + \text{Beta3} \cdot \text{HML} + \text{Beta4} \cdot \text{MOM} + \text{Residuals},\;\; \text{fitted on the daily returns within each period (e.g. each quarter)}
 $$
 
-For more information about the method, see the following paper:
-
-- Carhart, M.M. (1997). "On Persistence in Mutual Fund Performance." The Journal of Finance, 52(1), 57-82.
-
 **Also known as:** Carhart model, four-factor model, momentum-augmented Fama-French model.
+
+**References:**
+
+- paper | Carhart, M.M. (1997). "On Persistence in Mutual Fund Performance." The Journal of Finance, 52(1), 57-82.
+- library | Referenced against pyfolio's [rolling_regression](https://github.com/stefan-jansen/pyfolio-reloaded/blob/0.10.2/src/pyfolio/timeseries.py#L550){:target="_blank"}
+- library | Shares similar logic as statsmodels' [RollingOLS](https://www.statsmodels.org/stable/generated/statsmodels.regression.rolling.RollingOLS.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period for the calculation (e.g., "weekly", "monthly", "quarterly", "yearly").
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
-- <u>region (str, optional):</u> The region whose factors to use: "United States", "Developed",
-"Developed ex US", "Europe", "Japan", "Asia Pacific ex Japan" or "North America" (the
-factors of Ken French's library for that region's stocks). Every region's factors are
+- <u>period (str, optional):</u> The period for the calculation. Options are: "weekly", "monthly",
+"quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>region (str, optional):</u> The region whose factors to use (the factors of Ken French's library
+for that region's stocks). Options are: "United States", "Developed", "Developed ex US",
+"Europe", "Japan", "Asia Pacific ex Japan", "North America". Every region's factors are
 U.S. dollar returns with the U.S. one-month Treasury bill as the risk-free rate (RF),
 so a ticker quoted in another currency is best analysed with its U.S. dollar returns;
 otherwise the exchange rate's moves end up in the factor loadings, mostly the market
@@ -717,7 +744,7 @@ than the Toolkit's own risk-free rate, to stay consistent with the momentum fact
 - With `rolling` the result has a row per date, the last date of each window. It agrees with pyfolio's
 timeseries.rolling_regression of the excess returns on the factors with a rolling_window one shorter
 (pyfolio's windows hold rolling_window + 1 days).
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -756,19 +783,19 @@ A window estimates the weights over a rolling number of periods instead, which s
 
 By default the styles are Sharpe's asset classes as ETFs: IWD and IWF for US large cap value and growth, IWN and IWO for small cap value and growth, AGG for bonds and BIL for cash. Style tickers that are not in the Toolkit are retrieved for the same dates, and every Toolkit ticker that is not a style is analyzed against them. "Benchmark" can be one of them.
 
-For more information, see the following paper:
-
-- Sharpe, W.F. (1992). "Asset Allocation: Management Style and Performance Measurement." The Journal of Portfolio Management, 18(2), 7-19.
-
 **Also known as:** returns-based style analysis, RBSA, style regression, effective asset mix, selection return.
+
+**References:**
+
+- paper | Sharpe, W.F. (1992). "Asset Allocation: Management Style and Performance Measurement." The Journal of Portfolio Management, 18(2), 7-19.
 
 **Args:**
 
 - <u>style_tickers (str &#124; list[str] &#124; None, optional):</u> The tickers of the style indices, as a
 list or a comma-separated string. Defaults to None, which uses IWD, IWF, IWN, IWO,
 AGG and BIL.
-- <u>period (str, optional):</u> The return frequency (daily, weekly, monthly, quarterly or
-yearly). Defaults to "monthly".
+- <u>period (str, optional):</u> The return frequency. Options are: "daily", "weekly", "monthly",
+"quarterly", "yearly". Defaults to "monthly".
 - <u>window (int &#124; None, optional):</u> The number of periods to estimate the weights over on a
 rolling basis, which adds the Out-of-Sample Selection Return. Defaults to None,
 which uses every period.
@@ -811,7 +838,7 @@ Which returns:
 ---
 
 ## get_alpha
-Alpha, in a general sense, represents the excess return an investment generates relative to a benchmark or a risk-adjusted return. It can be positive (indicating the investment outperformed the benchmark) or negative (indicating underperformance).
+Calculate the Alpha: how much an asset returned above (or below) its benchmark, as the plain difference of the returns, the annualized Active Premium or Jensen's Alpha above the return its Beta explains. A positive Alpha means the investment outperformed the benchmark, a negative one that it underperformed.
 
 The formula is as follows:
 
@@ -819,7 +846,7 @@ $$
 \text{Alpha} = \text{Asset's Actual Return} - \text{Benchmark's Actual Return}
 $$
 
-With method="annualized" it is the Active Premium (or annualized active return) of Bacon (2008) instead, one value per ticker over the whole date range:
+With the annualized method it is the Active Premium (or annualized active return) of Bacon (2008) instead, one value per ticker over the whole date range:
 
 $$
 \text{Active Premium} = \text{Annualized Return of the Asset} - \text{Annualized Return of the Benchmark}
@@ -831,7 +858,7 @@ $$
 
 Where N is the number of daily returns and the observations per year are 252 (365 for a ticker that trades on weekends, such as a cryptocurrency). The benchmark is annualized over the dates from the first to the last return of each ticker, so a ticker listed later is compared over its own history.
 
-With method="jensen" it is Jensen's Alpha (Jensen, 1968) instead, the return of each period above the return the Capital Asset Pricing Model (CAPM) expects given the asset's Beta, which assesses whether an investment outperformed or underperformed for its systematic risk:
+With the Jensen method it is Jensen's Alpha (Jensen, 1968) instead, the return of each period above the return the Capital Asset Pricing Model (CAPM) expects given the asset's Beta, which assesses whether an investment outperformed or underperformed for its systematic risk:
 
 $$
 \text{Jensen's Alpha} = \text{Asset's Actual Return} - \left[\text{Risk-Free Rate} + \text{Beta} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right]
@@ -841,29 +868,37 @@ Where Beta is estimated from the daily returns within each period (see `get_beta
 
 **See definition:** [https://en.wikipedia.org/wiki/Alpha_(finance)](https://en.wikipedia.org/wiki/Alpha_(finance)){:target="_blank"} and [https://en.wikipedia.org/wiki/Jensen%27s_alpha](https://en.wikipedia.org/wiki/Jensen%27s_alpha){:target="_blank"}
 
-For more information, see the following sources:
-
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period 1945-1964." The Journal of Finance, 23(2), 389-416.
-- PerformanceAnalytics: ActivePremium (ActiveReturn) ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** excess return, outperformance, active return, active premium, Jensen's alpha, Jensen alpha, jensens alpha, risk-adjusted excess return.
+
+**References:**
+
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- paper | Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period 1945-1964." The Journal of Finance, 23(2), 389-416.
+- library | Referenced against PerformanceAnalytics (R)'s [Return.annualized](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.annualized.R#L39){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.jensenAlpha](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.jensenAlpha.R#L34){:target="_blank"}
+- library | Shares similar logic as empyrical's [alpha](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1154){:target="_blank"}
+- library | Shares similar logic as empyrical's [annual_return](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L408){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1058){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.beta](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L89){:target="_blank"}
+- library | Shares similar logic as empyrical's [beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1314){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [ActivePremium](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/ActivePremium.R#L35){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>show_full_results (bool, optional):</u> Whether to show the actual and benchmark returns next to the
 Alpha. Only used when method="standard" or "annualized". Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation, in periods, across
-the full return history instead of per `period`. With method="standard" Alpha is the rolling
-mean excess return over this many periods; with method="jensen" it is the window of the Beta,
+the full return history instead of per `period`. With the standard method Alpha is the rolling
+mean excess return over this many periods; with the Jensen method it is the window of the Beta,
 estimated from the period returns of the last `rolling` periods instead of from the daily
-returns within each period. Not used with method="annualized". Defaults to None.
-- <u>method (str, optional):</u> "standard" for the difference of the returns of each period,
-"annualized" for the Active Premium, the difference of the annualized returns over the
-whole date range, one value per ticker (`period` and `rolling` are then not used), or
-"jensen" for Jensen's Alpha, the return of each period above the CAPM expected return.
+returns within each period. Not used with the annualized method. Defaults to None.
+- <u>method (str, optional):</u> The Alpha. Options are: "standard" (the difference of the returns of
+each period), "annualized" (the Active Premium, the difference of the annualized returns
+over the whole date range, one value per ticker; `period` and `rolling` are then not used),
+"jensen" (Jensen's Alpha, the return of each period above the CAPM expected return).
 Defaults to "standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -879,22 +914,23 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Alpha values. With method="annualized" a Series with the Active Premium per
+pd.DataFrame: Alpha values. With the annualized method a Series with the Active Premium per
 ticker, or with show_full_results=True a DataFrame with the annualized return of each
-ticker and of the benchmark next to it. With method="jensen" Jensen's Alpha values, with
+ticker and of the benchmark next to it. With the Jensen method Jensen's Alpha values, with
 the periods without a value left out.
 
 **Notes:**
 
 - The method retrieves historical data and calculates the Alpha for each asset in the Toolkit instance.
-- method="annualized" agrees with PerformanceAnalytics' ActivePremium on the daily returns (252 observations
+- The annualized method agrees with PerformanceAnalytics' ActivePremium on the daily returns (252 observations
 a year). PerformanceAnalytics compares on the dates both have a return; the Toolkit annualizes each on
 its own calendar within the ticker's history, so a cryptocurrency keeps its weekend returns.
-- With method="jensen", a daily period has no Beta within it, as the standard deviation of a single day is
-close to zero, so it gives no useful insights. The risk-free rate is the Toolkit's risk_free_rate, the
-10-year US Treasury yield by default. Many textbook definitions (Sharpe, 1994; the Ken French factors) use a
-short-term Treasury bill instead, which the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With the Jensen method, a daily period has no Beta within it, as the standard deviation of a single day is
+close to zero, so it gives no useful insights. The risk-free rate is the Toolkit's risk free rate, the 10-year
+US Treasury yield by default. Many textbook definitions (Sharpe, 1994; the Ken French factors) use a
+short-term Treasury bill instead, which the Toolkit uses when initialised with the 13-week Treasury bill as
+its risk free rate.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -924,7 +960,7 @@ Which returns:
 ---
 
 ## get_treynor_ratio
-The Treynor Ratio, also known as Treynor's Measure or the Reward-to-Volatility Ratio, is a financial metric used to assess the risk-adjusted performance of an investment portfolio or asset. It measures the excess return generated by the portfolio per unit of systematic or market risk, often represented by Beta. The Treynor Ratio is a valuable tool for evaluating the performance of investments in relation to their market risk exposure.
+Calculate the Treynor Ratio: the excess return an asset earns per unit of market risk (Beta), which judges its return against the risk that diversification cannot remove. Also known as Treynor's Measure or the Reward-to-Volatility Ratio, it evaluates the performance of investments in relation to their market risk exposure.
 
 The formula is as follows:
 
@@ -942,18 +978,23 @@ Where the benchmark volatility is the standard deviation of its daily returns wi
 
 **See definition:** [https://en.wikipedia.org/wiki/Treynor_ratio](https://en.wikipedia.org/wiki/Treynor_ratio){:target="_blank"}
 
-For more information, see the following sources:
-
-- Treynor, J.L. (1965). "How to Rate Management of Investment Funds." Harvard Business Review, 43(1), 63-75.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 77.
-- PerformanceAnalytics: TreynorRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** reward-to-volatility ratio.
+
+**References:**
+
+- paper | Treynor, J.L. (1965). "How to Rate Management of Investment Funds." Harvard Business Review, 43(1), 63-75.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 77.
+- library | Referenced against PerformanceAnalytics (R)'s [TreynorRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/TreynorRatio.R#L47){:target="_blank"} (modified)
+- library | Shares similar logic as quantstats' [treynor_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1469){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1058){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.beta](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L89){:target="_blank"}
+- library | Shares similar logic as empyrical's [beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1314){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -983,10 +1024,10 @@ it does not give any useful insights.
 - PerformanceAnalytics' TreynorRatio annualizes the excess return over the whole sample and estimates
 Beta on excess returns; the Toolkit takes the return and Beta of each period (Beta on the daily returns
 within it). The modified ratio follows the same formula.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -1016,7 +1057,7 @@ Which returns:
 ---
 
 ## get_sharpe_ratio
-Calculate the Sharpe ratio, a measure of risk-adjusted return that evaluates the excess return of an investment portfolio or asset per unit of risk taken.
+Calculate the Sharpe ratio: the excess return an asset earns per unit of volatility, the risk-adjusted return that makes assets with different risks comparable.
 
 The Sharpe ratio is calculated as the difference between the expected return of the asset or portfolio and the risk-free rate of return, divided by the standard deviation of the asset or portfolio's excess return. It quantifies the amount of return generated for each unit of risk assumed, providing insights into the investment's performance relative to the risk taken.
 
@@ -1038,21 +1079,21 @@ $$
 \text{Sharpe Ratio} = \frac{\text{Average Rolling Excess Return}}{\text{Standard Deviation of Rolling Excess Returns}}
 $$
 
-Note that the Risk Free Rate is already subtracted from these returns. The Toolkit's risk free rate is the 10-year US Treasury yield by default, while Sharpe (1994) and the Ken French factor files use a short-term Treasury bill. Initialise the Toolkit with risk_free_rate="13w" (the 13-week Treasury bill; "5y", "10y" and "30y" are the other options) to use a short rate instead.
+Note that the Risk Free Rate is already subtracted from these returns. The Toolkit's risk free rate is the 10-year US Treasury yield by default, while Sharpe (1994) and the Ken French factor files use a short-term Treasury bill. Initialise the Toolkit with the 13-week Treasury bill as its risk free rate (the 5, 10 and 30 year yields are the other choices) to use a short rate instead.
 
-By default the result is **not annualized**: it is a per-observation Sharpe ratio, so a value computed from daily returns is roughly SQRT(252) smaller than the annualized figure usually quoted in the literature (SQRT(52), SQRT(12) and SQRT(4) for weekly, monthly and quarterly returns respectively). Set annualize=True to multiply by that factor, to compare against published annualized Sharpe ratios.
+By default the result is **not annualized**: it is a per-observation Sharpe ratio, so a value computed from daily returns is roughly SQRT(252) smaller than the annualized figure usually quoted in the literature (SQRT(52), SQRT(12) and SQRT(4) for weekly, monthly and quarterly returns respectively). Annualizing multiplies by that factor, to compare against published annualized Sharpe ratios.
 
 The plain Sharpe ratio only looks at the mean and standard deviation of returns, implicitly assuming Gaussian, i.i.d. returns and ignoring how much uncertainty surrounds the estimate itself. The `method` parameter selects one of five corrections for that, each keeping the same excess returns and therefore the same underlying Sharpe ratio as its starting point:
 
-- `"smart"` - the Smart Sharpe ratio of quantstats, which divides the Sharpe ratio by an autocorrelation penalty so that serially correlated returns (whose standard deviation understates the risk over several periods) no longer flatter it:
+- The Smart Sharpe ratio of quantstats divides the Sharpe ratio by an autocorrelation penalty so that serially correlated returns (whose standard deviation understates the risk over several periods) no longer flatter it:
 
 $$
 \text{Smart Sharpe Ratio} = \frac{\text{SR}}{\sqrt{1 + 2 \cdot \sum_{k=1}^{n-1}\left(\frac{n - k}{n}\right) \cdot \left|\rho\right|^{k}}}
 $$
 
-where n is the number of excess returns and $$\rho$$ their first order autocorrelation (see `performance_model.get_autocorrelation_penalty`). It is a simplification of `"lo"`, which uses the autocorrelation at every lag rather than powers of the first one, and unlike `"lo"` it is not annualized unless annualize=True.
+where n is the number of excess returns and $$\rho$$ their first order autocorrelation (see `performance_model.get_autocorrelation_penalty`). It is a simplification of the Sharpe ratio of Lo (2002), which uses the autocorrelation at every lag rather than powers of the first one, and unlike that one it is only annualized on request.
 
-- `"lo"` - the annualized Sharpe ratio of Lo (2002), which corrects the annualization for serially correlated returns. SQRT(q) * SR assumes independent returns; with autocorrelated returns (smoothed prices of illiquid assets, hedge funds, momentum or mean reversion) the variance of a yearly return is no longer q times the variance of one return, and the yearly Sharpe ratio becomes:
+- The annualized Sharpe ratio of Lo (2002) corrects the annualization for serially correlated returns. SQRT(q) * SR assumes independent returns; with autocorrelated returns (smoothed prices of illiquid assets, hedge funds, momentum or mean reversion) the variance of a yearly return is no longer q times the variance of one return, and the yearly Sharpe ratio becomes:
 
 $$
 \operatorname{SR}(q) = \eta(q) \cdot \text{SR},\;\; \eta(q) = \frac{q}{\sqrt{q + 2 \cdot \sum_{k=1}^{q-1}(q - k) \cdot \rho_{k}}}
@@ -1060,19 +1101,19 @@ $$
 
 where q is the number of observations in a year and $$\rho_{k}$$ the sample autocorrelation of the excess returns at lag k. Positive autocorrelation lowers the annualized ratio below SQRT(q) * SR, negative autocorrelation raises it. Sample autocorrelations at lags close to the sample size rest on a handful of pairs, so the sum runs over `lags` lags and takes the autocorrelations beyond them as 0. Each $$\rho_{k}$$ is corrected for its small-sample bias −(n − k) / (n · (n − 1)) (Moran, 1948), which the (q − k) weights would otherwise turn into an overstated ratio on short samples, and fewer than 30 observations give NaN: a week or a month of daily returns, or a rolling window below 30, so use quarterly or yearly periods or a longer window. The result is always annualized.
 
-- `"adjusted"` - the Adjusted Sharpe Ratio (ASR, Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically:
+- The Adjusted Sharpe Ratio (ASR, Pezier & White, 2006) penalizes (or rewards) the Sharpe ratio for negative skewness and excess kurtosis using a Cornish-Fisher-style expansion, so that two strategies with the same Sharpe ratio but different tail shapes are no longer scored identically:
 
 $$
 \text{ASR} = \text{SR} \cdot \left[1 + \frac{S}{6} \cdot \text{SR} - \frac{K - 3}{24} \cdot \text{SR}^{2}\right]
 $$
 
-- `"probabilistic"` - the Probabilistic Sharpe Ratio (PSR) is the probability that the true (population) Sharpe ratio exceeds `benchmark_sharpe_ratio`, folding the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio so that a short, lumpy sample no longer looks more convincing than it is:
+- The Probabilistic Sharpe Ratio (PSR) is the probability that the true (population) Sharpe ratio exceeds `benchmark_sharpe_ratio`, folding the skewness and (non-excess) kurtosis of the underlying returns into the standard error of the Sharpe ratio so that a short, lumpy sample no longer looks more convincing than it is:
 
 $$
 \operatorname{PSR}(\text{SR}^{*}) = \Phi\left(\frac{(\widehat{\text{SR}} - \text{SR}^{*}) \cdot \sqrt{n - 1}}{\sqrt{1 - \gamma_{3} \cdot \widehat{\text{SR}} + \frac{\gamma_{4} - 1}{4} \cdot \widehat{\text{SR}}^{2}}}\right)
 $$
 
-- `"deflated"` - the Deflated Sharpe Ratio (DSR) is the Probabilistic Sharpe Ratio corrected for the fact that a reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting"). It estimates the Sharpe ratio one would expect to observe purely by chance as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and uses that expected maximum as the benchmark SR* in the Probabilistic Sharpe Ratio formula instead of a naive benchmark such as 0:
+- The Deflated Sharpe Ratio (DSR) is the Probabilistic Sharpe Ratio corrected for the fact that a reported Sharpe ratio is often the best of many strategy variations, parameter combinations, or lookback windows tried during a backtest (multiple testing / selection bias / "backtest overfitting"). It estimates the Sharpe ratio one would expect to observe purely by chance as the maximum of `n_trials` independent trials under the null hypothesis of no skill, and uses that expected maximum as the benchmark SR* in the Probabilistic Sharpe Ratio formula instead of a naive benchmark such as 0:
 
 $$
 \text{SR}^{*} = \sqrt{\text{Var}\left[\text{SR}_{\text{trials}}\right]} \cdot \left[(1 - \gamma) \cdot \Phi^{- 1}\left(1 - \frac{1}{N}\right) + \gamma \cdot \Phi^{- 1}\left(1 - \frac{1}{N \cdot e}\right)\right]
@@ -1086,15 +1127,37 @@ This codebase does not track "N literal strategy trials" - there is no record of
 
 **Also known as:** risk-adjusted return, reward-to-variability ratio. The variants are also known as the Pezier and White Adjusted Sharpe Ratio (ASR), the Sharpe ratio significance probability (PSR) and the backtest overfitting or selection-bias-adjusted Sharpe ratio (DSR).
 
+**References:**
+
+- library | Referenced against quantstats' [smart_sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1000){:target="_blank"} (with get_autocorrelation_penalty)
+- library | Referenced against quantstats' [autocorr_penalty](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L875){:target="_blank"}
+- library | Referenced against quantstats' [probabilistic_sortino_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1404){:target="_blank"}
+- library | Referenced against quantstats' [probabilistic_adjusted_sortino_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1434){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as quantstats' [rolling_sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1030){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [SharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SharpeRatio.R#L80){:target="_blank"}
+- library | Shares similar logic as empyrical's [sharpe_ratio](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L652){:target="_blank"}
+- library | Shares similar logic as quantstats' [sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L938){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [AdjustedSharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/AdjustedSharpeRatio.R#L35){:target="_blank"}
+- library | Shares similar logic as quantstats' [probabilistic_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1297){:target="_blank"}
+- library | Shares similar logic as quantstats' [probabilistic_sharpe_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1369){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [ProbSharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/ProbSharpeRatio.R#L47){:target="_blank"}
+- library | Shares similar logic as RiskLabAI's [probabilistic_sharpe_ratio](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/probabilistic_sharpe_ratio.py#L16){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_deflated_sharpe_ratio](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L3077){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_expected_max_sharpe](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L3048){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
 Defaults to None, which calculates the Sharpe ratio within each period.
-- <u>method (str, optional):</u> Which Sharpe ratio to calculate, one of "standard", "smart", "lo",
-"adjusted", "probabilistic" or "deflated", as described above. Defaults to "standard".
+- <u>method (str, optional):</u> Which Sharpe ratio to calculate, as described above. Options are:
+"standard" (the Sharpe ratio), "smart" (the Smart Sharpe ratio), "lo" (the annualized Sharpe
+ratio of Lo), "adjusted" (the Adjusted Sharpe Ratio), "probabilistic" (the Probabilistic
+Sharpe Ratio), "deflated" (the Deflated Sharpe Ratio). Defaults to "standard".
 - <u>benchmark_sharpe_ratio (float, optional):</u> The hypothesized or benchmark Sharpe ratio
 (SR*) to test the observed Sharpe ratio against. Only used when method="probabilistic".
 It is a per-observation Sharpe ratio, or an annualized one when annualize=True.
@@ -1145,26 +1208,26 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Sharpe ratio values. For method="probabilistic" and method="deflated"
+pd.DataFrame: Sharpe ratio values. For the Probabilistic and Deflated Sharpe Ratios
 these are probabilities between 0 and 1 rather than ratios.
 
 **Notes:**
 
-- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+- The daily period needs intraday - <u>data (initialise the Toolkit with an intraday period):</u> the ratio per day
 is then computed from the intraday bars within each day, with the daily risk free rate spread over the
 bars of a day. Without intraday data a single day holds one return, so the result is empty and logs why.
 - The method retrieves historical data and calculates the Sharpe ratio for each asset in the Toolkit instance.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default; choose
-risk_free_rate="13w" when initialising the Toolkit for the short-term rate Sharpe (1994) uses.
-- The "adjusted", "probabilistic" and "deflated" variants use the **non-excess (raw)** kurtosis
-convention, i.e. a Normal distribution has a kurtosis of 3, not 0. Internally this calls
-`risk_model.get_kurtosis(..., fisher=False)`.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-- `get_sharpe_ratio(method="probabilistic")` returns the probability that each Sharpe ratio is genuine,
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default; initialise the
+Toolkit with the 13-week Treasury bill as its risk free rate for the short-term rate Sharpe (1994) uses.
+- The Adjusted, Probabilistic and Deflated Sharpe Ratios use the **non-excess (raw)** kurtosis
+convention, i.e. a Normal distribution has a kurtosis of 3, not 0, the non-excess kurtosis of
+`risk_model.get_kurtosis`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
+- The Probabilistic Sharpe Ratio is the probability that each Sharpe ratio is genuine,
 i.e. above `benchmark_sharpe_ratio` once the sample length, skewness and kurtosis are accounted for.
-- method="smart" agrees with quantstats' smart_sharpe (stats.smart_sharpe,
-[https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}) on the same excess returns; quantstats returns a penalty of 1
-where the autocorrelation is undefined (fewer than two returns, or returns without variation), the Toolkit NaN.
+- The Smart Sharpe ratio agrees with quantstats' smart_sharpe on the same excess returns; quantstats returns a
+penalty of 1 where the autocorrelation is undefined (fewer than two returns, or returns without variation),
+the Toolkit NaN.
 
 **As an example:**
 
@@ -1195,7 +1258,7 @@ Which returns:
 ---
 
 ## get_sortino_ratio
-The Sortino Ratio is a financial metric used to assess the risk-adjusted performance of an investment portfolio or asset by considering only the downside risk. It measures the excess return generated by the portfolio per unit of downside risk, specifically, the standard deviation of negative returns. The Sortino Ratio is particularly useful for investors who are primarily concerned with minimizing the downside risk of their investments.
+Calculate the Sortino Ratio: the excess return an asset earns per unit of downside risk, so that only the volatility of losses counts against it. It measures the excess return per unit of the downside deviation, the standard deviation of the returns below the target, which suits investors who are primarily concerned with the downside of their investments.
 
 The formula is as follows:
 
@@ -1219,22 +1282,22 @@ $$
 \text{Sortino Ratio} = \frac{\text{Average Rolling Excess Return}}{\text{Rolling Downside Deviation}}
 $$
 
-Note that the Risk Free Rate is already subtracted from these returns. It is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default; initialise the Toolkit with risk_free_rate="13w" for a short-term Treasury bill rate instead.
+Note that the Risk Free Rate is already subtracted from these returns. It is the Toolkit's risk free rate, the 10-year US Treasury yield by default; initialise the Toolkit with the 13-week Treasury bill as its risk free rate for a short-term rate instead.
 
 A period needs at least two observations for a Sortino ratio, with a single one the ratio would only show its sign, so such periods are left out.
 
-As with the Sharpe Ratio, the result is **not annualized** by default: it is a per-observation ratio, roughly SQRT(252), SQRT(52), SQRT(12) or SQRT(4) smaller than the annualized figure for daily, weekly, monthly or quarterly returns respectively. Set annualize=True to multiply by that factor.
+As with the Sharpe Ratio, the result is **not annualized** by default: it is a per-observation ratio, roughly SQRT(252), SQRT(52), SQRT(12) or SQRT(4) smaller than the annualized figure for daily, weekly, monthly or quarterly returns respectively. Annualizing multiplies by that factor.
 
 The `method` parameter selects a variant of the same ratio:
 
-- `"smart"` - the Smart Sortino ratio of quantstats, the Sortino ratio divided by the autocorrelation penalty that also gives the Smart Sharpe ratio, so that serially correlated returns no longer flatter it (see `performance_model.get_autocorrelation_penalty`):
+- The Smart Sortino ratio of quantstats is the Sortino ratio divided by the autocorrelation penalty that also gives the Smart Sharpe ratio, so that serially correlated returns no longer flatter it (see `performance_model.get_autocorrelation_penalty`):
 
 $$
 \text{Smart Sortino Ratio} = \frac{\text{Sortino Ratio}}{\sqrt{1 + 2 \cdot \sum_{k=1}^{n-1}\left(\frac{n - k}{n}\right) \cdot \left|\rho\right|^{k}}}
 $$
 
-- `"adjusted"` - the Sortino ratio divided by SQRT(2), as Jack Schwager proposed to make it comparable with the Sharpe ratio: for symmetric returns the downside deviation is about 1 / SQRT(2) times the standard deviation, so the plain Sortino ratio is about SQRT(2) times the Sharpe ratio.
-- `"probabilistic"` and `"probabilistic_adjusted"` - the probability that the true Sortino (or adjusted Sortino) ratio is above 0, with the standard error of the Probabilistic Sharpe Ratio of Bailey and López de Prado (2012) applied to it, as quantstats does:
+- The adjusted Sortino ratio is the Sortino ratio divided by SQRT(2), as Jack Schwager proposed to make it comparable with the Sharpe ratio: for symmetric returns the downside deviation is about 1 / SQRT(2) times the standard deviation, so the plain Sortino ratio is about SQRT(2) times the Sharpe ratio.
+- The probabilistic Sortino ratio and the probabilistic adjusted Sortino ratio are the probability that the true Sortino (or adjusted Sortino) ratio is above 0, with the standard error of the Probabilistic Sharpe Ratio of Bailey and López de Prado (2012) applied to it, as quantstats does:
 
 $$
 \text{PSR} = \Phi\left(\frac{\text{SoR} \cdot \sqrt{n - 1}}{\sqrt{1 - \gamma_{3} \cdot \text{SoR} + \frac{\gamma_{4} - 1}{4} \cdot \text{SoR}^{2}}}\right)
@@ -1244,22 +1307,37 @@ where SoR is the per-observation (adjusted) Sortino ratio, $$\gamma_{3}$$ the sk
 
 **See definition:** [https://en.wikipedia.org/wiki/Sortino_ratio](https://en.wikipedia.org/wiki/Sortino_ratio){:target="_blank"}
 
-For more information, see the following sources:
+**References:**
 
-- Sortino, F.A., & Price, L.N. (1994). "Performance Measurement in a Downside Risk Framework." Journal of Investing, 3(3), 59-64.
-- Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
-- quantstats: stats.sortino, stats.smart_sortino, stats.adjusted_sortino, stats.probabilistic_sortino_ratio and stats.probabilistic_adjusted_sortino_ratio, the reference for the variants ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
+- paper | Sortino, F.A., & Price, L.N. (1994). "Performance Measurement in a Downside Risk Framework." Journal of Investing, 3(3), 59-64.
+- paper | Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
+- library | Referenced against quantstats' [smart_sortino](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1158){:target="_blank"} (with get_autocorrelation_penalty)
+- library | Referenced against quantstats' [adjusted_sortino](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1258){:target="_blank"}
+- library | Referenced against quantstats' [probabilistic_sortino_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1404){:target="_blank"}
+- library | Referenced against quantstats' [probabilistic_adjusted_sortino_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1434){:target="_blank"}
+- library | Referenced against quantstats' [autocorr_penalty](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L875){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as quantstats' [rolling_sortino](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1188){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [SortinoRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SortinoRatio.R#L48){:target="_blank"}
+- library | Shares similar logic as empyrical's [sortino_ratio](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L727){:target="_blank"}
+- library | Shares similar logic as quantstats' [sortino](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1085){:target="_blank"}
+- library | Shares similar logic as quantstats' [probabilistic_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1297){:target="_blank"}
+- library | Shares similar logic as quantstats' [probabilistic_sharpe_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1369){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [ProbSharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/ProbSharpeRatio.R#L47){:target="_blank"}
+- library | Shares similar logic as RiskLabAI's [probabilistic_sharpe_ratio](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/probabilistic_sharpe_ratio.py#L16){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Sortino ratio is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
-- <u>method (str, optional):</u> Which Sortino ratio to calculate, one of "standard", "smart",
-"adjusted", "probabilistic" or "probabilistic_adjusted", as described above.
-Defaults to "standard".
+- <u>method (str, optional):</u> Which Sortino ratio to calculate, as described above. Options are:
+"standard" (the Sortino ratio), "smart" (the Smart Sortino ratio), "adjusted" (divided by
+SQRT(2)), "probabilistic" (the probabilistic Sortino ratio), "probabilistic_adjusted" (the
+probabilistic adjusted Sortino ratio). Defaults to "standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -1279,21 +1357,21 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Sortino ratio values. For method="probabilistic" and
-"probabilistic_adjusted" these are probabilities between 0 and 1.
+pd.DataFrame: Sortino ratio values. For the probabilistic and
+probabilistic adjusted methods these are probabilities between 0 and 1.
 
 **Notes:**
 
-- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+- The daily period needs intraday - <u>data (initialise the Toolkit with an intraday period):</u> the ratio per day
 is then computed from the intraday bars within each day, with the daily risk free rate spread over the
 bars of a day. Without intraday data a single day holds one return, so the result is empty and logs why.
 - The method retrieves historical data and calculates the Sortino ratio for each asset in the Toolkit instance.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 - The variants agree with quantstats' sortino, smart_sortino, adjusted_sortino and the probabilistic Sortino
-ratios (with annualize=False) on the same excess returns. quantstats returns a penalty of 1 where the
+ratios (not annualized) on the same excess returns. quantstats returns a penalty of 1 where the
 autocorrelation is undefined (fewer than two returns, or returns without variation), the Toolkit NaN.
 
 **As an example:**
@@ -1324,36 +1402,37 @@ Which returns:
 ---
 
 ## get_safety_first_ratio
-Calculate Roy's Safety-First Ratio of an investment portfolio or asset's returns.
+Calculate Roy's Safety-First Ratio: how many standard deviations the mean return lies above a minimum acceptable return; the higher the ratio, the lower the probability of falling below that threshold.
 
 Roy (1952) argues that an investor first of all wants to avoid a disaster, a return below a threshold, and so prefers the portfolio with the lowest probability of falling below it. For normally distributed returns that probability is N(-Safety-First Ratio), so the best portfolio is the one with the highest ratio: the number of standard deviations the expected return lies above the threshold.
 
 The formula is as follows:
 
 $$
-\text{Safety-First Ratio} = \frac{\operatorname{Mean}(\text{Return}) - \text{Threshold per Observation}}{\text{Standard Deviation}(\text{Return})}
+\text{Safety-First Ratio} = \frac{\operatorname{Mean}(\text{Return}) - \text{MAR per Observation}}{\text{Standard Deviation}(\text{Return})}
 $$
 
 $$
-\text{Threshold per Observation} = (1 + \text{Threshold})^{\frac{1}{\text{Observations per Year}}} - 1
+\text{MAR per Observation} = (1 + \text{MAR})^{\frac{1}{\text{Observations per Year}}} - 1
 $$
 
-The threshold is an annual return, compounded down to the returns the ratio is computed from: by default the **daily** returns falling inside each `period`, 252 a year for a ticker that trades on trading days and 365 for one that also trades on weekends (such as a cryptocurrency). With `rolling`, `period` instead sets the frequency of the returns and the ratio is computed over a rolling window of `rolling` such returns, with the threshold compounded to that frequency. The standard deviation is the sample one (ddof=1). With the risk-free rate as the threshold the ratio is the Sharpe Ratio (`get_sharpe_ratio`); the default threshold of 0 is Roy's disaster of losing money.
+Where MAR is the minimum acceptable return, the threshold. It is an annual return, compounded down to the returns the ratio is computed from: by default the **daily** returns falling inside each `period`, 252 a year for a ticker that trades on trading days and 365 for one that also trades on weekends (such as a cryptocurrency). With `rolling`, `period` instead sets the frequency of the returns and the ratio is computed over a rolling window of `rolling` such returns, with the threshold compounded to that frequency. The standard deviation is the sample one (with n - 1 in the denominator). With the risk-free rate as the threshold the ratio is the Sharpe Ratio (`get_sharpe_ratio`); the default threshold of 0 is Roy's disaster of losing money.
 
 As with the Sharpe Ratio, the result is **not annualized**: it is a per-observation ratio, so multiply by SQRT(252), SQRT(52), SQRT(12) or SQRT(4) for daily, weekly, monthly or quarterly returns respectively before comparing against published annualized figures.
 
-For more information, see the following paper:
-
-- Roy, A.D. (1952). "Safety First and the Holding of Assets." Econometrica, 20(3), 431-449.
-
 **Also known as:** SFRatio, Roy's safety-first criterion.
+
+**References:**
+
+- paper | Roy, A.D. (1952). "Safety First and the Holding of Assets." Econometrica, 20(3), 431-449.
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>threshold (float, optional):</u> The minimum acceptable (shortfall) return as an annual decimal return,
-e.g. 0.02 for 2% a year. Defaults to 0.0.
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>minimum_acceptable_return (float, optional):</u> The minimum acceptable (shortfall) return as an annual
+decimal return, e.g. 0.02 for 2% a year. Defaults to 0.0.
 - <u>rolling (int &#124; None, optional):</u> The rolling window size to use for the calculation. If set, the
 ratio is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
@@ -1375,11 +1454,11 @@ pd.DataFrame: Safety-First Ratio values.
 
 **Notes:**
 
-- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+- The daily period needs intraday - <u>data (initialise the Toolkit with an intraday period):</u> the ratio per day
 is then computed from the intraday bars within each day, with the threshold compounded over the bars
 of a year. Without intraday data a single day holds one return, so the result is empty and logs why.
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -1393,7 +1472,7 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_safety_first_ratio(threshold=0.02)
+toolkit.performance.get_safety_first_ratio(minimum_acceptable_return=0.02)
 ```
 
 Which returns:
@@ -1409,7 +1488,7 @@ Which returns:
 ---
 
 ## get_upside_potential_ratio
-Calculate the Upside Potential Ratio of an investment portfolio or asset's returns.
+Calculate the Upside Potential Ratio: the average gain above a minimum acceptable return per unit of downside deviation below it, how much upside an asset offers for the downside it carries.
 
 The Upside Potential Ratio of Sortino, van der Meer & Plantinga (1999) divides the expected return above a minimum acceptable return (MAR) by the downside deviation below it. Where the Sortino Ratio rewards the mean excess return, which the losses lower, this ratio rewards only the potential above the MAR and penalizes only the risk below it, each counted once.
 
@@ -1433,16 +1512,19 @@ A period needs at least two observations, and a period without a return below th
 
 As with the Sortino Ratio, the result is a ratio of the observations within the period and is not annualized.
 
-For more information, see the following paper:
-
-- Sortino, F.A., van der Meer, R., & Plantinga, A. (1999). "The Dutch Triangle." Journal of Portfolio Management, 26(1), 50-57.
-
 **Also known as:** UPR.
+
+**References:**
+
+- paper | Sortino, F.A., van der Meer, R., & Plantinga, A. (1999). "The Dutch Triangle." Journal of Portfolio Management, 26(1), 50-57.
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [UpsidePotentialRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/UpsidePotentialRatio.R#L72){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The rolling window size to use for the calculation. If set, the
 ratio is calculated over a rolling window of this many periods across the full return history
 instead of per `period`. Defaults to None.
@@ -1464,14 +1546,14 @@ pd.DataFrame: Upside Potential Ratio values.
 
 **Notes:**
 
-- period="daily" needs intraday - <u>data (initialise the Toolkit with an intraday_period):</u> the ratio per day
+- The daily period needs intraday - <u>data (initialise the Toolkit with an intraday period):</u> the ratio per day
 is then computed from the intraday bars within each day, with the daily risk free rate spread over the
 bars of a day. Without intraday data a single day holds one return, so the result is empty and logs why.
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -1501,7 +1583,7 @@ Which returns:
 ---
 
 ## get_ulcer_performance_index
-Calculate the Ulcer Performance Index (UPI), alternatively called Martin ratio, a measure of risk-adjusted return that evaluates the excess return of an investment portfolio or asset per unit of risk taken.
+Calculate the Ulcer Performance Index (UPI), also called the Martin ratio: the excess return an asset earns per unit of the Ulcer Index, the depth and length of its drawdowns.
 
 The formula is as follows:
 
@@ -1517,10 +1599,18 @@ It measures the excess return earned per unit of drawdown pain: the depth and th
 
 **Also known as:** UPI, Martin ratio.
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [MartinRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/MartinRatio.R#L33){:target="_blank"}
+- library | Shares similar logic as quantstats' [ulcer_performance_index](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1855){:target="_blank"}
+- library | Shares similar logic as ffn's [to_ulcer_performance_index](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L2989){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The number of trailing days whose highest value each day's drawdown
 is measured from. Defaults to None, which measures it from the highest value since the start of
 the period, as Martin (1987) defines the Ulcer Index.
@@ -1543,10 +1633,10 @@ pd.DataFrame: Ulcer Performance Index values.
 **Notes:**
 
 - The method retrieves historical data and calculates the UPI for each asset in the Toolkit instance.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -1576,9 +1666,9 @@ Which returns:
 ---
 
 ## get_calmar_ratio
-Calculate the Calmar Ratio of an investment portfolio or asset's returns.
+Calculate the Calmar Ratio: the return an asset earns per unit of its Maximum Drawdown, how well the return pays for the worst fall.
 
-The Calmar Ratio is a risk-adjusted return metric that divides the return of an investment portfolio or asset over each period (a calendar-year return for period='yearly', a quarterly return for period='quarterly') by its Maximum Drawdown, providing insight into the return achieved per unit of the worst historical loss of value.
+The Calmar Ratio is a risk-adjusted return metric that divides the return of an investment portfolio or asset over each period (a calendar-year return for the yearly period, a quarterly return for the quarterly one) by its Maximum Drawdown, providing insight into the return achieved per unit of the worst historical loss of value.
 
 The formula is as follows:
 
@@ -1586,7 +1676,7 @@ $$
 \text{Calmar Ratio} = \frac{\text{Return}}{\left|\text{Maximum Drawdown}\right|}
 $$
 
-With method="annualized" it is the definition of the reference libraries instead, one value per ticker over the whole date range:
+With the annualized method it is the definition of the reference libraries instead, one value per ticker over the whole date range:
 
 $$
 \text{Calmar Ratio} = \frac{\text{Annualized Return}}{\left|\text{Maximum Drawdown}\right|}
@@ -1600,28 +1690,31 @@ Where both are measured over the daily returns of the whole date range, N is the
 
 **See definition:** [https://en.wikipedia.org/wiki/Calmar_ratio](https://en.wikipedia.org/wiki/Calmar_ratio){:target="_blank"}
 
-For more information, see the following sources:
-
-- Young, T.W. (1991). "Calmar Ratio: A Smoother Tool." Futures, 20(1), 40.
-- PerformanceAnalytics: CalmarRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-- empyrical: calmar_ratio ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
-- quantstats: stats.calmar ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-- ffn: calc_calmar_ratio ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-
 **Also known as:** Drawdown ratio.
+
+**References:**
+
+- paper | Young, T.W. (1991). "Calmar Ratio: A Smoother Tool." Futures, 20(1), 40.
+- library | Referenced against PerformanceAnalytics (R)'s [Return.annualized](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.annualized.R#L39){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CalmarRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CalmarRatio.R#L50){:target="_blank"}
+- library | Shares similar logic as empyrical's [calmar_ratio](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L548){:target="_blank"}
+- library | Shares similar logic as quantstats' [calmar](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1788){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_calmar_ratio](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L2945){:target="_blank"}
+- library | Shares similar logic as empyrical's [annual_return](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L408){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Maximum Drawdown within the
 specified period or for the entire period. Thus whether to look at the Maximum Drawdown
 within a specific year (if period = 'yearly') or look at the entirety of all years.
 Defaults to True.
-- <u>method (str, optional):</u> "standard" for the ratio per period, or "annualized" for the
-annualized return over the whole date range divided by the Maximum Drawdown over it,
-one value per ticker (`period` and `within_period` are then not used). Defaults to
-"standard".
+- <u>method (str, optional):</u> The ratio. Options are: "standard" (the ratio per period),
+"annualized" (the annualized return over the whole date range divided by the Maximum
+Drawdown over it, one value per ticker; `period` and `within_period` are then not used).
+Defaults to "standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -1636,17 +1729,17 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Calmar Ratio values, or with method="annualized" a Series with one value
+pd.DataFrame: Calmar Ratio values, or with the annualized method a Series with one value
 per ticker.
 
 **Notes:**
 
 - The method retrieves historical data and calculates the Calmar Ratio for each asset in
 the Toolkit instance.
-- method="annualized" agrees with PerformanceAnalytics' CalmarRatio, empyrical's calmar_ratio and quantstats'
+- The annualized method agrees with PerformanceAnalytics' CalmarRatio, empyrical's calmar_ratio and quantstats'
 calmar on the daily returns (252 observations a year). ffn (calc_calmar_ratio) counts the years of the
 annualized return in calendar days, which differs slightly.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -1677,9 +1770,9 @@ Which returns:
 ---
 
 ## get_sterling_ratio
-Calculate the Sterling Ratio of an investment portfolio or asset's returns.
+Calculate the Sterling Ratio: the return an asset earns per unit of the average depth of its deepest drawdowns, a Calmar ratio that rests on more than one drawdown.
 
-The Sterling Ratio is a risk-adjusted return metric that divides the return of an investment portfolio or asset over each period (a calendar-year return for period='yearly', a quarterly return for period='quarterly') by the average depth of its deepest drawdowns plus a fixed adjustment (conventionally 10%), so that it reflects the typical size of its large drawdowns rather than only the single worst one (as the Calmar Ratio does).
+The Sterling Ratio is a risk-adjusted return metric that divides the return of an investment portfolio or asset over each period (a calendar-year return for the yearly period, a quarterly return for the quarterly one) by the average depth of its deepest drawdowns plus a fixed adjustment (conventionally 10%), so that it reflects the typical size of its large drawdowns rather than only the single worst one (as the Calmar Ratio does).
 
 The formula is as follows (Bacon, 2008):
 
@@ -1693,7 +1786,7 @@ $$
 
 Where each drawdown runs from a peak to the trough before wealth is back at that peak (as in `toolkit.risk.get_drawdown_table`), measured on the daily returns within the period by default (a drawdown that has not recovered by the end of the period included), and d is 3 unless set otherwise, or the number of drawdowns when there are fewer. A period without a drawdown has a $$D_{\text{Lar}}$$ of 0.
 
-With method="annualized" the ratio is taken once over the whole date range instead, one value per ticker:
+With the annualized method the ratio is taken once over the whole date range instead, one value per ticker:
 
 $$
 \text{Sterling Ratio} = \frac{\text{Annualized Return}}{\left|D_{Lar}\right| + \text{Adjustment}}
@@ -1703,22 +1796,25 @@ $$
 \text{Annualized Return} = \operatorname{PRODUCT}(1 + \text{Daily Return})^{\frac{\text{Observations per Year}}{N}} - 1
 $$
 
-Where both are measured over the daily returns of the whole date range, N is their number and the observations per year are 252 (365 for a ticker that trades on weekends). With largest_drawdowns=1, $$D_{\text{Lar}}$$ is the Maximum Drawdown, which gives the SterlingRatio of PerformanceAnalytics.
+Where both are measured over the daily returns of the whole date range, N is their number and the observations per year are 252 (365 for a ticker that trades on weekends). With one largest drawdown, $$D_{\text{Lar}}$$ is the Maximum Drawdown, which gives the SterlingRatio of PerformanceAnalytics.
 
 The original form of Deane Sterling Jones, popularised by Kestner (1996), divides the compound annual return of the last three years by the average of the maximum drawdown of each of those three years plus 10%: an average of annual maxima, one per year, where $$D_{\text{Lar}}$$ averages the deepest drawdowns wherever they fall (two of them can lie in the same year).
 
-For more information, see the following sources:
-
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- Kestner, L.N. (1996). "Getting a Handle on True Performance." Futures, 25(1), 44-46.
-- PerformanceAnalytics: SterlingRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** Sterling-Calmar ratio.
+
+**References:**
+
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- paper | Kestner, L.N. (1996). "Getting a Handle on True Performance." Futures, 25(1), 44-46.
+- library | Referenced against PerformanceAnalytics (R)'s [Return.annualized](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.annualized.R#L39){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [SterlingRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CalmarRatio.R#L85){:target="_blank"}
+- library | Shares similar logic as empyrical's [annual_return](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L408){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to measure the drawdowns on the daily returns within
 each period, or on the period returns of the whole history, one $$D_{\text{Lar}}$$ for every period. Thus
 whether to look at the drawdowns within a specific year (if period = 'yearly') or at the
@@ -1727,10 +1823,10 @@ entirety of all years. Defaults to True.
 conventionally 0.1 (10%). Defaults to 0.1.
 - <u>largest_drawdowns (int, optional):</u> The number d of deepest drawdowns averaged into $$D_{\text{Lar}}$$;
 1 gives the Maximum Drawdown. Defaults to 3.
-- <u>method (str, optional):</u> "standard" for the ratio per period, or "annualized" for the
-annualized return over the whole date range divided by the Average Largest Drawdown over it
-plus the adjustment, one value per ticker (`period` and `within_period` are then not used).
-Defaults to "standard".
+- <u>method (str, optional):</u> The ratio. Options are: "standard" (the ratio per period),
+"annualized" (the annualized return over the whole date range divided by the Average
+Largest Drawdown over it plus the adjustment, one value per ticker; `period` and
+`within_period` are then not used). Defaults to "standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -1745,16 +1841,16 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Sterling Ratio values, or with method="annualized" a Series with one value
+pd.DataFrame: Sterling Ratio values, or with the annualized method a Series with one value
 per ticker.
 
 **Notes:**
 
 - The method retrieves historical data and calculates the Sterling Ratio for each asset in
 the Toolkit instance.
-- method="annualized" with largest_drawdowns=1 agrees with PerformanceAnalytics' SterlingRatio on the
+- The annualized method with one largest drawdown agrees with PerformanceAnalytics' SterlingRatio on the
 daily returns (252 observations a year, excess = `adjustment`).
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -1785,7 +1881,7 @@ Which returns:
 ---
 
 ## get_burke_ratio
-Calculate the Burke Ratio of an investment portfolio or asset's returns.
+Calculate the Burke Ratio: the excess return an asset earns per unit of the square root of its summed squared drawdowns, which weighs deep drawdowns more than shallow ones.
 
 The Burke Ratio is a risk-adjusted return metric that divides the excess return (return minus the risk-free rate) of an investment portfolio or asset by the square root of the sum of its squared drawdowns, penalizing both the frequency and depth of drawdowns more heavily than the Calmar or Sterling Ratios.
 
@@ -1803,16 +1899,18 @@ $$
 \text{Modified Burke Ratio} = \frac{\text{Return} - \text{Risk-Free Rate}}{\sqrt{\frac{\sum(\text{Drawdown}_{d}^{2})}{N}}} = \text{Burke Ratio} \cdot \sqrt{N}
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Burke, G. (1994). "A Sharper Sharpe Ratio." Futures, 23(3), 56.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, pp. 90-91.
-- PerformanceAnalytics: BurkeRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- paper | Burke, G. (1994). "A Sharper Sharpe Ratio." Futures, 23(3), 56.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, pp. 90-91.
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [BurkeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/BurkeRatio.R#L37){:target="_blank"} (modified)
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the drawdowns within the specified
 period or for the entire period. Thus whether to look at the drawdowns within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -1842,10 +1940,10 @@ the Toolkit instance.
 - PerformanceAnalytics' BurkeRatio sums one drawdown per episode (consecutive negative returns) and
 annualizes the return over the whole sample, so its values differ; the modified ratio relates to the
 plain one by the same factor SQRT(N) in both.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -1876,7 +1974,7 @@ Which returns:
 ---
 
 ## get_pain_ratio
-Calculate the Pain Ratio of an investment portfolio or asset's returns.
+Calculate the Pain Ratio: the excess return an asset earns per unit of the Pain Index, the average depth of its drawdowns over every day.
 
 The Pain Ratio divides the excess return (return minus the risk-free rate) of an investment portfolio or asset by its Pain Index, the mean depth of its drawdowns. Where the Ulcer Performance Index squares the drawdowns, which makes the deep ones dominate, the Pain Index weighs every observation under water by its depth alone.
 
@@ -1894,16 +1992,19 @@ $$
 \text{Drawdown}_{t} = \frac{\text{Wealth}_{t}}{\text{Peak}_{t}} - 1,\;\; \text{with Peak\_t the highest wealth since the first return}
 $$
 
-With within_period=True (the default) the observations are the daily returns within each period: N is the number of days in the period, and the wealth and its peak restart from 1 before the first return of every period, so a loss on its first day is a drawdown as well. With within_period=False the observations are the `period` returns (such as the yearly returns) of the full history: N is the number of those periods, and every period's excess return is divided by that one Pain Index, as the Calmar, Sterling and Burke ratios do. Observations at a new high count as a drawdown of 0. The risk-free rate is compounded over the days of the period, so a partial period (such as the current year) earns the rate of the days it covers. Bacon (2013) divides the annualized return minus the risk-free rate; for period="yearly" that is the same for every full year, and for other periods the ratio uses the period's own (not annualized) excess return, as the Ulcer Performance Index and the Burke Ratio do.
+Within periods (the default) the observations are the daily returns within each period: N is the number of days in the period, and the wealth and its peak restart from 1 before the first return of every period, so a loss on its first day is a drawdown as well. Over the whole history the observations are the `period` returns (such as the yearly returns) of the full history: N is the number of those periods, and every period's excess return is divided by that one Pain Index, as the Calmar, Sterling and Burke ratios do. Observations at a new high count as a drawdown of 0. The risk-free rate is compounded over the days of the period, so a partial period (such as the current year) earns the rate of the days it covers. Bacon (2013) divides the annualized return minus the risk-free rate; for the yearly period that is the same for every full year, and for other periods the ratio uses the period's own (not annualized) excess return, as the Ulcer Performance Index and the Burke Ratio do.
 
-For more information, see the following source:
+**References:**
 
-- Bacon, C.R. (2013). "Practical Risk-Adjusted Performance Measurement." John Wiley & Sons, chapter 5 (the Pain Index and Pain Ratio of Zephyr Associates).
+- paper | Bacon, C.R. (2013). "Practical Risk-Adjusted Performance Measurement." John Wiley & Sons, chapter 5 (the Pain Index and Pain Ratio of Zephyr Associates).
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [PainRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/PainRatio.R#L33){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Pain Index from the daily drawdowns
 within each period (if period = 'yearly', a Pain Index per year) or from the drawdowns of the
 `period` returns over the full history (one Pain Index from the yearly returns of all years).
@@ -1929,10 +2030,10 @@ pd.DataFrame: Pain Ratio values.
 - The method retrieves historical data and calculates the Pain Ratio for each asset in
 the Toolkit instance.
 - A period without a drawdown has a Pain Index of 0 and no ratio (NaN).
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -1962,7 +2063,7 @@ Which returns:
 ---
 
 ## get_m2_ratio
-The M2 Ratio, also known as the Modigliani-Modigliani Measure, is a financial metric used to evaluate the risk-adjusted performance of an investment portfolio or strategy. It assesses the excess return generated by the portfolio relative to a risk-free investment, taking into account the portfolio's volatility or risk. The M2 Ratio helps investors and portfolio managers determine whether the portfolio is delivering returns that justify its level of risk.
+Calculate the M2 Ratio (Modigliani-Modigliani Measure): the return an asset would have earned at the volatility of the benchmark, which puts its risk-adjusted performance in percentage points that compare directly with the benchmark's return. The M2 Ratio helps investors and portfolio managers determine whether the portfolio is delivering returns that justify its level of risk.
 
 The formula is as follows:
 
@@ -1972,7 +2073,7 @@ $$
 
 This rescales the (dimensionless) Sharpe ratio back into return-space by asking what return the portfolio would have earned had it been leveraged or de-leveraged, via risk-free borrowing or lending, to match the benchmark's volatility exactly -- producing a number directly comparable to the benchmark's actual return. Requires a `benchmark_ticker` to be set on the Toolkit instance, since the benchmark's standard deviation is part of the formula.
 
-With method="sortino" it is the M2 for Sortino of Bacon (2008), which matches the downside risk of the benchmark instead of its total risk:
+With the Sortino method it is the M2 for Sortino of Bacon (2008), which matches the downside risk of the benchmark instead of its total risk:
 
 $$
 M_{2} \;\text{for Sortino} = \text{Risk-Free Rate} + \text{Sortino Ratio} \cdot \text{Benchmark Downside Deviation}
@@ -1996,25 +2097,29 @@ $$
 
 **See definition:** [https://en.wikipedia.org/wiki/Modigliani_risk-adjusted_performance](https://en.wikipedia.org/wiki/Modigliani_risk-adjusted_performance){:target="_blank"}
 
-For more information, see the following sources:
-
-- Modigliani, F., & Modigliani, L. (1997). "Risk-Adjusted Performance." Journal of Portfolio Management, 23(2), 45-54.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, pp. 68 and 102-103.
-- PerformanceAnalytics: MSquared, M2Sortino and MSquaredExcess ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** Modigliani-Modigliani measure, M2, risk-adjusted performance.
+
+**References:**
+
+- paper | Modigliani, F., & Modigliani, L. (1997). "Risk-Adjusted Performance." Journal of Portfolio Management, 23(2), 45-54.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, pp. 68 and 102-103.
+- library | Referenced against PerformanceAnalytics (R)'s [MSquared](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/MSquared.R#L33){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [MSquaredExcess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/MSquaredExcess.R#L35){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Modigliani](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Modigliani.R#L36){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the M2 ratio is calculated over a rolling window of this many periods across the full
 return history instead of per `period`. Only for method="standard". Defaults to None.
-- <u>method (str, optional):</u> "standard" to match the benchmark's total risk, or "sortino" to
-match its downside risk, as described above. Defaults to "standard".
-- <u>excess (str &#124; None, optional):</u> None for the M2 measure itself, or "arithmetic" or
-"geometric" for the M2 excess return over the benchmark. Defaults to None.
+- <u>method (str, optional):</u> The risk matched, as described above. Options are: "standard" (the
+benchmark's total risk), "sortino" (its downside risk). Defaults to "standard".
+- <u>excess (str &#124; None, optional):</u> The M2 excess return over the benchmark. Options are: None (the
+M2 measure itself), "arithmetic" (the arithmetic excess), "geometric" (the geometric excess).
+Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2041,10 +2146,10 @@ the Toolkit uses the return of each period and sample standard deviations. Its M
 the per-observation Sortino ratio by the difference of the annualized downside deviations; the
 Toolkit keeps return, Sortino ratio and downside deviations on the scale of the period, which on
 PerformanceAnalytics' own example data gives 0.1023 instead of 0.1035.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -2074,7 +2179,7 @@ Which returns:
 ---
 
 ## get_tracking_error
-Tracking Error is a financial metric that quantifies the volatility or dispersion of the difference between the returns of an investment portfolio or asset and the returns of a benchmark index. It measures how closely the portfolio tracks its benchmark and provides insights into the consistency of the portfolio's performance relative to the benchmark. A higher Tracking Error indicates greater divergence from the benchmark, while a lower Tracking Error suggests that the portfolio closely follows the benchmark.
+Calculate the Tracking Error: the volatility of the difference between an asset's returns and those of its benchmark, how closely the asset follows the benchmark. A higher Tracking Error indicates greater divergence from the benchmark, while a lower Tracking Error suggests that the portfolio closely follows the benchmark.
 
 The formula is as follows:
 
@@ -2088,10 +2193,15 @@ By default one Tracking Error is reported per `period`, computed from the daily 
 
 **Also known as:** active risk, benchmark deviation.
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [TrackingError](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/TrackingError.R#L32){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Tracking Error is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
@@ -2116,7 +2226,7 @@ pd.DataFrame: Tracking error values.
 - Daily Tracking Error is not an option as the standard deviation for 1 day is close to zero. Therefore, it does
 not give any useful insights.
 - The method retrieves historical data and calculates the TE for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -2146,7 +2256,7 @@ Which returns:
 ---
 
 ## get_information_ratio
-The Information Ratio (IR) is a financial metric that assesses the risk-adjusted performance of a portfolio or investment strategy relative to a benchmark index. It quantifies how much active return (the return above the benchmark) the portfolio generates per unit of tracking error, the volatility of that active return. The Information Ratio is commonly used by portfolio managers, financial analysts, and investors to evaluate the skill of a portfolio manager in generating returns beyond what would be expected based on the risk taken.
+Calculate the Information Ratio (IR): the return an asset earns above its benchmark per unit of Tracking Error, how consistently it beats the benchmark. It quantifies how much active return the portfolio generates per unit of the volatility of that active return, and is commonly used to evaluate the skill of a portfolio manager in generating returns beyond what would be expected based on the risk taken.
 
 - $$\text{IR} > 0$$: A positive Information Ratio indicates that the portfolio has generated excess returns compared to the benchmark, suggesting that the portfolio manager has added value.
 - $$\text{IR} = 0$$: An Information Ratio of zero implies that the portfolio's excess return is in line with the benchmark, meaning the portfolio manager has not added or lost value relative to the benchmark.
@@ -2164,10 +2274,17 @@ By default it is computed from the daily returns within each period and is not a
 
 **Also known as:** active return per risk.
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [InformationRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/InformationRatio.R#L32){:target="_blank"}
+- library | Shares similar logic as quantstats' [information_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2884){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_information_ratio](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1691){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Information Ratio is calculated over a rolling window of this many periods across
 the full return history instead of per `period`. Defaults to None.
@@ -2192,7 +2309,7 @@ pd.DataFrame: Information ratio values.
 - Daily Information Ratio is not an option as the standard deviation for 1 day is close to zero.
 Therefore, it does not give any useful insights.
 - The method retrieves historical data and calculates the IR for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -2222,7 +2339,7 @@ Which returns:
 ---
 
 ## get_upside_capture_ratio
-Calculate the Upside Capture Ratio of an investment portfolio or asset's returns.
+Calculate the Upside Capture Ratio: how much of the benchmark's return an asset captures in the periods the benchmark rises, above 1 when it gains more than the market in rising markets.
 
 The Upside Capture Ratio measures how well an investment portfolio or asset performs relative to a benchmark during periods in which the benchmark's return is positive. A ratio above 1 (or 100%) indicates the asset captured more of the benchmark's gains than the benchmark itself.
 
@@ -2240,26 +2357,31 @@ Where the up periods are the observations (days within each period) with a posit
 
 Upside and downside capture (see `get_downside_capture_ratio`) are read together: an upside capture above the downside capture means the asset kept more of the benchmark's gains than of its losses, which is what defensive and low-volatility strategies aim for even with both ratios below 1. Both are computed from the daily returns within each period, while fund factsheets usually use monthly returns over three to five years, so the figures are not directly comparable with published ones.
 
-For more information, see the following sources:
+**References:**
 
-- Morningstar. "Upside/Downside Capture Ratio." Morningstar Investment Glossary and methodology documents.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- empyrical: up_capture and roll_up_capture ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
-- PerformanceAnalytics: UpDownRatios ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- paper | Morningstar. "Upside/Downside Capture Ratio." Morningstar Investment Glossary and methodology documents.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- library | Referenced against empyrical's [up_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1887){:target="_blank"} (annualized)
+- library | Referenced against PerformanceAnalytics (R)'s [UpDownRatios](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/UpDownRatios.R#L44){:target="_blank"} (arithmetic)
+- library | Shares similar logic as empyrical's [roll_up_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L2020){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_down_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L2045){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_up_down_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L2070){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 36 you obtain the rolling three year Upside Capture
 Ratio of the monthly returns, Morningstar's figure. Defaults to None, which uses the daily
 returns within each period.
-- <u>method (str, optional):</u> How the returns are averaged. Defaults to "geometric". Choose from:
+- <u>method (str, optional):</u> How the returns are averaged. Options are:
 - "geometric": the geometric average return per observation (Morningstar).
 - "annualized": the geometric average annualized, (1 + average)^P - 1 with P the
 observations in a year, the ratio of the annual returns empyrical's up_capture reports.
 - "arithmetic": the sum of the returns, as PerformanceAnalytics' UpDownRatios reports.
+Defaults to "geometric".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2280,13 +2402,13 @@ pd.DataFrame: Upside Capture Ratio values.
 
 - The method retrieves historical data and calculates the Upside Capture Ratio for each
 asset in the Toolkit instance.
-- method="annualized" agrees with empyrical's up_capture (and with rolling= its roll_up_capture) on the
+- The annualized method agrees with empyrical's up_capture (and with rolling= its roll_up_capture) on the
 same returns. Annualizing compounds both averages over a year, which changes the value but not the
-ranking of tickers against the same benchmark. method="arithmetic" agrees with PerformanceAnalytics'
-UpDownRatios (method="Capture").
+ranking of tickers against the same benchmark. With the arithmetic method agrees with PerformanceAnalytics'
+UpDownRatios (the Capture method).
 - See `get_capture_ratios` for the overall capture ratio, the Up/Down Capture Ratio and the Up and Down
 Numbers and Percentages in one table.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -2317,7 +2439,7 @@ Which returns:
 ---
 
 ## get_downside_capture_ratio
-Calculate the Downside Capture Ratio of an investment portfolio or asset's returns.
+Calculate the Downside Capture Ratio: how much of the benchmark's loss an asset takes in the periods the benchmark falls, below 1 when it loses less than the market in falling markets.
 
 The Downside Capture Ratio measures how well an investment portfolio or asset performs relative to a benchmark during periods in which the benchmark's return is negative. A ratio below 1 (or 100%) indicates the asset lost less than the benchmark during those periods.
 
@@ -2333,26 +2455,31 @@ $$
 
 Where the down periods are the observations (days within each period) with a negative benchmark return and n is their number, following Morningstar's definition. As with the Upside Capture Ratio, both ratios are computed from the daily returns within each period, while fund factsheets usually use monthly returns over three to five years.
 
-For more information, see the following sources:
+**References:**
 
-- Morningstar. "Upside/Downside Capture Ratio." Morningstar Investment Glossary and methodology documents.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- empyrical: down_capture and roll_down_capture ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
-- PerformanceAnalytics: UpDownRatios ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- paper | Morningstar. "Upside/Downside Capture Ratio." Morningstar Investment Glossary and methodology documents.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- library | Referenced against empyrical's [down_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1921){:target="_blank"} (annualized)
+- library | Shares similar logic as empyrical's [roll_up_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L2020){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_down_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L2045){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_up_down_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L2070){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [UpDownRatios](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/UpDownRatios.R#L44){:target="_blank"} (arithmetic)
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 36 you obtain the rolling three year Downside Capture
 Ratio of the monthly returns, Morningstar's figure. Defaults to None, which uses the daily
 returns within each period.
-- <u>method (str, optional):</u> How the returns are averaged. Defaults to "geometric". Choose from:
+- <u>method (str, optional):</u> How the returns are averaged. Options are:
 - "geometric": the geometric average return per observation (Morningstar).
 - "annualized": the geometric average annualized, (1 + average)^P - 1 with P the
 observations in a year, the ratio of the annual returns empyrical's down_capture reports.
 - "arithmetic": the sum of the returns, as PerformanceAnalytics' UpDownRatios reports.
+Defaults to "geometric".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2373,14 +2500,14 @@ pd.DataFrame: Downside Capture Ratio values.
 
 - The method retrieves historical data and calculates the Downside Capture Ratio for each
 asset in the Toolkit instance.
-- method="annualized" agrees with empyrical's down_capture (and with rolling= its roll_down_capture) on the
+- The annualized method agrees with empyrical's down_capture (and with rolling= its roll_down_capture) on the
 same returns. Annualizing compounds both averages over a year, which changes the value but not the
-ranking of tickers against the same benchmark. method="arithmetic" agrees with PerformanceAnalytics'
-UpDownRatios (method="Capture"), except that PerformanceAnalytics also counts the days the benchmark
+ranking of tickers against the same benchmark. With the arithmetic method agrees with PerformanceAnalytics'
+UpDownRatios (the Capture method), except that PerformanceAnalytics also counts the days the benchmark
 did not move as down days.
 - See `get_capture_ratios` for the overall capture ratio, the Up/Down Capture Ratio and the Up and Down
 Numbers and Percentages in one table.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -2445,25 +2572,31 @@ $$
 
 Where the averages are geometric by default (Morningstar), (PRODUCT(1 + Return))^(1 / n) - 1 over the same n days for the asset and the benchmark, all from the daily returns within each period. An Up/Down Capture Ratio above 1 means the asset kept more of the benchmark's gains than of its losses. A high Up Number with a low Down Number shows an asset that rises with the market but falls less often; the Up and Down Percent are the up and down market win rates (batting averages, see `get_win_rate`).
 
-For more information, see the following sources:
-
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- Morningstar. "Upside/Downside Capture Ratio." Morningstar Investment Glossary and methodology documents.
-- empyrical: capture, up_capture, down_capture and up_down_capture ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
-- PerformanceAnalytics: UpDownRatios, table.UpDownRatios and table.CaptureRatios ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** up/down capture, up-market and down-market capture, capture table.
+
+**References:**
+
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- paper | Morningstar. "Upside/Downside Capture Ratio." Morningstar Investment Glossary and methodology documents.
+- library | Referenced against empyrical's [up_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1887){:target="_blank"} (annualized)
+- library | Referenced against PerformanceAnalytics (R)'s [UpDownRatios](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/UpDownRatios.R#L44){:target="_blank"} (arithmetic)
+- library | Referenced against empyrical's [down_capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1921){:target="_blank"} (annualized)
+- library | Referenced against empyrical's [capture](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1531){:target="_blank"} (annualized)
+- library | Referenced against PerformanceAnalytics (R)'s [UpDownRatios](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/UpDownRatios.R#L44){:target="_blank"} (Up Number, Down Number)
+- library | Referenced against PerformanceAnalytics (R)'s [UpDownRatios](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/UpDownRatios.R#L44){:target="_blank"} (Up Percent, Down Percent)
+- library | Shares similar logic as quantstats' [win_rate](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L564){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>method (str, optional):</u> How the capture ratios average the returns. Defaults to "geometric".
-Choose from:
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> How the capture ratios average the returns. Options are:
 - "geometric": the geometric average return per day (Morningstar).
 - "annualized": the geometric average annualized, (1 + average)^P - 1 with P the days in a
 year (252, 365 for a ticker that trades on weekends), empyrical's capture ratios.
 - "arithmetic": the sum of the returns, PerformanceAnalytics' UpDownRatios.
+Defaults to "geometric".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2484,14 +2617,14 @@ Ratio, Up Number, Down Number, Up Percent and Down Percent per period, with a Mu
 
 **Notes:**
 
-- With method="annualized" the Capture Ratio, Upside, Downside and Up/Down Capture Ratios equal
+- With the annualized method the Capture Ratio, Upside, Downside and Up/Down Capture Ratios equal
 empyrical's capture, up_capture, down_capture and up_down_capture on the same daily returns. With
-method="arithmetic" the Upside and Downside Capture Ratios agree with PerformanceAnalytics' UpDownRatios,
+the arithmetic method the Upside and Downside Capture Ratios agree with PerformanceAnalytics' UpDownRatios,
 which also counts the days the benchmark did not move as down days for its Down Capture; its Up and
 Down Number and Percent equal the Toolkit's.
 - The Portfolio of a Portfolio's Toolkit is measured on its own daily return series, as a weighted
 average of capture ratios or counts is not the statistic of the portfolio.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -2534,24 +2667,26 @@ $$
 
 Days on which the asset or the benchmark has no return are left out of both counts rather than counted as losses.
 
-With market="up" or "down" only the days the benchmark rose or fell are counted, the up and down market batting averages: a manager who beats a rising market by taking more risk shows a high up market and a low down market figure, while one who protects capital shows the reverse.
+In up or down markets only the days the benchmark rose or fell are counted, the up and down market batting averages: a manager who beats a rising market by taking more risk shows a high up market and a low down market figure, while one who protects capital shows the reverse.
 
 - Up Market Win Rate = (Number of Days with Asset Return > Benchmark Return and Benchmark Return > 0) / (Number of Days with Benchmark Return > 0)
 
-For more information, see the following sources:
-
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- empyrical: batting_average ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
-- PerformanceAnalytics: UpDownRatios (method="Percent") ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** batting average.
+
+**References:**
+
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- library | Referenced against PerformanceAnalytics (R)'s [UpDownRatios](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/UpDownRatios.R#L44){:target="_blank"} (Up Percent, Down Percent)
+- library | Shares similar logic as quantstats' [win_rate](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L564){:target="_blank"}
+- library | Shares similar logic as empyrical's [batting_average](https://github.com/stefan-jansen/empyrical-reloaded/blob/0.7.3/src/empyrical/stats.py#L1973){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>market (str, optional):</u> The days counted: "all", "up" (the benchmark rose) or "down" (the
-benchmark fell). Defaults to "all".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>market (str, optional):</u> The days counted. Options are: "all" (every day), "up" (the benchmark
+rose), "down" (the benchmark fell). Defaults to "all".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2575,7 +2710,7 @@ Toolkit instance.
 - The overall Win Rate agrees with empyrical's batting_average and the up and down market ones its "up market"
 and "down market" values, except that empyrical counts a day the benchmark did not move as an up market
 day, where the Toolkit counts it as neither (as PerformanceAnalytics' Up and Down Percent do).
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -2618,20 +2753,21 @@ $$
 \text{Probability of Outperformance} = \text{Number of Windows with Window Return} > \frac{\text{Benchmark Window Return}}{\text{Number of Windows in}} \;\text{which they differ}
 $$
 
-The windows end at every period from the first full window onwards, so consecutive windows overlap and a longer window has fewer of them. With relative=False the window return is compared with 0 instead of the benchmark's, the share of windows with a gain: for 12 monthly returns ffn's "Win 12m %".
+The windows end at every period from the first full window onwards, so consecutive windows overlap and a longer window has fewer of them. Measured on its own the window return is compared with 0 instead of the benchmark's, the share of windows with a gain: for 12 monthly returns ffn's "Win 12m %".
 
 The measure is defined in PerformanceAnalytics (Peterson and Carl) as table.ProbOutPerformance; the Toolkit applies it to each ticker against its benchmark.
 
-For more information, see the following sources:
-
-- PerformanceAnalytics: table.ProbOutPerformance ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-- ffn: PerformanceStats.twelve_month_win_perc ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-
 **Also known as:** rolling win rate, hit rate over rolling windows.
+
+**References:**
+
+- library | Referenced against PerformanceAnalytics (R)'s [table.ProbOutPerformance](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/table.ProbOutperformance.R#L32){:target="_blank"}
+- library | Shares similar logic as ffn's [PerformanceStats](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L123){:target="_blank"} (twelve_month_win_perc)
 
 **Args:**
 
-- <u>period (str, optional):</u> The period of the returns the windows are made of. Defaults to "monthly".
+- <u>period (str, optional):</u> The period of the returns the windows are made of. Options are: "daily",
+"weekly", "monthly", "quarterly", "yearly". Defaults to "monthly".
 - <u>windows (list[int] &#124; None, optional):</u> The window lengths in periods. Defaults to None, which uses
 1, 3, 6, 9, 12, 18 and 36 (PerformanceAnalytics' defaults).
 - <u>relative (bool, optional):</u> Whether to compare with the benchmark (True) or with a return of 0
@@ -2652,8 +2788,8 @@ pd.DataFrame: The probability of outperformance per window length (rows) and tic
 - Equals the probability column of PerformanceAnalytics' table.ProbOutPerformance on the same returns.
 PerformanceAnalytics reports the counts as well; a window in which both returns are equal counts as
 neither, there as here.
-- With relative=False and windows=[12] it agrees with ffn's twelve_month_win_perc, except that ffn also counts
-the window that starts at the first price, one window more than the monthly returns hold.
+- Measured on its own over a window of 12 months it agrees with ffn's twelve_month_win_perc, except that ffn
+also counts the window that starts at the first price, one window more than the monthly returns hold.
 - Each ticker is measured over its own history, so a later listing has fewer windows.
 - The Portfolio of a Portfolio's Toolkit is measured on its own daily return series, as a weighted
 average of probabilities is not that of the portfolio.
@@ -2708,24 +2844,28 @@ $$
 \text{Annualized Alpha} = (1 + \text{Alpha per Day})^{P} - 1
 $$
 
-Where the excess returns are the daily returns minus the risk free rate, the market "rose" when the benchmark excess return was positive (PerformanceAnalytics) or, with market="return", when the benchmark return was positive (empyrical), and P is the number of days in a year (252, 365 for a ticker that trades on weekends). A Timing Ratio above 1 means the asset moved more with the market when it rose than when it fell, the asymmetry a successful market timer shows; Henriksson and Merton (1981) test the same asymmetry with one regression (see `get_henriksson_merton_model`).
-
-For more information, see the following sources:
-
-- Henriksson, R.D., & Merton, R.C. (1981). "On Market Timing and Investment Performance II: Statistical Procedures for Evaluating Forecasting Skills." Journal of Business, 54(4), 513-533.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- PerformanceAnalytics: CAPM.beta.bull, CAPM.beta.bear and TimingRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-- empyrical: up_alpha_beta and down_alpha_beta ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
+Where the excess returns are the daily returns minus the risk free rate, the market "rose" when the benchmark excess return was positive (PerformanceAnalytics) or, with the return market, when the benchmark return was positive (empyrical), and P is the number of days in a year (252, 365 for a ticker that trades on weekends). A Timing Ratio above 1 means the asset moved more with the market when it rose than when it fell, the asymmetry a successful market timer shows; Henriksson and Merton (1981) test the same asymmetry with one regression (see the Henriksson-Merton model of `get_market_timing_model`).
 
 **Also known as:** up-market and down-market beta, conditional beta, up and down alpha.
 
+**References:**
+
+- paper | Henriksson, R.D., & Merton, R.C. (1981). "On Market Timing and Investment Performance II: Statistical Procedures for Evaluating Forecasting Skills." Journal of Business, 54(4), 513-533.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- library | Referenced against PerformanceAnalytics (R)'s [CAPM.beta.bull](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L133){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [CAPM.beta.bear](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L184){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [TimingRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L236){:target="_blank"}
+- library | Referenced against empyrical's [up_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1986){:target="_blank"}
+- library | Referenced against empyrical's [down_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L2004){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>market (str, optional):</u> What splits the bull and bear days: "excess_return" for the sign of the
-benchmark excess return (PerformanceAnalytics) or "return" for the sign of the benchmark return
-(empyrical). Defaults to "excess_return".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>market (str, optional):</u> What splits the bull and bear days. Options are: "excess_return" (the
+sign of the benchmark excess return, PerformanceAnalytics), "return" (the sign of the
+benchmark return, empyrical). Defaults to "excess_return".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2748,15 +2888,15 @@ Multi Index of (ticker, statistic) as the columns.
 - The Bull and Bear Betas and the Timing Ratio agree with PerformanceAnalytics' CAPM.beta.bull, CAPM.beta.bear
 and TimingRatio on the daily returns within each period, and the Alphas and Betas empyrical's up_alpha_beta
 and down_alpha_beta given the excess returns. empyrical splits the days on the sign of the benchmark return
-it is given, which market="return" does with the benchmark's own return; given a risk free rate, empyrical
+it is given, which the return market does with the benchmark's own return; given a risk free rate, empyrical
 computes its Beta from the returns themselves and its Alpha from the excess returns, where the Toolkit uses
 excess returns for both.
-- Unlike `get_beta` with method="upside" or "downside", which regresses the returns themselves, these
+- Unlike the upside or downside Beta of `get_beta`, which regresses the returns themselves, these
 regressions use excess returns, so the Alphas are the CAPM (Jensen's) Alphas of each market.
 - Each side needs at least three days with returns in a period, otherwise its values are NaN.
 - The Portfolio of a Portfolio's Toolkit is regressed on its own daily return series, as the market
 timing models do.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -2804,17 +2944,18 @@ $$
 
 Where the daily returns within each period are sorted by the benchmark return, and low, middle and high are the days with the lowest, the median (position n // 2) and the highest benchmark return. H compares the asset's return on the median day with the straight line through its returns on the two extreme days. A negative H means the returns are concave in the market's (fragile: the losses accelerate in a large fall), a positive H that they are convex (antifragile).
 
-For more information, see the following sources:
-
-- Taleb, N.N., Canetti, E., Kinda, T., Loukoianova, E., & Schmieder, C. (2012). "A New Heuristic Measure of Fragility and Tail Risks: Application to Stress Testing." IMF Working Paper WP/12/216.
-- empyrical: beta_fragility_heuristic ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
-
 **Also known as:** fragility heuristic, beta fragility heuristic.
+
+**References:**
+
+- paper | Taleb, N.N., Canetti, E., Kinda, T., Loukoianova, E., & Schmieder, C. (2012). "A New Heuristic Measure of Fragility and Tail Risks: Application to Stress Testing." IMF Working Paper WP/12/216.
+- library | Referenced against empyrical's [beta_fragility_heuristic](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1565){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2838,7 +2979,7 @@ share the median benchmark return, the Toolkit takes them in date order (a stabl
 leaves their order to its sorting algorithm, so the two can pick a different middle day.
 - The heuristic rests on three days of each period, so it is noisy; compare it across tickers or with a
 longer period rather than reading a single value.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -2884,17 +3025,18 @@ Where t counts the returns (0, 1, 2, ...). A value close to 1 means the asset gr
 
 The measure is defined in empyrical (Quantopian) as stability_of_timeseries and reported in pyfolio's tear sheets; the Toolkit applies it to the returns of each ticker and period.
 
-For more information, see the following sources:
-
-- empyrical: stability_of_timeseries ([https://github.com/stefan-jansen/empyrical-reloaded](https://github.com/stefan-jansen/empyrical-reloaded){:target="_blank"}).
-- pyfolio: timeseries.stability_of_timeseries ([https://github.com/stefan-jansen/pyfolio-reloaded](https://github.com/stefan-jansen/pyfolio-reloaded){:target="_blank"}).
-
 **Also known as:** stability of timeseries, R-squared of the equity curve.
+
+**References:**
+
+- library | Referenced against empyrical's [stability_of_timeseries](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1471){:target="_blank"}
+- library | Shares similar logic as pyfolio's [stability_of_timeseries](https://github.com/quantopian/pyfolio/blob/0.9.2/pyfolio/timeseries.py#L368){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the stability from the daily returns within each
 period or from the period returns of the entirety of all periods, one value per ticker.
 Defaults to True.
@@ -2919,7 +3061,7 @@ value per ticker.
 
 - Equals empyrical's (and pyfolio's) stability_of_timeseries on the same returns. Each ticker is
 measured over its own returns, missing returns left out.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -2959,17 +3101,18 @@ $$
 
 With one regressor this is the squared correlation with the benchmark. An R-squared close to 1 means the asset moves almost entirely with the market, so its Beta and Alpha describe it well; a low R-squared means most of its risk is its own (see `get_risk_decomposition`), and a Beta or Treynor ratio says little about it. Funds that hug their index have an R-squared above 0.95.
 
-For more information, see the following sources:
-
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
-- quantstats: stats.r_squared ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-
 **Also known as:** coefficient of determination, R2.
+
+**References:**
+
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons.
+- library | Referenced against quantstats' [r_squared](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2828){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 36 you obtain the rolling three year R-squared of the
 monthly returns. Defaults to None, which uses the daily returns within each period.
@@ -2993,9 +3136,9 @@ pd.DataFrame: R-squared values.
 
 - Equals quantstats' r_squared on the same returns. Each ticker is paired with the benchmark on the days
 both have a return.
-- The R Squared of `get_henriksson_merton_model` and `get_treynor_mazuy_model` includes their timing term,
+- The R Squared of `get_market_timing_model` includes its timing term,
 so it is at least this one.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -3033,21 +3176,27 @@ $$
 \text{Risk-Return Ratio} = \frac{\operatorname{Mean}(\text{Returns})}{\text{Standard Deviation}(\text{Returns})}
 $$
 
-Computed from the daily returns within each period (or the period returns over a rolling window), per observation; set annualize=True to multiply it by the square root of the observations in a year (252 daily returns, 365 for a ticker that trades on weekends, or 52, 12, 4 or 1 for rolling weekly, monthly, quarterly or yearly returns). Leaving out the risk free rate makes it comparable across currencies and rate environments, but it overstates the reward of a low-risk asset that earns little more than cash; `get_sharpe_ratio` subtracts the risk free rate.
+Computed from the daily returns within each period (or the period returns over a rolling window), per observation; annualizing multiplies it by the square root of the observations in a year (252 daily returns, 365 for a ticker that trades on weekends, or 52, 12, 4 or 1 for rolling weekly, monthly, quarterly or yearly returns). Leaving out the risk free rate makes it comparable across currencies and rate environments, but it overstates the reward of a low-risk asset that earns little more than cash; `get_sharpe_ratio` subtracts the risk free rate.
 
 The ratio under this name is defined in quantstats (Ran Aroussi) and ffn (Philippe Morissette).
 
-For more information, see the following sources:
-
-- quantstats: stats.risk_return_ratio ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-- ffn: calc_risk_return_ratio ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-
 **Also known as:** return to risk ratio, return over volatility, information ratio against cash.
+
+**References:**
+
+- library | Referenced against quantstats' [smart_sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1000){:target="_blank"} (with get_autocorrelation_penalty)
+- library | Shares similar logic as quantstats' [rolling_sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1030){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [SharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SharpeRatio.R#L80){:target="_blank"}
+- library | Shares similar logic as empyrical's [sharpe_ratio](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L652){:target="_blank"}
+- library | Shares similar logic as quantstats' [sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L938){:target="_blank"}
+- library | Shares similar logic as quantstats' [risk_return_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2603){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_risk_return_ratio](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1592){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month ratio. Defaults to None.
 - <u>annualize (bool, optional):</u> Whether to annualize the ratio, multiplying it by the square root of the
@@ -3070,9 +3219,9 @@ pd.DataFrame: Risk-return ratio values.
 
 **Notes:**
 
-- Equals quantstats' risk_return_ratio (not annualized) and, with annualize=True, ffn's
+- Equals quantstats' risk_return_ratio (not annualized) and, annualized, ffn's
 calc_risk_return_ratio on the same returns. Returns without variation give NaN.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -3120,17 +3269,20 @@ $$
 
 Where Beta and the Residuals come from the CAPM regression of the daily excess returns on the benchmark's within each period, Excess Return = Alpha + Beta x Benchmark Excess Return + Residual. The volatilities are sample standard deviations of the daily values scaled to the period (times the square root of 252 trading days for a year, 365 calendar days for a ticker that trades on weekends), so the yearly figures are annualized. With the same degrees of freedom the regression splits the variance exactly, so the Total Risk equals the volatility of the excess returns. A specific risk that dominates the total means the asset's moves are mostly its own, as a low R-squared (see `get_r_squared`) shows.
 
-For more information, see the following sources:
-
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, pp. 71-72.
-- PerformanceAnalytics: SystematicRisk, SpecificRisk, TotalRisk and table.SpecificRisk ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** market and idiosyncratic risk, diversifiable and non-diversifiable risk, residual risk.
+
+**References:**
+
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, pp. 71-72.
+- library | Referenced against PerformanceAnalytics (R)'s [SystematicRisk](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SystematicRisk.R#L36){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [SpecificRisk](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SpecificRisk.R#L27){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [TotalRisk](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/TotalRisk.R#L30){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -3157,7 +3309,7 @@ Toolkit's (0.2% lower for a year of daily returns), and its TotalRisk combines t
 of the risk module uses the residuals of the Fama-French factor model instead.
 - The Portfolio of a Portfolio's Toolkit is measured on its own daily return series, as the risks of
 a portfolio do not add up as a weighted average.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -3209,18 +3361,21 @@ $$
 
 The first three are per day, from the daily returns within each period. The CML slope is the benchmark's Sharpe ratio, the extra return the market paid per unit of volatility; the CML return is what a mix of the benchmark and the risk free asset with the asset's volatility earned per day, so an asset whose mean daily return lies below it was not rewarded for its total risk. The SML slope is the market risk premium per day, the extra return the CAPM gives per unit of Beta. The Regression Epsilon is the part of the period's excess return the CAPM regression (Alpha and Beta per day, fitted on the daily excess returns) does not predict.
 
-For more information, see the following sources:
-
-- Sharpe, W.F. (1964). "Capital Asset Prices: A Theory of Market Equilibrium under Conditions of Risk." Journal of Finance, 19(3), 425-442.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 71.
-- PerformanceAnalytics: CAPM.CML.slope, CAPM.CML, CAPM.SML.slope and CAPM.epsilon ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** CML, SML, capital allocation line of the market, regression epsilon.
+
+**References:**
+
+- paper | Sharpe, W.F. (1964). "Capital Asset Prices: A Theory of Market Equilibrium under Conditions of Risk." Journal of Finance, 19(3), 425-442.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 71.
+- library | Referenced against PerformanceAnalytics (R)'s [CAPM.CML.slope](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.utils.R#L6){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [CAPM.SML.slope](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.utils.R#L152){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [CAPM.epsilon](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.epsilon.R#L33){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -3250,7 +3405,7 @@ uses the annualized returns as the period's. With a risk free rate PerformanceAn
 asset's return instead of subtracting it; the Toolkit uses excess returns throughout.
 - The Portfolio of a Portfolio's Toolkit is regressed on its own daily return series, as the market
 timing models do.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -3279,9 +3434,9 @@ Which returns:
 ---
 
 ## get_kappa_ratio
-Calculate the Kappa Ratio of an investment portfolio or asset's returns.
+Calculate the Kappa Ratio: the excess return an asset earns per unit of the lower partial moment of a chosen order, a generalization of the Sortino ratio that weighs large losses more as the order rises.
 
-The Kappa Ratio is a generalization of the Sortino Ratio that penalizes downside risk using a higher-order lower partial moment. The Sortino Ratio is the special case of the Kappa Ratio with order=2.
+The Kappa Ratio is a generalization of the Sortino Ratio that penalizes downside risk using a higher-order lower partial moment. The Sortino Ratio is the special case of the Kappa Ratio with an order of 2.
 
 Note that this already subtracts the Risk Free Rate.
 
@@ -3299,10 +3454,15 @@ $$
 \text{Kappa Ratio} = \frac{\operatorname{MEAN}(\text{Daily Excess Return})}{\text{LPM}^{\frac{1}{\text{Order}}}},\;\; \text{per period and not annualized, with Order defaulting to 3}
 $$
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Kappa](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Kappa.R#L52){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>order (int, optional):</u> The order of the lower partial moment used in the denominator.
 Defaults to 3.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -3327,10 +3487,10 @@ pd.DataFrame: Kappa Ratio values.
 Therefore, it does not give any useful insights.
 - The method retrieves historical data and calculates the Kappa Ratio for each asset in
 the Toolkit instance.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -3361,7 +3521,7 @@ Which returns:
 ---
 
 ## get_omega_ratio
-Calculate the Omega Ratio of an investment portfolio or asset's returns.
+Calculate the Omega Ratio: the probability-weighted gains above a threshold divided by the probability-weighted losses below it, a ratio of upside to downside that uses the whole distribution of the returns.
 
 The Omega Ratio is a risk-return measure that divides the sum of gains above a minimum acceptable return (MAR) by the sum of losses below it, capturing the full shape of the return distribution rather than only its first two moments (unlike the Sharpe Ratio).
 
@@ -3373,10 +3533,17 @@ $$
 
 **See definition:** [https://en.wikipedia.org/wiki/Omega_ratio](https://en.wikipedia.org/wiki/Omega_ratio){:target="_blank"}
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Omega](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Omega.R#L72){:target="_blank"}
+- library | Shares similar logic as empyrical's [omega_ratio](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L599){:target="_blank"}
+- library | Shares similar logic as quantstats' [omega](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1508){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Omega Ratio within the specified
 period or for the entire period. Thus whether to look at the Omega Ratio within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -3405,7 +3572,7 @@ pd.DataFrame: Omega Ratio values.
 
 - The method retrieves historical data and calculates the Omega Ratio for each asset in
 the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -3436,9 +3603,9 @@ Which returns:
 ---
 
 ## get_morningstar_risk_adjusted_return
-Calculate the Morningstar Risk-Adjusted Return (MRAR), the measure Morningstar ranks funds on within their category for its star rating.
+Calculate the Morningstar Risk-Adjusted Return (MRAR): the return that penalizes the variation of the returns as a risk-averse investor would, the measure Morningstar ranks funds on within their category for its star rating.
 
-MRAR is the annualized certainty equivalent of the monthly geometric excess returns for an investor with risk aversion gamma: the return such an investor would accept with certainty instead of the uncertain returns. It equals the annualized geometric mean excess return when every month returns the same and falls further below it the more the returns vary, penalizing downside variation most. Morningstar uses a gamma of 2 and rates funds on 36, 60 and 120 months (three, five and ten years), which rolling=36, rolling=60 and rolling=120 give, weighting them 20%, 30% and 50% in the overall rating. For US dollar funds its risk-free rate is the three-month Treasury bill (auction average), which risk_free_rate="13w" follows. Morningstar also adjusts for tax-advantaged dividends where appropriate, which these total returns don't.
+MRAR is the annualized certainty equivalent of the monthly geometric excess returns for an investor with risk aversion gamma: the return such an investor would accept with certainty instead of the uncertain returns. It equals the annualized geometric mean excess return when every month returns the same and falls further below it the more the returns vary, penalizing downside variation most. Morningstar uses a gamma of 2 and rates funds on 36, 60 and 120 months (three, five and ten years), which rolling windows of 36, 60 and 120 months give, weighting them 20%, 30% and 50% in the overall rating. For US dollar funds its risk-free rate is the three-month Treasury bill (auction average), which the 13-week Treasury bill rate of the Toolkit follows. Morningstar also adjusts for tax-advantaged dividends where appropriate, which these total returns don't.
 
 The formula is as follows:
 
@@ -3452,17 +3619,17 @@ $$
 
 with T the number of months. With a gamma of 0 it is the annualized geometric mean of the excess returns, Morningstar Return.
 
-For more information, see the following:
+**References:**
 
-- Morningstar (2023). "The Morningstar Rating for Funds." Morningstar Methodology, April 2023. [https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf](https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf){:target="_blank"}
-- Morningstar (2009). "MRAR Illustrated." [https://www.morningstar.com/content/dam/marketing/apac/au/pdfs/Legal/MRARIllustrated_Factsheet.pdf](https://www.morningstar.com/content/dam/marketing/apac/au/pdfs/Legal/MRARIllustrated_Factsheet.pdf){:target="_blank"}
+- paper | Morningstar (2023). "The Morningstar Rating for Funds." Morningstar Methodology, April 2023. [https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf](https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf){:target="_blank"}
+- paper | Morningstar (2009). "MRAR Illustrated." [https://www.morningstar.com/content/dam/marketing/apac/au/pdfs/Legal/MRARIllustrated_Factsheet.pdf](https://www.morningstar.com/content/dam/marketing/apac/au/pdfs/Legal/MRARIllustrated_Factsheet.pdf){:target="_blank"}
 
 **Args:**
 
 - <u>gamma (float, optional):</u> The risk aversion, 0 or higher. Defaults to 2.0, which
 Morningstar uses for its ratings.
-- <u>period (str, optional):</u> The period to group the monthly returns by, "yearly" or
-"quarterly". Defaults to "yearly".
+- <u>period (str, optional):</u> The period to group the monthly returns by. Options are: "quarterly",
+"yearly". Defaults to "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the MRAR of the months within
 each period or of all months in the range. Defaults to True.
 - <u>rolling (int, optional):</u> The number of months in a rolling window, e.g. 36 for the
@@ -3529,7 +3696,7 @@ Which returns:
 ---
 
 ## get_morningstar_risk
-Calculate Morningstar Risk, the return a risk-averse investor would give up to remove the variation of the returns: Morningstar Return (the annualized geometric mean excess return) minus the Morningstar Risk-Adjusted Return. It is zero for returns that never vary and grows with their variation, most with variation on the downside. Morningstar rates funds Low to High on it within their category, over 36, 60 and 120 months (rolling=36, 60 and 120).
+Calculate Morningstar Risk, the return a risk-averse investor would give up to remove the variation of the returns: Morningstar Return (the annualized geometric mean excess return) minus the Morningstar Risk-Adjusted Return. It is zero for returns that never vary and grows with their variation, most with variation on the downside. Morningstar rates funds Low to High on it within their category, over 36, 60 and 120 months (rolling windows of 36, 60 and 120).
 
 The formula is as follows:
 
@@ -3539,16 +3706,16 @@ $$
 
 with MRAR the Morningstar Risk-Adjusted Return (see get_morningstar_risk_adjusted_return) and MRAR(0) Morningstar Return.
 
-For more information, see the following:
+**References:**
 
-- Morningstar (2023). "The Morningstar Rating for Funds." Morningstar Methodology, April 2023. [https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf](https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf){:target="_blank"}
+- paper | Morningstar (2023). "The Morningstar Rating for Funds." Morningstar Methodology, April 2023. [https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf](https://s25.q4cdn.com/634000362/files/doc_downloads/1/1157231.pdf){:target="_blank"}
 
 **Args:**
 
 - <u>gamma (float, optional):</u> The risk aversion, 0 or higher. Defaults to 2.0, which
 Morningstar uses for its ratings.
-- <u>period (str, optional):</u> The period to group the monthly returns by, "yearly" or
-"quarterly". Defaults to "yearly".
+- <u>period (str, optional):</u> The period to group the monthly returns by. Options are: "quarterly",
+"yearly". Defaults to "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the risk of the months within
 each period or of all months in the range. Defaults to True.
 - <u>rolling (int, optional):</u> The number of months in a rolling window, e.g. 36 for the
@@ -3608,7 +3775,7 @@ Which returns:
 ---
 
 ## get_gain_to_pain_ratio
-Calculate the Gain-to-Pain Ratio of an investment portfolio or asset's returns.
+Calculate the Gain-to-Pain Ratio: the sum of the returns divided by the sum of the absolute losses, how much an asset gained for the losses it went through.
 
 The Gain-to-Pain Ratio, popularized by Jack Schwager, divides the sum of all returns by the sum of the absolute value of all losses, summarizing the entire return history into a single measure of return earned per unit of pain endured.
 
@@ -3624,19 +3791,20 @@ $$
 \text{Omega-Sharpe Ratio} = \frac{\sum(\text{Returns} - \text{MAR})}{\sum(\max(\text{MAR} - \text{Returns},\; 0))} = \text{Omega Ratio} - 1
 $$
 
-For more information, see the following sources:
-
-- Schwager, J.D. (2012). "Hedge Fund Market Wizards: How Winning Traders Win." John Wiley & Sons.
-- Kazemi, H., Schneeweis, T., & Gupta, R. (2004). "Omega as a Performance Measure." Journal of Performance Measurement, 8(3), 16-25.
-- PerformanceAnalytics: OmegaSharpeRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-- quantstats: stats.gain_to_pain_ratio ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-
 **Also known as:** Omega-Sharpe ratio.
+
+**References:**
+
+- paper | Schwager, J.D. (2012). "Hedge Fund Market Wizards: How Winning Traders Win." John Wiley & Sons.
+- paper | Kazemi, H., Schneeweis, T., & Gupta, R. (2004). "Omega as a Performance Measure." Journal of Performance Measurement, 8(3), 16-25.
+- library | Referenced against PerformanceAnalytics (R)'s [OmegaSharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/OmegaSharpeRatio.R#L37){:target="_blank"}
+- library | Referenced against quantstats' [gain_to_pain_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1584){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Gain-to-Pain Ratio within the
 specified period or for the entire period. Thus whether to look at the Gain-to-Pain Ratio
 within a specific year (if period = 'yearly') or look at the entirety of all years.
@@ -3666,7 +3834,7 @@ pd.DataFrame: Gain-to-Pain Ratio values.
 in the Toolkit instance.
 - Equals quantstats' gain_to_pain_ratio and, with a minimum acceptable return, PerformanceAnalytics'
 OmegaSharpeRatio on the same returns.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -3707,15 +3875,16 @@ $$
 
 Where $$n_{d}$$ is the number of negative and $$n_{u}$$ the number of positive daily returns within the period. It is the inverse of the gain-loss (Bernardo-Ledoit) ratio weighted by the frequencies of the losses and gains. Lower is better: 0 means there was no loss at all, and a value above 1 means the losses weigh more than the gains.
 
-For more information, see the following sources:
+**References:**
 
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 95.
-- PerformanceAnalytics: DRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 95.
+- library | Referenced against PerformanceAnalytics (R)'s [DRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/DRatio.R#L38){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the ratio from the daily returns
 within each period or from the period returns of the entirety of all periods, one value
 per ticker. Defaults to True.
@@ -3740,7 +3909,7 @@ pd.DataFrame: d ratio values, or with within_period=False a Series with one valu
 - The method retrieves historical data and calculates the d ratio for each asset in the Toolkit instance.
 - Equals PerformanceAnalytics' DRatio on the same returns. Without a positive return the ratio is NaN,
 where PerformanceAnalytics reports infinity.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -3784,17 +3953,18 @@ $$
 
 Where N is the number of daily returns within the period, MAR the minimum acceptable return per day and $$\lambda$$ the loss aversion (2.25, Tversky and Kahneman, 1992). Like the Sortino ratio it is a per-observation ratio, not annualized.
 
-For more information, see the following sources:
+**References:**
 
-- Watanabe, Y. (2006). "Is Sharpe Ratio Still Effective?" Journal of Performance Measurement, 11(1), 55-66.
-- Tversky, A., & Kahneman, D. (1992). "Advances in Prospect Theory: Cumulative Representation of Uncertainty." Journal of Risk and Uncertainty, 5(4), 297-323.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 100.
-- PerformanceAnalytics: ProspectRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- paper | Watanabe, Y. (2006). "Is Sharpe Ratio Still Effective?" Journal of Performance Measurement, 11(1), 55-66.
+- paper | Tversky, A., & Kahneman, D. (1992). "Advances in Prospect Theory: Cumulative Representation of Uncertainty." Journal of Risk and Uncertainty, 5(4), 297-323.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 100.
+- library | Referenced against PerformanceAnalytics (R)'s [ProspectRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/ProspectRatio.R#L32){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the ratio from the daily returns
 within each period or from the period returns of the entirety of all periods, one value
 per ticker. Defaults to True.
@@ -3826,7 +3996,7 @@ instance.
 PerformanceAnalytics function subtracts MAR / N instead of the MAR from the average return, unlike the
 formula in its documentation and in Bacon (2008), which the Toolkit follows.
 - Without a return below the MAR the downside deviation is 0 and the ratio is undefined (NaN).
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -3870,15 +4040,16 @@ $$
 
 Where Return is the return of the period, $$\sigma_{D}$$ and $$\sigma_{\text{DB}}$$ are the downside deviations of the daily returns of the asset and of the benchmark within the period below the minimum acceptable return, scaled to the period (times SQRT(252) for a year, SQRT(365) for a ticker that trades on weekends), and $$\beta_{S}$$ is the style beta. The higher the downside risk of the asset relative to the benchmark, the more of its return is given up.
 
-For more information, see the following sources:
+**References:**
 
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 103.
-- PerformanceAnalytics: OmegaExcessReturn ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 103.
+- library | Referenced against PerformanceAnalytics (R)'s [OmegaExcessReturn](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/OmegaExcessReturn.R#L36){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>minimum_acceptable_return (float, optional):</u> The minimum acceptable return (MAR) per daily
 return that the downside deviations are measured below. Defaults to 0.0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -3903,7 +4074,7 @@ pd.DataFrame: Omega Excess Return values.
 Toolkit instance. It requires a benchmark_ticker.
 - PerformanceAnalytics' OmegaExcessReturn uses the annualized return and downside deviations over the
 whole sample; the Toolkit uses those of each period, with the same formula.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -3956,24 +4127,29 @@ $$
 
 A value of 0.25 means putting a quarter of the capital at risk, a value above 1 means borrowing to invest and a negative value means the history shows a negative edge.
 
-For more information, see the following sources:
+**References:**
 
-- Kelly, J.L. (1956). "A New Interpretation of Information Rate." Bell System Technical Journal, 35(4), 917-926.
-- Thorp, E.O. (2006). "The Kelly Criterion in Blackjack, Sports Betting, and the Stock Market." Handbook of Asset and Liability Management, Volume 1, 385-428.
-- MacLean, L.C., Thorp, E.O. & Ziemba, W.T. (2011). "The Kelly Capital Growth Investment Criterion." World Scientific.
+- paper | Kelly, J.L. (1956). "A New Interpretation of Information Rate." Bell System Technical Journal, 35(4), 917-926.
+- paper | Thorp, E.O. (2006). "The Kelly Criterion in Blackjack, Sports Betting, and the Stock Market." Handbook of Asset and Liability Management, Volume 1, 385-428.
+- paper | MacLean, L.C., Thorp, E.O. & Ziemba, W.T. (2011). "The Kelly Capital Growth Investment Criterion." World Scientific.
+- library | Shares similar logic as quantstats' [kelly_criterion](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2786){:target="_blank"} (discrete)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [KellyRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/KellyRatio.R#L39){:target="_blank"} (continuous)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Kelly Criterion from the daily
 returns within each period (e.g. each year if period = 'yearly') or from the returns
 of the periods themselves over the whole history. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the
 Kelly Criterion is calculated over a rolling window of this many periods across the
 full return history instead of per `period`. Defaults to None.
-- <u>method (str, optional):</u> "discrete" (Kelly's bet from the win rate and payoff ratio) or
-"continuous" (average excess return over its variance). Defaults to "discrete".
+- <u>method (str, optional):</u> The Kelly Criterion. Options are: "discrete" (Kelly's bet from the win
+rate and payoff ratio), "continuous" (average excess return over its variance). Defaults to
+"discrete".
 - <u>fraction (float, optional):</u> The share of the full Kelly bet, e.g. 0.5 for half Kelly.
 Defaults to 1.0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -4119,17 +4295,36 @@ The Recovery Factor compounds the returns into the cumulative return and keeps i
 
 The Expectancy and the Payoff Ratio follow Tharp (2006). The Common Sense Ratio, the CPC Index, the Profit Ratio, the Outlier Win and Loss Ratios, the Risk of Ruin, the Exposure and the Risk-Adjusted Return are defined in quantstats (Ran Aroussi); the Toolkit applies them to the returns of each ticker and period.
 
-For more information, see the following sources:
+**References:**
 
-- Tharp, V.K. (2006). "Trade Your Way to Financial Freedom." 2nd ed., McGraw-Hill.
-- quantstats: stats.avg_return, best, worst, exposure, cpc_index, profit_ratio, outlier_win_ratio, outlier_loss_ratio, risk_of_ruin and rar ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-- ffn: PerformanceStats best_day, worst_day, best_month, worst_month, best_year and worst_year ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-- PerformanceAnalytics: mean.stderr, mean.LCL and mean.UCL ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+- paper | Tharp, V.K. (2006). "Trade Your Way to Financial Freedom." 2nd ed., McGraw-Hill.
+- library | Referenced against quantstats' [avg_return](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L640){:target="_blank"} (Expectancy)
+- library | Referenced against quantstats' [best](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L362){:target="_blank"}
+- library | Referenced against quantstats' [worst](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L395){:target="_blank"}
+- library | Referenced against quantstats' [exposure](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L514){:target="_blank"}
+- library | Referenced against quantstats' [cpc_index](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2417){:target="_blank"}
+- library | Referenced against quantstats' [profit_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2312){:target="_blank"}
+- library | Referenced against quantstats' [outlier_win_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2484){:target="_blank"}
+- library | Referenced against quantstats' [outlier_loss_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2523){:target="_blank"}
+- library | Referenced against quantstats' [risk_of_ruin](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1968){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [mean.stderr](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/mean.utils.R#L137){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [mean.LCL](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/mean.utils.R#L169){:target="_blank"}
+- library | Referenced against PerformanceAnalytics (R)'s [mean.UCL](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/mean.utils.R#L208){:target="_blank"}
+- library | Shares similar logic as quantstats' [win_rate](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L564){:target="_blank"}
+- library | Shares similar logic as quantstats' [payoff_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2242){:target="_blank"}
+- library | Shares similar logic as quantstats' [profit_factor](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2370){:target="_blank"}
+- library | Shares similar logic as quantstats' [consecutive_wins](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L428){:target="_blank"}
+- library | Shares similar logic as quantstats' [consecutive_losses](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L471){:target="_blank"}
+- library | Shares similar logic as quantstats' [recovery_factor](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2562){:target="_blank"}
+- library | Shares similar logic as quantstats' [common_sense_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2451){:target="_blank"}
+- library | Shares similar logic as quantstats' [rar](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1698){:target="_blank"}
+- library | Shares similar logic as ffn's [PerformanceStats](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L123){:target="_blank"} (best_day to worst_year)
 
 **Args:**
 
 - <u>period (str, optional):</u> The period of the returns over the whole history, or with
-within_period=True the period the daily returns are grouped by. Defaults to "daily",
+within_period=True the period the daily returns are grouped by. Options are: "daily",
+"weekly", "monthly", "quarterly", "yearly". Defaults to "daily",
 or with within_period=True to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the statistics from the daily returns
@@ -4214,7 +4409,7 @@ Which returns:
 ---
 
 ## get_compound_growth_rate
-This function calculates the Compound Growth Rate (CGR) for different periods: yearly, quarterly, monthly, weekly, and daily.
+Calculate the Compound Growth Rate (CGR): the constant rate per period at which an investment would have grown from its first to its last value, for yearly, quarterly, monthly, weekly or daily periods.
 
 The CGR is a measure that provides the mean growth rate of an investment over a specified period of time. It is a useful measure for comparing the performance of investments over different time periods or across different asset classes. The CGR is calculated by taking the ratio of the final value to the initial value, raising it to the inverse of the number of periods, and then subtracting one.
 
@@ -4235,6 +4430,11 @@ $$
 The CAGR is measured on calendar time: each asset from its own first to its own last close between the start and end date, with the years in between counted in calendar days. The rate thereby does not depend on how often an asset trades, so a stock (which trades on weekdays) and a cryptocurrency (which trades every day) in the same Toolkit are measured over the same years, and an asset without a close on the first or last date of the range is measured over the dates it has. The quarterly, monthly, weekly and daily rates follow from the CAGR with 4 quarters, 12 months, 52 weeks and 252 trading days to a year, so the rates are consistent with each other: (1 + CDGR) ^ 252 equals 1 + CAGR.
 
 **Also known as:** CAGR, compound annual growth rate, annualized return.
+
+**References:**
+
+- library | Shares similar logic as quantstats' [cagr](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1636){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_cagr](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1563){:target="_blank"}
 
 **Args:**
 
@@ -4284,7 +4484,7 @@ Which returns:
 ---
 
 ## get_returns
-Calculate the Return of an investment portfolio or asset for a given period based on the daily historical returns.
+Calculate the returns of each period: how much the value of each asset changed over each week, month, quarter or year, compounded from the daily returns.
 
 The period Return is obtained by compounding the daily returns within each period. If cumulative is set to True, the period returns within the selected date range are compounded further into a cumulative return (growth of 1) instead.
 
@@ -4304,7 +4504,7 @@ The first daily return in the range is that of the second trading day: the price
 
 A period without any daily return for a ticker (before it listed, or a gap in its history) is NaN rather than 0, and the cumulative return carries the previous value past such a period.
 
-With log=True the returns are log (continuously compounded) returns, which add up over time where simple returns compound:
+Logarithmic returns are log (continuously compounded) returns, which add up over time where simple returns compound:
 
 $$
 \text{Log Return} = \ln(1 + \text{Period Return})
@@ -4314,7 +4514,7 @@ $$
 \text{Cumulative Log Return} = \ln(\text{Cumulative Return}),\;\; \text{the sum of the log returns}
 $$
 
-With unsmoothed=True the period returns are unsmoothed with Geltner's filter first, for assets whose reported returns are smoothed (appraisal-based real estate, private equity, illiquid funds), which shows up as positive autocorrelation and understates the volatility:
+With unsmoothing the period returns are unsmoothed with Geltner's filter first, for assets whose reported returns are smoothed (appraisal-based real estate, private equity, illiquid funds), which shows up as positive autocorrelation and understates the volatility:
 
 $$
 \text{Unsmoothed Return}_{t} = \frac{\text{Period Return}_{t} - \rho 1 \cdot \text{Period Return}_{t-1}}{1 - \rho 1}
@@ -4322,23 +4522,26 @@ $$
 
 Where $$\rho_{1}$$ is the first order autocorrelation of each ticker's period returns over the date range; the first period has no predecessor and is NaN. See `get_smoothing_index` to measure the smoothing.
 
-For more information, see the following sources:
-
-- Geltner, D. (1991). "Smoothing in Appraisal-Based Returns." Journal of Real Estate Finance and Economics, 4(3), 327-345.
-- Geltner, D. (1993). "Estimating Market Values from Appraised Values without Assuming an Efficient Market." Journal of Real Estate Research, 8(3), 325-345.
-- ffn: to_log_returns and PerformanceStats.log_returns ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-- pandas-ta-classic: log_return ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- PerformanceAnalytics: Return.Geltner ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** periodic return, log return, continuously compounded return, unsmoothed return, Geltner return, de-smoothed return.
+
+**References:**
+
+- paper | Geltner, D. (1991). "Smoothing in Appraisal-Based Returns." Journal of Real Estate Finance and Economics, 4(3), 327-345.
+- paper | Geltner, D. (1993). "Estimating Market Values from Appraised Values without Assuming an Efficient Market." Journal of Real Estate Research, 8(3), 325-345.
+- library | Referenced against PerformanceAnalytics (R)'s [Return.Geltner](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.Geltner.R#L43){:target="_blank"}
+- library | Shares similar logic as ffn's [to_log_returns](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1223){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [log_return](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/performance/log_return.py#L12){:target="_blank"}
+- library | Shares similar logic as empyrical's [aggregate_returns](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L316){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.cumulative](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.cumulative.R#L27){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (daily, weekly, monthly, quarterly, or yearly).
-Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The data frequency for returns. Options are: "daily", "weekly", "monthly",
+"quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True,
+otherwise "yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative return over time
 instead of the discrete return per period. Defaults to False.
-- <u>log (bool, optional):</u> Whether to return log returns, ln(1 + return), or with
+- <u>logarithmic (bool, optional):</u> Whether to return log returns, ln(1 + return), or with
 cumulative=True the cumulative log return. Defaults to False.
 - <u>unsmoothed (bool, optional):</u> Whether to unsmooth the period returns with Geltner's
 first order autocorrelation filter. Defaults to False.
@@ -4364,7 +4567,7 @@ pd.Series: Return values with time as the index.
 the specified `period` for each asset in the Toolkit instance.
 - The daily log returns agree with pandas-ta-classic's log_return and ffn's to_log_returns of the adjusted
 close, the unsmoothed returns PerformanceAnalytics' Return.Geltner of the same returns.
-- If `growth` is set to True, the method calculates the growth of Return values using the specified `lag`.
+- With growth, the method calculates the growth of Return values using the specified `lag`.
 
 **As an example:**
 
@@ -4394,7 +4597,7 @@ Which returns:
 ---
 
 ## get_excess_return
-Calculate the Excess Return of an investment portfolio or asset for a given period based on the daily historical returns.
+Calculate the excess return of each period: how much each asset returned above the risk free rate over each week, month, quarter or year, compounded from the daily returns.
 
 The Excess Return is defined as the period Return minus the risk free rate earned over that period. If cumulative is set to True, the excess returns within the selected date range are compounded further into a cumulative excess return (growth of 1) instead.
 
@@ -4426,10 +4629,17 @@ A period without any daily return for a ticker (before it listed, or a gap in it
 
 **Also known as:** return minus the risk-free rate.
 
+**References:**
+
+- library | Shares similar logic as empyrical's [aggregate_returns](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L316){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.cumulative](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.cumulative.R#L27){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The data frequency for returns. Options are: "weekly", "monthly", "quarterly",
+"yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise
+"yearly".
 - <u>cumulative (bool, optional):</u> Whether to return the cumulative excess return over time
 instead of the discrete excess return per period. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -4453,10 +4663,10 @@ pd.Series: Excess Return values with time as the index.
 
 - The method retrieves the daily historical return data and calculates the Excess Return for
 the specified `period` for each asset in the Toolkit instance.
-- The risk-free rate is the Toolkit's risk_free_rate, the 10-year US Treasury yield by default. Many
+- The risk-free rate is the Toolkit's risk free rate, the 10-year US Treasury yield by default. Many
 textbook definitions (Sharpe, 1994; the Ken French factors) use a short-term Treasury bill instead, which
-the Toolkit uses when initialised with risk_free_rate="13w".
-- If `growth` is set to True, the method calculates the growth of Excess Return values using the
+the Toolkit uses when initialised with the 13-week Treasury bill as its risk free rate.
+- With growth, the method calculates the growth of Excess Return values using the
 specified `lag`.
 
 **As an example:**
@@ -4501,8 +4711,9 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The data frequency for returns. Options are: "weekly", "monthly", "quarterly",
+"yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise
+"yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4550,13 +4761,14 @@ Unlike `get_covariance`, which relates a single asset to the benchmark, this com
 The formula is as follows:
 
 $$
-\text{Covariance} \;(A,\; B) = \frac{\sum((\text{Return}\; A - \text{Mean Return}\; A) \cdot (\text{Return}\; B - \text{Mean Return}\; B))}{N - 1},\;\; \text{the sample covariance (ddof=1) of the period returns (e.g. monthly) within the Toolkit's date range, per period and not annualized, using the overlapping (pairwise complete) observations of each pair}
+\text{Covariance} \;(A,\; B) = \frac{\sum((\text{Return}\; A - \text{Mean Return}\; A) \cdot (\text{Return}\; B - \text{Mean Return}\; B))}{N - 1},\;\; \text{the sample covariance} \;(\text{with}\; n - 1 \;\text{in the denominator}) \;\text{of the period returns} \;(\text{e.g.} \;\text{monthly}) \;\text{within the Toolkit's date range},\;\; \text{per period and not annualized, using the overlapping (pairwise complete) observations of each pair}
 $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns (weekly, monthly, quarterly, or yearly). Defaults
-to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The data frequency for returns. Options are: "weekly", "monthly", "quarterly",
+"yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise
+"yearly".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4599,7 +4811,7 @@ Which returns:
 ## get_appraisal_ratio
 Calculate the Appraisal Ratio, i.e. Jensen's Alpha divided by the idiosyncratic (residual, unsystematic) standard deviation left over from the CAPM regression that produced that Alpha.
 
-Jensen's Alpha (see `get_alpha` with method="jensen") measures how much return a manager generated above what CAPM would predict given the asset's Beta. However, a large Alpha achieved with wildly noisy, unpredictable residual returns is far less attractive than the same Alpha achieved consistently. The Appraisal Ratio normalizes Alpha by that noise (the "specific risk" not explained by market exposure), giving a Sharpe-ratio-like measure of stock-picking or timing skill per unit of idiosyncratic risk taken.
+Jensen's Alpha (see `get_alpha` with the Jensen method) measures how much return a manager generated above what CAPM would predict given the asset's Beta. However, a large Alpha achieved with wildly noisy, unpredictable residual returns is far less attractive than the same Alpha achieved consistently. The Appraisal Ratio normalizes Alpha by that noise (the "specific risk" not explained by market exposure), giving a Sharpe-ratio-like measure of stock-picking or timing skill per unit of idiosyncratic risk taken.
 
 The formula is as follows:
 
@@ -4607,7 +4819,7 @@ $$
 \text{Appraisal Ratio} = \frac{\text{Jensen's Alpha}}{\text{Residual Standard Deviation}}
 $$
 
-Where the residual standard deviation is the standard deviation of the pointwise CAPM regression residuals (Asset Excess Return − Beta * Benchmark Excess Return), reusing the exact same CAPM regression formula as `get_alpha` with method="jensen".
+Where the residual standard deviation is the standard deviation of the pointwise CAPM regression residuals (Asset Excess Return − Beta * Benchmark Excess Return), reusing the exact same CAPM regression formula as `get_alpha` with the Jensen method.
 
 Bacon (2008) scales Jensen's Alpha by two other risk measures as well, which `method` selects:
 
@@ -4623,26 +4835,34 @@ Where Beta × Benchmark Volatility is the systematic risk, with the benchmark vo
 
 **See definition:** [https://en.wikipedia.org/wiki/Information_ratio](https://en.wikipedia.org/wiki/Information_ratio){:target="_blank"}
 
-For more information, see the following sources:
-
-- Treynor, J.L., & Black, F. (1973). "How to Use Security Analysis to Improve Portfolio Selection." Journal of Business, 46(1), 66-86.
-- Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 77.
-- PerformanceAnalytics: AppraisalRatio ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** Treynor-Black Appraisal Ratio.
+
+**References:**
+
+- paper | Treynor, J.L., & Black, F. (1973). "How to Use Security Analysis to Improve Portfolio Selection." Journal of Business, 46(1), 66-86.
+- paper | Bacon, C.R. (2008). "Practical Portfolio Performance Measurement and Attribution." 2nd edition, John Wiley & Sons, p. 77.
+- library | Referenced against PerformanceAnalytics (R)'s [AppraisalRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/AppraisalRatio.R#L45){:target="_blank"} (modified, alternative)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.jensenAlpha](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.jensenAlpha.R#L34){:target="_blank"}
+- library | Shares similar logic as empyrical's [alpha](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1154){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1058){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.beta](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L89){:target="_blank"}
+- library | Shares similar logic as empyrical's [beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1314){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [AppraisalRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/AppraisalRatio.R#L45){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Beta and
 the residual standard deviation are estimated over a rolling window of this many periods
 across the full return history instead of per `period`, the residuals of each window from
 the regression over that window (see `performance_model.get_rolling_appraisal_ratio`).
 Defaults to None.
-- <u>method (str, optional):</u> "appraisal" for Jensen's Alpha per unit of residual risk,
-"modified" for Jensen's Alpha per unit of Beta or "alternative" for Jensen's Alpha per
-unit of systematic risk, as described above. Defaults to "appraisal".
+- <u>method (str, optional):</u> The ratio, as described above. Options are: "appraisal" (Jensen's Alpha
+per unit of residual risk), "modified" (Jensen's Alpha per unit of Beta), "alternative"
+(Jensen's Alpha per unit of systematic risk). Defaults to "appraisal".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4665,11 +4885,11 @@ pd.DataFrame: Appraisal Ratio values.
 zero. Therefore, it does not give any useful insights.
 - The method retrieves historical data and calculates Jensen's Alpha and the CAPM
 regression residuals for each asset in the Toolkit instance, reusing the same Beta and
-CAPM formula as `get_alpha` with method="jensen".
+CAPM formula as `get_alpha` with the Jensen method.
 - PerformanceAnalytics' AppraisalRatio annualizes the returns over the whole sample and takes the
 population standard deviation of the residuals; the Toolkit uses the return, Beta and residuals of
 each period. The three methods follow the same formulas.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -4699,7 +4919,7 @@ Which returns:
 ---
 
 ## get_fama_decomposition
-Calculate the Fama (1972) decomposition of total excess return into Selectivity and Diversification.
+Calculate the Fama (1972) decomposition: Jensen's Alpha split into Selectivity, the return above what a fully diversified portfolio with the same total risk would have earned, and Diversification, the return the risk left undiversified should have earned.
 
 Jensen's Alpha alone conflates two very different sources of excess return: genuine stock/timing selection skill, and simply carrying more total risk than the market by holding an under-diversified portfolio (which, in a CAPM world, should be compensated with extra return even absent any skill). Fama's decomposition separates the two by comparing the portfolio's actual return against two different CAPM-implied return benchmarks: one using the portfolio's actual Beta (systematic risk only), and one using the portfolio's actual *total* risk ratio (Sigma_Portfolio / Sigma_Market) in place of Beta.
 
@@ -4713,14 +4933,23 @@ $$
 \text{Diversification} = \left[\text{Risk-Free Rate} + \frac{\sigma_{\text{Portfolio}}}{\sigma_{\text{Market}}} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right] - \left[\text{Risk-Free Rate} + \text{Beta} \cdot (\text{Benchmark Return} - \text{Risk-Free Rate})\right]
 $$
 
-Selectivity is the return earned above what would be required for a fully diversified portfolio carrying the same total risk, i.e. genuine security selection or timing skill. Diversification is the extra return the manager left on the table (if positive, it is a cost) by taking on unsystematic risk that a fully diversified portfolio of the same total risk would not have. Selectivity plus Diversification equals Jensen's Alpha (see `get_alpha` with method="jensen").
+Selectivity is the return earned above what would be required for a fully diversified portfolio carrying the same total risk, i.e. genuine security selection or timing skill. Diversification is the extra return the manager left on the table (if positive, it is a cost) by taking on unsystematic risk that a fully diversified portfolio of the same total risk would not have. Selectivity plus Diversification equals Jensen's Alpha (see `get_alpha` with the Jensen method).
 
 **Also known as:** Fama's Net Selectivity, Fama performance decomposition.
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [NetSelectivity](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/NetSelectivity.R#L35){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Selectivity](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Selectivity.R#L32){:target="_blank"}
+- library | Shares similar logic as empyrical's [roll_alpha_beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1058){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CAPM.beta](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CAPM.beta.R#L89){:target="_blank"}
+- library | Shares similar logic as empyrical's [beta](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L1314){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Beta and
 the standard deviations of the asset and the benchmark are estimated from the returns per
 `period` over a rolling window of this many periods across the full return history,
@@ -4749,7 +4978,7 @@ to zero. Therefore, it does not give any useful insights.
 - The method retrieves historical data and calculates Beta, the asset's and benchmark's
 standard deviation, and the Selectivity and Diversification components for each asset in
 the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -4779,7 +5008,7 @@ Which returns:
 ---
 
 ## get_starr_ratio
-Calculate the STARR (Stable Tail Adjusted Return Ratio) of an investment portfolio or asset's returns.
+Calculate the STARR (Stable Tail Adjusted Return Ratio): the excess return an asset earns per unit of Conditional Value at Risk, the average loss in the tail.
 
 The Sharpe ratio penalizes upside and downside volatility equally via the standard deviation. The STARR ratio instead scales the mean excess return by the Conditional Value at Risk (CVaR / Expected Shortfall), a coherent tail-risk measure that only looks at the average magnitude of losses beyond the `alpha` quantile. This makes STARR more appropriate than the Sharpe ratio for return distributions with fat left tails.
 
@@ -4793,10 +5022,15 @@ $$
 
 **Also known as:** Stable Tail Adjusted Return Ratio, Conditional Sharpe Ratio.
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the CVaR within the specified
 period or for the entire period. Thus whether to look at the CVaR within a specific
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
@@ -4827,7 +5061,7 @@ the selected date range) can produce a degenerate (e.g. zero or ±infinite) CVaR
 CVaR is not a meaningful statistic with only one or two data points. This mirrors the
 analogous caveat for the Sharpe Ratio needing enough observations for its standard
 deviation to be meaningful.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -4858,7 +5092,7 @@ Which returns:
 ---
 
 ## get_rachev_ratio
-Calculate the Rachev Ratio (R-Ratio) of an investment portfolio or asset's returns.
+Calculate the Rachev Ratio (R-Ratio): the average of the best returns in the right tail divided by the average loss in the left tail, how large the extreme gains are compared to the extreme losses.
 
 The Rachev ratio compares the "quality" of the best outcomes to the "quality" of the worst outcomes by taking the ratio of the right-tail Expected Shortfall (the average of the best `alpha` fraction of returns) to the left-tail Expected Shortfall (the average magnitude of the worst `alpha` fraction of returns). A ratio above 1 indicates that the average size of extreme gains outweighs the average size of extreme losses.
 
@@ -4870,10 +5104,15 @@ $$
 
 **Also known as:** R-Ratio.
 
+**References:**
+
+- library | Shares similar logic as PerformanceAnalytics (R)'s [RachevRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/RachevRatio.R#L30){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the Rachev Ratio within the
 specified period or for the entire period. Thus whether to look at the return
 distribution within a specific year (if period = 'yearly') or look at the entirety of
@@ -4900,7 +5139,7 @@ pd.DataFrame: Rachev Ratio values.
 
 - The method retrieves historical data and calculates the Rachev Ratio for each asset in
 the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
+- With growth, the method calculates the growth of the ratio values using
 the specified `lag`.
 
 **As an example:**
@@ -4930,12 +5169,12 @@ Which returns:
 
 ---
 
-## get_treynor_mazuy_model
-Calculate the Treynor-Mazuy market timing model for each asset in the Toolkit instance.
+## get_market_timing_model
+Calculate a market timing model for each asset: whether the manager raised the exposure to the market before it rose and lowered it before it fell, with the Treynor-Mazuy or the Henriksson-Merton model.
 
-Jensen's Alpha and Beta from a plain CAPM regression cannot distinguish stock-picking skill (selectivity) from market-timing skill (shifting exposure ahead of market moves). The Treynor-Mazuy model adds a quadratic term in the benchmark excess return to the regression: a manager who successfully increases (decreases) market exposure ahead of up (down) markets will show a return profile that curves upward as a function of the benchmark return, captured by a positive quadratic coefficient (Gamma).
+Jensen's Alpha and Beta from a plain CAPM regression cannot distinguish stock-picking skill (selectivity) from market-timing skill (shifting exposure ahead of market moves). Both models add a timing term in the benchmark excess return to the regression.
 
-The formula is as follows:
+The Treynor-Mazuy model adds a quadratic term: a manager who successfully increases (decreases) market exposure ahead of up (down) markets will show a return profile that curves upward as a function of the benchmark return, captured by a positive quadratic coefficient (Gamma). The formula is as follows:
 
 $$
 \text{Excess Return} = \text{Alpha} + \text{Beta} \cdot \text{Benchmark Excess Return} + \Gamma \cdot \text{Benchmark Excess Return}^{2} + \text{Residuals}
@@ -4943,12 +5182,31 @@ $$
 
 Gamma > 0 indicates positive market-timing ability; Gamma <= 0 indicates no timing ability.
 
-**Also known as:** Treynor-Mazuy quadratic timing model, TM model.
+The Henriksson-Merton model models timing as a piecewise (rather than quadratic) change in Beta: a "down-market" Beta and an "up-market" Beta. The formula is as follows:
+
+$$
+\text{Excess Return} = \text{Alpha} + \text{Beta} \cdot \text{Benchmark Excess Return} + \text{Up Market Beta} \cdot \max(\text{Benchmark Excess Return},\; 0) + \text{Residuals}
+$$
+
+Beta is the "down-market" Beta (the portfolio's market exposure when the benchmark excess return is negative), and Beta + Up Market Beta is the "up-market" Beta. Up Market Beta > 0 indicates positive market-timing ability; Up Market Beta <= 0 indicates no timing ability.
+
+**Also known as:** Treynor-Mazuy quadratic timing model, TM model, Henriksson-Merton piecewise timing model, HM model, market timing regression.
+
+**References:**
+
+- paper | Treynor, J., & Mazuy, K. (1966). "Can Mutual Funds Outguess the Market?" Harvard Business Review, 44(4), 131-136.
+- paper | Henriksson, R.D., & Merton, R.C. (1981). "On Market Timing and Investment Performance II: Statistical Procedures for Evaluating Forecasting Skills." Journal of Business, 54(4), 513-533.
+- library | Shares similar logic as PerformanceAnalytics (R)'s [MarketTiming](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/MarketTiming.R#L52){:target="_blank"} (TM)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [MarketTiming](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/MarketTiming.R#L52){:target="_blank"} (HM)
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> The timing model. Options are: "treynor_mazuy" (the quadratic timing term,
+Gamma), "henriksson_merton" (the piecewise timing term, Up Market Beta). Defaults to
+"treynor_mazuy".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -4963,16 +5221,17 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Alpha, Beta, Gamma and R Squared values, with a Multi Index of
+pd.DataFrame: Alpha, Beta, Gamma (Treynor-Mazuy) or Up Market Beta
+(Henriksson-Merton) and R Squared values, with a Multi Index of
 (ticker, parameter) as the columns.
 
 **Notes:**
 
-- Daily and weekly Treynor-Mazuy results are not an option as there would be too few
+- Daily and weekly results are not an option as there would be too few
 observations within each period to run a meaningful regression.
-- The method retrieves historical data and performs a quadratic regression for each asset
+- The method retrieves historical data and performs the regression for each asset
 in the Toolkit instance, within each period.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -4986,7 +5245,7 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_treynor_mazuy_model().xs("ARKK", level=0, axis=1)
+toolkit.performance.get_market_timing_model().xs("ARKK", level=0, axis=1)
 ```
 
 Which returns:
@@ -4999,53 +5258,7 @@ Which returns:
 | 2024 | -0.001  | 2.1368 |  -3.1566 |      0.5658 |
 | 2025 |  0.0006 | 1.8994 |  -1.3437 |      0.6767 |
 
----
-
-## get_henriksson_merton_model
-Calculate the Henriksson-Merton market timing model for each asset in the Toolkit instance.
-
-Like the Treynor-Mazuy model (see `get_treynor_mazuy_model`), this separates market-timing skill from selectivity, but models timing as a piecewise (rather than quadratic) change in Beta: a "down-market" Beta and an "up-market" Beta.
-
-The formula is as follows:
-
-$$
-\text{Excess Return} = \text{Alpha} + \text{Beta} \cdot \text{Benchmark Excess Return} + \text{Up Market Beta} \cdot \max(\text{Benchmark Excess Return},\; 0) + \text{Residuals}
-$$
-
-Beta is the "down-market" Beta (the portfolio's market exposure when the benchmark excess return is negative), and Beta + Up Market Beta is the "up-market" Beta. Up Market Beta > 0 indicates positive market-timing ability; Up Market Beta <= 0 indicates no timing ability.
-
-**Also known as:** Henriksson-Merton piecewise timing model, HM model.
-
-**Args:**
-
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Alpha, Beta, Up Market Beta and R Squared values, with a Multi Index of
-(ticker, parameter) as the columns.
-
-**Notes:**
-
-- Daily and weekly Henriksson-Merton results are not an option as there would be too few
-observations within each period to run a meaningful regression.
-- The method retrieves historical data and performs a piecewise regression for each asset
-in the Toolkit instance, within each period.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-
-**As an example:**
+With the Henriksson-Merton model:
 
 ```python
 from financetoolkit import Toolkit
@@ -5057,10 +5270,10 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.performance.get_henriksson_merton_model().xs("FBCG", level=0, axis=1)
+toolkit.performance.get_market_timing_model(method="henriksson_merton").xs("FBCG", level=0, axis=1)
 ```
 
-Which returns:
+
 
 |      |   Alpha |   Beta |   Up Market Beta |   R Squared |
 |:-----|--------:|-------:|-----------------:|------------:|
@@ -5073,7 +5286,7 @@ Which returns:
 ---
 
 ## get_factor_analysis
-Factor analysis (predictive power) of the performance metrics, or of a factor of your own: whether the tickers that score high on a metric go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the metric of the tickers in the period and their return over the following horizon: 1 means the metric ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
+Calculate the factor analysis (predictive power) of the performance metrics, or of a factor of your own: whether the tickers that score high on a metric go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the metric of the tickers in the period and their return over the following horizon: 1 means the metric ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
 The summary has a row per metric and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the skewness and excess kurtosis of the IC, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the annualized alpha and the beta of the factor-weighted long-short portfolio against the equally weighted tickers, the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the metric from one period to the next. With detail, it returns one part of the analysis per period, quantile or group for a single metric.
 
@@ -5113,6 +5326,12 @@ Each metric is measured within each period (e.g. the volatility of a month's dai
 
 A factor of your own is a DataFrame with the dates as index and the tickers as columns, applied from each date on, or with the tickers as index and periods as columns, applied from the end of each period. Make sure each value was known on the date it is given for, or the analysis looks ahead.
 
+**References:**
+
+- library | Shares similar logic as alphalens' [factor_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L28){:target="_blank"}
+- library | Shares similar logic as alphalens' [factor_returns](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L210){:target="_blank"}
+- library | Shares similar logic as alphalens' [mean_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L461){:target="_blank"}
+
 **Args:**
 
 - <u>metrics (str &#124; list[str] &#124; pd.DataFrame):</u> A performance method name with a value per ticker and
@@ -5121,7 +5340,7 @@ as a DataFrame. "all" holds the returns, excess return, beta, Sharpe, Sortino,
 Treynor and information ratios, tracking error, Jensen's alpha, Calmar and
 Omega ratios and the win rate. Defaults to "all".
 - <u>period (str, optional):</u> The frequency at which the metrics are measured and
-evaluated: weekly, monthly, quarterly or yearly. Each metric is calculated
+evaluated. Options are: "weekly", "monthly", "quarterly", "yearly". Each metric is calculated
 within each period from that period's daily returns, so use monthly or longer
 for enough returns per period. Defaults to "monthly".
 - <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
@@ -5158,11 +5377,11 @@ a group-neutral analysis, in which the IC is group-adjusted and the
 factor-weighted portfolio neutral within each group. Without group the IC
 stays the same, as subtracting one mean from every ticker keeps their ranks.
 Defaults to False.
-- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period:
+- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period. Options are:
 "quantile" (equally sized), "equal_width" (bins of equal width between the lowest
 and highest value), "zero_aware" (half of the quantiles for the negative and half
 for the zero and positive values, for a signal centred on zero; needs an even number
-of quantiles) or "group" (equally sized within each group, needs group). Defaults to
+of quantiles), "group" (equally sized within each group, needs group). Defaults to
 "quantile".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
@@ -5203,9 +5422,8 @@ of Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period
 1945-1964." Journal of Finance 23(2); the event returns follow MacKinlay, A.C.
 (1997). "Event Studies in Economics and Finance." Journal of Economic Literature
 35(1).
-- Referenced against alphalens-reloaded
-([https://github.com/stefan-jansen/alphalens-reloaded](https://github.com/stefan-jansen/alphalens-reloaded){:target="_blank"}). Its top minus bottom
-spread is half of the one here (a gross exposure of one rather than two), it
+- The top minus bottom spread of alphalens (Stefan Jansen's alphalens-reloaded)
+is half of the one here (a gross exposure of one rather than two), it
 drops a period and ticker without every horizon's return where each horizon
 here uses its own, and its event returns average the single-period returns at
 each offset where these are the price paths rebased to the period itself.
@@ -5234,10 +5452,10 @@ toolkit.performance.get_factor_analysis(momentum, horizons=[1, 12])
 
 Which returns:
 
-|                                |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |   Beta |   Quantile Turnover |   Rank Autocorrelation |
+|                                |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   P-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |   Beta |   Quantile Turnover |   Rank Autocorrelation |
 |:-------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|--------------:|--------------:|-----------------:|---------------:|-------------------:|-------------------:|-------:|--------------------:|-----------------------:|
-| ('Custom Factor', '1 Month')   |    0.0175 |                  0.3747 |                 0.0467 |        0.4834 |    0.6298 |       -0.2827 |       -0.6356 |           0.4953 |            107 |             0.004  |             0.0649 | 0.0264 |              0.2391 |                 0.8823 |
-| ('Custom Factor', '12 Months') |    0.1118 |                  0.4188 |                 0.2669 |        2.6147 |    0.0104 |       -0.4185 |       -0.2819 |           0.5729 |             96 |             0.0193 |             0.0152 | 0.1642 |              0.2391 |                 0.8823 |
+| ('Custom Factor', '1 Month')   |    0.018  |                  0.374  |                 0.0481 |        0.4979 |    0.6196 |       -0.2886 |       -0.6254 |           0.4953 |            107 |             0.004  |             0.0648 | 0.0264 |              0.2391 |                 0.8821 |
+| ('Custom Factor', '12 Months') |    0.1119 |                  0.4193 |                 0.2668 |        2.6144 |    0.0104 |       -0.4186 |       -0.2835 |           0.5729 |             96 |             0.0194 |             0.0152 | 0.1641 |              0.2391 |                 0.8821 |
 
 ---
 
@@ -5247,34 +5465,36 @@ Calculate the standard error of the Sharpe ratio: how far the measured Sharpe ra
 The formulas are as follows, with SR the Sharpe ratio of one observation (the Sharpe ratio of `get_sharpe_ratio` without annualizing) and n the number of observations:
 
 $$
-\text{"iid":}\;\; \text{SE} = \sqrt{\frac{1 + \frac{\text{SR}^{2}}{2}}{n}},\;\; \text{for normally and independently distributed returns (Lo, 2002, equation 9)}
+\text{Independent normal returns:}\;\; \text{SE} = \sqrt{\frac{1 + \frac{\text{SR}^{2}}{2}}{n}},\;\; \text{for normally and independently distributed returns (Lo, 2002, equation 9)}
 $$
 
 $$
-\text{"non\_normal":}\;\; \text{SE} = \sqrt{\frac{1 - \gamma_{3} \cdot \text{SR} + \frac{\gamma_{4} - 1}{4} \cdot \text{SR}^{2}}{n - 1}},\;\; \text{for independent but skewed and fat-tailed returns, with } \gamma_{3} \text{ the skewness and } \gamma_{4} \text{ the non-excess (raw) kurtosis (Mertens, 2002; the standard error inside the Probabilistic Sharpe Ratio of Bailey and López de Prado, 2012)}
+\text{Non-normal returns:}\;\; \text{SE} = \sqrt{\frac{1 - \gamma_{3} \cdot \text{SR} + \frac{\gamma_{4} - 1}{4} \cdot \text{SR}^{2}}{n - 1}},\;\; \text{for independent but skewed and fat-tailed returns, with } \gamma_{3} \text{ the skewness and } \gamma_{4} \text{ the non-excess (raw) kurtosis (Mertens, 2002; the standard error inside the Probabilistic Sharpe Ratio of Bailey and López de Prado, 2012)}
 $$
 
 $$
-\text{"gmm":}\;\; \text{SE} = \sqrt{\frac{\frac{\partial g}{\partial \theta} \cdot \Sigma \cdot \frac{\partial g}{\partial \theta}'}{n}},\;\; \text{for returns that may also be serially correlated and heteroskedastic (Lo, 2002, Appendix)}.\;\; \text{With}\; \theta = (\mu,\; \sigma^{2})\;\;\text{and}\;\; g(\theta) = \frac{\mu}{\sigma},\;\; \frac{\partial g}{\partial \theta} = \left(\frac{1}{\sigma},\; - \frac{\mu}{2 \sigma^{3}}\right) \;\text{and} \;\sum \;\text{is the Newey and West} \;(1987) \;\text{long-run covariance of the moment conditions} \;(r_{t} - \mu,\; (r_{t} - \mu)^{2} - \sigma^{2})
+\text{GMM (serially correlated returns):}\;\; \text{SE} = \sqrt{\frac{\frac{\partial g}{\partial \theta} \cdot \Sigma \cdot \frac{\partial g}{\partial \theta}'}{n}},\;\; \text{for returns that may also be serially correlated and heteroskedastic (Lo, 2002, Appendix)}.\;\; \text{With}\; \theta = (\mu,\; \sigma^{2})\;\;\text{and}\;\; g(\theta) = \frac{\mu}{\sigma},\;\; \frac{\partial g}{\partial \theta} = \left(\frac{1}{\sigma},\; - \frac{\mu}{2 \sigma^{3}}\right) \;\text{and} \;\sum \;\text{is the Newey and West} \;(1987) \;\text{long-run covariance of the moment conditions} \;(r_{t} - \mu,\; (r_{t} - \mu)^{2} - \sigma^{2})
 $$
 
-Negative skewness, fat tails and positive autocorrelation all widen the standard error, so the same Sharpe ratio is then less certain. The standard error is on the scale of the Sharpe ratio of one observation; multiply by SQRT(252) to compare it with a Sharpe ratio annualized by SQRT(252) (exact for the "iid" and "non_normal" errors, a rescaling of the same estimate for "gmm").
-
-For more information about the method, see the following papers:
-
-- Lo, A.W. (2002). "The Statistics of Sharpe Ratios." Financial Analysts Journal, 58(4), 36-52.
-- Mertens, E. (2002). "Comments on Variance of the IID Estimator in Lo (2002)." Working Paper, University of Basel.
-- Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
-- Newey, W.K., & West, K.D. (1987). "A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix." Econometrica, 55(3), 703-708.
+Negative skewness, fat tails and positive autocorrelation all widen the standard error, so the same Sharpe ratio is then less certain. The standard error is on the scale of the Sharpe ratio of one observation; multiply by SQRT(252) to compare it with a Sharpe ratio annualized by SQRT(252) (exact for the independent normal and non-normal errors, a rescaling of the same estimate for the GMM error).
 
 **Also known as:** Sharpe ratio confidence interval, Sharpe ratio estimation error.
 
+**References:**
+
+- paper | Lo, A.W. (2002). "The Statistics of Sharpe Ratios." Financial Analysts Journal, 58(4), 36-52.
+- paper | Mertens, E. (2002). "Comments on Variance of the IID Estimator in Lo (2002)." Working Paper, University of Basel.
+- paper | Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
+- paper | Newey, W.K., & West, K.D. (1987). "A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix." Econometrica, 55(3), 703-708.
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>method (str, optional):</u> "iid", "non_normal" or "gmm", as described above. Defaults
-to "iid".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> The standard error, as described above. Options are: "iid" (independent
+normal returns), "non_normal" (independent skewed and fat-tailed returns), "gmm" (serially
+correlated and heteroskedastic returns). Defaults to "iid".
 - <u>lags (int, optional):</u> The number of lags in the Newey-West covariance, only used
 when method="gmm". Defaults to None, which uses the Newey and West (1994) rule
 floor(4 * (n / 100)^(2/9)), 4 for a year of daily returns.
@@ -5297,12 +5517,12 @@ pd.DataFrame: The standard error of the Sharpe ratio per period.
 **Notes:**
 
 - The Sharpe ratio is computed from the daily excess returns within each period, as in
-`get_sharpe_ratio`; period="daily" needs intraday data (initialise the Toolkit with an
-intraday_period).
-- The "non_normal" error uses the bias-corrected sample skewness and kurtosis, as
-`get_sharpe_ratio(method="probabilistic")` does; the "gmm" error uses the moments of
+`get_sharpe_ratio`; the daily period needs intraday data (initialise the Toolkit with an
+intraday period).
+- The non-normal error uses the bias-corrected sample skewness and kurtosis, as
+the Probabilistic Sharpe Ratio of `get_sharpe_ratio` does; the GMM error uses the moments of
 GMM ($$\sigma^{2}$$ with 1 / n).
-- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+- With growth, the method calculates the growth of the values using the specified `lag`.
 
 **As an example:**
 
@@ -5340,11 +5560,11 @@ Two Sharpe ratios measured over a year of daily returns are both estimates, and 
 The formulas are as follows, with n the number of dates both have an excess return:
 
 $$
-\text{"memmel":}\;\; z = \frac{\text{SR}_{a} - \text{SR}_{b}}{\sqrt{\frac{2 - 2 \rho + \frac{\text{SR}_{a}^{2} + \text{SR}_{b}^{2} - 2 \cdot \text{SR}_{a} \cdot \text{SR}_{b} \cdot \rho^{2}}{2}}{n}}}
+\text{Memmel:}\;\; z = \frac{\text{SR}_{a} - \text{SR}_{b}}{\sqrt{\frac{2 - 2 \rho + \frac{\text{SR}_{a}^{2} + \text{SR}_{b}^{2} - 2 \cdot \text{SR}_{a} \cdot \text{SR}_{b} \cdot \rho^{2}}{2}}{n}}}
 $$
 
 $$
-\text{"ledoit\_wolf":}\;\; z = \frac{\Delta}{\sqrt{\frac{\text{∇f'} \Psi \text{∇f}}{n}}},\;\; \text{with}\;\; \Delta = f(v) = \frac{\mu_{a}}{\sqrt{\gamma_{a} - \mu_{a}^{2}}} - \frac{\mu_{b}}{\sqrt{\gamma_{b} - \mu_{b}^{2}}}
+\text{Ledoit-Wolf:}\;\; z = \frac{\Delta}{\sqrt{\frac{\text{∇f'} \Psi \text{∇f}}{n}}},\;\; \text{with}\;\; \Delta = f(v) = \frac{\mu_{a}}{\sqrt{\gamma_{a} - \mu_{a}^{2}}} - \frac{\mu_{b}}{\sqrt{\gamma_{b} - \mu_{b}^{2}}}
 $$
 
 $$
@@ -5363,23 +5583,24 @@ $$
 \text{P-Value} = 2 \cdot (1 - \Phi(\left|z\right|))
 $$
 
-Where SR is the Sharpe ratio of one observation (mean over standard deviation, ddof=1, of the daily excess returns, as `get_sharpe_ratio` before annualizing), $$\rho$$ the correlation of the two excess returns, $$\mu$$ and $$\gamma$$ the means of the excess returns and of their squares, $$\Psi$$ the Bartlett (Newey-West) estimate of their long-run covariance with L lags and $$\Phi$$ the standard normal distribution. A low p-value (e.g. below 0.05) means the Sharpe ratios differ significantly; a positive Sharpe Difference that the asset's Sharpe ratio is the higher one.
-
-For more information about the method, see the following papers:
-
-- Jobson, J.D. and Korkie, B.M. (1981). "Performance Hypothesis Testing with the Sharpe and Treynor Measures." Journal of Finance, 36(4), 889-908.
-- Memmel, C. (2003). "Performance Hypothesis Testing with the Sharpe Ratio." Finance Letters, 1, 21-23.
-- Ledoit, O. and Wolf, M. (2008). "Robust Performance Hypothesis Testing with the Sharpe Ratio." Journal of Empirical Finance, 15(5), 850-859.
-- Newey, W.K., & West, K.D. (1987). "A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix." Econometrica, 55(3), 703-708.
+Where SR is the Sharpe ratio of one observation (mean over standard deviation with n - 1 in the denominator, of the daily excess returns, as `get_sharpe_ratio` before annualizing), $$\rho$$ the correlation of the two excess returns, $$\mu$$ and $$\gamma$$ the means of the excess returns and of their squares, $$\Psi$$ the Bartlett (Newey-West) estimate of their long-run covariance with L lags and $$\Phi$$ the standard normal distribution. A low p-value (e.g. below 0.05) means the Sharpe ratios differ significantly; a positive Sharpe Difference that the asset's Sharpe ratio is the higher one.
 
 **Also known as:** Jobson-Korkie test, Memmel test, Ledoit-Wolf test, Sharpe ratio equality test, Sharpe ratio significance test.
 
+**References:**
+
+- paper | Jobson, J.D. and Korkie, B.M. (1981). "Performance Hypothesis Testing with the Sharpe and Treynor Measures." Journal of Finance, 36(4), 889-908.
+- paper | Memmel, C. (2003). "Performance Hypothesis Testing with the Sharpe Ratio." Finance Letters, 1, 21-23.
+- paper | Ledoit, O. and Wolf, M. (2008). "Robust Performance Hypothesis Testing with the Sharpe Ratio." Journal of Empirical Finance, 15(5), 850-859.
+- paper | Newey, W.K., & West, K.D. (1987). "A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix." Econometrica, 55(3), 703-708.
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>method (str, optional):</u> "memmel" for the Jobson-Korkie test with Memmel's correction or
-"ledoit_wolf" for the HAC test of Ledoit and Wolf. Defaults to "memmel".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> The test. Options are: "memmel" (the Jobson-Korkie test with Memmel's
+correction), "ledoit_wolf" (the HAC test of Ledoit and Wolf). Defaults to "memmel".
 - <u>lags (int, optional):</u> The number of lags L in the Newey-West covariance, only used when
 method="ledoit_wolf". Defaults to None, which uses the Newey and West (1994) rule
 floor(4 * (n / 100)^(2/9)), 4 for a year of daily returns.
@@ -5398,13 +5619,13 @@ P-Value.
 
 **Notes:**
 
-- The tests use the daily excess returns within each period, as `get_sharpe_ratio` does; period="daily"
-needs intraday data (initialise the Toolkit with an intraday_period). A period with fewer than five
+- The tests use the daily excess returns within each period, as `get_sharpe_ratio` does; the daily
+period needs intraday data (initialise the Toolkit with an intraday period). A period with fewer than five
 shared dates is NaN.
-- The "ledoit_wolf" Sharpe Difference uses standard deviations with 1 / n, as the delta method of Ledoit
-and Wolf (2008) does, so it is a factor $$\sqrt{(n - 1) / n}$$ from the "memmel" one.
-- Ledoit and Wolf (2008) use a prewhitened Quadratic Spectral kernel and also propose a studentized
-bootstrap; the Toolkit uses the Bartlett kernel of `get_sharpe_ratio_standard_error(method="gmm")`, which
+- The Ledoit-Wolf Sharpe Difference uses standard deviations with 1 / n, as the delta method of Ledoit
+and Wolf (2008) does, so it is a factor $$\sqrt{(n - 1) / n}$$ from the Memmel one.
+- Ledoit and Wolf (2008) use a prewhitened Quadratic Spectral kernel and also propose a studentized bootstrap;
+the Toolkit uses the Bartlett kernel of the GMM standard error of `get_sharpe_ratio_standard_error`, which
 gives the same test with another weighting of the autocovariances. RiskLabAI's sharpe_difference_test
 calibrates the p-value with that bootstrap instead.
 
@@ -5444,20 +5665,28 @@ $$
 \text{MinTRL} = 1 + \left(1 - \gamma_{3} \cdot \text{SR} + \frac{\gamma_{4} - 1}{4} \cdot \text{SR}^{2}\right) \cdot \left(\frac{Z_{\alpha}}{\text{SR} - \text{SR}^{*}}\right)^{2}
 $$
 
-Where SR is the Sharpe ratio of one observation (not annualized), SR* the benchmark Sharpe ratio on the same scale, $$\gamma_{3}$$ the skewness and $$\gamma_{4}$$ the non-excess (raw) kurtosis of the excess returns (3 for a normal distribution) and $$Z_{\alpha}$$ the standard normal quantile at `confidence_level` (1.645 for 95%). With $$n = \text{MinTRL}$$ observations, the Probabilistic Sharpe Ratio, `get_sharpe_ratio(method="probabilistic")`, equals `confidence_level`. Negative skewness and fat tails lengthen the record needed. When SR does not exceed SR*, no track record is long enough and the value is left out (NaN).
+Where SR is the Sharpe ratio of one observation (not annualized), SR* the benchmark Sharpe ratio on the same scale, $$\gamma_{3}$$ the skewness and $$\gamma_{4}$$ the non-excess (raw) kurtosis of the excess returns (3 for a normal distribution) and $$Z_{\alpha}$$ the standard normal quantile at `confidence_level` (1.645 for 95%). With $$n = \text{MinTRL}$$ observations, the Probabilistic Sharpe Ratio, the Probabilistic Sharpe Ratio of `get_sharpe_ratio`, equals `confidence_level`. Negative skewness and fat tails lengthen the record needed. When SR does not exceed SR*, no track record is long enough and the value is left out (NaN).
 
 By default one MinTRL is reported per `period`, computed from the daily excess returns within that period, so it counts trading days (divide by 252 for years). For a rolling period, `period` sets the frequency of the returns and the measure is computed over a rolling window of `rolling` such returns, so it counts periods (e.g. months).
 
-For more information about the method, see the following paper:
-
-- Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
-
 **Also known as:** MinTRL, minimum track record, required track record length.
+
+**References:**
+
+- paper | Bailey, D.H., & López de Prado, M. (2012). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
+- library | Referenced against quantstats' [smart_sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1000){:target="_blank"} (with get_autocorrelation_penalty)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [MinTrackRecord](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/MinTRL.R#L49){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as quantstats' [rolling_sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1030){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [SharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SharpeRatio.R#L80){:target="_blank"}
+- library | Shares similar logic as empyrical's [sharpe_ratio](https://github.com/quantopian/empyrical/blob/0.5.5/empyrical/stats.py#L652){:target="_blank"}
+- library | Shares similar logic as quantstats' [sharpe](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L938){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size, in observations of `period`.
 Defaults to None, one value per period.
 - <u>benchmark_sharpe_ratio (float, optional):</u> The benchmark Sharpe ratio SR*, on the scale
@@ -5483,10 +5712,10 @@ pd.DataFrame: The minimum number of return observations per period.
 **Notes:**
 
 - The skewness and kurtosis are the bias-corrected sample estimates, as in
-`get_sharpe_ratio(method="probabilistic")`.
-- period="daily" without rolling needs intraday data (initialise the Toolkit with an
-intraday_period).
-- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+the Probabilistic Sharpe Ratio of `get_sharpe_ratio`.
+- the daily period without a rolling window needs intraday data (initialise the Toolkit with an
+intraday period).
+- With growth, the method calculates the growth of the values using the specified `lag`.
 
 **As an example:**
 
@@ -5521,30 +5750,32 @@ Calculate the co-skewness of each asset with the benchmark: how the asset's retu
 The formulas are as follows:
 
 $$
-\text{"standardized":}\;\; \text{Co-Skewness} = \frac{E\left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m})^{2}\right]}{\sigma_{i} \cdot \sigma_{m}^{2}}
+\text{Standardized:}\;\; \text{Co-Skewness} = \frac{E\left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m})^{2}\right]}{\sigma_{i} \cdot \sigma_{m}^{2}}
 $$
 
 $$
-\text{"residual":}\;\; \beta_{\text{SKD}} = \frac{E\left[\epsilon_{i} \cdot \epsilon_{m}^{2}\right]}{\sqrt{E\left[\epsilon_{i}^{2}\right]} \cdot E\left[\epsilon_{m}^{2}\right]} \;(\text{Harvey and Siddique},\; 2000)
+\text{Residual:}\;\; \beta_{\text{SKD}} = \frac{E\left[\epsilon_{i} \cdot \epsilon_{m}^{2}\right]}{\sqrt{E\left[\epsilon_{i}^{2}\right]} \cdot E\left[\epsilon_{m}^{2}\right]} \;(\text{Harvey and Siddique},\; 2000)
 $$
 
 Where $$r_{i}$$ is the asset return, $$r_{m}$$ the benchmark return, $$\epsilon_{m} = r_{m} - \mu_{m}$$ and $$\epsilon_{i}$$ the residual of the regression $$r_{i} = \alpha + \beta \cdot r_{m} + \epsilon_{i}$$. The residual version only looks at the part of the asset's return the market does not explain, so the market's own skewness does not enter through the beta. For the benchmark itself the standardized co-skewness is the benchmark's skewness.
 
 By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so $$\sigma_{i}$$ and $$\sigma_{m}$$ use 1 / n as well and the measure does not depend on the scale of the returns.
 
-For more information about the method, see the following papers:
-
-- Harvey, C.R., & Siddique, A. (2000). "Conditional Skewness in Asset Pricing Tests." Journal of Finance, 55(3), 1263-1295.
-- Kraus, A., & Litzenberger, R.H. (1976). "Skewness Preference and the Valuation of Risk Assets." Journal of Finance, 31(4), 1085-1100.
-
 **Also known as:** coskewness, systematic skewness, co-skewness beta.
+
+**References:**
+
+- paper | Harvey, C.R., & Siddique, A. (2000). "Conditional Skewness in Asset Pricing Tests." Journal of Finance, 55(3), 1263-1295.
+- paper | Kraus, A., & Litzenberger, R.H. (1976). "Skewness Preference and the Valuation of Risk Assets." Journal of Finance, 31(4), 1085-1100.
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CoSkewness](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CoMoments.R#L391){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>method (str, optional):</u> "standardized" or "residual", as described above. Defaults to
-"standardized".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> The co-moment, as described above. Options are: "standardized" (the
+standardized co-moment), "residual" (the residual co-moment). Defaults to "standardized".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
@@ -5565,8 +5796,8 @@ pd.DataFrame: The co-skewness of each asset with the benchmark per period.
 
 - The returns are the total returns (Adj Close), as for `get_beta`; the risk free rate,
 nearly constant within a period, drops out with the means.
-- period="daily" needs intraday data (initialise the Toolkit with an intraday_period).
-- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+- The daily period needs intraday data (initialise the Toolkit with an intraday period).
+- With growth, the method calculates the growth of the values using the specified `lag`.
 
 **As an example:**
 
@@ -5601,30 +5832,32 @@ Calculate the co-kurtosis of each asset with the benchmark: how the asset's retu
 The formulas are as follows:
 
 $$
-\text{"standardized":}\;\; \text{Co-Kurtosis} = \frac{E\left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m})^{3}\right]}{\sigma_{i} \cdot \sigma_{m}^{3}}
+\text{Standardized:}\;\; \text{Co-Kurtosis} = \frac{E\left[(r_{i} - \mu_{i}) (r_{m} - \mu_{m})^{3}\right]}{\sigma_{i} \cdot \sigma_{m}^{3}}
 $$
 
 $$
-\text{"residual":}\;\; \frac{E\left[\epsilon_{i} \cdot \epsilon_{m}^{3}\right]}{\sqrt{E\left[\epsilon_{i}^{2}\right]} \cdot E\left[\epsilon_{m}^{2}\right]^{\frac{3}{2}}}
+\text{Residual:}\;\; \frac{E\left[\epsilon_{i} \cdot \epsilon_{m}^{3}\right]}{\sqrt{E\left[\epsilon_{i}^{2}\right]} \cdot E\left[\epsilon_{m}^{2}\right]^{\frac{3}{2}}}
 $$
 
 Where $$r_{i}$$ is the asset return, $$r_{m}$$ the benchmark return, $$\epsilon_{m} = r_{m} - \mu_{m}$$ and $$\epsilon_{i}$$ the residual of the regression $$r_{i} = \alpha + \beta \cdot r_{m} + \epsilon_{i}$$, the residual form Harvey and Siddique (2000) use for co-skewness. For the benchmark itself the standardized co-kurtosis is the benchmark's non-excess kurtosis (3 for normal returns); for an asset with a correlation $$\rho$$ to normally distributed market returns it is $$3 \rho$$.
 
 By default one value is reported per `period`, computed from the daily returns within that period on the dates both the asset and the benchmark have a return. The expectations are population moments (1 / n), so $$\sigma_{i}$$ and $$\sigma_{m}$$ use 1 / n as well.
 
-For more information about the method, see the following papers:
-
-- Dittmar, R.F. (2002). "Nonlinear Pricing Kernels, Kurtosis Preference, and Evidence from the Cross Section of Equity Returns." Journal of Finance, 57(1), 369-403.
-- Harvey, C.R., & Siddique, A. (2000). "Conditional Skewness in Asset Pricing Tests." Journal of Finance, 55(3), 1263-1295.
-
 **Also known as:** cokurtosis, systematic kurtosis, co-kurtosis beta.
+
+**References:**
+
+- paper | Dittmar, R.F. (2002). "Nonlinear Pricing Kernels, Kurtosis Preference, and Evidence from the Cross Section of Equity Returns." Journal of Finance, 57(1), 369-403.
+- paper | Harvey, C.R., & Siddique, A. (2000). "Conditional Skewness in Asset Pricing Tests." Journal of Finance, 55(3), 1263-1295.
+- library | Shares similar logic as PerformanceAnalytics (R)'s [CoKurtosis](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/CoMoments.R#L466){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>method (str, optional):</u> "standardized" or "residual", as described above. Defaults to
-"standardized".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>method (str, optional):</u> The co-moment, as described above. Options are: "standardized" (the
+standardized co-moment), "residual" (the residual co-moment). Defaults to "standardized".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
@@ -5645,8 +5878,8 @@ pd.DataFrame: The co-kurtosis of each asset with the benchmark per period.
 
 - The returns are the total returns (Adj Close), as for `get_beta`; the risk free rate,
 nearly constant within a period, drops out with the means.
-- period="daily" needs intraday data (initialise the Toolkit with an intraday_period).
-- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+- The daily period needs intraday data (initialise the Toolkit with an intraday period).
+- With growth, the method calculates the growth of the values using the specified `lag`.
 
 **As an example:**
 
@@ -5694,18 +5927,20 @@ $$
 
 The Conditional Drawdown at Risk is the average of the worst `alpha` share of the daily drawdowns within the period and the Volatility the standard deviation of the daily returns within the period scaled to the period (times the square root of the trading days in it), so the Pitfall Indicator counts how many standard deviations the worst drawdowns reach. Two assets with the same Ulcer Performance Index get a lower Serenity Index when one of them has the deeper tail of drawdowns.
 
-For more information, see the following sources:
-
-- KeyQuant (2017). "Assessing Performance Through Risk: Part 1." KeyQuant white paper (the Serenity Ratio and the Pitfall Indicator).
-- Martin, P.G., & McCann, B.B. (1989). "The Investor's Guide to Fidelity Funds." John Wiley & Sons (the Ulcer Index).
-- quantstats: stats.serenity_index ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-
 **Also known as:** Serenity Ratio.
+
+**References:**
+
+- paper | KeyQuant (2017). "Assessing Performance Through Risk: Part 1." KeyQuant white paper (the Serenity Ratio and the Pitfall Indicator).
+- paper | Martin, P.G., & McCann, B.B. (1989). "The Investor's Guide to Fidelity Funds." John Wiley & Sons (the Ulcer Index).
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+- library | Shares similar logic as quantstats' [serenity_index](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L1906){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>alpha (float, optional):</u> The share of the worst drawdowns the Conditional Drawdown at Risk averages.
 Defaults to 0.05.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -5733,7 +5968,7 @@ standard deviation, over the whole history. The Toolkit follows KeyQuant's defin
 Ulcer Index, historical Conditional Drawdown at Risk and volatility per period, so the values differ
 from quantstats; with quantstats' components the formula gives its value (to 1e-12).
 - A period without a drawdown leaves the index undefined (NaN).
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -5770,40 +6005,42 @@ $$
 \text{Risk Measure Ratio} = \frac{\operatorname{Mean}(\text{Daily Return} - \text{Daily Risk Free Rate})}{\text{Risk Measure}(\text{Daily Returns})}
 $$
 
-The risk measures (`risk_measure`) are those of `toolkit.risk`, as a positive number:
+The risk measures are those of `toolkit.risk`, as a positive number:
 
-- "var": the historical Value at Risk, the `alpha` quantile of the returns.
-- "cvar": the historical Conditional Value at Risk (Expected Shortfall), the mean of the returns at or below it (the Conditional Sharpe or STARR ratio).
-- "evar": the historical Entropic Value at Risk.
-- "erm": the Entropic Risk Measure with a risk aversion of 1.
-- "worst": the Worst Realization, the lowest return.
-- "mad": the Mean Absolute Deviation from the mean.
-- "lpm": the first Lower Partial Moment below the mean, MEAN(MAX(Mean - Return, 0)).
-- "gmd": the Gini Mean Difference.
-- "max_drawdown": the Maximum Drawdown (a Calmar ratio).
-- "average_drawdown": the Average Drawdown over every day.
-- "dar", "cdar" and "edar": the Drawdown at Risk, Conditional Drawdown at Risk and Entropic Drawdown at Risk at `alpha`.
-- "ulcer": the Ulcer Index, the root mean square drawdown.
+- Value at Risk: the historical Value at Risk, the `alpha` quantile of the returns.
+- Conditional Value at Risk: the historical Conditional Value at Risk (Expected Shortfall), the mean of the returns at or below it (the Conditional Sharpe or STARR ratio).
+- Entropic Value at Risk: the historical Entropic Value at Risk.
+- Entropic Risk Measure: the Entropic Risk Measure with a risk aversion of 1.
+- Worst Realization: the Worst Realization, the lowest return.
+- Mean Absolute Deviation: the Mean Absolute Deviation from the mean.
+- Lower Partial Moment: the first Lower Partial Moment below the mean, MEAN(MAX(Mean - Return, 0)).
+- Gini Mean Difference: the Gini Mean Difference.
+- Maximum Drawdown: the Maximum Drawdown (a Calmar ratio).
+- Average Drawdown: the Average Drawdown over every day.
+- Drawdown at Risk, Conditional Drawdown at Risk and Entropic Drawdown at Risk: the three drawdown measures at `alpha`.
+- Ulcer Index: the Ulcer Index, the root mean square drawdown.
 
-The ratio is computed from the daily returns within each period (e.g. each year), with the mean and the risk measure per day and not annualized, as skfolio's ratio measures are. With within_period=False the returns of `period` over the whole history give one ratio per ticker. The drawdowns compound the returns and start from a wealth of 1 at the start of each period.
-
-For more information, see the following sources:
-
-- Cajas, D. (2021). "Riskfolio-Lib: Portfolio Optimization in Python", the risk-adjusted return ratios ([https://riskfolio-lib.readthedocs.io](https://riskfolio-lib.readthedocs.io){:target="_blank"}).
-- Gregoriou, G.N., & Gueyie, J.P. (2003). "Risk-Adjusted Performance of Funds of Hedge Funds Using a Modified Sharpe Ratio." Journal of Wealth Management, 6(3), 77-83.
-- skfolio: RatioMeasure ([https://skfolio.org/generated/skfolio.measures.RatioMeasure.html](https://skfolio.org/generated/skfolio.measures.RatioMeasure.html){:target="_blank"}).
-- Riskfolio-Lib: RiskFunctions.Sharpe ([https://github.com/dcajasn/Riskfolio-Lib](https://github.com/dcajasn/Riskfolio-Lib){:target="_blank"}).
-- PerformanceAnalytics: SharpeRatio with FUN="VaR" or "ES" ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
+The ratio is computed from the daily returns within each period (e.g. each year), with the mean and the risk measure per day and not annualized, as skfolio's ratio measures are. Over the whole history the returns of `period` over the whole history give one ratio per ticker. The drawdowns compound the returns and start from a wealth of 1 at the start of each period.
 
 **Also known as:** return over risk, risk-adjusted return ratio, generalized Sharpe ratio, conditional Sharpe ratio, VaR ratio, CVaR ratio, EVaR ratio, CDaR ratio, MAD ratio, Gini mean difference ratio.
 
+**References:**
+
+- paper | Cajas, D. (2021). "Riskfolio-Lib: Portfolio Optimization in Python", the risk-adjusted return ratios.
+- paper | Gregoriou, G.N., & Gueyie, J.P. (2003). "Risk-Adjusted Performance of Funds of Hedge Funds Using a Modified Sharpe Ratio." Journal of Wealth Management, 6(3), 77-83.
+- library | Referenced against skfolio's [RatioMeasure](https://skfolio.org/generated/skfolio.measures.RatioMeasure.html){:target="_blank"}
+- library | Shares similar logic as Riskfolio-Lib's [Sharpe](https://riskfolio-lib.readthedocs.io/en/latest/riskfoliolib/risk.html#RiskFunctions.Sharpe){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [SharpeRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SharpeRatio.R#L80){:target="_blank"} (VaR and ES)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [Return.excess](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/Return.excess.R#L42){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
-- <u>risk_measure (str, optional):</u> The risk measure, one of "var", "cvar", "evar", "erm", "worst", "mad",
-"lpm", "gmd", "max_drawdown", "average_drawdown", "dar", "cdar", "edar" or "ulcer". Defaults to
-"cvar".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
+- <u>risk_measure (str, optional):</u> The risk measure, as described above. Options are: "var", "cvar",
+"evar", "erm", "worst", "mad", "lpm", "gmd", "max_drawdown", "average_drawdown", "dar", "cdar",
+"edar", "ulcer". Defaults to "cvar".
 - <u>within_period (bool, optional):</u> Whether to calculate the ratio from the daily returns within each
 period, or from the returns of `period` over the whole history (one value per ticker).
 Defaults to True.
@@ -5831,7 +6068,7 @@ pd.DataFrame &#124; pd.Series: The ratio per period and ticker, or per ticker wi
 absolute deviation, the first lower partial moment, the worst realization, the Gini mean difference,
 the Entropic Value at Risk, the Entropic Risk Measure and, on the drawdowns, the maximum and average
 drawdown, the Ulcer Index and the Entropic Drawdown at Risk. skfolio measures the drawdowns without
-compounding by default (compounded=False), the Toolkit compounds them. The historical Value at Risk,
+compounding by default, the Toolkit compounds them. The historical Value at Risk,
 Conditional Value at Risk and their drawdown versions use the interpolated quantile of the risk module,
 where skfolio takes the order statistic and the exact (Rockafellar-Uryasev) Conditional Value at Risk,
 so these differ slightly from skfolio on short samples.
@@ -5839,7 +6076,7 @@ so these differ slightly from skfolio on short samples.
 and `get_ulcer_performance_index` the period excess return by the drawdown measure; this ratio keeps the
 mean and the risk measure per day, so every risk measure is on the same scale.
 - A risk measure of 0 (e.g. no drawdown) leaves the ratio undefined (NaN).
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- With growth, the method calculates the growth of the ratio values using the specified `lag`.
 
 **As an example:**
 
@@ -5881,19 +6118,23 @@ $$
 \text{Probabilistic Momentum} = T(\text{Information Ratio} \cdot \sqrt{N},\; N - 1)
 $$
 
-Where N is the number of return differences and T the cumulative Student's t distribution with N - 1 degrees of freedom. It is computed from the daily returns within each period, or with `rolling` from the returns of `period` over every rolling window of that many periods (e.g. period="daily" and rolling=60 for Varadi's 60-day lookback). A value above 0.5 means the asset did better than the benchmark, and the more returns and the steadier the difference, the closer it gets to 1. Varadi switches between two assets only when the confidence passes a threshold such as 0.6, rather than on the sign of the return difference alone, which cuts the number of trades a momentum strategy makes on noise.
-
-For more information, see the following sources:
-
-- Varadi, D. (2014). "Are Simple Momentum Strategies Too Dumb? Introducing Probabilistic Momentum." CSS Analytics, 28 January 2014.
-- ffn: calc_prob_mom ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
+Where N is the number of return differences and T the cumulative Student's t distribution with N - 1 degrees of freedom. It is computed from the daily returns within each period, or with `rolling` from the returns of `period` over every rolling window of that many periods (e.g. daily returns and a rolling window of 60 for Varadi's 60-day lookback). A value above 0.5 means the asset did better than the benchmark, and the more returns and the steadier the difference, the closer it gets to 1. Varadi switches between two assets only when the confidence passes a threshold such as 0.6, rather than on the sign of the return difference alone, which cuts the number of trades a momentum strategy makes on noise.
 
 **Also known as:** probabilistic momentum, momentum confidence.
 
+**References:**
+
+- paper | Varadi, D. (2014). "Are Simple Momentum Strategies Too Dumb? Introducing Probabilistic Momentum." CSS Analytics, 28 January 2014.
+- library | Referenced against ffn's [calc_prob_mom](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1739){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [InformationRatio](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/InformationRatio.R#L32){:target="_blank"}
+- library | Shares similar logic as quantstats' [information_ratio](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L2884){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_information_ratio](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1691){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The number of periods in each rolling window. Defaults to None, which
 uses the daily returns within each period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -5917,7 +6158,7 @@ pd.DataFrame: The probability, between 0 and 1, per period (or date) and ticker.
 - It agrees with ffn's calc_prob_mom of the ticker against the benchmark over the same returns.
 - The returns are compared on the dates both the ticker and the benchmark have a return, as in
 `get_information_ratio`.
-- If `growth` is set to True, the method calculates the growth of the values using the specified `lag`.
+- With growth, the method calculates the growth of the values using the specified `lag`.
 
 **As an example:**
 
@@ -5961,12 +6202,14 @@ $$
 
 The close at the start of a window is the last close on or before the date the window lies before the last close (e.g. 3 months earlier). When the last close falls on the last business day of its month, the windows run from month end to month end (a history up to 30 June has its 3 month return from the close of 31 March). Month to date and year to date start from the last close of the previous month and year. The returns of 3 years and longer are annualized over the calendar days of the window, and the return since inception is the Compound Annual Growth Rate over the date range (see `get_compound_growth_rate`). The returns use the dividend-adjusted close, so they are total returns.
 
-For more information, see the following sources:
-
-- ffn: calc_mtd, calc_ytd, calc_cagr and PerformanceStats (mtd, three_month, six_month, ytd, one_year, three_year, five_year, ten_year, incep) ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-- PerformanceAnalytics: table.TrailingPeriods ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** trailing performance, period returns, MTD, YTD, 1Y, 3Y, 5Y, 10Y returns.
+
+**References:**
+
+- library | Referenced against ffn's [PerformanceStats](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L123){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_mtd](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1426){:target="_blank"}
+- library | Shares similar logic as ffn's [calc_ytd](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L1437){:target="_blank"}
+- library | Shares similar logic as PerformanceAnalytics (R)'s [table.TrailingPeriods](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/table.RollingPeriods.R#L36){:target="_blank"}
 
 **Args:**
 
@@ -6036,13 +6279,13 @@ $$
 
 A month without any return (before the start date or a listing, or after the end date) is NaN, and the Year compounds the months it has, so a partial first or last year is the return over the months covered. The returns use the dividend-adjusted close, so they are total returns.
 
-For more information, see the following sources:
-
-- quantstats: stats.monthly_returns ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-- ffn: PerformanceStats.return_table ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-- PerformanceAnalytics: table.CalendarReturns ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** monthly returns table, return table, calendar year returns.
+
+**References:**
+
+- library | Shares similar logic as quantstats' [monthly_returns](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L3190){:target="_blank"}
+- library | Shares similar logic as ffn's [PerformanceStats](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L123){:target="_blank"} (return_table)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [table.CalendarReturns](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/table.CalendarReturns.R#L41){:target="_blank"}
 
 **Args:**
 
@@ -6062,7 +6305,7 @@ followed by Year.
 
 - quantstats fills a month without returns with 0 and ffn's return table does too; the Toolkit leaves
 it NaN. The months and years otherwise agree with quantstats' monthly_returns (compounded) and the Year
-column equals its EOY, and `get_returns` with period="monthly" and "yearly".
+column equals its EOY, and the monthly and yearly `get_returns`.
 
 **As an example:**
 
@@ -6104,8 +6347,8 @@ Calculate how much the performance statistics of the history could have differed
 
 Every simulation draws a history of as many daily returns as the date range holds:
 
-- method="resample" draws the returns with replacement (Efron's bootstrap), so a day can appear several times or not at all and every statistic varies across simulations, as pyfolio does.
-- method="shuffle" puts the same returns in a random order (a permutation), as quantstats' Monte Carlo does: the cumulative return, the volatility and the Sharpe ratio stay those of the history and only the path, so the maximum drawdown, varies. It shows how much of a drawdown was the order of the returns rather than their size.
+- Resampling draws the returns with replacement (Efron's bootstrap), so a day can appear several times or not at all and every statistic varies across resamples, as pyfolio does.
+- Shuffling puts the same returns in a random order (a permutation), as quantstats' Monte Carlo does: the cumulative return, the volatility and the Sharpe ratio stay those of the history and only the path, so the maximum drawdown, varies. It shows how much of a drawdown was the order of the returns rather than their size.
 
 For every simulation:
 
@@ -6129,22 +6372,22 @@ $$
 \text{Maximum Drawdown} = \min\left(\frac{\text{Wealth}}{\text{Running Peak}} - 1\right),\;\; \text{the wealth starting at 1}
 $$
 
-Where N is the number of daily returns and P the daily returns in a year (252, or 365 for a ticker that trades on weekends such as a cryptocurrency). The excess return of each day (the return minus the daily risk-free rate) is drawn together with the return. Each statistic is summarized by the mean, the median, the standard deviation and the 5th, 25th, 75th and 95th percentiles over the simulations; the 5th to 95th percentile is a 90% bootstrap interval.
-
-For more information, see the following sources:
-
-- Efron, B. (1979). "Bootstrap Methods: Another Look at the Jackknife." The Annals of Statistics, 7(1), 1-26.
-- pyfolio: timeseries.perf_stats_bootstrap, calc_bootstrap and calc_distribution_stats ([https://github.com/quantopian/pyfolio](https://github.com/quantopian/pyfolio){:target="_blank"}).
-- quantstats: stats.montecarlo, montecarlo_cagr, montecarlo_drawdown and montecarlo_sharpe ([https://github.com/ranaroussi/quantstats](https://github.com/ranaroussi/quantstats){:target="_blank"}).
-- ffn: resample_returns ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
+Where N is the number of daily returns and P the daily returns in a year (252, or 365 for a ticker that trades on weekends such as a cryptocurrency). The excess return of each day (the return minus the daily risk-free rate) is drawn together with the return. Each statistic is summarized by the mean, the median, the standard deviation and the 5th, 25th, 75th and 95th percentiles over the resamples; the 5th to 95th percentile is a 90% bootstrap interval.
 
 **Also known as:** Monte Carlo simulation, bootstrapped performance statistics, resampled returns.
 
+**References:**
+
+- paper | Efron, B. (1979). "Bootstrap Methods: Another Look at the Jackknife." The Annals of Statistics, 7(1), 1-26.
+- library | Shares similar logic as pyfolio's [perf_stats_bootstrap](https://github.com/quantopian/pyfolio/blob/0.9.2/pyfolio/timeseries.py#L742){:target="_blank"}
+- library | Shares similar logic as quantstats' [montecarlo](https://github.com/ranaroussi/quantstats/blob/v0.0.86/quantstats/stats.py#L3428){:target="_blank"}
+- library | Shares similar logic as ffn's [resample_returns](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L3293){:target="_blank"}
+
 **Args:**
 
-- <u>simulations (int, optional):</u> The number of simulated histories. Defaults to 1000.
-- <u>method (str, optional):</u> "resample" (with replacement) or "shuffle" (without replacement). Defaults
-to "resample".
+- <u>n_bootstrap (int, optional):</u> The number of bootstrap resamples (simulated histories). Defaults to 1000.
+- <u>method (str, optional):</u> The bootstrap. Options are: "resample" (draws with replacement),
+"shuffle" (a random order without replacement). Defaults to "resample".
 - <u>seed (int &#124; None, optional):</u> The seed of the random numbers, so that results can be reproduced;
 None draws new ones every time. Defaults to 0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -6165,10 +6408,10 @@ Mean, Median, Std, 5%, 25%, 75% and 95%.
 depend on the other tickers in the Toolkit.
 - The simple bootstrap treats the returns as independent: it keeps their distribution but not their
 autocorrelation or volatility clustering.
-- pyfolio reports the mean, median and 5th and 95th percentiles of the same statistics (its standard
-deviation with ddof=0). quantstats keeps the history itself as one of the paths, counts 252 returns to
-a year and computes the Sharpe ratio of its paths from their percentage changes, which leaves out the
-first return; on the same paths the statistics otherwise agree.
+- pyfolio reports the mean, median and 5th and 95th percentiles of the same statistics (its standard deviation
+with n in the denominator). quantstats keeps the history itself as one of the paths, counts 252 returns to a
+year and computes the Sharpe ratio of its paths from their percentage changes, which leaves out the first
+return; on the same paths the statistics otherwise agree.
 
 **As an example:**
 
@@ -6218,12 +6461,13 @@ A strategy whose live performance leaves the cone (e.g. below the lower 2 standa
 
 The bootstrap forecast cone is the one pyfolio (Quantopian) draws in its tear sheets.
 
-For more information, see the following sources:
-
-- pyfolio: timeseries.forecast_cone_bootstrap, simulate_paths and summarize_paths ([https://github.com/quantopian/pyfolio](https://github.com/quantopian/pyfolio){:target="_blank"}).
-- Efron, B. (1979). "Bootstrap Methods: Another Look at the Jackknife." The Annals of Statistics, 7(1), 1-26.
-
 **Also known as:** bootstrap cone, probability cone, Bayesian cone (pyfolio's tear sheet).
+
+**References:**
+
+- paper | Efron, B. (1979). "Bootstrap Methods: Another Look at the Jackknife." The Annals of Statistics, 7(1), 1-26.
+- library | Referenced against pyfolio's [summarize_paths](https://github.com/quantopian/pyfolio/blob/0.9.2/pyfolio/timeseries.py#L1111){:target="_blank"}
+- library | Shares similar logic as pyfolio's [forecast_cone_bootstrap](https://github.com/quantopian/pyfolio/blob/0.9.2/pyfolio/timeseries.py#L1147){:target="_blank"}
 
 **Args:**
 
@@ -6248,7 +6492,7 @@ the bounds being Lower 2, Lower 1.5, Lower 1, Mean, Upper 1, Upper 1.5 and Upper
 **Notes:**
 
 - It agrees with pyfolio's forecast_cone_bootstrap on the same simulated paths, apart from the standard
-deviation over the simulations, which pyfolio takes with ddof=0 and the Toolkit with ddof=1.
+deviation over the simulations, which pyfolio takes with n and the Toolkit with n - 1 in the denominator.
 - Every ticker draws from its own daily returns with the same seed, so a ticker's result does not
 depend on the other tickers in the Toolkit.
 
@@ -6291,12 +6535,13 @@ The tickers are the candidate strategies, for instance funds to choose from or t
 
 A PBO close to 0 means the ticker that looked best kept doing well out of sample; around 0.5 or above, selecting on the past Sharpe ratio adds nothing and the best backtest is likely overfit. The table also gives the Average Out-of-Sample Rank (the mean $$\omega$$, 0.5 for a random choice), the Probability of Loss (the share of combinations in which the selected ticker has a negative out-of-sample Sharpe ratio), the Performance Degradation (the slope of the regression of the selected ticker's out-of-sample Sharpe ratio on its in-sample Sharpe ratio, negative when a high in-sample Sharpe ratio is followed by a low one) and the number of Combinations, C(blocks, blocks / 2).
 
-For more information, see the following sources:
-
-- Bailey, D.H., Borwein, J.M., López de Prado, M., & Zhu, Q.J. (2017). "The Probability of Backtest Overfitting." Journal of Computational Finance, 20(4), 39-69.
-- ffn: calc_prob_backtest_overfitting ([https://github.com/pmorissette/ffn](https://github.com/pmorissette/ffn){:target="_blank"}).
-
 **Also known as:** PBO, CSCV, combinatorially symmetric cross-validation.
+
+**References:**
+
+- paper | Bailey, D.H., Borwein, J.M., López de Prado, M., & Zhu, Q.J. (2017). "The Probability of Backtest Overfitting." Journal of Computational Finance, 20(4), 39-69.
+- library | Referenced against ffn's [calc_prob_backtest_overfitting](https://github.com/pmorissette/ffn/blob/v1.4.1/ffn/core.py#L3165){:target="_blank"}
+- library | Shares similar logic as RiskLabAI's [probability_of_backtest_overfitting](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/probability_of_backtest_overfitting.py#L80){:target="_blank"}
 
 **Args:**
 
@@ -6370,17 +6615,18 @@ $$
 
 The weights $$\theta$$ are those of a moving average model (MA(2) by default) fitted by exact maximum likelihood to the de-meaned returns of `period` over the date range, normalized to add up to 1. A Smoothing Index of $$1 (\theta_{0} = 1)$$ means the returns show no smoothing; the lower it is, the more of each return is carried over from earlier periods, down to 1 / 3 when the three periods weigh the same. Smoothed returns understate the volatility and the correlation with the market and so overstate the Sharpe ratio.
 
-For more information, see the following sources:
-
-- Getmansky, M., Lo, A.W., & Makarov, I. (2004). "An Econometric Model of Serial Correlation and Illiquidity in Hedge Fund Returns." Journal of Financial Economics, 74(3), 529-609.
-- PerformanceAnalytics: SmoothingIndex ([https://github.com/braverock/PerformanceAnalytics](https://github.com/braverock/PerformanceAnalytics){:target="_blank"}).
-
 **Also known as:** Getmansky-Lo-Makarov smoothing index, return smoothing, serial correlation of returns.
+
+**References:**
+
+- paper | Getmansky, M., Lo, A.W., & Makarov, I. (2004). "An Econometric Model of Serial Correlation and Illiquidity in Hedge Fund Returns." Journal of Financial Economics, 74(3), 529-609.
+- library | Referenced against statsmodels' [ARIMA](https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima.model.ARIMA.html){:target="_blank"} (order (0, 0, k), without a mean)
+- library | Shares similar logic as PerformanceAnalytics (R)'s [SmoothingIndex](https://github.com/braverock/PerformanceAnalytics/blob/v2.0.4/R/SmoothingIndex.R#L96){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The period of the returns, weekly, monthly, quarterly or yearly. The paper
-uses monthly returns. Defaults to "monthly".
+- <u>period (str, optional):</u> The period of the returns. Options are: "weekly", "monthly", "quarterly",
+"yearly". The paper uses monthly returns. Defaults to "monthly".
 - <u>order (int, optional):</u> The number of earlier periods a return carries, k in MA(k). Defaults to 2.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -6402,7 +6648,7 @@ PerformanceAnalytics does by default, since a negative weight on a past return i
 Makarov de-mean them first, as the Toolkit does. On the same (raw) returns the Toolkit's maximum
 likelihood estimate equals that of statsmodels' ARIMA to 3e-8 and PerformanceAnalytics' recorded
 examples to 6e-5, the tolerance of R's optimizer.
-- Liquid stocks have a Smoothing Index close to 1. `get_returns(unsmoothed=True)` removes first order
+- Liquid stocks have a Smoothing Index close to 1. `get_returns` with unsmoothing removes first order
 smoothing from the returns (Geltner).
 
 **As an example:**
@@ -6452,18 +6698,19 @@ $$
 \text{VWR} = \text{Annualized Return} \cdot \left(1 - \left(\frac{\operatorname{Std}(\text{Deviation})}{\text{maximum\_deviation}}\right)^{\tau}\right)
 $$
 
-Where P is the number of returns in a year (252 daily returns, 365 for a ticker that trades on weekends such as a cryptocurrency, or 52, 12, 4 or 1 for weekly, monthly, quarterly or yearly returns), N the number of returns and Std the sample standard deviation (ddof=1). The Annualized Return compounds continuously from the average log return, which equals the compounded annual growth over the returns.
-
-For more information, see the following sources:
-
-- backtrader's VWR analyzer (Daniel Rodriguez, [https://www.backtrader.com/docu/analyzers-reference/](https://www.backtrader.com/docu/analyzers-reference/){:target="_blank"}), after the "Sharpe Ratio: Better with Log Returns" article of crystalbull.com, where the measure is defined. Referenced against backtrader's VWR.
+Where P is the number of returns in a year (252 daily returns, 365 for a ticker that trades on weekends such as a cryptocurrency, or 52, 12, 4 or 1 for weekly, monthly, quarterly or yearly returns), N the number of returns and Std the sample standard deviation (with n - 1 in the denominator). The Annualized Return compounds continuously from the average log return, which equals the compounded annual growth over the returns.
 
 **Also known as:** Variability-Weighted Return, VWR, log return Sharpe alternative.
 
+**References:**
+
+- library | Shares similar logic as backtrader's [VWR](https://github.com/backtrader/backtrader/blob/1.9.74.123/backtrader/analyzers/vwr.py#L32){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "quarterly" if the Toolkit is
-initialised with quarterly=True, otherwise "yearly".
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
+quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the VWR from the daily returns within each
 period (e.g. each year if period = 'yearly') or from the returns of the periods themselves over
 the whole history. Defaults to True.
@@ -6492,8 +6739,8 @@ one value per ticker.
 
 - backtrader documents $$\tau = 2$$ and a maximum deviation of 0.20 (as the crystalbull.com article), but its
 parameters set $$\tau = 0.20$$ and sdev_max = 2.0, which makes the penalty (s / 2)^0.2 and leaves far less of
-the return than the documented definition. The defaults here are the documented ones; passing tau=0.2
-and maximum_deviation=2.0 gives backtrader's default output, which backtrader reports in percent.
+the return than the documented definition. The defaults here are the documented ones; a tau of 0.2
+and a maximum deviation of 2.0 give backtrader's default output, which backtrader reports in percent.
 - With a maximum deviation that the deviations exceed, the VWR changes sign: a gain turns into a
 negative value, so compare it only between assets of similar variability or raise `maximum_deviation`.
 - The Portfolio of a Portfolio's Toolkit is measured on its own daily return series, as a weighted
@@ -6547,17 +6794,18 @@ $$
 \text{Time Concentration} = h \;\text{of the number of returns in each calendar month}
 $$
 
-For more information, see the following sources:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, section 14.5.1 (Snippet 14.3).
-- Herfindahl, O.C. (1950). "Concentration in the Steel Industry." Columbia University.
-
 **Also known as:** bets concentration, HHI of returns, Herfindahl-Hirschman Index of returns.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, section 14.5.1 (Snippet 14.3).
+- paper | Herfindahl, O.C. (1950). "Concentration in the Steel Industry." Columbia University.
 
 **Args:**
 
 - <u>period (str, optional):</u> The period of the returns over the whole history, or with
-within_period=True the period the daily returns are grouped by. Defaults to "daily",
+within_period=True the period the daily returns are grouped by. Options are: "daily",
+"weekly", "monthly", "quarterly", "yearly". Defaults to "daily",
 or with within_period=True to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the concentration from the daily returns
@@ -6641,18 +6889,22 @@ $$
 
 Where n is the number of bets a year (252 daily returns, 365 for a ticker that trades on weekends such as a cryptocurrency, or 52, 12, 4 or 1 for weekly, monthly, quarterly or yearly returns), $$\theta$$ the target Sharpe ratio, N the number of returns and N(.) the standard normal distribution function. The Implied Precision is the precision that reaches $$\theta$$ at the measured gains, losses and frequency, the Implied Frequency the number of bets a year that reaches $$\theta$$ at the measured precision, gains and losses.
 
-For more information, see the following sources:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, chapter 15 (Snippets 15.1 to 15.5).
-- Bailey, D.H. and López de Prado, M. (2014). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
-- Referenced against RiskLabAI's `implied_precision`, `bin_frequency`, `binomial_sharpe_ratio` and `failure_probability` ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
-
 **Also known as:** implied precision, implied betting frequency, binomial Sharpe ratio, probability of strategy failure.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, chapter 15 (Snippets 15.1 to 15.5).
+- paper | Bailey, D.H. and López de Prado, M. (2014). "The Sharpe Ratio Efficient Frontier." Journal of Risk, 15(2), 3-44.
+- library | Shares similar logic as RiskLabAI's [implied_precision](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/strategy_risk.py#L82){:target="_blank"}
+- library | Shares similar logic as RiskLabAI's [bin_frequency](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/strategy_risk.py#L134){:target="_blank"}
+- library | Shares similar logic as RiskLabAI's [binomial_sharpe_ratio](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/strategy_risk.py#L193){:target="_blank"}
+- library | Shares similar logic as RiskLabAI's [failure_probability](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/strategy_risk.py#L281){:target="_blank"}
 
 **Args:**
 
 - <u>period (str, optional):</u> The period of the returns over the whole history, or with
-within_period=True the period the daily returns are grouped by. Defaults to "daily",
+within_period=True the period the daily returns are grouped by. Options are: "daily",
+"weekly", "monthly", "quarterly", "yearly". Defaults to "daily",
 or with within_period=True to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>within_period (bool, optional):</u> Whether to calculate the strategy risk from the daily returns

@@ -29,7 +29,9 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/options.md %}
 
 ## get_option_chains
-Get the Option Chains which gives information about the currently available options as reported by Yahoo Finance. This returns the Expiration Date, Contract Symbol, Last Trade Date, Last Price, Bid, Ask, Change, Percent Change, Volume, Open Interest, Implied Volatility, whether the option is In The Money and the Currency.
+Get the Option Chains: the currently available options of each ticker as reported by Yahoo Finance, with their prices, volume, open interest and implied volatility.
+
+This returns the Expiration Date, Contract Symbol, Last Trade Date, Last Price, Bid, Ask, Change, Percent Change, Volume, Open Interest, Implied Volatility, whether the option is In The Money and the Currency.
 
 Every ticker has its own expiration dates (one lists weekly options, another only monthly ones). Without an expiration date each ticker shows its nearest expiry; with one, a ticker that has no options expiring on that date is left out with a warning that lists its own expiration dates.
 
@@ -94,7 +96,9 @@ Which returns:
 ---
 
 ## collect_all_greeks
-Calculate all Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
+Calculate all Greeks of an option based on the Black Scholes Model: how the option value responds to the price of the underlying asset, the strike price, the volatility, time, the risk free rate and the dividend yield.
+
+This will return the following Greeks per Strike Price and Expiration Date:
 
 **First Order Greeks:**
 
@@ -214,7 +218,9 @@ Which returns:
 ---
 
 ## collect_first_order_greeks
-Calculate the first order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
+Calculate the first order Greeks of an option based on the Black Scholes Model: how the option value responds to the price of the underlying asset, the strike price, the volatility, time, the risk free rate and the dividend yield.
+
+This will return the following Greeks per Strike Price and Expiration Date:
 
 - Delta: measures the rate of change of the theoretical option value with respect to changes in the underlying asset's price.
 - Dual Delta: the first derivative of the option price with respect to the strike price. Up to the discount factor and a sign it is the risk-neutral probability of the option finishing in the money, negative for a call and positive for a put.
@@ -298,7 +304,9 @@ Which returns:
 ---
 
 ## get_delta
-Calculate the delta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The delta is the rate of change of the option price with respect to the price of the underlying asset.
+Calculate the delta of an option based on the Black Scholes Model: how much the option value changes for a 1.00 change in the price of the underlying asset.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The delta is the rate of change of the option price with respect to the price of the underlying asset.
 
 The delta calculation is the theoretical value of the delta. The actual delta can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -405,7 +413,9 @@ Which returns:
 ---
 
 ## get_dual_delta
-Calculate the dual delta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The dual delta is the first derivative of the option price with respect to the strike price; up to the discount factor and its sign it is the risk-neutral probability of the option finishing in the money.
+Calculate the dual delta of an option based on the Black Scholes Model: how much the option value changes for a 1.00 change in the strike price.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The dual delta is the first derivative of the option price with respect to the strike price; up to the discount factor and its sign it is the risk-neutral probability of the option finishing in the money.
 
 The dual delta calculation is the theoretical value of the dual delta. The actual dual delta can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -514,7 +524,9 @@ Which returns:
 ---
 
 ## get_vega
-Calculate the vega of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vega is the rate of change of the option price with respect to the volatility of the underlying asset.
+Calculate the vega of an option based on the Black Scholes Model: how much the option value changes for a 1.00 change in the volatility of the underlying asset.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vega is the rate of change of the option price with respect to the volatility of the underlying asset.
 
 The vega calculation is the theoretical value of the vega. The actual vega can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -617,7 +629,9 @@ Which returns:
 ---
 
 ## get_theta
-Calculate the theta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The theta is the rate of change of the option price with respect to the passage of time.
+Calculate the theta of an option based on the Black Scholes Model: how much the option value changes as time passes, its time decay.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The theta is the rate of change of the option price with respect to the passage of time.
 
 The theta calculation is the theoretical value of the theta. The actual theta can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -725,7 +739,9 @@ Which returns:
 ---
 
 ## get_rho
-Calculate the rho of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The rho is the rate of change of the option price with respect to the risk free interest rate.
+Calculate the rho of an option based on the Black Scholes Model: how much the option value changes for a 1.00 change in the risk free rate.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The rho is the rate of change of the option price with respect to the risk free interest rate.
 
 The rho calculation is the theoretical value of the rho. The actual rho can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -829,7 +845,9 @@ Which returns:
 ---
 
 ## get_epsilon
-Calculate the epsilon of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The epsilon is the rate of change of the option price with respect to the dividend yield.
+Calculate the epsilon of an option based on the Black Scholes Model: how much the option value changes for a 1.00 change in the dividend yield.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The epsilon is the rate of change of the option price with respect to the dividend yield.
 
 The epsilon calculation is the theoretical value of the epsilon. The actual epsilon can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -930,7 +948,9 @@ Which returns:
 ---
 
 ## get_lambda
-Calculate the lambda of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The lambda, or elasticity, is the percentage change in the option price for a 1% change in the price of the underlying asset, i.e. the leverage the option gives.
+Calculate the lambda of an option based on the Black Scholes Model: the percentage change in the option value per percentage change in the price of the underlying asset, the leverage the option gives.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The lambda, or elasticity, is the percentage change in the option price for a 1% change in the price of the underlying asset, i.e. the leverage the option gives.
 
 The lambda calculation is the theoretical value of the lambda. The actual lambda can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1045,7 +1065,9 @@ Which returns:
 ---
 
 ## collect_second_order_greeks
-Calculate the second order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
+Calculate the second order Greeks of an option based on the Black Scholes Model: how the first order Greeks themselves respond to the price of the underlying asset, the strike price, the volatility and time.
+
+This will return the following Greeks per Strike Price and Expiration Date:
 
 - Gamma: measures the rate of change in the delta with respect to changes in the underlying price. Gamma is the second derivative of the value function with respect to the underlying price.
 - Dual Gamma: the second derivative of the option value with respect to the strike price rather than the underlying price. It is the discounted risk-neutral probability density of the underlying at expiration.
@@ -1129,7 +1151,9 @@ Which returns:
 ---
 
 ## get_gamma
-Calculate the gamma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The gamma is the rate of change of the delta with respect to the price of the underlying asset.
+Calculate the gamma of an option based on the Black Scholes Model: how much the delta changes for a 1.00 change in the price of the underlying asset.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The gamma is the rate of change of the delta with respect to the price of the underlying asset.
 
 The gamma calculation is the theoretical value of the gamma. The actual gamma can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1225,7 +1249,9 @@ Which returns:
 ---
 
 ## get_dual_gamma
-Calculate the dual gamma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The dual gamma is the second derivative of the option price with respect to the strike price, i.e. the rate of change of the dual delta as the strike price changes. It is the strike-space counterpart of gamma and describes the (discounted) risk-neutral probability density of the underlying finishing at the strike.
+Calculate the dual gamma of an option based on the Black Scholes Model: how much the dual delta changes for a 1.00 change in the strike price.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The dual gamma is the second derivative of the option price with respect to the strike price, i.e. the rate of change of the dual delta as the strike price changes. It is the strike-space counterpart of gamma and describes the (discounted) risk-neutral probability density of the underlying finishing at the strike.
 
 The dual gamma calculation is the theoretical value of the dual gamma. The actual dual gamma can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1318,7 +1344,9 @@ Which returns:
 ---
 
 ## get_vanna
-Calculate the vanna of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vanna is the rate of change of the vega with respect to the price of the underlying asset.
+Calculate the vanna of an option based on the Black Scholes Model: how much the delta changes for a 1.00 change in the volatility, or equally the vega for a 1.00 change in the price of the underlying asset.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vanna is the rate of change of the vega with respect to the price of the underlying asset.
 
 The vanna calculation is the theoretical value of the vanna. The actual vanna can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1423,7 +1451,9 @@ Which returns:
 ---
 
 ## get_charm
-Calculate the charm of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The charm is the rate of change of the delta with respect to the time to expiration.
+Calculate the charm of an option based on the Black Scholes Model: how much the delta changes as time passes, the delta decay.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The charm is the rate of change of the delta with respect to the time to expiration.
 
 The charm calculation is the theoretical value of the charm. The actual charm can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1538,7 +1568,9 @@ Which returns:
 ---
 
 ## get_vomma
-Calculate the vomma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vomma is the rate of change of the vega with respect to the volatility of the underlying asset.
+Calculate the vomma of an option based on the Black Scholes Model: how much the vega changes for a 1.00 change in the volatility, the convexity of the option value in the volatility.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vomma is the rate of change of the vega with respect to the volatility of the underlying asset.
 
 The vomma calculation is the theoretical value of the vomma. The actual vomma can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1644,7 +1676,9 @@ Which returns:
 ---
 
 ## get_vera
-Calculate the vera of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vera is the rate of change of the rho with respect to volatility.
+Calculate the vera of an option based on the Black Scholes Model: how much the rho changes for a 1.00 change in the volatility.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The vera is the rate of change of the rho with respect to volatility.
 
 The vera calculation is the theoretical value of the vera. The actual vera can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1750,7 +1784,9 @@ Which returns:
 ---
 
 ## get_veta
-Calculate the veta of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The veta is the rate of change of the vega with respect to the time to expiration.
+Calculate the veta of an option based on the Black Scholes Model: how much the vega changes as time passes.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The veta is the rate of change of the vega with respect to the time to expiration.
 
 The veta calculation is the theoretical value of the veta. The actual veta can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -1854,7 +1890,9 @@ Which returns:
 ---
 
 ## get_partial_derivative
-Calculate the partial derivative of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The partial derivative is the second derivative of the option price with respect to the strike price, the rate at which the dual delta changes with the strike.
+Calculate the partial derivative of an option based on the Black Scholes Model: how fast the dual delta changes with the strike price, the second derivative of the option value with respect to the strike price.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The partial derivative is the second derivative of the option price with respect to the strike price, the rate at which the dual delta changes with the strike.
 
 Note that this uses a single, flat assumed volatility (the same value at every strike price) rather than the market's actual implied volatility smile. This means it is NOT the Breeden-Litzenberger risk-neutral density -- with a flat volatility input the second derivative can only ever recover a lognormal density, regardless of what the real market smile looks like, which defeats the entire purpose of that theorem. For the actual market-implied (smile-consistent) risk-neutral density, see `get_risk_neutral_density`, which uses this same second-derivative relationship but applied to a volatility surface calibrated to real market option prices instead of a flat assumption.
 
@@ -1949,7 +1987,9 @@ Which returns:
 ---
 
 ## collect_third_order_greeks
-Calculate the third order Greeks of an option based on the Black Scholes Model. This will return the following Greeks per Strike Price and Expiration Date:
+Calculate the third order Greeks of an option based on the Black Scholes Model: how the second order Greeks themselves respond to the price of the underlying asset, the volatility and time.
+
+This will return the following Greeks per Strike Price and Expiration Date:
 
 - Speed: measures the rate of change in Gamma with respect to changes in the underlying price.
 - Zomma: measures the rate of change of gamma with respect to changes in volatility.
@@ -2045,7 +2085,9 @@ Which returns:
 ---
 
 ## get_speed
-Calculate the speed of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The speed is the rate of change of the gamma with respect to the price of the underlying asset.
+Calculate the speed of an option based on the Black Scholes Model: how much the gamma changes for a 1.00 change in the price of the underlying asset.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The speed is the rate of change of the gamma with respect to the price of the underlying asset.
 
 The speed calculation is the theoretical value of the speed. The actual speed can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -2136,7 +2178,9 @@ Which returns:
 ---
 
 ## get_zomma
-Calculate the zomma of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The zomma is the rate of change of the gamma with respect to volatility.
+Calculate the zomma of an option based on the Black Scholes Model: how much the gamma changes for a 1.00 change in the volatility.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The zomma is the rate of change of the gamma with respect to volatility.
 
 The zomma calculation is the theoretical value of the zomma. The actual zomma can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -2236,7 +2280,9 @@ Which returns:
 ---
 
 ## get_color
-Calculate the color of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The color is the rate of change of the gamma with respect to time to expiration.
+Calculate the color of an option based on the Black Scholes Model: how much the gamma changes as time passes.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The color is the rate of change of the gamma with respect to time to expiration.
 
 The color calculation is the theoretical value of the color. The actual color can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -2335,7 +2381,9 @@ Which returns:
 ---
 
 ## get_ultima
-Calculate the ultima of an option based on the Black Scholes Model. The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The ultima is the rate of change of the vomma with respect to volatility.
+Calculate the ultima of an option based on the Black Scholes Model: how much the vomma changes for a 1.00 change in the volatility.
+
+The Black Scholes Model is a mathematical model used to estimate the price of European-style options. The ultima is the rate of change of the vomma with respect to volatility.
 
 The ultima calculation is the theoretical value of the ultima. The actual gamma can differ from this value due to several factors such as the volatility of the underlying asset, the time to expiration, the risk free rate and more.
 
@@ -2432,7 +2480,9 @@ Which returns:
 ---
 
 ## get_put_call_ratio
-Calculate the put-call ratio of every expiry, by volume and by open interest. The ratio is the number of puts divided by the number of calls: a ratio above one means more puts are traded or held than calls, which is usually read as hedging demand or bearish sentiment, and an unusually low ratio as complacency. The volume ratio reflects today's trading; the open interest ratio the positions that remain.
+Calculate the put-call ratio of every expiry, by volume and by open interest: how many puts are traded or held per call, which is usually read as hedging demand or bearish sentiment when above one.
+
+The ratio is the number of puts divided by the number of calls, and an unusually low ratio is read as complacency. The volume ratio reflects today's trading; the open interest ratio the positions that remain.
 
 **Also known as:** PCR, put/call ratio, options sentiment.
 
@@ -2526,12 +2576,12 @@ Calculate the dealer gamma exposure (GEX): the dollar value of shares market mak
 
 With positive exposure dealers buy dips and sell rallies, which dampens volatility; with negative exposure they trade in the direction of the move and amplify it. The gamma flip point is the price at which the total exposure changes sign.
 
-For more information, see the following sources:
-
-- SqueezeMetrics (2017). "Gamma Exposure (GEX)." White paper.
-- Perfiliev, S. (2021). "How to Calculate Gamma Exposure (GEX) and Zero Gamma Level." [https://perfiliev.com/blog/how-to-calculate-gamma-exposure-and-zero-gamma-level/](https://perfiliev.com/blog/how-to-calculate-gamma-exposure-and-zero-gamma-level/){:target="_blank"}
-
 **Also known as:** GEX, dealer gamma, gamma positioning, net gamma.
+
+**References:**
+
+- paper | SqueezeMetrics (2017). "Gamma Exposure (GEX)." White paper.
+- paper | Perfiliev, S. (2021). "How to Calculate Gamma Exposure (GEX) and Zero Gamma Level." [https://perfiliev.com/blog/how-to-calculate-gamma-exposure-and-zero-gamma-level/](https://perfiliev.com/blog/how-to-calculate-gamma-exposure-and-zero-gamma-level/){:target="_blank"}
 
 **Args:**
 
@@ -2551,8 +2601,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per ticker the Stock Price, Call, Put and Net Gamma Exposure (in
-dollars per 1% move) and the Gamma Flip Point; with by_strike=True the Call, Put
-and Net Gamma Exposure per ticker and strike.
+dollars per 1% move) and the Gamma Flip Point; or, when returned per strike, the
+Call, Put and Net Gamma Exposure per ticker and strike.
 
 **Notes:**
 
@@ -2645,7 +2695,7 @@ Which returns:
 ---
 
 ## get_volatility_skew
-Calculate the volatility skew of every expiry from the 25-delta options, the standard way to compare skew across underlyings and dates:
+Calculate the volatility skew of every expiry: how much more the market pays for downside than for upside protection, from the 25-delta options, the standard way to compare skew across underlyings and dates:
 
 $$
 \text{25-Delta} \;\text{Risk Reversal} = \operatorname{IV}(\text{25-delta} \;\text{call}) - \operatorname{IV}(\text{25-delta} \;\text{put})
@@ -2657,11 +2707,11 @@ $$
 
 For equities the risk reversal is usually negative: out-of-the-money puts are dearer than calls because investors pay for crash protection. A more negative risk reversal means more fear of a fall; the butterfly measures how much both tails cost relative to the centre. The deltas follow from each option's implied volatility, and the volatility at exactly 25 delta is interpolated.
 
-For more information, see the following book:
-
-- Gatheral, J. (2006). "The Volatility Surface: A Practitioner's Guide." Wiley.
-
 **Also known as:** risk reversal, volatility smile, skew, butterfly spread volatility.
+
+**References:**
+
+- paper | Gatheral, J. (2006). "The Volatility Surface: A Practitioner's Guide." Wiley.
 
 **Args:**
 
@@ -2715,7 +2765,7 @@ Which returns:
 ---
 
 ## get_implied_move
-Calculate the move the options market expects up to every expiry, from the price of the at-the-money straddle (buying the call and the put at the strike closest to the current price):
+Calculate the move the options market expects up to every expiry: the size of the move, in either direction, that the price of the at-the-money straddle (buying the call and the put at the strike closest to the current price) prices in:
 
 $$
 \text{Implied Move} = \frac{\text{Call Price} + \text{Put Price}}{\text{Stock Price}}
@@ -2725,7 +2775,7 @@ $$
 \text{Expected Range} = \text{Stock Price} \;\pm \;\text{Straddle Price}
 $$
 
-The straddle pays the absolute move, so its price is the market's expected size of the move, regardless of direction. With around_earnings=True the first expiry after the next earnings date is used, which gives the move the market prices for the earnings announcement (an expiry on the announcement day itself settles at that day's close, before the usual after-the-close announcement).
+The straddle pays the absolute move, so its price is the market's expected size of the move, regardless of direction. Around earnings the first expiry after the next earnings date is used, which gives the move the market prices for the earnings announcement (an expiry on the announcement day itself settles at that day's close, before the usual after-the-close announcement).
 
 **Also known as:** expected move, straddle move, earnings move, implied earnings move.
 
@@ -2781,7 +2831,9 @@ Which returns:
 ---
 
 ## get_model_free_implied_volatility
-Calculate the model-free implied volatility with the Cboe VIX methodology, for any ticker with listed options. Rather than inverting a pricing model, it reads the expected variance directly from the prices of out-of-the-money options across all strikes, weighted by $$1 / K^{2}$$, for the two expiries around the target maturity, and interpolates their variances to a constant maturity:
+Calculate the model-free implied volatility with the Cboe VIX methodology, for any ticker with listed options: the volatility the options market expects over the coming days, without a pricing model.
+
+Rather than inverting a pricing model, it reads the expected variance directly from the prices of out-of-the-money options across all strikes, weighted by $$1 / K^{2}$$, for the two expiries around the target maturity, and interpolates their variances to a constant maturity:
 
 $$
 \sigma^{2} = \frac{2}{T} \sum\left(\frac{\Delta K_{i}}{K_{i}^{2}}\right) e^{\text{RT}} Q(K_{i}) - \left(\frac{1}{T}\right) \left(\frac{F}{K_{0}} - 1\right)^{2}
@@ -2791,14 +2843,14 @@ $$
 \text{Volatility} = \sqrt{\text{interpolated variance at} \;\text{days}}
 $$
 
-Applied to the S&P 500 index options ("^SPX") with days=30 it approximates the VIX, within about a tenth of a volatility point: the Cboe counts the time to expiry in minutes, uses Treasury rates for each expiry and the Friday expiries between 23 and 37 days away. For a single stock it gives the equivalent volatility index.
-
-For more information, see the following papers:
-
-- Cboe Global Markets (2023). "Cboe Volatility Index (VIX) White Paper."
-- Britten-Jones, M. and Neuberger, A. (2000). "Option Prices, Implied Price Processes, and Stochastic Volatility." The Journal of Finance, 55(2), 839-866.
+Applied to the S&P 500 index options ("^SPX") over 30 days it approximates the VIX, within about a tenth of a volatility point: the Cboe counts the time to expiry in minutes, uses Treasury rates for each expiry and the Friday expiries between 23 and 37 days away. For a single stock it gives the equivalent volatility index.
 
 **Also known as:** VIX methodology, model-free volatility, variance swap volatility.
+
+**References:**
+
+- paper | Cboe Global Markets (2023). "Cboe Volatility Index (VIX) White Paper."
+- paper | Britten-Jones, M. and Neuberger, A. (2000). "Option Prices, Implied Price Processes, and Stochastic Volatility." The Journal of Finance, 55(2), 839-866.
 
 **Args:**
 
@@ -2860,12 +2912,12 @@ Calculate the volatility risk premium: the model-free implied volatility over th
 
 Both compare the implied figure with the realized one of the past, which is known today, as Bollerslev, Tauchen and Zhou (2009) do. Carr and Wu (2009) measure the premium after the fact instead: the variance realized over the coming `days` minus the variance swap rate, which is negative on average.
 
-For more information, see the following papers:
-
-- Bollerslev, T., Tauchen, G. and Zhou, H. (2009). "Expected Stock Returns and Variance Risk Premia." The Review of Financial Studies, 22(11), 4463-4492.
-- Carr, P. and Wu, L. (2009). "Variance Risk Premiums." The Review of Financial Studies, 22(3), 1311-1341.
-
 **Also known as:** VRP, implied minus realized volatility, variance risk premium.
+
+**References:**
+
+- paper | Bollerslev, T., Tauchen, G. and Zhou, H. (2009). "Expected Stock Returns and Variance Risk Premia." The Review of Financial Studies, 22(11), 4463-4492.
+- paper | Carr, P. and Wu, L. (2009). "Variance Risk Premiums." The Review of Financial Studies, 22(3), 1311-1341.
 
 **Args:**
 
@@ -2914,7 +2966,9 @@ Which returns:
 ---
 
 ## get_risk_neutral_moments
-Calculate the risk-neutral (option-implied) volatility, skewness and kurtosis of the log return up to every expiry with the method of Bakshi, Kapadia and Madan (2003). Any payoff can be built from a position in the underlying and a strip of out-of-the-money options (Carr and Madan, 2001), so the prices of the quadratic, cubic and quartic contracts on the log return follow from the option prices, and with them the moments the market prices in, without a pricing model. A negative skewness means the options price a larger chance of a fall than of a rise of the same size; a kurtosis above 3 means fatter tails than a normal distribution.
+Calculate the risk-neutral (option-implied) volatility, skewness and kurtosis of the log return up to every expiry: the shape of the return distribution that the option prices imply, with the method of Bakshi, Kapadia and Madan (2003).
+
+Any payoff can be built from a position in the underlying and a strip of out-of-the-money options (Carr and Madan, 2001), so the prices of the quadratic, cubic and quartic contracts on the log return follow from the option prices, and with them the moments the market prices in, without a pricing model. A negative skewness means the options price a larger chance of a fall than of a rise of the same size; a kurtosis above 3 means fatter tails than a normal distribution.
 
 The formula is as follows, with $$R = \ln (S_{T} / K_{0})$$, $$y_{i} = \ln (K_{i} / K_{0})$$ and the strikes $$K_{i}$$, prices $$Q (K_{i})$$ and intervals $$\Delta K_{i}$$ of the VIX methodology:
 
@@ -2952,13 +3006,13 @@ $$
 
 The integrals of the paper are discretised as in the Cboe VIX methodology: the forward price F follows from put-call parity at the strike where call and put prices are closest, $$K_{0}$$ is the first strike at or below it, $$Q (K_{i})$$ is the put price below $$K_{0}$$, the call price above and their average at $$K_{0}$$, and $$\Delta K_{i}$$ is half the distance between the neighbouring strikes (the distance to the one neighbour at the ends). Puts and calls are added away from $$K_{0}$$ while they have a bid, up to two consecutive strikes without one. The paper expands around the spot price without dividends ($$F / S = e^{\text{rT}}$$); the expansion around $$K_{0}$$ keeps the replication exact and takes in dividends through the forward price, and leaves the skewness and kurtosis unchanged. r is the continuously compounded risk free rate.
 
-For more information, see the following papers:
-
-- Bakshi, G., Kapadia, N. and Madan, D. (2003). "Stock Return Characteristics, Skew Laws, and the Differential Pricing of Individual Equity Options." The Review of Financial Studies, 16(1), 101-143.
-- Carr, P. and Madan, D. (2001). "Optimal Positioning in Derivative Securities." Quantitative Finance, 1(1), 19-37.
-- Cboe Global Markets (2023). "Cboe Volatility Index (VIX) White Paper."
-
 **Also known as:** option-implied moments, implied skewness, implied kurtosis, BKM moments.
+
+**References:**
+
+- paper | Bakshi, G., Kapadia, N. and Madan, D. (2003). "Stock Return Characteristics, Skew Laws, and the Differential Pricing of Individual Equity Options." The Review of Financial Studies, 16(1), 101-143.
+- paper | Carr, P. and Madan, D. (2001). "Optimal Positioning in Derivative Securities." Quantitative Finance, 1(1), 19-37.
+- paper | Cboe Global Markets (2023). "Cboe Volatility Index (VIX) White Paper."
 
 **Args:**
 
@@ -3070,14 +3124,14 @@ $$
 \text{SKEW Index} = 100 - 10 \;\text{Skewness}
 $$
 
-$$P_{1}$$, $$P_{2}$$ and $$P_{3}$$ are the prices of R, $$R^{2}$$ and $$R^{3}$$, the $$\epsilon$$ terms correct for the expansion around the forward price $$F_{0}$$ while the puts and calls are split at $$K_{0}$$, the first strike at or below it, and r is the continuously compounded risk free rate. The terms, the forward price, $$K_{0}$$ and the strikes used are those of the VIX methodology (see get_model_free_implied_volatility), as the white paper prescribes. $$\epsilon_{2}$$ holds the full $$\ln (K_{0} / F_{0})^{2}$$ of the expansion of $$R^{2}$$ around $$K_{0}$$, where the white paper prints half of it (see market_metrics_model.get_cboe_skewness); for index options the difference is negligible. Unlike the variance of the VIX, the skewness is interpolated linearly in time. Applied to the S&P 500 index options ("^SPX") with days=30 it approximates the Cboe SKEW Index, which uses the Cboe's own quotes and Treasury bill rates per expiry.
-
-For more information, see the following papers:
-
-- Cboe Global Markets (2010). "The Cboe SKEW Index - SKEW." White paper.
-- Bakshi, G., Kapadia, N. and Madan, D. (2003). "Stock Return Characteristics, Skew Laws, and the Differential Pricing of Individual Equity Options." The Review of Financial Studies, 16(1), 101-143.
+$$P_{1}$$, $$P_{2}$$ and $$P_{3}$$ are the prices of R, $$R^{2}$$ and $$R^{3}$$, the $$\epsilon$$ terms correct for the expansion around the forward price $$F_{0}$$ while the puts and calls are split at $$K_{0}$$, the first strike at or below it, and r is the continuously compounded risk free rate. The terms, the forward price, $$K_{0}$$ and the strikes used are those of the VIX methodology (see get_model_free_implied_volatility), as the white paper prescribes. $$\epsilon_{2}$$ holds the full $$\ln (K_{0} / F_{0})^{2}$$ of the expansion of $$R^{2}$$ around $$K_{0}$$, where the white paper prints half of it (see market_metrics_model.get_cboe_skewness); for index options the difference is negligible. Unlike the variance of the VIX, the skewness is interpolated linearly in time. Applied to the S&P 500 index options ("^SPX") over 30 days it approximates the Cboe SKEW Index, which uses the Cboe's own quotes and Treasury bill rates per expiry.
 
 **Also known as:** Cboe SKEW, tail risk index, black swan index, implied skewness index.
+
+**References:**
+
+- paper | Cboe Global Markets (2010). "The Cboe SKEW Index - SKEW." White paper.
+- paper | Bakshi, G., Kapadia, N. and Madan, D. (2003). "Stock Return Characteristics, Skew Laws, and the Differential Pricing of Individual Equity Options." The Review of Financial Studies, 16(1), 101-143.
 
 **Args:**
 
@@ -3136,7 +3190,9 @@ Which returns:
 ---
 
 ## get_variance_swap
-Calculate the fair strike of a variance swap up to every expiry from the option chain, replicated with the discrete strike weights of Demeterfi, Derman, Kamal and Zou (1999), and with a strike the value of a swap, also of one traded in the past. A variance swap pays the variance the stock realizes up to maturity minus the strike; the fair strike is the price of a portfolio of out-of-the-money options that replicates the log contract, whose payoff grows with the realized variance whatever the path:
+Calculate the fair strike of a variance swap up to every expiry from the option chain: the variance at which a swap on the stock's realized variance is worth nothing today, replicated with the discrete strike weights of Demeterfi, Derman, Kamal and Zou (1999), and with a strike the value of a swap, also of one traded in the past.
+
+A variance swap pays the variance the stock realizes up to maturity minus the strike; the fair strike is the price of a portfolio of out-of-the-money options that replicates the log contract, whose payoff grows with the realized variance whatever the path:
 
 $$
 f(S) = \left(\frac{2}{T}\right) \left[\frac{S - S^{*}}{S^{*}} - \ln\left(\frac{S}{S^{*}}\right)\right]
@@ -3164,14 +3220,16 @@ $$
 
 with the forward price F and the boundary strike $$S^{*} = K_{0}$$, the highest strike at or below it, from put-call parity as in the Cboe VIX methodology, puts below S* and calls above it. The Cboe Variance column is the VIX methodology's variance of the same expiry (see get_model_free_implied_volatility): it discretises the same integral with the midpoint rule, so the two agree when the strikes are close together and the Fair Variance replicates the payoff at the quoted strikes exactly when they are not.
 
-For more information, see the following papers:
-
-- Demeterfi, K., Derman, E., Kamal, M. and Zou, J. (1999). "More Than You Ever Wanted to Know About Volatility Swaps." Goldman Sachs Quantitative Strategies Research Notes.
-- Carr, P. and Madan, D. (1998). "Towards a Theory of Volatility Trading." In Volatility: New Estimation Techniques for Pricing Derivatives, Risk Books, 417-427.
-
-Referenced against QuantLib's ReplicatingVarianceSwapEngine and VarianceSwap ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's EquityVarianceSwap ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}).
-
 **Also known as:** variance swap rate, variance strike, fair variance, DDKZ replication.
+
+**References:**
+
+- paper | Demeterfi, K., Derman, E., Kamal, M. and Zou, J. (1999). "More Than You Ever Wanted to Know About Volatility Swaps." Goldman Sachs Quantitative Strategies Research Notes.
+- paper | Carr, P. and Madan, D. (1998). "Towards a Theory of Volatility Trading." In Volatility: New Estimation Techniques for Pricing Derivatives, Risk Books, 417-427.
+- library | Referenced against QuantLib's [ReplicatingVarianceSwapEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_replicating_variance_swap_engine.html){:target="_blank"}
+- library | Referenced against FinancePy's [EquityVarianceSwap.fair_strike](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/equity/equity_variance_swap.py#L102){:target="_blank"}
+- library | Referenced against FinancePy's [EquityVarianceSwap.value](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/equity/equity_variance_swap.py#L61){:target="_blank"}
+- library | Shares similar logic as QuantLib's [VarianceSwap](https://www.quantlib.org/reference/class_quant_lib_1_1_variance_swap.html){:target="_blank"}
 
 **Args:**
 
@@ -3241,7 +3299,9 @@ Which returns:
 ---
 
 ## get_delta_hedging_backtest
-Calculate the realized profit and loss of selling a European option on each ticker and delta hedging it on the ticker's own prices until it expires `days` trading days later (Hull, 2022, chapter 19). The option is sold at its Black-Scholes value, the hedge holds its delta in shares, pays a proportional cost on every trade, receives the dividends on the shares held and keeps the rest in cash at the risk free rate:
+Calculate the realized profit and loss of selling a European option on each ticker and delta hedging it on the ticker's own prices until it expires `days` trading days later: how much the hedged seller gained or lost when the volatility the stock realized differed from the one the option was sold at (Hull, 2022, chapter 19).
+
+The option is sold at its Black-Scholes value, the hedge holds its delta in shares, pays a proportional cost on every trade, receives the dividends on the shares held and keeps the rest in cash at the risk free rate:
 
 $$
 \text{Option Value} = \text{Black-Scholes value at the volatility}\; \sigma \;\text{on the start date}
@@ -3257,13 +3317,13 @@ $$
 
 The profit and loss shows what the volatility the option was sold at earned against the volatility the stock then realized: the seller gains about ½ $$\Gamma S^{2} (\sigma^{2} - \sigma_{\text{realized}}^{2})$$ per unit of time (Wilmott, 2006), so a positive result means the stock moved less than the option priced, less the costs of hedging (Leland, 1985).
 
-For more information, see the following sources:
-
-- Hull, J. C. (2022). "Options, Futures, and Other Derivatives." 11th edition, chapter 19.
-- Leland, H. E. (1985). "Option Pricing and Replication with Transactions Costs." The Journal of Finance, 40(5), 1283-1301.
-- Wilmott, P. (2006). "Paul Wilmott on Quantitative Finance." 2nd edition, chapter 12.
-
 **Also known as:** delta hedging P&L, hedged option P&L, gamma scalping backtest, realized hedging error.
+
+**References:**
+
+- paper | Hull, J. C. (2022). "Options, Futures, and Other Derivatives." 11th edition, chapter 19.
+- paper | Leland, H. E. (1985). "Option Pricing and Replication with Transactions Costs." The Journal of Finance, 40(5), 1283-1301.
+- paper | Wilmott, P. (2006). "Paul Wilmott on Quantitative Finance." 2nd edition, chapter 12.
 
 **Args:**
 
@@ -3336,7 +3396,9 @@ Which returns:
 ---
 
 ## get_delta_hedging_simulation
-Calculate the distribution of the hedging error of selling a European option and delta hedging it, by simulating the stock as a Geometric Brownian Motion from its price on the start date. Each path is hedged as in get_delta_hedging_backtest: the option is sold at its Black-Scholes value at the implied volatility, the hedge holds its delta, rebalanced every `rebalancing_days` trading days at a proportional cost, while the stock moves with the volatility:
+Calculate the distribution of the hedging error of selling a European option and delta hedging it: how much the hedged seller can gain or lose across simulated Geometric Brownian Motion paths of the stock from its price on the start date.
+
+Each path is hedged as in get_delta_hedging_backtest: the option is sold at its Black-Scholes value at the implied volatility, the hedge holds its delta, rebalanced every `rebalancing_days` trading days at a proportional cost, while the stock moves with the volatility:
 
 $$
 S(t + \Delta t) = S(t) e^{\left(r - q - \frac{\sigma^{2}}{2}\right) \Delta t + \sigma \sqrt{\Delta t} Z},\;\; Z \sim N(0,\; 1),\;\; \Delta t = \frac{1}{252}
@@ -3352,15 +3414,16 @@ $$
 
 Hedging at discrete times leaves an error whose mean is near zero and whose standard deviation falls with the square root of the number of rebalances N, as Boyle and Emanuel (1980) and Derman and Kamal (1999) derive for an at-the-money option; the last column gives their approximation. An implied volatility above the volatility gives the seller a profit on average, transaction costs a loss that grows as the hedge is rebalanced more often (Leland, 1985).
 
-For more information, see the following papers:
-
-- Boyle, P. P. and Emanuel, D. (1980). "Discretely Adjusted Option Hedges." Journal of Financial Economics, 8(3), 259-282.
-- Derman, E. and Kamal, M. (1999). "When You Cannot Hedge Continuously: The Corrections of Black-Scholes." Risk, 12(1), 82-85.
-- Leland, H. E. (1985). "Option Pricing and Replication with Transactions Costs." The Journal of Finance, 40(5), 1283-1301.
-
-Referenced against FinancePy's simulate_hedge_paths ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}), which reports the profit and loss at expiration rather than discounted and closes the hedge in cash at expiration.
+FinancePy's simulate_hedge_paths reports the profit and loss at expiration rather than discounted and closes the hedge in cash at expiration.
 
 **Also known as:** hedging error distribution, discrete hedging simulation, delta hedging Monte Carlo.
+
+**References:**
+
+- paper | Boyle, P. P. and Emanuel, D. (1980). "Discretely Adjusted Option Hedges." Journal of Financial Economics, 8(3), 259-282.
+- paper | Derman, E. and Kamal, M. (1999). "When You Cannot Hedge Continuously: The Corrections of Black-Scholes." Risk, 12(1), 82-85.
+- paper | Leland, H. E. (1985). "Option Pricing and Replication with Transactions Costs." The Journal of Finance, 40(5), 1283-1301.
+- library | Referenced against FinancePy's [simulate_hedge_paths](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/black_scholes_hedging_sim.py#L592){:target="_blank"}
 
 **Args:**
 
@@ -3381,7 +3444,7 @@ hedged at. Defaults to None, the volatility the stock moves with.
 (0.001 is 10 basis points). Defaults to 0.0.
 - <u>rebalancing_days (int, optional):</u> The trading days between rebalances. Defaults to
 1, daily.
-- <u>paths (int, optional):</u> The number of simulated paths. Defaults to 10,000.
+- <u>simulations (int, optional):</u> The number of simulated paths. Defaults to 10,000.
 - <u>seed (int &#124; None, optional):</u> The seed of the random numbers, None for a different
 draw on every call. Defaults to 0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -3434,9 +3497,11 @@ Which returns:
 ---
 
 ## get_exchange_option
-Calculate the price of an option to exchange a second asset (the benchmark by default) for each ticker, an outperformance option, with the formula of Margrabe (1978). The option receives one share of the ticker and delivers the number of units of the second asset that are worth exchange_ratio times the ticker's price today, so at exchange_ratio=1 it pays at expiration what the ticker gained over the second asset since today, if anything, per share of the ticker.
+Calculate the price of an option to exchange a second asset (the benchmark by default) for each ticker, an outperformance option: what the right to receive the ticker for the second asset at expiration is worth, with the formula of Margrabe (1978).
 
-Measured in units of the second asset the payoff is a call on the ratio of the two prices, so the risk-free rate drops out and the volatility is that of the ratio. With american_option=True the option may be exercised at any time, which is an American call on the ticker with the second asset as strike, a risk-free rate of q2 and a dividend yield of q1 (Bjerksund and Stensland, 1993), priced with the QD+ exercise boundary and its integral (Li, 2010; Andersen, Lake and Offengenden, 2016), within about 0.1% of a 999-step Leisen-Reimer tree. Without a dividend yield on the ticker early exercise is never optimal and the American option is worth the European one.
+The option receives one share of the ticker and delivers the number of units of the second asset that are worth the exchange ratio times the ticker's price today, so at an exchange ratio of 1 it pays at expiration what the ticker gained over the second asset since today, if anything, per share of the ticker.
+
+Measured in units of the second asset the payoff is a call on the ratio of the two prices, so the risk-free rate drops out and the volatility is that of the ratio. An American option may be exercised at any time, which is an American call on the ticker with the second asset as strike, a risk-free rate of q2 and a dividend yield of q1 (Bjerksund and Stensland, 1993), priced with the QD+ exercise boundary and its integral (Li, 2010; Andersen, Lake and Offengenden, 2016), within about 0.1% of a 999-step Leisen-Reimer tree. Without a dividend yield on the ticker early exercise is never optimal and the American option is worth the European one.
 
 The formula is as follows:
 
@@ -3460,9 +3525,14 @@ Where S1 is the ticker's price (the traded close on the pricing date), S2 the se
 
 Options on other two-asset payoffs, and the exchange option on prices and correlations of your own, are priced by the model functions in financetoolkit.options.multiasset.multi_asset_model.
 
-See: Margrabe, W. (1978), "The Value of an Option to Exchange One Asset for Another", Journal of Finance, 33(1), 177-186; Bjerksund, P. & Stensland, G. (1993), "American Exchange Options and a Put-Call Transformation: A Note", Journal of Business Finance & Accounting, 20(5), 761-764; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., chapter 5. Referenced against QuantLib's AnalyticEuropeanMargrabeEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}), and the American value against a Leisen-Reimer tree of 999 steps on the call it equals (QuantLib's AnalyticAmericanMargrabeEngine takes the Bjerksund-Stensland (1993) approximation, a lower bound about 1% below it).
+See: Margrabe, W. (1978), "The Value of an Option to Exchange One Asset for Another", Journal of Finance, 33(1), 177-186; Bjerksund, P. & Stensland, G. (1993), "American Exchange Options and a Put-Call Transformation: A Note", Journal of Business Finance & Accounting, 20(5), 761-764; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., chapter 5. The American value is checked against a Leisen-Reimer tree of 999 steps on the call it equals (QuantLib's AnalyticAmericanMargrabeEngine takes the Bjerksund-Stensland (1993) approximation, a lower bound about 1% below it).
 
 **Also known as:** Margrabe option, exchange option, outperformance option, swap option.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticEuropeanMargrabeEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_european_margrabe_engine.html){:target="_blank"}
+- library | Shares similar logic as QuantLib's [AnalyticAmericanMargrabeEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_american_margrabe_engine.html){:target="_blank"}
 
 **Args:**
 
@@ -3524,7 +3594,9 @@ Which returns:
 ---
 
 ## get_spread_option
-Calculate the price of a European spread option of each ticker over a second asset (the benchmark by default) with the closed-form approximation of Bjerksund and Stensland (2011) or of Kirk (1995). The option is on one share of the ticker less the units of the second asset worth the same today, so the spread starts at 0 and the call pays max(S1 - S2 - K, 0) at expiration, where S1 - S2 is what the ticker gained over the second asset per share. The strikes run from strike_price_range below to strike_price_range above a spread of 0, as a share of the ticker's price.
+Calculate the price of a European spread option of each ticker over a second asset (the benchmark by default): what an option on how much the ticker gains over the second asset is worth, with the closed-form approximation of Bjerksund and Stensland (2011) or of Kirk (1995).
+
+The option is on one share of the ticker less the units of the second asset worth the same today, so the spread starts at 0 and the call pays max(S1 - S2 - K, 0) at expiration, where S1 - S2 is what the ticker gained over the second asset per share. The strikes run from the strike price range below to the strike price range above a spread of 0, as a share of the ticker's price.
 
 The spread of two lognormal prices has no closed-form distribution. Kirk takes F2 + K as one lognormal price, and Bjerksund and Stensland exercise where F1 exceeds a boundary fitted to the exercise region, which gives a lower bound that is closer to the exact price. At a strike of 0 both are Margrabe's exact exchange option (get_exchange_option).
 
@@ -3566,9 +3638,14 @@ Where S1 is the ticker's price (the traded close on the pricing date), K the str
 
 Spread options on prices, strikes and correlations of your own (such as a crack or a calendar spread of futures), are priced by the model function financetoolkit.options.multiasset.multi_asset_model.get_spread_option.
 
-See: Kirk, E. (1995), "Correlation in the Energy Markets", in Managing Energy Price Risk, Risk Publications, 71-78; Bjerksund, P. & Stensland, G. (2014), "Closed Form Spread Option Valuation", Quantitative Finance, 14(10), 1785-1794; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., chapter 5. Referenced against QuantLib's KirkEngine and BjerksundStenslandSpreadEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}).
+See: Kirk, E. (1995), "Correlation in the Energy Markets", in Managing Energy Price Risk, Risk Publications, 71-78; Bjerksund, P. & Stensland, G. (2014), "Closed Form Spread Option Valuation", Quantitative Finance, 14(10), 1785-1794; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., chapter 5.
 
 **Also known as:** spread option, relative performance option, Kirk's approximation.
+
+**References:**
+
+- library | Referenced against QuantLib's [BjerksundStenslandSpreadEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_bjerksund_stensland_spread_engine.html){:target="_blank"}
+- library | Referenced against QuantLib's [KirkEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_kirk_engine.html){:target="_blank"}
 
 **Args:**
 
@@ -3579,8 +3656,8 @@ Defaults to None, which uses the last date of the historical data.
 - <u>second_ticker (str &#124; None, optional):</u> The second asset, "Benchmark" or one of the tickers (which is
 then left out of the rows). Defaults to None, which uses the benchmark.
 - <u>put_option (bool, optional):</u> Whether the option is a put. Defaults to False.
-- <u>method (str, optional):</u> The approximation, "bjerksund_stensland" (Bjerksund and Stensland, 2011, the
-more accurate) or "kirk" (Kirk, 1995). Defaults to "bjerksund_stensland".
+- <u>method (str, optional):</u> The approximation. Options are: "bjerksund_stensland" (Bjerksund and Stensland,
+2011, the more accurate), "kirk" (Kirk, 1995). Defaults to "bjerksund_stensland".
 - <u>strike_price_range (float):</u> The range of the strike prices around a spread of 0, as a share of the
 ticker's price, at most 0.5. Defaults to 0.25, which gives strikes from -25 to 25 for a price of 100.
 - <u>strike_step_size (float):</u> The step size of the strike prices. Defaults to 5, which gives the strikes
@@ -3650,7 +3727,7 @@ Which returns:
 ---
 
 ## get_black_scholes_model
-Calculate the Black Scholes Model, a mathematical model used to estimate the price of European-style options.
+Calculate the Black Scholes Model: what European calls and puts on each ticker are worth today, for a range of strike prices and times to expiration, when the stock follows a lognormal process with a constant volatility.
 
 The Black Scholes Model is a mathematical model used to estimate the price of European-style options. It is widely used by traders and investors to determine the theoretical value of an option, and to assess the potential risks and rewards of a position.
 
@@ -3687,7 +3764,7 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The model price is only as good as its volatility input, and here that input is realised (historical) volatility, while traded options are priced off implied volatility, which usually differs from it and varies by strike and expiry. Practitioners therefore use the Black Scholes value as a benchmark and compare it with market prices from `get_option_chains`, or back the market's volatility out with `get_implied_volatility`. Deep out-of-the-money options are most sensitive to that choice, since the model's flat volatility ignores the skew.
 
-Dividends are paid in cash on their ex-dividend dates, which the dividend yield q spreads evenly over the year. For short options that difference matters: an option that expires just after an ex-date loses the whole dividend, one that expires just before it none of it. With dividends="escrowed" or dividends="haug_haug_lewis" the dividend yield is replaced by the projected cash dividends: the latest dividend per share before the pricing date, repeated at the median interval between its last ex-dates (see options_model.get_projected_dividends), so a past pricing date only uses what was known on that date.
+Dividends are paid in cash on their ex-dividend dates, which the dividend yield q spreads evenly over the year. For short options that difference matters: an option that expires just after an ex-date loses the whole dividend, one that expires just before it none of it. With the escrowed or the Haug-Haug-Lewis dividend model the dividend yield is replaced by the projected cash dividends: the latest dividend per share before the pricing date, repeated at the median interval between its last ex-dates (see options_model.get_projected_dividends), so a past pricing date only uses what was known on that date.
 
 - Escrowed (Hull, 2022, chapter 17): the Black-Scholes formula with $$q = 0$$ on $$S^{*} = S - \sum D_{i} \cdot e^{- r \cdot t_{i}}$$, the stock price net of the present value of the dividends up to expiration.
 - Haug-Haug-Lewis (Haug, Haug and Lewis, 2003): the stock price drops by $$D_{i}$$ at $$t_{i}$$ and the option value is integrated over the lognormal stock price at each ex-date, from the Black-Scholes value after the last dividend backwards: $$V_{i} (x) = e^{- r \cdot (t_{i + 1} - t_{i})} \cdot E [V_{i + 1} (S_{t_{i + 1}} - D_{i + 1})]$$.
@@ -3695,6 +3772,11 @@ Dividends are paid in cash on their ex-dividend dates, which the dividend yield 
 Where $$D_{i}$$ is the cash dividend with ex-date $$t_{i}$$ years after the pricing date. The escrowed model is the market convention; it applies the volatility to S* instead of S, which the Haug-Haug-Lewis method does not, so the latter gives slightly higher prices when the dividends are large.
 
 **Also known as:** BSM, Black-Scholes-Merton, option pricing model, escrowed dividend model, discrete dividends.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticDividendEuropeanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_dividend_european_engine.html){:target="_blank"} (escrowed)
+- library | Referenced against QuantLib's [CashDividendEuropeanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_cash_dividend_european_engine.html){:target="_blank"} (Haug-Haug-Lewis)
 
 **Args:**
 
@@ -3719,9 +3801,9 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield. Only used with
 dividends="yield".
-- <u>dividends (str, optional):</u> How the dividends enter the price: "yield" (a continuous dividend yield),
-"escrowed" (the projected cash dividends, escrowed model) or "haug_haug_lewis" (the projected cash
-dividends, stock price dropping on each ex-date). Defaults to "yield".
+- <u>dividends (str, optional):</u> How the dividends enter the price. Options are: "yield" (a continuous
+dividend yield), "escrowed" (the projected cash dividends, escrowed model), "haug_haug_lewis" (the
+projected cash dividends, stock price dropping on each ex-date). Defaults to "yield".
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -3775,15 +3857,17 @@ Which returns:
 ---
 
 ## get_binomial_model
-Calculate the Binomial Option Pricing Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset, and then working backwards through the tree to determine the price of the option at each node.
+Calculate the Binomial Option Pricing Model: what European and American calls and puts on each ticker are worth at every node of a binomial tree of stock prices, from the payoffs at expiration back to today.
+
+It creates a binomial tree of price paths for the underlying asset and works backwards through the tree to determine the price of the option at each node.
 
 The tree of Cox, Ross and Rubinstein (1979) is the default. The variants choose the up and down movements and the probability differently, which changes how fast and how smoothly the price converges as the number of time steps grows:
 
-- Jarrow-Rudd (method="jarrow_rudd"): equal probabilities of 1/2, with the moves centred on the drift.
-- Tian (method="tian"): matches the first three moments of the lognormal distribution in each step.
-- Trigeorgis (method="trigeorgis"): equal steps in the logarithm of the price with the drift in the probability, a tree that keeps its probability between 0 and 1 longer than Cox-Ross-Rubinstein.
-- Leisen-Reimer (method="leisen_reimer"): centred on the strike so the price converges smoothly at a rate of $$1 / n^{2}$$ instead of oscillating at 1 / n, with the probabilities from the Peizer-Pratt inversion of the normal distribution.
-- Exact inversion (method="exact_inversion"): the Leisen-Reimer tree with the exact inverse of the binomial distribution, of which Joshi (2010) takes a fourth order expansion. It prices a European option at its Black-Scholes value at every number of steps and converges fastest for American options.
+- Jarrow-Rudd: equal probabilities of 1/2, with the moves centred on the drift.
+- Tian: matches the first three moments of the lognormal distribution in each step.
+- Trigeorgis: equal steps in the logarithm of the price with the drift in the probability, a tree that keeps its probability between 0 and 1 longer than Cox-Ross-Rubinstein.
+- Leisen-Reimer: centred on the strike so the price converges smoothly at a rate of $$1 / n^{2}$$ instead of oscillating at 1 / n, with the probabilities from the Peizer-Pratt inversion of the normal distribution.
+- Exact inversion: the Leisen-Reimer tree with the exact inverse of the binomial distribution, of which Joshi (2010) takes a fourth order expansion. It prices a European option at its Black-Scholes value at every number of steps and converges fastest for American options.
 
 The Leisen-Reimer and exact inversion trees need an odd number of time steps; an even number is raised by one (the default of 10 becomes 11).
 
@@ -3867,9 +3951,17 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 
 The resulting output is a DataFrame containing the tickers, strike prices and movements as the index and the time to expiration as the columns. The movements index contains the number of up movements and the number of down movements. The output is the binomial tree displayed in a table. E.g. when using 10 time steps, the table for each strike price from each company will contain the actual binomial tree as also depicted in the image found here: [https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method](https://en.wikipedia.org/wiki/Binomial_options_pricing_model#Method){:target="_blank"}
 
-See: Cox, J. C., Ross, S. A., & Rubinstein, M. (1979), "Option Pricing: A Simplified Approach", Journal of Financial Economics, 7(3), 229-263; Jarrow, R., & Rudd, A. (1983), "Option Pricing", Irwin; Trigeorgis, L. (1991), "A Log-Transformed Binomial Numerical Analysis Method for Valuing Complex Multi-Option Investments", Journal of Financial and Quantitative Analysis, 26(3), 309-326; Tian, Y. (1993), "A Modified Lattice Approach to Option Pricing", Journal of Futures Markets, 13(5), 563-577; Leisen, D. P. J., & Reimer, M. (1996), "Binomial Models for Option Valuation - Examining and Improving Convergence", Applied Mathematical Finance, 3(4), 319-346; Joshi, M. S. (2010), "Achieving Higher Order Convergence for the Prices of European Options in Binomial Trees", Mathematical Finance, 20(1), 89-103. Referenced against QuantLib's BinomialJRVanillaEngine, BinomialTianVanillaEngine, BinomialTrigeorgisVanillaEngine, BinomialLRVanillaEngine and BinomialJ4VanillaEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}): the first four agree within 1e-9 and the J4 tree, Joshi's expansion, lies within 1e-6 of the exact inverse at 101 steps. An equal probabilities tree that matches the mean and variance of the log price is the Jarrow-Rudd tree.
+See: Cox, J. C., Ross, S. A., & Rubinstein, M. (1979), "Option Pricing: A Simplified Approach", Journal of Financial Economics, 7(3), 229-263; Jarrow, R., & Rudd, A. (1983), "Option Pricing", Irwin; Trigeorgis, L. (1991), "A Log-Transformed Binomial Numerical Analysis Method for Valuing Complex Multi-Option Investments", Journal of Financial and Quantitative Analysis, 26(3), 309-326; Tian, Y. (1993), "A Modified Lattice Approach to Option Pricing", Journal of Futures Markets, 13(5), 563-577; Leisen, D. P. J., & Reimer, M. (1996), "Binomial Models for Option Valuation - Examining and Improving Convergence", Applied Mathematical Finance, 3(4), 319-346; Joshi, M. S. (2010), "Achieving Higher Order Convergence for the Prices of European Options in Binomial Trees", Mathematical Finance, 20(1), 89-103. The Jarrow-Rudd, Tian, Trigeorgis and Leisen-Reimer trees agree with QuantLib's within 1e-9 and its J4 tree, Joshi's expansion, lies within 1e-6 of the exact inverse at 101 steps. An equal probabilities tree that matches the mean and variance of the log price is the Jarrow-Rudd tree.
 
 **Also known as:** binomial tree, lattice model, option pricing, CRR, Leisen-Reimer, Jarrow-Rudd, Tian tree.
+
+**References:**
+
+- library | Referenced against QuantLib's [BinomialJRVanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_binomial_vanilla_engine.html){:target="_blank"} (Jarrow-Rudd)
+- library | Referenced against QuantLib's [BinomialTianVanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_binomial_vanilla_engine.html){:target="_blank"} (Tian)
+- library | Referenced against QuantLib's [BinomialTrigeorgisVanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_binomial_vanilla_engine.html){:target="_blank"} (Trigeorgis)
+- library | Referenced against QuantLib's [BinomialLRVanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_binomial_vanilla_engine.html){:target="_blank"} (Leisen-Reimer)
+- library | Referenced against QuantLib's [BinomialJ4VanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_binomial_vanilla_engine.html){:target="_blank"} (exact inversion)
 
 **Args:**
 
@@ -3887,7 +3979,7 @@ node, instead of a European option. Defaults to False.
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>time_to_expiration (float):</u> The number of years to use for the time to expiration. Defaults to 1 which equals
 one year.
-- <u>timesteps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
+- <u>time_steps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
 time steps. This will be evenly distributed over the time to expiration.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -3907,13 +3999,15 @@ time to expiration columns for each ticker and strike price. Defaults to False.
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
 exist the result is returned in full. Defaults to None, which keeps every column.
-- <u>method (str, optional):</u> The tree: "cox_ross_rubinstein", "jarrow_rudd", "tian", "trigeorgis",
-"leisen_reimer" or "exact_inversion". Defaults to "cox_ross_rubinstein".
+- <u>method (str, optional):</u> The tree. Options are: "cox_ross_rubinstein" (Cox-Ross-Rubinstein),
+"jarrow_rudd" (Jarrow-Rudd), "tian" (Tian), "trigeorgis" (Trigeorgis), "leisen_reimer"
+(Leisen-Reimer), "exact_inversion" (exact inversion of the binomial distribution). Defaults to
+"cox_ross_rubinstein".
 
 **Returns:**
 
 pd.DataFrame: Binomial Trees values containing the tickers, strike prices and movements as the index and the
-timesteps as the columns.
+time steps as the columns.
 
 **As an example:**
 
@@ -3928,7 +4022,7 @@ toolkit = Toolkit(
 )
 
 binomial_model = toolkit.options.get_binomial_model(
-    strike_price_range=0, strike_step_size=1, timesteps=5
+    strike_price_range=0, strike_step_size=1, time_steps=5
 )
 
 binomial_model.loc["KO"]
@@ -3948,7 +4042,9 @@ Which returns:
 ---
 
 ## get_stock_price_simulation
-Simulate the Stock Price based on the Binomial Model, a mathematical model used to estimate the price of European and American style options. It does so by creating a binomial tree of price paths for the underlying asset based on the stock price, its volatility and the time to expiration: each step multiplies the price by $$u = e^{\sigma \cdot \sqrt{\Delta t}}$$ or by $$d = 1 / u$$. The stock price is then simulated based on these up and down movements.
+Simulate the Stock Price based on the Binomial Model: the prices each ticker can reach after every combination of up and down movements up to expiration.
+
+The binomial model is a mathematical model used to estimate the price of European and American style options. It creates a binomial tree of price paths for the underlying asset based on the stock price, its volatility and the time to expiration: each step multiplies the price by $$u = e^{\sigma \cdot \sqrt{\Delta t}}$$ or by $$d = 1 / u$$. The stock price is then simulated based on these up and down movements.
 
 By default the most recent stock price is used, you can alter this by changing the start date. The volatility is the annualized standard deviation of the daily returns over the year before that date, so an earlier start date only uses what was known on that date.
 
@@ -3982,7 +4078,7 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>time_to_expiration (float):</u> The number of years to use for the time to expiration. Defaults to 1 which equals
 one year.
-- <u>timesteps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
+- <u>time_steps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
 time steps. This will be evenly distributed over the time to expiration.
 - <u>risk_free_rate (float, optional):</u> The risk free rate shown with show_input_info; it does not affect the
 simulated prices. Defaults to None, which uses the Toolkit's risk-free rate on the pricing date: the
@@ -4004,7 +4100,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Simulated Stock Price values containing the tickers and movements as the index and the
-timesteps as the columns.
+time steps as the columns.
 
 **As an example:**
 
@@ -4019,7 +4115,7 @@ toolkit = Toolkit(
 )
 
 stock_price_simulation = toolkit.options.get_stock_price_simulation(
-    timesteps=5, show_unique_combinations=True
+    time_steps=5, show_unique_combinations=True
 )
 
 stock_price_simulation.loc["AMD"]
@@ -4125,7 +4221,7 @@ Which returns:
 ---
 
 ## get_garman_kohlhagen
-Calculate the Garman-Kohlhagen Model, a variant of the Black-Scholes model used to price European-style options on foreign exchange (FX) rates.
+Calculate the Garman-Kohlhagen Model: what European calls and puts on each currency pair are worth, the Black-Scholes model with the foreign interest rate in the role of a dividend yield.
 
 Because holding foreign currency earns the foreign risk-free rate (analogous to a continuous dividend yield on a stock), the Garman-Kohlhagen model uses the foreign risk-free rate in place of the dividend yield used in the standard Black-Scholes model.
 
@@ -4227,9 +4323,9 @@ Which returns:
 ---
 
 ## get_binary_option
-Calculate the price of a Binary (Digital) Option using the Black-Scholes framework.
+Calculate the price of a Binary (Digital) Option: what a payoff of all or nothing at expiration is worth, a fixed cash amount or the stock itself when the option ends in the money, using the Black-Scholes framework.
 
-A binary option pays out a fixed amount if the option expires in-the-money and nothing otherwise. Two variants are supported through the ``option_type`` parameter: "cash-or-nothing" (the default) pays a fixed cash amount and "asset-or-nothing" pays the value of the underlying asset if the option expires in-the-money.
+A binary option pays out a fixed amount if the option expires in-the-money and nothing otherwise. Two variants are supported: the cash-or-nothing option (the default) pays a fixed cash amount and the asset-or-nothing option pays the value of the underlying asset if the option expires in-the-money.
 
 The formula is as follows:
 
@@ -4269,8 +4365,8 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>option_type (str, optional):</u> Either "cash-or-nothing" or "asset-or-nothing". Defaults to
-"cash-or-nothing".
+- <u>option_type (str, optional):</u> The payoff. Options are: "cash-or-nothing" (a fixed cash amount),
+"asset-or-nothing" (the value of the stock). Defaults to "cash-or-nothing".
 - <u>cash_payout (float, optional):</u> The fixed cash amount paid out by a cash-or-nothing option when it
 expires in-the-money. Ignored for asset-or-nothing options. Defaults to 1.0.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
@@ -4341,150 +4437,20 @@ Which returns:
 
 ---
 
-## get_bjerksund_stensland
-Calculate American option prices using the Bjerksund-Stensland (2002) closed-form analytical approximation, or the original 1993 version with method="1993".
-
-Unlike European options, American options can be exercised at any time up to and including expiration, which normally requires a numerical approach such as the Binomial Tree model (see ``get_binomial_model``). The Bjerksund-Stensland model instead derives a closed-form approximation by assuming the early-exercise boundary is flat in steps: once the stock price crosses the trigger price, immediate exercise is assumed optimal. The option's life is split at $$t_{1} = \tfrac{1}{2} (\sqrt{5} - 1) \cdot T$$ into two periods, each with its own flat trigger price, which brings the price closer to the exact American value than a single flat trigger.
-
-The formula is as follows (for a call, with cost of carry $$b = r - q$$ smaller than r):
-
-$$
-\beta = \left(0.5 - \frac{b}{\sigma^{2}}\right) + \sqrt{\left(\frac{b}{\sigma^{2}} - 0.5\right)^{2} + \frac{2r}{\sigma^{2}}}
-$$
-
-$$
-B_{\infty} = \frac{\beta}{\beta - 1} \cdot K
-$$
-
-$$
-B_{0} = \max\left(K,\; \frac{r}{r - b} \cdot K\right)
-$$
-
-$$
-h(t) = - \frac{(b \cdot t + 2 \sigma \sqrt{t}) \cdot K^{2}}{(B_{\infty} - B_{0}) \cdot B_{0}}
-$$
-
-$$
-I(t) = B_{0} + (B_{\infty} - B_{0}) \cdot (1 - e^{h(t)}),\;\; \text{with}\;\; I_{1} = I(t_{1})\;\;\text{and}\;\; I_{2} = I(T)
-$$
-
-$$
-\text{Call} = \max(\text{Approximation},\; \text{European Black-Scholes Call},\; \max(S - K,\; 0)),\;\; \text{where the Approximation is}\; S - K \;\text{when}\; S \geq I_{2} \;\text{and otherwise combines univariate} \;(\text{first period}) \;\text{and bivariate} \;(\text{both periods}) \;\text{normal terms},\;\; \text{see black\_scholes\_model.get\_bjerksund\_stensland}
-$$
-
-$$
-\text{Put} \;(S,\; K,\; T,\; r,\; b,\; \sigma) = \text{Call} \;(K,\; S,\; T,\; r - b,\; - b,\; \sigma),\;\; \text{the put-call transformation}
-$$
-
-The 1993 version (method="1993") keeps one flat trigger price over the option's whole life, which is faster and slightly further below the exact American value:
-
-$$
-h(T) = - \frac{(b \cdot T + 2 \sigma \sqrt{T}) \cdot B_{0}}{B_{\infty} - B_{0}}
-$$
-
-$$
-I = B_{0} + (B_{\infty} - B_{0}) \cdot (1 - e^{h(T)}),\;\; \alpha = (I - K) \cdot I^{- \beta}
-$$
-
-$$
-\text{Call} = \alpha \cdot S^{\beta} - \alpha \cdot \phi(S,\; T,\; \beta,\; I,\; I) + \phi(S,\; T,\; 1,\; I,\; I) - \phi(S,\; T,\; 1,\; K,\; I) - K \cdot \phi(S,\; T,\; 0,\; I,\; I) + K \cdot \phi(S,\; T,\; 0,\; K,\; I),\;\; \text{with } \phi \text{ the univariate knock-out claim of black\_scholes\_model.\_phi}
-$$
-
-Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252) and T is the time to expiration in years (days / 365).
-
-When $$b \geq r$$ early exercise of a call is not optimal and the value is the Black-Scholes price (floored at the exercise value). Where the boundary I2 falls to or below the strike, a 1,000-step binomial tree prices the option instead. At zero days to expiration the value is the exercise value.
-
-See: Bjerksund, P., & Stensland, G. (2002), "Closed Form Valuation of American Options", Working paper, NHH, and Bjerksund, P., & Stensland, G. (1993), "Closed-Form Approximation of American Options", Scandinavian Journal of Management, 9, S87-S99, as presented in Haug, E. G. (2007), "The Complete Guide to Option Pricing Formulas" (2nd ed.), sections 3.1.4 and 3.1.3. The 1993 version is referenced against QuantLib's BjerksundStenslandApproximationEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}). For the Barone-Adesi-Whaley, Ju-Zhong and QD+ approximations, see ``get_american_option``.
-
-**Also known as:** BS2002, Bjerksund-Stensland approximation, American option approximation.
-
-**Args:**
-
-- <u>start_date (str &#124; None, optional):</u> The date whose price, volatility and rates the values
-start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
-ticker without a price on that day is left out with a warning. Defaults to None, which uses the
-last date of the historical data.
-- <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
-it will calculate the call option price.
-- <u>method (str, optional):</u> The version of the approximation: "2002" (two flat trigger prices) or "1993"
-(one flat trigger price). Defaults to "2002".
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
-25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
-strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
-- <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
-expirations of 1 to 29 days.
-- <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
-uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
-risk_free_rate parameter selects '13w', '5y' or '30y', converted from its semi-annual bond-equivalent
-quote to continuous compounding. A rate passed here is used as given, as a continuously compounded rate.
-- <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None, which
-uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
-as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
-- <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result across the
-time to expiration columns for each ticker and strike price. Defaults to False.
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Bjerksund-Stensland American option values containing the tickers and strike prices as
-the index and the time to expiration as the columns.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["VZ"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2025-01-01",
-    end_date="2025-12-31",
-)
-
-bjerksund_stensland = toolkit.options.get_bjerksund_stensland(
-    strike_price_range=0.15, strike_step_size=1, expiration_time_range=91
-)
-
-bjerksund_stensland.loc["VZ", ["2026-01-30", "2026-03-01", "2026-03-31"]]
-```
-
-Which returns:
-
-|   Strike Price |   2026-01-30 |   2026-03-01 |   2026-03-31 |
-|---------------:|-------------:|-------------:|-------------:|
-|             34 |       6.73   |       6.73   |       6.73   |
-|             35 |       5.73   |       5.73   |       5.7418 |
-|             36 |       4.73   |       4.7531 |       4.8237 |
-|             37 |       3.741  |       3.8479 |       3.9723 |
-|             38 |       2.8271 |       3.0221 |       3.2026 |
-|             39 |       2.0122 |       2.2963 |       2.5249 |
-|             40 |       1.3365 |       1.684  |       1.9446 |
-|             41 |       0.8218 |       1.1896 |       1.4622 |
-|             42 |       0.465  |       0.8084 |       1.073  |
-|             43 |       0.2413 |       0.5282 |       0.7684 |
-|             44 |       0.1146 |       0.3318 |       0.537  |
-|             45 |       0.0498 |       0.2004 |       0.3664 |
-
----
-
 ## get_american_option
-Calculate American option prices with the QD+ method of Li (2010) and Andersen, Lake and Offengenden (2016), the quadratic approximations of Barone-Adesi and Whaley (1987) and Ju and Zhong (1999), or the exact value from the exercise boundary solved as a fixed point (Andersen, Lake and Offengenden, 2016).
+Calculate American option prices: what calls and puts on each ticker that may be exercised at any time up to expiration are worth, with the method of choice.
+
+The methods are the QD+ method of Li (2010) and Andersen, Lake and Offengenden (2016), the quadratic approximations of Barone-Adesi and Whaley (1987) and Ju and Zhong (1999), the closed-form approximations of Bjerksund and Stensland (2002 and 1993), finite differences, and the exact value from the exercise boundary solved as a fixed point (Andersen, Lake and Offengenden, 2016).
 
 Listed options on single stocks are American: they can be exercised at any time up to expiration, which makes an in-the-money put, or a call on a stock with a high dividend yield, worth more than the European option the Black-Scholes model prices. These methods value that early exercise right without a tree:
 
-- Barone-Adesi-Whaley (method="barone_adesi_whaley"): the early exercise premium is a power of S, fitted to the exercise value at the critical stock price S*, found numerically. Fast, and within about 1% of the exact value for most options, but several percent off for maturities of a year or more.
-- Ju-Zhong (method="ju_zhong"): Barone-Adesi-Whaley with a correction for the term it drops, which divides the premium by $$1 - \chi (S)$$, a quadratic in ln(S / S*). As fast and within about 0.3% for most options.
-- QD+ (method="qd_plus"): the European price plus the early exercise premium integrated over the exercise boundary, with the boundary at each time to expiration from the QD+ equation of Li (2010). The most accurate of the three, within 0.3% of the exact value across typical inputs, and slower.
-- QD fixed point (method="qd_fixed_point"): the same integral with the boundary that solves the integral equation of Kim (1990), iterated as a fixed point from the QD+ boundary until it changes less than 1e-12. It converges to the exact American value, within about 1e-6 (1e-8 for most options), at about 30 to 150 ms per price, so it is the slowest and best suited to a few strikes and expirations.
-- Finite differences (method="finite_difference"): the Black-Scholes equation solved backwards from expiration with Crank-Nicolson (Rannacher start-up) on a grid of 1,000 steps in ln(S / K) and at least 400 time steps (4 per expiration day beyond 100 days), with the exercise constraint solved at every step by Brennan and Schwartz (1977). As $$V (S , K , \tau) = K \cdot v (S / K , \tau)$$, one solve gives every strike, and the expirations are solved in groups whose longest is at most four times their shortest, each on a grid sized for it, so that an expiration a day away is as precise as one months away: within about 1e-3 of the exact value for a stock price of 100 (7.3e-4 at most from a day to a quarter at volatilities up to 100%; the error scales with the price), see ``finite_difference_model.get_finite_difference_option_values``.
+- QD+ (the default): the European price plus the early exercise premium integrated over the exercise boundary, with the boundary at each time to expiration from the QD+ equation of Li (2010). The most accurate of the approximations, within 0.3% of the exact value across typical inputs, and slower.
+- Barone-Adesi-Whaley: the early exercise premium is a power of S, fitted to the exercise value at the critical stock price S*, found numerically. Fast, and within about 1% of the exact value for most options, but several percent off for maturities of a year or more.
+- Ju-Zhong: Barone-Adesi-Whaley with a correction for the term it drops, which divides the premium by $$1 - \chi (S)$$, a quadratic in ln(S / S*). As fast and within about 0.3% for most options.
+- QD fixed point: the QD+ integral with the boundary that solves the integral equation of Kim (1990), iterated as a fixed point from the QD+ boundary until it changes less than 1e-12. It converges to the exact American value, within about 1e-6 (1e-8 for most options), at about 30 to 150 ms per price, so it is the slowest and best suited to a few strikes and expirations.
+- Finite differences: the Black-Scholes equation solved backwards from expiration with Crank-Nicolson (Rannacher start-up) on a grid of 1,000 steps in ln(S / K) and at least 400 time steps (4 per expiration day beyond 100 days), with the exercise constraint solved at every step by Brennan and Schwartz (1977). As $$V (S , K , \tau) = K \cdot v (S / K , \tau)$$, one solve gives every strike, and the expirations are solved in groups whose longest is at most four times their shortest, each on a grid sized for it, so that an expiration a day away is as precise as one months away: within about 1e-3 of the exact value for a stock price of 100 (7.3e-4 at most from a day to a quarter at volatilities up to 100%; the error scales with the price), see ``finite_difference_model.get_finite_difference_option_values``.
+- Bjerksund-Stensland (2002): a closed form that assumes the early exercise boundary is flat in steps: once the stock price crosses the trigger price, immediate exercise is assumed optimal. The option's life is split at $$t_{1} = \tfrac{1}{2} (\sqrt{5} - 1) \cdot T$$ into two periods, each with its own flat trigger price, which brings the price closer to the exact American value than a single flat trigger.
+- Bjerksund-Stensland (1993): the original version, with one flat trigger price over the option's whole life, which is faster and slightly further below the exact American value.
 
 The formulas are as follows, with $$\phi = 1$$ for a call and -1 for a put:
 
@@ -4524,13 +4490,70 @@ $$
 \text{Finite differences:}\;\; V_{\tau} = \frac{\sigma^{2}}{2} \cdot V_{xx} + \left(r - q - \frac{\sigma^{2}}{2}\right) \cdot V_{x} - r \cdot V \;\text{on}\; x = \ln\left(\frac{S}{K}\right),\;\; \text{stepped with} \;\left(I - \frac{\Delta \tau}{2} \cdot L\right) \cdot V(\tau + \Delta \tau) = \left(I + \frac{\Delta \tau}{2} \cdot L\right) \cdot V(\tau) \;\text{subject to}\; V \geq \phi \cdot (S - K)
 $$
 
+The Bjerksund-Stensland formulas are as follows (for a call, with cost of carry $$b = r - q$$ smaller than r):
+
+$$
+\beta = \left(0.5 - \frac{b}{\sigma^{2}}\right) + \sqrt{\left(\frac{b}{\sigma^{2}} - 0.5\right)^{2} + \frac{2r}{\sigma^{2}}}
+$$
+
+$$
+B_{\infty} = \frac{\beta}{\beta - 1} \cdot K
+$$
+
+$$
+B_{0} = \max\left(K,\; \frac{r}{r - b} \cdot K\right)
+$$
+
+$$
+h(t) = - \frac{(b \cdot t + 2 \sigma \sqrt{t}) \cdot K^{2}}{(B_{\infty} - B_{0}) \cdot B_{0}}
+$$
+
+$$
+I(t) = B_{0} + (B_{\infty} - B_{0}) \cdot (1 - e^{h(t)}),\;\; \text{with}\;\; I_{1} = I(t_{1})\;\;\text{and}\;\; I_{2} = I(T)
+$$
+
+$$
+\text{Call} \;(2002) = \max(\text{Approximation},\; \text{European Black-Scholes Call},\; \max(S - K,\; 0)),\;\; \text{where the Approximation is}\; S - K \;\text{when}\; S \geq I_{2} \;\text{and otherwise combines univariate} \;(\text{first period}) \;\text{and bivariate} \;(\text{both periods}) \;\text{normal terms},\;\; \text{see black\_scholes\_model.get\_bjerksund\_stensland}
+$$
+
+$$
+\text{Put} \;(S,\; K,\; T,\; r,\; b,\; \sigma) = \text{Call} \;(K,\; S,\; T,\; r - b,\; - b,\; \sigma),\;\; \text{the put-call transformation}
+$$
+
+The 1993 version keeps one flat trigger price over the option's whole life:
+
+$$
+h(T) = - \frac{(b \cdot T + 2 \sigma \sqrt{T}) \cdot B_{0}}{B_{\infty} - B_{0}}
+$$
+
+$$
+I = B_{0} + (B_{\infty} - B_{0}) \cdot (1 - e^{h(T)}),\;\; \alpha = (I - K) \cdot I^{- \beta}
+$$
+
+$$
+\text{Call} \;(1993) = \alpha \cdot S^{\beta} - \alpha \cdot \phi(S,\; T,\; \beta,\; I,\; I) + \phi(S,\; T,\; 1,\; I,\; I) - \phi(S,\; T,\; 1,\; K,\; I) - K \cdot \phi(S,\; T,\; 0,\; I,\; I) + K \cdot \phi(S,\; T,\; 0,\; K,\; I),\;\; \text{with } \phi \text{ the univariate knock-out claim of black\_scholes\_model.\_phi}
+$$
+
 Where each formula holds on the side of S* (or of the boundary B(T)) where holding the option is optimal, and the option is worth its exercise value $$\phi \cdot (S - K)$$ beyond it. S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365), $$V_{E}$$ and p are the European Black-Scholes prices, d1 and d2 are those of the Black-Scholes model, b and c are the Ju-Zhong coefficients (see ``american_model.get_ju_zhong``) and $$B (\tau)$$ is the QD+ exercise boundary of a put with $$\tau$$ years to expiration (see ``american_model.get_qd_plus``).
 
-A call on a stock without dividends is never exercised early and a put at a non-positive rate neither; these are worth the Black-Scholes price, floored at the exercise value. At zero days to expiration the value is the exercise value. For the Bjerksund-Stensland approximations, see ``get_bjerksund_stensland``.
+A call on a stock without dividends is never exercised early and a put at a non-positive rate neither; these are worth the Black-Scholes price, floored at the exercise value. With Bjerksund-Stensland, a call whose cost of carry b is at least r is likewise worth the Black-Scholes price, and where the boundary I2 falls to or below the strike, a 1,000-step binomial tree prices the option instead. At zero days to expiration the value is the exercise value.
 
-See: Barone-Adesi, G., & Whaley, R. E. (1987), "Efficient Analytic Approximation of American Option Values", The Journal of Finance, 42(2), 301-320; Ju, N., & Zhong, R. (1999), "An Approximate Formula for Pricing American Options", The Journal of Derivatives, 7(2), 31-40; Li, M. (2010), "Analytical Approximations for the Critical Stock Prices of American Options: A Performance Comparison", Review of Derivatives Research, 13(1), 75-99; Andersen, L., Lake, M., & Offengenden, D. (2016), "High-Performance American Option Pricing", Journal of Computational Finance, 20(1), 39-87; Kim, I. J. (1990), "The Analytic Valuation of American Options", The Review of Financial Studies, 3(4), 547-572; Brennan, M. J., & Schwartz, E. S. (1977), "The Valuation of American Put Options", The Journal of Finance, 32(2), 449-462. Referenced against QuantLib's BaroneAdesiWhaleyApproximationEngine, JuQuadraticApproximationEngine, QdPlusAmericanEngine, QdFpAmericanEngine and FdBlackScholesVanillaEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's black_scholes_analytic.baw_value and finite_difference.black_scholes_fd ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}).
+See: Barone-Adesi, G., & Whaley, R. E. (1987), "Efficient Analytic Approximation of American Option Values", The Journal of Finance, 42(2), 301-320; Ju, N., & Zhong, R. (1999), "An Approximate Formula for Pricing American Options", The Journal of Derivatives, 7(2), 31-40; Li, M. (2010), "Analytical Approximations for the Critical Stock Prices of American Options: A Performance Comparison", Review of Derivatives Research, 13(1), 75-99; Andersen, L., Lake, M., & Offengenden, D. (2016), "High-Performance American Option Pricing", Journal of Computational Finance, 20(1), 39-87; Kim, I. J. (1990), "The Analytic Valuation of American Options", The Review of Financial Studies, 3(4), 547-572; Brennan, M. J., & Schwartz, E. S. (1977), "The Valuation of American Put Options", The Journal of Finance, 32(2), 449-462; Bjerksund, P., & Stensland, G. (2002), "Closed Form Valuation of American Options", Working paper, NHH; Bjerksund, P., & Stensland, G. (1993), "Closed-Form Approximation of American Options", Scandinavian Journal of Management, 9, S87-S99, both as presented in Haug, E. G. (2007), "The Complete Guide to Option Pricing Formulas" (2nd ed.), sections 3.1.4 and 3.1.3.
 
-**Also known as:** BAW, quadratic approximation, American option price, early exercise premium, QD+, QdFp.
+**Also known as:** BAW, quadratic approximation, American option price, early exercise premium, QD+, QdFp, BS2002, Bjerksund-Stensland approximation.
+
+**References:**
+
+- library | Referenced against QuantLib's [QdPlusAmericanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_qd_plus_american_engine.html){:target="_blank"} (QD+)
+- library | Referenced against QuantLib's [BaroneAdesiWhaleyApproximationEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_barone_adesi_whaley_approximation_engine.html){:target="_blank"} (Barone-Adesi-Whaley)
+- library | Referenced against QuantLib's [JuQuadraticApproximationEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_ju_quadratic_approximation_engine.html){:target="_blank"} (Ju-Zhong)
+- library | Referenced against QuantLib's [QdFpAmericanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_qd_fp_american_engine.html){:target="_blank"} (QD fixed point)
+- library | Referenced against QuantLib's [FdBlackScholesVanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_fd_black_scholes_vanilla_engine.html){:target="_blank"} (QD fixed point)
+- library | Referenced against QuantLib's [FdBlackScholesVanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_fd_black_scholes_vanilla_engine.html){:target="_blank"} (Bjerksund-Stensland 2002)
+- library | Referenced against QuantLib's [BjerksundStenslandApproximationEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_bjerksund_stensland_approximation_engine.html){:target="_blank"} (Bjerksund-Stensland 1993)
+- library | Shares similar logic as QuantLib's [FdBlackScholesVanillaEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_fd_black_scholes_vanilla_engine.html){:target="_blank"} (finite differences)
+- library | Shares similar logic as FinancePy's [black_scholes_fd](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/finite_difference.py#L318){:target="_blank"} (finite differences)
+- library | Shares similar logic as FinancePy's [baw_value](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/black_scholes_analytic.py#L682){:target="_blank"} (Barone-Adesi-Whaley)
 
 **Args:**
 
@@ -4540,8 +4563,11 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>method (str, optional):</u> The method: "qd_plus", "barone_adesi_whaley", "ju_zhong", "qd_fixed_point" or
-"finite_difference". Defaults to "qd_plus".
+- <u>method (str, optional):</u> The pricing method. Options are: "qd_plus" (QD+), "barone_adesi_whaley"
+(Barone-Adesi-Whaley), "ju_zhong" (Ju-Zhong), "qd_fixed_point" (QD fixed point), "finite_difference"
+(Crank-Nicolson finite differences), "bjerksund_stensland" (Bjerksund-Stensland 2002, two flat trigger
+prices) and "bjerksund_stensland_1993" (Bjerksund-Stensland 1993, one flat trigger price). Defaults to
+"qd_plus".
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -4612,7 +4638,7 @@ Which returns:
 ---
 
 ## get_cev_model
-Calculate European option prices in the constant elasticity of variance (CEV) model of Cox (1975), with the non-central chi-squared formula of Schroder (1989).
+Calculate European option prices in the constant elasticity of variance (CEV) model of Cox (1975): what calls and puts on each ticker are worth when the volatility rises as the stock price falls, with the non-central chi-squared formula of Schroder (1989).
 
 In the CEV model the stock's volatility depends on its price, $$\sigma (S) = \delta \cdot S^{\beta - 1}$$. With an elasticity $$\beta$$ below 1 the volatility rises as the price falls (the leverage effect), so out-of-the-money puts are worth more and out-of-the-money calls less than in the Black-Scholes model ($$\beta = 1$$): the downward sloping skew of equity options. $$\beta = 0.5$$ is the square-root process and $$\beta = 0$$ an absolute (normal) volatility. The stock is absorbed at zero.
 
@@ -4642,9 +4668,13 @@ $$
 
 Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), $$\beta$$ is the elasticity, T is the time to expiration in years (days / 365), F is the futures price of the expiration and $$\chi^{2} (z ; k , \lambda)$$ is the distribution function of the non-central chi-squared distribution with k degrees of freedom and non-centrality $$\lambda$$. With $$\beta = 1$$ the values are those of the Black-Scholes model. At zero days to expiration the value is the exercise value.
 
-See: Cox, J. C. (1975), "Notes on Option Pricing I: Constant Elasticity of Variance Diffusions", working paper, Stanford University (reprinted in The Journal of Portfolio Management, 23(2), 1996); Schroder, M. (1989), "Computing the Constant Elasticity of Variance Option Pricing Formula", The Journal of Finance, 44(1), 211-219. Referenced against QuantLib's AnalyticCEVEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}).
+See: Cox, J. C. (1975), "Notes on Option Pricing I: Constant Elasticity of Variance Diffusions", working paper, Stanford University (reprinted in The Journal of Portfolio Management, 23(2), 1996); Schroder, M. (1989), "Computing the Constant Elasticity of Variance Option Pricing Formula", The Journal of Finance, 44(1), 211-219.
 
 **Also known as:** CEV model, constant elasticity of variance, CEV option price, leverage effect skew.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticCEVEngine](https://github.com/lballabio/QuantLib/blob/v1.44/ql/pricingengines/vanilla/analyticcevengine.hpp#L62){:target="_blank"}
 
 **Args:**
 
@@ -4722,7 +4752,7 @@ Which returns:
 ---
 
 ## get_black_76_model
-Calculate the Black (1976) model, the Black-Scholes model for European options on futures and forwards, with each ticker's price taken as the futures price.
+Calculate the Black (1976) model: what European calls and puts on futures and forwards are worth, the Black-Scholes model with each ticker's price taken as the futures price.
 
 A futures price already contains the cost of carry of the underlying (interest, storage, dividends or the convenience yield of a commodity), so it grows at no rate under the risk-neutral measure and the option only discounts its payoff. Use it for tickers that quote futures prices, such as commodities (GCUSD for gold, CLUSD for crude oil) and index futures. It assumes the option expires with the futures contract, so the futures price of each expiration is the one quoted today; for an option that expires before its futures contract the price is the same with the time to the option's expiration.
 
@@ -4746,9 +4776,14 @@ $$
 
 Where F is the futures price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, $$\sigma$$ is the annualized volatility of the futures price (the standard deviation of the daily returns over the trailing 252 trading days times √252), t is the time to expiration in years (days / 365) and N is the standard normal distribution. At zero days to expiration the value is the exercise value. The implied volatility of a quoted option on a futures contract is ``black_scholes_model.get_black_76_implied_volatility``.
 
-See: Black, F. (1976), "The Pricing of Commodity Contracts", Journal of Financial Economics, 3(1-2), 167-179. Referenced against QuantLib's blackFormula ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's Black model ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}).
+See: Black, F. (1976), "The Pricing of Commodity Contracts", Journal of Financial Economics, 3(1-2), 167-179.
 
 **Also known as:** Black-76, Black's model, options on futures, options on forwards, commodity options.
+
+**References:**
+
+- library | Referenced against QuantLib's [blackFormula](https://www.quantlib.org/reference/namespace_quant_lib.html#adfe71f9b0b157cae6e4bd53faaa676af){:target="_blank"}
+- library | Shares similar logic as FinancePy's [Black](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/black.py#L18){:target="_blank"}
 
 **Args:**
 
@@ -4821,7 +4856,7 @@ Which returns:
 ---
 
 ## get_monte_carlo_option_price
-Calculate European option prices through Monte Carlo simulation of Geometric Brownian Motion (GBM) stock price paths, or American option prices by least-squares Monte Carlo (Longstaff and Schwartz, 2001) with american_option=True.
+Calculate option prices through Monte Carlo simulation: what European calls and puts on each ticker are worth on simulated Geometric Brownian Motion (GBM) stock price paths, or American ones by least-squares Monte Carlo (Longstaff and Schwartz, 2001).
 
 The Monte Carlo method prices an option by simulating a large number of possible future paths for the underlying stock price under the risk-neutral measure, computing the option's payoff at expiration for each simulated path, and then discounting the average payoff back to the present.
 
@@ -4849,7 +4884,7 @@ $$
 
 Where S(t) is the stock price at time t (starting from the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365) and Z is a standard normal random variable.
 
-With american_option=True the option can be exercised at each of the time steps: stepping back from expiration, the discounted cash flows of the paths in the money are regressed on a constant and the weighted Laguerre polynomials $$e^{- x / 2} \cdot L_{n} (x)$$, $$n = 0$$, 1, 2, of $$x = S (t) / K$$, and a path is exercised where its exercise value beats the fitted continuation value (see ``monte_carlo_model.get_longstaff_schwartz_option``):
+An American option can be exercised at each of the time steps: stepping back from expiration, the discounted cash flows of the paths in the money are regressed on a constant and the weighted Laguerre polynomials $$e^{- x / 2} \cdot L_{n} (x)$$, $$n = 0$$, 1, 2, of $$x = S (t) / K$$, and a path is exercised where its exercise value beats the fitted continuation value (see ``monte_carlo_model.get_longstaff_schwartz_option``):
 
 $$
 C(t) = \beta_{0} + \sum \beta_{n} \cdot e^{- \frac{x}{2}} \cdot L_{n}(x),\;\; \text{fitted on the in-the-money paths at } t
@@ -4865,17 +4900,23 @@ $$
 
 Two variance reductions and quasi-random numbers narrow the standard error at the same number of paths (Glasserman, 2003, chapters 4 and 5):
 
-- variance_reduction="antithetic": every path Z is paired with -Z (simulations must be even) and the standard error comes from the averages of the pairs.
-- variance_reduction="control_variate": Price = MEAN(Y - $$\beta \cdot (X - E [X])$$), $$\beta = \operatorname{Cov} (Y , X) / \operatorname{Var} (X)$$, with X the discounted stock price at expiration ($$E [X] = S \cdot e^{- q \cdot T}$$) for a European option and the discounted European payoff (E[X] its Black-Scholes price) for an American option.
-- sequence="sobol": scrambled Sobol points with a Brownian bridge in 16 independently scrambled replications, whose spread gives the standard error; the error shrinks close to 1 / simulations rather than $$1 / \sqrt{\text{simulations}}$$.
+- Antithetic variates: every path Z is paired with -Z (simulations must be even) and the standard error comes from the averages of the pairs.
+- Control variate: Price = MEAN(Y - $$\beta \cdot (X - E [X])$$), $$\beta = \operatorname{Cov} (Y , X) / \operatorname{Var} (X)$$, with X the discounted stock price at expiration ($$E [X] = S \cdot e^{- q \cdot T}$$) for a European option and the discounted European payoff (E[X] its Black-Scholes price) for an American option.
+- Sobol sequence: scrambled Sobol points with a Brownian bridge in 16 independently scrambled replications, whose spread gives the standard error; the error shrinks close to 1 / simulations rather than $$1 / \sqrt{\text{simulations}}$$.
 
-All strike prices of an expiry are priced on the same simulated paths (common random numbers), which keeps the prices consistent across strikes and means the paths are simulated once per expiry rather than once per strike.
+All strike prices of an expiry are priced on the same simulated paths (common random numbers), which keeps the prices consistent across strikes and means the paths are simulated once per expiry rather than once per strike. The European expiries share one set of standardised shocks, each scaled to its own time to expiration, which with a seed gives the prices of simulating every expiry with that seed.
 
-As it is a simulation, the result comes with sampling error. Set ``show_standard_error=True`` to additionally return the standard error of each estimate - as a rule of thumb, the true price lies within plus or minus 2 times the standard error roughly 95% of the time. Pass a ``seed`` (as the example does) to make the results reproducible; without one every call draws new paths.
+As it is a simulation, the result comes with sampling error. Showing the standard error additionally returns the standard error of each estimate - as a rule of thumb, the true price lies within plus or minus 2 times the standard error roughly 95% of the time. The seed makes the results reproducible; without one (None) every call draws new paths.
 
-See: Boyle, P. P. (1977), "Options: A Monte Carlo Approach", Journal of Financial Economics, 4(3), 323-338; Longstaff, F. A., & Schwartz, E. S. (2001), "Valuing American Options by Simulation: A Simple Least-Squares Approach", The Review of Financial Studies, 14(1), 113-147; Glasserman, P. (2003), "Monte Carlo Methods in Financial Engineering", Springer. Referenced against QuantLib's MCEuropeanEngine and MCAmericanEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's equity_lsmc ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}); their own random numbers give other draws.
+See: Boyle, P. P. (1977), "Options: A Monte Carlo Approach", Journal of Financial Economics, 4(3), 323-338; Longstaff, F. A., & Schwartz, E. S. (2001), "Valuing American Options by Simulation: A Simple Least-Squares Approach", The Review of Financial Studies, 14(1), 113-147; Glasserman, P. (2003), "Monte Carlo Methods in Financial Engineering", Springer. The libraries below draw their own random numbers, which give other paths.
 
 **Also known as:** Monte Carlo option pricing, simulation-based option pricing.
+
+**References:**
+
+- library | Shares similar logic as QuantLib's [MCEuropeanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_m_c_european_engine.html){:target="_blank"} (European)
+- library | Shares similar logic as QuantLib's [MCAmericanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_m_c_american_engine.html){:target="_blank"} (American)
+- library | Shares similar logic as FinancePy's [equity_lsmc](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/equity_lsmc.py#L39){:target="_blank"} (American)
 
 **Args:**
 
@@ -4902,7 +4943,7 @@ as the continuously compounded ln(1 + q)). A given value is used as a continuous
 - <u>simulations (int, optional):</u> The number of simulated stock price paths. Defaults to 10,000.
 - <u>time_steps (int, optional):</u> The number of time steps used to build each simulated path. Defaults to 100.
 - <u>seed (int &#124; None, optional):</u> The seed used to initialize the random number generator, ensuring
-reproducible results. Defaults to None, which means the results will not be reproducible.
+reproducible results; None draws new paths on every call. Defaults to 0.
 - <u>show_standard_error (bool, optional):</u> Whether to also return the standard error of each Monte Carlo
 estimate as a second DataFrame. Defaults to False.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
@@ -4916,9 +4957,10 @@ items of a financial statement). Names that do not exist are logged, and when no
 exist the result is returned in full. Defaults to None, which keeps every column.
 - <u>american_option (bool, optional):</u> Whether to price American options by least-squares Monte
 Carlo, exercisable at each time step. Defaults to False.
-- <u>variance_reduction (str &#124; None, optional):</u> None, "antithetic" or "control_variate". Defaults to None.
-- <u>sequence (str, optional):</u> "pseudo_random" or "sobol" (at least 32 simulations). Defaults to
-"pseudo_random".
+- <u>variance_reduction (str &#124; None, optional):</u> The variance reduction. Options are: None (none),
+"antithetic" (antithetic variates), "control_variate" (control variate). Defaults to None.
+- <u>sequence (str, optional):</u> The random numbers. Options are: "pseudo_random" (pseudo-random numbers),
+"sobol" (scrambled Sobol points, at least 32 simulations). Defaults to "pseudo_random".
 
 **Returns:**
 
@@ -4972,7 +5014,7 @@ Which returns:
 ---
 
 ## get_barrier_option
-Calculate the closed-form price of a single-barrier (knock-in or knock-out, up or down) European option using the Reiner & Rubinstein (1991) formulas.
+Calculate the closed-form price of a barrier option: what a European option on each ticker is worth that knocks in or out when the stock price touches a barrier, single (up or down) with the Reiner & Rubinstein (1991) formulas, double, partial-time, soft or discretely watched.
 
 A barrier option is a path-dependent option whose payoff (and existence) depends on whether the underlying stock price touches a pre-specified barrier level at any point before expiration:
 
@@ -4981,14 +5023,14 @@ A barrier option is a path-dependent option whose payoff (and existence) depends
 - Down barrier: the barrier is below the current stock price.
 - Up barrier: the barrier is above the current stock price.
 
-The barrier level is defined relative to the current stock price through ``barrier_percentage``, e.g. a value of 0.9 sets the barrier at 90% of the current stock price (a sensible default for a down barrier).
+The barrier level is defined relative to the current stock price as a percentage, e.g. a value of 0.9 sets the barrier at 90% of the current stock price (a sensible default for a down barrier).
 
 Besides the single barrier watched continuously over the whole life, the barrier can be:
 
-- Double (barrier_direction="double"): a lower barrier at ``barrier_percentage`` and an upper barrier at ``upper_barrier_percentage``; the knock-out pays only when the stock price stays between the two, priced with the series of Ikeda and Kunitomo (1992) for flat barriers.
-- Partial-time (barrier_window="start" or "end"): watched only during the first or the last ``window_share`` of the life (Heynen & Kat, 1994). With an end window the option is also knocked out (or in) when the stock price is beyond the barrier at the start of the window.
-- Soft (soft_barrier_percentage): a band between ``barrier_percentage`` and ``soft_barrier_percentage`` through which the option knocks out gradually (Hart & Ross, 1994): a soft down-and-out pays the vanilla payoff times (min S - L) / (U - L), the share of the band the lowest price did not reach, which is the average of the hard barrier prices over the band.
-- Discretely watched (monitoring="daily", "weekly" or "monthly"): checked only at each close, which is priced by moving the barriers away from the stock price by $$e^{0.5826 \cdot \sigma \cdot \sqrt{\Delta} t}$$, with $$\Delta t = \tfrac{1}{252}$$, 1/52 or 1/12 (Broadie, Glasserman & Kou, 1997). A daily barrier is crossed noticeably less often than a continuous one, so it is worth setting for a knock-out with a barrier close to the stock price.
+- Double: a lower barrier and an upper barrier, each a percentage of the stock price; the knock-out pays only when the stock price stays between the two, priced with the series of Ikeda and Kunitomo (1992) for flat barriers.
+- Partial-time: watched only during the first (a start window) or the last (an end window) share of the life (Heynen & Kat, 1994). With an end window the option is also knocked out (or in) when the stock price is beyond the barrier at the start of the window.
+- Soft: a band between the barrier and a second, soft barrier through which the option knocks out gradually (Hart & Ross, 1994): a soft down-and-out pays the vanilla payoff times (min S - L) / (U - L), the share of the band the lowest price did not reach, which is the average of the hard barrier prices over the band.
+- Discretely watched (daily, weekly or monthly): checked only at each close, which is priced by moving the barriers away from the stock price by $$e^{0.5826 \cdot \sigma \cdot \sqrt{\Delta} t}$$, with $$\Delta t = \tfrac{1}{252}$$, 1/52 or 1/12 (Broadie, Glasserman & Kou, 1997). A daily barrier is crossed noticeably less often than a continuous one, so it is worth setting for a knock-out with a barrier close to the stock price.
 
 The formula is as follows (Reiner & Rubinstein, 1991, in the notation of Haug, 2007):
 
@@ -5096,9 +5138,17 @@ Where S is the stock price (the traded close on the pricing date), K is the stri
 
 A useful identity is in-out parity: without a rebate, a knock-in option plus its corresponding knock-out option (same direction and barrier) equals the price of the equivalent vanilla Black-Scholes option, since the underlying either does or does not touch the barrier. With a rebate, both legs pay it in the scenario where they do not exist, so the sum exceeds the vanilla price by the value of those rebates.
 
-See: Reiner, E., & Rubinstein, M. (1991), "Breaking Down the Barriers", Risk, 4(8), 28-35; Ikeda, M., & Kunitomo, N. (1992), "Pricing Options with Curved Boundaries", Mathematical Finance, 2(4), 275-298; Heynen, R. C., & Kat, H. M. (1994), "Partial Barrier Options", The Journal of Financial Engineering, 3(3/4), 253-274; Hart, I., & Ross, M. (1994), "Striking Continuity", Risk, 7(6), 51-56; Broadie, M., Glasserman, P., & Kou, S. (1997), "A Continuity Correction for Discrete Barrier Options", Mathematical Finance, 7(4), 325-349; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.17. Referenced against QuantLib's AnalyticBarrierEngine, AnalyticDoubleBarrierEngine, AnalyticPartialTimeBarrierOptionEngine and AnalyticSoftBarrierEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's EquityBarrierOption with observations per year ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}).
+See: Reiner, E., & Rubinstein, M. (1991), "Breaking Down the Barriers", Risk, 4(8), 28-35; Ikeda, M., & Kunitomo, N. (1992), "Pricing Options with Curved Boundaries", Mathematical Finance, 2(4), 275-298; Heynen, R. C., & Kat, H. M. (1994), "Partial Barrier Options", The Journal of Financial Engineering, 3(3/4), 253-274; Hart, I., & Ross, M. (1994), "Striking Continuity", Risk, 7(6), 51-56; Broadie, M., Glasserman, P., & Kou, S. (1997), "A Continuity Correction for Discrete Barrier Options", Mathematical Finance, 7(4), 325-349; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.17.
 
 **Also known as:** knock-in option, knock-out option, down-and-out, down-and-in, up-and-out, up-and-in option, double barrier option, partial barrier option, window barrier option, soft barrier option, discrete barrier option.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticDoubleBarrierEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_double_barrier_engine.html){:target="_blank"} (double)
+- library | Referenced against QuantLib's [AnalyticPartialTimeBarrierOptionEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_partial_time_barrier_option_engine.html){:target="_blank"} (partial-time)
+- library | Referenced against QuantLib's [AnalyticSoftBarrierEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_soft_barrier_engine.html){:target="_blank"} (soft)
+- library | Shares similar logic as QuantLib's [AnalyticBarrierEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_barrier_engine.html){:target="_blank"} (single)
+- library | Shares similar logic as FinancePy's [EquityBarrierOption](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/equity/equity_barrier_option.py#L28){:target="_blank"} (discretely watched)
 
 **Args:**
 
@@ -5111,21 +5161,25 @@ it will calculate the call option price.
 - <u>barrier_percentage (float, optional):</u> The barrier level as a percentage of the current stock price.
 Defaults to 0.9 which equals 90% of the current stock price. A down barrier needs a value below 1
 and an up barrier a value above 1; otherwise the barrier is already breached.
-- <u>barrier_direction (str, optional):</u> "down", "up" or "double" (barrier_percentage is then the lower and
+- <u>barrier_direction (str, optional):</u> The side of the barrier. Options are: "down" (below the stock
+price), "up" (above the stock price), "double" (barrier_percentage is then the lower and
 upper_barrier_percentage the upper barrier). Defaults to "down".
-- <u>knock_type (str, optional):</u> Either "in" or "out". Defaults to "out".
+- <u>knock_type (str, optional):</u> The knock. Options are: "in" (knock-in), "out" (knock-out). Defaults to
+"out".
 - <u>rebate (float, optional):</u> The fixed cash amount paid out if the option knocks out (or fails to knock
 in), for a single barrier watched over the whole life only. Defaults to 0.0.
-- <u>upper_barrier_percentage (float, optional):</u> The upper barrier of barrier_direction="double" as a
+- <u>upper_barrier_percentage (float, optional):</u> The upper barrier of a double barrier option as a
 percentage of the current stock price. Defaults to 1.1, 110% of the current stock price.
-- <u>barrier_window (str, optional):</u> When the barrier is watched: "full" (the whole life), "start" (the first
-window_share of the life) or "end" (the last window_share of the life). Defaults to "full".
+- <u>barrier_window (str, optional):</u> When the barrier is watched. Options are: "full" (the whole life),
+"start" (the first window_share of the life), "end" (the last window_share of the life). Defaults to
+"full".
 - <u>window_share (float, optional):</u> The share of the life a "start" or "end" window covers, above 0 and at
 most 1. Defaults to 0.5.
 - <u>soft_barrier_percentage (float &#124; None, optional):</u> The other edge of a soft barrier band (the first is
 barrier_percentage), on the same side of the stock price. Defaults to None, a hard barrier.
-- <u>monitoring (str, optional):</u> How often the barrier is checked: "continuous", "daily" (252 times a year),
-"weekly" or "monthly". Defaults to "continuous".
+- <u>monitoring (str, optional):</u> How often the barrier is checked. Options are: "continuous"
+(continuously), "daily" (252 times a year), "weekly" (52 times a year), "monthly" (12 times a year).
+Defaults to "continuous".
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
 - <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
@@ -5204,14 +5258,16 @@ Which returns:
 ---
 
 ## get_asian_option
-Calculate the price of an average price Asian option, of which the payoff depends on the average stock price over the option's life: the geometric average in closed form (Kemna & Vorst, 1990) or the arithmetic average, the kind that is traded, with the approximations of Turnbull and Wakeman (1991) or Curran (1994), or a Monte Carlo simulation with the geometric option as control variate.
+Calculate the price of an average price Asian option: what an option on each ticker is worth whose payoff depends on the average stock price over its life rather than the price at expiration.
 
-An Asian option's payoff, max(A - K, 0) for a call and max(K - A, 0) for a put, depends on the average A of the stock price rather than its price at expiration, which typically makes it cheaper than the equivalent vanilla option (the averaging reduces variance). The average is taken continuously, or over a number of equally spaced fixings with ``fixings``, the first a 1/n-th of the life from now and the last at expiration. The methods are:
+The geometric average is priced in closed form (Kemna & Vorst, 1990) and the arithmetic average, the kind that is traded, with the approximations of Turnbull and Wakeman (1991) or Curran (1994), or a Monte Carlo simulation with the geometric option as control variate.
 
-- Geometric (method="geometric"): the geometric average of a lognormal price is lognormal, so this is a Black-Scholes option on it. It never exceeds the arithmetic average, so it is a lower bound for the arithmetic call and an upper bound for the arithmetic put.
-- Turnbull-Wakeman (method="turnbull_wakeman"): takes the arithmetic average to be lognormal with its exact first two moments. Fast and close at low volatilities and short maturities, but it loses accuracy as both grow (off by up to 0.8 on a stock price of 100 at 60% volatility over two years). For a continuous average that starts today, Levy (1992) matches the same two moments with a lognormal and gives the same price; the two differ only for an average that has already started.
-- Curran (method="curran"): conditions on the geometric average, which is exact for the paths on which the geometric average ends above the strike (there A ≥ G ≥ K) and approximates the others. The most accurate of the approximations: within 0.05 of a simulation with 200,000 paths on a stock price of 100 up to 60% volatility and two years, and within 0.002 at 15% volatility.
-- Monte Carlo (method="monte_carlo"): simulates the arithmetic average along each path and corrects the simulation error with the geometric option, whose price is known, which makes it about 50 to 100 times more precise than a plain simulation. A continuous average is approximated by ``time_steps`` fixings.
+An Asian option's payoff, max(A - K, 0) for a call and max(K - A, 0) for a put, depends on the average A of the stock price rather than its price at expiration, which typically makes it cheaper than the equivalent vanilla option (the averaging reduces variance). The average is taken continuously, or over a number of equally spaced fixings, the first a 1/n-th of the life from now and the last at expiration. The methods are:
+
+- Geometric: the geometric average of a lognormal price is lognormal, so this is a Black-Scholes option on it. It never exceeds the arithmetic average, so it is a lower bound for the arithmetic call and an upper bound for the arithmetic put.
+- Turnbull-Wakeman: takes the arithmetic average to be lognormal with its exact first two moments. Fast and close at low volatilities and short maturities, but it loses accuracy as both grow (off by up to 0.8 on a stock price of 100 at 60% volatility over two years). For a continuous average that starts today, Levy (1992) matches the same two moments with a lognormal and gives the same price; the two differ only for an average that has already started.
+- Curran: conditions on the geometric average, which is exact for the paths on which the geometric average ends above the strike (there A ≥ G ≥ K) and approximates the others. The most accurate of the approximations: within 0.05 of a simulation with 200,000 paths on a stock price of 100 up to 60% volatility and two years, and within 0.002 at 15% volatility.
+- Monte Carlo: simulates the arithmetic average along each path and corrects the simulation error with the geometric option, whose price is known, which makes it about 50 to 100 times more precise than a plain simulation. A continuous average is approximated by a number of fixings.
 
 The formula is as follows:
 
@@ -5237,11 +5293,22 @@ $$
 
 Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$b = r - q$$ is the cost of carry, $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365), n is the number of fixings, G and A are the geometric and arithmetic average and N is the cumulative standard normal distribution.
 
-The Monte Carlo prices are reproducible with a ``seed``, and all strike prices of an expiry are priced on the same paths. Its standard error is around 0.1% of the price with the defaults.
+The Monte Carlo prices are reproducible with a seed, and all strike prices of an expiry are priced on the same paths. Its standard error is around 0.1% of the price with the defaults.
 
-See: Kemna, A. G. Z., & Vorst, A. C. F. (1990), "A Pricing Method for Options Based on Average Asset Values", Journal of Banking & Finance, 14(1), 113-129; Turnbull, S. M., & Wakeman, L. M. (1991), "A Quick Algorithm for Pricing European Average Options", Journal of Financial and Quantitative Analysis, 26(3), 377-389; Levy, E. (1992), "Pricing European Average Rate Currency Options", Journal of International Money and Finance, 11(5), 474-491; Curran, M. (1994), "Valuing Asian and Portfolio Options by Conditioning on the Geometric Mean Price", Management Science, 40(12), 1705-1711; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.20. Referenced against QuantLib's AnalyticContinuousGeometricAveragePriceAsianEngine, AnalyticDiscreteGeometricAveragePriceAsianEngine, TurnbullWakemanAsianEngine, ContinuousArithmeticAsianLevyEngine and MCDiscreteArithmeticAPEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's EquityAsianOption (value_curran, value_turnbull_wakeman and value_geometric, [https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}).
+See: Kemna, A. G. Z., & Vorst, A. C. F. (1990), "A Pricing Method for Options Based on Average Asset Values", Journal of Banking & Finance, 14(1), 113-129; Turnbull, S. M., & Wakeman, L. M. (1991), "A Quick Algorithm for Pricing European Average Options", Journal of Financial and Quantitative Analysis, 26(3), 377-389; Levy, E. (1992), "Pricing European Average Rate Currency Options", Journal of International Money and Finance, 11(5), 474-491; Curran, M. (1994), "Valuing Asian and Portfolio Options by Conditioning on the Geometric Mean Price", Management Science, 40(12), 1705-1711; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.20.
 
 **Also known as:** Asian option, average rate option, average price option, arithmetic Asian option, geometric Asian option.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticDiscreteGeometricAveragePriceAsianEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_discrete_geometric_average_price_asian_engine.html){:target="_blank"} (geometric, fixings)
+- library | Referenced against QuantLib's [TurnbullWakemanAsianEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_turnbull_wakeman_asian_engine.html){:target="_blank"} (Turnbull-Wakeman)
+- library | Referenced against QuantLib's [ContinuousArithmeticAsianLevyEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_continuous_arithmetic_asian_levy_engine.html){:target="_blank"} (Turnbull-Wakeman, continuous)
+- library | Referenced against QuantLib's [MCDiscreteArithmeticAPEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_m_c_discrete_arithmetic_a_p_engine.html){:target="_blank"} (Curran, Monte Carlo)
+- library | Shares similar logic as QuantLib's [AnalyticContinuousGeometricAveragePriceAsianEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_continuous_geometric_average_price_asian_engine.html){:target="_blank"} (geometric, continuous)
+- library | Shares similar logic as FinancePy's [EquityAsianOption.value_geometric](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/equity/equity_asian_option.py#L180){:target="_blank"} (geometric)
+- library | Shares similar logic as FinancePy's [EquityAsianOption.value_turnbull_wakeman](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/equity/equity_asian_option.py#L332){:target="_blank"} (Turnbull-Wakeman)
+- library | Shares similar logic as FinancePy's [EquityAsianOption.value_curran](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/equity/equity_asian_option.py#L256){:target="_blank"} (Curran)
 
 **Args:**
 
@@ -5251,8 +5318,9 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>method (str, optional):</u> The pricing method: "geometric" (the geometric average), or for the arithmetic
-average "turnbull_wakeman", "curran" or "monte_carlo". Defaults to "geometric".
+- <u>method (str, optional):</u> The pricing method. Options are: "geometric" (the geometric average),
+"turnbull_wakeman" (Turnbull-Wakeman, arithmetic average), "curran" (Curran, arithmetic average),
+"monte_carlo" (Monte Carlo, arithmetic average). Defaults to "geometric".
 - <u>fixings (int &#124; None, optional):</u> The number of equally spaced fixings of the average, the last on the
 expiration date. Defaults to None, which averages continuously.
 - <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
@@ -5269,11 +5337,11 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None, which
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
-- <u>simulations (int, optional):</u> The number of simulated paths of method="monte_carlo". Defaults to 10,000.
-- <u>time_steps (int, optional):</u> The fixings that approximate a continuous average with method="monte_carlo"
+- <u>simulations (int, optional):</u> The number of simulated paths of the Monte Carlo method. Defaults to 10,000.
+- <u>time_steps (int, optional):</u> The fixings that approximate a continuous average with the Monte Carlo method
 (fixings, when given, take their place). Defaults to 100.
-- <u>seed (int &#124; None, optional):</u> The seed of the random number generator of method="monte_carlo", which makes
-the results reproducible. Defaults to None, which draws new paths on every call.
+- <u>seed (int &#124; None, optional):</u> The seed of the random number generator of the Monte Carlo method, which
+makes the results reproducible; None draws new paths on every call. Defaults to 0.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -5334,11 +5402,13 @@ Which returns:
 ---
 
 ## get_lookback_option
-Calculate the closed-form price of a lookback option, of which the payoff depends on the highest or lowest stock price over the option's life, with the formulas of Conze and Viswanathan (1991) for a fixed strike, Goldman, Sosin and Gatto (1979) for a floating strike and Heynen and Kat (1994) for a partial-time lookback.
+Calculate the closed-form price of a lookback option: what an option on each ticker is worth whose payoff depends on the highest or lowest stock price over its life.
 
-- Fixed strike (strike_type="fixed"): the call pays $$\max (S_{\text{max}} - K , 0)$$ and the put $$\max (K - S_{\text{min}} , 0)$$, the best price reached against the strike.
-- Floating strike (strike_type="floating"): the call pays $$S (T) - S_{\text{min}}$$, buying at the lowest price, and the put $$S_{\text{max}} - S (T)$$, selling at the highest. It has no strike, so the result has a row per ticker.
-- Partial-time (lookback_period below 1): the extreme is only watched during part of the life, the first lookback_period of it for a floating strike and the last lookback_period for a fixed strike, which makes the option cheaper.
+The formulas are those of Conze and Viswanathan (1991) for a fixed strike, Goldman, Sosin and Gatto (1979) for a floating strike and Heynen and Kat (1994) for a partial-time lookback.
+
+- Fixed strike: the call pays $$\max (S_{\text{max}} - K , 0)$$ and the put $$\max (K - S_{\text{min}} , 0)$$, the best price reached against the strike.
+- Floating strike: the call pays $$S (T) - S_{\text{min}}$$, buying at the lowest price, and the put $$S_{\text{max}} - S (T)$$, selling at the highest. It has no strike, so the result has a row per ticker.
+- Partial-time (a lookback period below 1): the extreme is only watched during part of the life, the first part for a floating strike and the last part for a fixed strike, which makes the option cheaper.
 
 The options start on the pricing date, so the highest and lowest price so far are the stock price.
 
@@ -5374,9 +5444,16 @@ $$
 
 Where S is the stock price (the traded close on the pricing date), K is the strike price, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$b = r - q$$ is the cost of carry, $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365) and N is the cumulative standard normal distribution. Where $$b = 0$$ the formulas are taken at b = ±0.00001 and averaged, which equals their limit to within $$O (b^{2})$$.
 
-See: Goldman, M. B., Sosin, H. B., & Gatto, M. A. (1979), "Path Dependent Options: Buy at the Low, Sell at the High", The Journal of Finance, 34(5), 1111-1127; Conze, A., & Viswanathan (1991), "Path Dependent Options: The Case of Lookback Options", The Journal of Finance, 46(5), 1893-1907; Heynen, R. C., & Kat, H. M. (1994), "Selective Memory", Risk, 7(11), 73-76; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.15. Referenced against QuantLib's AnalyticContinuousFloatingLookbackEngine, AnalyticContinuousFixedLookbackEngine, AnalyticContinuousPartialFloatingLookbackEngine and AnalyticContinuousPartialFixedLookbackEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}).
+See: Goldman, M. B., Sosin, H. B., & Gatto, M. A. (1979), "Path Dependent Options: Buy at the Low, Sell at the High", The Journal of Finance, 34(5), 1111-1127; Conze, A., & Viswanathan (1991), "Path Dependent Options: The Case of Lookback Options", The Journal of Finance, 46(5), 1893-1907; Heynen, R. C., & Kat, H. M. (1994), "Selective Memory", Risk, 7(11), 73-76; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.15.
 
 **Also known as:** lookback option, fixed strike lookback, floating strike lookback, partial lookback, hindsight option, no-regret option.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticContinuousFixedLookbackEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_continuous_fixed_lookback_engine.html){:target="_blank"} (fixed strike)
+- library | Referenced against QuantLib's [AnalyticContinuousFloatingLookbackEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_continuous_floating_lookback_engine.html){:target="_blank"} (floating strike)
+- library | Referenced against QuantLib's [AnalyticContinuousPartialFixedLookbackEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_continuous_partial_fixed_lookback_engine.html){:target="_blank"} (partial fixed strike)
+- library | Referenced against QuantLib's [AnalyticContinuousPartialFloatingLookbackEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_continuous_partial_floating_lookback_engine.html){:target="_blank"} (partial floating strike)
 
 **Args:**
 
@@ -5386,7 +5463,8 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>strike_type (str, optional):</u> "fixed" or "floating". Defaults to "fixed".
+- <u>strike_type (str, optional):</u> The strike. Options are: "fixed" (fixed strike), "floating" (floating
+strike). Defaults to "fixed".
 - <u>lookback_period (float, optional):</u> The share of the life over which the extreme is watched, above 0 and
 at most 1: the start of the life for a floating strike and the end for a fixed strike. Defaults to 1,
 the whole life.
@@ -5463,14 +5541,16 @@ TABLE_LOOKBACK
 ---
 
 ## get_touch_option
-Calculate the closed-form price of a one-touch, no-touch, double one-touch or double no-touch option with the formulas of Reiner and Rubinstein (1991) for a single barrier and Hui (1996) for two barriers.
+Calculate the closed-form price of a one-touch, no-touch, double one-touch or double no-touch option: what a binary option on whether the stock price of each ticker touches a barrier before expiration is worth.
+
+The formulas are those of Reiner and Rubinstein (1991) for a single barrier and Hui (1996) for two barriers.
 
 A touch option is a binary option on whether the stock price touches a barrier before expiration:
 
-- One-touch (touch_type="one-touch"): pays the cash payout once the barrier at barrier_percentage of the stock price is touched, at that moment (payment="hit") or at expiration (payment="expiration").
-- No-touch (touch_type="no-touch"): pays the cash payout at expiration when the barrier is never touched.
-- Double one-touch (touch_type="double-one-touch"): pays at expiration when either the lower barrier (barrier_percentage) or the upper barrier (upper_barrier_percentage) is touched.
-- Double no-touch (touch_type="double-no-touch"): pays at expiration when the stock price stays between the two barriers.
+- One-touch: pays the cash payout once the barrier at barrier_percentage of the stock price is touched, at that moment or at expiration (see payment).
+- No-touch: pays the cash payout at expiration when the barrier is never touched.
+- Double one-touch: pays at expiration when either the lower barrier (barrier_percentage) or the upper barrier (upper_barrier_percentage) is touched.
+- Double no-touch: pays at expiration when the stock price stays between the two barriers.
 
 A barrier below the stock price (barrier_percentage below 1) is touched when the price falls to it, one above (barrier_percentage above 1) when the price rises to it. The price of a one-touch paid at expiration is the discounted risk-neutral probability of touching the barrier, so with a cash payout of 1 and the discounting removed it reads as that probability.
 
@@ -5514,9 +5594,15 @@ $$
 
 Where S is the stock price (the traded close on the pricing date), H is the barrier, $$h = \ln (H / S)$$, $$l = \ln (L / S)$$ and $$u = \ln (U / S)$$ with L and U the lower and upper barrier, $$Z = u - l$$, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\nu = r - q - \sigma^{2} / 2$$, $$\mu = \nu / \sigma^{2}$$, $$\lambda = \sqrt{\mu^{2} + 2 r / \sigma^{2}}$$, $$\eta = 1$$ for a barrier below and -1 for one above the stock price, $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365) and N is the cumulative standard normal distribution. P(stay) is the probability of staying between the barriers from the method of images, summed until its terms are below machine precision; Hui (1996) writes the same probability as a sine series.
 
-See: Reiner, E., & Rubinstein, M. (1991), "Unscrambling the Binary Code", Risk, 4(9), 75-83; Hui, C. H. (1996), "One-Touch Double Barrier Binary Option Values", Applied Financial Economics, 6(4), 343-346; Broadie, M., Glasserman, P., & Kou, S. (1997), "A Continuity Correction for Discrete Barrier Options", Mathematical Finance, 7(4), 325-349; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.19. Referenced against QuantLib's AnalyticDigitalAmericanEngine, AnalyticBinaryBarrierEngine and AnalyticDoubleBarrierBinaryEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}).
+See: Reiner, E., & Rubinstein, M. (1991), "Unscrambling the Binary Code", Risk, 4(9), 75-83; Hui, C. H. (1996), "One-Touch Double Barrier Binary Option Values", Applied Financial Economics, 6(4), 343-346; Broadie, M., Glasserman, P., & Kou, S. (1997), "A Continuity Correction for Discrete Barrier Options", Mathematical Finance, 7(4), 325-349; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.19.
 
 **Also known as:** one-touch option, no-touch option, double one-touch, double no-touch, American digital option, barrier binary option, touch probability.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticDigitalAmericanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_digital_american_engine.html){:target="_blank"} (one-touch)
+- library | Referenced against QuantLib's [AnalyticBinaryBarrierEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_binary_barrier_engine.html){:target="_blank"} (no-touch)
+- library | Referenced against QuantLib's [AnalyticDoubleBarrierBinaryEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_double_barrier_binary_engine.html){:target="_blank"} (double one-touch, double no-touch)
 
 **Args:**
 
@@ -5524,17 +5610,20 @@ See: Reiner, E., & Rubinstein, M. (1991), "Unscrambling the Binary Code", Risk, 
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>touch_type (str, optional):</u> "one-touch", "no-touch", "double-one-touch" or "double-no-touch". Defaults to
-"one-touch".
+- <u>option_type (str, optional):</u> The kind of touch option. Options are: "one-touch" (one-touch),
+"no-touch" (no-touch), "double-one-touch" (double one-touch), "double-no-touch" (double no-touch).
+Defaults to "one-touch".
 - <u>barrier_percentage (float, optional):</u> The barrier (the lower barrier of a double touch option) as a
 percentage of the current stock price. Defaults to 0.9, 90% of the current stock price.
 - <u>upper_barrier_percentage (float, optional):</u> The upper barrier of a double touch option as a percentage of
 the current stock price. Defaults to 1.1, 110% of the current stock price.
-- <u>payment (str, optional):</u> When a one-touch option pays: "expiration" or "hit". The other touch options pay
-at expiration. Defaults to "expiration".
+- <u>payment (str, optional):</u> When a one-touch option pays. Options are: "expiration" (at expiration),
+"hit" (when the barrier is touched). The other touch options pay at expiration. Defaults to
+"expiration".
 - <u>cash_payout (float, optional):</u> The cash amount paid. Defaults to 1.0.
-- <u>monitoring (str, optional):</u> How often the barrier is checked: "continuous", "daily" (252 times a year),
-"weekly" or "monthly". Defaults to "continuous".
+- <u>monitoring (str, optional):</u> How often the barrier is checked. Options are: "continuous"
+(continuously), "daily" (252 times a year), "weekly" (52 times a year), "monthly" (12 times a year).
+Defaults to "continuous".
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
 expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
 expirations of 1 to 29 days.
@@ -5562,7 +5651,7 @@ columns.
 
 **Raises:**
 
-ValueError: If touch_type, payment or monitoring is not one of its values, a touch option other than the
+ValueError: If option_type, payment or monitoring is not one of its values, a touch option other than the
 one-touch is asked to pay at the hit, the barrier is at the current stock price or a double touch
 option's barriers do not lie on either side of it.
 
@@ -5579,7 +5668,7 @@ toolkit = Toolkit(
 )
 
 touch_option = toolkit.options.get_touch_option(
-    touch_type="double-no-touch", barrier_percentage=0.9, upper_barrier_percentage=1.1,
+    option_type="double-no-touch", barrier_percentage=0.9, upper_barrier_percentage=1.1,
     expiration_time_range=91,
 )
 
@@ -5597,9 +5686,11 @@ TABLE_TOUCH
 ---
 
 ## get_chooser_option
-Calculate the closed-form price of a simple chooser option with the formula of Rubinstein (1991). A chooser option lets the holder decide at the choice time whether it becomes a European call or a European put with the same strike price and expiration, so it is worth at least as much as either and at most as much as the straddle of both.
+Calculate the closed-form price of a simple chooser option: what the right to decide at the choice time whether the option on each ticker becomes a European call or a European put is worth, with the formula of Rubinstein (1991).
 
-The choice is made after choice_period of the life: at choice_period=0 the chooser is the larger of the call and the put today, at choice_period=1 a straddle. By put-call parity at the choice time t the chooser is a call on (K, T) plus a put on ($$K \cdot e^{- (r - q) (T - t)} , t$$), scaled by $$e^{- q (T - t)}$$.
+The call and the put share the strike price and expiration, so the chooser is worth at least as much as either and at most as much as the straddle of both.
+
+The choice is made after a share of the life, the choice period: at a choice period of 0 the chooser is the larger of the call and the put today, at 1 a straddle. By put-call parity at the choice time t the chooser is a call on (K, T) plus a put on ($$K \cdot e^{- (r - q) (T - t)} , t$$), scaled by $$e^{- q (T - t)}$$.
 
 The formula is as follows:
 
@@ -5623,9 +5714,14 @@ Where S is the stock price (the traded close on the pricing date), K is the stri
 
 A complex chooser, which chooses between a call and a put with their own strike and expiration, is priced by the model function financetoolkit.options.pricing.compound_model.get_chooser_option with put_strike_price and put_time_to_expiration.
 
-See: Rubinstein, M. (1991), "Options for the Undecided", Risk, 4(4), 43; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.10. Referenced against QuantLib's AnalyticSimpleChooserEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's EquityChooserOption ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}).
+See: Rubinstein, M. (1991), "Options for the Undecided", Risk, 4(4), 43; Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.10.
 
 **Also known as:** chooser option, as-you-like-it option, pay now choose later option.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticSimpleChooserEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_simple_chooser_engine.html){:target="_blank"}
+- library | Shares similar logic as FinancePy's [EquityChooserOption](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/equity/equity_chooser_option.py#L67){:target="_blank"}
 
 **Args:**
 
@@ -5705,11 +5801,11 @@ Which returns:
 ---
 
 ## get_forward_start_option
-Calculate the closed-form price of a forward-start option with the formula of Rubinstein (1990), of a cliquet (ratchet) option, a series of them, or of their performance versions.
+Calculate the closed-form price of a forward-start option: what a European option on each ticker is worth whose strike is set later at a share of the stock price then, with the formula of Rubinstein (1990), or of a cliquet (ratchet) option, a series of them, or of their performance versions.
 
-- Forward-start (periods=1): a European option whose strike is set after start_period of the life to moneyness times the stock price then, paying $$\max (S (T) - \alpha \cdot S (t_{1}) , 0)$$ for a call.
-- Cliquet (periods above 1): the time from the start to expiration is split into equal periods, and each period is a forward-start option whose strike is reset to moneyness times the stock price at its start and whose payoff is paid at its end. With start_period=0 the first period starts today.
-- Performance (performance=True): each period pays the return S(t(i+1)) / S(ti) beyond the moneyness instead, max(S(t(i+1)) / S(ti) - $$\alpha$$, 0) for a call, a decimal per unit of notional.
+- Forward-start (one period): a European option whose strike is set after the start period of the life to moneyness times the stock price then, paying $$\max (S (T) - \alpha \cdot S (t_{1}) , 0)$$ for a call.
+- Cliquet (more than one period): the time from the start to expiration is split into equal periods, and each period is a forward-start option whose strike is reset to moneyness times the stock price at its start and whose payoff is paid at its end. With a start period of 0 the first period starts today.
+- Performance: each period pays the return S(t(i+1)) / S(ti) beyond the moneyness instead, max(S(t(i+1)) / S(ti) - $$\alpha$$, 0) for a call, a decimal per unit of notional.
 
 The options have no strike today, so the result has a row per ticker.
 
@@ -5737,9 +5833,15 @@ $$
 
 Where S is the stock price (the traded close on the pricing date), $$\alpha$$ is the moneyness, r is the continuously compounded risk-free rate, q is the continuous dividend yield (ln(1 + dividend yield)), $$\sigma$$ is the annualized volatility (the standard deviation of the daily returns over the trailing 252 trading days times √252), T is the time to expiration in years (days / 365) and N is the cumulative standard normal distribution. A performance option is a forward-start option divided by S only when $$r = q$$.
 
-See: Rubinstein, M. (1990), "Pay Now, Choose Later", Risk, 3(2); Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.6. Referenced against QuantLib's ForwardEuropeanEngine, AnalyticCliquetEngine and AnalyticPerformanceEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}).
+See: Rubinstein, M. (1990), "Pay Now, Choose Later", Risk, 3(2); Haug, E. G. (2007), The Complete Guide to Option Pricing Formulas, 2nd ed., section 4.6.
 
 **Also known as:** forward-start option, delayed option, cliquet option, ratchet option, performance option.
+
+**References:**
+
+- library | Referenced against QuantLib's [AnalyticCliquetEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_cliquet_engine.html){:target="_blank"} (cliquet)
+- library | Referenced against QuantLib's [AnalyticPerformanceEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_performance_engine.html){:target="_blank"} (performance)
+- library | Shares similar logic as QuantLib's [ForwardEuropeanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_forward_vanilla_engine.html){:target="_blank"} (forward-start)
 
 **Args:**
 
@@ -5817,7 +5919,7 @@ Which returns:
 ---
 
 ## get_strategy_payoff
-Calculate the net expiration profit and loss (P&L) profile of a multi-leg option (and, optionally, stock) strategy across a range of stock prices.
+Calculate the net expiration profit and loss (P&L) profile of a multi-leg option (and, optionally, stock) strategy: what the combined position earns or loses at expiration across a range of stock prices.
 
 A strategy is expressed as a list of "legs". Each leg is a dictionary describing either an option position or a stock position:
 
@@ -5957,7 +6059,7 @@ Which returns:
 ---
 
 ## get_implied_volatility
-Calculate the Implied Volatility (IV) based on the Black Scholes Model and the actual option prices for any of the available expiration dates.
+Calculate the Implied Volatility (IV): the volatility at which the Black Scholes Model (or the American price) reproduces the actual option prices, for any of the available expiration dates.
 
 Implied Volatility (IV) is a measure of how much the market expects the price of the underlying asset to fluctuate in the future. It is a key component of options pricing and can also be used to calculate the theoretical value of an option.
 
@@ -5991,13 +6093,17 @@ $$
 
 To determine the Implied Volatility, the Black Scholes Model is used to calculate the theoretical option price in which sigma ($$\sigma$$) is the only unknown variable. Since that price rises strictly with $$\sigma$$, the implied volatility is the root of the difference between the theoretical and actual option price, found with Brent's method on the interval [1e-6, 5]. Prices outside the no-arbitrage bounds have no root and return NaN.
 
-Listed options on single stocks are American and can be exercised before expiration, which the Black Scholes price leaves out. With american=True the implied volatility is the $$\sigma$$ at which the American price of the QD+ method (Li, 2010; Andersen, Lake and Offengenden, 2016, see ``get_american_option``) equals the mid price, found with Brent's method on [0.001, 5]. The European volatility attributes the value of exercising early to a higher volatility, so in-the-money puts and calls on stocks with a high dividend yield show a lower American implied volatility; for out-of-the-money options the two hardly differ. Index options such as those on the S&P 500 (^SPX) are European. Referenced against QuantLib's QdPlusAmericanEngine ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}), whose prices it inverts to the volatility they were priced at.
+Listed options on single stocks are American and can be exercised before expiration, which the Black Scholes price leaves out. For American options the implied volatility is the $$\sigma$$ at which the American price of the QD+ method (Li, 2010; Andersen, Lake and Offengenden, 2016, see ``get_american_option``) equals the mid price, found with Brent's method on [0.001, 5]. The European volatility attributes the value of exercising early to a higher volatility, so in-the-money puts and calls on stocks with a high dividend yield show a lower American implied volatility; for out-of-the-money options the two hardly differ. Index options such as those on the S&P 500 (^SPX) are European. The prices of QuantLib's QdPlusAmericanEngine invert to the volatility they were priced at.
 
 Mid prices and the underlying price quoted with the chain describe the same moment, unlike last traded prices, which can be hours or days old for illiquid strikes. Deep in-the-money and far out-of-the-money strikes still have wide quotes and can show extreme values (above 100%) that say more about the spread than about the market's view. Practitioners read the smile around the money, where trading is liquid, and use `get_volatility_surface`, which filters outliers and fits a smooth curve, when they need values across all strikes.
 
 The quotes, the underlying price quoted with them and the time to expiration are live, while the risk free rate and the dividend yield come from the last historical date, as does the stock price when a chain quotes no price of the underlying. When that date lies more than five days before today (for example with an end_date in the past), a warning is logged.
 
 **Also known as:** IV, option-implied volatility.
+
+**References:**
+
+- library | Referenced against QuantLib's [QdPlusAmericanEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_qd_plus_american_engine.html){:target="_blank"} (American)
 
 **Args:**
 
@@ -6014,7 +6120,7 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None, which
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
-- <u>american (bool, optional):</u> Whether to solve the volatility of the American price (QD+) instead of the
+- <u>american_option (bool, optional):</u> Whether to solve the volatility of the American price (QD+) instead of the
 European Black Scholes price. Defaults to False.
 - <u>show_expiration_dates (bool, optional):</u> Whether to show the expiration dates: a list for a single ticker
 and a list per ticker (a dictionary) for several. Defaults to False.
@@ -6060,7 +6166,7 @@ Which returns:
 ---
 
 ## get_volatility_surface
-Calibrate an implied volatility surface across multiple expiries by fitting a smile model to the market-implied smile (see `get_implied_volatility`) at each expiry: a raw SVI curve (Gatheral 2004) per expiry, an SSVI surface (Gatheral and Jacquier 2014) across all expiries at once, or a SABR smile (Hagan et al. 2002) per expiry.
+Calibrate an implied volatility surface across multiple expiries: the smooth smile of each expiry that fits the market-implied smile (see `get_implied_volatility`), a raw SVI curve (Gatheral 2004) per expiry, an SSVI surface (Gatheral and Jacquier 2014) across all expiries at once, or a SABR smile (Hagan et al. 2002) per expiry.
 
 A single per-expiry smile only tells you the shape of the market's volatility skew at that one maturity. Stitching several calibrated slices together instead gives a full surface, which is what is needed to price/interpolate options at maturities or strikes that don't trade directly, and to check for term-structure inconsistencies (see Notes).
 
@@ -6084,9 +6190,9 @@ $$
 
 Where w is the total implied variance (implied volatility squared times the time to expiration t), k the log-moneyness ln(K / F) with K the strike and F the forward price, $$\theta_{t}$$ the at-the-money total variance of the expiry and D, z, x(z) and I the terms of Hagan et al. (see `sabr_model.get_sabr_volatility`). The implied volatility is sqrt(w(k) / t) for SVI and SSVI.
 
-- SVI (method="svi") fits five parameters per expiry and follows each smile closely, but a slice can carry butterfly arbitrage and two slices can cross. The fit keeps the total variance non-negative through Gatheral's condition $$a + b \cdot \sigma \cdot \sqrt{1 - \rho^{2}} \geq 0$$.
-- SSVI (method="ssvi") takes $$\theta_{t}$$ from each expiry's at-the-money total variance and fits three parameters, $$\rho$$, $$\eta$$ and $$\gamma$$, to all expiries together with $$\eta \cdot (1 + \vert \rho \vert) \leq 2$$ and $$0 < \gamma \leq \tfrac{1}{2}$$, which keeps every slice free of butterfly arbitrage and the surface free of calendar-spread arbitrage when $$\theta_{t}$$ rises with the expiry. It follows each smile less closely than SVI.
-- SABR (method="sabr") fits $$\rho$$ and $$\nu$$ per expiry with $$\beta$$ fixed (sabr_beta) and $$\alpha$$ set by the at-the-money volatility (West 2005), the smile model of the rates market and a common alternative for equities.
+- SVI fits five parameters per expiry and follows each smile closely, but a slice can carry butterfly arbitrage and two slices can cross. The fit keeps the total variance non-negative through Gatheral's condition $$a + b \cdot \sigma \cdot \sqrt{1 - \rho^{2}} \geq 0$$.
+- SSVI takes $$\theta_{t}$$ from each expiry's at-the-money total variance and fits three parameters, $$\rho$$, $$\eta$$ and $$\gamma$$, to all expiries together with $$\eta \cdot (1 + \vert \rho \vert) \leq 2$$ and $$0 < \gamma \leq \tfrac{1}{2}$$, which keeps every slice free of butterfly arbitrage and the surface free of calendar-spread arbitrage when $$\theta_{t}$$ rises with the expiry. It follows each smile less closely than SVI.
+- SABR fits $$\rho$$ and $$\nu$$ per expiry with $$\beta$$ fixed and $$\alpha$$ set by the at-the-money volatility (West 2005), the smile model of the rates market and a common alternative for equities.
 
 Before fitting, strikes whose market-implied volatility is a statistical outlier relative to its neighbors (a common symptom of a stale or wide-bid/ask illiquid quote) are dropped via a median-absolute-deviation filter, since a single bad quote can otherwise dominate the least-squares fit for that whole expiry. Every fit is bounded and runs from a fixed grid of starting points, so the same quotes always give the same surface.
 
@@ -6094,11 +6200,18 @@ The option chains, the price of the underlying quoted with them and the time to 
 
 See: Gatheral, J. (2004), "A parsimonious arbitrage-free implied volatility parameterization with application to the valuation of volatility derivatives"; Gatheral, J., & Jacquier, A. (2014), "Arbitrage-free SVI volatility surfaces", Quantitative Finance, 14(1), 59-71; Hagan, P. S., Kumar, D., Lesniewski, A. S., & Woodward, D. E. (2002), "Managing smile risk", Wilmott Magazine; West, G. (2005), "Calibration of the SABR model in illiquid markets", Applied Mathematical Finance.
 
-SABR is referenced against QuantLib's sabrVolatility ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}), FinancePy's SABR ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}) and rateslib's sabr ([https://rateslib.com](https://rateslib.com){:target="_blank"}); SSVI against FinancePy's volatility_fns.
-
 **Also known as:** SVI surface, SSVI surface, SABR smile, implied volatility surface.
 
 Notes: For SVI and SSVI a warning is logged (not raised) if the fitted surface has calendar-spread arbitrage, total implied variance decreasing with time to expiration at some log-moneyness, or butterfly arbitrage, $$g (k) < 0$$ for some slice (see `svi_model.check_butterfly_arbitrage`). These reflect inconsistent market quotes or a slice SVI cannot fit without arbitrage, and are only checked, not corrected; SSVI avoids the butterfly arbitrage by construction.
+
+**References:**
+
+- library | Referenced against QuantLib's [sabrVolatility](https://github.com/lballabio/QuantLib/blob/v1.44/ql/termstructures/volatility/sabr.cpp#L163){:target="_blank"} (SABR)
+- library | Referenced against FinancePy's [volatility_fns.g](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/volatility_fns.py#L247){:target="_blank"} (butterfly arbitrage)
+- library | Shares similar logic as QuantLib's [SABRInterpolation](https://www.quantlib.org/reference/class_quant_lib_1_1_s_a_b_r_interpolation.html){:target="_blank"} (SABR)
+- library | Shares similar logic as FinancePy's [SABR](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/sabr.py#L157){:target="_blank"} (SABR)
+- library | Shares similar logic as rateslib's [IRSabrSmile](https://rateslib.com/py/en/2.7.x/api/rateslib.volatility.IRSabrSmile.html){:target="_blank"} (SABR)
+- library | Shares similar logic as FinancePy's [volatility_fns.ssvi](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/volatility_fns.py#L148){:target="_blank"} (SSVI)
 
 **Args:**
 
@@ -6124,10 +6237,10 @@ Defaults to 6.
 deviations from the median implied volatility beyond which a quote
 is treated as an outlier and dropped before fitting. Defaults to
 5.0.
-- <u>method (str, optional):</u> The smile model: "svi" (raw SVI per expiry), "ssvi"
-(SSVI across the expiries) or "sabr" (SABR per expiry). Defaults to "svi".
+- <u>method (str, optional):</u> The smile model. Options are: "svi" (raw SVI per expiry), "ssvi"
+(SSVI across the expiries), "sabr" (SABR per expiry). Defaults to "svi".
 - <u>sabr_beta (float, optional):</u> The SABR elasticity $$\beta$$ between 0 and 1, only used
-with method="sabr": 1 is a lognormal backbone, the usual choice for equities.
+for the SABR method: 1 is a lognormal backbone, the usual choice for equities.
 Defaults to 1.0.
 - <u>show_parameters (bool, optional):</u> Whether to return the fitted parameters per
 ticker and expiration date instead of the surface. Defaults to False.
@@ -6238,7 +6351,7 @@ Which returns:
 ---
 
 ## get_local_volatility_surface
-Calculate the Dupire (1994) local volatility surface from the SVI or SSVI implied volatility surface fitted to the option chains (see `get_volatility_surface`).
+Calculate the Dupire (1994) local volatility surface: the volatility of the stock at each price and time that reproduces the SVI or SSVI implied volatility surface fitted to the option chains (see `get_volatility_surface`).
 
 The local volatility $$\sigma_{\text{loc}} (K , T)$$ is the volatility, as a function of the price of the underlying and the time, of the only diffusion $$dS / S = (r - q) dt + \sigma_{\text{loc}} (S , t) dW$$ that reprices every European option of the surface. Where the implied volatility at a strike is an average of the volatility along the paths to expiration, the local volatility is the instantaneous volatility the market prices for the moment the underlying stands at K at time T. It is the input of local volatility models for pricing path-dependent options consistently with the smile, and it shows the skew more steeply than the implied volatility (about twice as steep near the money).
 
@@ -6252,15 +6365,18 @@ $$
 g(k) = 1 - \frac{k}{w} \cdot \frac{\partial w}{\partial k} + \frac{1}{4} \cdot \left(- \frac{1}{4} - \frac{1}{w} + \frac{k^{2}}{w^{2}}\right) \cdot \left(\frac{\partial w}{\partial k}\right)^{2} + \frac{\frac{1}{2} \cdot \text{∂}^{2} w}{\partial k^{2}}
 $$
 
-Where w(k, T) is the total implied variance (implied volatility squared times the time to expiration T) of the fitted surface, $$k = \ln (K / F_{T})$$ the log-moneyness with $$F_{T}$$ the forward price of the expiry. The derivatives in k are analytic per slice and $$\partial w / \partial T$$ is taken at fixed k by finite differences between the expiries (three-point for unequal spacing at the inner expiries, one-sided at the first and the last), so the surface needs at least two expiries. The local volatility exists where $$g (k) > 0$$ (no butterfly arbitrage) and $$\partial w / \partial T \geq 0$$ (no calendar-spread arbitrage) and is NaN elsewhere, which SSVI (method="ssvi") avoids by construction where the at-the-money variance rises with the expiry.
+Where w(k, T) is the total implied variance (implied volatility squared times the time to expiration T) of the fitted surface, $$k = \ln (K / F_{T})$$ the log-moneyness with $$F_{T}$$ the forward price of the expiry. The derivatives in k are analytic per slice and $$\partial w / \partial T$$ is taken at fixed k by finite differences between the expiries (three-point for unequal spacing at the inner expiries, one-sided at the first and the last), so the surface needs at least two expiries. The local volatility exists where $$g (k) > 0$$ (no butterfly arbitrage) and $$\partial w / \partial T \geq 0$$ (no calendar-spread arbitrage) and is NaN elsewhere, which SSVI avoids by construction where the at-the-money variance rises with the expiry.
 
 The strikes are an evenly spaced grid around the price of the underlying quoted with the chains, from (1 - strike_price_range) to (1 + strike_price_range) times it, the same for every expiry. The forward price is $$F_{T} = S \cdot e^{(r - q) \cdot T}$$ with the continuously compounded rate r and yield q.
 
 See: Dupire, B. (1994), "Pricing with a smile", Risk, 7(1), 18-20; Gatheral, J. (2006), "The Volatility Surface: A Practitioner's Guide", Wiley, eq. 1.10; and Gatheral, J., & Jacquier, A. (2014), "Arbitrage-free SVI volatility surfaces", Quantitative Finance, 14(1), 59-71.
 
-Referenced against QuantLib's LocalVolSurface ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}) and FinancePy's volatility_fns.ssvi_local_varg ([https://github.com/domokane/FinancePy](https://github.com/domokane/FinancePy){:target="_blank"}).
-
 **Also known as:** Dupire local volatility, local vol surface.
+
+**References:**
+
+- library | Referenced against QuantLib's [LocalVolSurface](https://www.quantlib.org/reference/class_quant_lib_1_1_local_vol_surface.html){:target="_blank"}
+- library | Referenced against FinancePy's [volatility_fns.ssvi_local_varg](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/volatility_fns.py#L318){:target="_blank"}
 
 **Args:**
 
@@ -6283,8 +6399,8 @@ when `expiration_dates` is not given. Defaults to 6.
 - <u>outlier_threshold (float, optional):</u> The number of median absolute deviations
 from the median implied volatility beyond which a quote is treated as an
 outlier and dropped before fitting. Defaults to 5.0.
-- <u>method (str, optional):</u> The implied volatility surface to start from: "svi" (raw
-SVI per expiry) or "ssvi" (SSVI across the expiries). Defaults to "svi".
+- <u>method (str, optional):</u> The implied volatility surface to start from. Options are: "svi"
+(raw SVI per expiry), "ssvi" (SSVI across the expiries). Defaults to "svi".
 - <u>strike_price_range (float, optional):</u> The range of strikes, as a fraction of the
 price of the underlying in each direction. Defaults to 0.25, from 75% to 125%.
 - <u>number_of_strikes (int, optional):</u> The number of strikes in the grid. Defaults to
@@ -6335,7 +6451,7 @@ Which returns:
 ---
 
 ## get_risk_neutral_density
-Extract the market-implied risk-neutral probability density of the underlying's price at expiration, via the Breeden-Litzenberger (1978) theorem, applied to a volatility smile calibrated to real market option prices (see `get_implied_volatility`) rather than a single flat assumed volatility.
+Calculate the market-implied risk-neutral probability density of the underlying's price at expiration: how likely the market prices each price at expiration, via the Breeden-Litzenberger (1978) theorem, applied to a volatility smile calibrated to real market option prices (see `get_implied_volatility`) rather than a single flat assumed volatility.
 
 `get_partial_derivative` computes the same second-derivative relationship but with one flat volatility value applied at every strike -- with a flat volatility input, the second derivative can only ever recover a lognormal density regardless of what the real market smile looks like, which defeats the entire purpose of the theorem. This method instead first calibrates a raw SVI (Gatheral 2004) curve to the actual market smile (see `get_volatility_surface`) and evaluates the density from that.
 
@@ -6495,7 +6611,7 @@ Which returns:
 ---
 
 ## get_heston_parameters
-Calibrate the Heston (1993) stochastic volatility model to each ticker's option chain: one set of parameters per ticker that reproduces the market's implied volatility across the term structure, from about a month to a year and a half, at once.
+Calibrate the Heston (1993) stochastic volatility model to each ticker's option chain: the one set of parameters per ticker that reproduces the market's implied volatility across the term structure, from about a month to a year and a half, at once.
 
 In the Heston model the variance of the stock follows a mean-reverting square-root process correlated with the stock, $$dS = (r - q) S dt + \sqrt{v} S$$ dW_1 and $$dv = \kappa (\theta - v) dt + \sigma \sqrt{v}$$ dW_2 with dW_1 dW_2 = $$\rho dt$$. Its five parameters read directly: $$\sqrt{v_{0}}$$ is today's volatility, $$\sqrt{\theta}$$ the volatility the market expects in the long run, $$\kappa$$ how fast it gets there (a half-life of $$\ln (2) / \kappa$$ years), $$\sigma$$ the volatility of the variance (the curvature of the smile) and $$\rho$$ the correlation of the stock with its variance (the skew: negative for equities, whose volatility rises as they fall).
 
@@ -6525,11 +6641,17 @@ Where S is the price of the underlying quoted with the nearest chain, K the stri
 
 The RMSE is the root mean squared difference between the implied volatility of the fitted Heston prices, from a COS series converged to 1e-10 per unit of the strike, and the market's, over the quotes fitted.
 
-See: Heston, S. L. (1993), "A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options", The Review of Financial Studies, 6(2), 327-343; Albrecher, H., Mayer, P., Schoutens, W. and Tistaert, J. (2007), "The Little Heston Trap", Wilmott Magazine; Fang, F. and Oosterlee, C. W. (2008), "A Novel Pricing Method for European Options Based on Fourier-Cosine Series Expansions", SIAM Journal on Scientific Computing, 31(2), 826-848. Referenced against QuantLib's AnalyticHestonEngine, COSHestonEngine and HestonModelHelper calibration ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}).
+See: Heston, S. L. (1993), "A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options", The Review of Financial Studies, 6(2), 327-343; Albrecher, H., Mayer, P., Schoutens, W. and Tistaert, J. (2007), "The Little Heston Trap", Wilmott Magazine; Fang, F. and Oosterlee, C. W. (2008), "A Novel Pricing Method for European Options Based on Fourier-Cosine Series Expansions", SIAM Journal on Scientific Computing, 31(2), 826-848.
 
 **Also known as:** Heston calibration, stochastic volatility calibration, Heston model fit.
 
 Notes: Heston is calibrated across the term structure because its parameters describe it: with one expiration, or several within a few weeks, $$\kappa$$ and $$\theta$$ are hardly identified separately and $$\kappa$$ and $$\sigma$$ run to their bounds. The expirations under 14 days are left out by default: their smiles are dominated by jump risk (earnings and other events) and by the bid-ask spread, which a diffusion like Heston cannot produce without an implausibly fast mean reversion and volatile variance. The At Bound column names the parameters that end at a bound of the search (v0 and $$\theta$$ from 0.0001 to 4, $$\kappa$$ from 0.001 to 20, a half-life of under two weeks at 20, $$\sigma$$ from 0.01 to 5 and $$\rho$$ from -0.999 to 0.999), and a warning is logged with it. A parameter at its bound is a sign that the quotes ask for more than the model has, such as jumps or a humped term structure, and the other parameters then compensate for it, so they are less meaningful. Even within the bounds $$\kappa$$ and $$\sigma$$ trade off: a faster mean reversion with a more volatile variance gives much the same smile, so on a real surface the fit is flat along that direction and two similar smiles can give a quite different $$\kappa$$. The long-run level $$\theta$$, the Feller ratio and the at-the-money term structure are far better determined than $$\kappa$$ and $$\sigma$$ separately. Listed options on single stocks are American; the fit treats their implied volatility as European, as `get_volatility_surface` does. The Heston prices themselves are available as `heston_model.get_heston_price`.
+
+**References:**
+
+- library | Referenced against QuantLib's [HestonModelHelper](https://www.quantlib.org/reference/class_quant_lib_1_1_heston_model_helper.html){:target="_blank"}
+- library | Referenced against QuantLib's [AnalyticHestonEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_analytic_heston_engine.html){:target="_blank"}
+- library | Shares similar logic as QuantLib's [COSHestonEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_c_o_s_heston_engine.html){:target="_blank"}
 
 **Args:**
 
@@ -6587,7 +6709,7 @@ Which returns:
 ---
 
 ## get_heston_nandi_model
-Calculate European option prices in the GARCH model of Heston and Nandi (2000), with the GARCH parameters fitted on each ticker's own daily returns.
+Calculate European option prices in the GARCH model of Heston and Nandi (2000): what calls and puts on each ticker are worth when its variance follows a GARCH process with a leverage effect, with the GARCH parameters fitted on each ticker's own daily returns.
 
 Where the Black-Scholes model takes one volatility for the whole life of the option, the Heston-Nandi model lets the daily variance follow a GARCH(1, 1) process with a leverage effect: it starts from the variance the GARCH filter forecasts for tomorrow, reverts to its long-run level at the speed the returns show, and rises more after a fall than after a rise. The prices therefore follow the current volatility regime of the stock and carry a skew, without any option prices as input. It is the GARCH option pricing model with a closed form.
 
@@ -6613,7 +6735,7 @@ $$
 
 Where $$R_{t}$$ is the daily log return, $$r_{t}$$ the risk-free rate of that day, $$h_{t}$$ the conditional variance, $$z_{t}$$ the standard normal shock, $$\omega$$, $$\alpha$$, $$\beta$$, $$\gamma$$ and $$\lambda$$ the fitted parameters, S the traded close on the pricing date, K the strike, h the variance forecast for the next trading day, r the continuously compounded risk-free rate, q the continuous dividend yield (ln(1 + dividend yield)), T the number of trading days to expiration over 252 and $$\phi_{X}$$ the characteristic function of $$\ln (S_{T} / F)$$ with F the forward price. The trading days to an expiration are the weekdays after the pricing date up to and including it, so an expiration on a weekend has the value of the Friday before it and one on the next weekday is one GARCH step away. The prices are computed with the COS method of Fang and Oosterlee (2008), which agrees with the Fourier integral within 1e-10 here and prices all strikes of an expiration at once.
 
-See: Heston, S. L. and Nandi, S. (2000), "A Closed-Form GARCH Option Valuation Model", The Review of Financial Studies, 13(3), 585-625. Referenced against a Monte Carlo simulation of the risk-neutral process and the Black-Scholes price at $$\alpha = \beta = 0$$.
+See: Heston, S. L. and Nandi, S. (2000), "A Closed-Form GARCH Option Valuation Model", The Review of Financial Studies, 13(3), 585-625. Checked against a Monte Carlo simulation of the risk-neutral process and the Black-Scholes price at $$\alpha = \beta = 0$$.
 
 **Also known as:** Heston-Nandi model, GARCH option pricing, HN-GARCH.
 

@@ -100,6 +100,12 @@ To calculate these statistics for terms of your own, use the functions of `finan
 
 **Also known as:** bond data, fixed income statistics, bond analytics.
 
+**References:**
+
+- library | Referenced against QuantLib's [BondFunctions.duration](https://www.quantlib.org/reference/struct_quant_lib_1_1_bond_functions.html){:target="_blank"}
+- library | Referenced against QuantLib's [BondFunctions.convexity](https://www.quantlib.org/reference/struct_quant_lib_1_1_bond_functions.html){:target="_blank"}
+- library | Shares similar logic as QuantLib's [BondFunctions.zSpread](https://www.quantlib.org/reference/struct_quant_lib_1_1_bond_functions.html){:target="_blank"}
+
 **Args:**
 
 - <u>bonds (list[str] &#124; str &#124; None, optional):</u> CUSIPs or ISINs, a list or a
@@ -164,7 +170,9 @@ Which returns:
 ---
 
 ## get_present_value
-Calculates the present value of individual bonds: their coupons and principal discounted with the Treasury zero-coupon curve of the price date, next to the price they trade at. For a Treasury the two differ by how far the issue trades off the curve; for a corporate bond the present value is the price it would have without any credit or liquidity risk, and the gap with its price is what the Z-spread (`get_z_spread`) measures.
+Calculates the present value of individual bonds: what their coupons and principal are worth when discounted with the Treasury zero-coupon curve of the price date, next to the price they trade at.
+
+For a Treasury the two differ by how far the issue trades off the curve; for a corporate bond the present value is the price it would have without any credit or liquidity risk, and the gap with its price is what the Z-spread (`get_z_spread`) measures.
 
 The formula is as follows:
 
@@ -259,7 +267,9 @@ Which returns:
 ---
 
 ## get_duration
-Calculates the duration of individual bonds at their yield to maturity. It has the option to calculate the following type of bond durations:
+Calculates the duration of individual bonds at their yield to maturity: how sensitive the price of each bond is to a change in its yield, or how long on average its cash flows take to arrive.
+
+It has the option to calculate the following type of bond durations:
 
 - Macaulay's Duration: The weighted average time to receive the bond's cash flows.
 - Modified Duration: The Macaulay's duration divided by 1 plus the per-period yield (YTM / 2).
@@ -300,10 +310,15 @@ Modified duration is the first estimate of interest rate risk: a modified durati
 
 **Also known as:** Macaulay duration, modified duration, bond price sensitivity.
 
+**References:**
+
+- library | Referenced against QuantLib's [BondFunctions.duration](https://www.quantlib.org/reference/struct_quant_lib_1_1_bond_functions.html){:target="_blank"} (modified, macaulay)
+
 **Args:**
 
-- <u>duration_type (str, optional):</u> The duration: "modified", "macaulay", "effective" or
-"dollar". Defaults to "modified".
+- <u>method (str, optional):</u> The duration measure. Options are: "modified" (Modified Duration),
+"macaulay" (Macaulay's Duration), "effective" (Effective Duration), "dollar" (Dollar
+Duration). Defaults to "modified".
 - <u>bonds (list[str] &#124; str &#124; None, optional):</u> CUSIPs or ISINs, see
 `collect_bond_statistics`. Defaults to None.
 - <u>issuer (list[str] &#124; str &#124; None, optional):</u> Part of an issuer's name, such as
@@ -356,7 +371,7 @@ Which returns:
 ---
 
 ## get_yield_to_maturity
-Calculates the yield to maturity of individual bonds from their market price. The yield to maturity is the internal rate of return of the bond, the discount rate that equates the present value of the bond's cash flows to its price.
+Calculates the yield to maturity of individual bonds from their market price: the internal rate of return of the bond, the discount rate that equates the present value of the bond's cash flows to its price.
 
 The formula is as follows, solved for YTM:
 
@@ -441,7 +456,7 @@ Which returns:
 ---
 
 ## get_z_spread
-Calculates the zero-volatility spread (Z-spread) of individual bonds over the Treasury zero-coupon curve. The Z-spread is the constant spread that, when added uniformly to every point of the curve, makes the present value of the bond's cash flows equal to its price.
+Calculates the zero-volatility spread (Z-spread) of individual bonds over the Treasury zero-coupon curve: the constant spread that, when added uniformly to every point of the curve, makes the present value of the bond's cash flows equal to its price.
 
 Unlike a simple yield spread (the bond's yield to maturity minus a Treasury yield of the same maturity, the G-spread of `get_bond_universe`), the Z-spread is measured against the entire curve rather than a single point, which makes it a more accurate measure of the compensation an investor receives for a bond's credit and liquidity risk. For a Treasury it shows how far the issue trades off the curve, typically a few basis points.
 
@@ -456,6 +471,10 @@ Where each coupon is 100 * Coupon / 2, the principal is repaid with the last cou
 The bonds are selected as in `collect_bond_statistics`. TIPS have no Z-spread on the nominal curve. For a bond with an embedded option the Z-spread includes the option's value, which an option-adjusted spread removes: the ICE BofA option-adjusted spreads of bond indices are in `get_ice_bofa_option_adjusted_spread`, and `short_rate_model.get_option_adjusted_spread` calculates one for a call schedule of your own. For terms of your own, use `bond_model.get_z_spread`.
 
 **Also known as:** zero-volatility spread, static spread, credit spread.
+
+**References:**
+
+- library | Shares similar logic as QuantLib's [BondFunctions.zSpread](https://www.quantlib.org/reference/struct_quant_lib_1_1_bond_functions.html){:target="_blank"}
 
 **Args:**
 
@@ -517,7 +536,7 @@ Which returns:
 ---
 
 ## get_key_rate_duration
-Calculates the key rate durations of individual bonds on the Treasury zero-coupon curve: the price sensitivity to a shock at a single maturity ("key rate") of the curve while every other point is held fixed. Whereas `get_duration` with `duration_type='effective'` assumes the entire curve shifts in parallel, key rate durations show which segment of the curve a bond's price is exposed to. Because cash flows are discounted using linear interpolation between the curve's maturities, a shock at an inner maturity tapers off towards its neighbours and has no effect beyond them. The curve is held flat beyond its first and last maturities, so a shock at the first maturity moves every cash flow paid before it in full (and a shock at the last maturity every cash flow paid after it).
+Calculates the key rate durations of individual bonds on the Treasury zero-coupon curve: the price sensitivity to a shock at a single maturity ("key rate") of the curve while every other point is held fixed. Whereas the effective duration of `get_duration` assumes the entire curve shifts in parallel, key rate durations show which segment of the curve a bond's price is exposed to. Because cash flows are discounted using linear interpolation between the curve's maturities, a shock at an inner maturity tapers off towards its neighbours and has no effect beyond them. The curve is held flat beyond its first and last maturities, so a shock at the first maturity moves every cash flow paid before it in full (and a shock at the last maturity every cash flow paid after it).
 
 Summing the key rate durations across every maturity of the curve approximately reproduces the bond's effective (parallel-shift) duration on the curve. A barbell and a bullet with the same duration have very different key rate profiles and react differently when the curve steepens or flattens, which is why key rate durations are hedged with instruments at each key maturity. The profile also depends on which maturities the curve contains: the same bond shows different key rate durations on a curve with more or fewer points.
 
@@ -597,9 +616,11 @@ Which returns:
 ---
 
 ## get_bucketed_delta
-Calculates the bucketed delta of individual bonds on the Treasury curve: the change in each bond's present value, per 100 of par, when one maturity of the curve rises by a basis point, for every maturity the Treasury quotes. Where `get_key_rate_duration` shocks a zero-coupon rate with a tent around it, these deltas move the rates traders hedge with.
+Calculates the bucketed delta of individual bonds on the Treasury curve: the change in each bond's present value, per 100 of par, when one maturity of the curve rises by a basis point, for every maturity the Treasury quotes.
 
-With method="par" (the par-rate delta) one par yield of the Treasury par curve rises by a basis point and the zero-coupon curve is bootstrapped again, so the deltas are the sensitivities to the notes and bonds of each maturity: a par bond maturing at a quoted maturity has a delta to that maturity only. They follow from the chain rule through the par-to-zero Jacobian of the bootstrap (see `curve_risk_model.get_par_rate_delta`):
+Where `get_key_rate_duration` shocks a zero-coupon rate with a tent around it, these deltas move the rates traders hedge with.
+
+For the par-rate delta one par yield of the Treasury par curve rises by a basis point and the zero-coupon curve is bootstrapped again, so the deltas are the sensitivities to the notes and bonds of each maturity: a par bond maturing at a quoted maturity has a delta to that maturity only. They follow from the chain rule through the par-to-zero Jacobian of the bootstrap (see `curve_risk_model.get_par_rate_delta`):
 
 $$
 \text{PV} = \sum(\operatorname{CF}(t) \cdot (1 + \text{Zero Rate}(t))^{- t})
@@ -609,7 +630,7 @@ $$
 \text{Par Rate} \;\Delta(i) = \sum_{j}\left(\frac{\frac{\text{dPV}}{\text{dZero Rate}(j)} \cdot \text{dZero Rate}(j)}{\text{dPar Yield}(i)}\right) \cdot 0.0001
 $$
 
-With method="forward" (the forward-rate delta) the continuously compounded instantaneous forward rate between two neighbouring quoted maturities rises by a basis point, which moves every discount factor beyond it as well (see `curve_risk_model.get_forward_rate_delta`):
+For the forward-rate delta the continuously compounded instantaneous forward rate between two neighbouring quoted maturities rises by a basis point, which moves every discount factor beyond it as well (see `curve_risk_model.get_forward_rate_delta`):
 
 $$
 \text{Forward Rate} \;\Delta(i) = \sum(\operatorname{CF}(t) \cdot (1 + \text{Zero Rate}(t))^{- t} \cdot - \operatorname{Overlap}(t,\; i)) \cdot 0.0001
@@ -619,10 +640,16 @@ Where CF(t) are the bond's coupons (100 * Coupon / 2) and principal on its actua
 
 **Also known as:** bucketed PV01, par-rate risk, forward-rate risk, DV01 ladder, partial DV01.
 
+**References:**
+
+- library | Shares similar logic as rateslib's [Solver.delta](https://rateslib.com/py/en/3.0.x/api/rateslib.solver.Solver.html#rateslib.solver.Solver.delta){:target="_blank"} (par)
+- library | Shares similar logic as FinancePy's [par_rate_risk_report](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/market/curves/ibor_curve_risk_engine.py#L25){:target="_blank"} (par)
+- library | Shares similar logic as FinancePy's [forward_rate_risk_report](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/market/curves/ibor_curve_risk_engine.py#L84){:target="_blank"} (forward)
+
 **Args:**
 
-- <u>method (Literal["par", "forward"], optional):</u> "par" for the par-rate delta or
-"forward" for the forward-rate delta. Defaults to "par".
+- <u>method (Literal["par", "forward"], optional):</u> The delta. Options are: "par" (the par-rate
+delta), "forward" (the forward-rate delta). Defaults to "par".
 - <u>bump (float, optional):</u> The move of a rate up and down in the differences (decimal).
 Defaults to 0.0001.
 - <u>bonds (list[str] &#124; str &#124; None, optional):</u> CUSIPs or ISINs, see
@@ -699,6 +726,10 @@ $$
 Where CF(t) are the bond's coupons (100 * Coupon / 2) and principal on its actual coupon dates, Zero Rate(t) is the Treasury zero-coupon curve of the price date (annually compounded, see `get_zero_coupon_curve`, interpolated linearly), so Δ shifts annually compounded zero rates, and h is 1 basis point. Delta and Gamma are per unit of rate, so P&L(Δ) ≈ Delta * Δ + $$0.5 \cdot \text{Gamma} \cdot \Delta^{2}$$ with Δ as a decimal: a Delta of -700 loses 0.07 for a 1 basis point rise. The bonds are discounted on the Treasury curve without a spread and selected as in `collect_bond_statistics`; TIPS have no ladder on the nominal curve. For cash flows or a curve of your own, and the delta and gamma at every shift, use `curve_risk_model.get_parallel_shift_ladder`.
 
 **Also known as:** parallel shift report, scenario ladder, PV ladder, dollar gamma.
+
+**References:**
+
+- library | Shares similar logic as FinancePy's [parallel_shift_ladder_report](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/market/curves/ibor_curve_risk_engine.py#L291){:target="_blank"}
 
 **Args:**
 
@@ -796,6 +827,11 @@ The Taylor estimate holds the time to maturity fixed, while the realised change 
 
 **Also known as:** duration-convexity approximation, second-order price approximation, realised bond price change.
 
+**References:**
+
+- library | Referenced against QuantLib's [BondFunctions.duration](https://www.quantlib.org/reference/struct_quant_lib_1_1_bond_functions.html){:target="_blank"}
+- library | Referenced against QuantLib's [BondFunctions.convexity](https://www.quantlib.org/reference/struct_quant_lib_1_1_bond_functions.html){:target="_blank"}
+
 **Args:**
 
 - <u>yield_change (float &#124; None, optional):</u> The change in the yield to maturity (decimal),
@@ -882,7 +918,9 @@ price_changes.loc[:, "Maturity":].drop(columns=["From Date", "Price Date"])
 ---
 
 ## get_bond_equivalent_yield
-Calculates the bond-equivalent yield (BEY) of every Treasury bill from its price. Bills are quoted on a discount-yield basis, which understates the return an investor earns because it is computed on face value rather than the (lower) purchase price, and uses a 360-day rather than a 365-day year. The bond-equivalent yield restates the discount yield on a basis that is comparable to coupon-bearing notes and bonds.
+Calculates the bond-equivalent yield (BEY) of every Treasury bill from its price: the return of the bill on a basis comparable to coupon-bearing notes and bonds.
+
+Bills are quoted on a discount-yield basis, which understates the return an investor earns because it is computed on face value rather than the (lower) purchase price, and uses a 360-day rather than a 365-day year. The bond-equivalent yield restates the discount yield on a basis that is comparable to coupon-bearing notes and bonds.
 
 The formula is as follows:
 
@@ -955,7 +993,9 @@ Which returns:
 ---
 
 ## get_ice_bofa_option_adjusted_spread
-The ICE BofA Option-Adjusted Spreads (OASs) are the calculated spreads between a computed OAS index of all bonds in a given maturity and rating category and a spot Treasury curve. An OAS index is constructed using each constituent bond's OAS, weighted by market capitalization.
+Retrieves the ICE BofA Option-Adjusted Spreads (OASs): the extra yield that US corporate bonds of a given maturity or rating category pay over a spot Treasury curve once their embedded options are taken out, the compensation investors demand for credit risk.
+
+The spreads are calculated between a computed OAS index of all bonds in a given maturity and rating category and a spot Treasury curve. An OAS index is constructed using each constituent bond's OAS, weighted by market capitalization.
 
 The Option-Adjusted Spread (OAS) is the spread relative to a risk-free interest rate, usually quoted in basis points, that equates the theoretical present value of a series of uncertain cash flows to the market price of a fixed-income investment. The spread is added to the risk-free rate to compensate for the uncertainty of the cash flows. ICE adds it to the semi-annually compounded forward rates of the Treasury curve (ICE Bond Index Methodologies), so it is a semi-annually compounded spread.
 
@@ -1020,7 +1060,9 @@ Which returns:
 ---
 
 ## get_ice_bofa_effective_yield
-This data represents the effective yield of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
+Retrieves the effective yield of the ICE BofA Indices: the yield that US corporate bonds of a given maturity or rating category pay, an index of the cost of corporate borrowing.
+
+When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
 
 The effective yield of an ICE BofA index is the yield of the index as a whole, aggregated from the yields of its constituent bonds and weighted by their market capitalisation. It is an index-level yield of the corporate bond market segment, not a statistic derived from any single bond's coupon; for the yield of a single bond, see the "Yield to Maturity" of `collect_bond_statistics` instead. ICE states each bond's yield in conventional terms, compounded at the bond's coupon frequency (ICE Bond Index Methodologies): twice a year for the US indices, so their effective yields compound semi-annually like Treasury yields.
 
@@ -1087,7 +1129,9 @@ Which returns:
 ---
 
 ## get_ice_bofa_total_return
-This data represents the total return of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
+Retrieves the total return of the ICE BofA Indices: the gain of holding US corporate bonds of a given maturity or rating category, coupons and price changes included.
+
+When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
 
 The total return is the actual rate of return of an investment or a pool of investments over a given evaluation period. Total return includes interest, capital gains, dividends and distributions realized over a given period of time.
 
@@ -1151,7 +1195,9 @@ Which returns:
 ---
 
 ## get_ice_bofa_yield_to_worst
-This data represents the semi-annual yield to worst of the ICE BofA Indices, When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
+Retrieves the semi-annual yield to worst of the ICE BofA Indices: the lowest yield US corporate bonds of a given maturity or rating category pay if their issuers redeem them at the least favourable moment for investors.
+
+When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
 
 Yield to worst is the lowest potential yield that a bond can generate without the issuer defaulting. The standard US convention for this series is to use semi-annual coupon payments, whereas the standard in the foreign markets is to use coupon payments with frequencies of annual, semi-annual, quarterly, and monthly. These series state every index in semi-annual terms, so the yields are compounded twice a year whatever the coupon frequency.
 
@@ -1217,7 +1263,7 @@ Which returns:
 ## get_hqm_corporate_bond_yield_curve
 Retrieves the High Quality Market (HQM) corporate bond yield curve of the U.S. Department of the Treasury: the yields of high quality (AAA, AA and A rated) US corporate bonds by maturity, from 6 months to 100 years, monthly from 1984. The Treasury builds it for discounting long-dated liabilities, which is why it is the prescribed discount curve for US corporate pension obligations, and its long history makes it a natural basis for modelling how corporate yields and spreads move.
 
-Two curves are available. Spot rates (rate="spot") are zero-coupon yields, the rate to discount a single payment at that maturity, for 17 maturities. Par yields (rate="par") are the coupons a bond priced at par would pay, for 2, 5, 10 and 30 years, comparable to the Treasury par yield curve (see `get_treasury_rates`). Every value is the average over the month.
+Two curves are available. Spot rates are zero-coupon yields, the rate to discount a single payment at that maturity, for 17 maturities. Par yields are the coupons a bond priced at par would pay, for 2, 5, 10 and 30 years, comparable to the Treasury par yield curve (see `get_treasury_rates`). Every value is the average over the month.
 
 Without a FRED API key the curve comes from the Treasury's own HQM files, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `FixedIncome` class), it comes from FRED, which republishes the Treasury's curve. The rates are returned as decimal fractions (0.0558 for 5.58%), semi-annual bond-equivalent as the Treasury publishes them.
 
@@ -1227,8 +1273,8 @@ Without a FRED API key the curve comes from the Treasury's own HQM files, which 
 
 **Args:**
 
-- <u>rate (str, optional):</u> "spot" for the spot rates or "par" for the par yields.
-Defaults to "spot".
+- <u>rate (str, optional):</u> The curve. Options are: "spot" (the spot rates), "par" (the par
+yields). Defaults to "spot".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
@@ -1329,7 +1375,7 @@ Retrieves the yields of corporate bonds of a variety of countries, by rating whe
 - Australia: the yields of non-financial corporate bonds rated A and BBB with a target tenor of 3, 5, 7 and 10 years the Reserve Bank of Australia publishes from 2005 (end of month), e.g. "BBB 10Y".
 - United States: Moody's seasoned Aaa and Baa corporate bond yields, from 1919. This requires a FRED API key (the fred_api_key of the FixedIncome class); see get_moodys_corporate_bond_yields for daily data.
 
-With spread=True each yield is returned as a spread over government bonds: for Germany over the yield on public debt securities outstanding (from 1956), for Australia over the Australian government bond yield of the same tenor (end of month, interpolated between 5 and 10 years for 7 years, from 2013), and for the United States over the 10-year Treasury yield.
+As spreads, each yield is returned over government bonds: for Germany over the yield on public debt securities outstanding (from 1956), for Australia over the Australian government bond yield of the same tenor (end of month, interpolated between 5 and 10 years for 7 years, from 2013), and for the United States over the 10-year Treasury yield.
 
 The yields are decimal fractions (0.0446 for 4.46%), with one column per country and rating.
 
@@ -1391,16 +1437,18 @@ Which returns:
 ---
 
 ## get_rating_transition_matrix
-Retrieves the rating transition matrix of a credit rating agency: for every rating at the start of a period, the share of ratings that ended the period in each rating category, in default or withdrawn. It is the input of rating migration and default models, such as the Jarrow-Lando-Turnbull model, and of credit portfolio models.
+Retrieves the rating transition matrix of a credit rating agency: for every rating at the start of a period, the share of ratings that ended the period in each rating category, in default or withdrawn, which shows how likely a rating is to be upgraded, downgraded or to default.
+
+It is the input of rating migration and default models, such as the Jarrow-Lando-Turnbull model, and of credit portfolio models.
 
 The data comes from CEREP, the central repository where every credit rating agency registered in the European Union reports its ratings to ESMA, published twice a year with periods from 1989. It covers the global ratings of agencies such as S&P, Moody's, Fitch, DBRS and Scope, for corporates (non-financial, financial and insurance), sovereigns, structured finance and covered bonds, in each agency's own rating scale.
 
-By default the matrix is withdrawal-adjusted, the convention of the agencies' own default studies: ratings withdrawn during the period are left out, so each row sums to 1. The matrix compares the rating at the start of the period with the rating at its end, so a default that was followed by a new rating within the period (as after a distressed exchange) shows as that new rating; get_default_rates counts every default within the period and is the measure to calibrate default rates on. With include_withdrawals=True they are a separate "Withdrawals" column, and with probabilities=False the counts are returned instead.
+By default the matrix is withdrawal-adjusted, the convention of the agencies' own default studies: ratings withdrawn during the period are left out, so each row sums to 1. The matrix compares the rating at the start of the period with the rating at its end, so a default that was followed by a new rating within the period (as after a distressed exchange) shows as that new rating; get_default_rates counts every default within the period and is the measure to calibrate default rates on. The withdrawals can be kept as a separate "Withdrawals" column, and the counts can be returned instead of the probabilities.
 
-The formula is as follows (probabilities=True, the default):
+The formula of the probabilities is as follows:
 
 $$
-\text{Transition Probability} \;(\text{from},\; \text{to}) = \frac{\text{Count} \;(\text{from},\; \text{to})}{\sum(\text{Count} \;(\text{from},\; \text{every end category}))},\;\; \text{with the end categories the ratings and default, plus "Withdrawals" only when include\_withdrawals=True}
+\text{Transition Probability} \;(\text{from},\; \text{to}) = \frac{\text{Count} \;(\text{from},\; \text{to})}{\sum(\text{Count} \;(\text{from},\; \text{every end category}))},\;\; \text{with the end categories the ratings and default, plus "Withdrawals" only when they are kept}
 $$
 
 A single year's matrix rests on few observations in the top and bottom rows: an AAA row with few issuers is often 100% stable one year and shows a downgrade the next. Credit models therefore use the average over many years, or a longer horizon, and check how far the latest year deviates from it, which also shows where in the credit cycle the year stands.
@@ -1414,8 +1462,9 @@ A single year's matrix rests on few observations in the top and bottom rows: an 
 - <u>agency (str, optional):</u> The rating agency, e.g. "S&P", "Moody's", "Fitch",
 "DBRS", "Scope" or "Kroll", or the CEREP code of any registered agency.
 Defaults to "S&P".
-- <u>rating_type (str, optional):</u> "corporate", "sovereign", "structured_finance" or
-"covered_bonds". Defaults to "corporate".
+- <u>rating_type (str, optional):</u> The rated instruments. Options are: "corporate" (companies),
+"sovereign" (governments), "structured_finance" (structured finance products),
+"covered_bonds" (covered bonds). Defaults to "corporate".
 - <u>year (int &#124; None, optional):</u> The first year of the period. Defaults to None,
 which takes the latest year published.
 - <u>horizon (int, optional):</u> The length of the period in years, from 1 January of
@@ -1424,9 +1473,9 @@ year. Defaults to 1.
 instead of the number. Defaults to True.
 - <u>include_withdrawals (bool, optional):</u> Whether to keep the ratings withdrawn
 during the period as a "Withdrawals" column. Defaults to False.
-- <u>region (str &#124; None, optional):</u> The area of the rated entities: "Africa",
-"America", "Asia", "Europe", "EU members", "International" or "Oceania".
-Defaults to None, which covers all of them.
+- <u>region (str &#124; None, optional):</u> The area of the rated entities. Options are: "Africa",
+"America", "Asia", "Europe", "EU members", "International", "Oceania", None (all of
+them). Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1465,7 +1514,9 @@ Which returns:
 ---
 
 ## get_default_rates
-Retrieves the one-year default rates per rating of a credit rating agency, year by year from 1989: the share of the ratings outstanding at the start of each year that defaulted within it. The history of default rates per rating calibrates the default intensity of credit risk models and shows how defaults cluster in recessions.
+Retrieves the one-year default rates per rating of a credit rating agency, year by year from 1989: the share of the ratings outstanding at the start of each year that defaulted within it.
+
+The history of default rates per rating calibrates the default intensity of credit risk models and shows how defaults cluster in recessions.
 
 The data comes from CEREP, the central repository where every credit rating agency registered in the European Union reports its ratings to ESMA, in each agency's own rating scale (AAA to C for S&P and Fitch, Aaa to C for Moody's). Only the years between the start and end date are retrieved, one request per year. CEREP answers slowly (up to half a minute per year), so a long history takes a few minutes the first time; each year is cached afterwards. The years before an agency reported to CEREP read as zero defaults and are left out, so the history starts at the first year with a default.
 
@@ -1480,11 +1531,12 @@ Default rates rise steeply down the rating scale, from close to zero for investm
 - <u>agency (str, optional):</u> The rating agency, e.g. "S&P", "Moody's", "Fitch",
 "DBRS", "Scope" or "Kroll", or the CEREP code of any registered agency.
 Defaults to "S&P".
-- <u>rating_type (str, optional):</u> "corporate", "sovereign", "structured_finance" or
-"covered_bonds". Defaults to "corporate".
-- <u>region (str &#124; None, optional):</u> The area of the rated entities: "Africa",
-"America", "Asia", "Europe", "EU members", "International" or "Oceania".
-Defaults to None, which covers all of them.
+- <u>rating_type (str, optional):</u> The rated instruments. Options are: "corporate" (companies),
+"sovereign" (governments), "structured_finance" (structured finance products),
+"covered_bonds" (covered bonds). Defaults to "corporate".
+- <u>region (str &#124; None, optional):</u> The area of the rated entities. Options are: "Africa",
+"America", "Asia", "Europe", "EU members", "International", "Oceania", None (all of
+them). Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -1524,17 +1576,19 @@ Which returns:
 ---
 
 ## get_implied_default_probability
-Calculates the default probabilities that credit spreads imply. Investors in a corporate bond are compensated for the loss they expect from a default, so with a constant default intensity (hazard rate) $$\lambda$$ and a share R recovered on default the spread s is about $$\lambda (1 - R)$$, the "credit triangle":
+Calculates the default probabilities that credit spreads imply: how likely the market prices a default of an issuer of each rating within each horizon.
+
+Investors in a corporate bond are compensated for the loss they expect from a default, so with a constant default intensity (hazard rate) $$\lambda$$ and a share R recovered on default the spread s is about $$\lambda (1 - R)$$, the "credit triangle":
 
 $$\lambda = s / (1 - R)$$, P(default within t years) = $$1 - e^{- \lambda t}$$
 
 The spreads are the latest ICE BofA option-adjusted spreads of the US corporate bond indices per rating (AAA to CCC) up to the end date, which need a FRED API key. For a spread of your own, use `short_rate_model.get_implied_default_probability`. Spreads also pay for liquidity and for the uncertainty of the losses, so these risk-neutral probabilities are higher than the default rates that are observed historically (see `get_default_rates`); the gap is the credit risk premium.
 
-For more information, see the following book:
-
-- Hull, J.C. (2022). "Options, Futures, and Other Derivatives." Pearson, 11th edition, chapter 24.
-
 **Also known as:** implied default probability, hazard rate, credit triangle, risk-neutral default probability.
+
+**References:**
+
+- paper | Hull, J.C. (2022). "Options, Futures, and Other Derivatives." Pearson, 11th edition, chapter 24.
 
 **Args:**
 
@@ -1606,15 +1660,16 @@ By maturity, the curve is bootstrapped from the six maturity buckets of the ICE 
 
 The spreads are the latest up to the end date, and the Treasury curve that of the same day (or the last day before it). Spreads also pay for liquidity and the uncertainty of losses, so these risk-neutral survival probabilities are below those of the default rates observed (see `get_default_rates`).
 
-For more information, see the following sources:
-
-- Jarrow, R.A. and Turnbull, S.M. (1995). "Pricing Derivatives on Financial Securities Subject to Credit Risk." The Journal of Finance, 50(1), 53-85.
-- O'Kane, D. (2008). "Modelling Single-name and Multi-name Credit Derivatives." Wiley, ch. 3 and 7.
-- Markit (2009). "ISDA CDS Standard Model."
-
-Referenced against QuantLib's PiecewiseFlatHazardRate and RiskyBondEngine.
-
 **Also known as:** credit curve, hazard rate curve, default probability term structure, bond-implied default probabilities.
+
+**References:**
+
+- paper | Jarrow, R.A. and Turnbull, S.M. (1995). "Pricing Derivatives on Financial Securities Subject to Credit Risk." The Journal of Finance, 50(1), 53-85.
+- paper | O'Kane, D. (2008). "Modelling Single-name and Multi-name Credit Derivatives." Wiley, ch. 3 and 7.
+- paper | Markit (2009). "ISDA CDS Standard Model."
+- library | Referenced against QuantLib's [HazardRateCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_interpolated_hazard_rate_curve.html){:target="_blank"}
+- library | Referenced against QuantLib's [RiskyBondEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_risky_bond_engine.html){:target="_blank"}
+- library | Shares similar logic as QuantLib's [PiecewiseFlatHazardRate](https://www.quantlib.org/reference/class_quant_lib_1_1_piecewise_default_curve.html){:target="_blank"}
 
 **Args:**
 
@@ -1679,7 +1734,9 @@ Which returns:
 ---
 
 ## get_credit_default_swap_spread
-Calculates the CDS-equivalent spreads of US corporate credit: the par spreads of credit default swaps on the survival curves the ICE BofA option-adjusted spreads imply (see `get_survival_curve`). It turns the spreads of corporate bonds into the spread a protection buyer would pay each year to insure against a default of an issuer with that credit, by maturity or by rating.
+Calculates the CDS-equivalent spreads of US corporate credit: the spread a protection buyer would pay each year to insure against a default of an issuer with that credit, by maturity or by rating.
+
+These are the par spreads of credit default swaps on the survival curves the ICE BofA option-adjusted spreads imply (see `get_survival_curve`), which turns the spreads of corporate bonds into CDS spreads.
 
 The swaps follow the ISDA CDS Standard Model: the premium is paid quarterly on an ACT/360 basis, the premium accrued since the last payment is paid on default, and the protection pays (1 - R) of the notional at the time of default. The par spread is the premium at which both legs are worth the same:
 
@@ -1701,15 +1758,18 @@ where $$\tau_{k}$$ is the ACT/360 accrual of the k-th quarter, P(t) = (1 + r(t))
 
 The gap between a CDS-equivalent spread and the bond spread at the same maturity is a model basis: a bond loses its price less the recovery at default while a CDS pays the face value less the recovery, and the CDS premium stops at default. Traded CDS spreads also differ by the liquidity of each market, the cheapest-to-deliver option and the funding of the bonds.
 
-For more information, see the following sources:
-
-- O'Kane, D. (2008). "Modelling Single-name and Multi-name Credit Derivatives." Wiley, ch. 5 to 7.
-- Markit (2009). "ISDA CDS Standard Model."
-- Hull, J.C. and White, A. (2000). "Valuing Credit Default Swaps I: No Counterparty Default Risk." The Journal of Derivatives, 8(1), 29-40.
-
-Referenced against QuantLib's CreditDefaultSwap with the IsdaCdsEngine and FinancePy's CDS. For a single name with spreads or hazard rates of your own, use `cds_model.get_credit_default_swap` and `cds_model.get_cds_implied_hazard_rates`.
+For a single name with spreads or hazard rates of your own, use `cds_model.get_credit_default_swap` and `cds_model.get_cds_implied_hazard_rates`.
 
 **Also known as:** CDS spread, CDS-equivalent spread, credit default swap premium, bond-implied CDS spread.
+
+**References:**
+
+- paper | O'Kane, D. (2008). "Modelling Single-name and Multi-name Credit Derivatives." Wiley, ch. 5 to 7.
+- paper | Markit (2009). "ISDA CDS Standard Model."
+- paper | Hull, J.C. and White, A. (2000). "Valuing Credit Default Swaps I: No Counterparty Default Risk." The Journal of Derivatives, 8(1), 29-40.
+- library | Referenced against QuantLib's [CreditDefaultSwap](https://www.quantlib.org/reference/class_quant_lib_1_1_credit_default_swap.html){:target="_blank"}
+- library | Referenced against QuantLib's [IsdaCdsEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_isda_cds_engine.html){:target="_blank"}
+- library | Shares similar logic as FinancePy's [CDS](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/credit/cds.py#L262){:target="_blank"}
 
 **Args:**
 
@@ -1765,13 +1825,13 @@ Which returns:
 ---
 
 ## get_moodys_corporate_bond_yields
-Retrieves Moody's seasoned corporate bond yields for Aaa (the highest rating) and Baa (the lowest investment grade rating) US corporate bonds, the longest running corporate bond yield benchmark there is: daily from 1986 and monthly from 1919.
+Retrieves Moody's seasoned corporate bond yields for Aaa (the highest rating) and Baa (the lowest investment grade rating) US corporate bonds: what the safest and the riskiest investment grade companies pay to borrow, the longest running corporate bond yield benchmark there is, daily from 1986 and monthly from 1919.
 
-With spread=True the spreads over the 10-year Treasury yield are returned instead, together with the Baa minus Aaa spread, the classic measure of default risk in the academic literature (e.g. Fama and French, 1989), which widens sharply in recessions. Monthly spreads start in 1953, when the monthly 10-year Treasury yield does.
+The spreads over the 10-year Treasury yield can be returned instead, together with the Baa minus Aaa spread, the classic measure of default risk in the academic literature (e.g. Fama and French, 1989), which widens sharply in recessions. Monthly spreads start in 1953, when the monthly 10-year Treasury yield does.
 
 Monthly values are the averages over the month, as Moody's publishes them; weekly values are the yields on the last day of each week (weeks end on Friday).
 
-The formula is as follows (spread=True only):
+The formula of the spreads is as follows:
 
 $$
 \text{Aaa} = \text{Aaa Yield} - \text{10-Year} \;\text{Treasury Yield},\;\; \text{and Baa likewise}
@@ -1789,10 +1849,10 @@ The data comes from FRED, so a free FRED API key is required. The yields and spr
 
 **Args:**
 
-- <u>period (str, optional):</u> Whether to return the daily, weekly, monthly, quarterly or
-yearly data. Weekly takes the last day of every week; quarterly and yearly
-average the monthly averages of the complete quarters and years. Defaults to
-"daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily" (daily),
+"weekly" (the last day of every week), "monthly" (monthly averages), "quarterly"
+and "yearly" (the averages of the monthly averages of the complete quarters and
+years). Defaults to "daily".
 - <u>spread (bool, optional):</u> Whether to return the spreads over the 10-year Treasury
 yield instead of the yields. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1808,7 +1868,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The "Aaa" and "Baa" yields, or with spread=True the "Aaa", "Baa" and
+pd.DataFrame: The "Aaa" and "Baa" yields, or as spreads the "Aaa", "Baa" and
 "Baa - Aaa" spreads.
 
 **As an example:**
@@ -1954,8 +2014,8 @@ Weekly and monthly periods take the index on the last day of each period.
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The areas to include, e.g. 'Euro Area'
 or ['United States', 'United Kingdom']. Defaults to None, which returns all of them.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily", "weekly",
+"monthly". Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
@@ -1997,7 +2057,9 @@ Which returns:
 ---
 
 ## get_forward_rate
-Calculates the implied forward rates between pairs of maturities of a country's zero-coupon (spot) yield curve on a day. The forward rate is the interest rate, implied by that day's curve, for a loan that starts at a future date: it follows from no-arbitrage pricing rather than being a forecast of future rates, and contains a term premium.
+Calculates the implied forward rates between pairs of maturities of a country's zero-coupon (spot) yield curve on a day: the interest rate, implied by that day's curve, for a loan that starts at a future date.
+
+It follows from no-arbitrage pricing rather than being a forecast of future rates, and contains a term premium.
 
 The formula is as follows:
 
@@ -2023,7 +2085,7 @@ $$
 t_{2} = \text{Far maturity},\;\; \text{in years}
 $$
 
-The curve is the zero-coupon curve of `get_zero_coupon_curve`, bootstrapped from the country's government bond par yields and annually compounded, so the forward rate is annually compounded as well. By default (interpolation="linear_par") it holds the zero rate of every coupon date the bootstrap solves for, not only those of the quoted maturities, and is linear between them; another interpolation bootstraps the curve with that interpolation, see `get_zero_coupon_curve`. For a curve of your own, use `yieldcurve_model.get_forward_rate`.
+The curve is the zero-coupon curve of `get_zero_coupon_curve`, bootstrapped from the country's government bond par yields and annually compounded, so the forward rate is annually compounded as well. By default (linear par interpolation) it holds the zero rate of every coupon date the bootstrap solves for, not only those of the quoted maturities, and is linear between them; another interpolation bootstraps the curve with that interpolation, see `get_zero_coupon_curve`. For a curve of your own, use `yieldcurve_model.get_forward_rate`.
 
 **Also known as:** implied forward rate, forward-forward rate.
 
@@ -2037,10 +2099,11 @@ maturities), in years or as labels such as '10Y'. Defaults to None, 5 to 10 year
 "United States".
 - <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
 before it with a curve. Defaults to None, the end date.
-- <u>interpolation (str, optional):</u> How the zero-coupon curve is read between its
-maturities: "linear_par", "linear_zero", "log_linear", "natural_cubic",
-"monotone_cubic" or "monotone_convex", see `get_zero_coupon_curve`.
-Defaults to "linear_par".
+- <u>interpolation (str, optional):</u> How the zero-coupon curve is read between its maturities, see
+`get_zero_coupon_curve`. Options are: "linear_par" (linear annually compounded zero rates on every
+coupon date), "linear_zero" (linear zero rates), "log_linear" (linear log discount factors),
+"natural_cubic" (a natural cubic spline), "monotone_cubic" (a monotone cubic spline), "monotone_convex"
+(Hagan and West's monotone convex method). Defaults to "linear_par".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2077,7 +2140,7 @@ Which returns:
 ---
 
 ## get_par_yield
-Calculates the par yields of any maturity from a country's zero-coupon (spot) yield curve on a day. The par yield for a maturity is the coupon rate a newly issued bond of that maturity needs so that, discounted with the spot curve, its price equals par.
+Calculates the par yields of any maturity from a country's zero-coupon (spot) yield curve on a day: the coupon rate a newly issued bond of each maturity needs so that, discounted with the spot curve, its price equals par.
 
 The government bond yield curve quotes par yields at its own maturities; this gives the par yield of any maturity in between (such as 4 or 15 years) from the zero-coupon rates of every coupon date the bootstrap of `get_zero_coupon_curve` solves for, so a maturity on a coupon date reprices the par yield the bootstrap assumed there and a maturity between coupon dates is interpolated on the zero-coupon rates.
 
@@ -2091,7 +2154,7 @@ $$
 \text{Par Yield} = \frac{\text{Frequency} \cdot (1 - \operatorname{DF}(t_{n}))}{\sum(\operatorname{DF}(t_{i})) - a},\;\; \text{over}\;\; \text{the remaining coupons}\; i = 1,\; \ldots,\; n
 $$
 
-where Spot Rate(τ) is the zero-coupon rate of `get_zero_coupon_curve` at $$\tau$$ years, restated from annual compounding to the country's coupon frequency (twice a year, once for Sweden and Norway) and interpolated linearly between the bills and the coupon dates of the bootstrap (or read with another interpolation, see below), a is the elapsed fraction of the current coupon period (0 on a coupon date) and $$t_{i} = i - a$$ is the time of the i-th coupon in periods. With an interpolation other than "linear_par" the zero-coupon curve is bootstrapped with that interpolation (see `get_zero_coupon_curve`), so every quoted par yield reprices exactly and the maturities in between follow the interpolation. The par yield is a nominal annual coupon rate paid at the coupon frequency, like the government bond yield curve. For a curve of your own, use `yieldcurve_model.get_par_yield`.
+where Spot Rate(τ) is the zero-coupon rate of `get_zero_coupon_curve` at $$\tau$$ years, restated from annual compounding to the country's coupon frequency (twice a year, once for Sweden and Norway) and interpolated linearly between the bills and the coupon dates of the bootstrap (or read with another interpolation, see below), a is the elapsed fraction of the current coupon period (0 on a coupon date) and $$t_{i} = i - a$$ is the time of the i-th coupon in periods. With an interpolation other than linear par the zero-coupon curve is bootstrapped with that interpolation (see `get_zero_coupon_curve`), so every quoted par yield reprices exactly and the maturities in between follow the interpolation. The par yield is a nominal annual coupon rate paid at the coupon frequency, like the government bond yield curve. For a curve of your own, use `yieldcurve_model.get_par_yield`.
 
 **Also known as:** par rate, par coupon rate.
 
@@ -2103,10 +2166,11 @@ or as labels such as '15Y'. Defaults to None, 1 to 30 years.
 "United States".
 - <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
 before it with a curve. Defaults to None, the end date.
-- <u>interpolation (str, optional):</u> How the zero-coupon curve is read between its
-maturities: "linear_par", "linear_zero", "log_linear", "natural_cubic",
-"monotone_cubic" or "monotone_convex", see `get_zero_coupon_curve`.
-Defaults to "linear_par".
+- <u>interpolation (str, optional):</u> How the zero-coupon curve is read between its maturities, see
+`get_zero_coupon_curve`. Options are: "linear_par" (linear annually compounded zero rates on every
+coupon date), "linear_zero" (linear zero rates), "log_linear" (linear log discount factors),
+"natural_cubic" (a natural cubic spline), "monotone_cubic" (a monotone cubic spline), "monotone_convex"
+(Hagan and West's monotone convex method). Defaults to "linear_par".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2153,18 +2217,21 @@ $$
 r(t) = \frac{1}{t} \cdot \text{∫} \;f(s) \,\mathrm{d}s,\;\; \text{from 0 to } t
 $$
 
-where P(t) is the discount factor and r(t) the continuously compounded zero rate of maturity t, read from the zero-coupon curve of `get_zero_coupon_curve` (bootstrapped from the par yields) with the interpolation. As the forward rate is the slope of r(t) t, it shows every kink of the interpolation: it jumps at every maturity of "linear_zero" and "linear_par" and is flat between those of "log_linear". The default, Hagan and West's (2006) monotone convex method, gives a continuous forward curve that keeps the discrete forwards between the maturities and does not oscillate, which is why it is the default here (the other curve methods default to "linear_par", the curve of `get_zero_coupon_curve`). At a maturity of the curve itself the forward is that of the interval that starts there; beyond the last maturity the zero rate, and so the forward, is held at the last zero rate.
+where P(t) is the discount factor and r(t) the continuously compounded zero rate of maturity t, read from the zero-coupon curve of `get_zero_coupon_curve` (bootstrapped from the par yields) with the interpolation. As the forward rate is the slope of r(t) t, it shows every kink of the interpolation: it jumps at every maturity of the linear zero and linear par interpolations and is flat between those of the log-linear one. The default, Hagan and West's (2006) monotone convex method, gives a continuous forward curve that keeps the discrete forwards between the maturities and does not oscillate, which is why it is the default here (the other curve methods default to linear par, the curve of `get_zero_coupon_curve`). At a maturity of the curve itself the forward is that of the interval that starts there; beyond the last maturity the zero rate, and so the forward, is held at the last zero rate.
 
 The instantaneous forward rate is continuously compounded, as it is defined.
 
-For more information, see the following papers:
-
-- Hagan, P.S. and West, G. (2006). "Interpolation Methods for Curve Construction." Applied Mathematical Finance, 13(2), 89-129.
-- Hagan, P.S. and West, G. (2008). "Methods for Constructing a Yield Curve." Wilmott Magazine, May, 70-81.
-
-Referenced against QuantLib's forward rates of its piecewise curves ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}), see `get_zero_coupon_curve`.
-
 **Also known as:** instantaneous forward rate, forward curve, short forward curve.
+
+**References:**
+
+- paper | Hagan, P.S. and West, G. (2006). "Interpolation Methods for Curve Construction." Applied Mathematical Finance, 13(2), 89-129.
+- paper | Hagan, P.S. and West, G. (2008). "Methods for Constructing a Yield Curve." Wilmott Magazine, May, 70-81.
+- library | Referenced against QuantLib's [ZeroCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_interpolated_zero_curve.html){:target="_blank"} (linear_zero)
+- library | Referenced against QuantLib's [DiscountCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_interpolated_discount_curve.html){:target="_blank"} (log_linear)
+- library | Referenced against QuantLib's [NaturalCubicZeroCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_interpolated_zero_curve.html){:target="_blank"} (natural_cubic)
+- library | Referenced against QuantLib's [MonotonicCubicZeroCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_interpolated_zero_curve.html){:target="_blank"} (monotone_cubic)
+- library | Referenced against QuantLib's [PiecewiseYieldCurve with ConvexMonotone](https://www.quantlib.org/reference/class_quant_lib_1_1_convex_monotone.html){:target="_blank"} (monotone_convex)
 
 **Args:**
 
@@ -2175,9 +2242,11 @@ labels such as '6M' (a list or a comma-separated string). Defaults to None,
 "United States".
 - <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD), or the last day
 before it with a curve. Defaults to None, the end date.
-- <u>interpolation (str, optional):</u> "monotone_convex", "linear_zero", "log_linear",
-"natural_cubic", "monotone_cubic" or "linear_par", see
-`get_zero_coupon_curve`. Defaults to "monotone_convex".
+- <u>interpolation (str, optional):</u> How the zero-coupon curve is read between its maturities, see
+`get_zero_coupon_curve`. Options are: "linear_par" (linear annually compounded zero rates on every
+coupon date), "linear_zero" (linear zero rates), "log_linear" (linear log discount factors),
+"natural_cubic" (a natural cubic spline), "monotone_cubic" (a monotone cubic spline), "monotone_convex"
+(Hagan and West's monotone convex method). Defaults to "monotone_convex".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
 to. Defaults to None, which uses the rounding of the class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2215,7 +2284,9 @@ Which returns:
 ---
 
 ## get_smith_wilson_curve
-Extends a country's government bond yield curve to any maturity with the Smith-Wilson method (Smith and Wilson, 2001), as EIOPA builds the Solvency II risk-free rate term structures: the curve prices every bill and par bond of the curve exactly and, beyond its last liquid point, converges to an ultimate forward rate (UFR). Insurers and pension funds discount liabilities of 50 to 100 years with such a curve, longer than any bond that trades.
+Extends a country's government bond yield curve to any maturity with the Smith-Wilson method (Smith and Wilson, 2001): the risk-free curve that prices every bill and par bond of the curve exactly and, beyond its last liquid point, converges to an ultimate forward rate (UFR), as EIOPA builds the Solvency II risk-free rate term structures.
+
+Insurers and pension funds discount liabilities of 50 to 100 years with such a curve, longer than any bond that trades.
 
 The formula is as follows:
 
@@ -2237,18 +2308,19 @@ $$
 
 where $$u_{j}$$ are the cash flow times of the instruments, C their cash flows and m their prices. The instruments are the curve's quotes of the day up to the last liquid point: the bills (a year or less) as zero-coupon bonds whose price follows from their yield in the country's quote convention, and the longer maturities as par bonds paying their par yield in coupons twice a year (once for Sweden and Norway) at a price of par. The Euro Area and German curves are zero-coupon curves, so every maturity is a zero-coupon bond.
 
-Alpha sets how fast the forward rate converges to the UFR. By default it is set as EIOPA does: the smallest alpha of at least 0.05 for which the instantaneous forward rate at the convergence point lies within a basis point of $$\omega$$, with the convergence point at the later of 60 years and the last liquid point plus 40 years (see `smith_wilson_model.get_smith_wilson_alpha`).
+The convergence speed $$\alpha$$, EIOPA's alpha, sets how fast the forward rate converges to the UFR. By default it is set as EIOPA does: the smallest alpha of at least 0.05 for which the instantaneous forward rate at the convergence point lies within a basis point of $$\omega$$, with the convergence point at the later of 60 years and the last liquid point plus 40 years (see `smith_wilson_model.get_smith_wilson_alpha`).
 
 The zero rates are annually compounded, as EIOPA publishes them and as `get_zero_coupon_curve` returns them, and the instantaneous forward rate is continuously compounded, so it converges to ln(1 + UFR).
 
-For more information, see the following sources:
-
-- Smith, A. and Wilson, T. (2001). "Fitting Yield Curves with Long Term Constraints." Research Notes, Bacon and Woodrow.
-- EIOPA (2022). "Technical Documentation of the Methodology to Derive EIOPA's Risk-Free Interest Rate Term Structures." EIOPA-BoS-22/409.
-
-Referenced against rateslib's SmithWilsonCurve ([https://rateslib.com](https://rateslib.com){:target="_blank"}) and EIOPA's October 2026 euro curve, whose Smith-Wilson coefficients, alpha (0.068369) and rates it reproduces from the same par swaps.
+EIOPA's October 2026 euro curve, its Smith-Wilson coefficients, alpha (0.068369) and rates are reproduced from the same par swaps.
 
 **Also known as:** Smith-Wilson extrapolation, UFR curve, Solvency II curve extrapolation, ultimate forward rate.
+
+**References:**
+
+- paper | Smith, A. and Wilson, T. (2001). "Fitting Yield Curves with Long Term Constraints." Research Notes, Bacon and Woodrow.
+- paper | EIOPA (2022). "Technical Documentation of the Methodology to Derive EIOPA's Risk-Free Interest Rate Term Structures." EIOPA-BoS-22/409.
+- library | Referenced against rateslib's [SmithWilsonCurve](https://rateslib.com/py/en/3.0.x/api/rateslib.curves.SmithWilsonCurve.html){:target="_blank"}
 
 **Args:**
 
@@ -2261,8 +2333,8 @@ labels such as '50Y' (a list or a comma-separated string). Defaults to None,
 before it with a curve. Defaults to None, the end date.
 - <u>ultimate_forward_rate (float, optional):</u> The UFR, annually compounded (decimal);
 EIOPA publishes it every year per currency. Defaults to 0.033.
-- <u>alpha (float &#124; None, optional):</u> The speed of convergence, above 0. Defaults to
-None, EIOPA's convergence criterion.
+- <u>convergence_speed (float &#124; None, optional):</u> The speed $$\alpha$$ of convergence to the UFR,
+EIOPA's alpha, above 0. Defaults to None, EIOPA's convergence criterion.
 - <u>last_liquid_point (float &#124; None, optional):</u> The longest maturity, in years, whose
 quote the curve keeps. Defaults to None, the longest maturity of the curve.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
@@ -2310,7 +2382,9 @@ Which returns:
 ---
 
 ## get_yield_curve_spread
-Calculates the spreads between pairs of maturities of a country's government bond yield curve on a day, e.g. the widely followed 10-year minus 2-year and 10-year minus 3-month Treasury spreads. A positive spread indicates a "normal" upward-sloping curve, while a negative spread ("inversion") has historically been used as a leading indicator of an economic slowdown.
+Calculates the spreads between pairs of maturities of a country's government bond yield curve on a day: the slope of the curve, e.g. the widely followed 10-year minus 2-year and 10-year minus 3-month Treasury spreads.
+
+A positive spread indicates a "normal" upward-sloping curve, while a negative spread ("inversion") has historically been used as a leading indicator of an economic slowdown.
 
 The formula is as follows:
 
@@ -2433,15 +2507,17 @@ Which returns:
 ---
 
 ## get_government_bond_yield
-Get the government bond yield for a variety of countries over time from the OECD. By default this is the long-term (10-year) government bond yield; set short_term=True to get the short-term (3-month) rate instead. The two maturities are described below.
+Get the government bond yield for a variety of countries over time from the OECD: what governments pay to borrow, by default the long-term (10-year) government bond yield or else the short-term (3-month) rate.
 
-Long-term (short_term=False): long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
+The two maturities are described below.
+
+Long-term: long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
 
 In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth.
 
 **See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
 
-Short-term (short_term=True): short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage. They are based on three-month money market rates where available; the OECD source specifically returns the 3-month interbank offered rate rather than a government bill yield, so for most countries it tracks the central bank's policy rate closely.
+Short-term: short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage. They are based on three-month money market rates where available; the OECD source specifically returns the 3-month interbank offered rate rather than a government bill yield, so for most countries it tracks the central bank's policy rate closely.
 
 **See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
 
@@ -2451,9 +2527,9 @@ Short-term (short_term=True): short-term interest rates are the rates at which s
 
 - <u>short_term (bool, optional):</u> Whether to return the short-term interest rate. Defaults to False.
 This means that the long-term interest rate will be returned.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which returns the monthly data (quarterly when the class was
-created with quarterly=True).
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly", "quarterly",
+"yearly", None (the monthly data, or the quarterly data when the class was created
+with quarterly data). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -2468,7 +2544,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: A DataFrame containing the long-term (10-year) government bond yield, or the
-short-term (3-month) interest rate when short_term=True.
+short-term (3-month) interest rate.
 
 **As an example:**
 
@@ -2498,7 +2574,9 @@ Which returns:
 ---
 
 ## get_government_bond_yield_curve
-Retrieves the government bond yield curve of a variety of countries, every maturity a country's government borrows at, from treasury bills to bonds of 30 years and more. The yield curve is the basis for discounting cash flows and pricing bonds, and its shape is one of the most watched signals in markets: an inverted curve, with short rates above long rates, has preceded most recessions.
+Retrieves the government bond yield curve of a variety of countries: the yield of every maturity a country's government borrows at, from treasury bills to bonds of 30 years and more.
+
+The yield curve is the basis for discounting cash flows and pricing bonds, and its shape is one of the most watched signals in markets: an inverted curve, with short rates above long rates, has preceded most recessions.
 
 Every curve comes from the official source:
 
@@ -2512,7 +2590,7 @@ Every curve comes from the official source:
 - Norway: Norges Bank's generic government bond yields, 3 to 10 years.
 - Australia: the Reserve Bank of Australia's government bond yields interpolated to 2, 3, 5 and 10 years, from 2013.
 
-With period="monthly", every other European Union member, such as France, Italy, Spain, the Netherlands and Poland, is included with its 10-year yield, the long-term interest rate for convergence purposes the ECB publishes monthly. For other countries, see `get_government_bond_yield` for the monthly 3-month and 10-year rates of around forty countries from the OECD. Only the requested countries are retrieved, and only the days that are not cached yet.
+With monthly data, every other European Union member, such as France, Italy, Spain, the Netherlands and Poland, is included with its 10-year yield, the long-term interest rate for convergence purposes the ECB publishes monthly. For other countries, see `get_government_bond_yield` for the monthly 3-month and 10-year rates of around forty countries from the OECD. Only the requested countries are retrieved, and only the days that are not cached yet.
 
 The yields are returned as decimal fractions per annum (0.0419 for 4.19%), with one column per country and maturity, sorted from the shortest to the longest maturity. Each curve is returned as its source publishes it: the Euro Area and Germany curves are continuously compounded zero-coupon rates, while the other countries publish par or benchmark bond yields, which compound with the coupon frequency of their bonds. The two are not interchangeable: a continuously compounded zero rate r equals an annually compounded zero rate of exp(r) - 1, and a par yield is the coupon rate at which a bond prices at par, which differs from the zero rate of the same maturity whenever the curve is not flat. Weekly and monthly periods take the yields on the last trading day of each period (weeks end on Friday).
 
@@ -2522,11 +2600,11 @@ The yields are returned as decimal fractions per annum (0.0419 for 4.19%), with 
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
 "United States", "Euro Area", "Germany", "United Kingdom", "Japan", "Canada",
-"Sweden", "Norway" and "Australia", and with period="monthly" any European
-Union member.
+"Sweden", "Norway" and "Australia", and with monthly data any European Union
+member.
 Defaults to None, which retrieves every country.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the data by. Defaults to 1.
@@ -2569,7 +2647,9 @@ Which returns:
 ---
 
 ## get_treasury_rates
-Retrieves the daily U.S. Treasury par yield curve rates as officially published by the U.S. Department of the Treasury, covering every maturity from 1 Month through 30 Year in a single dataset. This is the official, risk-free curve widely used as the discount curve for bond valuation and as the benchmark for credit spreads.
+Retrieves the daily U.S. Treasury par yield curve rates as officially published by the U.S. Department of the Treasury: the yields at which the US government borrows, for every maturity from 1 Month through 30 Year in a single dataset.
+
+This is the official, risk-free curve widely used as the discount curve for bond valuation and as the benchmark for credit spreads.
 
 With a FinancialModelingPrep API key the rates come from FinancialModelingPrep, and without one, or when the key's plan does not include them, from the U.S. Department of the Treasury directly, which gives the same figures.
 
@@ -2646,7 +2726,9 @@ Which returns:
 ---
 
 ## get_zero_coupon_curve
-Calculates the zero-coupon (spot) yield curve of a country by bootstrapping its government bond par yields. A par yield is the coupon at which a bond trades at par, so it mixes the discount rates of every coupon date; the zero-coupon rate of a maturity is the single rate that discounts a payment at that date. Zero-coupon rates are what bonds and other cash flows are discounted with, and what forward rates and the curve models (Nelson-Siegel, Vasicek) are built on.
+Calculates the zero-coupon (spot) yield curve of a country by bootstrapping its government bond par yields: the single rate that discounts a payment at each maturity.
+
+A par yield is the coupon at which a bond trades at par, so it mixes the discount rates of every coupon date. Zero-coupon rates are what bonds and other cash flows are discounted with, and what forward rates and the curve models (Nelson-Siegel, Vasicek) are built on.
 
 Maturities up to one year are treasury bills, which pay no coupon, so their yield only needs converting to annual compounding: US bill yields are bond-equivalent yields (simple interest up to half a year), Canadian bill yields simple interest on a 365-day year and Swedish bill yields simple interest on a 360-day year. Beyond that the par yields are interpolated linearly to every coupon date and each discount factor follows from the earlier ones:
 
@@ -2656,34 +2738,40 @@ $$
 
 with c the par yield of maturity $$t_{n}$$ and f the coupons per year (two, and one for Sweden and Norway). The curves of the Euro Area and Germany are estimated as zero-coupon curves by the ECB and the Bundesbank, which publish them continuously compounded; they are converted to annual compounding like the others. A curve needs a maturity of a year or less to start from, so the United Kingdom, Norway and Australia (and Canada before its bill yields start) are not covered.
 
-How the curve is read between the quoted maturities is a choice (Hagan and West, 2006). By default (interpolation="linear_par") the par yields are interpolated linearly to every coupon date, as above, and the zero rates linearly between those dates. The other interpolations bootstrap the zero curve itself: the coupon dates of a bond lie between quoted maturities, so their discount factors are read from the curve with the interpolation, and the discount factor of each maturity is solved so that its par bond prices at par on that curve. For the interpolations whose shape depends on the maturities further out (the cubic splines and monotone convex) the bootstrap is repeated until the curve no longer changes (to 1e-13). They work on continuously compounded zero rates r(t), with $$P (t) = e^{- r (t) t}$$:
+How the curve is read between the quoted maturities is a choice (Hagan and West, 2006). By default (linear par interpolation) the par yields are interpolated linearly to every coupon date, as above, and the zero rates linearly between those dates. The other interpolations bootstrap the zero curve itself: the coupon dates of a bond lie between quoted maturities, so their discount factors are read from the curve with the interpolation, and the discount factor of each maturity is solved so that its par bond prices at par on that curve. For the interpolations whose shape depends on the maturities further out (the cubic splines and monotone convex) the bootstrap is repeated until the curve no longer changes (to 1e-13). They work on continuously compounded zero rates r(t), with $$P (t) = e^{- r (t) t}$$:
 
-- "linear_zero": r(t) linear between the maturities.
-- "log_linear": ln P(t) linear between the maturities, so the instantaneous forward rate is flat between them (piecewise flat forward, Hagan and West's raw interpolation).
-- "natural_cubic": a natural cubic spline on r(t).
-- "monotone_cubic": a cubic on r(t) with the slopes of the natural spline held by Hyman's (1983) filter, so it does not overshoot where the rates rise or fall.
-- "monotone_convex": Hagan and West's (2006) monotone convex method on the forward rates, which keeps the discrete forwards between the maturities, gives a continuous forward curve and does not oscillate.
+- Linear zero: r(t) linear between the maturities.
+- Log-linear: ln P(t) linear between the maturities, so the instantaneous forward rate is flat between them (piecewise flat forward, Hagan and West's raw interpolation).
+- Natural cubic: a natural cubic spline on r(t).
+- Monotone cubic: a cubic on r(t) with the slopes of the natural spline held by Hyman's (1983) filter, so it does not overshoot where the rates rise or fall.
+- Monotone convex: Hagan and West's (2006) monotone convex method on the forward rates, which keeps the discrete forwards between the maturities, gives a continuous forward curve and does not oscillate.
 
 The zero rate before the first maturity is that of the first maturity (monotone convex extrapolates the forward instead) and beyond the last maturity it is held at the last one. The curves of the Euro Area and Germany are zero-coupon curves already, so the interpolation only matters between their maturities. Whatever the interpolation, the rates returned are annually compounded.
 
-For more information, see the following papers:
-
-- Hagan, P.S. and West, G. (2006). "Interpolation Methods for Curve Construction." Applied Mathematical Finance, 13(2), 89-129.
-- Hyman, J.M. (1983). "Accurate Monotonicity Preserving Cubic Interpolation." SIAM Journal on Scientific and Statistical Computing, 4(4), 645-654.
-
-The interpolations and their bootstrap are referenced against QuantLib's PiecewiseLinearZero, PiecewiseLogLinearDiscount, PiecewiseNaturalCubicZero, MonotonicCubicZeroCurve and PiecewiseConvexMonotoneForward (without forced positivity, quadraticity 0 and monotonicity 1), [https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}. The monotone cubic sets the slope to zero at a local extremum of the zero rates, where QuantLib applies Hyman's extended filter.
+QuantLib's convex monotone forward curve is taken without forced positivity, quadraticity 0 and monotonicity 1. The monotone cubic sets the slope to zero at a local extremum of the zero rates, where QuantLib applies Hyman's extended filter.
 
 **Also known as:** spot curve, zero curve, bootstrapped curve, discount curve, curve interpolation, monotone convex, flat forward.
+
+**References:**
+
+- paper | Hagan, P.S. and West, G. (2006). "Interpolation Methods for Curve Construction." Applied Mathematical Finance, 13(2), 89-129.
+- paper | Hyman, J.M. (1983). "Accurate Monotonicity Preserving Cubic Interpolation." SIAM Journal on Scientific and Statistical Computing, 4(4), 645-654.
+- library | Referenced against QuantLib's [PiecewiseYieldCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_piecewise_yield_curve.html){:target="_blank"}
+- library | Referenced against QuantLib's [FixedRateBondHelper](https://www.quantlib.org/reference/class_quant_lib_1_1_fixed_rate_bond_helper.html){:target="_blank"}
+- library | Referenced against QuantLib's [DepositRateHelper](https://www.quantlib.org/reference/class_quant_lib_1_1_deposit_rate_helper.html){:target="_blank"}
+- library | Referenced against QuantLib's [PiecewiseYieldCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_piecewise_yield_curve.html){:target="_blank"} (linear_par)
 
 **Args:**
 
 - <u>countries (list[str] &#124; str, optional):</u> The countries, see
 `get_government_bond_yield_curve`. Defaults to "United States".
-- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
-Defaults to "daily".
-- <u>interpolation (str, optional):</u> "linear_par", "linear_zero", "log_linear",
-"natural_cubic", "monotone_cubic" or "monotone_convex". Defaults to
-"linear_par".
+- <u>period (str, optional):</u> The frequency of the curves. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
+- <u>interpolation (str, optional):</u> How the curve is read between the quoted maturities. Options are:
+"linear_par" (linear annually compounded zero rates on every coupon date), "linear_zero" (linear zero
+rates), "log_linear" (linear log discount factors), "natural_cubic" (a natural cubic spline),
+"monotone_cubic" (a monotone cubic spline), "monotone_convex" (Hagan and West's monotone convex method).
+Defaults to "linear_par".
 - <u>maturities (float &#124; str &#124; list &#124; None, optional):</u> The maturities to return the
 zero rates of, in years or as labels such as '4Y' (a list or a
 comma-separated string). Defaults to None, the maturities the curve quotes.
@@ -2723,7 +2811,9 @@ Which returns:
 ---
 
 ## get_nelson_siegel_svensson
-Fits the Nelson-Siegel-Svensson model to the zero-coupon yield curve of a country on every date. The model describes a whole curve with a few parameters, which smooths out the noise of individual maturities, gives a yield for any maturity in between and turns the history of curves into a history of a handful of factors. It is the model central banks such as the ECB, the Bundesbank and the Federal Reserve (Gürkaynak, Sack and Wright) publish their curves with.
+Fits the Nelson-Siegel-Svensson model to the zero-coupon yield curve of a country on every date: the level, slope and curvature factors that describe each curve with a few parameters.
+
+The model smooths out the noise of individual maturities, gives a yield for any maturity in between and turns the history of curves into a history of a handful of factors. It is the model central banks such as the ECB, the Bundesbank and the Federal Reserve (Gürkaynak, Sack and Wright) publish their curves with.
 
 The Nelson-Siegel model has a level $$\beta_{0}$$ (the yield at an infinite maturity), a slope $$\beta_{1}$$ (the short end minus the long end) and a curvature $$\beta_{2}$$ (a hump that peaks at about $$1.8 \tau_{1}$$ years):
 
@@ -2731,27 +2821,28 @@ $$
 y (m) = \beta_{0} + \beta_{1} (1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) + \beta_{2} [(1 - e^{- m / \tau_{1}}) / (m / \tau_{1}) - e^{- m / \tau_{1}}]
 $$
 
-Svensson adds a second curvature $$\beta_{3}$$ with its own decay $$\tau_{2}$$, which fits the long end better. With the dozen maturities a government curve has, the six Svensson parameters are weakly identified, as the level and the second curvature can offset each other; set svensson=False for the three factors to read as level, slope and curvature (Diebold and Li, 2006).
+Svensson adds a second curvature $$\beta_{3}$$ with its own decay $$\tau_{2}$$, which fits the long end better. With the dozen maturities a government curve has, the six Svensson parameters are weakly identified, as the level and the second curvature can offset each other; the Nelson-Siegel model has three factors that read as level, slope and curvature (Diebold and Li, 2006).
 
 Given the decays the betas follow exactly from least squares, so the decays are searched on a grid and refined for every date. The second decay is kept at least 1.5 times the first and the first at least a third of the shortest maturity, and the level at or above the lower of zero and the longest yield (as Gürkaynak, Sack and Wright keep it at or above zero), so that the curve extrapolates sensibly beyond the maturities it is fitted to. The curve is the zero-coupon curve of `get_zero_coupon_curve`, so the countries are those it covers that have at least as many maturities as the model has parameters. The model is fitted to the continuously compounded rates, as the ECB, the Bundesbank and the Federal Reserve fit it, so the parameters compare with theirs; the yields at `maturities` are annually compounded, like those of `get_zero_coupon_curve`.
 
-For more information, see the following papers:
-
-- Nelson, C.R. and Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489.
-- Svensson, L.E.O. (1994). "Estimating and Interpreting Forward Interest Rates: Sweden 1992-1994." NBER Working Paper 4871.
-- Diebold, F.X. and Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364.
-- Gürkaynak, R.S., Sack, B. and Wright, J.H. (2007). "The U.S. Treasury Yield Curve: 1961 to the Present." Journal of Monetary Economics, 54(8), 2291-2304.
-
 **Also known as:** NSS, Svensson curve, Nelson-Siegel curve, yield curve fitting, level slope curvature factors.
+
+**References:**
+
+- paper | Nelson, C.R. and Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489.
+- paper | Svensson, L.E.O. (1994). "Estimating and Interpreting Forward Interest Rates: Sweden 1992-1994." NBER Working Paper 4871.
+- paper | Diebold, F.X. and Li, C. (2006). "Forecasting the Term Structure of Government Bond Yields." Journal of Econometrics, 130(2), 337-364.
+- paper | Gürkaynak, R.S., Sack, B. and Wright, J.H. (2007). "The U.S. Treasury Yield Curve: 1961 to the Present." Journal of Monetary Economics, 54(8), 2291-2304.
 
 **Args:**
 
 - <u>countries (list[str] &#124; str, optional):</u> The countries, see
 `get_zero_coupon_curve`. Defaults to "United States".
-- <u>period (str, optional):</u> Whether to fit the daily, weekly or monthly curves.
-Defaults to "daily".
-- <u>svensson (bool, optional):</u> Whether to fit the Svensson model (True) or the
-Nelson-Siegel model (False). Defaults to True.
+- <u>period (str, optional):</u> The frequency of the curves. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
+- <u>method (str, optional):</u> The model to fit. Options are: "svensson" (the six
+parameters of Svensson, 1994) or "nelson_siegel" (the three factors of Nelson and
+Siegel, 1987). Defaults to "svensson".
 - <u>maturities (list[float &#124; str] &#124; str &#124; None, optional):</u> The maturities, in years or
 as labels such as "3M" and "10Y" (a list or a comma-separated string), to
 return the fitted zero-coupon yields at instead of the parameters. Defaults
@@ -2837,19 +2928,19 @@ To first order, with $$D = (T - h) / (1 + z (T))$$ the modified duration (annual
 - Carry ≈ $$(z (T) - r) \times h$$
 - Roll-Down ≈ $$- D \times (z (T - h) - z (T))$$
 
-For more information, see the following sources:
-
-- Koijen, R.S.J., Moskowitz, T.J., Pedersen, L.H. and Vrugt, E.B. (2018). "Carry." Journal of Financial Economics, 127(2), 197-225.
-- Ilmanen, A. (2011). "Expected Returns: An Investor's Guide to Harvesting Market Rewards." Wiley, chapter 9.
-
 **Also known as:** bond carry, rolldown, roll yield, horizon return on an unchanged curve.
+
+**References:**
+
+- paper | Koijen, R.S.J., Moskowitz, T.J., Pedersen, L.H. and Vrugt, E.B. (2018). "Carry." Journal of Financial Economics, 127(2), 197-225.
+- paper | Ilmanen, A. (2011). "Expected Returns: An Investor's Guide to Harvesting Market Rewards." Wiley, chapter 9.
 
 **Args:**
 
 - <u>countries (list[str] &#124; str, optional):</u> The countries, see
 `get_zero_coupon_curve`. Defaults to "United States".
-- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the curves. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>horizon (float &#124; str, optional):</u> The holding period, in years or as a label such
 as "3M" or "1Y". Defaults to 0.25 (three months).
 - <u>maturities (list[float &#124; str] &#124; str &#124; None, optional):</u> The maturities of the
@@ -2898,18 +2989,18 @@ Calculates the principal components of a country's government bond yield curve: 
 
 The components are the eigenvectors of the covariance matrix of the yield changes (or levels), sorted by the share of the variance they explain. Their sign is arbitrary, so PC1 is oriented as a rise in all yields (its loadings sum to a positive number), PC2 as a steepening (the longest maturity loads above the shortest) and the others so that their loadings sum to a positive number. Maturities that are only published for part of the period (such as the 4-month Treasury bill from 2022) are left out, so that the analysis covers the full period.
 
-For more information, see the following paper:
-
-- Litterman, R. and Scheinkman, J. (1991). "Common Factors Affecting Bond Returns." The Journal of Fixed Income, 1(1), 54-61.
-
 **Also known as:** PCA of the yield curve, level slope curvature, term structure factors.
+
+**References:**
+
+- paper | Litterman, R. and Scheinkman, J. (1991). "Common Factors Affecting Bond Returns." The Journal of Fixed Income, 1(1), 54-61.
 
 **Args:**
 
 - <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
 Defaults to "United States".
-- <u>period (str, optional):</u> Whether to use the daily, weekly or monthly curves.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the curves. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>components (int, optional):</u> The number of components. Defaults to 3.
 - <u>changes (bool, optional):</u> Whether to analyze the changes of the yields, the usual
 choice as yields themselves are not stationary, or their levels. Defaults to True.
@@ -2956,7 +3047,9 @@ Which returns:
 ---
 
 ## get_term_premium
-Retrieves the Treasury term premia of Adrian, Crump and Moench (2013), as the Federal Reserve Bank of New York estimates them daily from 1961 for maturities of 1 to 10 years. A Treasury yield is split into the average short rate investors expect over the bond's life and the term premium: the extra yield they demand for holding a long bond instead of rolling over short ones. The split tells whether a move in long yields comes from expected monetary policy or from compensation for risk, such as inflation and fiscal uncertainty.
+Retrieves the Treasury term premia of Adrian, Crump and Moench (2013): the extra yield investors demand for holding a long Treasury instead of rolling over short ones, as the Federal Reserve Bank of New York estimates it daily from 1961 for maturities of 1 to 10 years.
+
+A Treasury yield is split into the average short rate investors expect over the bond's life and the term premium. The split tells whether a move in long yields comes from expected monetary policy or from compensation for risk, such as inflation and fiscal uncertainty.
 
 Adrian, T., Crump, R. K., & Moench, E. (2013). Pricing the Term Structure with Linear Regressions. Journal of Financial Economics, 110(1), 110-138. [https://doi.org/10.1016/j.jfineco.2013.04.009](https://doi.org/10.1016/j.jfineco.2013.04.009){:target="_blank"}
 
@@ -2970,8 +3063,8 @@ The term premium is a model estimate rather than an observed price: it rests on 
 
 **Args:**
 
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>maturity_years (list[int] &#124; str &#124; None, optional):</u> The maturities in years to keep,
 from 1 to 10, e.g. [2, 5, 10] (or "2,5,10"). Defaults to None, which keeps every
 maturity.
@@ -3017,9 +3110,11 @@ Which returns:
 ---
 
 ## get_eiopa_risk_free_rate
-Retrieves the risk-free interest rate term structures the European Insurance and Occupational Pensions Authority (EIOPA) publishes monthly: the curves European insurers must discount their liabilities with under Solvency II. They cover the euro and the currencies of every country of the European Economic Area, plus Switzerland, the United Kingdom, Australia, Canada, China, Colombia, Hong Kong, Japan, Taiwan and the United States, for maturities of 1 to 150 years. Beyond the last liquid maturity each curve converges to the ultimate forward rate (UFR), as Solvency II prescribes.
+Retrieves the risk-free interest rate term structures the European Insurance and Occupational Pensions Authority (EIOPA) publishes monthly: the curves European insurers must discount their liabilities with under Solvency II.
 
-Four curves are published: the basic spot curve (curve="spot_no_va"), the spot curve with the volatility adjustment (curve="spot_with_va"), and the basic curve after the interest rate shocks of the Solvency II standard formula (curve="shock_up" and curve="shock_down"). EIOPA ships the shocked worksheets as formulas without computed values, so they are computed here with those formulas: upwards by the relative shock per maturity and at least one percentage point, downwards by the relative shock with negative rates left unchanged. Every value is a decimal fraction (0.0358 for 3.58%), at the end of the month the release is for, and an annually compounded spot rate, as Solvency II defines the term structure: a rate r discounts a payment in t years with (1 + r)^(-t).
+They cover the euro and the currencies of every country of the European Economic Area, plus Switzerland, the United Kingdom, Australia, Canada, China, Colombia, Hong Kong, Japan, Taiwan and the United States, for maturities of 1 to 150 years. Beyond the last liquid maturity each curve converges to the ultimate forward rate (UFR), as Solvency II prescribes.
+
+Four curves are published: the basic spot curve, the spot curve with the volatility adjustment, and the basic curve after the upward and downward interest rate shocks of the Solvency II standard formula. EIOPA ships the shocked worksheets as formulas without computed values, so they are computed here with those formulas: upwards by the relative shock per maturity and at least one percentage point, downwards by the relative shock with negative rates left unchanged. Every value is a decimal fraction (0.0358 for 3.58%), at the end of the month the release is for, and an annually compounded spot rate, as Solvency II defines the term structure: a rate r discounts a payment in t years with (1 + r)^(-t).
 
 EIOPA's page links the releases from January 2023; each is a separate file, so only the months between the start and end date are downloaded, and a release is cached for a year since it does not change.
 
@@ -3034,8 +3129,10 @@ Up to the last liquid point the curve follows market rates (for the euro, swap r
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The currencies or countries to include,
 as EIOPA names them, e.g. 'Euro Area', 'United Kingdom' or 'United States'.
 Defaults to None, which returns all of them.
-- <u>curve (str, optional):</u> "spot_no_va", "spot_with_va", "shock_up" or "shock_down".
-Defaults to "spot_no_va".
+- <u>curve (str, optional):</u> The curve. Options are: "spot_no_va" (the basic spot curve),
+"spot_with_va" (the spot curve with the volatility adjustment), "shock_up" (the
+basic curve after the upward shock), "shock_down" (the basic curve after the
+downward shock). Defaults to "spot_no_va".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
@@ -3077,7 +3174,9 @@ Which returns:
 ---
 
 ## get_eiopa_symmetric_adjustment
-Retrieves the symmetric adjustment of the equity capital charge of Solvency II, the "equity dampener" EIOPA publishes, daily from 1991, and the equity charges of the standard formula it results in. The adjustment raises the charge when equity prices are above their three-year average and lowers it when they are below, between -10% and +10%, so insurers are not forced to sell equities into a falling market. With get_eiopa_risk_free_rate it completes the market inputs of the standard formula's market risk module.
+Retrieves the symmetric adjustment of the equity capital charge of Solvency II: how much the "equity dampener" EIOPA publishes, daily from 1991, raises or lowers the equity charges of the standard formula.
+
+The adjustment raises the charge when equity prices are above their three-year average and lowers it when they are below, between -10% and +10%, so insurers are not forced to sell equities into a falling market. With get_eiopa_risk_free_rate it completes the market inputs of the standard formula's market risk module.
 
 The formula is as follows:
 
@@ -3097,8 +3196,8 @@ Every value is a decimal fraction (0.0771 for 7.71%). Weekly and monthly periods
 
 **Args:**
 
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
@@ -3139,9 +3238,11 @@ Which returns:
 ---
 
 ## get_bank_of_england_yield_curve
-Retrieves the UK yield curves the Bank of England estimates daily from 1985, for maturities from 0.5 years to 40 years (25 years for OIS): the nominal spot curve of UK government bonds (gilts) and the spot curve of overnight index swaps on SONIA (OIS, from 2009). Unlike the par yields of 5, 10 and 20 years in `get_government_bond_yield_curve`, these are zero-coupon spot rates over the full range of maturities with history back to 1985. The Bank of England publishes them continuously compounded, and they are returned that way: a spot rate r discounts a payment in t years with exp(-r t).
+Retrieves the UK yield curves the Bank of England estimates daily from 1985: the spot rates of UK government bonds (gilts) and of overnight index swaps on SONIA (OIS, from 2009), for maturities from 0.5 years to 40 years (25 years for OIS).
 
-The Bank of England's real and implied inflation curves are part of `economics.get_real_yield_curve` and `economics.get_breakeven_inflation_expectations` (countries='United Kingdom').
+Unlike the par yields of 5, 10 and 20 years in `get_government_bond_yield_curve`, these are zero-coupon spot rates over the full range of maturities with history back to 1985. The Bank of England publishes them continuously compounded, and they are returned that way: a spot rate r discounts a payment in t years with exp(-r t).
+
+The Bank of England's real and implied inflation curves are part of `economics.get_real_yield_curve` and `economics.get_breakeven_inflation_expectations` for the United Kingdom.
 
 The archive is a set of large files, of which only those covering the requested years are read, and they are cached since past years do not change. Weekly and monthly periods take the curve on the last day of each period.
 
@@ -3151,9 +3252,10 @@ The archive is a set of large files, of which only those covering the requested 
 
 **Args:**
 
-- <u>curve (str, optional):</u> "nominal" or "ois". Defaults to "nominal".
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>curve (str, optional):</u> The curve. Options are: "nominal" (the gilt spot curve), "ois" (the
+SONIA overnight index swap spot curve). Defaults to "nominal".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
 - <u>lag (int, optional):</u> The number of periods to lag the growth data by. Defaults to 1.
@@ -3196,7 +3298,7 @@ Which returns:
 ---
 
 ## get_inflation_swap_rate
-Calculates the zero-coupon and year-on-year inflation swap rates the government bond market implies: the fair fixed rates of swaps on US CPI-U inflation (from Treasury and TIPS yields) or euro area HICP inflation excluding tobacco (from nominal and inflation-linked German federal securities).
+Calculates the zero-coupon and year-on-year inflation swap rates the government bond market implies: the inflation the market expects, as the fair fixed rates of swaps on US CPI-U inflation (from Treasury and TIPS yields) or euro area HICP inflation excluding tobacco (from nominal and inflation-linked German federal securities).
 
 A zero-coupon inflation swap pays the growth of the price index over its life against a fixed rate compounded over the same years; a year-on-year swap pays each year's inflation against a fixed rate every year. With nominal and real zero-coupon curves, the forward index of maturity T is $$I (0) \cdot P_{\text{real}} (T)$$ / P_nominal(T) (Jarrow and Yildirim, 2003), so the zero-coupon swap rate is the zero-coupon breakeven inflation rate and the year-on-year swap rate the discount-weighted average of the forward year-on-year rates (Kerkhof, 2005; Brigo and Mercurio, 2006, ch. 15).
 
@@ -3216,15 +3318,18 @@ $$
 
 where n(T) and r(T) are the annually compounded nominal and real zero-coupon rates of maturity T and P(i) = (1 + n(i))^(-i) the nominal discount factor. The nominal zero rates are bootstrapped from the government par yield curve (see `get_zero_coupon_curve`), the real ones from the real par yields of the inflation-linked bonds with their coupons (twice a year for TIPS, once for German inflation-linked German federal securities), held at the shortest quoted real yield before its maturity. Every rate is annually compounded. The year-on-year rates carry no convexity adjustment, which needs the volatilities of real and nominal rates: it is a few basis points up to ten years.
 
-Referenced against QuantLib's ZeroCouponInflationSwap and YearOnYearInflationSwap (fairRate) on the same forward index.
-
 **Also known as:** ZCIS rate, YoY swap rate, zero-coupon breakeven inflation, inflation swap curve.
+
+**References:**
+
+- library | Referenced against QuantLib's [ZeroCouponInflationSwap.fairRate](https://www.quantlib.org/reference/class_quant_lib_1_1_zero_coupon_inflation_swap.html){:target="_blank"}
+- library | Referenced against QuantLib's [YearOnYearInflationSwap.fairRate](https://www.quantlib.org/reference/class_quant_lib_1_1_year_on_year_inflation_swap.html){:target="_blank"}
 
 **Args:**
 
-- <u>country (str, optional):</u> "United States" (CPI-U, Treasury and TIPS curves) or
-"Germany" (euro area HICP excluding tobacco, Bundesbank curves). Defaults to
-"United States".
+- <u>country (str, optional):</u> The country. Options are: "United States" (CPI-U, Treasury and
+TIPS curves), "Germany" (euro area HICP excluding tobacco, Bundesbank curves).
+Defaults to "United States".
 - <u>date (str &#124; None, optional):</u> The day (YYYY-MM-DD), or the last day before it with a
 real yield curve. Defaults to None, the end date.
 - <u>maturities (list[float] &#124; str &#124; None, optional):</u> The swap maturities in years, or
@@ -3281,7 +3386,7 @@ Which returns:
 ---
 
 ## get_forward_inflation_index
-Calculates the forward US consumer price index (CPI-U, not seasonally adjusted) of every coming month from the inflation swap rates the Treasury and TIPS curves imply, with the monthly seasonality of the CPI.
+Calculates the forward US consumer price index (CPI-U, not seasonally adjusted) of every coming month: the price level the inflation swap rates the Treasury and TIPS curves imply, with the monthly seasonality of the CPI.
 
 The zero-coupon inflation swap rates fix the growth of the index over whole years (see `get_inflation_swap_rate`). Between them, prices rise faster in some months than in others, so each month's forward index is moved by its seasonal factor relative to that of the base month (Belgrade, Benhamou and Koehler, 2004; Kerkhof, 2005). The seasonal factors are estimated from the CPI history: the average log change of each calendar month above the average of all months, accumulated over the year and scaled so that the twelve factors multiply to 1.
 
@@ -3305,9 +3410,12 @@ $$
 
 where I(0) is the CPI of the base month, m the months after it, K the annually compounded zero-coupon inflation swap rate (interpolated linearly between whole years), n and r the annually compounded nominal and real zero rates of the Treasury and TIPS curves and S the seasonal factors (all 1 without seasonality). The base month is the third month before the date's month, the CPI the reference CPI of TIPS starts from on the first of the month (31 CFR 356), so the breakevens price the inflation from it on.
 
-Referenced against QuantLib's ZeroInflationIndex forecasts on a ZeroInflationCurve with MultiplicativePriceSeasonality.
-
 **Also known as:** forward CPI, CPI fixing curve, inflation index curve, seasonal adjustment of inflation swaps.
+
+**References:**
+
+- library | Referenced against QuantLib's [ZeroInflationIndex](https://www.quantlib.org/reference/class_quant_lib_1_1_zero_inflation_index.html){:target="_blank"}
+- library | Referenced against QuantLib's [MultiplicativePriceSeasonality](https://www.quantlib.org/reference/class_quant_lib_1_1_multiplicative_price_seasonality.html){:target="_blank"}
 
 **Args:**
 
@@ -3594,9 +3702,9 @@ The data comes from the Treasury's Fiscal Data API, from 1979 on. The Yield is t
 
 **Args:**
 
-- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security: "Bill",
-"Cash Management Bill", "Note", "Bond", "TIPS" or "FRN", or several (a list or
-a comma-separated string). Defaults to None, which returns every kind.
+- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security, or several (a list or
+a comma-separated string). Options are: "Bill", "Cash Management Bill", "Note", "Bond",
+"TIPS", "FRN", None (every kind). Defaults to None.
 - <u>security_term (str &#124; None, optional):</u> The term as the Treasury writes it, such as
 "13-Week", "10-Year" or "30-Year". Defaults to None, which returns every term.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -3815,7 +3923,7 @@ Which returns:
 ---
 
 ## get_treasury_securities
-Retrieves every marketable US Treasury (bills, notes, bonds, TIPS and floating rate notes) with its price, yield to maturity and modified duration on a day, without an API key.
+Retrieves every marketable US Treasury (bills, notes, bonds, TIPS and floating rate notes) with its price, yield to maturity and modified duration on a day, without an API key: what each Treasury trades at and yields.
 
 Where the Treasury par yield curve gives one yield per constant maturity, this lists the roughly 460 securities themselves, from the Bureau of the Fiscal Service's daily FedInvest prices: the prices the Treasury values its own accounts at. That shows where individual issues trade off the curve (old and new issues of the same maturity, the cheapest notes to deliver into futures) and gives the yield of any maturity date.
 
@@ -3847,9 +3955,9 @@ Coupons are semi-annual and fall on the actual coupon dates, counted back from m
 
 - <u>date (str &#124; None, optional):</u> The day (YYYY-MM-DD); a weekend or holiday uses the
 business day before it. Defaults to None, the latest day with prices.
-- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security: "Bill",
-"Note", "Bond", "TIPS" or "FRN", or several (a list or a comma-separated
-string). Defaults to None, which returns every kind.
+- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security, or several (a list or
+a comma-separated string). Options are: "Bill", "Note", "Bond", "TIPS", "FRN", None
+(every kind). Defaults to None.
 - <u>bonds (list[str] &#124; str &#124; None, optional):</u> Keeps the securities with these CUSIPs
 (or their US ISINs), as a list or a comma-separated string. Defaults to None,
 every security.
@@ -3900,7 +4008,9 @@ Which returns:
 ---
 
 ## get_fitted_bond_curve
-Fits the US Treasury zero-coupon curve to the prices of every Treasury note and bond on a day, from the Treasury's FedInvest prices. Where `get_zero_coupon_curve` bootstraps the dozen constant maturity par yields of the Treasury's own curve, this takes the roughly 330 notes and bonds themselves, so the curve reflects what trades and each bond's residual shows whether it is rich (priced above the curve) or cheap (below it), the relative value view of a bond desk.
+Fits the US Treasury zero-coupon curve to the prices of every Treasury note and bond on a day, from the Treasury's FedInvest prices: the term structure the bonds themselves imply, with each bond's residual showing whether it is rich (priced above the curve) or cheap (below it), the relative value view of a bond desk.
+
+Where `get_zero_coupon_curve` bootstraps the dozen constant maturity par yields of the Treasury's own curve, this takes the roughly 330 notes and bonds themselves, so the curve reflects what trades.
 
 The curve minimizes the weighted squared differences between the bonds' prices and their prices on the curve, with weights inversely proportional to duration, as Gürkaynak, Sack and Wright (2007) fit the Federal Reserve's Treasury curve. A price error is about the duration times the price times the yield error, so the weights reduce the weight of the long bonds' larger price errors, while still giving a basis point of a long bond more weight than one of a short bond (equal weight in yield would need $$1 / D^{2}$$).
 
@@ -3912,31 +4022,36 @@ $$
 
 where $$P_{i}$$ is the clean price plus accrued interest of bond i, $$\text{CF}_{ik}$$ its coupons and principal at times $$t_{ik}$$ (actual days / 365 from the price date, on its actual coupon dates), $$D_{i}$$ its modified duration and d(t) the discount function of the method:
 
-- "svensson": $$d (t) = e^{- y (t) t}$$, with y(t) the Svensson (1994) zero rate $$\beta_{0} + \beta_{1} (1 - e^{- t / \tau_{1}}) / (t / \tau_{1}) + \beta_{2} [(1 - e^{- t / \tau_{1}}) / (t / \tau_{1}) - e^{- t / \tau_{1}}] + \beta_{3} [(1 - e^{- t / \tau_{2}}) / (t / \tau_{2}) - e^{- t / \tau_{2}}]$$, the model of the Federal Reserve's curve (Gürkaynak, Sack and Wright, 2007)
-- "nelson_siegel": the same without $$\beta_{3}$$ (Nelson and Siegel, 1987)
-- "exponential_spline": $$d (t) = \sum_{k = 1}^{9} a_{k} e^{- k \kappa t}$$ with $$\sum a_{k} = 1$$, the exponential basis of Vasicek and Fong (1982)
-- "cubic_spline": d(t) a cubic spline with $$d (0) = 1$$ and about $$\sqrt{n}$$ basis functions for n bonds, with knots at quantiles of the maturities so that as many bonds mature between every two knots (McCulloch, 1975)
+- Svensson: $$d (t) = e^{- y (t) t}$$, with y(t) the Svensson (1994) zero rate $$\beta_{0} + \beta_{1} (1 - e^{- t / \tau_{1}}) / (t / \tau_{1}) + \beta_{2} [(1 - e^{- t / \tau_{1}}) / (t / \tau_{1}) - e^{- t / \tau_{1}}] + \beta_{3} [(1 - e^{- t / \tau_{2}}) / (t / \tau_{2}) - e^{- t / \tau_{2}}]$$, the model of the Federal Reserve's curve (Gürkaynak, Sack and Wright, 2007)
+- Nelson-Siegel: the same without $$\beta_{3}$$ (Nelson and Siegel, 1987)
+- Exponential spline: $$d (t) = \sum_{k = 1}^{9} a_{k} e^{- k \kappa t}$$ with $$\sum a_{k} = 1$$, the exponential basis of Vasicek and Fong (1982)
+- Cubic spline: d(t) a cubic spline with $$d (0) = 1$$ and about $$\sqrt{n}$$ basis functions for n bonds, with knots at quantiles of the maturities so that as many bonds mature between every two knots (McCulloch, 1975)
 
 The Nelson-Siegel and Svensson fits are a bounded nonlinear least squares from fixed starts (the model fitted to the bonds' yields at their durations, and its betas with first decays of 0.5, 1, 2 and 5 years), with the bounds of `get_nelson_siegel_svensson`; a fit whose parameters are not identified (a flat ridge of equally good fits) raises an error rather than return an arbitrary point on it. The splines are linear in their coefficients and fitted exactly. As Gürkaynak, Sack and Wright do, bills, TIPS, floating rate notes and notes and bonds within three months of maturity are left out. Each day uses its own prices only. For prices of your own, use `fitted_curve_model.fit_bond_curve`.
 
 The fitted zero rates are annually compounded, like those of `get_zero_coupon_curve`, while the models are fitted on continuously compounded rates, so the betas compare with the Federal Reserve's; the instantaneous forward rate is continuously compounded. Yields of the bonds are bond-equivalent (compounded twice a year), as the Treasury quotes them.
 
-For more information, see the following papers:
-
-- McCulloch, J.H. (1975). "The Tax-Adjusted Yield Curve." The Journal of Finance, 30(3), 811-830.
-- Vasicek, O.A. and Fong, H.G. (1982). "Term Structure Modeling Using Exponential Splines." The Journal of Finance, 37(2), 339-348.
-- Nelson, C.R. and Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489.
-- Svensson, L.E.O. (1994). "Estimating and Interpreting Forward Interest Rates: Sweden 1992-1994." NBER Working Paper 4871.
-- Gürkaynak, R.S., Sack, B. and Wright, J.H. (2007). "The U.S. Treasury Yield Curve: 1961 to the Present." Journal of Monetary Economics, 54(8), 2291-2304.
-
-Referenced against QuantLib's FittedBondDiscountCurve with NelsonSiegelFitting, SvenssonFitting, ExponentialSplinesFitting and CubicBSplinesFitting ([https://www.quantlib.org](https://www.quantlib.org){:target="_blank"}).
-
 **Also known as:** fitted yield curve, Treasury curve fitting, rich cheap analysis, bond relative value, Svensson curve on bond prices, spline curve.
+
+**References:**
+
+- paper | McCulloch, J.H. (1975). "The Tax-Adjusted Yield Curve." The Journal of Finance, 30(3), 811-830.
+- paper | Vasicek, O.A. and Fong, H.G. (1982). "Term Structure Modeling Using Exponential Splines." The Journal of Finance, 37(2), 339-348.
+- paper | Nelson, C.R. and Siegel, A.F. (1987). "Parsimonious Modeling of Yield Curves." The Journal of Business, 60(4), 473-489.
+- paper | Svensson, L.E.O. (1994). "Estimating and Interpreting Forward Interest Rates: Sweden 1992-1994." NBER Working Paper 4871.
+- paper | Gürkaynak, R.S., Sack, B. and Wright, J.H. (2007). "The U.S. Treasury Yield Curve: 1961 to the Present." Journal of Monetary Economics, 54(8), 2291-2304.
+- library | Shares similar logic as QuantLib's [FittedBondDiscountCurve](https://www.quantlib.org/reference/class_quant_lib_1_1_fitted_bond_discount_curve.html){:target="_blank"}
+- library | Shares similar logic as QuantLib's [SvenssonFitting](https://www.quantlib.org/reference/class_quant_lib_1_1_svensson_fitting.html){:target="_blank"} (svensson)
+- library | Shares similar logic as QuantLib's [NelsonSiegelFitting](https://www.quantlib.org/reference/class_quant_lib_1_1_nelson_siegel_fitting.html){:target="_blank"} (nelson_siegel)
+- library | Shares similar logic as QuantLib's [ExponentialSplinesFitting](https://www.quantlib.org/reference/class_quant_lib_1_1_exponential_splines_fitting.html){:target="_blank"} (exponential_spline)
+- library | Shares similar logic as QuantLib's [CubicBSplinesFitting](https://www.quantlib.org/reference/class_quant_lib_1_1_cubic_b_splines_fitting.html){:target="_blank"} (cubic_spline)
 
 **Args:**
 
-- <u>method (str, optional):</u> "svensson", "nelson_siegel", "exponential_spline" or
-"cubic_spline". Defaults to "svensson".
+- <u>method (str, optional):</u> The discount function. Options are: "svensson" (the
+Nelson-Siegel-Svensson zero rate), "nelson_siegel" (the Nelson-Siegel zero rate),
+"exponential_spline" (the exponential spline of Vasicek and Fong), "cubic_spline"
+(McCulloch's cubic spline). Defaults to "svensson".
 - <u>maturities (float &#124; str &#124; list &#124; None, optional):</u> The maturities to return the
 curve at, in years or as labels such as '6M' (a list or a comma-separated
 string). Defaults to None, 6 months and 1, 2, 3, 5, 7, 10, 20 and 30 years.
@@ -3956,7 +4071,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.DataFrame: The Zero Rate (annually compounded), the Discount Factor and the
 Instantaneous Forward Rate (continuously compounded) by maturity in years; or,
-with residuals=True, per bond (by CUSIP) its Security Type, Coupon, Maturity,
+with the residuals, per bond (by CUSIP) its Security Type, Coupon, Maturity,
 Price, Fitted Price (clean, on the curve), Price Residual (Price minus Fitted
 Price, positive for a bond that is rich), Yield to Maturity, Fitted Yield and Yield
 Residual (Yield to Maturity minus Fitted Yield, positive for a bond that is cheap).
@@ -3988,7 +4103,7 @@ Which returns:
 ---
 
 ## get_treasury_floating_rate_notes
-Calculates the discount margin, yield and durations of every US Treasury floating rate note (FRN) from its FedInvest price, with the Treasury's own pricing formula (31 CFR 356, Appendix B, IV).
+Calculates the discount margin, yield and durations of every US Treasury floating rate note (FRN) from its FedInvest price: what each note pays over its index and how its price responds to the index and the margin, with the Treasury's own pricing formula (31 CFR 356, Appendix B, IV).
 
 A Treasury FRN pays, each quarter, the interest accrued day by day at the index rate (the high rate of the latest 13-week bill auction, as a money market yield) plus a fixed spread set at its first auction. Its price is close to par, and how far it is from par is read as the discount margin: the margin over the index rate at which the projected interest and principal are worth the price plus accrued interest. A note trading below par has a discount margin above its spread.
 
@@ -4022,11 +4137,17 @@ $$
 
 where s is the spread, r the index rate that applies to the price date (held for every later day), $$T_{i}$$ the quarterly interest payment dates and P the price plus accrued interest. Each day accrues at the index rate of the most recent 13-week bill auction held before it, except that an auction held in the two business days before an issue or interest payment date applies from the day after that date (the lockout, which 31 CFR 356 applies only to those dates, so not to a price date between them). The coupons follow the index, so the index duration is close to zero, while the spread duration, the price change for a change in the discount margin, is about the time to maturity.
 
-The pricing reproduces the Treasury's: the reopening of 91282CRD5 on 25 September 2026 at a discount margin of 0.040% prices at 100.015499 with accrued interest of 0.603670, as announced. Referenced against FinancePy's BondFRN (dirty_price_from_dm, discount_margin and modified_credit_duration), which agree on the same cash flows.
+The pricing reproduces the Treasury's: the reopening of 91282CRD5 on 25 September 2026 at a discount margin of 0.040% prices at 100.015499 with accrued interest of 0.603670, as announced.
 
 **See definition:** [https://www.ecfr.gov/current/title-31/part-356/appendix-Appendix%20B%20to%20Part%20356](https://www.ecfr.gov/current/title-31/part-356/appendix-Appendix%20B%20to%20Part%20356){:target="_blank"}
 
 **Also known as:** FRN discount margin, floating rate note yield, Treasury FRN spread, spread duration, credit duration, quoted margin.
+
+**References:**
+
+- library | Referenced against FinancePy's [BondFRN.dirty_price_from_dm](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/bonds/bond_frn.py#L107){:target="_blank"}
+- library | Referenced against FinancePy's [BondFRN.modified_credit_duration](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/bonds/bond_frn.py#L283){:target="_blank"}
+- library | Shares similar logic as FinancePy's [BondFRN.discount_margin](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/bonds/bond_frn.py#L375){:target="_blank"}
 
 **Args:**
 
@@ -4083,7 +4204,7 @@ Which returns:
 ---
 
 ## get_treasury_inflation_protected_securities
-Calculates the index ratio, inflation-adjusted price and breakeven inflation rate of every US Treasury Inflation-Protected Security (TIPS) from its FedInvest price.
+Calculates the index ratio, inflation-adjusted price and breakeven inflation rate of every US Treasury Inflation-Protected Security (TIPS) from its FedInvest price: how much inflation has lifted each security's principal and what inflation its price implies.
 
 TIPS pay a fixed real coupon on a principal that grows with the Consumer Price Index (CPI-U, not seasonally adjusted). They are quoted per 100 of inflation-adjusted principal, a real price whose yield is a real yield; what a buyer pays per 100 of par is that price times the index ratio, the inflation accrued since the security's dated date. The nominal Treasury yield of the same maturity less the real yield is the inflation rate at which the two earn the same: the breakeven inflation rate of the security.
 
@@ -4111,11 +4232,17 @@ $$
 
 where the reference CPI and the index ratio are truncated to six decimal places and rounded to five (31 CFR 356, Appendix B, I.B), the reference CPI of the dated date is the one TreasuryDirect publishes with the security, and the Nominal Yield is the Treasury par yield (bond-equivalent, compounded semi-annually) at the security's maturity on the price date, interpolated linearly between the curve's maturities. Yields are compounded semi-annually; the time in the current coupon period is counted in actual days (actual/actual). A month the BLS did not report the CPI for (October 2025) takes the index number the Treasury announced in its place, from the last twelve-month change.
 
-Referenced against QuantLib's CPI interpolation (CPI.laggedFixing, linear, three months' lag) and CPIBond, and FinancePy's InflationBond (inflation_principal and inflation_accrued_interest). The Treasury's own figures are reproduced: the reference CPI of 30 November 2026 is 336.87467, the index ratio of 91282CRE3 on that day 1.00870.
+QuantLib's CPI interpolation is linear with three months' lag. The Treasury's own figures are reproduced: the reference CPI of 30 November 2026 is 336.87467, the index ratio of 91282CRE3 on that day 1.00870.
 
 **See definition:** [https://www.treasurydirect.gov/marketable-securities/tips/](https://www.treasurydirect.gov/marketable-securities/tips/){:target="_blank"}
 
 **Also known as:** TIPS index ratio, inflation-adjusted principal, real yield, TIPS breakeven, inflation compensation, reference CPI.
+
+**References:**
+
+- library | Referenced against QuantLib's [CPI.laggedFixing](https://github.com/lballabio/QuantLib/blob/v1.44/ql/indexes/inflationindex.hpp#L39){:target="_blank"}
+- library | Shares similar logic as QuantLib's [CPIBond](https://www.quantlib.org/reference/class_quant_lib_1_1_c_p_i_bond.html){:target="_blank"}
+- library | Shares similar logic as FinancePy's [InflationBond.inflation_principal](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/inflation/InflationBond.py#L92){:target="_blank"}
 
 **Args:**
 
@@ -4191,9 +4318,14 @@ $$
 
 where P is the clean price, $$\text{AI}_{0}$$ and $$\text{AI}_{T}$$ the accrued interest (actual/actual) on the price date and the forward date, r the repo rate (simple interest, actual/360), d the days to the forward date and $$c_{k}$$ the coupons paid $$d_{k}$$ days from the price date, which earn the repo rate until the forward date. A positive carry (coupon income above the repo cost) makes the forward price lower than the price. The implied repo rate of a quoted forward price inverts this formula (see `bond_futures_model.get_implied_repo_rate`).
 
-Referenced against QuantLib's BondForward (equal without a coupon in between; with one within 0.0001 per 100, as QuantLib discounts the coupon on the repo curve rather than reinvesting it at simple interest) and rateslib's FixedRateBond.fwd_from_repo.
+QuantLib's BondForward is equal without a coupon in between and within 0.0001 per 100 with one, as QuantLib discounts the coupon on the repo curve rather than reinvesting it at simple interest.
 
 **Also known as:** bond forward price, repo carry, forward drop, cost of carry, forward yield, bond forward.
+
+**References:**
+
+- library | Referenced against QuantLib's [BondForward](https://www.quantlib.org/reference/class_quant_lib_1_1_bond_forward.html){:target="_blank"}
+- library | Shares similar logic as rateslib's [FixedRateBond.fwd_from_repo](https://rateslib.com/py/en/3.0.x/api/rateslib.instruments.FixedRateBond.html#rateslib.instruments.FixedRateBond.fwd_from_repo){:target="_blank"}
 
 **Args:**
 
@@ -4206,8 +4338,8 @@ against Treasuries, held for the whole term.
 - <u>date (str &#124; None, optional):</u> The day of the FedInvest prices (YYYY-MM-DD); a weekend
 or holiday uses the business day before it. Defaults to None, the latest day
 with prices.
-- <u>security_type (list[str] &#124; str &#124; None, optional):</u> "Bill", "Note" or "Bond", or
-several. Defaults to None, all three.
+- <u>security_type (list[str] &#124; str &#124; None, optional):</u> The kind of security, or several. Options
+are: "Bill", "Note", "Bond", None (all three). Defaults to None.
 - <u>bonds (list[str] &#124; str &#124; None, optional):</u> Keeps the securities with these CUSIPs
 (or their US ISINs). Defaults to None, every security.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -4259,7 +4391,7 @@ Which returns:
 ---
 
 ## get_treasury_futures_basis
-Calculates the conversion factor, basis and implied repo rate of every Treasury that can be delivered into a CME US Treasury futures contract, and which of them is the cheapest to deliver.
+Calculates the conversion factor, basis and implied repo rate of every Treasury that can be delivered into a CME US Treasury futures contract: what delivering each costs and earns against the futures price, and which of them is the cheapest to deliver.
 
 The seller of a Treasury futures contract delivers a Treasury of its choice from a basket of eligible ones and receives the futures price times that security's conversion factor, plus accrued interest. The factors put securities of different coupons and maturities on one scale, but not exactly, so one of them is the cheapest to deliver: the one whose purchase today, financed in repo and delivered into the futures, earns the most (the highest implied repo rate). The futures price tracks that security (Burghardt and Belton, 2005, The Treasury Bond Basis; Hull, 2022, Options, Futures and Other Derivatives, ch. 6.2).
 
@@ -4291,16 +4423,25 @@ $$
 
 where c is the coupon, P the clean price (FedInvest), F the futures price, $$\text{AI}_{0}$$ and $$\text{AI}_{T}$$ the accrued interest on the price date and the delivery date, d the days to the delivery date and $$c_{k}$$ the coupons paid before it. The months to maturity are rounded down to whole quarters for the 10-year (ZN), Ultra 10-year (TN), bond (ZB) and Ultra bond (UB) contracts and to whole months for the 2-year (ZT) and 5-year (ZF) ones. Rates are simple interest on actual/360. The cheapest to deliver has the highest implied repo rate and the lowest net basis.
 
-The conversion factors equal those of FinancePy's BondFuture and rateslib's BondFuture (CME conventions) and Hull's examples (1.4623 for a 10% coupon with 20 years and 2 months). Referenced against FinancePy's BondFuture and rateslib's BondFuture (gross_basis, net_basis, implied_repo).
+The conversion factors equal those of FinancePy's BondFuture and rateslib's BondFuture (CME conventions) and Hull's examples (1.4623 for a 10% coupon with 20 years and 2 months).
 
 **See definition:** [https://www.cmegroup.com/trading/interest-rates/treasury-conversion-factors.html](https://www.cmegroup.com/trading/interest-rates/treasury-conversion-factors.html){:target="_blank"}
 
 **Also known as:** cheapest to deliver, CTD, Treasury basis, implied repo rate, IRR, conversion factor, net basis, gross basis, invoice price, delivery basket.
 
+**References:**
+
+- library | Referenced against rateslib's [BondFuture.cfs](https://rateslib.com/py/en/3.0.x/api/rateslib.instruments.BondFuture.html#rateslib.instruments.BondFuture.cfs){:target="_blank"}
+- library | Shares similar logic as FinancePy's [BondFuture.gross_basis](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/bonds/bond_future.py#L209){:target="_blank"}
+- library | Shares similar logic as FinancePy's [BondFuture.net_basis](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/bonds/bond_future.py#L237){:target="_blank"}
+- library | Shares similar logic as rateslib's [BondFuture.gross_basis](https://rateslib.com/py/en/3.0.x/api/rateslib.instruments.BondFuture.html#rateslib.instruments.BondFuture.gross_basis){:target="_blank"}
+- library | Shares similar logic as rateslib's [BondFuture.net_basis](https://rateslib.com/py/en/3.0.x/api/rateslib.instruments.BondFuture.html#rateslib.instruments.BondFuture.net_basis){:target="_blank"}
+- library | Shares similar logic as rateslib's [BondFuture.implied_repo](https://rateslib.com/py/en/3.0.x/api/rateslib.instruments.BondFuture.html#rateslib.instruments.BondFuture.implied_repo){:target="_blank"}
+
 **Args:**
 
-- <u>contract (str, optional):</u> The futures contract: "ZT" (2-year note), "ZF" (5-year
-note), "ZN" (10-year note), "TN" (Ultra 10-year note), "ZB" (bond) or "UB"
+- <u>contract (str, optional):</u> The futures contract. Options are: "ZT" (2-year note), "ZF"
+(5-year note), "ZN" (10-year note), "TN" (Ultra 10-year note), "ZB" (bond), "UB"
 (Ultra bond). Defaults to "ZN".
 - <u>contract_month (str &#124; None, optional):</u> The delivery month (YYYY-MM), March, June,
 September or December. Defaults to None, the first of those months that starts
@@ -4378,7 +4519,9 @@ Which returns:
 ---
 
 ## get_euribor_rates
-Euribor rates, short for Euro Interbank Offered Rate, are the interest rates at which a panel of European banks lend funds to one another in the interbank market. These rates are fixed daily by the European Money Markets Institute (EMMI) and serve as a benchmark for various financial products and contracts, including mortgages, loans, and derivatives, across the Eurozone.
+Retrieves the Euribor rates, short for Euro Interbank Offered Rate: the interest rates at which a panel of European banks lend funds to one another in the interbank market.
+
+These rates are fixed daily by the European Money Markets Institute (EMMI) and serve as a benchmark for various financial products and contracts, including mortgages, loans, and derivatives, across the Eurozone.
 
 Euribor is fixed for maturities of one week to 12 months; this method returns the 1, 3, 6 and 12-month rates as monthly averages of the daily fixings, from the European Central Bank, as decimals. Longer maturities carry a term premium but also reflect where markets expect short rates to go, so the curve inverts when cuts are expected.
 
@@ -4388,13 +4531,12 @@ For more information, see for example: [https://data.ecb.europa.eu/data/datasets
 
 **Args:**
 
-- <u>maturities (str &#124; list &#124; None, optional):</u> The maturities to retrieve, from "1M", "3M", "6M" and "1Y",
-as a list or a comma-separated string ("1M,3M").
-Defaults to None, which retrieves all four.
+- <u>maturities (str &#124; list &#124; None, optional):</u> The maturities to retrieve, as a list or a comma-separated
+string ("1M,3M"). Options are: "1M", "3M", "6M", "1Y", None (all four). Defaults to None.
 - <u>nominal (bool, optional):</u> Whether to retrieve the nominal Euribor fixings or their real
-(inflation-adjusted) counterpart. The ECB only publishes a real Euribor for the 3-month
-maturity, so nominal=False returns that maturity alone and warns about any others that
-were requested rather than silently answering them with a nominal rate. Defaults to True.
+(inflation-adjusted) counterpart. The ECB only publishes a real Euribor for the 3-month maturity, so
+the real rates return that maturity alone and warn about any others that were requested rather than
+silently answering them with a nominal rate. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> Rounding precision for the rates. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4449,7 +4591,9 @@ Which returns:
 ---
 
 ## get_european_central_bank_rates
-The Governing Council of the ECB sets the key interest rates for the euro area. The available rates are:
+Retrieves the key interest rates the Governing Council of the ECB sets for the euro area: what banks pay to borrow from and receive to deposit with the central bank.
+
+The available rates are:
 
 - Main refinancing operations (refinancing)
 - Marginal lending facility (lending)
@@ -4471,10 +4615,11 @@ See source: [https://data.ecb.europa.eu/main-figures/](https://data.ecb.europa.e
 
 **Args:**
 
-- <u>rate (str, optional):</u> The rate to return. Defaults to None, which returns all rates.
-Choose between 'refinancing', 'lending' or 'deposit'.
-- <u>period (str, optional):</u> Whether to return the daily, weekly, monthly, quarterly or
-yearly data. Defaults to 'daily'.
+- <u>rate (str, optional):</u> The rate to return. Options are: "refinancing" (the main refinancing operations
+rate), "lending" (the marginal lending facility rate), "deposit" (the deposit facility rate), None
+(all rates). Defaults to None.
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily", "weekly", "monthly",
+"quarterly", "yearly". Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4514,7 +4659,9 @@ Which returns:
 ---
 
 ## get_federal_reserve_rates
-Get the Federal Reserve rates as published by the Federal Reserve Bank of New York. The federal funds market consists of domestic unsecured borrowings in U.S. dollars by depository institutions from other depository institutions and certain other entities, primarily government-sponsored enterprises.
+Get the Federal Reserve rates as published by the Federal Reserve Bank of New York: the overnight rates at which US banks and other institutions borrow dollars, unsecured or against Treasury collateral.
+
+The federal funds market consists of domestic unsecured borrowings in U.S. dollars by depository institutions from other depository institutions and certain other entities, primarily government-sponsored enterprises.
 
 The following rates are available:
 
@@ -4544,7 +4691,9 @@ See source: [https://www.newyorkfed.org/markets/reference-rates/](https://www.ne
 
 **Args:**
 
-- <u>rate (str):</u> The rate to return. Defaults to 'EFFR' (Effective Federal Funds Rate).
+- <u>rate (str):</u> The rate to return. Options are: "EFFR" (Effective Federal Funds Rate), "OBFR" (Overnight
+Bank Funding Rate), "TGCR" (Tri-Party General Collateral Rate), "BGCR" (Broad General Collateral
+Rate), "SOFR" (Secured Overnight Financing Rate). Defaults to "EFFR".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. Defaults to False.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4587,7 +4736,9 @@ Which returns:
 ---
 
 ## get_short_rate_model
-Calibrates the Vasicek and Cox-Ingersoll-Ross (CIR) short-rate models to the history of a country's short-term government bond yield and compares the zero-coupon curve each model implies with today's. Short-rate models describe how the interest rate moves, pulled back to a long-run mean b at a speed a with a volatility $$\sigma$$:
+Calibrates the Vasicek and Cox-Ingersoll-Ross (CIR) short-rate models to the history of a country's short-term government bond yield: how fast the rate reverts to its long-run mean and how volatile it is, with the zero-coupon curve each model implies next to today's.
+
+Short-rate models describe how the interest rate moves, pulled back to a long-run mean b at a speed a with a volatility $$\sigma$$:
 
 $$
 \text{Vasicek (1977):}\;\; \,\mathrm{d}r = a (b - r) \,\mathrm{d}t + \sigma \,\mathrm{d}W
@@ -4601,12 +4752,12 @@ In CIR the volatility shrinks as the rate approaches zero, so the rate stays pos
 
 A model calibrated to the history does not reproduce today's curve, which is what the comparison with the market shows; the Hull-White model of `get_short_rate_simulation` adds a time-varying mean that does.
 
-For more information, see the following papers:
-
-- Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188.
-- Cox, J.C., Ingersoll, J.E. and Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407.
-
 **Also known as:** short rate model, mean reversion of interest rates, Vasicek model, CIR model, equilibrium term structure model.
+
+**References:**
+
+- paper | Vasicek, O. (1977). "An Equilibrium Characterization of the Term Structure." Journal of Financial Economics, 5(2), 177-188.
+- paper | Cox, J.C., Ingersoll, J.E. and Ross, S.A. (1985). "A Theory of the Term Structure of Interest Rates." Econometrica, 53(2), 385-407.
 
 **Args:**
 
@@ -4614,8 +4765,8 @@ For more information, see the following papers:
 Defaults to "United States".
 - <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,
 such as "1M", "3M" or "6M". Defaults to "3M".
-- <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the rates. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4667,7 +4818,9 @@ Which returns:
 ---
 
 ## get_short_rate_simulation
-Simulates the future path of a country's short-term interest rate with the Hull-White, Vasicek or Cox-Ingersoll-Ross model and summarizes the distribution of the paths per step: the mean and the 5th, 25th, 50th, 75th and 95th percentiles. Simulated rate paths value interest rate derivatives and path-dependent products (such as mortgages with prepayment), and stress the interest income of a balance sheet.
+Simulates the future path of a country's short-term interest rate with the Hull-White, Vasicek or Cox-Ingersoll-Ross model: the distribution of the rate per step, the mean and the 5th, 25th, 50th, 75th and 95th percentiles of the paths.
+
+Simulated rate paths value interest rate derivatives and path-dependent products (such as mortgages with prepayment), and stress the interest income of a balance sheet.
 
 The speed of mean reversion and the volatility are calibrated to the history of the rate, see `get_short_rate_model`. In the Vasicek and CIR models the rate is pulled to the long-run mean of that history. The Hull-White (1990) model replaces it with a mean that varies over time and follows from today's zero-coupon curve, so that the model reproduces the discount factors of that curve (its expected short rate lies above the forward rate by the convexity term $$\sigma^{2} (1 - e^{- at})^{2} / (2 a^{2})$$):
 
@@ -4675,31 +4828,34 @@ $$
 dr = [\theta (t) - a r] dt + \sigma dW,\quad \theta (t) = \partial f / \partial t + a f (t) + \sigma^{2} (1 - e^{- 2 at}) / (2 a)
 $$
 
-with f the instantaneous forward rate. The paths start at today's rate and are simulated with an Euler scheme (CIR's are kept at or above zero) or, with scheme="exact", by drawing the rate at the end of every step from its exact distribution given the rate at the start: normal for Vasicek and Hull-White ($$r' = r e^{- a \Delta} + m (1 - e^{- a \Delta}) + \sigma \sqrt{(1 - e^{- 2 a \Delta}) / (2 a)} Z$$, with m the mean of the step) and a scaled non-central chi-squared for CIR (Glasserman, 2003, Monte Carlo Methods in Financial Engineering, sections 3.3 and 3.4). The exact scheme has no discretization error at any step size, and its CIR rate stays at or above zero without being cut off, which matters most when the Feller ratio of `get_short_rate_model` is below 1.
+with f the instantaneous forward rate. The paths start at today's rate and are simulated with an Euler scheme (CIR's are kept at or above zero) or, with the exact scheme, by drawing the rate at the end of every step from its exact distribution given the rate at the start: normal for Vasicek and Hull-White ($$r' = r e^{- a \Delta} + m (1 - e^{- a \Delta}) + \sigma \sqrt{(1 - e^{- 2 a \Delta}) / (2 a)} Z$$, with m the mean of the step) and a scaled non-central chi-squared for CIR (Glasserman, 2003, Monte Carlo Methods in Financial Engineering, sections 3.3 and 3.4). The exact scheme has no discretization error at any step size, and its CIR rate stays at or above zero without being cut off, which matters most when the Feller ratio of `get_short_rate_model` is below 1.
 
 The simulated short rates are continuously compounded, the rate these models describe: the quoted yield of the short_rate maturity is converted from its quote convention (for US bills the bond-equivalent yield) and the zero-coupon curve of the Hull-White mean from annual compounding.
 
-For more information, see the following paper:
-
-- Hull, J. and White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592.
-
 **Also known as:** interest rate simulation, Hull-White model, Monte Carlo short rate, interest rate scenarios.
+
+**References:**
+
+- paper | Hull, J. and White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592.
+- library | Shares similar logic as FinancePy's [CIRMonteCarlo](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/cir_montecarlo.py#L10){:target="_blank"} (cir)
 
 **Args:**
 
-- <u>model (str, optional):</u> "hull_white", "vasicek" or "cir". Defaults to "hull_white".
+- <u>model (str, optional):</u> The model. Options are: "hull_white" (Hull-White, fitted to today's curve), "vasicek"
+(Vasicek), "cir" (Cox-Ingersoll-Ross). Defaults to "hull_white".
 - <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
 Defaults to "United States".
 - <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,
 such as "1M", "3M" or "6M". Defaults to "3M".
-- <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the rates. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>years (float, optional):</u> The horizon in years. Defaults to 10.
 - <u>steps_per_year (int, optional):</u> The steps per year. Defaults to 12.
-- <u>paths (int, optional):</u> The number of simulated paths. Defaults to 10,000.
+- <u>simulations (int, optional):</u> The number of simulated paths. Defaults to 10,000.
 - <u>seed (int &#124; None, optional):</u> The random seed, None for a different simulation
 every time. Defaults to 0.
-- <u>scheme (str, optional):</u> "euler" or "exact". Defaults to "euler".
+- <u>scheme (str, optional):</u> The simulation scheme. Options are: "euler" (an Euler scheme), "exact" (sampling the
+exact distribution of the rate). Defaults to "euler".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -4739,7 +4895,9 @@ Which returns:
 ---
 
 ## get_swaption_price
-Calculates the prices of European or Bermudan swaptions, the right to enter an interest rate swap at the option's expiry, for a grid of expiries and swap tenors in a one-factor short-rate model fitted to today's government zero-coupon curve. A payer swaption is the right to pay the fixed rate (it gains when rates rise), a receiver swaption the right to receive it. Without a strike every swaption is at the money: struck at the forward swap rate of its expiry and tenor on the same curve (`get_swap_rate` with curve="government" and forward_start the expiry).
+Calculates the prices of European or Bermudan swaptions for a grid of expiries and swap tenors in a one-factor short-rate model fitted to today's government zero-coupon curve: what the right to enter an interest rate swap at the option's expiry is worth.
+
+A payer swaption is the right to pay the fixed rate (it gains when rates rise), a receiver swaption the right to receive it. Without a strike every swaption is at the money: struck at the forward swap rate of its expiry and tenor on the same curve (`get_swap_rate` on the government curve, starting at the expiry).
 
 Two models reproduce the curve and so price at-the-money swaptions consistently:
 
@@ -4753,7 +4911,7 @@ $$
 
 The speed of mean reversion a and the volatility $$\sigma$$ (and for CIR++ the long-run mean b) are calibrated to the history of the short_rate yield between the start and end date, see `get_short_rate_model`; CIR++ starts its process at today's short rate. The price follows from Jamshidian's (1989) decomposition: at expiry the payer swaption is a put on a coupon bond paying the fixed rate, which in a one-factor model splits into puts on its zero-coupon bonds, each priced in closed form (see `short_rate_model.get_swaption` and `get_zero_coupon_bond_option`).
 
-A Bermudan swaption (exercise="bermudan", Hull-White only) can also be exercised on every fixed payment date after the expiry, into the rest of a swap that ends at the expiry plus the tenor (co-terminal, "10 non-call 1"). It has no closed form and is valued on a Hull-White trinomial tree fitted exactly to the zero curve with the two-stage procedure of Hull and White (1994), with at most 1/50 of a year between two dates of the tree, comparing at every exercise date the value of the swap with the value of waiting (see `trinomial_tree_model.get_bermudan_swaption`). It is worth at least the European swaption of the same expiry, tenor and strike.
+A Bermudan swaption (Hull-White only) can also be exercised on every fixed payment date after the expiry, into the rest of a swap that ends at the expiry plus the tenor (co-terminal, "10 non-call 1"). It has no closed form and is valued on a Hull-White trinomial tree fitted exactly to the zero curve with the two-stage procedure of Hull and White (1994), with at most 1/50 of a year between two dates of the tree, comparing at every exercise date the value of the swap with the value of waiting (see `trinomial_tree_model.get_bermudan_swaption`). It is worth at least the European swaption of the same expiry, tenor and strike.
 
 The formula is as follows:
 
@@ -4781,16 +4939,16 @@ with T the expiry, $$T_{i}$$ the fixed payment dates every 1 / fixed_frequency y
 
 The short rate and the model parameters are continuously compounded (the yield is converted from its quote convention, as in `get_short_rate_model`). The zero-coupon curve is that of the end date, bootstrapped from the par yields and annually compounded, and the strike is a nominal annual rate paid fixed_frequency times a year, with no day count. The calibration uses the history up to the end date only.
 
-For more information, see the following sources:
-
-- Jamshidian, F. (1989). "An Exact Bond Option Formula." Journal of Finance, 44(1), 205-209.
-- Hull, J. and White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592.
-- Brigo, D. and Mercurio, F. (2001). "A Deterministic-Shift Extension of Analytically Tractable and Time-Homogeneous Short-Rate Models." Finance and Stochastics, 5(3), 369-387.
-- Hull, J. and White, A. (1994). "Numerical Procedures for Implementing Term Structure Models I: Single-Factor Models." Journal of Derivatives, 2(1), 7-16.
-
-Referenced against QuantLib's `JamshidianSwaptionEngine` with `HullWhite` and `ExtendedCoxIngersollRoss`, and for Bermudan swaptions its `TreeSwaptionEngine` with `HullWhite`.
-
 **Also known as:** swaption price, Bermudan swaption, Hull-White swaption, CIR++ swaption, Jamshidian decomposition, interest rate option.
+
+**References:**
+
+- paper | Jamshidian, F. (1989). "An Exact Bond Option Formula." Journal of Finance, 44(1), 205-209.
+- paper | Hull, J. and White, A. (1990). "Pricing Interest-Rate-Derivative Securities." The Review of Financial Studies, 3(4), 573-592.
+- paper | Brigo, D. and Mercurio, F. (2001). "A Deterministic-Shift Extension of Analytically Tractable and Time-Homogeneous Short-Rate Models." Finance and Stochastics, 5(3), 369-387.
+- paper | Hull, J. and White, A. (1994). "Numerical Procedures for Implementing Term Structure Models I: Single-Factor Models." Journal of Derivatives, 2(1), 7-16.
+- library | Referenced against QuantLib's [JamshidianSwaptionEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_jamshidian_swaption_engine.html){:target="_blank"} (european)
+- library | Referenced against QuantLib's [TreeSwaptionEngine](https://www.quantlib.org/reference/class_quant_lib_1_1_tree_swaption_engine.html){:target="_blank"} (bermudan)
 
 **Args:**
 
@@ -4799,8 +4957,10 @@ years or as labels such as '6M'. Defaults to None, 1, 2, 5 and 10 years.
 - <u>tenors (float &#124; str &#124; list &#124; None, optional):</u> The tenors of the underlying swaps,
 in years or as labels such as '10Y'. Defaults to None, 1, 2, 5, 10 and 30
 years.
-- <u>model (str, optional):</u> "hull_white" or "cir++". Defaults to "hull_white".
-- <u>swaption_type (str, optional):</u> "payer" or "receiver". Defaults to "payer".
+- <u>model (str, optional):</u> The model. Options are: "hull_white" (Hull-White), "cir++" (CIR++ of Brigo and
+Mercurio). Defaults to "hull_white".
+- <u>swaption_type (str, optional):</u> The swaption. Options are: "payer" (the right to pay the fixed rate),
+"receiver" (the right to receive it). Defaults to "payer".
 - <u>strike (float &#124; None, optional):</u> The fixed rate of the swaps (decimal). Defaults
 to None, the at-the-money forward swap rate of each expiry and tenor.
 - <u>fixed_frequency (int, optional):</u> The fixed payments per year. Defaults to 1.
@@ -4808,16 +4968,15 @@ to None, the at-the-money forward swap rate of each expiry and tenor.
 Defaults to "United States".
 - <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,
 such as "1M", "3M" or "6M". Defaults to "3M".
-- <u>period (str, optional):</u> Whether to calibrate on daily, weekly or monthly rates.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the rates. Options are: "daily", "weekly", "monthly". Defaults to
+"daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
 exist the result is returned in full. Defaults to None, which keeps every column.
-- <u>exercise (str, optional):</u> "european" (at the expiry only) or "bermudan" (on every
-fixed payment date from the expiry on, Hull-White only). Defaults to
-"european".
+- <u>exercise (str, optional):</u> The exercise. Options are: "european" (at the expiry only), "bermudan" (on every
+fixed payment date from the expiry on, Hull-White only). Defaults to "european".
 
 **Returns:**
 
@@ -4871,11 +5030,15 @@ $$
 
 where P(t) = (1 + r(t))^(-t) is the discount factor of the annually compounded zero rate r(t) of the curve (interpolated linearly between its maturities), $$t_{0}$$ the start of the swap and $$\tau_{i} = 1$$ / fixed_frequency the accrual of a fixed period (a short first period when the maturity is not a whole number of periods). The swap rate is a nominal annual rate paid fixed_frequency times a year on year fractions with no calendar (a regular 30/360 schedule). The value of a basis point on the fixed rate (PV01) of a swap is Annuity * Notional * 0.0001.
 
-The default curve is EIOPA's risk-free rate term structure, which EIOPA derives from the swap rates of each currency (for the euro, swap rates minus a credit risk adjustment) and publishes at each month end; curve="government" uses the zero-coupon curve of the government bond yield curve of the day instead, whose par rates are those of government bonds rather than swaps. To value a swap of your own, with a fixed rate, a current fixing and its DV01, use `swap_model.get_swap_value`.
-
-Referenced against QuantLib's VanillaSwap with the DiscountingSwapEngine, FinancePy's IborSwap and rateslib's IRS on the same discount factors.
+The default curve is EIOPA's risk-free rate term structure, which EIOPA derives from the swap rates of each currency (for the euro, swap rates minus a credit risk adjustment) and publishes at each month end; the government curve is the zero-coupon curve of the government bond yield curve of the day, whose par rates are those of government bonds rather than swaps. To value a swap of your own, with a fixed rate, a current fixing and its DV01, use `swap_model.get_swap_value`.
 
 **Also known as:** par swap rate, swap curve, interest rate swap rate, forward swap rate, PV01, swap annuity, PVBP.
+
+**References:**
+
+- library | Referenced against QuantLib's [VanillaSwap.fairRate](https://www.quantlib.org/reference/class_quant_lib_1_1_vanilla_swap.html){:target="_blank"}
+- library | Referenced against rateslib's [IRS.rate](https://rateslib.com/py/en/3.0.x/api/rateslib.instruments.IRS.html#rateslib.instruments.IRS.rate){:target="_blank"}
+- library | Shares similar logic as FinancePy's [IborSwap.swap_rate](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/rates/ibor_swap.py#L280){:target="_blank"}
 
 **Args:**
 
@@ -4883,12 +5046,11 @@ Referenced against QuantLib's VanillaSwap with the DiscountingSwapEngine, Financ
 swaps, in years or as labels such as '10Y'. Defaults to None, 1, 2, 3, 5, 7, 10,
 15, 20 and 30 years.
 - <u>country (str, optional):</u> The country or currency area of the curve, as EIOPA
-(curve="eiopa") or `get_government_bond_yield_curve` (curve="government") names
-it. Defaults to "United States".
-- <u>curve (str, optional):</u> "eiopa" for the EIOPA risk-free rate term structure of the
-last month end on or before the date, or "government" for the zero-coupon curve
-of the government bond yield curve of the date (see `get_zero_coupon_curve`).
-Defaults to "eiopa".
+(for the EIOPA curve) or `get_government_bond_yield_curve` (for the government
+curve) names it. Defaults to "United States".
+- <u>curve (str, optional):</u> The discount curve. Options are: "eiopa" (EIOPA's risk-free rate term structure of
+the last month end on or before the date), "government" (the zero-coupon curve of the government bond
+yield curve of the date, see `get_zero_coupon_curve`). Defaults to "eiopa".
 - <u>fixed_frequency (int, optional):</u> The number of fixed payments per year. Defaults to
 1 (annual, as euro and US dollar overnight index swaps pay).
 - <u>forward_start (float &#124; str, optional):</u> The start of the swaps, in years or as a
@@ -4941,7 +5103,9 @@ Which returns:
 ---
 
 ## get_forward_rate_agreement
-Calculates the rates of forward rate agreements (FRAs) from a zero-coupon curve: the simple interest rate, fixed today, of a loan that starts and ends at future dates. A "3x6" FRA covers the three months that start three months from now.
+Calculates the rates of forward rate agreements (FRAs) from a zero-coupon curve: the simple interest rate, fixed today, of a loan that starts and ends at future dates.
+
+A "3x6" FRA covers the three months that start three months from now.
 
 At no arbitrage the FRA rate is the simple forward rate implied by the discount factors of the two dates (Hull, 2022, Options, Futures and Other Derivatives, ch. 4.7). A FRA that pays a fixed rate K and receives the floating rate is worth Notional * $$\tau$$ * (FRA Rate - K) * P(end), see `forward_model.get_forward_rate_agreement`.
 
@@ -4957,11 +5121,15 @@ $$
 
 where P(t) = (1 + r(t))^(-t) is the discount factor of the annually compounded zero rate r(t) of the curve, interpolated linearly between its maturities, the times are years (a month is a twelfth of a year) and Days in Year is 360 on ACT/360, the money market day count of US dollar and euro rates, or 365 on ACT/365. The FRA rate is simple interest on that day count.
 
-The default curve is the zero-coupon curve of the government bond yield curve of the day (see `get_zero_coupon_curve`), whose bills price the first months; curve="eiopa" uses EIOPA's swap-based risk-free rate term structure of the last month end, which starts at 1 year.
-
-Referenced against QuantLib's ForwardRateAgreement, FinancePy's IborFRA and rateslib's FRA on the same discount factors.
+The default curve is the zero-coupon curve of the government bond yield curve of the day (see `get_zero_coupon_curve`), whose bills price the first months; the EIOPA curve is EIOPA's swap-based risk-free rate term structure of the last month end, which starts at 1 year.
 
 **Also known as:** FRA, forward rate agreement, forward-forward rate, simple forward rate.
+
+**References:**
+
+- library | Referenced against QuantLib's [ForwardRateAgreement](https://www.quantlib.org/reference/class_quant_lib_1_1_forward_rate_agreement.html){:target="_blank"}
+- library | Shares similar logic as FinancePy's [IborFRA](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/rates/ibor_fra.py#L23){:target="_blank"}
+- library | Shares similar logic as rateslib's [FRA](https://rateslib.com/py/en/3.0.x/api/rateslib.instruments.FRA.html){:target="_blank"}
 
 **Args:**
 
@@ -4969,13 +5137,13 @@ Referenced against QuantLib's ForwardRateAgreement, FinancePy's IborFRA and rate
 list or comma-separated, e.g. "3x6,6x12". Defaults to None, 1x4, 3x6, 6x9, 6x12,
 9x12, 12x18 and 12x24.
 - <u>country (str, optional):</u> The country or currency area of the curve, see
-`get_government_bond_yield_curve` (or EIOPA's names with curve="eiopa").
+`get_government_bond_yield_curve` (or EIOPA's names for the EIOPA curve).
 Defaults to "United States".
-- <u>curve (str, optional):</u> "government" for the zero-coupon curve of the government
-bond yield curve of the date, or "eiopa" for EIOPA's risk-free rate term
-structure of the last month end on or before it. Defaults to "government".
-- <u>day_count (str, optional):</u> The day count of the FRA rate, "act/360" or "act/365".
-Defaults to "act/360".
+- <u>curve (str, optional):</u> The discount curve. Options are: "eiopa" (EIOPA's risk-free rate term structure of
+the last month end on or before the date), "government" (the zero-coupon curve of the government bond
+yield curve of the date, see `get_zero_coupon_curve`). Defaults to "government".
+- <u>day_count (str, optional):</u> The day count of the FRA rate. Options are: "act/360" (actual/360), "act/365"
+(actual/365). Defaults to "act/360".
 - <u>date (str &#124; None, optional):</u> The day of the curve (YYYY-MM-DD). Defaults to None,
 the end date.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results
@@ -5045,11 +5213,13 @@ $$
 
 where P(t) = (1 + r(t))^(-t) is the discount factor of the annually compounded US dollar zero rate r(t) of the curve on the bond's Price Date, c the coupon rate, $$t_{i}$$ the semi-annual coupon dates counted back from maturity in years on the 30/360 Bond Basis (as `get_bond_universe` prices the bonds), Dirty Price = Price + Accrued Interest per 100 of par, and $$\delta_{j} = 1$$ / float_frequency the accrual of the floating periods from the Price Date to maturity (a short first period). The spreads are simple annual rates on the floating leg.
 
-The default curve is EIOPA's US dollar risk-free rate term structure, which EIOPA derives from US dollar swap rates, of the last month end on or before each bond's Price Date; curve="government" uses the Treasury zero-coupon curve of the Price Date instead, which gives the asset swap spread over Treasuries. For a bond and curve of your own, use `swap_model.get_asset_swap_spread`.
-
-Referenced against QuantLib's AssetSwap (fairSpread, par and market value) on the same discount factors.
+The default curve is EIOPA's US dollar risk-free rate term structure, which EIOPA derives from US dollar swap rates, of the last month end on or before each bond's Price Date; the government curve is the Treasury zero-coupon curve of the Price Date instead, which gives the asset swap spread over Treasuries. For a bond and curve of your own, use `swap_model.get_asset_swap_spread`.
 
 **Also known as:** ASW, asset swap spread, par-par asset swap, proceeds asset swap, market value asset swap.
+
+**References:**
+
+- library | Referenced against QuantLib's [AssetSwap.fairSpread](https://www.quantlib.org/reference/class_quant_lib_1_1_asset_swap.html){:target="_blank"}
 
 **Args:**
 
@@ -5064,8 +5234,8 @@ date (YYYY-MM-DD). Defaults to None.
 date (YYYY-MM-DD). Defaults to None.
 - <u>etfs (list[str] &#124; str &#124; None, optional):</u> The bond ETFs to read the bonds from (see
 `get_bond_universe`). Defaults to None, LQD, IGSB and USHY.
-- <u>curve (str, optional):</u> "eiopa" for EIOPA's US dollar risk-free rate term structure,
-or "government" for the Treasury zero-coupon curve. Defaults to "eiopa".
+- <u>curve (str, optional):</u> The swap curve. Options are: "eiopa" (EIOPA's US dollar risk-free rate term
+structure), "government" (the Treasury zero-coupon curve). Defaults to "eiopa".
 - <u>float_frequency (int, optional):</u> The number of floating payments per year of the
 swap. Defaults to 4 (quarterly).
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -5084,7 +5254,7 @@ Asset Swap Spread (decimals) and the Price Date.
 **Notes:**
 
 - EIOPA publishes its curve at each month end, so the curve can be up to a month and
-a half older than the bond prices; curve="government" uses the curve of the same day.
+a half older than the bond prices; the government curve is that of the same day.
 - The bonds and their prices are those of `get_bond_universe`; a callable bond is
 treated as a bullet bond to maturity.
 - Requires a FinancialModelingPrep API key for the holdings.
@@ -5124,7 +5294,7 @@ $$
 
 where the Yield to Maturity is that of `get_bond_universe` (a nominal annual rate compounded twice a year) and Swap Rate(T) the par swap rate of `get_swap_rate` for the bond's years to maturity T on the 30/360 Bond Basis, with semi-annual fixed payments so that both rates are compounded alike (a short first period when T is not a whole number of half years). The swap rate is priced on the annually compounded US dollar zero curve of the bond's Price Date.
 
-The default curve is EIOPA's US dollar risk-free rate term structure, which EIOPA derives from US dollar swap rates, of the last month end on or before each bond's Price Date; curve="government" uses the Treasury zero-coupon curve, which makes the I-spread a spread over the Treasury par curve, close to the G-Spread. For a bond and curve of your own, use `swap_model.get_i_spread`.
+The default curve is EIOPA's US dollar risk-free rate term structure, which EIOPA derives from US dollar swap rates, of the last month end on or before each bond's Price Date; the government curve is the Treasury zero-coupon curve, which makes the I-spread a spread over the Treasury par curve, close to the G-Spread. For a bond and curve of your own, use `swap_model.get_i_spread`.
 
 **Also known as:** interpolated spread, I-spread, spread over swaps, swap spread of a bond.
 
@@ -5141,8 +5311,8 @@ date (YYYY-MM-DD). Defaults to None.
 date (YYYY-MM-DD). Defaults to None.
 - <u>etfs (list[str] &#124; str &#124; None, optional):</u> The bond ETFs to read the bonds from (see
 `get_bond_universe`). Defaults to None, LQD, IGSB and USHY.
-- <u>curve (str, optional):</u> "eiopa" for EIOPA's US dollar risk-free rate term structure,
-or "government" for the Treasury zero-coupon curve. Defaults to "eiopa".
+- <u>curve (str, optional):</u> The swap curve. Options are: "eiopa" (EIOPA's US dollar risk-free rate term
+structure), "government" (the Treasury zero-coupon curve). Defaults to "eiopa".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -5159,7 +5329,7 @@ the Price Date.
 **Notes:**
 
 - EIOPA publishes its curve at each month end, so the curve can be up to a month and
-a half older than the bond prices; curve="government" uses the curve of the same day.
+a half older than the bond prices; the government curve is that of the same day.
 - The yield is to maturity: a callable bond priced above its call price yields less
 to its call date.
 - Requires a FinancialModelingPrep API key for the holdings.
@@ -5189,7 +5359,9 @@ Which returns:
 ---
 
 ## get_fx_forward_rates
-Calculates FX forward rates by covered interest parity: the exchange rate, agreed today, at which currencies are exchanged at a future date. Exchanging today and depositing abroad, or depositing at home and exchanging forward, must give the same, so the forward rate is the spot rate carried at the difference between the two currencies' interest rates: the currency with the higher rate trades at a forward discount (Hull, 2022, Options, Futures and Other Derivatives, ch. 5.10).
+Calculates FX forward rates by covered interest parity: the exchange rate, agreed today, at which currencies are exchanged at a future date.
+
+Exchanging today and depositing abroad, or depositing at home and exchanging forward, must give the same, so the forward rate is the spot rate carried at the difference between the two currencies' interest rates: the currency with the higher rate trades at a forward discount (Hull, 2022, Options, Futures and Other Derivatives, ch. 5.10).
 
 The formula is as follows:
 
@@ -5203,11 +5375,15 @@ $$
 
 where the Spot Rate is in units of the country's currency per unit of the base country's currency, from the daily exchange rates against the US dollar the Bank for International Settlements compiles (the last day with a rate on or before the date), and r_country(T) and $$r_{\text{base}} (T)$$ are the annually compounded zero rates of the two currencies at the tenor T in years (a month is a twelfth of a year). The value of a forward you hold follows from `forward_model.get_fx_forward_rate`.
 
-The default curves are EIOPA's risk-free rate term structures, which EIOPA derives from the swap rates of each currency and publishes at each month end for the euro and about 20 other currencies; they start at 1 year, so a shorter tenor uses the 1-year zero rate. curve="government" uses the zero-coupon curves of the government bond yield curves of the date, whose bills price the first months, for the countries that have one (see `get_zero_coupon_curve`).
-
-Referenced against QuantLib's FxForward, FinancePy's FXForward and rateslib's forward_fx on the same discount factors.
+The default curves are EIOPA's risk-free rate term structures, which EIOPA derives from the swap rates of each currency and publishes at each month end for the euro and about 20 other currencies; they start at 1 year, so a shorter tenor uses the 1-year zero rate. The government curves are the zero-coupon curves of the government bond yield curves of the date, whose bills price the first months, for the countries that have one (see `get_zero_coupon_curve`).
 
 **Also known as:** FX forward, currency forward, forward exchange rate, forward points, swap points, covered interest parity, outright forward.
+
+**References:**
+
+- library | Referenced against rateslib's [forward_fx](https://rateslib.com/py/en/3.0.x/api/rateslib.fx.forward_fx.html){:target="_blank"}
+- library | Shares similar logic as QuantLib's [FxForward](https://www.quantlib.org/reference/class_quant_lib_1_1_fx_forward.html){:target="_blank"}
+- library | Shares similar logic as FinancePy's [FXForward](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/products/fx/fx_forward.py#L20){:target="_blank"}
 
 **Args:**
 
@@ -5219,9 +5395,9 @@ and Australia.
 the rates are quoted against. Defaults to "United States".
 - <u>tenors (float &#124; str &#124; list &#124; None, optional):</u> The tenors, in years or as labels such
 as '3M' or '5Y'. Defaults to None, 1, 3 and 6 months and 1, 2, 5 and 10 years.
-- <u>curve (str, optional):</u> "eiopa" for EIOPA's risk-free rate term structures of the last
-month end on or before the date, or "government" for the zero-coupon curves of the
-government bond yield curves of the date. Defaults to "eiopa".
+- <u>curve (str, optional):</u> The discount curves. Options are: "eiopa" (EIOPA's risk-free rate term structures of
+the last month end on or before the date), "government" (the zero-coupon curves of the government bond
+yield curves of the date). Defaults to "eiopa".
 - <u>points (bool, optional):</u> Whether to return the forward points, (Forward Rate - Spot
 Rate) * 10,000, instead of the forward rates. Defaults to False.
 - <u>date (str &#124; None, optional):</u> The day (YYYY-MM-DD). Defaults to None, the end date.
@@ -5242,7 +5418,7 @@ of each tenor, in units of the country's currency per unit of the base currency.
 - The market quotes forward points of yen pairs per 100 rather than 10,000; the points
 here are per 10,000 for every pair.
 - The spot rate is the BIS rate of the day, while EIOPA's curves are those of the last
-month end; curve="government" takes the curves of the same day.
+month end; the government curves are those of the same day.
 - Covered interest parity leaves out the cross-currency basis, which makes US dollar
 forwards trade some basis points of carry away from the parity rate.
 

@@ -7308,3 +7308,28 @@ body.article-document {
     }
   }
 }
+
+// A method's References: papers and the libraries it is referenced against,
+// each with its kind in a narrow column on the left
+.page__content ul.docs-refs {
+  list-style: none;
+  padding: 0;
+  margin-left: 0 !important;
+
+  li {
+    position: relative;
+    padding: 12px 0 12px 92px;
+    margin: 0 !important;
+    border-bottom: 1px solid rgba(127, 127, 127, 0.2);
+  }
+}
+
+.docs-refs__kind {
+  position: absolute;
+  left: 0;
+  top: 15px;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.65;
+}

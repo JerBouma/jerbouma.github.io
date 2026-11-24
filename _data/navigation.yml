@@ -566,16 +566,10 @@ financetoolkit-docs-ratios:
         url: /projects/financetoolkit/docs/ratios#get_return_on_tangible_assets
       - title: Return on Capital Employed (RoCE)
         url: /projects/financetoolkit/docs/ratios#get_return_on_capital_employed
-      - title: Net Income per EBT
-        url: /projects/financetoolkit/docs/ratios#get_net_income_per_ebt
       - title: Free Cash Flow Operating Cash Flow Ratio
         url: /projects/financetoolkit/docs/ratios#get_free_cash_flow_operating_cash_flow_ratio
       - title: Tax Burden Ratio
         url: /projects/financetoolkit/docs/ratios#get_tax_burden_ratio
-      - title: EBT to EBIT
-        url: /projects/financetoolkit/docs/ratios#get_ebt_to_ebit
-      - title: EBIT to Revenue
-        url: /projects/financetoolkit/docs/ratios#get_ebit_to_revenue
       - title: Cash Tax Rate
         url: /projects/financetoolkit/docs/ratios#get_cash_tax_rate
       - title: Tax Rate Divergence
@@ -968,8 +962,6 @@ financetoolkit-docs-options:
         url: /projects/financetoolkit/docs/options#get_stock_price_simulation
       - title: Garman-Kohlhagen Model
         url: /projects/financetoolkit/docs/options#get_garman_kohlhagen
-      - title: Bjerksund-Stensland Model
-        url: /projects/financetoolkit/docs/options#get_bjerksund_stensland
       - title: Monte Carlo Option Price
         url: /projects/financetoolkit/docs/options#get_monte_carlo_option_price
       - title: Binary Option
@@ -1683,10 +1675,8 @@ financetoolkit-docs-performance:
         url: /projects/financetoolkit/docs/performance#get_factor_correlations
       - title: "Alpha"
         url: /projects/financetoolkit/docs/performance#get_alpha
-      - title: "Treynor-Mazuy Model"
-        url: /projects/financetoolkit/docs/performance#get_treynor_mazuy_model
-      - title: "Henriksson-Merton Model"
-        url: /projects/financetoolkit/docs/performance#get_henriksson_merton_model
+      - title: "Market Timing Model"
+        url: /projects/financetoolkit/docs/performance#get_market_timing_model
       - title: "Fama Decomposition"
         url: /projects/financetoolkit/docs/performance#get_fama_decomposition
       - title: Style Analysis
@@ -2181,22 +2171,18 @@ financetoolkit-docs-econometrics:
         url: /projects/financetoolkit/docs/econometrics#get_linear_regression
       - title: "Slope"
         url: /projects/financetoolkit/docs/econometrics#get_slope
-      - title: "Rolling Correlation"
-        url: /projects/financetoolkit/docs/econometrics#get_rolling_correlation
-      - title: "Rolling Median"
-        url: /projects/financetoolkit/docs/econometrics#get_rolling_median
-      - title: "Rolling Percentile"
-        url: /projects/financetoolkit/docs/econometrics#get_rolling_percentile
+      - title: "Correlation"
+        url: /projects/financetoolkit/docs/econometrics#get_correlation
+      - title: "Percentile"
+        url: /projects/financetoolkit/docs/econometrics#get_percentile
       - title: "Percent Rank"
         url: /projects/financetoolkit/docs/econometrics#get_percent_rank
-      - title: "Rolling Z-Score"
-        url: /projects/financetoolkit/docs/econometrics#get_rolling_z_score
-      - title: "Rolling Mean Absolute Deviation"
-        url: /projects/financetoolkit/docs/econometrics#get_rolling_mean_absolute_deviation
-      - title: "Rolling Standard Error"
-        url: /projects/financetoolkit/docs/econometrics#get_rolling_standard_error
-      - title: "Rolling Entropy"
-        url: /projects/financetoolkit/docs/econometrics#get_rolling_entropy
+      - title: "Z-Score"
+        url: /projects/financetoolkit/docs/econometrics#get_z_score
+      - title: "Mean Absolute Deviation"
+        url: /projects/financetoolkit/docs/econometrics#get_mean_absolute_deviation
+      - title: "Standard Error"
+        url: /projects/financetoolkit/docs/econometrics#get_standard_error
       - title: "Entropy"
         url: /projects/financetoolkit/docs/econometrics#get_entropy
       - title: "Lempel-Ziv Complexity"

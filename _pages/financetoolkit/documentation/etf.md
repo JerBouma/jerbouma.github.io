@@ -25,7 +25,9 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/etf.md %}
 
 ## get_holdings
-Get the holdings of every fund: each asset it holds with the number of shares, the market value and the weight in the fund (as a decimal). This shows what the fund is actually exposed to and how concentrated it is; get_concentration and get_overlap summarize the weights.
+Get the holdings of every fund: each asset it holds with the number of shares, the market value and the weight in the fund (as a decimal).
+
+This shows what the fund is actually exposed to and how concentrated it is; get_concentration and get_overlap summarize the weights.
 
 Tickers that are not an ETF or fund have no holdings and return no data. They are not removed from the Toolkit instance.
 
@@ -81,6 +83,8 @@ Which returns:
 ---
 
 ## get_information
+Get everything Financial Modeling Prep publishes about every fund.
+
 Get everything Financial Modeling Prep publishes about every fund: its name, identifiers, issuer, asset class, domicile, inception date, expense ratio (as a decimal), assets under management, net asset value, number of holdings, description and website. The expense ratio in particular determines how much of the return is lost to costs every year. get_profile adds the latest price, the premium or discount to the NAV and the dollar volume to the key figures.
 
 Tickers that are not an ETF or fund return no data. They are not removed from the Toolkit instance.
@@ -139,7 +143,9 @@ Which returns:
 ---
 
 ## get_country_weightings
-Get how every fund is allocated across countries, as decimals, the largest weights of the first fund first. Two funds tracking similar markets can differ considerably here, which matters for the currency and political risk the fund carries.
+Get how every fund is allocated across countries, as decimals, the largest weights of the first fund first.
+
+Two funds tracking similar markets can differ considerably here, which matters for the currency and political risk the fund carries.
 
 Tickers that are not an ETF or fund return no data. They are not removed from the Toolkit instance.
 
@@ -187,7 +193,9 @@ Which returns:
 ---
 
 ## get_sector_weightings
-Get how every fund is allocated across sectors, as decimals, the largest weights of the first fund first. This shows whether a fund that looks broad is in fact concentrated in a few sectors, such as technology in many large-cap indices.
+Get how every fund is allocated across sectors, as decimals, the largest weights of the first fund first.
+
+This shows whether a fund that looks broad is in fact concentrated in a few sectors, such as technology in many large-cap indices.
 
 Tickers that are not an ETF or fund return no data. They are not removed from the Toolkit instance.
 
@@ -242,7 +250,9 @@ Which returns:
 ---
 
 ## get_profile
-Get the profile of every fund: its name, issuer, asset class, domicile, inception date, expense ratio, assets under management, net asset value (NAV), latest price and the premium or discount of that price to the NAV, the number of holdings and the average daily volume and dollar volume (in US dollars, at the exchange rate of every day for a fund listed in another currency). The expense ratio is what holding the fund costs every year; a premium means buying it costs more than the holdings are worth, which happens in stress for funds of less liquid assets such as bonds. The NAV is the latest Financial Modeling Prep publishes and the NAV Date the New York close it was struck at (the last 16:00 close before its update), so the premium compares the close on the NAV Date with the NAV (SEC Rule 6c-11), not the latest Price. It is empty without a close within three days before the NAV Date (an end date in the past), when the NAV is in another currency than the listing (a close in pence, GBp or GBX, is compared in pounds) and, with a logged warning, when it exceeds 50% either way, which is a data error rather than a price. With stale_nav=True the premium is given however old the NAV is: it compares the NAV with the last close on or before the NAV Date, or with the latest close when the prices end before the NAV Date or the NAV has no date. A NAV days older than the close then mostly shows how the market moved since, not what the fund trades at.
+Get the profile of every fund: who issues it, what it holds, what it costs and how large it is.
+
+Get the profile of every fund: its name, issuer, asset class, domicile, inception date, expense ratio, assets under management, net asset value (NAV), latest price and the premium or discount of that price to the NAV, the number of holdings and the average daily volume and dollar volume (in US dollars, at the exchange rate of every day for a fund listed in another currency). The expense ratio is what holding the fund costs every year; a premium means buying it costs more than the holdings are worth, which happens in stress for funds of less liquid assets such as bonds. The NAV is the latest Financial Modeling Prep publishes and the NAV Date the New York close it was struck at (the last 16:00 close before its update), so the premium compares the close on the NAV Date with the NAV (SEC Rule 6c-11), not the latest Price. It is empty without a close within three days before the NAV Date (an end date in the past), when the NAV is in another currency than the listing (a close in pence, GBp or GBX, is compared in pounds) and, with a logged warning, when it exceeds 50% either way, which is a data error rather than a price. Including a stale NAV, the premium is given however old the NAV is: it compares the NAV with the last close on or before the NAV Date, or with the latest close when the prices end before the NAV Date or the NAV has no date. A NAV days older than the close then mostly shows how the market moved since, not what the fund trades at.
 
 **Also known as:** ETF profile, expense ratio, assets under management, premium discount.
 
@@ -299,15 +309,15 @@ Which returns:
 ---
 
 ## get_tracking
-Measure how closely every fund tracks the Benchmark of the Toolkit, which for an index fund should be the index it follows (set benchmark_ticker to a total return index or to another fund of the same index). Per fund:
+Measure how closely every fund tracks the Benchmark of the Toolkit, which for an index fund should be the index it follows (set benchmark_ticker to a total return index or to another fund of the same index).
+
+Per fund:
 
 - Tracking Difference: the annualized return of the fund minus that of the Benchmark over the period, as issuers report it. An index fund trails its index by roughly its expense ratio; less points to securities lending income, more to a costly or loose replication.
-
 - Tracking Error: the annualized volatility of the per-period return difference, how far the fund strays from the index from period to period.
-
 - Correlation, Beta and R Squared of the fund's returns with the Benchmark's.
 
-With yearly=True the tracking difference is given per calendar year instead, the return of the fund minus that of the Benchmark. Each fund is compared with the Benchmark on the dates both have a close, so a fund whose prices stop within a year (after a ticker change, for example) is measured up to its last close. The daily closes of two funds can differ by the timing of their last trade, which adds noise to a daily tracking error; fund reports usually measure it from monthly returns.
+Per year, the tracking difference is given per calendar year instead, the return of the fund minus that of the Benchmark. Each fund is compared with the Benchmark on the dates both have a close, so a fund whose prices stop within a year (after a ticker change, for example) is measured up to its last close. The daily closes of two funds can differ by the timing of their last trade, which adds noise to a daily tracking error; fund reports usually measure it from monthly returns.
 
 A fund listed in another currency than the Benchmark (a London listing of an S&P 500 fund in pounds against SPY in dollars) is compared with the Benchmark converted into the fund's currency at the exchange rate of each date, as the fund's own returns include the move of that currency. The fund and the Benchmark still close at different hours, which adds noise to the daily measures; monthly returns are less affected. Without an exchange rate the prices are compared as they are, with a logged warning.
 
@@ -315,8 +325,9 @@ A fund listed in another currency than the Benchmark (a London listing of an S&P
 
 **Args:**
 
-- <u>period (str, optional):</u> The return frequency (daily, weekly, monthly, quarterly or
-yearly). Defaults to "daily".
+- <u>period (str, optional):</u> The return frequency. Options are: "daily" (daily returns), "weekly"
+(weekly returns), "monthly" (monthly returns), "quarterly" (quarterly returns), "yearly" (yearly
+returns). Defaults to "daily".
 - <u>yearly (bool, optional):</u> Whether to return the tracking difference per year.
 Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -360,6 +371,8 @@ Which returns:
 ---
 
 ## get_concentration
+Measure how concentrated every fund is in its largest holdings.
+
 Measure how concentrated every fund is from its holdings: the number of holdings, the largest holding and its weight, the weight of the ten largest (shares of the fund), the Herfindahl-Hirschman index (the sum of the squared weights, after scaling the weights of the holdings to sum to one, so cash and holdings without a weight do not dilute it) and the effective number of holdings (one over that index). A fund of 500 holdings whose ten largest make up a third of it behaves like a fund of far fewer stocks; the effective number says how many equally weighted holdings would give the same concentration.
 
 **Also known as:** fund concentration, top 10 weight, Herfindahl index, effective number of holdings.
@@ -401,7 +414,9 @@ Which returns:
 ---
 
 ## get_overlap
-Measure how much the funds hold of the same: for every pair of funds the sum, over the holdings they share, of the smaller of the two weights. An overlap of 0.8 means 80% of the two portfolios is the same, so holding both adds little diversification.
+Measure how much the funds hold of the same: for every pair of funds the sum, over the holdings they share, of the smaller of the two weights.
+
+An overlap of 0.8 means 80% of the two portfolios is the same, so holding both adds little diversification.
 
 The weights are taken as listed, not scaled to add up to one, so the overlap of a fund whose list of holdings is incomplete is at most the weight that list covers, also with itself on the diagonal (1 for a complete list). One minus the overlap equals the active share (see get_active_share, which scales the weights) only for funds whose listed weights each add up to one.
 
@@ -442,7 +457,9 @@ Which returns:
 ---
 
 ## get_active_share
-Measure how much each fund's holdings differ from every other fund's: half the sum, over all holdings of either fund, of the absolute difference between their weights. Against an index fund it shows how far a fund departs from the index: an active share of 0.2 means 20% of the portfolio differs and 80% is the index. Cremers and Petajisto (2009) call funds below about 0.6 closet indexers.
+Measure how much each fund's holdings differ from every other fund's: half the sum, over all holdings of either fund, of the absolute difference between their weights.
+
+Against an index fund it shows how far a fund departs from the index: an active share of 0.2 means 20% of the portfolio differs and 80% is the index. Cremers and Petajisto (2009) call funds below about 0.6 closet indexers.
 
 **Also known as:** active share, portfolio difference, deviation from the benchmark.
 
@@ -452,9 +469,9 @@ $$
 \text{Active Share} = \frac{1}{2} \cdot \sum(\left|\text{Weight Fund}\; i - \text{Weight Other Fund}\; i\right|)
 $$
 
-For more information, see the following paper:
+**References:**
 
-- Cremers, K.J.M., & Petajisto, A. (2009). "How Active Is Your Fund Manager? A New Measure That Predicts Performance." Review of Financial Studies, 22(9), 3329-3365.
+- paper | Cremers, K.J.M., & Petajisto, A. (2009). "How Active Is Your Fund Manager? A New Measure That Predicts Performance." Review of Financial Studies, 22(9), 3329-3365.
 
 **Args:**
 
@@ -503,6 +520,8 @@ Which returns:
 ---
 
 ## get_look_through_valuation
+Value every fund through its holdings, as the weighted valuation ratios of the companies it holds.
+
 Value every fund through its holdings: the price-to-earnings, price-to-book, price-to-sales and price-to-free-cash-flow ratio, the dividend yield and the net profit margin of its largest holdings, weighted by their weight in the fund. The multiples are weighted harmonic means, the multiple of the fund as a whole, so one holding with a very high multiple does not dominate. When the holdings' earnings (or book value, sales or free cash flow) add up to a loss or to about zero, the fund has no meaningful multiple, so it is NaN with a logged warning. The coverage is the share of the fund's weight held in holdings with a usable, non-zero price-to-earnings ratio (or, without price-to-earnings ratios, the first other multiple there is); more holdings raise it at the cost of more requests.
 
 The ratios are the trailing twelve month ratios Financial Modeling Prep calculates for every holding.
@@ -549,13 +568,15 @@ Which returns:
 ---
 
 ## get_liquidity
+Measure how liquid every fund is to trade, from its daily volume and the price impact of trading it.
+
 Measure how liquid every fund is to trade over the last year of the period: its average daily volume and dollar volume, that dollar volume relative to the fund's assets under management, and the price impact of trading 100 million dollars in a day (the Amihud, 2002, illiquidity: the average absolute daily return per dollar traded, scaled to 100 million). The dollar volume of a fund listed in another currency is its traded value in the major unit (pounds for a close in pence) converted at the exchange rate of every day, and its assets, published in the NAV's currency (the major unit of the listing currency when the NAV currency is not published), at the latest rate; without an exchange rate these measures are NaN, with a logged warning. An ETF can also be traded through its holdings, so a thinly traded fund of liquid holdings is easier to trade than its own volume suggests; a fund whose holdings are themselves illiquid (small companies, high yield bonds) is not.
 
-For more information, see the following paper:
-
-- Amihud, Y. (2002). "Illiquidity and Stock Returns: Cross-Section and Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
-
 **Also known as:** ETF liquidity, dollar volume, Amihud illiquidity, price impact.
+
+**References:**
+
+- paper | Amihud, Y. (2002). "Illiquidity and Stock Returns: Cross-Section and Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
 
 **Args:**
 
@@ -599,6 +620,8 @@ Which returns:
 ---
 
 ## get_contribution
+Calculate how much every holding or sector of a fund added to or took off its return over the period.
+
 Calculate how much every holding (or sector) of a fund added to or took off its return over the period: the holding's weight at the start of the period times its return over the period, in decimals and in points of the fund's price (or of an index, e.g. the S&P 500 for SPY). It answers questions such as "how many points did technology take off the S&P 500 this month?" and shows when a few large holdings carry an index while most of its stocks fall, or the other way around.
 
 The period runs from the close before the Toolkit's start date to the close on its end date, so a start date of January 1 gives the return so far this year. Returns are price returns of the split-adjusted close, as an index level such as the S&P 500 is a price index; dividends are not included.
@@ -609,8 +632,8 @@ A fund publishes only its current holdings, so the weights are those of the clos
 
 **Args:**
 
-- <u>group_by (str, optional):</u> "holding" for every holding or "sector" for every sector
-(from the holdings' company profiles). Defaults to "holding".
+- <u>group_by (str, optional):</u> What the contribution is given for. Options are: "holding" (every
+holding), "sector" (every sector, from the holdings' company profiles). Defaults to "holding".
 - <u>holdings (int &#124; None, optional):</u> The number of largest holdings (by weight) to
 price, one request each; the rest counts towards the Remainder. Defaults to
 None, which prices every holding with a symbol.
@@ -674,6 +697,8 @@ Which returns:
 ---
 
 ## get_return_excluding
+Calculate the return a fund would have had without some of its holdings or sectors.
+
 Calculate the return a fund would have had without some of its holdings or sectors: the contribution of the other holdings over their weight, Σ contribution / Σ start weight over the holdings that remain, so the rest of the fund reweighted to a whole. It answers "what did the S&P 500 do without technology?" or "without Nvidia?", showing how much of an index move comes from a few stocks.
 
 The contributions come from get_contribution: weights rolled back from the fund's current holdings to the start of the period, price returns from the close before the start date to the close on the end date. The same caveats apply: the longer the period, the more the rolled back weights drift from the fund's actual weights. Only the priced holdings count: what get_contribution puts in the Remainder (cash, holdings without a price and that drift) would otherwise all fall on the holdings that remain and, once most of the fund is excluded, dominate their return. The Priced Holdings Return, the same calculation without excluding anything, is therefore the like-for-like comparison; for a stock index fund it is close to the fund's own Return.

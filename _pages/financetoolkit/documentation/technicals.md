@@ -29,11 +29,14 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/technicals.md %}
 
 ## collect_all_indicators
-Calculates all Technical Indicators based on the data provided.
+Collect all the technical indicators of every ticker in one table: the breadth, momentum, overlap, volatility and cycle indicators.
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>window (int, optional):</u> The number of periods to use for the calculation. Defaults to 14.
 The Bollinger Bands and their %B and BandWidth keep their own window of 20
 periods (with 2 standard deviations), as defined by Bollinger, and the indicators
@@ -59,8 +62,8 @@ pd.Series or pd.DataFrame: Technical indicators calculated based on the specifie
 **Notes:**
 
 - The method calculates various types of technical indicators for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -94,7 +97,9 @@ Which returns:
 ---
 
 ## get_factor_analysis
-Factor analysis (predictive power) of the technical indicators: whether the tickers that score high on an indicator go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the indicator of the tickers at the end of the period and their return over the following horizon: 1 means the indicator ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
+Factor analysis (predictive power) of the technical indicators: whether the tickers that score high on an indicator go on to return more than those that score low.
+
+Per period, the information coefficient (IC) is the Spearman rank correlation between the indicator of the tickers at the end of the period and their return over the following horizon: 1 means the indicator ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
 The summary has a row per indicator and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the skewness and excess kurtosis of the IC, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the annualized alpha and the beta of the factor-weighted long-short portfolio against the equally weighted tickers, the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the indicator from one period to the next. With detail, it returns one part of the analysis per period, quantile or group for a single indicator.
 
@@ -130,7 +135,19 @@ $$
 \text{Standard error of a quantile} = \text{standard deviation over the periods} \;/ \sqrt{\text{periods}}
 $$
 
-The indicators are calculated daily and the value on the last trading day of each period is compared with the returns from that day's close onwards, using the dividend and split adjusted close. An indicator in price units does not compare across tickers with different share prices, so a price line (a moving average, band, channel, stop or cloud line, and the Butterworth and Gaussian filters of the Swiss Army Knife) is used as the distance of the close from it, close / line - 1, and a price difference as a share of the close: the true range, the ATR and average day range, the price distance, the market thermometer, the squeeze momentum, the MACD, the momentum (absolute rate of change), the Qstick, the awesome and accelerator oscillators, the elder ray, the detrended price oscillator, the force index, the Hilbert phasor components, the high-pass and band-pass filters of the Swiss Army Knife and the detrended synthetic price. The collections evaluate every variant of an indicator with variants, such as each method of `get_moving_average`, labelled with its parameters, e.g. "get_moving_average(method='t3')". Each ticker keeps its own history: a ticker without a value or a return in a period is left out of that period only.
+The indicators are calculated daily and the value on the last trading day of each period is compared with the returns from that day's close onwards, using the dividend and split adjusted close. An indicator in price units does not compare across tickers with different share prices, so a price line (a moving average, band, channel, stop or cloud line, and the Butterworth and Gaussian filters of the Swiss Army Knife) is used as the distance of the close from it, close / line - 1, and a price difference as a share of the close: the true range, the ATR and average day range, the price distance, the market thermometer, the squeeze momentum, the MACD, the momentum (absolute rate of change), the Qstick, the awesome and accelerator oscillators, the elder ray, the detrended price oscillator, the force index, the Hilbert phasor components, the high-pass and band-pass filters of the Swiss Army Knife and the detrended synthetic price. The collections evaluate every variant of an indicator with variants, such as each method of `get_moving_average`, labelled with the method name and its parameters. Each ticker keeps its own history: a ticker without a value or a return in a period is left out of that period only.
+
+**References:**
+
+- library | Referenced against alphalens' [factor_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L28){:target="_blank"}
+- library | Referenced against alphalens' [mean_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L80){:target="_blank"}
+- library | Referenced against alphalens' [mean_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L461){:target="_blank"}
+- library | Referenced against alphalens' [factor_weights](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L131){:target="_blank"}
+- library | Referenced against alphalens' [factor_returns](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L210){:target="_blank"}
+- library | Referenced against alphalens' [factor_alpha_beta](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L265){:target="_blank"}
+- library | Referenced against alphalens' [quantile_turnover](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L575){:target="_blank"}
+- library | Referenced against alphalens' [factor_rank_autocorrelation](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L620){:target="_blank"}
+- library | Shares similar logic as alphalens' [average_cumulative_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L758){:target="_blank"}
 
 **Args:**
 
@@ -142,8 +159,9 @@ or "get_moving_average(method='hull', window=10)", a list of them, or a collecti
 the oscillators and momentum indicators. The collections leave out the market-wide
 breadth measures, the volume-scaled indicators, the pivot points and
 Fibonacci levels and the Hilbert dominant cycle phase and trend mode.
-- <u>period (str, optional):</u> The frequency at which the indicators are evaluated:
-daily, weekly, monthly, quarterly or yearly. Defaults to "monthly".
+- <u>period (str, optional):</u> The frequency at which the indicators are evaluated. Options are:
+"daily" (daily prices), "weekly" (weekly prices), "monthly" (monthly prices),
+"quarterly" (quarterly prices), "yearly" (yearly prices). Defaults to "monthly".
 - <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
 returns cover. Defaults to None, which uses about a period, a quarter and a
 year ahead (1, 3 and 12 months for monthly).
@@ -151,21 +169,21 @@ year ahead (1, 3 and 12 months for monthly).
 period. Defaults to 5.
 - <u>periods_apart (int, optional):</u> The number of periods between the dates the
 quantile turnover and the rank autocorrelation compare. Defaults to 1.
-- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single indicator
-instead of the summary: "information_coefficient" (per period and horizon),
-"information_coefficient_by_month" or "information_coefficient_by_year" (the mean IC
-per calendar month or year), "group_information_coefficient" (the IC statistics
-within each group, needs group), "quantile_returns" (the mean forward return per
-quantile and horizon), "quantile_returns_by_date" (per period),
-"quantile_return_statistics" (the mean, its standard error and both per single
-period), "quantile_statistics" (the range, mean and count of the factor values in
-each quantile), "quantile_turnover" (per period and quantile),
-"rank_autocorrelation" (per period), "factor_weights" (the weights of the
-factor-weighted long-short portfolio per period and ticker), "factor_returns" (its
-return per period and horizon), "cumulative_returns" (the growth of 1 in it and in
-each quantile) or "event_returns" (the mean price path of each quantile from the
-longest horizon before to the longest horizon after the periods it is formed).
-Defaults to None.
+- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single indicator instead of the
+summary. Options are: "information_coefficient" (the IC per period and horizon),
+"information_coefficient_by_month" (the mean IC per calendar month),
+"information_coefficient_by_year" (the mean IC per calendar year),
+"group_information_coefficient" (the IC statistics within each group, needs group),
+"quantile_returns" (the mean forward return per quantile and horizon),
+"quantile_returns_by_date" (the mean forward return per quantile and horizon, per period),
+"quantile_return_statistics" (the mean forward return, its standard error and both per single
+period), "quantile_statistics" (the range, mean and count of the factor values in each
+quantile), "quantile_turnover" (the turnover per period and quantile),
+"rank_autocorrelation" (the rank autocorrelation per period), "factor_weights" (the weights of
+the factor-weighted long-short portfolio per period and ticker), "factor_returns" (its return
+per period and horizon), "cumulative_returns" (the growth of 1 in it and in each quantile),
+"event_returns" (the mean price path of each quantile from the longest horizon before to the
+longest horizon after the periods it is formed). Defaults to None.
 - <u>column (str &#124; None, optional):</u> The output to use of an indicator with several,
 e.g. "Signal Line" of the MACD or "Upper Band" of the Bollinger Bands.
 Defaults to None, which uses the first output in alphabetical order other
@@ -180,12 +198,11 @@ a group-neutral analysis, in which the IC is group-adjusted and the
 factor-weighted portfolio neutral within each group. Without group the IC
 stays the same, as subtracting one mean from every ticker keeps their ranks.
 Defaults to False.
-- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period:
-"quantile" (equally sized), "equal_width" (bins of equal width between the lowest
-and highest value), "zero_aware" (half of the quantiles for the negative and half
-for the zero and positive values, for a signal centred on zero; needs an even number
-of quantiles) or "group" (equally sized within each group, needs group). Defaults to
-"quantile".
+- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period. Options are:
+"quantile" (equally sized), "equal_width" (bins of equal width between the lowest and highest
+value), "zero_aware" (half of the quantiles for the negative and half for the zero and positive
+values, for a signal centred on zero; needs an even number of quantiles), "group" (equally sized
+within each group, needs group). Defaults to "quantile".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the indicators that take them, e.g. window=14,
@@ -226,12 +243,11 @@ of Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period
 1945-1964." Journal of Finance 23(2); the event returns follow MacKinlay, A.C.
 (1997). "Event Studies in Economics and Finance." Journal of Economic Literature
 35(1).
-- Referenced against alphalens-reloaded
-([https://github.com/stefan-jansen/alphalens-reloaded](https://github.com/stefan-jansen/alphalens-reloaded){:target="_blank"}). Its top minus bottom
-spread is half of the one here (a gross exposure of one rather than two), it
-drops a period and ticker without every horizon's return where each horizon
-here uses its own, and its event returns average the single-period returns at
-each offset where these are the price paths rebased to the period itself.
+- Unlike alphalens, the top minus bottom spread is twice alphalens' (a gross
+exposure of two rather than one), each horizon uses its own returns where alphalens
+drops a period and ticker without every horizon's return, and the event returns are
+the price paths rebased to the period itself where alphalens averages the
+single-period returns at each offset.
 
 Also known as: predictive power, information coefficient, factor testing, alpha signal
 
@@ -256,7 +272,7 @@ toolkit.technicals.get_factor_analysis(
 
 Which returns:
 
-|                                     |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |    Beta |   Quantile Turnover |   Rank Autocorrelation |
+|                                     |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   P-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |    Beta |   Quantile Turnover |   Rank Autocorrelation |
 |:------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|--------------:|--------------:|-----------------:|---------------:|-------------------:|-------------------:|--------:|--------------------:|-----------------------:|
 | ('get_rate_of_change', '1 Month')   |    0.0468 |                  0.3467 |                 0.1349 |        1.4713 |    0.1439 |       -0.3812 |       -0.3944 |           0.5798 |            119 |             0.0091 |             0.1115 |  0.0444 |              0.2637 |                 0.8582 |
 | ('get_rate_of_change', '12 Months') |    0.1184 |                  0.3988 |                 0.2968 |        3.0848 |    0.0026 |       -0.4661 |       -0.3225 |           0.6389 |            108 |             0.079  |            -0.0334 |  0.6091 |              0.2637 |                 0.8582 |
@@ -266,12 +282,14 @@ Which returns:
 ---
 
 ## collect_breadth_indicators
-Calculates and collects various breadth indicators based on the provided data.
+Collect the breadth and volume indicators of every ticker in one table: how much volume and how many tickers take part in the moves of the prices.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -295,8 +313,8 @@ pd.Series or pd.DataFrame: Breadth indicators calculated based on the specified 
 **Notes:**
 
 - The method calculates various breadth indicators for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -330,7 +348,7 @@ Which returns:
 ---
 
 ## get_mcclellan_oscillator
-Calculate the McClellan Oscillator for a given price series.
+Calculate the McClellan Oscillator: the momentum of the market's breadth, as the difference between a fast and a slow average of the advancing minus declining tickers.
 
 The McClellan Oscillator is the difference between a short-term and a long-term exponential moving average of the daily advance/decline signal. Traditionally it is calculated from the number of advancing minus declining stocks across a market; here it is applied to each ticker's own signal (+1 on a day it closed higher, -1 on a day it closed lower, 0 otherwise), so it measures how persistently that ticker has been rising or falling.
 
@@ -340,16 +358,18 @@ $$
 \text{McClellan Oscillator} = \operatorname{EMA}(\text{Advance/Decline} \;\text{Signal},\; \text{short\_ema\_window}) - \operatorname{EMA}(\text{Advance/Decline} \;\text{Signal},\; \text{long\_ema\_window})
 $$
 
-For more information, see the following sources:
-
-- McClellan, S. and McClellan, M. (1970). "Patterns for Profit: The McClellan Oscillator and Summation Index." Trade Levels Inc.
-
 **Also known as:** McClellan oscillator, market breadth.
+
+**References:**
+
+- paper | McClellan, S. and McClellan, M. (1970). "Patterns for Profit: The McClellan Oscillator and Summation Index." Trade Levels Inc.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>short_ema_window (int, optional):</u> The window size for the short-term EMA.
@@ -378,8 +398,8 @@ pd.Series or pd.DataFrame: McClellan Oscillator values.
 
 - The method retrieves historical data based on the specified `period` and calculates
 the McClellan Oscillator for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -409,7 +429,7 @@ Which returns:
 ---
 
 ## get_advancers_decliners
-Calculate the daily advance/decline signal for a given price series.
+Calculate the advance/decline signal: whether each ticker closed higher (1) or lower (-1) than the period before, the building block of the market breadth measures.
 
 Traditionally advancers versus decliners is a market-wide count of rising against falling stocks; applied to a single ticker it becomes a directional signal: +1 on a day the ticker closed higher than the day before, -1 on a day it closed lower and 0 on an unchanged day. It feeds the McClellan Oscillator; get_trin and get_new_highs_new_lows measure breadth across all tickers.
 
@@ -423,8 +443,10 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -449,8 +471,8 @@ pd.Series or pd.DataFrame: Advance/decline signal values (+1, 0 or -1).
 
 - The method retrieves historical data based on the specified `period` and calculates
 the advance/decline signal for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -480,7 +502,7 @@ Which returns:
 ---
 
 ## get_on_balance_volume
-Calculate the On-Balance Volume (OBV) for a given price series.
+Calculate the On-Balance Volume (OBV): a running total of volume that adds the volume of up periods and subtracts that of down periods, to show whether volume flows into or out of a security.
 
 The On-Balance Volume (OBV) is a technical indicator that uses volume flow to predict changes in stock price. It accumulates the volume on up days and subtracts the volume on down days. The resulting OBV line provides insights into the buying and selling pressure behind price movements.
 
@@ -492,17 +514,19 @@ $$
 
 The level of OBV has no meaning by itself, since it depends on the first date of the data; only its direction and its divergences from price matter. A rising OBV while price moves sideways is read as accumulation ahead of a breakout, a falling OBV as distribution. A single day of very high volume, such as an index rebalance or an earnings day, can move the line for a long time.
 
-For more information, see the following sources:
-
-- Granville, J.E. (1963). "Granville's New Key to Stock Market Profits." Prentice-Hall.
-- Referenced against TA-Lib's OBV ([https://ta-lib.org/functions/obv.html](https://ta-lib.org/functions/obv.html){:target="_blank"}).
-
 **Also known as:** OBV, volume momentum.
+
+**References:**
+
+- paper | Granville, J.E. (1963). "Granville's New Key to Stock Market Profits." Prentice-Hall.
+- library | Referenced against TA-Lib's [OBV](https://ta-lib.org/functions/obv.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -529,7 +553,7 @@ pd.Series or pd.DataFrame: On-Balance Volume values.
 for each asset in the Toolkit instance.
 - TA-Lib's OBV starts its running total at the first period's volume instead of 0, so it is
 the On-Balance Volume here plus that volume; every change is equal.
-- If `growth` is set to True, the method calculates the growth of the OBV using the specified `lag`.
+- When growth is requested, the method calculates the growth of the OBV over the given lag.
 
 **As an example:**
 
@@ -559,7 +583,7 @@ Which returns:
 ---
 
 ## get_price_volume_trend
-Calculate the Price Volume Trend (PVT) for a given price series.
+Calculate the Price Volume Trend (PVT): a running total of volume weighted by the percentage change of the close, which shows how strongly buying or selling pressure backs a trend.
 
 The Price Volume Trend is a running total of volume weighted by the period's percentage change in price. On-Balance Volume adds or subtracts the whole volume depending on the direction of the close; the PVT adds only the share of the volume that matches the size of the move, so a small change in price moves the line only a little.
 
@@ -575,19 +599,21 @@ $$
 
 The level of the PVT has no meaning by itself, since it starts at 0 on the start date; only its direction and its divergences from price matter. A rising PVT confirms an uptrend carried by volume, and a PVT that fails to follow price to a new high warns that the move lacks participation. The line is in shares, so it cannot be compared across stocks.
 
-For more information, see the following sources:
-
-- Granville, J.E. (1963). "Granville's New Key to Stock Market Profits." Prentice-Hall, the On-Balance Volume the PVT refines.
-- Referenced against TA-Lib's PVT ([https://ta-lib.org/functions/pvt.html](https://ta-lib.org/functions/pvt.html){:target="_blank"}).
-
 **Also known as:** PVT, Price and Volume Trend, Volume Price Trend.
 
 See `breadth_model.get_price_volume_trend` for the references.
 
+**References:**
+
+- paper | Granville, J.E. (1963). "Granville's New Key to Stock Market Profits." Prentice-Hall, the On-Balance Volume the PVT refines.
+- library | Referenced against TA-Lib's [PVT](https://ta-lib.org/functions/pvt.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", so that the change in price is the return including dividends.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -612,7 +638,7 @@ pd.Series or pd.DataFrame: Price Volume Trend values, in shares.
 
 - The running total starts at 0 on each ticker's first date with a close and a volume on or
 after the start date of the Toolkit, as in TA-Lib's PVT, which it equals.
-- If `growth` is set to True, the method calculates the growth of the PVT using the specified `lag`.
+- When growth is requested, the method calculates the growth of the PVT over the given lag.
 
 **As an example:**
 
@@ -642,7 +668,7 @@ Which returns:
 ---
 
 ## get_accumulation_distribution_line
-Calculate the Accumulation/Distribution Line for a given price series.
+Calculate the Accumulation/Distribution Line: a running total of volume weighted by where each close lies within its high-low range, to show whether a security is being accumulated or distributed.
 
 The Accumulation/Distribution Line is a technical indicator that evaluates the flow of money into or out of an asset. It takes into account both price and volume information to identify whether an asset is being accumulated (bought) or distributed (sold) by investors.
 
@@ -660,17 +686,19 @@ $$
 \text{ADL} = \text{Previous ADL} + \text{Money Flow Volume}
 $$
 
-For more information, see the following sources:
-
-- Chaikin, M., who published no formal paper on it; the standard textbook treatment is Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-- Referenced against TA-Lib's AD ([https://ta-lib.org/functions/ad.html](https://ta-lib.org/functions/ad.html){:target="_blank"}).
-
 **Also known as:** ADL, Chaikin ADL, volume-price trend.
+
+**References:**
+
+- paper | Chaikin, M., who published no formal paper on it; the standard textbook treatment is Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
+- library | Referenced against TA-Lib's [AD](https://ta-lib.org/functions/ad.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -697,8 +725,8 @@ pd.Series or pd.DataFrame: Accumulation/Distribution Line values.
 - The method retrieves historical data based on the specified `period` and calculates the
 Accumulation/Distribution Line for each asset in the Toolkit instance.
 - The Accumulation/Distribution Line agrees with TA-Lib's AD.
-- If `growth` is set to True, the method calculates the growth of the Accumulation/Distribution Line
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Accumulation/Distribution Line
+over the given lag.
 
 **As an example:**
 
@@ -728,7 +756,7 @@ Which returns:
 ---
 
 ## get_chaikin_oscillator
-Calculate the Chaikin Oscillator for a given price series.
+Calculate the Chaikin Oscillator: the momentum of the Accumulation/Distribution Line, as the difference between its fast and slow exponential moving averages.
 
 The Chaikin Oscillator is a momentum-based indicator that combines price and volume to help identify potential trends and reversals in the market. It is calculated as the difference between the 3-day and 10-day Accumulation/Distribution Line.
 
@@ -738,17 +766,19 @@ $$
 \text{Chaikin Oscillator} = \operatorname{EMA}(\text{short-window ADL}) - \operatorname{EMA}(\text{long-window ADL})
 $$
 
-For more information, see the following sources:
-
-- Chaikin, M., who published no formal paper on it; the standard textbook treatment is Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-- Referenced against TA-Lib's ADOSC ([https://ta-lib.org/functions/adosc.html](https://ta-lib.org/functions/adosc.html){:target="_blank"}).
-
 **Also known as:** Chaikin oscillator, volume accumulation.
+
+**References:**
+
+- paper | Chaikin, M., who published no formal paper on it; the standard textbook treatment is Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
+- library | Referenced against TA-Lib's [ADOSC](https://ta-lib.org/functions/adosc.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -782,8 +812,8 @@ Chaikin Oscillator for each asset in the Toolkit instance.
 while TA-Lib's ADOSC starts them from the first Accumulation/Distribution value, so the
 first values differ from TA-Lib's until the two converge (within 0.01% after about 65
 periods with the default windows).
-- If `growth` is set to True, the method calculates the growth of the Chaikin Oscillator
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Chaikin Oscillator
+over the given lag.
 
 **As an example:**
 
@@ -813,33 +843,35 @@ Which returns:
 ---
 
 ## get_chaikin_money_flow
-Calculate the Chaikin Money Flow (CMF) for a given price series, or Colin Twiggs' Money Flow (TMF).
+Calculate the Chaikin Money Flow (CMF) or Colin Twiggs' Money Flow (TMF): the share of volume over a window that came with closes near the highs rather than the lows, a measure of buying versus selling pressure.
 
 The Chaikin Money Flow sums the same Money Flow Volume used by the Accumulation/ Distribution Line over a rolling window and normalizes it by the window's total volume, turning the running (unbounded) Accumulation/Distribution Line into a bounded oscillator. Sustained readings above zero indicate buying pressure (accumulation) is dominating over the window, while sustained readings below zero indicate selling pressure (distribution).
 
-Twiggs Money Flow (method="twiggs") refines the Chaikin Money Flow. It places the close within the true range (which includes a gap from the previous close) instead of the high-low range, so a gap does not show up as a close at the top or bottom of a narrow range, and it smooths the money flow volume and the volume with Wilder's moving average instead of summing them over a window, so a large volume does not distort the result when it leaves the window. Twiggs used crossings of zero and divergences from price as signals.
+Twiggs Money Flow refines the Chaikin Money Flow. It places the close within the true range (which includes a gap from the previous close) instead of the high-low range, so a gap does not show up as a close at the top or bottom of a narrow range, and it smooths the money flow volume and the volume with Wilder's moving average instead of summing them over a window, so a large volume does not distort the result when it leaves the window. Twiggs used crossings of zero and divergences from price as signals.
 
 The formula is as follows, per method:
 
 $$
-\text{"standard":}\;\; \text{Money Flow Multiplier} = \frac{(\text{Close} - \text{Low}) - (\text{High} - \text{Close})}{\text{High} - \text{Low}},\;\; \text{Money Flow Volume} = \text{Money Flow Multiplier} \cdot \text{Volume}\;\;\text{and}\;\; \text{CMF} = \frac{\operatorname{Sum}(\text{Money Flow Volume},\; \text{window})}{\operatorname{Sum}(\text{Volume},\; \text{window})}
+\text{Chaikin Money Flow:}\;\; \text{Money Flow Multiplier} = \frac{(\text{Close} - \text{Low}) - (\text{High} - \text{Close})}{\text{High} - \text{Low}},\;\; \text{Money Flow Volume} = \text{Money Flow Multiplier} \cdot \text{Volume}\;\;\text{and}\;\; \text{CMF} = \frac{\operatorname{Sum}(\text{Money Flow Volume},\; \text{window})}{\operatorname{Sum}(\text{Volume},\; \text{window})}
 $$
 
 $$
-\text{"twiggs":}\;\; \text{True High} = \max(\text{High},\; \operatorname{Close}(t-1)),\;\; \text{True Low} = \min(\text{Low},\; \operatorname{Close}(t-1)),\;\; \text{Money Flow Volume} = \frac{\text{Volume} \cdot ((\text{Close} - \text{True Low}) - (\text{True High} - \text{Close}))}{\text{True High} - \text{True Low}}\;\;\text{and}\;\; \text{TMF} = \frac{\text{Wilder MA}(\text{Money Flow Volume},\; \text{window})}{\text{Wilder MA}(\text{Volume},\; \text{window})}
+\text{Twiggs Money Flow:}\;\; \text{True High} = \max(\text{High},\; \operatorname{Close}(t-1)),\;\; \text{True Low} = \min(\text{Low},\; \operatorname{Close}(t-1)),\;\; \text{Money Flow Volume} = \frac{\text{Volume} \cdot ((\text{Close} - \text{True Low}) - (\text{True High} - \text{Close}))}{\text{True High} - \text{True Low}}\;\;\text{and}\;\; \text{TMF} = \frac{\text{Wilder MA}(\text{Money Flow Volume},\; \text{window})}{\text{Wilder MA}(\text{Volume},\; \text{window})}
 $$
-
-For more information, see the following sources:
-
-- Referenced against TA-Lib's CMF ([https://ta-lib.org/functions/cmf.html](https://ta-lib.org/functions/cmf.html){:target="_blank"}).
-- Twiggs, C. (2003). "Twiggs Money Flow." Incredible Charts ([https://www.incrediblecharts.com/indicators/twiggs_money_flow.php](https://www.incrediblecharts.com/indicators/twiggs_money_flow.php){:target="_blank"}).
 
 **Also known as:** CMF, Chaikin Money Flow, TMF, Twiggs Money Flow.
 
+**References:**
+
+- library | Referenced against TA-Lib's [CMF](https://ta-lib.org/functions/cmf.html){:target="_blank"}
+- paper | Referenced against Twiggs, C. (2003). "Twiggs Money Flow." Incredible Charts ([https://www.incrediblecharts.com/indicators/twiggs_money_flow.php](https://www.incrediblecharts.com/indicators/twiggs_money_flow.php){:target="_blank"}).
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -855,8 +887,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "standard" for the Chaikin Money Flow or "twiggs" for Twiggs
-Money Flow. Defaults to "standard".
+- <u>method (str, optional):</u> The variant. Options are: "standard" (the Chaikin Money Flow),
+"twiggs" (Twiggs Money Flow). Defaults to "standard".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -875,12 +907,12 @@ the Chaikin Money Flow for each asset in the Toolkit instance.
 textbook treatment is Murphy, J.J. (1999). "Technical Analysis of the Financial
 Markets." New York Institute of Finance.
 - The Chaikin Money Flow agrees with TA-Lib's CMF.
-- "twiggs": TA-Lib, pandas-ta-classic, ta and Tulip Indicators do not have it, and finta's
+- Twiggs Money Flow: TA-Lib, pandas-ta-classic, ta and Tulip Indicators do not have it, and finta's
 TMF is an unfinished stub, so it follows Twiggs' definition. Wilder's moving average starts
 from the simple average of its first `window` values, and the first period, without a
 previous close, uses its own high-low range.
-- If `growth` is set to True, the method calculates the growth of the Chaikin Money
-Flow using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Chaikin Money
+Flow over the given lag.
 
 **As an example:**
 
@@ -910,7 +942,7 @@ Which returns:
 ---
 
 ## get_ease_of_movement
-Calculate the Ease of Movement (EMV) for a given price series.
+Calculate the Ease of Movement (EMV): how far the price moves per unit of volume, so a large value shows a price rising or falling on little volume.
 
 The Ease of Movement indicator relates how far price moved (the change in the midpoint of the high-low range from one period to the next) to the volume required to move it (via the "Box Ratio", volume scaled down and divided by the period's high-low range). High positive readings mean price is moving up easily on relatively little volume; high negative readings mean price is moving down easily on relatively little volume. The raw daily reading is smoothed with a Simple Moving Average to reduce noise.
 
@@ -934,10 +966,16 @@ $$
 
 **Also known as:** EMV, Ease of Movement.
 
+**References:**
+
+- library | Referenced against TA-Lib's [EMV](https://ta-lib.org/functions/emv.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods used to smooth the raw Ease of
@@ -969,11 +1007,11 @@ pd.Series or pd.DataFrame: Ease of Movement values.
 the Ease of Movement for each asset in the Toolkit instance.
 - Reference: Arms, R.W. (1989). "The Arms - <u>Index (TRIN):</u> An Introduction to the
 Volume Analysis of Stock and Bond Markets." Dow Jones-Irwin.
-- Referenced against TA-Lib's EMV ([https://ta-lib.org/functions/emv.html](https://ta-lib.org/functions/emv.html){:target="_blank"}).
 - The Ease of Movement agrees with TA-Lib's EMV with its `volumedivisor` set to `volume_divisor`
 (TA-Lib's default is 10,000).
-- If `growth` is set to True, the method calculates the growth of the Ease of
-Movement using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Ease of
+Movement over the given lag.
+
 
 **As an example:**
 
@@ -1003,31 +1041,36 @@ Which returns:
 ---
 
 ## get_volume_index
-Calculate the Negative Volume Index (NVI) or the Positive Volume Index (PVI) for a given price series.
+Calculate the Negative or the Positive Volume Index (NVI or PVI), which separates the trades of informed investors from those of the crowd.
 
-The Negative Volume Index is a cumulative index that only updates on days where volume decreases from the prior period, compounding that day's percentage price change onto the running index; on days where volume increases (or stays flat), the index is carried forward unchanged. The premise, per Fosback, is that "smart money" tends to be active on low-volume (quiet) days, so tracking price behaviour specifically on those days isolates informed trading from the noise of high-volume, crowd-driven days. The Positive Volume Index (method="positive") mirrors it: it only updates on days where volume increases from the prior period, and is carried forward unchanged on days where volume decreases (or stays flat). Per Fosback, it isolates price behaviour on high-volume (crowd-driven) days, which is traditionally read as tracking less-informed, sentiment-driven trading.
+It is a running total of the price changes on the periods volume falls (NVI) or rises (PVI).
+
+The Negative Volume Index is a cumulative index that only updates on days where volume decreases from the prior period, compounding that day's percentage price change onto the running index; on days where volume increases (or stays flat), the index is carried forward unchanged. The premise, per Fosback, is that "smart money" tends to be active on low-volume (quiet) days, so tracking price behaviour specifically on those days isolates informed trading from the noise of high-volume, crowd-driven days. The Positive Volume Index mirrors it: it only updates on days where volume increases from the prior period, and is carried forward unchanged on days where volume decreases (or stays flat). Per Fosback, it isolates price behaviour on high-volume (crowd-driven) days, which is traditionally read as tracking less-informed, sentiment-driven trading.
 
 The formula is as follows, per method:
 
 $$
-\text{"negative":}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \cdot \left(1 + \left(\frac{\operatorname{Close}(t)}{\operatorname{Close}(t-1)} - 1\right)\right) \;\text{if Volume}(t) < \operatorname{Volume}(t-1),\;\; \text{and}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \;\text{otherwise}
+\text{Negative Volume Index:}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \cdot \left(1 + \left(\frac{\operatorname{Close}(t)}{\operatorname{Close}(t-1)} - 1\right)\right) \;\text{if Volume}(t) < \operatorname{Volume}(t-1),\;\; \text{and}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \;\text{otherwise}
 $$
 
 $$
-\text{"positive":}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \cdot \left(1 + \left(\frac{\operatorname{Close}(t)}{\operatorname{Close}(t-1)} - 1\right)\right) \;\text{if Volume}(t) > \operatorname{Volume}(t-1),\;\; \text{and}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \;\text{otherwise}
+\text{Positive Volume Index:}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \cdot \left(1 + \left(\frac{\operatorname{Close}(t)}{\operatorname{Close}(t-1)} - 1\right)\right) \;\text{if Volume}(t) > \operatorname{Volume}(t-1),\;\; \text{and}\;\; \operatorname{Index}(t) = \operatorname{Index}(t-1) \;\text{otherwise}
 $$
-
-For more information, see the following sources:
-
-- Fosback, N.G. (1976). "Stock Market Logic: A Sophisticated Approach to Profits on Wall Street." The Institute for Econometric Research.
-- Referenced against TA-Lib's NVI ([https://ta-lib.org/functions/nvi.html](https://ta-lib.org/functions/nvi.html){:target="_blank"}) and PVI ([https://ta-lib.org/functions/pvi.html](https://ta-lib.org/functions/pvi.html){:target="_blank"}).
 
 **Also known as:** NVI, Negative Volume Index, PVI, Positive Volume Index, volume index.
 
+**References:**
+
+- paper | Fosback, N.G. (1976). "Stock Market Logic: A Sophisticated Approach to Profits on Wall Street." The Institute for Econometric Research.
+- library | Referenced against TA-Lib's [NVI](https://ta-lib.org/functions/nvi.html){:target="_blank"}
+- library | Referenced against TA-Lib's [PVI](https://ta-lib.org/functions/pvi.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>start_value (float, optional):</u> The index value to start the series at.
@@ -1041,8 +1084,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "negative" for the Negative Volume Index or "positive" for the
-Positive Volume Index. Defaults to "negative".
+- <u>method (str, optional):</u> The index. Options are: "negative" (the Negative Volume Index),
+"positive" (the Positive Volume Index). Defaults to "negative".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1058,8 +1101,8 @@ pd.Series or pd.DataFrame: Negative (or Positive) Volume Index values.
 the volume index for each asset in the Toolkit instance.
 - With the default `start_value` of 1,000, the Negative Volume Index agrees with TA-Lib's NVI
 and the Positive Volume Index with TA-Lib's PVI.
-- If `growth` is set to True, the method calculates the growth of the volume index using
-the specified `lag`.
+- When growth is requested, the method calculates the growth of the volume index over
+the given lag.
 
 **As an example:**
 
@@ -1090,7 +1133,7 @@ Which returns:
 ---
 
 ## get_trin
-Calculate the TRIN (Arms Index) for a given price series.
+Calculate the TRIN (Arms Index): the ratio of advancing to declining tickers divided by the ratio of their volumes, which shows whether volume favours the rising or the falling tickers.
 
 TRIN compares the ratio of advancing to declining issues against the ratio of volume in advancing issues to volume in declining issues. It is a market-wide breadth reading computed across all tickers in the Toolkit instance (excluding the synthetic "Portfolio" and "Benchmark" columns), and the resulting single reading is broadcast to every ticker column so it lines up with the other breadth indicators.
 
@@ -1104,17 +1147,19 @@ A TRIN below 1 means the volume in rising stocks outweighs their number, which i
 
 A ticker counts on the dates it traded, with its change since its own previous close: on a date only a cryptocurrency in the Toolkit traded, such as a weekend, only the cryptocurrency counts, and a stock is never counted as unchanged on it.
 
-For more information, see the following sources:
-
-- Arms, R.W. (1967), who introduced the index in Barron's as the Short-Term Trading Index.
-- Arms, R.W. (1989). "The Arms Index (TRIN): An Introduction to the Volume Analysis of Stock and Bond Markets." Dow Jones-Irwin.
-
 **Also known as:** Arms Index, TRIN.
+
+**References:**
+
+- paper | Arms, R.W. (1967), who introduced the index in Barron's as the Short-Term Trading Index.
+- paper | Arms, R.W. (1989). "The Arms Index (TRIN): An Introduction to the Volume Analysis of Stock and Bond Markets." Dow Jones-Irwin.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -1139,8 +1184,8 @@ pd.Series or pd.DataFrame: TRIN values.
 
 - The method retrieves historical data based on the specified `period` and calculates
 the TRIN across all tickers in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1171,7 +1216,7 @@ Which returns:
 ---
 
 ## get_new_highs_new_lows
-Calculate the New Highs - New Lows for a given price series.
+Calculate the New Highs - New Lows: the number of tickers at a new high over a window minus the number at a new low, which shows how broad a rise or a fall is.
 
 New Highs - New Lows measures the number of tickers reaching a new high over the specified window minus the number of tickers reaching a new low over the same window. It is a market-wide breadth reading computed across all tickers in the Toolkit instance (excluding the synthetic "Portfolio" and "Benchmark" columns), and the resulting single reading is broadcast to every ticker column so it lines up with the other breadth indicators.
 
@@ -1185,16 +1230,18 @@ The reading counts tickers at a high or low of the lookback window, so it needs 
 
 Each ticker's window counts its own closes and the ticker counts on the dates it traded, so the weekends of a cryptocurrency in the Toolkit do not shorten a stock's window.
 
-For more information, see the following sources:
-
-- Colby, R.W. (2003). "The Encyclopedia of Technical Market Indicators." 2nd ed. McGraw-Hill.
-
 **Also known as:** new highs minus new lows, record high percent.
+
+**References:**
+
+- paper | Colby, R.W. (2003). "The Encyclopedia of Technical Market Indicators." 2nd ed. McGraw-Hill.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for the new high / new low lookback.
@@ -1221,8 +1268,8 @@ pd.Series or pd.DataFrame: New Highs - New Lows values.
 
 - The method retrieves historical data based on the specified `period` and calculates
 the New Highs - New Lows across all tickers in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1253,7 +1300,7 @@ Which returns:
 ---
 
 ## get_klinger_volume_oscillator
-Calculate the Klinger Volume Oscillator (KVO) for a given price series.
+Calculate the Klinger Volume Oscillator (KVO): the difference between a fast and a slow average of the volume force, which compares the volume of up and down trends to show long-term money flow.
 
 The Klinger Volume Oscillator turns each period's volume into a signed "volume force": positive when the sum of the high, low and close rose from the period before (an up trend), negative when it fell, and weighted by how the period's range compares with the range accumulated since the trend last turned. The oscillator is the difference between a short and a long exponential moving average of that force, with a signal line to show when it turns.
 
@@ -1285,18 +1332,20 @@ $$
 
 Klinger designed it to follow the long-term flow of money while staying sensitive to short-term reversals: the KVO crossing its signal line, or diverging from price at a new high or low, is the usual signal. Its level is in units of volume and depends on how many shares trade, so it is not comparable across tickers.
 
-For more information, see the following sources:
-
-- Klinger, S.J. (1997). "Identifying Trends With Volume Analysis." Technical Analysis of Stocks & Commodities, 15(12).
-- Referenced against TA-Lib's KVO ([https://ta-lib.org/functions/kvo.html](https://ta-lib.org/functions/kvo.html){:target="_blank"}).
-- Tulip Indicators: kvo ([https://tulipindicators.org/kvo](https://tulipindicators.org/kvo){:target="_blank"}).
-
 **Also known as:** KVO, Klinger Oscillator, Klinger Volume Force.
+
+**References:**
+
+- paper | Klinger, S.J. (1997). "Identifying Trends With Volume Analysis." Technical Analysis of Stocks & Commodities, 15(12).
+- library | Referenced against TA-Lib's [KVO](https://ta-lib.org/functions/kvo.html){:target="_blank"}
+- library | Referenced against Tulip Indicators' [kvo](https://tulipindicators.org/kvo){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -1333,8 +1382,8 @@ periods later. TA-Lib seeds the averages with the first volume force instead; on
 AAPL and MSFT the two agree to 1% of the typical KVO after about 210 periods and to 0.0001% after
 about 470. pandas-ta-classic's `kvo` uses a simplified force (the volume signed by the change in
 the typical price) and differs.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1364,7 +1413,7 @@ Which returns:
 ---
 
 ## get_market_facilitation_index
-Calculate Bill Williams' Market Facilitation Index (BW MFI) for a given price series.
+Calculate Bill Williams' Market Facilitation Index (BW MFI): the range of a period per unit of volume, which shows how efficiently volume moves the price.
 
 The Market Facilitation Index measures how far price moved per unit of volume: the period's range divided by its volume. Williams read it together with the change in volume: a rising index on rising volume ("green") shows a market that moves easily with new participants, a falling index on falling volume ("fade") a market that loses interest, a falling index on rising volume ("squat") a struggle between buyers and sellers that often comes before a breakout, and a rising index on falling volume ("fake") a move without participation.
 
@@ -1376,19 +1425,21 @@ $$
 
 The index depends on the price and the number of shares traded, so it is read against its own history rather than compared across tickers.
 
-For more information, see the following sources:
-
-- Williams, B.M. (1995). "Trading Chaos: Applying Expert Techniques to Maximize Your Profits." John Wiley & Sons.
-- Referenced against TA-Lib's MARKETFI ([https://ta-lib.org/functions/marketfi.html](https://ta-lib.org/functions/marketfi.html){:target="_blank"}).
-- pandas-ta-classic: marketfi ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- Tulip Indicators: marketfi ([https://tulipindicators.org/marketfi](https://tulipindicators.org/marketfi){:target="_blank"}).
-
 **Also known as:** BW MFI, Market Facilitation Index, MARKETFI.
+
+**References:**
+
+- paper | Williams, B.M. (1995). "Trading Chaos: Applying Expert Techniques to Maximize Your Profits." John Wiley & Sons.
+- library | Referenced against TA-Lib's [MARKETFI](https://ta-lib.org/functions/marketfi.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [marketfi](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/marketfi.py#L16){:target="_blank"}
+- library | Referenced against Tulip Indicators' [marketfi](https://tulipindicators.org/marketfi){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -1417,11 +1468,11 @@ traded by default.
 
 - The method retrieves historical data based on the specified `period` and calculates the Market
 Facilitation Index for each asset in the Toolkit instance.
-- With `volume_divisor=1` it agrees with TA-Lib's MARKETFI, pandas-ta-classic's `marketfi` and Tulip
+- With a volume divisor of 1 it agrees with TA-Lib's MARKETFI, pandas-ta-classic's `marketfi` and Tulip
 Indicators' `marketfi`, whose index for a stock trading millions of shares is a fraction of a
 millionth. A period without volume has no index (NaN) rather than an infinite one.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1451,7 +1502,7 @@ Which returns:
 ---
 
 ## get_williams_accumulation_distribution
-Calculate Larry Williams' Accumulation/Distribution (WAD) for a given price series.
+Calculate Larry Williams' Accumulation/Distribution (WAD): a running total of how far each close moved from the opposite end of its true range, which shows accumulation and distribution from prices alone.
 
 Williams' Accumulation/Distribution is a running total of how far each close moved away from the opposite end of the period's true range: on an up close the distance from the true low (accumulation), on a down close the distance from the true high (distribution). Unlike Chaikin's Accumulation/Distribution Line it uses no volume.
 
@@ -1471,19 +1522,21 @@ $$
 
 Williams traded the divergences: price making a new high while the line does not points to distribution, price making a new low while the line holds up to accumulation. The level of the line depends on the start date; only its direction and divergences carry meaning.
 
-For more information, see the following sources:
-
-- Williams, L.R. (1973). "How I Made One Million Dollars Last Year Trading Commodities." Windsor Books.
-- Referenced against TA-Lib's WAD ([https://ta-lib.org/functions/wad.html](https://ta-lib.org/functions/wad.html){:target="_blank"}).
-- pandas-ta-classic: wad ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- Tulip Indicators: wad ([https://tulipindicators.org/wad](https://tulipindicators.org/wad){:target="_blank"}).
-
 **Also known as:** WAD, Williams A/D, Williams Accumulation Distribution.
+
+**References:**
+
+- paper | Williams, L.R. (1973). "How I Made One Million Dollars Last Year Trading Commodities." Windsor Books.
+- library | Referenced against TA-Lib's [WAD](https://ta-lib.org/functions/wad.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [wad](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/wad.py#L13){:target="_blank"}
+- library | Referenced against Tulip Indicators' [wad](https://tulipindicators.org/wad){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -1512,8 +1565,8 @@ Accumulation/Distribution for each asset in the Toolkit instance, as a running t
 start date.
 - It agrees with TA-Lib's WAD (which also starts at 0), Tulip Indicators' `wad` (which starts on the
 second period) and pandas-ta-classic's `wad` (NaN on the first period).
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1543,7 +1596,7 @@ Which returns:
 ---
 
 ## get_relative_volume
-Calculate the Relative Volume (RVOL) for a given volume series.
+Calculate the Relative Volume (RVOL): the volume of a period divided by its average over a window, which shows how unusually busy the period is.
 
 Relative Volume compares a period's volume with the average volume of the periods before it. A value of 2 means twice the usual volume: a breakout or a gap on high relative volume carries more conviction than one on thin trading, and traders use it to screen for stocks "in play".
 
@@ -1555,17 +1608,19 @@ $$
 
 The average covers the `window` periods before the current one, so a spike does not raise its own benchmark. As a ratio it can be compared across tickers whatever the number of shares they trade.
 
-For more information, see the following sources:
-
-- Bulkowski, T.N. (2005). "Encyclopedia of Chart Patterns." 2nd ed. John Wiley & Sons.
-- Referenced against TA-Lib's RVOL ([https://ta-lib.org/functions/rvol.html](https://ta-lib.org/functions/rvol.html){:target="_blank"}).
-
 **Also known as:** RVOL, Relative Volume, volume ratio.
+
+**References:**
+
+- paper | Bulkowski, T.N. (2005). "Encyclopedia of Chart Patterns." 2nd ed. John Wiley & Sons.
+- library | Referenced against TA-Lib's [RVOL](https://ta-lib.org/functions/rvol.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>window (int, optional):</u> The number of earlier periods to average the volume over. Defaults to 20.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -1591,8 +1646,8 @@ pd.Series or pd.DataFrame: Relative Volume values, as a ratio (1 is the average 
 each asset in the Toolkit instance.
 - It agrees with TA-Lib's RVOL. A ticker without volume, such as an index or a currency pair, has no
 Relative Volume (NaN).
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1622,7 +1677,7 @@ Which returns:
 ---
 
 ## get_volume_flow_indicator
-Calculate Markos Katsanos' Volume Flow Indicator (VFI) for a given price series.
+Calculate Markos Katsanos' Volume Flow Indicator (VFI): the volume of the periods with a meaningful move of the typical price, signed by the direction of the move, which shows whether money flows in or out.
 
 The Volume Flow Indicator refines On-Balance Volume in three ways: it uses the typical price instead of the close, it ignores moves too small to matter (below a cutoff that scales with the recent volatility of the typical price) and it caps the volume of a single period at a multiple of the average volume, so one spike cannot dominate. The sum of that signed volume over the window, divided by the average volume, is smoothed with a short EMA.
 
@@ -1653,24 +1708,26 @@ $$
 $$
 
 $$
-\text{VFI} = \operatorname{EMA}\left(\frac{\operatorname{Sum}(\text{Signed Volume},\; \text{window})}{\text{Average Volume}},\; \text{smoothing\_window}\right)
+\text{VFI} = \operatorname{EMA}\left(\frac{\operatorname{Sum}(\text{Signed Volume},\; \text{window})}{\text{Average Volume}},\; \text{smooth\_window}\right)
 $$
 
 Katsanos read a VFI above zero as a bullish flow of money and below zero as a bearish one, a crossing of zero as a change in trend and a divergence from price as an early warning. The VFI is in units of the average volume (a sum of up to `window` periods), so it is comparable across tickers.
 
-For more information, see the following sources:
-
-- Katsanos, M. (2004). "Using Money Flow to Stay with the Trend." Technical Analysis of Stocks & Commodities, 22(6).
-- Katsanos, M. (2004). "Volume Flow Indicator Performance." Technical Analysis of Stocks & Commodities, 22(7).
-- Referenced against pandas-ta-classic's vfi ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: VFI ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** VFI, Volume Flow Indicator.
+
+**References:**
+
+- paper | Katsanos, M. (2004). "Using Money Flow to Stay with the Trend." Technical Analysis of Stocks & Commodities, 22(6).
+- paper | Katsanos, M. (2004). "Volume Flow Indicator Performance." Technical Analysis of Stocks & Commodities, 22(7).
+- library | Referenced against pandas-ta-classic's [vfi](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/vfi.py#L17){:target="_blank"}
+- library | Shares similar logic as finta's [VFI](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L2026){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -1680,7 +1737,7 @@ Defaults to 130, about six months of trading days.
 typical price needs to count. Defaults to 0.2.
 - <u>volume_coefficient (float, optional):</u> The multiple of the average volume that a single period's
 volume is capped at. Defaults to 2.5.
-- <u>smoothing_window (int, optional):</u> The number of periods for the EMA that smooths the result.
+- <u>smooth_window (int, optional):</u> The number of periods for the EMA that smooths the result.
 Defaults to 3.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -1710,8 +1767,8 @@ it only sets the cutoff of the indicator's definition, so it follows the primary
 Bollinger Bands do. The VFI agrees with pandas-ta-classic's `vfi` exactly. finta uses the sample
 deviation (ddof=1), a 1.7% larger cutoff, and differs wherever a move falls between the two
 cutoffs.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1741,7 +1798,7 @@ Which returns:
 ---
 
 ## get_finite_volume_elements
-Calculate Markos Katsanos' Finite Volume Elements (FVE) for a given price series.
+Calculate Markos Katsanos' Finite Volume Elements (FVE): the share of volume over a window classified as buying rather than selling, leaving out moves too small to matter, a measure of money flow.
 
 Finite Volume Elements is a money flow indicator that classifies each period's whole volume as buying, selling or neutral. It looks at both the intraday move (the close against the middle of the range) and the interday move (the change in the typical price), and leaves out periods whose combined move is smaller than a cutoff, so noise does not count as flow. The result is the net signed volume as a share of all volume over the window.
 
@@ -1765,18 +1822,20 @@ $$
 
 A rising FVE while price moves sideways points to accumulation ahead of a breakout, a falling one to distribution. As a share of volume it lies between -1 and 1 and is comparable across tickers.
 
-For more information, see the following sources:
-
-- Katsanos, M. (2003). "Detecting Breakouts." Technical Analysis of Stocks & Commodities, 21(4).
-- Katsanos, M. (2003). "Detecting Breakouts In Intraday Charts." Technical Analysis of Stocks & Commodities, 21(9).
-- Referenced against finta's FVE ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** FVE, Finite Volume Elements.
+
+**References:**
+
+- paper | Katsanos, M. (2003). "Detecting Breakouts." Technical Analysis of Stocks & Commodities, 21(4).
+- paper | Katsanos, M. (2003). "Detecting Breakouts In Intraday Charts." Technical Analysis of Stocks & Commodities, 21(9).
+- library | Referenced against finta's [FVE](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1998){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -1809,8 +1868,8 @@ each asset in the Toolkit instance.
 - It agrees with finta's FVE divided by 100 (Katsanos and finta express it in percent, with the cutoff
 in percent as well), from the second value on: finta counts the first period, which has no
 change in the typical price, as neutral volume and starts one period earlier.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1840,7 +1899,7 @@ Which returns:
 ---
 
 ## get_volume_zone_oscillator
-Calculate the Volume Zone Oscillator (VZO) for a given price series.
+Calculate the Volume Zone Oscillator (VZO): the volume of up closes minus that of down closes as a share of the total volume, smoothed, which shows whether buying or selling volume dominates.
 
 The Volume Zone Oscillator divides the volume into the volume of up closes and that of down closes and expresses their difference, smoothed with an exponential moving average, as a share of the smoothed total volume.
 
@@ -1856,17 +1915,19 @@ $$
 
 Khalil and Steckler read it in zones: above 0.05 the trend is bullish and above 0.40 overbought (0.60 extremely), below -0.05 bearish and below -0.40 oversold (-0.60 extremely), with crossings of zero and of the 0.40 lines as signals. As a share of volume it is comparable across tickers.
 
-For more information, see the following sources:
-
-- Khalil, W. and Steckler, D. (2011). "In The Volume Zone." Technical Analysis of Stocks & Commodities, 29(5).
-- Referenced against finta's VZO ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** VZO, Volume Zone Oscillator.
+
+**References:**
+
+- paper | Khalil, W. and Steckler, D. (2011). "In The Volume Zone." Technical Analysis of Stocks & Commodities, 29(5).
+- library | Referenced against finta's [VZO](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1521){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods for both EMAs. Defaults to 14.
@@ -1896,8 +1957,8 @@ each asset in the Toolkit instance.
 40 and 60. Both EMAs start from the simple average of their first values on the second period
 (the first has no change), so the VZO starts on period `window` + 1. finta averages from the
 first value and agrees after about 90 periods.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -1927,7 +1988,7 @@ Which returns:
 ---
 
 ## get_price_volume
-Calculate the Price-Volume (dollar volume) for a given price series.
+Calculate the Price-Volume (dollar volume): the close times the volume, the amount of money that traded in each period.
 
 The Price-Volume is the value traded in a period: the close times the volume. Unlike the number of shares, it can be compared across stocks with very different prices and is the usual measure of liquidity for position sizing. Signed, it carries the direction of the close, as a money flow per period.
 
@@ -1941,17 +2002,19 @@ $$
 \text{Signed Price-Volume} = \operatorname{sign}(\text{Close} - \operatorname{Close}(t-1)) \cdot \text{Close} \cdot \text{Volume}
 $$
 
-For more information, see the following sources:
-
-- Amihud, Y. (2002). "Illiquidity and Stock Returns: Cross-Section and Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
-- Referenced against pandas-ta-classic's pvol ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** PVOL, dollar volume, traded value.
+
+**References:**
+
+- paper | Amihud, Y. (2002). "Illiquidity and Stock Returns: Cross-Section and Time-Series Effects." Journal of Financial Markets, 5(1), 31-56.
+- library | Referenced against pandas-ta-classic's [pvol](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/pvol.py#L17){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Close".
 - <u>signed (bool, optional):</u> Whether to sign the value with the direction of the close. Defaults to
@@ -1980,9 +2043,9 @@ pd.Series or pd.DataFrame: Price-Volume values, in the currency of the prices.
 Price-Volume for each asset in the Toolkit instance.
 - The traded close is the default, as the value traded is a market value; the dividend-adjusted
 close would understate the value of older periods.
-- It agrees with pandas-ta-classic's `pvol`, also with `signed=True`.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- It agrees with pandas-ta-classic's `pvol`, also in its signed form.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -2012,7 +2075,7 @@ Which returns:
 ---
 
 ## get_price_volume_rank
-Calculate the Price Volume Rank (PVR) for a given price series.
+Calculate the Price Volume Rank (PVR): a code from 1 (a rising price on rising volume) to 4 (a falling price on falling volume), which shows whether volume confirms a move.
 
 The Price Volume Rank classifies each period by the direction of the close and of the volume, from the most bullish to the most bearish combination: a rising price on rising volume (1), a rising price on falling volume (2), a falling price on rising volume (3) and a falling price on falling volume (4). An unchanged close or volume counts as rising.
 
@@ -2036,17 +2099,19 @@ $$
 
 A moving average of the rank below 2.5 is read as bullish and above it as bearish.
 
-For more information, see the following sources:
-
-- Fulks Maxwell Laboratories (fmlabs), "Price Volume Rank," Technical Indicators Reference.
-- Referenced against pandas-ta-classic's pvr ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** PVR, Price Volume Rank.
+
+**References:**
+
+- paper | Fulks Maxwell Laboratories (fmlabs), "Price Volume Rank," Technical Indicators Reference.
+- library | Referenced against pandas-ta-classic's [pvr](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/pvr.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -2072,8 +2137,8 @@ pd.Series or pd.DataFrame: Price Volume Rank values (1, 2, 3 or 4).
 - The method retrieves historical data based on the specified `period` and calculates the Price
 Volume Rank for each asset in the Toolkit instance.
 - It agrees with pandas-ta-classic's `pvr`.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -2103,7 +2168,9 @@ Which returns:
 ---
 
 ## get_buying_selling_pressure
-Calculate the Buying and Selling Pressure (BASP) for a given price series.
+Calculate the Buying and Selling Pressure (BASP), which shows whether buyers or sellers control the market.
+
+It compares the distance of the close above the low (buying) and of the high above the close (selling) with their averages, weighted by volume.
 
 The Buying Pressure is the distance of the close above the low, the Selling Pressure the distance of the high above the close. Each is divided by its own exponential moving average, so it shows whether the pressure is larger than usual, and multiplied by the volume relative to its average, so a session with heavy volume weighs more. A short EMA smooths both lines.
 
@@ -2114,32 +2181,35 @@ $$
 $$
 
 $$
-\text{Buying Pressure} = \operatorname{EMA}\left(\frac{\text{Close} - \text{Low}}{\operatorname{EMA}(\text{Close} - \text{Low},\; \text{window})} \cdot \text{Relative Volume},\; \text{smoothing\_window}\right)
+\text{Buying Pressure} = \operatorname{EMA}\left(\frac{\text{Close} - \text{Low}}{\operatorname{EMA}(\text{Close} - \text{Low},\; \text{window})} \cdot \text{Relative Volume},\; \text{smooth\_window}\right)
 $$
 
 $$
-\text{Selling Pressure} = \operatorname{EMA}\left(\frac{\text{High} - \text{Close}}{\operatorname{EMA}(\text{High} - \text{Close},\; \text{window})} \cdot \text{Relative Volume},\; \text{smoothing\_window}\right)
+\text{Selling Pressure} = \operatorname{EMA}\left(\frac{\text{High} - \text{Close}}{\operatorname{EMA}(\text{High} - \text{Close},\; \text{window})} \cdot \text{Relative Volume},\; \text{smooth\_window}\right)
 $$
 
 Both lines are ratios around 1 (the usual pressure on the usual volume). Buying pressure above selling pressure points to accumulation, and a crossing of the two to a change in who is in control.
 
-For more information, see the following sources:
-
-- Referenced against finta's BASP and BASPN ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}), by Peerchemist, which defines the indicator without citing a primary source.
-- Williams, L.R. (1985). "The Ultimate Oscillator." Technical Analysis of Stocks & Commodities, 3(4), for a similar buying pressure measured from the lower of the low and the previous close.
-
 **Also known as:** BASP, BASPN, normalized buying and selling pressure.
+
+**References:**
+
+- library | Referenced against finta's [BASP](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1671){:target="_blank"}
+- library | Referenced against finta's [BASPN](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1691){:target="_blank"}
+- paper | Referenced against Williams, L.R. (1985). "The Ultimate Oscillator." Technical Analysis of Stocks & Commodities, 3(4), for a similar buying pressure measured from the lower of the low and the previous close.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
 - <u>window (int, optional):</u> The number of periods for the averages of the pressure and the volume.
 Defaults to 40.
-- <u>smoothing_window (int, optional):</u> The number of periods for the EMA that smooths both lines.
+- <u>smooth_window (int, optional):</u> The number of periods for the EMA that smooths both lines.
 Defaults to 20; 1 gives the unsmoothed lines.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -2163,11 +2233,12 @@ pd.Series or pd.DataFrame: The Buying Pressure and Selling Pressure.
 
 - The method retrieves historical data based on the specified `period` and calculates the buying
 and selling pressure for each asset in the Toolkit instance.
-- finta's BASPN is the default and its BASP `smoothing_window=1`; finta cites no primary source.
+- finta's BASPN is the default and its BASP a `smooth_window` of 1; finta cites no primary source.
 Every EMA starts from the simple average of its first values, while finta's average from the
 first value, so the two agree after about 300 periods.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
+- finta defines the Buying and Selling Pressure without citing a primary source.
 
 **As an example:**
 
@@ -2197,7 +2268,7 @@ Which returns:
 ---
 
 ## get_archer_on_balance_volume
-Calculate the Archer On-Balance Volume (AOBV) for a given price series.
+Calculate the Archer On-Balance Volume (AOBV): a fast and a slow average of the On-Balance Volume and whether the volume trend is up or down.
 
 The Archer On-Balance Volume adds a fast and a slow exponential moving average of On-Balance Volume and two flags for their trend, so OBV can be read like a moving average crossover system. A "long run" is a period in which the fast average rose over the last `run_window` periods while the slow one moved (a rising OBV trend or a potential bottom); a "short run" one in which the fast average fell (a falling trend or a potential top). The rolling minimum and maximum of OBV mark its recent range.
 
@@ -2223,17 +2294,19 @@ $$
 \text{Short Run} = 1 \;\text{if Fast Average fell over} \;\text{run\_window} \;\text{periods and the Slow Average changed},\;\; \text{else 0}
 $$
 
-For more information, see the following sources:
-
-- Granville, J.E. (1963). "Granville's New Key to Stock Market Profits." Prentice-Hall.
-- Referenced against pandas-ta-classic's aobv ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** AOBV, Archer OBV.
+
+**References:**
+
+- paper | Granville, J.E. (1963). "Granville's New Key to Stock Market Profits." Prentice-Hall.
+- library | Referenced against pandas-ta-classic's [aobv](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/aobv.py#L17){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>short_window (int, optional):</u> The number of periods for the fast EMA of OBV. Defaults to 4.
@@ -2269,8 +2342,8 @@ On-Balance Volume for each asset in the Toolkit instance, as a running total fro
 pandas-ta-classic's `aobv`, except that its On-Balance Volume (as TA-Lib's) starts at the first
 period's volume instead of 0: the OBV, its minimum, maximum and averages are that volume higher
 there, and the flags are equal.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -2304,7 +2377,7 @@ Which returns:
 ---
 
 ## get_volume_profile
-Calculate the Volume Profile (Volume by Price) between the start and end date.
+Calculate the Volume Profile (Volume by Price) between the start and end date: how much volume traded at each price level, which shows the prices the market accepted most.
 
 The Volume Profile is not a series over time but a histogram: it divides the range of the closes between the start and end date into price bins of equal width and adds up the volume traded at a close in each bin, split into the volume of up closes and that of down closes.
 
@@ -2328,18 +2401,20 @@ $$
 
 Bins with a lot of volume are prices at which many positions were opened, which tend to act as support or resistance when price returns to them; the bin with the most volume is the point of control. More up than down volume in a bin suggests the positions opened there were mostly purchases.
 
-For more information, see the following sources:
-
-- Steidlmayer, J.P. and Koy, K. (1986). "Markets and Market Logic." Porcupine Press.
-- StockCharts ChartSchool, "Volume by Price" ([https://chartschool.stockcharts.com/table-of-contents/technical-indicators-and-overlays/technical-overlays/volume-by-price](https://chartschool.stockcharts.com/table-of-contents/technical-indicators-and-overlays/technical-overlays/volume-by-price){:target="_blank"}).
-- Referenced against pandas-ta-classic's vp ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** VP, Volume by Price, Volume at Price, Market Profile.
+
+**References:**
+
+- paper | Steidlmayer, J.P. and Koy, K. (1986). "Markets and Market Logic." Porcupine Press.
+- paper | StockCharts ChartSchool, "Volume by Price" ([https://chartschool.stockcharts.com/table-of-contents/technical-indicators-and-overlays/technical-overlays/volume-by-price](https://chartschool.stockcharts.com/table-of-contents/technical-indicators-and-overlays/technical-overlays/volume-by-price){:target="_blank"}).
+- library | Referenced against pandas-ta-classic's [vp](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/vp.py#L13){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>bins (int, optional):</u> The number of price bins of equal width. Defaults to 10.
@@ -2360,10 +2435,10 @@ Up Volume, Down Volume and Total Volume of each ticker.
 - The profile covers the periods between the start and end date of the Toolkit and looks at every
 close in them, so it describes that window as a whole and is not meant for a backtest. Each
 ticker has its own bins, over the range of its own closes.
-- The bins are those of pandas-ta-classic's `vp` with `sort_close=True`, whose up and down volume
+- The bins are those of pandas-ta-classic's `vp` sorted by close, whose up and down volume
 it equals, with the exact range of the closes as edges and every bin kept, also those without
 volume (pandas-ta-classic widens the range by 0.1% and drops empty bins; its default
-`sort_close=False` splits the period into stretches of time instead). Its total is the up plus
+splits the period into stretches of time instead). Its total is the up plus
 the down volume; here the Total Volume also includes the volume of unchanged closes and of the
 first period, which has no change.
 - A close on an inner edge belongs to the lower bin. A ticker whose close does not change has all
@@ -2402,7 +2477,9 @@ Which returns:
 ---
 
 ## get_market_breadth
-Calculate the breadth of the market the Toolkit's tickers make up: how many of them take part in a move. An index can rise on the strength of a few large companies while most of its members fall; breadth shows that divergence, which often comes before the index itself turns. Breadth is most meaningful across many tickers, such as the constituents of an index, which `Discovery.get_index_constituents` lists (e.g. the 500 tickers of the S&P 500). Today's members leave out the companies that were removed from the index since (often after falling behind), so breadth of past dates computed from them is biased towards the survivors, the further back the more; its `date=` gives the members on the first date of the window instead.
+Calculate the breadth of the market the Toolkit's tickers make up: how many of them take part in a move.
+
+An index can rise on the strength of a few large companies while most of its members fall; breadth shows that divergence, which often comes before the index itself turns. Breadth is most meaningful across many tickers, such as the constituents of an index, which `Discovery.get_index_constituents` lists (e.g. the 500 tickers of the S&P 500). Today's members leave out the companies that were removed from the index since (often after falling behind), so breadth of past dates computed from them is biased towards the survivors, the further back the more; its `date=` gives the members on the first date of the window instead.
 
 Per date it returns:
 
@@ -2415,16 +2492,18 @@ Per date it returns:
 
 The Benchmark (and a Portfolio) are left out. A constituent counts on the dates it traded, and its changes, moving averages and highs and lows run over its own closes: on a date only a cryptocurrency in the Toolkit traded, such as a weekend, only the cryptocurrency counts, and the McClellan averages then skip that date (see `breadth_model.get_market_breadth`).
 
-For more information, see the following book:
-
-- McClellan, S. and McClellan, M. (1970). "Patterns for Profit: The McClellan Oscillator and Summation Index." Trade Levels Inc.
-
 **Also known as:** market breadth, advance-decline line, McClellan oscillator, percentage above 200-day moving average, new highs new lows.
+
+**References:**
+
+- paper | McClellan, S. and McClellan, M. (1970). "Patterns for Profit: The McClellan Oscillator and Summation Index." Trade Levels Inc.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>short_window (int, optional):</u> The short moving average window. Defaults to 50.
@@ -2476,12 +2555,14 @@ Which returns:
 ---
 
 ## collect_cycle_indicators
-Calculates and collects the cycle indicators based on the provided data.
+Collect the cycle indicators of every ticker in one table: the length, phase and turning points of the cycles in the prices.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>window (int, optional):</u> The window size for calculating indicators.
 Defaults to 14.
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
@@ -2509,8 +2590,8 @@ pd.Series or pd.DataFrame: Cycle indicators calculated based on the specified pa
 - The method calculates the cycle indicators for each asset in the Toolkit instance.
 - The Hilbert transform indicators adapt to the dominant cycle of the price and the filters and
 oscillators use their own default windows, so `window` is left unused.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -2545,7 +2626,7 @@ Which returns:
 ---
 
 ## get_hilbert_dominant_cycle_period
-Calculate the Hilbert Transform Dominant Cycle Period (HT_DCPERIOD) for a given price series.
+Calculate the Hilbert Transform Dominant Cycle Period (HT_DCPERIOD): the length, in periods, of the main cycle in the prices.
 
 The dominant cycle period is the length, in periods, of the cycle that dominates the price, measured with Ehlers' homodyne discriminator. The smoothed and detrended price is split by the Hilbert transform into an in-phase and a quadrature component, the two sides of an analytic signal whose angle advances 360 degrees per cycle. Multiplying the signal with that of the period before gives the change of the angle per period, and 360 degrees divided by that change is the period of the cycle. A short period means the price swings quickly, a long one that it moves in slow waves or trends.
 
@@ -2583,16 +2664,18 @@ $$
 \text{Dominant Cycle Period} = 0.33 \cdot \text{Period} + 0.67 \cdot \text{Dominant Cycle Period}(t-1)
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
-- Referenced against TA-Lib's HT_DCPERIOD ([https://ta-lib.org/functions/ht_dcperiod.html](https://ta-lib.org/functions/ht_dcperiod.html){:target="_blank"}).
-- pandas-ta-classic: ht_dcperiod ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
+- library | Referenced against TA-Lib's [HT_DCPERIOD](https://ta-lib.org/functions/ht_dcperiod.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [ht_dcperiod](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/ht_dcperiod.py#L14){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -2622,8 +2705,8 @@ the dominant cycle period for each asset in the Toolkit instance.
 and the first 32 periods (TA-Lib's lookback) are NaN.
 - The Hilbert transform and the homodyne discriminator are shared with the other Hilbert Transform
 indicators and MAMA.
-- If `growth` is set to True, the method calculates the growth of the dominant cycle period using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the dominant cycle period over the
+given lag.
 
 **As an example:**
 
@@ -2653,7 +2736,7 @@ Which returns:
 ---
 
 ## get_hilbert_dominant_cycle_phase
-Calculate the Hilbert Transform Dominant Cycle Phase (HT_DCPHASE) for a given price series.
+Calculate the Hilbert Transform Dominant Cycle Phase (HT_DCPHASE): where the prices are within their main cycle, in degrees.
 
 The dominant cycle phase is the position of the price within its dominant cycle, in degrees. It is the angle of the discrete Fourier transform of the smoothed price over exactly one dominant cycle period, corrected for the lag of the smoothing. The phase advances by about 360 degrees divided by the period each period while the price cycles, and barely moves (or moves backwards) while it trends. It runs from -45 to 315 degrees and wraps around once per cycle.
 
@@ -2703,16 +2786,18 @@ $$
 \text{Dominant Cycle Phase} = \operatorname{arctan}\left(\frac{\text{Real}}{\text{Imag}}\right) + 90 + \frac{360}{\text{Dominant Cycle Period in degrees}},\;\; \text{plus 180 when Imag is negative and minus 360 when above 315}
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
-- Referenced against TA-Lib's HT_DCPHASE ([https://ta-lib.org/functions/ht_dcphase.html](https://ta-lib.org/functions/ht_dcphase.html){:target="_blank"}).
-- pandas-ta-classic: ht_dcphase ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
+- library | Referenced against TA-Lib's [HT_DCPHASE](https://ta-lib.org/functions/ht_dcphase.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [ht_dcphase](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/ht_dcphase.py#L14){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -2743,8 +2828,8 @@ the dominant cycle phase for each asset in the Toolkit instance.
 and the first 63 periods (TA-Lib's lookback) are NaN.
 - The phase is an angle that wraps from 315 to -45 degrees, so its growth and its standardized
 values jump at every new cycle.
-- If `growth` is set to True, the method calculates the growth of the dominant cycle phase using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the dominant cycle phase over the
+given lag.
 
 **As an example:**
 
@@ -2774,7 +2859,7 @@ Which returns:
 ---
 
 ## get_hilbert_phasor_components
-Calculate the Hilbert Transform Phasor Components (HT_PHASOR) for a given price series.
+Calculate the Hilbert Transform Phasor Components (HT_PHASOR): the in-phase and quadrature parts of the prices' cycle, from which its phase and period follow.
 
 The phasor components are the in-phase component, the smoothed and detrended price lagged three periods, and the quadrature component, its Hilbert transform: the same cycle shifted by 90 degrees. Together they form the analytic signal (the phasor) of the price cycle, whose angle is the phase of the cycle and whose length is its amplitude, in price units.
 
@@ -2800,16 +2885,18 @@ $$
 \text{Period} = \text{the period of the homodyne discriminator before smoothing} \;(\text{see the Dominant Cycle Period})
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
-- Referenced against TA-Lib's HT_PHASOR ([https://ta-lib.org/functions/ht_phasor.html](https://ta-lib.org/functions/ht_phasor.html){:target="_blank"}).
-- pandas-ta-classic: ht_phasor ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
+- library | Referenced against TA-Lib's [HT_PHASOR](https://ta-lib.org/functions/ht_phasor.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [ht_phasor](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/ht_phasor.py#L14){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -2837,8 +2924,8 @@ the phasor components for each asset in the Toolkit instance.
 - Equals TA-Lib's HT_PHASOR and pandas-ta-classic's ht_phasor.
 - The recursion starts from zero on the 12th period of each ticker's own history, as in TA-Lib,
 and the first 32 periods (TA-Lib's lookback) are NaN.
-- If `growth` is set to True, the method calculates the growth of the phasor components using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the phasor components over the
+given lag.
 
 **As an example:**
 
@@ -2868,9 +2955,9 @@ Which returns:
 ---
 
 ## get_hilbert_sine_wave
-Calculate the Hilbert Transform SineWave (HT_SINE) for a given price series, or the MESA Sine Wave over a fixed window.
+Calculate the Hilbert Transform SineWave (HT_SINE), or the MESA Sine Wave over a fixed window: the sine of the phase of the prices' main cycle and its lead, whose crossings mark the turning points of the cycle.
 
-The sine wave is the sine of the dominant cycle phase and the lead sine the sine of the phase advanced by 45 degrees. While the price cycles, the two lines cross shortly before the turning points of the cycle: the sine crossing above the lead sine marks a low, crossing below a high. While the price trends, the phase barely moves and the two lines run apart without crossing. The MESA Sine Wave (method="mesa") is Ehlers' sinewave indicator over a fixed window: the phase of the price within a cycle of that window, measured with a discrete Fourier transform, where the Hilbert Transform SineWave measures the window as the dominant cycle.
+The sine wave is the sine of the dominant cycle phase and the lead sine the sine of the phase advanced by 45 degrees. While the price cycles, the two lines cross shortly before the turning points of the cycle: the sine crossing above the lead sine marks a low, crossing below a high. While the price trends, the phase barely moves and the two lines run apart without crossing. The MESA Sine Wave is Ehlers' sinewave indicator over a fixed window: the phase of the price within a cycle of that window, measured with a discrete Fourier transform, where the Hilbert Transform SineWave measures the window as the dominant cycle.
 
 The formula is as follows, per method:
 
@@ -2946,20 +3033,23 @@ $$
 \text{Lead Sine} = \sin(\text{Phase} + 45 \;\text{degrees})
 $$
 
-For more information, see the following sources:
-
-- Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
-- Referenced against TA-Lib's HT_SINE ([https://ta-lib.org/functions/ht_sine.html](https://ta-lib.org/functions/ht_sine.html){:target="_blank"}).
-- pandas-ta-classic: ht_sine ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- Ehlers, J.F. (1992). "MESA and Trading Market Cycles." John Wiley & Sons.
-- Referenced against Tulip Indicators' msw ([https://tulipindicators.org/msw](https://tulipindicators.org/msw){:target="_blank"}) and pandas-ta-classic's msw ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** HT_SINE, Hilbert Transform SineWave, sine wave, lead sine, MSW, MESA Sine Wave, MESA sinewave.
+
+**References:**
+
+- paper | Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
+- paper | Ehlers, J.F. (1992). "MESA and Trading Market Cycles." John Wiley & Sons.
+- library | Referenced against TA-Lib's [HT_SINE](https://ta-lib.org/functions/ht_sine.html){:target="_blank"}
+- library | Referenced against Tulip Indicators' [msw](https://tulipindicators.org/msw){:target="_blank"} (MESA Sine Wave)
+- library | Referenced against pandas-ta-classic's [msw](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/msw.py#L14){:target="_blank"} (MESA Sine Wave)
+- library | Shares similar logic as pandas-ta-classic's [ht_sine](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/ht_sine.py#L14){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low of the median price are
 adjusted for dividends in the same way.
@@ -2972,8 +3062,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "standard" for the Hilbert Transform SineWave or "mesa" for the
-MESA Sine Wave over a fixed window. Defaults to "standard".
+- <u>method (str, optional):</u> The sine wave. Options are: "standard" (the Hilbert Transform SineWave),
+"mesa" (the MESA Sine Wave over a fixed window). Defaults to "standard".
 - <u>median_price (bool, optional):</u> Whether to filter the median price (High + Low) / 2, as
 Ehlers does, or the close of `close_column`, as Tulip Indicators and
 pandas-ta-classic do. Only used when method="mesa". Defaults to True.
@@ -2995,13 +3085,13 @@ the sine wave for each asset in the Toolkit instance.
 - Equals TA-Lib's HT_SINE and pandas-ta-classic's ht_sine.
 - The recursion starts from zero on the 37th period of each ticker's own history, as in TA-Lib,
 and the first 63 periods (TA-Lib's lookback) are NaN.
-- "mesa": equals pandas-ta-classic's msw on the close (`median_price=False`), and Tulip
+- MESA Sine Wave: equals pandas-ta-classic's msw on the close (not the median price), and Tulip
 Indicators' msw to 1e-4, as Tulip takes 3.1415926 for $$\pi$$. Both start one period later, on the
 period after the first full window. Without an imaginary part the phase is 90 degrees times
 the sign of the real part, as in Ehlers' sinewave indicator, where Tulip Indicators and
 pandas-ta-classic take 180 degrees.
-- If `growth` is set to True, the method calculates the growth of the sine wave using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the sine wave over the
+given lag.
 
 **As an example:**
 
@@ -3031,7 +3121,7 @@ Which returns:
 ---
 
 ## get_hilbert_trend_mode
-Calculate the Hilbert Transform Trend vs Cycle Mode (HT_TRENDMODE) for a given price series.
+Calculate the Hilbert Transform Trend vs Cycle Mode (HT_TRENDMODE): whether the prices are trending (1) or moving in a cycle (0).
 
 The trend mode tells whether the price trends (1) or moves in a cycle (0). Ehlers' rules: a crossing of the sine and the lead sine starts a cycle, which lasts at least half a dominant cycle period; a phase that advances at the rate of the dominant cycle is a cycle; and a smoothed price 1.5% or more away from the instantaneous trendline is always a trend. Cycle indicators (oscillators) fit the cycle mode, trend-following indicators the trend mode.
 
@@ -3053,16 +3143,18 @@ $$
 \text{Trend} = 1 \;\text{when} \;\frac{\left|\text{Smooth} - \text{Trendline}\right|}{\text{Trendline}} \geq 0.015 \;(\text{see the Instantaneous Trendline})
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
-- Referenced against TA-Lib's HT_TRENDMODE ([https://ta-lib.org/functions/ht_trendmode.html](https://ta-lib.org/functions/ht_trendmode.html){:target="_blank"}).
-- pandas-ta-classic: ht_trendmode ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
+- library | Referenced against TA-Lib's [HT_TRENDMODE](https://ta-lib.org/functions/ht_trendmode.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [ht_trendmode](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/ht_trendmode.py#L14){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -3090,8 +3182,8 @@ the trend mode for each asset in the Toolkit instance.
 - Equals TA-Lib's HT_TRENDMODE and pandas-ta-classic's ht_trendmode after the lookback.
 - The recursion starts from zero on the 37th period of each ticker's own history, as in TA-Lib,
 and the first 63 periods (TA-Lib's lookback) are NaN, where TA-Lib returns 0.
-- If `growth` is set to True, the method calculates the growth of the trend mode using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the trend mode over the
+given lag.
 
 **As an example:**
 
@@ -3121,7 +3213,7 @@ Which returns:
 ---
 
 ## get_mesa_adaptive_moving_average
-Calculate the MESA Adaptive Moving Average (MAMA) and the Following Adaptive Moving Average (FAMA) for a given price series.
+Calculate the MESA Adaptive Moving Average (MAMA) and the Following Adaptive Moving Average (FAMA): averages that adapt to the speed of the prices' cycle, so they follow fast moves and stay flat in a range.
 
 MAMA is an exponential moving average whose smoothing factor follows the rate at which the phase of the price cycle changes, measured with the Hilbert transform. When the phase jumps, as at the start of a move, the smoothing factor is the fast limit and MAMA follows the price closely; when the phase advances slowly, the factor falls towards the slow limit and MAMA flattens. FAMA applies half the smoothing factor to MAMA, so that it follows MAMA, and Ehlers reads the crossings of the two lines as changes of direction.
 
@@ -3155,19 +3247,21 @@ $$
 \text{FAMA} = 0.5 \cdot \text{Alpha} \cdot \text{MAMA} + (1 - 0.5 \cdot \text{Alpha}) \cdot \operatorname{FAMA}(t-1)
 $$
 
-For more information, see the following sources:
-
-- Ehlers, J.F. (2001). "MESA Adaptive Moving Averages." Technical Analysis of Stocks & Commodities, September 2001.
-- Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
-- Referenced against TA-Lib's MAMA ([https://ta-lib.org/functions/mama.html](https://ta-lib.org/functions/mama.html){:target="_blank"}).
-- pandas-ta-classic: mama ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** MAMA, FAMA, MESA adaptive moving average.
+
+**References:**
+
+- paper | Ehlers, J.F. (2001). "MESA Adaptive Moving Averages." Technical Analysis of Stocks & Commodities, September 2001.
+- paper | Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
+- library | Referenced against TA-Lib's [MAMA](https://ta-lib.org/functions/mama.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [mama](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/mama.py#L248){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>fast_limit (float, optional):</u> The largest smoothing factor, used when the phase jumps.
@@ -3205,8 +3299,8 @@ the smoothing factor, is then still several percent below it and settles to with
 80 periods. The Toolkit calculates the technical indicators from a year before `start_date`, so with
 daily data this warm-up falls before the dates shown.
 - With the default `close_column` of "Adj Close" the prices are adjusted for dividends.
-- If `growth` is set to True, the method calculates the growth of the MESA adaptive moving average using
-the specified `lag`.
+- When growth is requested, the method calculates the growth of the MESA adaptive moving average over
+the given lag.
 
 **As an example:**
 
@@ -3236,7 +3330,7 @@ Which returns:
 ---
 
 ## get_swiss_army_knife_filter
-Calculate Ehlers' Swiss Army Knife filter for a given price series.
+Calculate Ehlers' Swiss Army Knife filter: a family of filters that remove the trend (high-pass), the noise (low-pass) or both (band-pass) from the prices.
 
 The Swiss Army Knife indicator of Ehlers (2006) is one second-order recursive filter whose coefficients select its response. The high-pass filters remove the trend and keep the cycles shorter than the window, the two-pole one with a steeper cut than the one-pole one. The band-pass filter keeps only the cycles around the window, which shows how strongly that cycle is present and where it turns. The Butterworth and Gaussian filters are low-pass filters that smooth away the cycles shorter than the window with little lag.
 
@@ -3274,15 +3368,21 @@ $$
 \text{Band-pass:}\;\; \text{Beta} = \cos\left(\frac{360}{\text{Window}}\right),\;\; \Gamma = \frac{1}{\cos\left(\frac{720 \cdot \Delta}{\text{Window}}\right)},\;\; \alpha = \Gamma - \sqrt{\Gamma^{2} - 1},\;\; c_{0} = \frac{1 - \alpha}{2},\;\; b_{2} = - 1,\;\; a_{1} = \text{Beta} \cdot (1 + \alpha)\;\;\text{and}\;\; a_{2} = - \alpha
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (2006). "Swiss Army Knife Indicator." Technical Analysis of Stocks & Commodities, 24(1), 28-31, 50-53.
-- Referenced against TA-Lib's SWAK_HP, SWAK_2PHP, SWAK_BP, SWAK_BUTTER and SWAK_GAUSS ([https://ta-lib.org/functions/](https://ta-lib.org/functions/){:target="_blank"}).
+- paper | Ehlers, J.F. (2006). "Swiss Army Knife Indicator." Technical Analysis of Stocks & Commodities, 24(1), 28-31, 50-53.
+- library | Referenced against TA-Lib's [SWAK_HP](https://ta-lib.org/functions/swak_hp.html){:target="_blank"}
+- library | Referenced against TA-Lib's [SWAK_2PHP](https://ta-lib.org/functions/swak_2php.html){:target="_blank"}
+- library | Referenced against TA-Lib's [SWAK_BP](https://ta-lib.org/functions/swak_bp.html){:target="_blank"}
+- library | Referenced against TA-Lib's [SWAK_BUTTER](https://ta-lib.org/functions/swak_butter.html){:target="_blank"}
+- library | Referenced against TA-Lib's [SWAK_GAUSS](https://ta-lib.org/functions/swak_gauss.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -3290,7 +3390,9 @@ for dividends in the same way.
 or the close of `close_column`, as TA-Lib's SWAK functions do. Defaults to True.
 - <u>window (int, optional):</u> The cutoff period of the high-pass and low-pass filters and the centre period of
 the band-pass filter, at least 5. Defaults to 20.
-- <u>filter (str, optional):</u> "high_pass", "two_pole_high_pass", "band_pass", "butterworth" or "gaussian".
+- <u>method (str, optional):</u> The filter. Options are: "high_pass" (one-pole high-pass filter),
+"two_pole_high_pass" (two-pole high-pass filter), "band_pass" (band-pass filter),
+"butterworth" (two-pole Butterworth low-pass filter), "gaussian" (Gaussian low-pass filter).
 Defaults to "band_pass", the default of Ehlers' listing.
 - <u>delta (float, optional):</u> The half bandwidth of the band-pass filter as a fraction of its centre
 frequency, above 0 and at most 0.5. Defaults to 0.1.
@@ -3317,13 +3419,13 @@ and centred on zero for the high-pass and band-pass filters.
 
 - The method retrieves historical data based on the specified `period` and calculates
 the Swiss Army Knife filter for each asset in the Toolkit instance.
-- Equals TA-Lib's SWAK functions on the close (`median_price=False`), from the first period on.
+- Equals TA-Lib's SWAK functions on the close (not the median price), from the first period on.
 - The filter starts in the steady state of a constant price equal to the first price of each ticker's own
 history: the low-pass filters on that price, the high-pass and band-pass filters on zero, as in TA-Lib.
 Ehlers' listing starts every filter from zero, which keeps the low-pass filters far below the price for
 many periods.
-- If `growth` is set to True, the method calculates the growth of the Swiss Army Knife filter using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the Swiss Army Knife filter over the
+given lag.
 
 **As an example:**
 
@@ -3353,7 +3455,7 @@ Which returns:
 ---
 
 ## get_even_better_sinewave
-Calculate Ehlers' Even Better Sinewave for a given price series.
+Calculate Ehlers' Even Better Sinewave: an oscillator between -1 and 1 that shows whether the prices move in a cycle or a trend and where they are in the cycle.
 
 The Even Better Sinewave of Ehlers (2013) removes the trend with a one-pole high-pass filter, smooths the remaining cycles with a SuperSmoother and divides their average over three periods by the square root of their power over the same periods. The result swings between -1 and 1 like a sine wave while the price cycles and stays near 1 (or -1) while it trends up (or down), so it tells a cycle from a trend and marks the turns of the cycle.
 
@@ -3387,19 +3489,21 @@ $$
 \text{Even Better Sinewave} = \frac{\text{Wave}}{\sqrt{\text{Power}}}
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (2013). "Cycle Analytics for Traders: Advanced Technical Trading Concepts." John Wiley & Sons.
-- Referenced against pandas-ta-classic's ebsw ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Ehlers, J.F. (2013). "Cycle Analytics for Traders: Advanced Technical Trading Concepts." John Wiley & Sons.
+- library | Referenced against pandas-ta-classic's [ebsw](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/ebsw.py#L63){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The cutoff period of the high-pass filter, the longest cycle kept. Defaults to 40.
-- <u>smoothing_window (int, optional):</u> The critical period of the SuperSmoother. Defaults to 10.
+- <u>smooth_window (int, optional):</u> The critical period of the SuperSmoother. Defaults to 10.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Even Better Sinewave.
@@ -3426,8 +3530,8 @@ the Even Better Sinewave for each asset in the Toolkit instance.
 the first `window` periods are NaN while they settle. pandas-ta-classic starts them on the 12th period;
 the two converge as the start fades and are equal on prices that do not move before it.
 - A period without power (three filter values of zero) is NaN, where pandas-ta-classic gives 0.
-- If `growth` is set to True, the method calculates the growth of the Even Better Sinewave using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the Even Better Sinewave over the
+given lag.
 
 **As an example:**
 
@@ -3457,7 +3561,7 @@ Which returns:
 ---
 
 ## get_detrended_synthetic_price
-Calculate Ehlers' Detrended Synthetic Price for a given price series.
+Calculate Ehlers' Detrended Synthetic Price: the difference between a fast and a slow average tuned to the prices' cycle, which shows the cycle without the trend.
 
 The Detrended Synthetic Price of Ehlers (1992) is the difference between an exponential moving average over a quarter of the dominant cycle and one over half of it. The difference removes the trend and leaves a wave in phase with the dominant cycle of the price: above zero in the rising half of the cycle and below zero in the falling half.
 
@@ -3467,15 +3571,17 @@ $$
 \text{Detrended Synthetic Price} = \operatorname{EMA}\left(\text{Price},\; \frac{\text{Window}}{4}\right) - \operatorname{EMA}\left(\text{Price},\; \frac{\text{Window}}{2}\right)
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (1992). "MESA and Trading Market Cycles." John Wiley & Sons.
-- Referenced against pandas-ta-classic's dsp ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Ehlers, J.F. (1992). "MESA and Trading Market Cycles." John Wiley & Sons.
+- library | Referenced against pandas-ta-classic's [dsp](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/cycles/dsp.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The period of the dominant cycle, at least 4. Defaults to 20.
@@ -3505,8 +3611,8 @@ the Detrended Synthetic Price for each asset in the Toolkit instance.
 average as every exponential moving average of the Toolkit; they agree with pandas-ta-classic's ema.
 - pandas-ta-classic's dsp subtracts one exponential moving average from the price, Price - EMA(Price, 14),
 a simpler detrender that also keeps the shorter cycles.
-- If `growth` is set to True, the method calculates the growth of the Detrended Synthetic Price using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the Detrended Synthetic Price over the
+given lag.
 
 **As an example:**
 
@@ -3536,7 +3642,7 @@ Which returns:
 ---
 
 ## get_center_of_gravity_oscillator
-Calculate Ehlers' Center of Gravity (CG) Oscillator for a given price series.
+Calculate Ehlers' Center of Gravity (CG) Oscillator: the weighted position of the prices within a window, which marks the turning points of the cycle with little lag.
 
 The Center of Gravity Oscillator of Ehlers (2002) is the balance point of the prices in the window, with the latest price at position 1, turned negative. When prices rise, the weight shifts to the latest prices and the balance point moves towards them, so the oscillator rises with the price, smoothed and with almost no lag. The trigger is the previous value, and a crossing of the two marks a turn. Ehlers sets the window to half the dominant cycle.
 
@@ -3550,15 +3656,18 @@ $$
 \text{Trigger} = \text{Center of Gravity}(t-1)
 $$
 
-For more information, see the following sources:
+**References:**
 
-- Ehlers, J.F. (2002). "The Center Of Gravity Oscillator." Technical Analysis of Stocks & Commodities, 20(5), 20-24.
-- Referenced against TA-Lib's CG ([https://ta-lib.org/functions/cg.html](https://ta-lib.org/functions/cg.html){:target="_blank"}) and pandas-ta-classic's cg ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Ehlers, J.F. (2002). "The Center Of Gravity Oscillator." Technical Analysis of Stocks & Commodities, 20(5), 20-24.
+- library | Referenced against TA-Lib's [CG](https://ta-lib.org/functions/cg.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [cg](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/cg.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -3587,11 +3696,11 @@ pd.DataFrame: The Center of Gravity and its Trigger.
 
 - The method retrieves historical data based on the specified `period` and calculates
 the Center of Gravity Oscillator for each asset in the Toolkit instance.
-- Equals TA-Lib's CG and pandas-ta-classic's cg on the close (`median_price=False`).
+- Equals TA-Lib's CG and pandas-ta-classic's cg on the close (not the median price).
 - The oscillator is not centred on zero: for flat prices it is -(Window + 1) / 2.
 - A window whose prices sum to zero is NaN, where Ehlers' listing keeps the value before.
-- If `growth` is set to True, the method calculates the growth of the Center of Gravity Oscillator using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the Center of Gravity Oscillator over the
+given lag.
 
 **As an example:**
 
@@ -3621,38 +3730,43 @@ Which returns:
 ---
 
 ## get_event_filter
-Calculate the events of an event filter: the dates something happens that is worth labeling, such as a run of returns in one direction. Sampling on events rather than on every date keeps the labels of a quiet market from outnumbering those of the moves that matter, and the events are the dates `get_triple_barrier_labels(events=...)` labels.
+Calculate the events of an event filter: the dates something happens that is worth labeling, such as a run of returns in one direction.
 
-- "cusum": the symmetric CUSUM filter of López de Prado, after the quality control charts of Page (1954) and the trading rule of Lam and Yam (1997). It sums the log returns since the last event of each direction and reports an event when a sum moves beyond `threshold` daily volatilities, after which that sum starts again from zero. A price hovering around a level triggers no events, unlike a band crossing, as it takes a full run of the threshold to set one off.
-- "z_score": the z-score filter: an event when the price lies at least `threshold` standard deviations from its average over `window` periods, a filter after the z-score peak detection of van Brakel (2014).
+Sampling on events rather than on every date keeps the labels of a quiet market from outnumbering those of the moves that matter, and the events are the dates `get_triple_barrier_labels(events=...)` labels.
+
+- CUSUM filter: the symmetric CUSUM filter of López de Prado, after the quality control charts of Page (1954) and the trading rule of Lam and Yam (1997). It sums the log returns since the last event of each direction and reports an event when a sum moves beyond `threshold` daily volatilities, after which that sum starts again from zero. A price hovering around a level triggers no events, unlike a band crossing, as it takes a full run of the threshold to set one off.
+- Z-score filter: the z-score filter: an event when the price lies at least `threshold` standard deviations from its average over `window` periods, a filter after the z-score peak detection of van Brakel (2014).
 
 The formula is as follows, per method:
 
 $$
-\text{"cusum":}\;\; y_{t} = \ln\left(\frac{p_{t}}{p_{t-1}}\right),\;\; S + \text{}_{t} = \max(0,\; S + \text{}_{t-1} + y_{t}),\;\; S - \text{}_{t} = \min(0,\; S - \text{}_{t-1} + y_{t}),\;\; h_{t} = \text{threshold}\; x \sigma_{t} \;(\text{the AFML daily volatility},\; \text{an EWM standard deviation of the returns with} \;\text{span});\;\; \text{an event of} - 1 \;\text{when}\; S - \text{}_{t} < - h_{t} (S - \text{}_{t} \;\text{resets}) \;\text{or else of 1 when}\; S + \text{}_{t} > h_{t} (S + \text{}_{t} \;\text{resets})
+\text{CUSUM filter:}\;\; y_{t} = \ln\left(\frac{p_{t}}{p_{t-1}}\right),\;\; S + \text{}_{t} = \max(0,\; S + \text{}_{t-1} + y_{t}),\;\; S - \text{}_{t} = \min(0,\; S - \text{}_{t-1} + y_{t}),\;\; h_{t} = \text{threshold}\; x \sigma_{t} \;(\text{the AFML daily volatility},\; \text{an EWM standard deviation of the returns with} \;\text{span});\;\; \text{an event of} - 1 \;\text{when}\; S - \text{}_{t} < - h_{t} (S - \text{}_{t} \;\text{resets}) \;\text{or else of 1 when}\; S + \text{}_{t} > h_{t} (S + \text{}_{t} \;\text{resets})
 $$
 
 $$
-\text{"z\_score":}\;\; z_{t} = \frac{p_{t} - \operatorname{mean}(p,\; \text{window})}{\operatorname{std}(p,\; \text{window})};\;\; \text{an event of 1 when}\; z_{t} \geq \text{threshold and of} - 1 \;\text{when}\; z_{t} \leq - \text{threshold}
+\text{Z-score filter:}\;\; z_{t} = \frac{p_{t} - \operatorname{mean}(p,\; \text{window})}{\operatorname{std}(p,\; \text{window})};\;\; \text{an event of 1 when}\; z_{t} \geq \text{threshold and of} - 1 \;\text{when}\; z_{t} \leq - \text{threshold}
 $$
 
 Each value uses the prices up to its date only.
 
-For more information, see the following books and papers:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, section 2.5.2.1 (Snippet 2.4).
-- Lam, K. and Yam, H.C. (1997). "CUSUM Techniques for Technical Trading in Financial Markets." Financial Engineering and the Japanese Markets, 4(3), 257-274.
-- Page, E.S. (1954). "Continuous Inspection Schemes." Biometrika, 41(1/2), 100-115.
-- van Brakel, J.P.G. (2014). "Robust peak detection algorithm using z-scores." Stack Overflow ([https://stackoverflow.com/questions/22583391](https://stackoverflow.com/questions/22583391){:target="_blank"}).
-- Referenced against RiskLabAI's `symmetric_cusum_filter` ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
-
 **Also known as:** CUSUM filter, symmetric CUSUM filter, event-based sampling, z-score filter, event filter.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, section 2.5.2.1 (Snippet 2.4).
+- paper | Lam, K. and Yam, H.C. (1997). "CUSUM Techniques for Technical Trading in Financial Markets." Financial Engineering and the Japanese Markets, 4(3), 257-274.
+- paper | Page, E.S. (1954). "Continuous Inspection Schemes." Biometrika, 41(1/2), 100-115.
+- paper | van Brakel, J.P.G. (2014). "Robust peak detection algorithm using z-scores." Stack Overflow ([https://stackoverflow.com/questions/22583391](https://stackoverflow.com/questions/22583391){:target="_blank"}).
+- library | Referenced against RiskLabAI's [symmetric_cusum_filter](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/data/labeling/labeling.py#L78){:target="_blank"}
 
 **Args:**
 
-- <u>method (str, optional):</u> "cusum" or "z_score". Defaults to "cusum".
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>method (str, optional):</u> The filter. Options are: "cusum" (the symmetric CUSUM filter),
+"z_score" (the z-score filter). Defaults to "cusum".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>threshold (float &#124; None, optional):</u> The threshold in volatilities: the multiple of
@@ -3712,7 +3826,9 @@ Which returns:
 ---
 
 ## get_triple_barrier_labels
-Calculate the triple-barrier labels of López de Prado: for every date (or event) the first of three barriers the price reaches. A profit-taking barrier lies `profit_taking` daily volatilities above the price, a stop-loss barrier `stop_loss` daily volatilities below it and a vertical barrier `horizon` periods later. The label is 1 when the upper barrier is reached first, -1 for the lower barrier and the sign of the return at the vertical barrier. Unlike a label on the return over a fixed horizon, it follows the path of the price the way a trade with a profit target, a stop-loss and a time limit does, and its barriers widen and narrow with the volatility.
+Calculate the triple-barrier labels of López de Prado: for every date (or event) the first of three barriers the price reaches.
+
+A profit-taking barrier lies `profit_taking` daily volatilities above the price, a stop-loss barrier `stop_loss` daily volatilities below it and a vertical barrier `horizon` periods later. The label is 1 when the upper barrier is reached first, -1 for the lower barrier and the sign of the return at the vertical barrier. Unlike a label on the return over a fixed horizon, it follows the path of the price the way a trade with a profit target, a stop-loss and a time limit does, and its barriers widen and narrow with the volatility.
 
 With a `side`, such as the crossovers of `get_signals`, the labels are meta-labels: the returns are those of the bet (multiplied by the side) and the label is 1 when the bet made money and 0 when it did not. A second model trained on them learns when to act on the first model's signals and how much to bet, rather than which side to take.
 
@@ -3740,17 +3856,20 @@ $$
 
 Labels look forward by construction: the label of a date describes the prices after it, up to `horizon` periods later, and is only known once a barrier is reached. The volatility of the barriers uses the returns up to the date only. Train a model on the labels with the features of the date itself and leave the labels' spans out of the test set (purging, see `get_label_uniqueness`).
 
-For more information, see the following book:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, chapter 3 (Snippets 3.1 to 3.7).
-- Referenced against RiskLabAI's `triple_barrier` and `meta_labeling` ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
-
 **Also known as:** triple barrier method, triple-barrier labeling, meta-labeling, meta labels, profit-taking and stop-loss labels.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, chapter 3 (Snippets 3.1 to 3.7).
+- library | Referenced against RiskLabAI's [triple_barrier](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/data/labeling/labeling.py#L193){:target="_blank"}
+- library | Referenced against RiskLabAI's [meta_labeling](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/data/labeling/labeling.py#L402){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>horizon (int, optional):</u> The number of periods to the vertical barrier. Defaults to 10.
@@ -3762,10 +3881,11 @@ no lower barrier. Defaults to 1.0.
 100, as López de Prado.
 - <u>minimum_target (float, optional):</u> The volatility a date needs to exceed to be labeled.
 Defaults to 0.0.
-- <u>events (str &#124; pd.DataFrame &#124; None, optional):</u> The dates to label: "cusum" or "z_score"
-for the events of `get_event_filter` with its defaults, or a DataFrame per date and
-ticker that is non-zero on the dates to label, such as the result of
-`get_event_filter` with other settings. Defaults to None, which labels every date.
+- <u>events (str &#124; pd.DataFrame &#124; None, optional):</u> The dates to label. Options are: "cusum" (the events
+of the CUSUM filter of `get_event_filter` with its defaults), "z_score" (the events of its
+z-score filter with its defaults), or a DataFrame per date and ticker that is non-zero on the
+dates to label, such as the result of `get_event_filter` with other settings. Defaults to None,
+which labels every date.
 - <u>side (str &#124; pd.DataFrame &#124; None, optional):</u> The side of the bets for meta-labels: the
 name of a signal of `get_signals`, such as "Moving Average Crossover" or "MACD
 Crossover", whose crossovers are the bets, or a DataFrame per date and ticker of
@@ -3830,7 +3950,9 @@ Which returns:
 ---
 
 ## get_fixed_horizon_labels
-Calculate the fixed-horizon labels: the sign of the return over the next `horizon` periods, 0 when it stays within the threshold, the most common labels of financial machine learning. The return can be the ticker's own or relative: its excess over the mean or median return of the tickers (a cross-sectional label, for which only the ranking matters) or over the Benchmark.
+Calculate the fixed-horizon labels: the sign of the return over the next `horizon` periods, 0 when it stays within the threshold, the most common labels of financial machine learning.
+
+The return can be the ticker's own or relative: its excess over the mean or median return of the tickers (a cross-sectional label, for which only the ranking matters) or over the Benchmark.
 
 The formula is as follows:
 
@@ -3852,17 +3974,19 @@ $$
 
 Labels look forward by construction: the label of a date is the return of the `horizon` periods after it. The volatility of a scaled threshold uses the returns up to the date only. López de Prado points out that a fixed threshold ignores the volatility, so that quiet periods are labeled 0 and volatile ones rarely, which the scaled threshold and the triple-barrier labels (`get_triple_barrier_labels`) address.
 
-For more information, see the following books:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, section 3.2.
-- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, section 5.2.
-
 **Also known as:** fixed-time horizon labels, fixed horizon method, return labels, excess return labels, relative labels.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, section 3.2.
+- paper | López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, section 5.2.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>horizon (int, optional):</u> The number of periods ahead. Defaults to 1.
@@ -3872,9 +3996,10 @@ volatilities when volatility scaled. Defaults to 0.0.
 volatility over the horizon, $$\sigma_{t}$$ x sqrt(horizon). Defaults to False.
 - <u>span (int, optional):</u> The span of the exponentially weighted volatility of a scaled
 threshold. Defaults to 100.
-- <u>relative_to (str &#124; None, optional):</u> "mean" or "median" for the excess over the mean or
-median return of the tickers, "benchmark" for the excess over the Benchmark.
-Defaults to None, which labels the return itself.
+- <u>relative_to (str &#124; None, optional):</u> What the return is measured against. Options are: "mean" (the
+excess over the mean return of the tickers), "median" (the excess over the median return of the
+tickers), "benchmark" (the excess over the Benchmark). Defaults to None, which labels the return
+itself.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -3926,7 +4051,9 @@ Which returns:
 ---
 
 ## get_trend_scanning_labels
-Calculate the trend-scanning labels of López de Prado: for every date, fit a linear trend to the prices of each forward window from `minimum_window` to `maximum_window` periods, and take the window whose slope is the most significant. The label is the sign of that slope and its t-value the strength of the trend. Unlike a fixed horizon, the method lets the data decide how long the trend after a date lasts, and labels the dates without a clear trend with a small t-value rather than a forced sign.
+Calculate López de Prado's trend-scanning labels: the sign of the most significant linear trend in the prices after every date.
+
+For every date it fits a linear trend to the prices of each forward window from `minimum_window` to `maximum_window` periods and takes the window whose slope is the most significant. The label is the sign of that slope and its t-value the strength of the trend. Unlike a fixed horizon, the method lets the data decide how long the trend after a date lasts, and labels the dates without a clear trend with a small t-value rather than a forced sign.
 
 The formula is as follows:
 
@@ -3948,17 +4075,19 @@ $$
 
 Labels look forward by construction: the label of a date describes the prices of up to `maximum_window` periods after it.
 
-For more information, see the following book:
-
-- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, section 5.4 (Snippets 5.1 and 5.2).
-- Referenced against RiskLabAI's `find_trend_using_trend_scanning` ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
-
 **Also known as:** trend scanning, trend-scanning method, t-value labels.
+
+**References:**
+
+- paper | López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, section 5.4 (Snippets 5.1 and 5.2).
+- library | Referenced against RiskLabAI's [find_trend_using_trend_scanning](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/data/labeling/financial_labels.py#L51){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>minimum_window (int, optional):</u> The shortest forward window in prices, at least 3.
@@ -4015,7 +4144,9 @@ Which returns:
 ---
 
 ## get_tail_set_labels
-Calculate the tail-set labels: per date, rank the tickers on their volatility-adjusted return over the next `horizon` periods and label the top `quantile` 1, the bottom `quantile` -1 and the rest 0. A model trained on them learns to tell the best from the worst performers of a universe, the question a long-short portfolio asks, without being distracted by the noisy middle. The labels need a universe of tickers, such as the constituents of an index.
+Calculate the tail-set labels: per date, rank the tickers on their volatility-adjusted return over the next `horizon` periods and label the top `quantile` 1, the bottom `quantile` -1 and the rest 0.
+
+A model trained on them learns to tell the best from the worst performers of a universe, the question a long-short portfolio asks, without being distracted by the noisy middle. The labels need a universe of tickers, such as the constituents of an index.
 
 The formula is as follows:
 
@@ -4035,17 +4166,19 @@ Labels look forward by construction: the score of a date is the return of the `h
 
 The tail sets follow Huerta, Corbacho and Elkan (2013), who label the stocks with the highest and lowest volatility-adjusted returns and leave the middle out.
 
-For more information, see the following sources:
-
-- Huerta, R., Corbacho, F. and Elkan, C. (2013). "Nonlinear Support Vector Machines Can Systematically Identify Stocks with High and Low Future Returns." Algorithmic Finance, 2(1), 45-58.
-- López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, chapter 5.
-
 **Also known as:** tail sets, tail set labels, cross-sectional quantile labels.
+
+**References:**
+
+- paper | Huerta, R., Corbacho, F. and Elkan, C. (2013). "Nonlinear Support Vector Machines Can Systematically Identify Stocks with High and Low Future Returns." Algorithmic Finance, 2(1), 45-58.
+- paper | López de Prado, M. (2020). "Machine Learning for Asset Managers." Cambridge University Press, chapter 5.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>horizon (int, optional):</u> The number of periods of the forward return. Defaults to 1.
@@ -4103,7 +4236,9 @@ Which returns:
 ---
 
 ## get_matrix_flag_labels
-Calculate the matrix flag labels: how closely the prices of the last `window` periods fit a bull (or bear) flag, a sharp move followed by a consolidation that chartists read as the pause before the move continues. The window's prices are laid out as a 10 x 10 grid of their price deciles (rows) over ten consecutive parts of the window (columns), and a template of weights rewards the cells the flag passes through and penalises the others. The score is the sum of the weighted grid; with a threshold the label is 1 from that score.
+Calculate the matrix flag labels: how closely the prices of the last `window` periods fit a bull (or bear) flag, a sharp move followed by a consolidation that chartists read as the pause before the move continues.
+
+The window's prices are laid out as a 10 x 10 grid of their price deciles (rows) over ten consecutive parts of the window (columns), and a template of weights rewards the cells the flag passes through and penalises the others. The score is the sum of the weighted grid; with a threshold the label is 1 from that score.
 
 The templates are those of Leigh, Modani, Purvis and Roberts (2002), "leigh_bull", and of Cervelló-Royo, Guijarro and Michniuk (2015), "cervello_royo_bull", who proposed a flag whose weights are concentrated in the consolidation. The bear templates are the bull templates upside down, the highest decile becoming the lowest.
 
@@ -4123,22 +4258,26 @@ $$
 
 Unlike the other labels, the score looks back: it uses the prices of the window up to and including the date, so a flag is known at the close of the date.
 
-For more information, see the following papers:
-
-- Leigh, W., Modani, N., Purvis, R. and Roberts, T. (2002). "Stock Market Trading Rule Discovery Using Technical Charting Heuristics." Expert Systems with Applications, 23(2), 155-159.
-- Cervelló-Royo, R., Guijarro, F. and Michniuk, K. (2015). "Stock Market Trading Rule Based on Pattern Recognition and Technical Analysis: Forecasting the DJIA Index with Intraday Data." Expert Systems with Applications, 42(14), 5963-5975.
-
 **Also known as:** matrix flags, bull flag, bear flag, flag pattern, template matching.
+
+**References:**
+
+- paper | Leigh, W., Modani, N., Purvis, R. and Roberts, T. (2002). "Stock Market Trading Rule Discovery Using Technical Charting Heuristics." Expert Systems with Applications, 23(2), 155-159.
+- paper | Cervelló-Royo, R., Guijarro, F. and Michniuk, K. (2015). "Stock Market Trading Rule Based on Pattern Recognition and Technical Analysis: Forecasting the DJIA Index with Intraday Data." Expert Systems with Applications, 42(14), 5963-5975.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of prices of the window, at least 10. Defaults to 40.
-- <u>template (str, optional):</u> "leigh_bull", "leigh_bear", "cervello_royo_bull" or
-"cervello_royo_bear". Defaults to "leigh_bull".
+- <u>template (str, optional):</u> The template of weights. Options are: "leigh_bull" (the bull flag of
+Leigh, Modani, Purvis and Roberts, 2002), "leigh_bear" (the Leigh bull flag upside down),
+"cervello_royo_bull" (the bull flag of Cervelló-Royo, Guijarro and Michniuk, 2015),
+"cervello_royo_bear" (the Cervelló-Royo bull flag upside down). Defaults to "leigh_bull".
 - <u>threshold (float &#124; None, optional):</u> The score from which the label is 1. Defaults to
 None, which returns the score only.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -4191,7 +4330,9 @@ Which returns:
 ---
 
 ## get_label_uniqueness
-Calculate the concurrency and the average uniqueness of labels. Labels that span several periods overlap: the triple-barrier labels of two consecutive days share most of their prices, so they are not independent observations. The concurrency of a date is the number of labels whose span includes it, and the average uniqueness of a label is the mean of one over the concurrency across its span: 1 for a label that overlaps no other and 1/10 for a label sharing its whole span with nine others. López de Prado uses it to weigh the labels, to bootstrap them in proportion to their uniqueness (sequential bootstrap) and to set the number of samples a bagging classifier draws.
+Calculate the concurrency and the average uniqueness of labels: how many labels span each date and how much of its span each label shares with others.
+
+Labels that span several periods overlap: the triple-barrier labels of two consecutive days share most of their prices, so they are not independent observations. The concurrency of a date is the number of labels whose span includes it, and the average uniqueness of a label is the mean of one over the concurrency across its span: 1 for a label that overlaps no other and 1/10 for a label sharing its whole span with nine others. López de Prado uses it to weigh the labels, to bootstrap them in proportion to their uniqueness (sequential bootstrap) and to set the number of samples a bagging classifier draws.
 
 The formula is as follows:
 
@@ -4205,12 +4346,12 @@ $$
 
 Both look forward by construction, as the spans of the labels do: the uniqueness of a label depends on the labels after it.
 
-For more information, see the following book:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, sections 4.3 and 4.4 (Snippets 4.1 and 4.2).
-- Referenced against RiskLabAI's `calculate_average_uniqueness` ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
-
 **Also known as:** label concurrency, number of concurrent events, average uniqueness, sample uniqueness, overlapping labels.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, sections 4.3 and 4.4 (Snippets 4.1 and 4.2).
+- library | Referenced against RiskLabAI's [calculate_average_uniqueness](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/data/weights/sample_weights.py#L71){:target="_blank"}
 
 **Args:**
 
@@ -4218,8 +4359,9 @@ For more information, see the following book:
 ticker, such as the result of `get_triple_barrier_labels`,
 `get_fixed_horizon_labels` or `get_trend_scanning_labels`. Defaults to None, which
 uses the triple-barrier labels with their defaults.
-- <u>period (str, optional):</u> The time period of the labels. Can be "intraday", "daily",
-"weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period of the labels. Options are: "intraday" (intraday prices),
+"daily" (daily prices), "weekly" (weekly prices), "monthly" (monthly prices),
+"quarterly" (quarterly prices), "yearly" (yearly prices). Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -4271,33 +4413,35 @@ Which returns:
 ---
 
 ## get_sample_weights
-Calculate the sample weights of labels for training a model, as López de Prado proposes for labels that overlap.
+Calculate the sample weights of labels for training a model: how much each label should count, by its uniqueness, its return or its age, as López de Prado proposes for labels that overlap.
 
-- "return": the weight by return attribution. Each period's log return is shared among the labels whose span includes it, and a label's weight is the absolute sum of its shares. Labels whose spans saw large moves, and that share them with few other labels, count most, while a label over a flat stretch counts little. The weights add up to the number of labels.
-- "time_decay": the weight by time decay. The weights fall linearly with the cumulative average uniqueness from 1 for the newest label to `decay` for the oldest, so that older observations count less, measured in unique information rather than in dates.
+- Return attribution: the weight by return attribution. Each period's log return is shared among the labels whose span includes it, and a label's weight is the absolute sum of its shares. Labels whose spans saw large moves, and that share them with few other labels, count most, while a label over a flat stretch counts little. The weights add up to the number of labels.
+- Time decay: the weight by time decay. The weights fall linearly with the cumulative average uniqueness from 1 for the newest label to `decay` for the oldest, so that older observations count less, measured in unique information rather than in dates.
 
 The formula is as follows, per method:
 
 $$
-\text{"return":}\;\; r_{t} = \ln\left(\frac{p_{t}}{p_{t-1}}\right),\;\; w \sim \text{}_{i} = \left|\sum_{t0_i<t \leq t1_i} \frac{r_{t}}{c_{t}}\right|\;\;\text{and}\;\; w_{i} = w \sim \frac{\text{}_{i} \cdot N}{\sum_{j} w} \sim \text{}_{j},\;\; \text{with } c_{t} \text{ the concurrency}
+\text{Return attribution:}\;\; r_{t} = \ln\left(\frac{p_{t}}{p_{t-1}}\right),\;\; w \sim \text{}_{i} = \left|\sum_{t0_i<t \leq t1_i} \frac{r_{t}}{c_{t}}\right|\;\;\text{and}\;\; w_{i} = w \sim \frac{\text{}_{i} \cdot N}{\sum_{j} w} \sim \text{}_{j},\;\; \text{with } c_{t} \text{ the concurrency}
 $$
 
 $$
-\text{"time\_decay":}\;\; x_{i} \text{ the cumulative average uniqueness up to label } i \text{ and } X \text{ the total},\;\; \text{slope} = \frac{1 - \text{decay}}{X} \;\text{when decay} \geq 0,\;\; \text{else}\;\; \frac{1}{(\text{decay} + 1) \cdot X},\;\; \text{and}\;\; w_{i} = \max(0,\; 1 - \text{slope} \cdot X + \text{slope}\; x x_{i})
+\text{Time decay:}\;\; x_{i} \text{ the cumulative average uniqueness up to label } i \text{ and } X \text{ the total},\;\; \text{slope} = \frac{1 - \text{decay}}{X} \;\text{when decay} \geq 0,\;\; \text{else}\;\; \frac{1}{(\text{decay} + 1) \cdot X},\;\; \text{and}\;\; w_{i} = \max(0,\; 1 - \text{slope} \cdot X + \text{slope}\; x x_{i})
 $$
 
 The weights look forward by construction, as the spans of the labels do.
 
-For more information, see the following book:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, sections 4.6 and 4.7 (Snippets 4.10 and 4.11).
-- Referenced against RiskLabAI's `sample_weight_absolute_return_meta_labeling` and `calculate_time_decay` ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
-
 **Also known as:** sample weights, return attribution, time decay, time-decay weights.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, sections 4.6 and 4.7 (Snippets 4.10 and 4.11).
+- library | Referenced against RiskLabAI's [sample_weight_absolute_return_meta_labeling](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/data/weights/sample_weights.py#L200){:target="_blank"}
+- library | Referenced against RiskLabAI's [calculate_time_decay](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/data/weights/sample_weights.py#L279){:target="_blank"}
 
 **Args:**
 
-- <u>method (str, optional):</u> "return" or "time_decay". Defaults to "return".
+- <u>method (str, optional):</u> The weighting. Options are: "return" (return attribution),
+"time_decay" (time decay). Defaults to "return".
 - <u>labels (pd.DataFrame &#124; None, optional):</u> Labels with a Holding Period per date and
 ticker, such as the result of `get_triple_barrier_labels`,
 `get_fixed_horizon_labels` or `get_trend_scanning_labels`. Defaults to None, which
@@ -4305,8 +4449,9 @@ uses the triple-barrier labels with their defaults.
 - <u>decay (float, optional):</u> The weight of the oldest label of "time_decay", in (-1, 1]: 1
 for no decay, 0 for a decay to zero and a negative value to give the oldest share
 (-decay) of the labels no weight. Defaults to 1.0.
-- <u>period (str, optional):</u> The time period of the labels. Can be "intraday", "daily",
-"weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period of the labels. Options are: "intraday" (intraday prices),
+"daily" (daily prices), "weekly" (weekly prices), "monthly" (monthly prices),
+"quarterly" (quarterly prices), "yearly" (yearly prices). Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -4358,26 +4503,28 @@ Which returns:
 ---
 
 ## get_bet_sizes
-Calculate the bet size of López de Prado for the bets of meta-labels: how much of the budget to put on each date, between -1 (fully short) and 1 (fully long), from the sides of the bets a primary model takes and, for "probability", how often its bets have paid off. A model that only says which side to take does not say how much to bet; sizing the bets keeps a strategy from betting the same on a weak signal as on a strong one.
+Calculate López de Prado's bet size for meta-labelled bets: how much of the budget to put on each date, from -1 (fully short) to 1 (fully long).
 
-- "budget": the open long bets as a share of the most long bets ever open, minus the same share of the short bets, a size that spreads the budget over the bets the strategy usually has open.
-- "reserve": the net number of open bets (long minus short) against how many the strategy usually has open, through a mixture of two normal distributions fitted to it with the EF3M algorithm (López de Prado and Foreman, 2014). An unusually large net count gives a bet close to 1 and a usual one a small bet, keeping a reserve for stronger signals.
-- "probability": every bet sized by the probability that it pays off, taken as the hit rate of the bets closed before it was placed (the share whose meta-label is 1), and the sizes averaged over the bets still open. A hit rate of 50% or less gives no bet.
+It follows from the sides of the bets a primary model takes and, for the probability bet size, how often its bets have paid off. A model that only says which side to take does not say how much to bet; sizing the bets keeps a strategy from betting the same on a weak signal as on a strong one.
+
+- Budget bet size: the open long bets as a share of the most long bets ever open, minus the same share of the short bets, a size that spreads the budget over the bets the strategy usually has open.
+- Reserve bet size: the net number of open bets (long minus short) against how many the strategy usually has open, through a mixture of two normal distributions fitted to it with the EF3M algorithm (López de Prado and Foreman, 2014). An unusually large net count gives a bet close to 1 and a usual one a small bet, keeping a reserve for stronger signals.
+- Probability bet size: every bet sized by the probability that it pays off, taken as the hit rate of the bets closed before it was placed (the share whose meta-label is 1), and the sizes averaged over the bets still open. A hit rate of 50% or less gives no bet.
 
 The formula is as follows, per method:
 
 - Long Bets_t and Short Bets_t, the bets open on t: placed on or before t and closing after t, `Holding Period` periods after they were placed
 
 $$
-\text{"budget":}\;\; m_{t} = \frac{\text{Long Bets}_{t}}{\max(\text{Long Bets})} - \frac{\text{Short Bets}_{t}}{\max(\text{Short Bets})}
+\text{Budget bet size:}\;\; m_{t} = \frac{\text{Long Bets}_{t}}{\max(\text{Long Bets})} - \frac{\text{Short Bets}_{t}}{\max(\text{Short Bets})}
 $$
 
 $$
-\text{"reserve":}\;\; c_{t} = \text{Long Bets}_{t} - \text{Short Bets}_{t},\;\; F \text{ the mixture of two normal distributions that matches the first five moments of } c_{t} \text{ on the dates bets are placed},\;\; \text{and}\;\; m_{t} = \frac{F(c_{t}) - F(0)}{1 - F(0)} \;\text{when}\; c_{t} \geq 0,\;\; \frac{F(c_{t}) - F(0)}{F(0)} \;\text{otherwise}
+\text{Reserve bet size:}\;\; c_{t} = \text{Long Bets}_{t} - \text{Short Bets}_{t},\;\; F \text{ the mixture of two normal distributions that matches the first five moments of } c_{t} \text{ on the dates bets are placed},\;\; \text{and}\;\; m_{t} = \frac{F(c_{t}) - F(0)}{1 - F(0)} \;\text{when}\; c_{t} \geq 0,\;\; \frac{F(c_{t}) - F(0)}{F(0)} \;\text{otherwise}
 $$
 
 $$
-\text{"probability":}\;\; p = \text{the hit rate known when bet}\; i \;\text{is placed},\;\; z_{i} = \frac{p - 0.5}{\sqrt{p \cdot (1 - p)}}\;\;\text{and}\;\; m_{i} = \text{side}_{i} \cdot (2 \cdot N(z_{i}) - 1) \;\text{when}\; p > 0.5,\;\; \text{else 0};\;\; m_{t} = \text{the average of}\; m_{i} \;\text{over the bets open on}\; t \;(0 \;\text{without an open bet})
+\text{Probability bet size:}\;\; p = \text{the hit rate known when bet}\; i \;\text{is placed},\;\; z_{i} = \frac{p - 0.5}{\sqrt{p \cdot (1 - p)}}\;\;\text{and}\;\; m_{i} = \text{side}_{i} \cdot (2 \cdot N(z_{i}) - 1) \;\text{when}\; p > 0.5,\;\; \text{else 0};\;\; m_{t} = \text{the average of}\; m_{i} \;\text{over the bets open on}\; t \;(0 \;\text{without an open bet})
 $$
 
 $$
@@ -4386,17 +4533,19 @@ $$
 
 Where N is the standard normal distribution function. The bets come from the meta-labels: the Side is the side of a bet, the Holding Period the periods until it closes at a barrier and the Label (1 or 0) whether it made money.
 
-For more information, see the following book and paper:
-
-- López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, chapter 10 (Snippets 10.1 to 10.3).
-- López de Prado, M. and Foreman, M. (2014). "A mixture of two Gaussians approach to mathematical portfolio oversight: the EF3M algorithm." Quantitative Finance, 14(5), 913-930.
-- Referenced against RiskLabAI's `probability_bet_size` and `avg_active_signals` ([https://github.com/RiskLabAI/RiskLabAI.py](https://github.com/RiskLabAI/RiskLabAI.py){:target="_blank"}).
-
 **Also known as:** bet sizing, position sizing from meta-labels, budget bet size, reserve bet size, EF3M, bet size from predicted probabilities.
+
+**References:**
+
+- paper | López de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley, chapter 10 (Snippets 10.1 to 10.3).
+- paper | López de Prado, M. and Foreman, M. (2014). "A mixture of two Gaussians approach to mathematical portfolio oversight: the EF3M algorithm." Quantitative Finance, 14(5), 913-930.
+- library | Referenced against RiskLabAI's [probability_bet_size](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/bet_sizing.py#L33){:target="_blank"}
+- library | Referenced against RiskLabAI's [avg_active_signals](https://github.com/RiskLabAI/RiskLabAI.py/blob/v3.2.0/src/RiskLabAI/backtest/bet_sizing.py#L166){:target="_blank"}
 
 **Args:**
 
-- <u>method (str, optional):</u> "budget", "reserve" or "probability". Defaults to "budget".
+- <u>method (str, optional):</u> The bet size. Options are: "budget" (the budget bet size), "reserve" (the
+reserve bet size), "probability" (the probability bet size). Defaults to "budget".
 - <u>labels (pd.DataFrame &#124; None, optional):</u> Meta-labels with a Side, Holding Period and
 Label per date and ticker, such as the result of `get_triple_barrier_labels` with a
 side. Defaults to None, which uses the triple-barrier meta-labels of the CUSUM
@@ -4411,8 +4560,9 @@ to 20.
 - <u>runs (int, optional):</u> The number of random starting points of the EF3M fit of
 "reserve". Defaults to 100.
 - <u>seed (int, optional):</u> The seed of the starting points of the EF3M fit. Defaults to 0.
-- <u>period (str, optional):</u> The time period of the labels. Can be "intraday", "daily",
-"weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period of the labels. Options are: "intraday" (intraday prices),
+"daily" (daily prices), "weekly" (weekly prices), "monthly" (monthly prices),
+"quarterly" (quarterly prices), "yearly" (yearly prices). Defaults to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -4475,12 +4625,14 @@ Which returns:
 ---
 
 ## collect_momentum_indicators
-Calculates and collects various momentum indicators based on the provided data.
+Collect the momentum indicators of every ticker in one table: how fast and how strongly the prices move, and whether they are overbought or oversold.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>window (int, optional):</u> The window size for calculating indicators.
 Defaults to 14.
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
@@ -4506,8 +4658,8 @@ pd.Series or pd.DataFrame: Momentum indicators calculated based on the specified
 **Notes:**
 
 - The method calculates various momentum indicators for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -4541,7 +4693,7 @@ Which returns:
 ---
 
 ## get_money_flow_index
-Calculate the Money Flow Index (MFI) for a given price series.
+Calculate the Money Flow Index (MFI): how strongly money flows into or out of a security, using price and volume.
 
 The Money Flow Index is a momentum indicator that measures the strength and direction of money flowing in and out of a security by considering both price and volume.
 
@@ -4551,17 +4703,19 @@ $$
 \text{MFI} = 100 - \frac{100}{1 + \frac{\text{positive\_money\_flow}}{\text{negative\_money\_flow}}}
 $$
 
-For more information, see the following sources:
-
-- Quong, G. & Soudack, A. (1989). "Volume-Weighted RSI: Money Flow." Technical Analysis of Stocks & Commodities, 7(3), 76-77.
-- Referenced against TA-Lib's MFI ([https://ta-lib.org/functions/mfi.html](https://ta-lib.org/functions/mfi.html){:target="_blank"}).
-
 **Also known as:** MFI, volume-weighted RSI.
+
+**References:**
+
+- paper | Quong, G. & Soudack, A. (1989). "Volume-Weighted RSI: Money Flow." Technical Analysis of Stocks & Commodities, 7(3), 76-77.
+- library | Referenced against TA-Lib's [MFI](https://ta-lib.org/functions/mfi.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -4590,8 +4744,8 @@ pd.Series or pd.DataFrame: Money Flow Index (MFI) values.
 - The method retrieves historical data based on the specified `period` and calculates
 the MFI values for each asset in the Toolkit instance.
 - The MFI agrees with TA-Lib's MFI.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -4621,7 +4775,7 @@ Which returns:
 ---
 
 ## get_williams_percent_r
-Calculate the Williams Percent R (Williams %R) for a given price series.
+Calculate the Williams Percent R (Williams %R): where the close lies within the high-low range of a window, from 0 (at the high) to -100 (at the low), to show overbought and oversold levels.
 
 The Williams %R is a momentum indicator that measures the level of the close price relative to the high-low range over a certain number of periods.
 
@@ -4631,17 +4785,19 @@ $$
 \text{Williams}\; \%R = \frac{\text{Highest High} - \text{Close}}{\text{Highest High} - \text{Lowest Low}} \cdot - 100
 $$
 
-For more information, see the following sources:
-
-- Williams, L.R. (1973). "How I Made One Million Dollars Last Year Trading Commodities." Windsor Books.
-- Referenced against TA-Lib's WILLR ([https://ta-lib.org/functions/willr.html](https://ta-lib.org/functions/willr.html){:target="_blank"}).
-
 **Also known as:** Williams percent R, overbought oversold oscillator.
+
+**References:**
+
+- paper | Williams, L.R. (1973). "How I Made One Million Dollars Last Year Trading Commodities." Windsor Books.
+- library | Referenced against TA-Lib's [WILLR](https://ta-lib.org/functions/willr.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -4670,8 +4826,8 @@ pd.Series or pd.DataFrame: Williams %R values.
 - The method retrieves historical data based on the specified `period` and calculates
 the Williams %R values for each asset in the Toolkit instance.
 - Williams %R agrees with TA-Lib's WILLR.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -4701,7 +4857,7 @@ Which returns:
 ---
 
 ## get_aroon_indicator
-Calculate the Aroon Indicator for a given price series.
+Calculate the Aroon Indicator: how many periods ago the highest high and the lowest low of a window were, which shows whether a trend is starting and how strong it is.
 
 The Aroon Indicator is an oscillator that measures the strength of a trend and the likelihood of its continuation or reversal.
 
@@ -4721,18 +4877,20 @@ $$
 
 The Aroon Oscillator runs from -100 to 100: above zero the latest high is more recent than the latest low, which reads as an uptrend, and a reading near 100 or -100 as a strong trend.
 
-For more information, see the following sources:
-
-- Chande, T.S. (1995). "The Time Price Oscillator." Technical Analysis of Stocks & Commodities, 13(9), 369-374.
-- Referenced against TA-Lib's AROON ([https://ta-lib.org/functions/aroon.html](https://ta-lib.org/functions/aroon.html){:target="_blank"}).
-- Referenced against TA-Lib's AROONOSC ([https://ta-lib.org/functions/aroonosc.html](https://ta-lib.org/functions/aroonosc.html){:target="_blank"}).
-
 **Also known as:** Aroon Up, Aroon Down, Aroon Oscillator, AROONOSC, trend strength.
+
+**References:**
+
+- paper | Chande, T.S. (1995). "The Time Price Oscillator." Technical Analysis of Stocks & Commodities, 13(9), 369-374.
+- library | Referenced against TA-Lib's [AROON](https://ta-lib.org/functions/aroon.html){:target="_blank"}
+- library | Referenced against TA-Lib's [AROONOSC](https://ta-lib.org/functions/aroonosc.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods for calculating the Aroon Indicator.
@@ -4761,8 +4919,8 @@ Aroon Indicator values for the upward and downward trends and the Aroon Oscillat
 - The method retrieves historical data based on the specified `period` and calculates
 the Aroon Indicator values for each asset in the Toolkit instance.
 - Aroon Up and Aroon Down agree with TA-Lib's AROON, and the Aroon Oscillator TA-Lib's AROONOSC.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -4792,7 +4950,7 @@ Which returns:
 ---
 
 ## get_commodity_channel_index
-Calculate the Commodity Channel Index (CCI) for a given price series.
+Calculate the Commodity Channel Index (CCI): how far the typical price lies from its average, in units of its mean deviation, to show cyclical turns and overbought and oversold levels.
 
 The Commodity Channel Index is an oscillator that measures the current price level relative to an average price level over a specified period.
 
@@ -4802,17 +4960,19 @@ $$
 \text{CCI} = \frac{\text{Typical Price} - \operatorname{SMA}(\text{Typical Price})}{\text{constant} \cdot \text{Mean Deviation}}
 $$
 
-For more information, see the following sources:
-
-- Lambert, D.R. (1980). "Commodity Channel Index: Tool for Trading Cyclic Trends." Commodities, October 1980; reprinted in Technical Analysis of Stocks & Commodities, 1(5), 120-122.
-- Referenced against TA-Lib's CCI ([https://ta-lib.org/functions/cci.html](https://ta-lib.org/functions/cci.html){:target="_blank"}).
-
 **Also known as:** CCI, cyclical trend indicator.
+
+**References:**
+
+- paper | Lambert, D.R. (1980). "Commodity Channel Index: Tool for Trading Cyclic Trends." Commodities, October 1980; reprinted in Technical Analysis of Stocks & Commodities, 1(5), 120-122.
+- library | Referenced against TA-Lib's [CCI](https://ta-lib.org/functions/cci.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -4843,8 +5003,8 @@ pd.Series or pd.DataFrame: Commodity Channel Index (CCI) values.
 - The method retrieves historical data based on the specified `period` and calculates
 the CCI values for each asset in the Toolkit instance.
 - With the default `constant` of 0.015, the CCI agrees with TA-Lib's CCI.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -4874,7 +5034,7 @@ Which returns:
 ---
 
 ## get_relative_vigor_index
-Calculate the Relative Vigor Index (RVI) for a given price series.
+Calculate the Relative Vigor Index (RVI): how strongly the close ends above the open relative to the range, which shows the conviction behind a move.
 
 The Relative Vigor Index measures the conviction behind a move by comparing where each period closes relative to its open with the period's full high-low range: in an uptrend prices tend to close above their open, in a downtrend below it.
 
@@ -4898,16 +5058,18 @@ $$
 
 The RVI usually lies between -1 and 1 and is positive when closes sit above opens. Crossovers of the RVI and its signal line are the usual trigger, and a divergence from price warns that a move lacks conviction. See `momentum_model.get_relative_vigor_index` for the full formula.
 
-For more information, see the following sources:
-
-- Ehlers, J.F. (2002). "Relative Vigor Index." Technical Analysis of Stocks & Commodities, 20(1), 16-20.
-
 **Also known as:** RVI, RVGI, vigor index.
+
+**References:**
+
+- paper | Ehlers, J.F. (2002). "Relative Vigor Index." Technical Analysis of Stocks & Commodities, 20(1), 16-20.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 the closing prices. Defaults to "Adj Close", in which case the open, high and
 low prices are adjusted for dividends in the same way.
@@ -4935,8 +5097,8 @@ pd.Series or pd.DataFrame: Relative Vigor Index and Signal Line values.
 
 - The method retrieves historical data based on the specified `period` and calculates
 the RVI values for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -4966,11 +5128,11 @@ Which returns:
 ---
 
 ## get_force_index
-Calculate the Force Index for a given price series, or with method="cumulative" the Cumulative Force Index (CFI).
+Calculate the Force Index or the Cumulative Force Index (CFI): the price change times the volume, smoothed (and added up over time for the CFI), which shows the force of the buyers or sellers behind a move.
 
 The Force Index of Elder measures the strength behind price movements: each period's change in price times its volume, smoothed with an exponential moving average. The Cumulative Force Index is its running total. Where On-Balance Volume adds the whole volume of an up close however small the move, the force weights the volume with the size of the move, so a heavy session that barely moves price adds little. With a window of 1 there is no smoothing and the Cumulative Force Index is the Weighted On-Balance Volume.
 
-The formula for method="standard" is as follows:
+The formula for the Force Index is as follows:
 
 $$
 \text{Raw Force Index} = (\text{Close} - \operatorname{Close}(1)) \cdot \text{Volume}
@@ -4980,7 +5142,7 @@ $$
 \text{Force Index} = \operatorname{EMA}(\text{Raw Force Index},\; \text{window})
 $$
 
-The formula for method="cumulative" is as follows:
+The formula for the Cumulative Force Index is as follows:
 
 $$
 \operatorname{Force}(t) = (\operatorname{Close}(t) - \operatorname{Close}(t-1)) \cdot \operatorname{Volume}(t)
@@ -4992,26 +5154,29 @@ $$
 
 As with On-Balance Volume, the level of the Cumulative Force Index depends on the start date and the number of shares traded; only the direction and the divergences from price carry meaning.
 
-For more information, see the following sources:
+**Also known as:** FI, Elder's Force Index, EFI, CFI, Cumulative Force Index, Weighted On-Balance Volume, WOBV (the Cumulative Force Index with a window of 1).
 
-- Elder, A. (1993). "Trading for a Living: Psychology, Trading Tactics, Money Management." John Wiley & Sons.
-- Referenced against TA-Lib's EFI ([https://ta-lib.org/functions/efi.html](https://ta-lib.org/functions/efi.html){:target="_blank"}).
-- Referenced against finta's CFI and WOBV ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}), by Peerchemist, which defines the cumulative form and the Weighted On-Balance Volume.
+**References:**
 
-**Also known as:** FI, Elder's Force Index, EFI, CFI, Cumulative Force Index, Weighted On-Balance Volume, WOBV (with method="cumulative" and a window of 1).
+- paper | Elder, A. (1993). "Trading for a Living: Psychology, Trading Tactics, Money Management." John Wiley & Sons.
+- library | Referenced against TA-Lib's [EFI](https://ta-lib.org/functions/efi.html){:target="_blank"}
+- library | Referenced against finta's [CFI](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1585){:target="_blank"} (cumulative Force Index)
+- library | Referenced against finta's [WOBV](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1506){:target="_blank"} (cumulative Force Index)
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 the closing prices. Defaults to "Adj Close".
 - <u>window (int &#124; None, optional):</u> The number of periods of the EMA that smooths the raw
 Force Index. Defaults to None, which is 13 with method="standard", Elder's setting
 for the trend (2 is his setting for timing entries), and 10 with
 method="cumulative"; 1 gives the Weighted On-Balance Volume.
-- <u>method (str, optional):</u> "standard" for the Force Index or "cumulative" for its running
-total from the start date, the Cumulative Force Index. Defaults to "standard".
+- <u>method (str, optional):</u> The index. Options are: "standard" (the Force Index), "cumulative" (its
+running total from the start date, the Cumulative Force Index). Defaults to "standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
@@ -5034,16 +5199,16 @@ volume.
 **Notes:**
 
 - The method retrieves historical data based on the specified `period` and calculates
-the Force Index values for each asset in the Toolkit instance; with method="cumulative"
+the Force Index values for each asset in the Toolkit instance; the Cumulative Force Index
 as a running total from the start date.
 - The Force Index agrees with TA-Lib's EFI.
-- With method="cumulative" and `window=1` it agrees with finta's WOBV. With a larger window
+- The Cumulative Force Index with a window of 1 agrees with finta's WOBV. With a larger window
 every change agrees with that of finta's CFI once the EMAs have converged (after about
 200 periods), but the EMA starts from the simple average of its first `window` values
 while finta's averages from the first value, and the running total keeps the difference
 of the warm-up as a constant offset.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -5073,7 +5238,7 @@ Which returns:
 ---
 
 ## get_ultimate_oscillator
-Calculate the Ultimate Oscillator for a given price series.
+Calculate the Ultimate Oscillator: the buying pressure over three windows combined into one value from 0 to 100, to show overbought and oversold levels with fewer false signals.
 
 The Ultimate Oscillator is a momentum oscillator that combines short-term, mid-term, and long-term price momentum into a single value.
 
@@ -5087,17 +5252,19 @@ $$
 \text{Ultimate Oscillator} = \frac{100 \cdot \left[(4 \cdot \text{Average}_{1}) + (2 \cdot \text{Average}_{2}) + \text{Average}_{3}\right]}{7}
 $$
 
-For more information, see the following sources:
-
-- Williams, L.R. (1985). "The Ultimate Oscillator." Technical Analysis of Stocks & Commodities, 3(4), 140-141.
-- Referenced against TA-Lib's ULTOSC ([https://ta-lib.org/functions/ultosc.html](https://ta-lib.org/functions/ultosc.html){:target="_blank"}).
-
 **Also known as:** UO, ultimate momentum oscillator. See `momentum_model.get_ultimate_oscillator` for the Buying Pressure and True Range definitions.
+
+**References:**
+
+- paper | Williams, L.R. (1985). "The Ultimate Oscillator." Technical Analysis of Stocks & Commodities, 3(4), 140-141.
+- library | Referenced against TA-Lib's [ULTOSC](https://ta-lib.org/functions/ultosc.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -5132,8 +5299,8 @@ the Ultimate Oscillator values for each asset in the Toolkit instance.
 - The Ultimate Oscillator agrees with TA-Lib's ULTOSC. The first period counts with its High —
 Low range and its close minus its low, so the oscillator starts on period `window_3`, one
 period before TA-Lib's.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -5163,7 +5330,7 @@ Which returns:
 ---
 
 ## get_percentage_volume_oscillator
-Calculate the Percentage Volume Oscillator (PVO) for a given volume series.
+Calculate the Percentage Volume Oscillator (PVO): the difference between a fast and a slow average of the volume as a share of the slow one, which shows whether volume is rising or falling.
 
 The Percentage Volume Oscillator is the Percentage Price Oscillator applied to volume: the difference between a short-term and a long-term EMA of volume as a share of the long-term EMA, with a signal line and a histogram as for the MACD.
 
@@ -5181,32 +5348,34 @@ $$
 \text{Histogram} = \text{PVO} - \text{Signal Line}
 $$
 
-with MA the Exponential Moving Average by default. With the Simple Moving Average (`moving_average="simple"`) it is the Volume Oscillator (VOSC) of StockCharts, pandas-ta-classic and Tulip Indicators, often used with 14 and 28 periods.
+with MA the Exponential Moving Average by default. With the Simple Moving Average it is the Volume Oscillator (VOSC) of StockCharts, pandas-ta-classic and Tulip Indicators, often used with 14 and 28 periods.
 
 A positive PVO means recent volume runs above its longer-term average, which gives weight to a breakout or a trend in price; a PVO below zero in a rising market says the move happens on thinning volume. Because it is a share of the average volume, the PVO can be compared across stocks whatever the number of shares they trade. It says nothing about the direction of price.
 
-For more information, see the following sources:
-
-- Appel, G. (1979). "The Moving Average Convergence-Divergence Trading Method." Signalert Corp., the MACD of which the PVO is the volume counterpart in percent.
-- Referenced against TA-Lib's PVO ([https://ta-lib.org/functions/pvo.html](https://ta-lib.org/functions/pvo.html){:target="_blank"}).
-- pandas-ta-classic: vosc, the Simple Moving Average form ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- Tulip Indicators: vosc, the Simple Moving Average form ([https://tulipindicators.org/vosc](https://tulipindicators.org/vosc){:target="_blank"}).
-
 **Also known as:** PVO, volume oscillator, VOSC. See `momentum_model.get_percentage_volume_oscillator` for the references.
+
+**References:**
+
+- paper | Appel, G. (1979). "The Moving Average Convergence-Divergence Trading Method." Signalert Corp., the MACD of which the PVO is the volume counterpart in percent.
+- library | Referenced against TA-Lib's [PVO](https://ta-lib.org/functions/pvo.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [vosc](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volume/vosc.py#L12){:target="_blank"}
+- library | Referenced against Tulip Indicators' [vosc](https://tulipindicators.org/vosc){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>short_window (int, optional):</u> The number of periods for the short-term moving average.
 Defaults to 12, as for the PPO and MACD.
 - <u>long_window (int, optional):</u> The number of periods for the long-term moving average.
 Defaults to 26, as for the PPO and MACD.
 - <u>signal_window (int, optional):</u> The number of periods for the signal line.
 Defaults to 9.
-- <u>moving_average (str, optional):</u> The moving average of the volume, "exponential"
-or "simple" (the Volume Oscillator). The signal line is always an EMA.
-Defaults to "exponential".
+- <u>moving_average (str, optional):</u> The moving average of the volume. Options are:
+"exponential" (Exponential Moving Average), "simple" (Simple Moving Average, which gives the
+Volume Oscillator). The signal line is always an EMA. Defaults to "exponential".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator values.
@@ -5235,11 +5404,11 @@ values, so the PVO starts on the `long_window`-th period and the signal line and
 - A ticker without volume, such as an index or a currency pair, has no PVO.
 - The PVO is a decimal, like the Percentage Price Oscillator, and NaN for a ticker without
 volume. It agrees with TA-Lib's PVO (with its default EMA) divided by 100: TA-Lib's PVO is in
-percent, returns 0 without volume and has no signal line or histogram. With
-`moving_average="simple"` it agrees with TA-Lib's PVO with `matype=0` and the `vosc` of
+percent, returns 0 without volume and has no signal line or histogram. With the
+Simple Moving Average it agrees with TA-Lib's PVO with that moving average and the `vosc` of
 pandas-ta-classic and Tulip Indicators, divided by 100.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -5269,7 +5438,7 @@ Which returns:
 ---
 
 ## get_detrended_price_oscillator
-Calculate the Detrended Price Oscillator (DPO) for a given price series.
+Calculate the Detrended Price Oscillator (DPO): the price minus a moving average shifted back in time, which removes the trend to show the cycles.
 
 The Detrended Price Oscillator (DPO) is an indicator that helps identify short-term cycles by removing longer-term trends from prices.
 
@@ -5283,17 +5452,19 @@ $$
 \text{DPO} = \operatorname{Close}(t - \text{Displacement}) - \operatorname{SMA}(\text{Close},\; \text{Number of Periods}) (t)
 $$
 
-For more information, see the following sources:
-
-- Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-- Referenced against TA-Lib's DPO ([https://ta-lib.org/functions/dpo.html](https://ta-lib.org/functions/dpo.html){:target="_blank"}).
-
 **Also known as:** DPO, detrended price oscillator. Note the moving average itself is not shifted - only the close price used for the comparison is looked up further back in time; see `momentum_model.get_detrended_price_oscillator` for the full explanation.
+
+**References:**
+
+- paper | Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
+- library | Referenced against TA-Lib's [DPO](https://ta-lib.org/functions/dpo.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 the closing prices. Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods to consider for the DPO calculation.
@@ -5321,8 +5492,8 @@ pd.Series or pd.DataFrame: Detrended Price Oscillator (DPO) values.
 - The method retrieves historical data based on the specified `period` and calculates
 the DPO values for each asset in the Toolkit instance.
 - The DPO agrees with TA-Lib's DPO.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -5352,36 +5523,38 @@ Which returns:
 ---
 
 ## get_average_directional_index
-Calculate the Average Directional Index (ADX) for a given price series, or its rating (ADXR).
+Calculate the Average Directional Index (ADX) or its rating (ADXR): how strong a trend is, whatever its direction, from the smoothed difference between upward and downward movement.
 
-The Average Directional Index (ADX) is an indicator that measures the strength of a trend, whether it's an uptrend or a downtrend. The Average Directional Movement Index Rating (method="rating") is Wilder's smoothed ADX: the average of today's ADX and the ADX of window - 1 periods ago. Wilder rated markets with it on how strongly they trend, to choose the ones to trade with his trend-following systems; it moves more slowly than the ADX and lags it.
+The Average Directional Index (ADX) is an indicator that measures the strength of a trend, whether it's an uptrend or a downtrend. The Average Directional Movement Index Rating (ADXR) is Wilder's smoothed ADX: the average of today's ADX and the ADX of window - 1 periods ago. Wilder rated markets with it on how strongly they trend, to choose the ones to trade with his trend-following systems; it moves more slowly than the ADX and lags it.
 
 The formula is as follows, per method:
 
 $$
-\text{"standard":}\;\; \text{ADX} = \text{Wilder's Smoothed Moving Average of DX},\;\; \text{where}\;\; \text{DX} = \frac{100 \cdot \left|\text{+DI} - \text{-DI}\right|}{\text{+DI} + \text{-DI}}
+\text{ADX:}\;\; \text{ADX} = \text{Wilder's Smoothed Moving Average of DX},\;\; \text{where}\;\; \text{DX} = \frac{100 \cdot \left|\text{+DI} - \text{-DI}\right|}{\text{+DI} + \text{-DI}}
 $$
 
 $$
-\text{"rating":}\;\; \text{ADXR} = \frac{\operatorname{ADX}(t) + \operatorname{ADX}(t - (\text{window} - 1))}{2}
+\text{ADXR:}\;\; \text{ADXR} = \frac{\operatorname{ADX}(t) + \operatorname{ADX}(t - (\text{window} - 1))}{2}
 $$
 
 The ADX measures trend strength, not direction: a reading above about 25 is usually taken as a trending market and below 20 as a range, whether prices are rising or falling. Traders combine it with the +DI and -DI lines it is built from (`get_directional_movement_index`), or with the price itself, to know the direction. With Wilder's smoothing it reacts slowly and needs a few times the window of history before its values settle. The same readings apply to the ADXR.
-
-For more information, see the following sources:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Referenced against TA-Lib's ADX ([https://ta-lib.org/functions/adx.html](https://ta-lib.org/functions/adx.html){:target="_blank"}).
-- Referenced against TA-Lib's ADXR ([https://ta-lib.org/functions/adxr.html](https://ta-lib.org/functions/adxr.html){:target="_blank"}).
 
 **Also known as:** ADX, trend strength indicator, ADXR, Average Directional Movement Rating, Average Directional Movement Index Rating.
 
 See `momentum_model.get_average_directional_index` for the full formula, which uses Wilder's smoothing (not a plain SMA) throughout.
 
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- library | Referenced against TA-Lib's [ADX](https://ta-lib.org/functions/adx.html){:target="_blank"}
+- library | Referenced against TA-Lib's [ADXR](https://ta-lib.org/functions/adxr.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -5396,7 +5569,7 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "standard" for the ADX or "rating" for the ADXR. Defaults to
+- <u>method (str, optional):</u> Options are: "standard" (the ADX), "rating" (the ADXR). Defaults to
 "standard".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -5405,8 +5578,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame or pd.Series: Average Directional Index (ADX) or, with method="rating",
-Average Directional Movement Index Rating (ADXR) values, between 0 and 100.
+pd.DataFrame or pd.Series: Average Directional Index (ADX) or Average Directional
+Movement Index Rating (ADXR) values, between 0 and 100.
 
 **Notes:**
 
@@ -5416,11 +5589,11 @@ the ADX values for each asset in the Toolkit instance.
 ADX seeds its running sums with `window` - 1 values, so the first values differ from
 TA-Lib's until the two converge (within 0.01% after about 120 periods with the default
 window).
-- "rating": the ADXR starts 3 * `window` — 2 periods after the first price, as in TA-Lib,
+- ADXR: the ADXR starts 3 * `window` — 2 periods after the first price, as in TA-Lib,
 and its first values differ from TA-Lib's ADXR in the same way until the two converge
 (within 0.01% after about 100 to 125 periods with the default window).
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -5476,23 +5649,25 @@ $$
 \text{DX} = \frac{100 \cdot \left|\text{+DI} - \text{-DI}\right|}{\text{+DI} + \text{-DI}}
 $$
 
-+DI crossing above -DI is Wilder's buy signal and crossing below it his sell signal, which he only took when the ADX showed a trend. The DX itself is jumpy; the ADX (`get_average_directional_index`) and the ADXR (`get_average_directional_index` with method="rating") smooth it.
-
-For more information, see the following sources:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Referenced against TA-Lib's PLUS_DM ([https://ta-lib.org/functions/plus_dm.html](https://ta-lib.org/functions/plus_dm.html){:target="_blank"}).
-- Referenced against TA-Lib's MINUS_DM ([https://ta-lib.org/functions/minus_dm.html](https://ta-lib.org/functions/minus_dm.html){:target="_blank"}).
-- Referenced against TA-Lib's PLUS_DI ([https://ta-lib.org/functions/plus_di.html](https://ta-lib.org/functions/plus_di.html){:target="_blank"}).
-- Referenced against TA-Lib's MINUS_DI ([https://ta-lib.org/functions/minus_di.html](https://ta-lib.org/functions/minus_di.html){:target="_blank"}).
-- Referenced against TA-Lib's DX ([https://ta-lib.org/functions/dx.html](https://ta-lib.org/functions/dx.html){:target="_blank"}).
++DI crossing above -DI is Wilder's buy signal and crossing below it his sell signal, which he only took when the ADX showed a trend. The DX itself is jumpy; the ADX (`get_average_directional_index`) and the ADXR (the rating of `get_average_directional_index`) smooth it.
 
 **Also known as:** DMI, Directional Movement System, +DM, -DM, +DI, -DI, DX, PLUS_DM, MINUS_DM, PLUS_DI, MINUS_DI, directional indicators.
 
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- library | Referenced against TA-Lib's [PLUS_DM](https://ta-lib.org/functions/plus_dm.html){:target="_blank"}
+- library | Referenced against TA-Lib's [MINUS_DM](https://ta-lib.org/functions/minus_dm.html){:target="_blank"}
+- library | Referenced against TA-Lib's [PLUS_DI](https://ta-lib.org/functions/plus_di.html){:target="_blank"}
+- library | Referenced against TA-Lib's [MINUS_DI](https://ta-lib.org/functions/minus_di.html){:target="_blank"}
+- library | Referenced against TA-Lib's [DX](https://ta-lib.org/functions/dx.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -5531,8 +5706,8 @@ and DX and converge as the seed decays by a factor 1 — 1 / `window` per period
 window within 0.01% after about 100 periods for the +DM, -DM, +DI and -DI and 150 for the DX,
 and to 1e-8 after about 260.
 - A window without any directional movement (+DI and -DI both 0) has no DX.
-- If `growth` is set to True, the method calculates the growth of the Directional Movement Index
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Directional Movement Index
+over the given lag.
 
 **As an example:**
 
@@ -5562,7 +5737,7 @@ Which returns:
 ---
 
 ## get_chande_momentum_oscillator
-Calculate the Chande Momentum Oscillator (CMO) for a given price series.
+Calculate the Chande Momentum Oscillator (CMO): the gains minus the losses over a window as a share of their sum, from -100 to 100, to show momentum and overbought and oversold levels.
 
 The Chande Momentum Oscillator is an indicator that measures the momentum of a price series and identifies overbought and oversold conditions.
 
@@ -5576,20 +5751,22 @@ $$
 \text{Smoothed CMO} = \frac{100 \cdot (\text{Wilder's MA}(\text{Upward Change}) - \text{Wilder's MA}(\text{Downward Change}))}{\text{Wilder's MA}(\text{Upward Change}) + \text{Wilder's MA}(\text{Downward Change})}
 $$
 
-Chande sums the changes over the window, so every change in the window counts equally and the CMO jumps when a large change leaves the window. With `smoothed=True` the changes are averaged with Wilder's smoothing, as in the RSI, which gives TA-Lib's CMO: a smoother line that equals 2 * RSI - 100.
-
-For more information, see the following sources:
-
-- Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
-- Referenced against TA-Lib's CMOU ([https://ta-lib.org/functions/cmou.html](https://ta-lib.org/functions/cmou.html){:target="_blank"}).
-- Referenced against TA-Lib's CMO ([https://ta-lib.org/functions/cmo.html](https://ta-lib.org/functions/cmo.html){:target="_blank"}).
+Chande sums the changes over the window, so every change in the window counts equally and the CMO jumps when a large change leaves the window. The smoothed CMO averages the changes with Wilder's smoothing, as in the RSI, which gives TA-Lib's CMO: a smoother line that equals 2 * RSI - 100.
 
 **Also known as:** CMO, CMOU, Chande momentum.
 
+**References:**
+
+- paper | Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
+- library | Referenced against TA-Lib's [CMOU](https://ta-lib.org/functions/cmou.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CMO](https://ta-lib.org/functions/cmo.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 the closing prices. Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods to consider for the CMO calculation.
@@ -5621,9 +5798,9 @@ the Chande Momentum Oscillator values for each asset in the Toolkit instance.
 - By default the gains and losses are summed over the window, as Chande defines the CMO and as
 on StockCharts, which agrees with TA-Lib's CMOU. TA-Lib's CMO smooths them with Wilder's method
 instead, as in its RSI, so the two differ throughout (by up to about 55 points on daily data);
-`smoothed=True` gives TA-Lib's CMO, from the same period on.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+the smoothed CMO gives TA-Lib's CMO, from the same period on.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -5653,7 +5830,7 @@ Which returns:
 ---
 
 ## get_ichimoku_cloud
-Calculate the Ichimoku Cloud indicator for a given price series.
+Calculate the Ichimoku Cloud: the midpoints of the highs and lows over three windows, which show the trend, the momentum and the support and resistance of the prices at a glance.
 
 The Ichimoku Cloud, also known as the Ichimoku Kinko Hyo, is a versatile indicator that defines support and resistance, identifies trend direction, gauges momentum, and provides trading signals.
 
@@ -5677,18 +5854,20 @@ $$
 
 Price above the cloud is read as an uptrend and below it as a downtrend, with the cloud itself as support or resistance; a thick cloud is stronger support than a thin one. The leading spans are shifted forward by the base window, so the cloud value shown on a date was calculated base_window periods (26 by default) earlier from the data then available. The method returns the Conversion and Base Lines and the two Leading Spans but not the Lagging Span (the close shifted back), which would report a future close on each date.
 
-For more information, see the following sources:
-
-- Hosoda, G. (1969). "Ichimoku Kinko Hyo." Published under the pen name Ichimoku Sanjin.
-- Elliott, N. (2007). "Ichimoku Charts." Harriman House.
-- Referenced against TA-Lib's ICHIMOKU ([https://ta-lib.org/functions/ichimoku.html](https://ta-lib.org/functions/ichimoku.html){:target="_blank"}).
-
 **Also known as:** Ichimoku Kinko Hyo, cloud indicator. The default windows (9, 26, 52) are Goichi Hosoda's original values, both leading spans are conventionally displaced forward by the base (Kijun-sen) period.
+
+**References:**
+
+- paper | Hosoda, G. (1969). "Ichimoku Kinko Hyo." Published under the pen name Ichimoku Sanjin.
+- paper | Elliott, N. (2007). "Ichimoku Charts." Harriman House.
+- library | Referenced against TA-Lib's [ICHIMOKU](https://ta-lib.org/functions/ichimoku.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>conversion_window (int, optional):</u> The number of periods to consider for the
@@ -5725,8 +5904,8 @@ the Ichimoku Cloud values for each asset in the Toolkit instance.
 `base_window` periods earlier: TA-Lib places them on the period they are calculated on
 instead of displacing them forward, and starts every line on the `lead_span_b_window`-th
 period.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 - The leading spans are shifted forward by exactly `base_window` periods, as StockCharts
 defines the cloud. Platforms that count the current period as the first of the 26
 shift by `base_window` - 1 and show the same values one period earlier.
@@ -5759,38 +5938,42 @@ Which returns:
 ---
 
 ## get_stochastic_oscillator
-Calculate the Stochastic Oscillator indicator for a given price series, of the price or of the Relative Strength Index (the Stochastic RSI).
+Calculate the Stochastic Oscillator or the Stochastic RSI, from 0 to 100, which show momentum and overbought and oversold levels.
 
-The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high-low range over a set number of periods. It consists of the %K line (fast) and the %D line (slow). The Stochastic RSI (method="rsi") applies the Stochastic Oscillator to the Relative Strength Index instead of to price: it shows where the current RSI sits within its own high-low range over the last `stochastic_window` periods. Chande and Kroll (1994, "The New Technical Trader") designed it because the RSI can spend long stretches between 30 and 70 without reaching either extreme; the Stochastic RSI reaches 0 and 100 far more often.
+It is where the close, or for the Stochastic RSI the Relative Strength Index, lies within its range over a window.
+
+The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high-low range over a set number of periods. It consists of the %K line (fast) and the %D line (slow). The Stochastic RSI applies the Stochastic Oscillator to the Relative Strength Index instead of to price: it shows where the current RSI sits within its own high-low range over the last `stochastic_window` periods. Chande and Kroll (1994, "The New Technical Trader") designed it because the RSI can spend long stretches between 30 and 70 without reaching either extreme; the Stochastic RSI reaches 0 and 100 far more often.
 
 The formula is as follows, per method:
 
 $$
-\text{"standard":}\;\; \%K = 100 \cdot \frac{\text{Close} - \text{Lowest Low}}{\text{Highest High} - \text{Lowest Low}},\;\; \%D = \operatorname{SMA}(\%K,\; \text{smooth\_window}),\;\; \text{and}\;\; \text{with} \;\text{slow} \;\text{Slow}\; \%K = \operatorname{SMA}(\%K,\; \text{smooth\_window}) \;\text{and Slow}\; \%D = \operatorname{SMA}(\text{Slow}\; \%K,\; \text{smooth\_window})
+\text{Stochastic Oscillator:}\;\; \%K = 100 \cdot \frac{\text{Close} - \text{Lowest Low}}{\text{Highest High} - \text{Lowest Low}},\;\; \%D = \operatorname{SMA}(\%K,\; \text{smooth\_window}),\;\; \text{and}\;\; \text{with} \;\text{slow} \;\text{Slow}\; \%K = \operatorname{SMA}(\%K,\; \text{smooth\_window}) \;\text{and Slow}\; \%D = \operatorname{SMA}(\text{Slow}\; \%K,\; \text{smooth\_window})
 $$
 
 $$
-\text{"rsi":}\;\; \text{RSI} = \text{Relative Strength Index}(\text{Close},\; \text{window}),\;\; \text{with Wilder's smoothing},\;\; \%K = \frac{100 \cdot (\text{RSI} - \text{Lowest RSI})}{\text{Highest RSI} - \text{Lowest RSI}} \;\text{over the last}\; \text{stochastic\_window} \;\text{RSI values},\;\; \text{and}\;\; \%D = \operatorname{SMA}(\%K,\; \text{smooth\_window})
+\text{Stochastic RSI:}\;\; \text{RSI} = \text{Relative Strength Index}(\text{Close},\; \text{window}),\;\; \text{with Wilder's smoothing},\;\; \%K = \frac{100 \cdot (\text{RSI} - \text{Lowest RSI})}{\text{Highest RSI} - \text{Lowest RSI}} \;\text{over the last}\; \text{stochastic\_window} \;\text{RSI values},\;\; \text{and}\;\; \%D = \operatorname{SMA}(\%K,\; \text{smooth\_window})
 $$
 
-The fast stochastic (the default) reacts to every close and gives many crossovers. The slow stochastic (`slow=True`) smooths %K once more, so its %K is the fast %D; it is the stochastic George Lane charted and the one most platforms show by default (14, 3, 3).
+The fast stochastic (the default) reacts to every close and gives many crossovers. The slow stochastic smooths %K once more, so its %K is the fast %D; it is the stochastic George Lane charted and the one most platforms show by default (14, 3, 3).
 
-The defaults of the Stochastic RSI follow Chande and Kroll's definition, a 14-period stochastic of a 14-period RSI, which StockCharts and TradingView use as well. StockCharts shows this %K on a scale of 0 to 1; TradingView smooths it over 3 periods, so its %K is the %D here. TA-Lib's STOCHRSI defaults to a 5-period stochastic instead (timeperiod 14, fastk_period 5 and fastd_period 3 with a simple average): pass stochastic_window=5 for its %K and %D. A %K of 100 means the RSI is at its highest of the window, not that the price is overbought, so the readings above 80 and below 20 come and go quickly and are mostly read together with the trend.
-
-For more information, see the following sources:
-
-- Lane, G.C. (1984). "Lane's Stochastics." Technical Analysis of Stocks & Commodities, 2(3).
-- Referenced against TA-Lib's STOCHF ([https://ta-lib.org/functions/stochf.html](https://ta-lib.org/functions/stochf.html){:target="_blank"}).
-- Referenced against TA-Lib's STOCH ([https://ta-lib.org/functions/stoch.html](https://ta-lib.org/functions/stoch.html){:target="_blank"}).
-- Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
-- Referenced against TA-Lib's STOCHRSI ([https://ta-lib.org/functions/stochrsi.html](https://ta-lib.org/functions/stochrsi.html){:target="_blank"}).
+The defaults of the Stochastic RSI follow Chande and Kroll's definition, a 14-period stochastic of a 14-period RSI, which StockCharts and TradingView use as well. StockCharts shows this %K on a scale of 0 to 1; TradingView smooths it over 3 periods, so its %K is the %D here. TA-Lib's STOCHRSI defaults to a 5-period stochastic instead (timeperiod 14, fastk_period 5 and fastd_period 3 with a simple average): a stochastic window of 5 gives its %K and %D. A %K of 100 means the RSI is at its highest of the window, not that the price is overbought, so the readings above 80 and below 20 come and go quickly and are mostly read together with the trend.
 
 **Also known as:** stochastic oscillator, percent K, percent D, fast stochastic, slow stochastic, Stochastic RSI, StochRSI, Stoch RSI.
 
+**References:**
+
+- paper | Lane, G.C. (1984). "Lane's Stochastics." Technical Analysis of Stocks & Commodities, 2(3).
+- paper | Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
+- library | Referenced against TA-Lib's [STOCHF](https://ta-lib.org/functions/stochf.html){:target="_blank"}
+- library | Referenced against TA-Lib's [STOCH](https://ta-lib.org/functions/stoch.html){:target="_blank"}
+- library | Referenced against TA-Lib's [STOCHRSI](https://ta-lib.org/functions/stochrsi.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -5809,7 +5992,7 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> The stochastic: "standard" (of the price) or "rsi" (the
+- <u>method (str, optional):</u> The stochastic. Options are: "standard" (of the price), "rsi" (the
 Stochastic RSI). Defaults to "standard".
 - <u>stochastic_window (int, optional):</u> The number of periods of RSI values whose high-low
 range gives %K. Only used when method="rsi". Defaults to 14.
@@ -5822,7 +6005,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.Series or pd.DataFrame: Stochastic Oscillator (%K and %D) values, between 0 and
 100, as "Stochastic %K" and "Stochastic %D", or "Stochastic RSI %K" and
-"Stochastic RSI %D" with method="rsi".
+"Stochastic RSI %D" for the Stochastic RSI.
 
 **Raises:**
 
@@ -5833,20 +6016,20 @@ ValueError: If the specified `period` or `method` is not one of the valid option
 - The method retrieves historical data based on the specified `period` and calculates
 the Stochastic Oscillator values for each asset in the Toolkit instance.
 - %K and %D agree with TA-Lib's STOCHF (the fast stochastic) with `fastd_period` set to
-`smooth_window` and a simple moving average (`fastd_matype=0`), which TA-Lib's STOCH gives
+`smooth_window` and a simple moving average, which TA-Lib's STOCH gives
 with a `slowk_period` of 1. TA-Lib starts %K on the first %D.
-- With `slow=True`, %K and %D agree with TA-Lib's STOCH with `slowk_period` and `slowd_period` set to
-`smooth_window` and simple moving averages (`slowk_matype=0`, `slowd_matype=0`), and
+- The slow stochastic's %K and %D agree with TA-Lib's STOCH with `slowk_period` and `slowd_period` set to
+`smooth_window` and simple moving averages, and
 pandas-ta-classic's stoch. TA-Lib starts %K on the first %D.
-- "rsi": the RSI is seeded with a simple average of its first `window` changes, as Wilder
+- Stochastic RSI: the RSI is seeded with a simple average of its first `window` changes, as Wilder
 and TA-Lib do, so %K starts `window` + `stochastic_window` - 1 periods after the first
 price and %D `smooth_window` - 1 periods later. TA-Lib starts both on the first %D,
 with the same values from there. An RSI that did not move over the stochastic window
 has no range, which leaves %K missing (TA-Lib sets it to 0). With `fastk_period` set to
-`stochastic_window`, `fastd_period` to `smooth_window` and a simple moving average
-(`fastd_matype=0`), %K and %D agree with TA-Lib's STOCHRSI.
-- If `growth` is set to True, the method calculates the growth of the %K and %D values
-using the specified `lag`.
+`stochastic_window`, `fastd_period` to `smooth_window` and a simple moving average,
+%K and %D agree with TA-Lib's STOCHRSI.
+- When growth is requested, the method calculates the growth of the %K and %D values
+over the given lag.
 
 **As an example:**
 
@@ -5876,48 +6059,54 @@ Which returns:
 ---
 
 ## get_moving_average_convergence_divergence
-Calculate the Moving Average Convergence Divergence (MACD) indicator for a given price series, in price units or as a percentage of the long average (the Percentage Price Oscillator).
+Calculate the Moving Average Convergence Divergence (MACD) or the Percentage Price Oscillator, which show the direction and momentum of a trend.
 
-The Moving Average Convergence Divergence (MACD) is a trend-following momentum indicator that shows the relationship between two moving averages of a security's price. It consists of the MACD line and its signal line; their difference is the MACD histogram. The MACD line is the Absolute Price Oscillator (APO), the difference between a short-term and a long-term moving average of the price, in price units: with exponential moving averages it is Appel's MACD line, and `moving_average` lets the average be chosen, such as simple moving averages for a slower oscillator. The Percentage Price Oscillator (method="percentage") measures the difference between the two moving averages as a percentage of the longer one.
+It is the difference between a fast and a slow moving average, in price units or, for the Percentage Price Oscillator, as a percentage of the slow average, with its signal line.
+
+The Moving Average Convergence Divergence (MACD) is a trend-following momentum indicator that shows the relationship between two moving averages of a security's price. It consists of the MACD line and its signal line; their difference is the MACD histogram. The MACD line is the Absolute Price Oscillator (APO), the difference between a short-term and a long-term moving average of the price, in price units: with exponential moving averages it is Appel's MACD line, and `moving_average` lets the average be chosen, such as simple moving averages for a slower oscillator. The Percentage Price Oscillator measures the difference between the two moving averages as a percentage of the longer one.
 
 The formula is as follows, per method:
 
 $$
-\text{"absolute":}\;\; \text{MACD Line} \;(\text{APO}) = \operatorname{MA}(\text{Close},\; \text{short\_window}) - \operatorname{MA}(\text{Close},\; \text{long\_window}),\;\; \text{with the EMA by default},\;\; \text{Signal Line} = \operatorname{EMA}(\text{MACD Line},\; \text{signal\_window})\;\;\text{and}\;\; \text{Histogram} = \text{MACD Line} - \text{Signal Line}
+\text{MACD:}\;\; \text{MACD Line} \;(\text{APO}) = \operatorname{MA}(\text{Close},\; \text{short\_window}) - \operatorname{MA}(\text{Close},\; \text{long\_window}),\;\; \text{with the EMA by default},\;\; \text{Signal Line} = \operatorname{EMA}(\text{MACD Line},\; \text{signal\_window})\;\;\text{and}\;\; \text{Histogram} = \text{MACD Line} - \text{Signal Line}
 $$
 
 $$
-\text{"percentage":}\;\; \text{PPO} = \frac{\operatorname{MA}(\text{Close},\; \text{short\_window}) - \operatorname{MA}(\text{Close},\; \text{long\_window})}{\operatorname{MA}(\text{Close},\; \text{long\_window})},\;\; \text{with the EMA by default},\;\; \text{Signal Line} = \operatorname{EMA}(\text{PPO},\; \text{signal\_window})\;\;\text{and}\;\; \text{Histogram} = \text{PPO} - \text{Signal Line}
+\text{Percentage Price Oscillator:}\;\; \text{PPO} = \frac{\operatorname{MA}(\text{Close},\; \text{short\_window}) - \operatorname{MA}(\text{Close},\; \text{long\_window})}{\operatorname{MA}(\text{Close},\; \text{long\_window})},\;\; \text{with the EMA by default},\;\; \text{Signal Line} = \operatorname{EMA}(\text{PPO},\; \text{signal\_window})\;\;\text{and}\;\; \text{Histogram} = \text{PPO} - \text{Signal Line}
 $$
 
 The MACD line crossing its signal line is the usual trigger, and the MACD crossing zero means the short average has crossed the long one. The histogram is the distance between the two lines: it crosses zero with every crossover and shrinks before one, which is why it is read as an early warning. Because the MACD is a price difference, its level scales with the share price and cannot be compared across stocks; the Percentage Price Oscillator divides by the long average for that. Both lines lag price, so crossovers come late in fast reversals. The PPO is the MACD line as a percentage of the long average, so unlike the MACD its level can be compared across stocks and over long periods; its signal line is always an EMA.
 
-`moving_average` and `signal_moving_average` replace the EMAs of the MACD line and of the signal line with another moving average (TA-Lib's MACDEXT), and `fixed=True` smooths the 12- and 26-period EMAs with the fixed constants 0.15 and 0.075 instead of 2 / (window + 1) (TA-Lib's MACDFIX). With `moving_average="volume_weighted"` it is Dormeier's Volume Weighted MACD: the Volume Weighted Moving Averages, Sum(Close × Volume) / Sum(Volume), let the periods with heavy volume count more, so a move on heavy volume moves the MACD more than one on light volume. `moving_average="elastic_volume_weighted"` uses Fries' Elastic Volume Weighted Moving Average, which moves towards the price by the share of the window's volume traded in a period (the Elastic Volume Weighted MACD, 20 and 40 periods in finta).
-
-For more information, see the following sources:
-
-- Appel, G. (1979). "The Moving Average Convergence-Divergence Trading Method." Signalert Corp.
-- Aspray, T. (1988). "MACD Momentum." Technical Analysis of Stocks & Commodities, 6(8), 294-297, for the MACD histogram.
-- Referenced against TA-Lib's MACD ([https://ta-lib.org/functions/macd.html](https://ta-lib.org/functions/macd.html){:target="_blank"}).
-- Referenced against TA-Lib's MACDEXT ([https://ta-lib.org/functions/macdext.html](https://ta-lib.org/functions/macdext.html){:target="_blank"}).
-- Referenced against TA-Lib's MACDFIX ([https://ta-lib.org/functions/macdfix.html](https://ta-lib.org/functions/macdfix.html){:target="_blank"}).
-- Achelis, S.B. (2000). "Technical Analysis from A to Z." 2nd ed. McGraw-Hill.
-- Appel, G. (2005). "Technical Analysis: Power Tools for Active Investors." FT Press.
-- Referenced against TA-Lib's APO ([https://ta-lib.org/functions/apo.html](https://ta-lib.org/functions/apo.html){:target="_blank"}) and PPO ([https://ta-lib.org/functions/ppo.html](https://ta-lib.org/functions/ppo.html){:target="_blank"}).
-- pandas-ta-classic: ppo, with `mamode="ema"` ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- ta: PercentagePriceOscillator ([https://github.com/bukosabino/ta](https://github.com/bukosabino/ta){:target="_blank"}).
-- finta: PPO ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-- Dormeier, B.P. (2011). "Investing with Volume Analysis." FT Press.
-- Fries, C.P. (2001). "Elastic Moving Averages." Technical Analysis of Stocks & Commodities, 19(6), 52-56 ([https://www.christian-fries.de/evwma/](https://www.christian-fries.de/evwma/){:target="_blank"}).
-- pandas-ta-classic: vwmacd, the Volume Weighted MACD ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: VW_MACD and EV_MACD ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
+`moving_average` and `signal_moving_average` replace the EMAs of the MACD line and of the signal line with another moving average (TA-Lib's MACDEXT), and the fixed MACD smooths the 12- and 26-period EMAs with the fixed constants 0.15 and 0.075 instead of 2 / (window + 1) (TA-Lib's MACDFIX). With the Volume Weighted Moving Average it is Dormeier's Volume Weighted MACD: the Volume Weighted Moving Averages, Sum(Close × Volume) / Sum(Volume), let the periods with heavy volume count more, so a move on heavy volume moves the MACD more than one on light volume. The Elastic Volume Weighted MACD uses Fries' Elastic Volume Weighted Moving Average, which moves towards the price by the share of the window's volume traded in a period (the 20 and 40 periods in finta).
 
 **Also known as:** MACD, MACD histogram, MACDEXT, MACDFIX, VWMACD, volume weighted MACD, EVMACD, elastic volume weighted MACD, momentum indicator, APO, absolute price oscillator, price oscillator, PPO, percentage price oscillator, PPO signal line, PPO histogram.
 
+**References:**
+
+- paper | Appel, G. (1979). "The Moving Average Convergence-Divergence Trading Method." Signalert Corp.
+- paper | Aspray, T. (1988). "MACD Momentum." Technical Analysis of Stocks & Commodities, 6(8), 294-297, for the MACD histogram.
+- paper | Achelis, S.B. (2000). "Technical Analysis from A to Z." 2nd ed. McGraw-Hill.
+- paper | Appel, G. (2005). "Technical Analysis: Power Tools for Active Investors." FT Press.
+- paper | Dormeier, B.P. (2011). "Investing with Volume Analysis." FT Press.
+- paper | Fries, C.P. (2001). "Elastic Moving Averages." Technical Analysis of Stocks & Commodities, 19(6), 52-56 ([https://www.christian-fries.de/evwma/](https://www.christian-fries.de/evwma/){:target="_blank"}).
+- library | Referenced against TA-Lib's [MACD](https://ta-lib.org/functions/macd.html){:target="_blank"}
+- library | Referenced against TA-Lib's [MACDEXT](https://ta-lib.org/functions/macdext.html){:target="_blank"}
+- library | Referenced against TA-Lib's [MACDFIX](https://ta-lib.org/functions/macdfix.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [vwmacd](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/vwmacd.py#L12){:target="_blank"}
+- library | Referenced against TA-Lib's [APO](https://ta-lib.org/functions/apo.html){:target="_blank"}
+- library | Referenced against TA-Lib's [PPO](https://ta-lib.org/functions/ppo.html){:target="_blank"}
+- library | Shares similar logic as finta's [VW_MACD](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L575){:target="_blank"}
+- library | Shares similar logic as finta's [EV_MACD](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L617){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [ppo](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/ppo.py#L48){:target="_blank"}
+- library | Shares similar logic as ta's [PercentagePriceOscillator](https://github.com/bukosabino/ta/blob/0.11.0/ta/momentum.py#L622){:target="_blank"}
+- library | Shares similar logic as finta's [PPO](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L541){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>short_window (int, optional):</u> The number of periods for the shorter moving average.
@@ -5926,13 +6115,21 @@ Defaults to 12.
 Defaults to 26.
 - <u>signal_window (int, optional):</u> The number of periods for the signal line.
 Defaults to 9.
-- <u>moving_average (str, optional):</u> The moving average of the short and long term: "simple",
-"exponential", "double_exponential", "triangular", "weighted", "hull",
-"kaufman_adaptive", "volume_weighted" (the Volume Weighted MACD) or
-"elastic_volume_weighted" (the Elastic Volume Weighted MACD). Defaults to "exponential".
-- <u>signal_moving_average (str, optional):</u> The moving average of the signal line, one of the
-same. Only used when method="absolute"; the signal line of the PPO is an EMA.
-Defaults to "exponential".
+- <u>moving_average (str, optional):</u> The moving average of the short and long term. Options are:
+"simple" (Simple Moving Average), "exponential" (Exponential Moving Average),
+"double_exponential" (Double Exponential Moving Average), "triangular" (Triangular Moving
+Average), "weighted" (Weighted Moving Average), "hull" (Hull Moving Average),
+"kaufman_adaptive" (Kaufman Adaptive Moving Average), "volume_weighted" (Volume Weighted Moving
+Average, the Volume Weighted MACD), "elastic_volume_weighted" (Elastic Volume Weighted Moving
+Average, the Elastic Volume Weighted MACD). Defaults to "exponential".
+- <u>signal_moving_average (str, optional):</u> The moving average of the signal line. Options are:
+"simple" (Simple Moving Average), "exponential" (Exponential Moving Average),
+"double_exponential" (Double Exponential Moving Average), "triangular" (Triangular Moving
+Average), "weighted" (Weighted Moving Average), "hull" (Hull Moving Average),
+"kaufman_adaptive" (Kaufman Adaptive Moving Average), "volume_weighted" (Volume Weighted Moving
+Average, the Volume Weighted MACD), "elastic_volume_weighted" (Elastic Volume Weighted Moving
+Average, the Elastic Volume Weighted MACD). Only used when method="absolute"; the signal line of
+the PPO is an EMA. Defaults to "exponential".
 - <u>fixed (bool, optional):</u> Whether to smooth the 12- and 26-period EMAs with the fixed
 constants 0.15 and 0.075 (TA-Lib's MACDFIX). Needs the exponential moving average and
 the default windows. Only used when method="absolute". Defaults to False.
@@ -5945,9 +6142,9 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "absolute" for the MACD in price units, or "percentage" for the
-Percentage Price Oscillator, a decimal of the long average. The volume weighted
-moving averages and `fixed` apply to the MACD only. Defaults to "absolute".
+- <u>method (str, optional):</u> Options are: "absolute" (the MACD in price units), "percentage" (the
+Percentage Price Oscillator, a decimal of the long average). The volume weighted moving averages
+and `fixed` apply to the MACD only. Defaults to "absolute".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5957,7 +6154,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.Series or pd.DataFrame:
 MACD line, signal line and histogram values in price units ("MACD Line", "Signal Line"
-and "Histogram"), or with method="percentage" the "Percentage Price Oscillator",
+and "Histogram"), or for the Percentage Price Oscillator the "Percentage Price Oscillator",
 "Signal Line" and "Histogram" as decimals (0.02 is 2%).
 
 **Notes:**
@@ -5973,22 +6170,22 @@ triangular moving averages, which have no recursion, the lines equal MACDEXT fro
 first value; with exponential ones (also MACDFIX) they converge within 0.01% after about 90
 periods, with double exponential ones after about 130 and with Kaufman adaptive ones, whose
 smoothing can be very slow, after about 210.
-- With `moving_average="volume_weighted"` and `signal_moving_average="volume_weighted"` the
+- With the Volume Weighted Moving Average for both the MACD line and the signal line the
 lines agree with pandas-ta-classic's vwmacd. finta's VW_MACD divides exponential averages of
 Close × Volume and of the volume instead. finta's EV_MACD starts every eVWMA from 0 where the
 Toolkit seeds it with a simple average, so the two converge as the start decays (after
 several hundred periods for a 40-period eVWMA).
-- The MACD line agrees with TA-Lib's APO with the same moving average (`matype`: SMA 0,
-EMA 1, WMA 2, DEMA 3, TRIMA 5, KAMA 6) from the first value.
-- "percentage": the PPO is a decimal and agrees with TA-Lib's PPO with the same moving average
-(`matype`) divided by 100, since TA-Lib's PPO is in percent. TA-Lib has no signal line or
+- The MACD line agrees with TA-Lib's APO with the same moving average (its moving average type:
+SMA 0, EMA 1, WMA 2, DEMA 3, TRIMA 5, KAMA 6) from the first value.
+- Percentage Price Oscillator: the PPO is a decimal and agrees with TA-Lib's PPO with the same moving average
+divided by 100, since TA-Lib's PPO is in percent. TA-Lib has no signal line or
 histogram; with the default EMAs all three agree with pandas-ta-classic's ppo with
-`mamode="ema"` divided by 100. ta and finta seed their EMAs with the first price instead of
+its exponential moving average, divided by 100. ta and finta seed their EMAs with the first price instead of
 a simple average, so their first values differ until the two converge. Every EMA is seeded
 with the simple average of its first values, so the PPO starts on the `long_window`-th
 period and the signal line and histogram `signal_window` - 1 periods later.
-- If `growth` is set to True, the method calculates the growth of the MACD and signal values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the MACD and signal values
+over the given lag.
 
 **As an example:**
 
@@ -6018,57 +6215,61 @@ Which returns:
 ---
 
 ## get_relative_strength_index
-Calculate the Relative Strength Index (RSI) indicator for a given price series: Wilder's RSI, the ConnorsRSI, Ehlers' Laguerre RSI, Chande's Dynamic Momentum Index or Chande's Intraday Momentum Index.
+Calculate the Relative Strength Index (RSI): the size of the gains against the losses over a window, from 0 to 100, to show momentum and overbought and oversold levels.
 
 The Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. It ranges from 0 to 100 and is used to identify overbought or oversold conditions in an asset's price. The variants share that scale:
 
-- "standard": Wilder's RSI of the close.
-- "connors": the ConnorsRSI of Connors, Alvarez and Radtke averages three short-term measures of how overbought or oversold a price is, each on a scale of 0 to 100: a 3-period RSI of the close, a 2-period RSI of the streak (the number of periods in a row the close rose, positive, or fell, negative) and the percent rank of the latest one-period return among the returns of the previous 100 periods. It was designed for short-term mean reversion: below 10 (or 5) is oversold and a pullback in an uptrend to buy, above 90 (or 95) overbought.
-- "laguerre": the Laguerre RSI of Ehlers (2004) is an RSI over the four elements of a Laguerre filter instead of four prices. The first element is an exponential moving average and each next one an all-pass element that delays the low frequencies more than the high ones. That warps time: four elements look as far back as a much longer window, so the RSI is smooth yet reacts quickly. Ehlers buys when it crosses back above 20 and sells when it crosses back below 80.
-- "dynamic": the Dynamic Momentum Index of Chande and Kroll (1994) is an RSI whose period changes with the volatility: it shortens when the recent volatility is above its average and lengthens when it is below, between 5 and 30 periods. The index thereby reacts quickly in volatile markets and stays calm in quiet ones.
-- "intraday": the Intraday Momentum Index is an RSI of the moves within each period: it compares the bodies of the periods that closed above their open with all bodies over the window. Tushar Chande designed it for traders who care about the move from open to close rather than from close to close.
+- RSI: Wilder's RSI of the close.
+- ConnorsRSI: the ConnorsRSI of Connors, Alvarez and Radtke averages three short-term measures of how overbought or oversold a price is, each on a scale of 0 to 100: a 3-period RSI of the close, a 2-period RSI of the streak (the number of periods in a row the close rose, positive, or fell, negative) and the percent rank of the latest one-period return among the returns of the previous 100 periods. It was designed for short-term mean reversion: below 10 (or 5) is oversold and a pullback in an uptrend to buy, above 90 (or 95) overbought.
+- Laguerre RSI: the Laguerre RSI of Ehlers (2004) is an RSI over the four elements of a Laguerre filter instead of four prices. The first element is an exponential moving average and each next one an all-pass element that delays the low frequencies more than the high ones. That warps time: four elements look as far back as a much longer window, so the RSI is smooth yet reacts quickly. Ehlers buys when it crosses back above 20 and sells when it crosses back below 80.
+- Dynamic Momentum Index: the Dynamic Momentum Index of Chande and Kroll (1994) is an RSI whose period changes with the volatility: it shortens when the recent volatility is above its average and lengthens when it is below, between 5 and 30 periods. The index thereby reacts quickly in volatile markets and stays calm in quiet ones.
+- Intraday Momentum Index: the Intraday Momentum Index is an RSI of the moves within each period: it compares the bodies of the periods that closed above their open with all bodies over the window. Tushar Chande designed it for traders who care about the move from open to close rather than from close to close.
 
 The formula is as follows, per method:
 
 $$
-\text{"standard":}\;\; \text{RSI} = 100 - \frac{100}{1 + \text{RS}},\;\; \text{with RS the ratio of Wilder's averages of the gains and losses over the window}
+\text{RSI:}\;\; \text{RSI} = 100 - \frac{100}{1 + \text{RS}},\;\; \text{with RS the ratio of Wilder's averages of the gains and losses over the window}
 $$
 
 $$
-\text{"connors":}\;\; \text{Streak} = \text{the number of consecutive periods the close rose} \;(\text{positive}) \;\text{or fell} \;(\text{negative}),\;\; \text{0 when it was unchanged},\;\; \text{Return} = \frac{\operatorname{Close}(t)}{\operatorname{Close}(t - 1)} - 1,\;\; \text{and}\;\; \text{ConnorsRSI} = \frac{\operatorname{RSI}(\text{Close},\; \text{window}) + \operatorname{RSI}(\text{Streak},\; \text{streak\_window}) + 100 \cdot \text{Percent Rank}(\text{Return},\; \text{rank\_window})}{3},\;\; \text{with Wilder's RSI and the Percent Rank the share of the previous rank\_window returns below the latest one (get\_percent\_rank)}
+\text{ConnorsRSI:}\;\; \text{Streak} = \text{the number of consecutive periods the close rose} \;(\text{positive}) \;\text{or fell} \;(\text{negative}),\;\; \text{0 when it was unchanged},\;\; \text{Return} = \frac{\operatorname{Close}(t)}{\operatorname{Close}(t - 1)} - 1,\;\; \text{and}\;\; \text{ConnorsRSI} = \frac{\operatorname{RSI}(\text{Close},\; \text{window}) + \operatorname{RSI}(\text{Streak},\; \text{streak\_window}) + 100 \cdot \text{Percent Rank}(\text{Return},\; \text{rank\_window})}{3},\;\; \text{with Wilder's RSI and the Percent Rank the share of the previous rank\_window returns below the latest one (get\_percent\_rank)}
 $$
 
 $$
-\text{"laguerre":}\;\; L_{0} = (1 - \Gamma) \cdot \text{Price} + \Gamma \cdot \operatorname{L0}(t-1),\;\; L_{1} = - \Gamma \cdot L_{0} + \operatorname{L0}(t-1) + \Gamma \cdot \operatorname{L1}(t-1),\;\; L_{2} = - \Gamma \cdot L_{1} + \operatorname{L1}(t-1) + \Gamma \cdot \operatorname{L2}(t-1),\;\; L_{3} = - \Gamma \cdot L_{2} + \operatorname{L2}(t-1) + \Gamma \cdot \operatorname{L3}(t-1),\;\; \text{CU} = \text{the sum of}\; L_{0} - L_{1},\;\; L_{1} - L_{2} \;\text{and}\; L_{2} - L_{3} \;\text{where positive},\;\; \text{CD} = \text{the sum of}\; L_{1} - L_{0},\;\; L_{2} - L_{1} \;\text{and}\; L_{3} - L_{2} \;\text{where positive},\;\; \text{and}\;\; \text{Laguerre RSI} = \frac{100 \cdot \text{CU}}{\text{CU} + \text{CD}}
+\text{Laguerre RSI:}\;\; L_{0} = (1 - \Gamma) \cdot \text{Price} + \Gamma \cdot \operatorname{L0}(t-1),\;\; L_{1} = - \Gamma \cdot L_{0} + \operatorname{L0}(t-1) + \Gamma \cdot \operatorname{L1}(t-1),\;\; L_{2} = - \Gamma \cdot L_{1} + \operatorname{L1}(t-1) + \Gamma \cdot \operatorname{L2}(t-1),\;\; L_{3} = - \Gamma \cdot L_{2} + \operatorname{L2}(t-1) + \Gamma \cdot \operatorname{L3}(t-1),\;\; \text{CU} = \text{the sum of}\; L_{0} - L_{1},\;\; L_{1} - L_{2} \;\text{and}\; L_{2} - L_{3} \;\text{where positive},\;\; \text{CD} = \text{the sum of}\; L_{1} - L_{0},\;\; L_{2} - L_{1} \;\text{and}\; L_{3} - L_{2} \;\text{where positive},\;\; \text{and}\;\; \text{Laguerre RSI} = \frac{100 \cdot \text{CU}}{\text{CU} + \text{CD}}
 $$
 
 $$
-\text{"dynamic":}\;\; \text{Volatility Index} = \frac{\operatorname{StdDev}(\text{Close},\; \text{volatility\_window})}{\operatorname{SMA}(\operatorname{StdDev}(\text{Close},\; \text{volatility\_window}),\; \text{average\_window})},\;\; \text{Period} = \operatorname{Int}\left(\frac{\text{window}}{\text{Volatility Index}}\right) \;\text{bounded to}\; \text{minimum\_window} \;\text{and}\; \text{maximum\_window},\;\; \text{and}\;\; \text{DMI} = \frac{100 \cdot \operatorname{Sum}(\text{Up Changes},\; \text{Period})}{\operatorname{Sum}(\text{Up Changes},\; \text{Period}) + \operatorname{Sum}(\text{Down Changes},\; \text{Period})}
+\text{Dynamic Momentum Index:}\;\; \text{Volatility Index} = \frac{\operatorname{StdDev}(\text{Close},\; \text{volatility\_window})}{\operatorname{SMA}(\operatorname{StdDev}(\text{Close},\; \text{volatility\_window}),\; \text{average\_window})},\;\; \text{Period} = \operatorname{Int}\left(\frac{\text{window}}{\text{Volatility Index}}\right) \;\text{bounded to}\; \text{minimum\_window} \;\text{and}\; \text{maximum\_window},\;\; \text{and}\;\; \text{DMI} = \frac{100 \cdot \operatorname{Sum}(\text{Up Changes},\; \text{Period})}{\operatorname{Sum}(\text{Up Changes},\; \text{Period}) + \operatorname{Sum}(\text{Down Changes},\; \text{Period})}
 $$
 
 $$
-\text{"intraday":}\;\; \text{Gain} = \text{Close} - \text{Open where Close} > \text{Open},\;\; \text{else 0},\;\; \text{Loss} = \text{Open} - \text{Close where Close} < \text{Open},\;\; \text{else 0},\;\; \text{and}\;\; \text{IMI} = \frac{100 \cdot \operatorname{Sum}(\text{Gain},\; \text{window})}{\operatorname{Sum}(\text{Gain},\; \text{window}) + \operatorname{Sum}(\text{Loss},\; \text{window})}
+\text{Intraday Momentum Index:}\;\; \text{Gain} = \text{Close} - \text{Open where Close} > \text{Open},\;\; \text{else 0},\;\; \text{Loss} = \text{Open} - \text{Close where Close} < \text{Open},\;\; \text{else 0},\;\; \text{and}\;\; \text{IMI} = \frac{100 \cdot \operatorname{Sum}(\text{Gain},\; \text{window})}{\operatorname{Sum}(\text{Gain},\; \text{window}) + \operatorname{Sum}(\text{Loss},\; \text{window})}
 $$
 
 Readings above 70 are conventionally read as overbought and below 30 as oversold, but in a strong trend the RSI can stay above 70 or below 30 for weeks, so a crossing is not a signal on its own. Practitioners look more at divergences, a new price high with a lower RSI high, and at the 50 line as a trend filter. The value depends on the window: a shorter window swings more and reaches the extremes more often. Chande's Dynamic Momentum Index uses a 14-period base, a 5-period standard deviation and its 10-period average.
 
-For more information, see the following sources:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Connors, L., Alvarez, C. & Radtke, M. (2012). "An Introduction to ConnorsRSI." Connors Research Trading Strategy Series.
-- Connors, L. & Alvarez, C. (2009). "Short Term Trading Strategies That Work." TradingMarkets Publishing.
-- Ehlers, J.F. (2004). "Cybernetic Analysis for Stocks and Futures." John Wiley & Sons, chapter 14, "Time Warp - Without Space Travel."
-- Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
-- Referenced against TA-Lib's RSI ([https://ta-lib.org/functions/rsi.html](https://ta-lib.org/functions/rsi.html){:target="_blank"}), CRSI ([https://ta-lib.org/functions/crsi.html](https://ta-lib.org/functions/crsi.html){:target="_blank"}) and IMI ([https://ta-lib.org/functions/imi.html](https://ta-lib.org/functions/imi.html){:target="_blank"}).
-- Referenced against pandas-ta-classic's lrsi ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: DYMI ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** RSI, momentum oscillator, overbought, oversold, CRSI, ConnorsRSI, Connors RSI, Laguerre RSI, LRSI, Ehlers' Laguerre RSI, DYMI, Dynamic Momentum Index, Chande's Dynamic Momentum Index, variable-term RSI, IMI, Intraday Momentum Index, intraday momentum.
+
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- paper | Connors, L., Alvarez, C. & Radtke, M. (2012). "An Introduction to ConnorsRSI." Connors Research Trading Strategy Series.
+- paper | Connors, L. & Alvarez, C. (2009). "Short Term Trading Strategies That Work." TradingMarkets Publishing.
+- paper | Ehlers, J.F. (2004). "Cybernetic Analysis for Stocks and Futures." John Wiley & Sons, chapter 14, "Time Warp - Without Space Travel."
+- paper | Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
+- library | Referenced against TA-Lib's [RSI](https://ta-lib.org/functions/rsi.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CRSI](https://ta-lib.org/functions/crsi.html){:target="_blank"} (ConnorsRSI)
+- library | Referenced against pandas-ta-classic's [lrsi](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/lrsi.py#L29){:target="_blank"} (Laguerre RSI)
+- library | Referenced against TA-Lib's [IMI](https://ta-lib.org/functions/imi.html){:target="_blank"} (Intraday Momentum Index)
+- library | Shares similar logic as finta's [DYMI](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L752){:target="_blank"} (Dynamic Momentum Index)
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open of method="intraday" is adjusted
 for dividends in the same way.
@@ -6086,8 +6287,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> The RSI: "standard" (Wilder's), "connors" (ConnorsRSI),
-"laguerre" (Ehlers' Laguerre RSI), "dynamic" (Chande's Dynamic Momentum Index) or
+- <u>method (str, optional):</u> The RSI. Options are: "standard" (Wilder's RSI), "connors" (ConnorsRSI),
+"laguerre" (Ehlers' Laguerre RSI), "dynamic" (Chande's Dynamic Momentum Index),
 "intraday" (Chande's Intraday Momentum Index). Defaults to "standard".
 - <u>streak_window (int, optional):</u> The number of periods of the RSI of the streak. Only
 used when method="connors". Defaults to 2.
@@ -6118,27 +6319,27 @@ Relative Strength Index (RSI) values, between 0 and 100.
 
 - The method retrieves historical data based on the specified `period` and calculates the
 RSI for each asset in the Toolkit instance.
-- "standard": the RSI agrees with TA-Lib's RSI.
-- "connors": equals TA-Lib's CRSI. It starts `rank_window` + 1 periods after the first
+- RSI: the RSI agrees with TA-Lib's RSI.
+- ConnorsRSI: equals TA-Lib's CRSI. It starts `rank_window` + 1 periods after the first
 price, the first percent rank of a return.
-- "laguerre": on the same scale of 0 to 100 as the other variants, as pandas-ta-classic's
+- Laguerre RSI: on the same scale of 0 to 100 as the other variants, as pandas-ta-classic's
 lrsi, where Ehlers' listing and the model function
 `cycle_model.get_laguerre_relative_strength_index` give a decimal between 0 and 1;
 otherwise they are equal. The filter elements start on the first price of each
 ticker's own history, as pandas-ta-classic starts them, so the first period is NaN;
 Ehlers' listing starts them from zero. When the four elements are equal (CU + CD is
 zero) the value before is kept, as in Ehlers' listing, where pandas-ta-classic gives 0.
-- "dynamic": the period changes every period, which leaves no single period for Wilder's
+- Dynamic Momentum Index: the period changes every period, which leaves no single period for Wilder's
 recursive average, so each period's RSI sums the gains and losses of its own last
 `Period` changes (Cutler's RSI), the summed form Chande also uses for his Momentum
 Oscillator (`get_chande_momentum_oscillator`). The standard deviation is the sample
 standard deviation (ddof=1). finta's DYMI rounds the Volatility Index before the
 division and takes an exponentially smoothed RSI over the periods before the current
 one, so it differs from this by up to 50 points.
-- "intraday": the IMI agrees with TA-Lib's IMI, except on a window in which every period
+- Intraday Momentum Index: the IMI agrees with TA-Lib's IMI, except on a window in which every period
 closed at its open, which has no IMI (NaN) where TA-Lib returns 50.
-- If `growth` is set to True, the method calculates the growth of the RSI
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the RSI
+over the given lag.
 
 **As an example:**
 
@@ -6168,13 +6369,15 @@ Which returns:
 ---
 
 ## get_true_strength_index
-Calculate the True Strength Index (TSI) for a given price series, or with method="ergodic" the SMI Ergodic Indicator and Oscillator.
+Calculate the True Strength Index (TSI) or the SMI Ergodic Indicator and Oscillator, which show the direction and strength of momentum.
+
+Both are the double-smoothed price change as a share of the double-smoothed absolute price change.
 
 The True Strength Index of Blau (1995, "Momentum, Direction, and Divergence") smooths the one-period price change twice with Exponential Moving Averages and divides it by the same double smoothing of the absolute change. The double smoothing filters out noise while lagging less than a single long average, and the division bounds the result between -100 (every change down) and +100 (every change up).
 
 The SMI Ergodic Indicator, also of Blau (1995), is the True Strength Index with short smoothing periods, and its signal line an EMA of the indicator. The SMI Ergodic Oscillator, the histogram, is the difference between the two, in the way the MACD histogram is the MACD line minus its signal line.
 
-The formula for method="standard" is as follows:
+The formula for the True Strength Index is as follows:
 
 $$
 \text{Momentum} = \operatorname{Close}(t) - \operatorname{Close}(t - 1)
@@ -6188,7 +6391,7 @@ $$
 \text{Signal Line} = \operatorname{EMA}(\text{TSI},\; \text{signal\_window})
 $$
 
-The formula for method="ergodic" is as follows:
+The formula for the SMI Ergodic Indicator is as follows:
 
 $$
 \text{Momentum} = \operatorname{Close}(t) - \operatorname{Close}(t - 1)
@@ -6216,18 +6419,20 @@ $$
 
 Blau smooths the TSI over 25 and then 13 periods; the 7-period signal line is the one StockCharts uses. The common parameters of the SMI Ergodic Indicator are 20, 5 and 5. The TSI crossing zero means the smoothed momentum has turned, crossing its signal line is the faster trigger, and readings beyond about +25 or -25 are read as overbought or oversold. Blau trades the direction of the SMI Ergodic Oscillator: a turn up from below zero is a buy signal, a turn down from above zero a sell signal. Like the RSI both are on a scale of -100 to 100 rather than a decimal.
 
-For more information, see the following sources:
-
-- Blau, W. (1995). "Momentum, Direction, and Divergence." Wiley.
-- Referenced against TA-Lib's TSI ([https://ta-lib.org/functions/tsi.html](https://ta-lib.org/functions/tsi.html){:target="_blank"}).
-- pandas-ta-classic: smi ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** TSI, double smoothed momentum, SMI Ergodic, SMIIO, SMI Ergodic Oscillator, ergodic oscillator.
+
+**References:**
+
+- paper | Blau, W. (1995). "Momentum, Direction, and Divergence." Wiley.
+- library | Referenced against TA-Lib's [TSI](https://ta-lib.org/functions/tsi.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [smi](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/smi.py#L13){:target="_blank"} (SMI Ergodic Indicator)
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>long_window (int &#124; None, optional):</u> The number of periods of the first EMA of the price
@@ -6238,9 +6443,9 @@ to None, which is 13 with method="standard" and 5 with method="ergodic".
 - <u>signal_window (int &#124; None, optional):</u> The number of periods of the EMA of the indicator
 that gives the signal line. Defaults to None, which is 7 with method="standard" and 5
 with method="ergodic".
-- <u>method (str, optional):</u> "standard" for the True Strength Index and its signal line, or
-"ergodic" for the SMI Ergodic Indicator, its signal line and the histogram (the SMI
-Ergodic Oscillator). Defaults to "standard".
+- <u>method (str, optional):</u> Options are: "standard" (the True Strength Index and its signal line),
+"ergodic" (the SMI Ergodic Indicator, its signal line and the histogram, the SMI Ergodic
+Oscillator). Defaults to "standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the indicator lines.
@@ -6257,8 +6462,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.Series or pd.DataFrame: True Strength Index and Signal Line values, or with
-method="ergodic" the SMI Ergodic Indicator, Signal Line and Histogram (the SMI Ergodic
+pd.Series or pd.DataFrame: True Strength Index and Signal Line values, or for the
+ergodic form the SMI Ergodic Indicator, Signal Line and Histogram (the SMI Ergodic
 Oscillator) values, between -100 and 100.
 
 **Notes:**
@@ -6273,8 +6478,8 @@ before it, as in TA-Lib and StockCharts, so the indicator starts `long_window` +
 - The TSI agrees with TA-Lib's TSI, which has no signal line, with either set of windows.
 The three SMI Ergodic columns agree with pandas-ta-classic's smi times 100, as
 pandas-ta-classic uses a scale of -1 to 1.
-- If `growth` is set to True, the method calculates the growth of the indicator lines
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator lines
+over the given lag.
 
 **As an example:**
 
@@ -6304,7 +6509,7 @@ Which returns:
 ---
 
 ## get_balance_of_power
-Calculate the Balance of Power (BOP) indicator for a given price series.
+Calculate the Balance of Power (BOP): how far the close lies from the open as a share of the range, which shows whether buyers or sellers control the period.
 
 The Balance of Power (BOP) indicator measures the strength of buyers versus sellers in the market. It relates the price change to the change in the asset's trading range.
 
@@ -6314,17 +6519,19 @@ $$
 \text{BOP} = \frac{\text{Close} - \text{Open}}{\text{High} - \text{Low}}
 $$
 
-For more information, see the following sources:
-
-- Igor Livshin, who created the indicator; described in Kaufman, P.J. (2005). "New Trading Systems and Methods." 4th ed. Wiley.
-- Referenced against TA-Lib's BOP ([https://ta-lib.org/functions/bop.html](https://ta-lib.org/functions/bop.html){:target="_blank"}).
-
 **Also known as:** BOP, bull bear power.
+
+**References:**
+
+- paper | Igor Livshin, who created the indicator; described in Kaufman, P.J. (2005). "New Trading Systems and Methods." 4th ed. Wiley.
+- library | Referenced against TA-Lib's [BOP](https://ta-lib.org/functions/bop.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -6352,8 +6559,8 @@ Balance of Power (BOP) values.
 - The method retrieves historical data based on the specified `period` and calculates the
 BOP for each asset in the Toolkit instance.
 - The BOP agrees with TA-Lib's BOP.
-- If `growth` is set to True, the method calculates the growth of the BOP
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the BOP
+over the given lag.
 
 **As an example:**
 
@@ -6383,7 +6590,7 @@ Which returns:
 ---
 
 ## get_internal_bar_strength
-Calculate the Internal Bar Strength (IBS) for a given price series.
+Calculate the Internal Bar Strength (IBS): where the close lies within the range of its period, from 0 (at the low) to 1 (at the high).
 
 The Internal Bar Strength is where the close sits within the period's own range: 0 for a close on the low, 1 for a close on the high. It is a mean-reversion measure: in equity indices and ETFs a close near the low of the day (an IBS below about 0.2) has tended to be followed by higher returns the next day, and a close near the high (above about 0.8) by lower returns.
 
@@ -6393,17 +6600,19 @@ $$
 \text{IBS} = \frac{\text{Close} - \text{Low}}{\text{High} - \text{Low}}
 $$
 
-For more information, see the following sources:
-
-- Pagonidis, A.S. (2014). "The IBS Effect: Mean Reversion in Equity ETFs." NAAIM Founders Award paper.
-- Referenced against TA-Lib's IBS ([https://ta-lib.org/functions/ibs.html](https://ta-lib.org/functions/ibs.html){:target="_blank"}).
-
 **Also known as:** IBS, internal bar strength.
+
+**References:**
+
+- paper | Pagonidis, A.S. (2014). "The IBS Effect: Mean Reversion in Equity ETFs." NAAIM Founders Award paper.
+- library | Referenced against TA-Lib's [IBS](https://ta-lib.org/functions/ibs.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -6431,8 +6640,8 @@ pd.Series or pd.DataFrame: Internal Bar Strength (IBS) values as a decimal betwe
 the IBS for each asset in the Toolkit instance.
 - The IBS agrees with TA-Lib's IBS, except on a period without a range (High equal to Low), which
 has no IBS (NaN) where TA-Lib returns 0.5.
-- If `growth` is set to True, the method calculates the growth of the IBS
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the IBS
+over the given lag.
 
 **As an example:**
 
@@ -6462,7 +6671,7 @@ Which returns:
 ---
 
 ## get_qstick
-Calculate the Qstick indicator for a given price series.
+Calculate the Qstick: the average of the close minus the open over a window, which shows whether candles have been mostly rising or falling.
 
 Qstick is the moving average of the candlestick bodies, Close - Open, over the window. It turns the colour of the recent candles into a number: above zero the periods closed above their open on average (white candles, buying pressure), below zero below their open (black candles, selling pressure). A cross of zero is read as a change of the pressure.
 
@@ -6472,17 +6681,19 @@ $$
 \text{Qstick} = \operatorname{SMA}(\text{Close} - \text{Open},\; \text{window})
 $$
 
-For more information, see the following sources:
-
-- Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
-- Referenced against TA-Lib's QSTICK ([https://ta-lib.org/functions/qstick.html](https://ta-lib.org/functions/qstick.html){:target="_blank"}).
-
 **Also known as:** Qstick, QSTICK, Q-stick.
+
+**References:**
+
+- paper | Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
+- library | Referenced against TA-Lib's [QSTICK](https://ta-lib.org/functions/qstick.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -6510,8 +6721,8 @@ pd.Series or pd.DataFrame: Qstick values, in price units.
 - The method retrieves historical data based on the specified `period` and calculates
 the Qstick for each asset in the Toolkit instance.
 - Qstick agrees with TA-Lib's QSTICK and pandas-ta-classic's qstick.
-- If `growth` is set to True, the method calculates the growth of the Qstick
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Qstick
+over the given lag.
 
 **As an example:**
 
@@ -6541,11 +6752,13 @@ Which returns:
 ---
 
 ## get_awesome_oscillator
-Calculate the Awesome Oscillator (AO) for a given price series, or with method="accelerator" the Accelerator/Decelerator Oscillator (AC).
+Calculate the Awesome Oscillator (AO) or the Accelerator/Decelerator Oscillator (AC), which show the momentum of the market (AO) and whether it speeds up or slows down (AC).
+
+The AO is the difference between a fast and a slow average of the median price.
 
 The Awesome Oscillator measures market momentum by comparing a short-term and a long-term Simple Moving Average of the median price (the midpoint of each period's high and low, rather than the closing price). The Accelerator Oscillator is the Awesome Oscillator minus its own 5-period Simple Moving Average: where the Awesome Oscillator measures the momentum of the median price, the Accelerator Oscillator measures how that momentum changes, on Bill Williams' premise that momentum changes direction before price does. Both were developed by Bill Williams as part of his "Trading Chaos" collection of momentum indicators.
 
-The formula for method="standard" is as follows:
+The formula for the Awesome Oscillator is as follows:
 
 $$
 \text{Median Price} = \frac{\text{High} + \text{Low}}{2}
@@ -6555,7 +6768,7 @@ $$
 \text{AO} = \operatorname{SMA}(\text{Median Price},\; \text{short\_window}) - \operatorname{SMA}(\text{Median Price},\; \text{long\_window})
 $$
 
-The formula for method="accelerator" is as follows:
+The formula for the Accelerator/Decelerator Oscillator is as follows:
 
 $$
 \text{Median Price} = \frac{\text{High} + \text{Low}}{2}
@@ -6571,18 +6784,21 @@ $$
 
 A cross of the AO above zero occurs exactly when the short-window SMA of the median price crosses above the long-window SMA, and vice versa for a cross below zero. Williams reads the AC by the colour of its bars: two rising bars in a row above zero (three below zero) are a buy signal, two falling bars below zero (three above zero) a sell signal.
 
-For more information, see the following sources:
-
-- Williams, B. (1995). "Trading Chaos: Applying Expert Techniques to Maximize Your Profits." Wiley.
-- Williams, B. (1998). "New Trading Dimensions: How to Profit from Chaos in Stocks, Bonds, and Commodities." Wiley.
-- Referenced against TA-Lib's AO ([https://ta-lib.org/functions/ao.html](https://ta-lib.org/functions/ao.html){:target="_blank"}) and AC ([https://ta-lib.org/functions/ac.html](https://ta-lib.org/functions/ac.html){:target="_blank"}).
-
 **Also known as:** AO, Bill Williams Awesome Oscillator, AC, Accelerator Oscillator, Acceleration/Deceleration Oscillator, AC oscillator.
+
+**References:**
+
+- paper | Williams, B. (1995). "Trading Chaos: Applying Expert Techniques to Maximize Your Profits." Wiley.
+- paper | Williams, B. (1998). "New Trading Dimensions: How to Profit from Chaos in Stocks, Bonds, and Commodities." Wiley.
+- library | Referenced against TA-Lib's [AO](https://ta-lib.org/functions/ao.html){:target="_blank"}
+- library | Referenced against TA-Lib's [AC](https://ta-lib.org/functions/ac.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -6592,8 +6808,8 @@ median price. Defaults to 5.
 median price. Defaults to 34.
 - <u>signal_window (int, optional):</u> The number of periods for the SMA of the Awesome
 Oscillator, with method="accelerator" only. Defaults to 5.
-- <u>method (str, optional):</u> "standard" for the Awesome Oscillator or "accelerator" for the
-Accelerator Oscillator. Defaults to "standard".
+- <u>method (str, optional):</u> Options are: "standard" (the Awesome Oscillator), "accelerator" (the
+Accelerator Oscillator). Defaults to "standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the oscillator.
@@ -6623,8 +6839,8 @@ than ones derived from a published financial paper; the standard textbook source
 Williams' books above.
 - The AO agrees with TA-Lib's AO, and the AC with TA-Lib's AC; the AC starts
 `long_window` + `signal_window` — 2 periods after the first price.
-- If `growth` is set to True, the method calculates the growth of the oscillator
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the oscillator
+over the given lag.
 
 **As an example:**
 
@@ -6654,7 +6870,7 @@ Which returns:
 ---
 
 ## get_vortex_indicator
-Calculate the Vortex Indicator for a given price series.
+Calculate the Vortex Indicator: the upward and downward movement of the prices relative to their true range, whose crossings mark the start of a new trend.
 
 The Vortex Indicator quantifies the presence and strength of a directional trend by comparing each period's price movement away from the prior period's range to the period's overall volatility (True Range). It consists of two lines, VI+ and VI-, whose crossovers signal potential trend changes: VI+ above VI- suggests an uptrend is in control, VI- above VI+ suggests a downtrend is in control.
 
@@ -6678,10 +6894,16 @@ $$
 
 **Also known as:** VI, Vortex Indicator +/-, trend direction indicator.
 
+**References:**
+
+- library | Referenced against TA-Lib's [VORTEX](https://ta-lib.org/functions/vortex.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -6712,10 +6934,10 @@ VI+ and VI- values.
 the Vortex Indicator values for each asset in the Toolkit instance.
 - Reference: Botes, E., & Siepman, D. (2010). "The Vortex Indicator." Technical Analysis
 of Stocks & Commodities, 28(1), 20-30.
-- Referenced against TA-Lib's VORTEX ([https://ta-lib.org/functions/vortex.html](https://ta-lib.org/functions/vortex.html){:target="_blank"}).
 - VI+ and VI- agree with TA-Lib's VORTEX.
-- If `growth` is set to True, the method calculates the growth of the VI+ and VI-
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the VI+ and VI-
+over the given lag.
+
 
 **As an example:**
 
@@ -6745,7 +6967,7 @@ Which returns:
 ---
 
 ## get_elder_ray_index
-Calculate the Elder Ray Index (Bull Power and Bear Power) for a given price series.
+Calculate the Elder Ray Index: how far the high (Bull Power) and the low (Bear Power) lie from an exponential moving average, which shows the strength of the buyers and the sellers.
 
 The Elder Ray Index measures buying and selling pressure in the market relative to a trend baseline (an Exponential Moving Average of the closing price). Bull Power captures how far the high extends above the EMA (buying pressure), while Bear Power captures how far the low extends below the EMA (selling pressure).
 
@@ -6761,10 +6983,16 @@ $$
 
 **Also known as:** Elder Ray, Bull Power, Bear Power.
 
+**References:**
+
+- library | Referenced against TA-Lib's [ERI](https://ta-lib.org/functions/eri.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -6797,10 +7025,10 @@ the Elder Ray Index values for each asset in the Toolkit instance.
 Power moves toward zero from below; when the close is below the EMA (downtrend), both
 tend to be negative.
 - Reference: Elder, A. (1993). "Trading for a Living." Wiley.
-- Referenced against TA-Lib's ERI ([https://ta-lib.org/functions/eri.html](https://ta-lib.org/functions/eri.html){:target="_blank"}).
 - Bull Power and Bear Power agree with TA-Lib's ERI.
-- If `growth` is set to True, the method calculates the growth of the Bull and Bear Power
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Bull and Bear Power
+over the given lag.
+
 
 **As an example:**
 
@@ -6830,33 +7058,35 @@ Which returns:
 ---
 
 ## get_rate_of_change
-Calculate the Rate of Change (ROC) for a given price series, as a percentage or in price units (the Momentum).
+Calculate the Rate of Change (ROC), as a percentage or in price units (the Momentum): the change of the price over a window, the speed at which the price moves.
 
-The Rate of Change is a pure momentum oscillator that measures the percentage change in price between the current period and the price a fixed number of periods ago. It oscillates around zero: positive values indicate price is higher than `window` periods ago (upward momentum), while negative values indicate price is lower (downward momentum). The Momentum (method="absolute") is the same change in price units: the simplest measure of the speed of a move. Momentum that falls while the price still rises says the move slows down. The Rate of Change is the change as a share of the earlier price, which can be compared across stocks; the Momentum is in the currency of the price.
+The Rate of Change is a pure momentum oscillator that measures the percentage change in price between the current period and the price a fixed number of periods ago. It oscillates around zero: positive values indicate price is higher than `window` periods ago (upward momentum), while negative values indicate price is lower (downward momentum). The Momentum is the same change in price units: the simplest measure of the speed of a move. Momentum that falls while the price still rises says the move slows down. The Rate of Change is the change as a share of the earlier price, which can be compared across stocks; the Momentum is in the currency of the price.
 
 The formula is as follows, per method:
 
 $$
-\text{"percentage":}\;\; \text{ROC} = \frac{\operatorname{Close}(t)}{\operatorname{Close}(t - \text{window})} - 1
+\text{Rate of Change:}\;\; \text{ROC} = \frac{\operatorname{Close}(t)}{\operatorname{Close}(t - \text{window})} - 1
 $$
 
 $$
-\text{"absolute":}\;\; \text{Momentum} = \operatorname{Close}(t) - \operatorname{Close}(t - \text{window})
+\text{Momentum:}\;\; \text{Momentum} = \operatorname{Close}(t) - \operatorname{Close}(t - \text{window})
 $$
-
-For more information, see the following sources:
-
-- Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-- Pring, M.J. (1991). "Technical Analysis Explained." 3rd ed. McGraw-Hill.
-- Referenced against TA-Lib's ROCP ([https://ta-lib.org/functions/rocp.html](https://ta-lib.org/functions/rocp.html){:target="_blank"}).
-- Referenced against TA-Lib's MOM ([https://ta-lib.org/functions/mom.html](https://ta-lib.org/functions/mom.html){:target="_blank"}).
 
 **Also known as:** ROC, Price Rate of Change, momentum, MOM, price momentum, momentum oscillator.
 
+**References:**
+
+- paper | Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
+- paper | Pring, M.J. (1991). "Technical Analysis Explained." 3rd ed. McGraw-Hill.
+- library | Referenced against TA-Lib's [ROCP](https://ta-lib.org/functions/rocp.html){:target="_blank"}
+- library | Referenced against TA-Lib's [MOM](https://ta-lib.org/functions/mom.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods to look back for the rate of change
@@ -6870,8 +7100,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "percentage" for the Rate of Change as a decimal or "absolute"
-for the Momentum in price units. Defaults to "percentage".
+- <u>method (str, optional):</u> Options are: "percentage" (the Rate of Change as a decimal), "absolute" (the
+Momentum in price units). Defaults to "percentage".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -6879,8 +7109,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.Series or pd.DataFrame: Rate of Change values as a decimal (0.05 is 5%), or with
-method="absolute" the Momentum, the change in price in price units.
+pd.Series or pd.DataFrame: Rate of Change values as a decimal (0.05 is 5%), or for the
+Momentum, the change in price in price units.
 
 **Notes:**
 
@@ -6888,9 +7118,9 @@ method="absolute" the Momentum, the change in price in price units.
 the Rate of Change for each asset in the Toolkit instance.
 - The Rate of Change is a decimal and agrees with TA-Lib's ROCP; TA-Lib's ROC is the same in
 percent.
-- "absolute": the Momentum agrees with TA-Lib's MOM, pandas-ta-classic's mom and finta's MOM.
-- If `growth` is set to True, the method calculates the growth of the Rate of Change
-using the specified `lag`.
+- Momentum: the Momentum agrees with TA-Lib's MOM, pandas-ta-classic's mom and finta's MOM.
+- When growth is requested, the method calculates the growth of the Rate of Change
+over the given lag.
 
 **As an example:**
 
@@ -6920,7 +7150,7 @@ Which returns:
 ---
 
 ## get_choppiness_index
-Calculate the Choppiness Index (CHOP) for a given price series.
+Calculate the Choppiness Index (CHOP): how much of the range of a window the price travelled, from trending (near 0) to choppy and sideways (near 100).
 
 The Choppiness Index quantifies whether the market is trending or moving sideways ("choppy") by comparing the sum of True Range over the window (a measure of the total price path travelled) to the net range the price actually covered over that same window (the distance between the highest high and the lowest low). When price travels a long, winding path but ends up covering little net ground, the index is high (near 100), signalling a choppy, range-bound market. When price travels efficiently in one direction, the index is low (near 0), signalling a trending market.
 
@@ -6930,28 +7160,30 @@ $$
 \text{CHOP} = \frac{100 \cdot \log_{10}\left(\frac{\operatorname{Sum}(\text{True Range},\; \text{window})}{\max(\text{High},\; \text{window}) - \min(\text{Low},\; \text{window})}\right)}{\log_{10}(\text{window})}
 $$
 
-With `range_method="true_range"` the net range is that of the true highs and lows, Max(High, Previous Close) and Min(Low, Previous Close), the range the summed True Ranges span, so a gap between periods counts in both the path and the net range (TA-Lib's CHOPTR).
-
-For more information, see the following sources:
-
-- Kaufman, P.J. (2013). "Trading Systems and Methods." 5th ed. Wiley.
-- Referenced against TA-Lib's CHOP ([https://ta-lib.org/functions/chop.html](https://ta-lib.org/functions/chop.html){:target="_blank"}).
-- Referenced against TA-Lib's CHOPTR ([https://ta-lib.org/functions/choptr.html](https://ta-lib.org/functions/choptr.html){:target="_blank"}).
+With the true range as the box, the net range is that of the true highs and lows, Max(High, Previous Close) and Min(Low, Previous Close), the range the summed True Ranges span, so a gap between periods counts in both the path and the net range (TA-Lib's CHOPTR).
 
 **Also known as:** CHOP, CHOPTR, Choppiness Index.
 
+**References:**
+
+- paper | Kaufman, P.J. (2013). "Trading Systems and Methods." 5th ed. Wiley.
+- library | Referenced against TA-Lib's [CHOP](https://ta-lib.org/functions/chop.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CHOPTR](https://ta-lib.org/functions/choptr.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
 - <u>window (int, optional):</u> Number of periods to consider for the Choppiness Index
 calculation. Defaults to 14.
-- <u>range_method (str, optional):</u> The net range the summed True Range is divided by:
-"high_low", the highest high minus the lowest low, or "true_range", the highest true
-high minus the lowest true low (TA-Lib's CHOPTR). Defaults to "high_low".
+- <u>range_method (str, optional):</u> The net range the summed True Range is divided by. Options are:
+"high_low" (the highest high minus the lowest low), "true_range" (the highest true high minus
+the lowest true low, TA-Lib's CHOPTR). Defaults to "high_low".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Choppiness Index.
@@ -6979,11 +7211,11 @@ the Choppiness Index for each asset in the Toolkit instance.
 - Developed by Australian commodities trader Bill Dreiss; there is no formal journal
 citation. The standard textbook treatment is Kaufman, P.J. (2013). "Trading Systems
 and Methods." 5th ed. Wiley.
-- The Choppiness Index agrees with TA-Lib's CHOP, and with `range_method="true_range"` TA-Lib's
+- The Choppiness Index agrees with TA-Lib's CHOP, and with the true range as the box TA-Lib's
 CHOPTR. The first period counts with its High — Low range, so the index starts on period
 `window`, one period before TA-Lib's.
-- If `growth` is set to True, the method calculates the growth of the Choppiness
-Index using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Choppiness
+Index over the given lag.
 
 **As an example:**
 
@@ -7013,9 +7245,9 @@ Which returns:
 ---
 
 ## get_efficiency_ratio
-Calculate Kaufman's Efficiency Ratio (ER) for a given price series.
+Calculate Kaufman's Efficiency Ratio (ER): the net change over a window as a share of the path travelled, from 0 (noise) to 1 (a straight trend).
 
-The Efficiency Ratio compares the net change in price over the window with the path the price travelled to get there, the sum of the absolute changes of each period. A price that moves in a straight line has a ratio of 1; a price that ends where it started, however much it moved in between, has a ratio of 0. Perry Kaufman uses it to adapt the speed of his Adaptive Moving Average (`get_moving_average` with method="kaufman_adaptive") to the noise in the market.
+The Efficiency Ratio compares the net change in price over the window with the path the price travelled to get there, the sum of the absolute changes of each period. A price that moves in a straight line has a ratio of 1; a price that ends where it started, however much it moved in between, has a ratio of 0. Perry Kaufman uses it to adapt the speed of his Adaptive Moving Average (the Kaufman adaptive method of `get_moving_average`) to the noise in the market.
 
 The formula is as follows:
 
@@ -7031,17 +7263,19 @@ $$
 \text{Efficiency Ratio} = \frac{\text{Change}}{\text{Volatility}}
 $$
 
-For more information, see the following sources:
-
-- Kaufman, P.J. (1995). "Smarter Trading: Improving Performance in Changing Markets." McGraw-Hill.
-- Referenced against TA-Lib's ER ([https://ta-lib.org/functions/er.html](https://ta-lib.org/functions/er.html){:target="_blank"}).
-
 **Also known as:** ER, Kaufman Efficiency Ratio, fractal efficiency.
+
+**References:**
+
+- paper | Kaufman, P.J. (1995). "Smarter Trading: Improving Performance in Changing Markets." McGraw-Hill.
+- library | Referenced against TA-Lib's [ER](https://ta-lib.org/functions/er.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the change and the path. Defaults to 10.
@@ -7069,8 +7303,8 @@ pd.Series or pd.DataFrame: Efficiency Ratio values as a decimal between 0 and 1.
 the Efficiency Ratio for each asset in the Toolkit instance.
 - The Efficiency Ratio agrees with TA-Lib's ER, pandas-ta-classic's er and finta's ER, except on a
 window without any change (flat prices), which has no ratio (NaN) where TA-Lib returns 1.
-- If `growth` is set to True, the method calculates the growth of the Efficiency Ratio
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Efficiency Ratio
+over the given lag.
 
 **As an example:**
 
@@ -7100,7 +7334,7 @@ Which returns:
 ---
 
 ## get_vertical_horizontal_filter
-Calculate the Vertical Horizontal Filter (VHF) for a given price series.
+Calculate the Vertical Horizontal Filter (VHF): the range of a window as a share of the path travelled, which shows whether prices trend or move sideways.
 
 The Vertical Horizontal Filter tells a trending market from a congested one by dividing the range of the closes over the window (the vertical move) by the sum of the absolute changes from period to period (the path, horizontal in a range). A high or rising VHF says the price moves in one direction, which suits trend-following indicators; a low or falling VHF says it moves back and forth, which suits oscillators.
 
@@ -7110,17 +7344,19 @@ $$
 \text{VHF} = \frac{\max(\text{Close},\; \text{window}) - \min(\text{Close},\; \text{window})}{\operatorname{Sum}(\left|\operatorname{Close}(i) - \operatorname{Close}(i - 1)\right|,\; \text{window})}
 $$
 
-For more information, see the following sources:
-
-- White, A. (1991). "Trending or Trading? The Vertical Horizontal Filter." Futures Magazine.
-- Referenced against TA-Lib's VHF ([https://ta-lib.org/functions/vhf.html](https://ta-lib.org/functions/vhf.html){:target="_blank"}).
-
 **Also known as:** VHF, vertical horizontal filter.
+
+**References:**
+
+- paper | White, A. (1991). "Trending or Trading? The Vertical Horizontal Filter." Futures Magazine.
+- library | Referenced against TA-Lib's [VHF](https://ta-lib.org/functions/vhf.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the range and the path. Defaults to 28.
@@ -7149,8 +7385,8 @@ the VHF for each asset in the Toolkit instance.
 - The VHF agrees with TA-Lib's VHF and pandas-ta-classic's vhf and starts `window` periods after the
 first price, except on a window without any change (flat prices), which has no VHF (NaN) where TA-Lib
 returns 0.
-- If `growth` is set to True, the method calculates the growth of the VHF
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the VHF
+over the given lag.
 
 **As an example:**
 
@@ -7180,7 +7416,7 @@ Which returns:
 ---
 
 ## get_know_sure_thing
-Calculate the Know Sure Thing (KST) for a given price series.
+Calculate the Know Sure Thing (KST): a weighted sum of four smoothed rates of change over increasing windows, which shows the momentum of the major price cycles.
 
 The Know Sure Thing is a momentum oscillator developed by Martin Pring that combines four smoothed Rate of Change series, each calculated over a progressively longer lookback period, into a single weighted sum. Smoothing each Rate of Change with a Simple Moving Average before combining them reduces noise, while the increasing weights on the longer lookback periods give more influence to the more significant, longer-term price cycles. A signal line (a Simple Moving Average of the KST itself) is used to spot crossovers, in the same way the MACD line is compared to its signal line.
 
@@ -7200,18 +7436,20 @@ $$
 
 Pring smooths with Simple Moving Averages; `moving_average` and `signal_moving_average` smooth the Rates of Change and the signal line with another moving average instead, as TA-Lib's KSTEXT does.
 
-For more information, see the following sources:
-
-- Pring, M.J. (1992). "Summed Rate of Change (KST)." Technical Analysis of Stocks & Commodities, 10(9), 365-369.
-- Referenced against TA-Lib's KST ([https://ta-lib.org/functions/kst.html](https://ta-lib.org/functions/kst.html){:target="_blank"}).
-- Referenced against TA-Lib's KSTEXT ([https://ta-lib.org/functions/kstext.html](https://ta-lib.org/functions/kstext.html){:target="_blank"}).
-
 **Also known as:** KST, KSTEXT, Pring's Know Sure Thing, Summed Rate of Change.
+
+**References:**
+
+- paper | Pring, M.J. (1992). "Summed Rate of Change (KST)." Technical Analysis of Stocks & Commodities, 10(9), 365-369.
+- library | Referenced against TA-Lib's [KST](https://ta-lib.org/functions/kst.html){:target="_blank"}
+- library | Referenced against TA-Lib's [KSTEXT](https://ta-lib.org/functions/kstext.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>roc_windows (list[int] &#124; None, optional):</u> The four lookback periods used for the
@@ -7224,11 +7462,16 @@ standard [10, 10, 10, 15].
 Rate of Change series before summing. Defaults to the standard [1, 2, 3, 4].
 - <u>signal_window (int, optional):</u> Number of periods for the Simple Moving Average of
 the KST used as the signal line. Defaults to 9.
-- <u>moving_average (str, optional):</u> The moving average that smooths each Rate of Change:
-"simple", "exponential", "double_exponential", "triangular", "weighted", "hull" or
-"kaufman_adaptive". Defaults to "simple".
-- <u>signal_moving_average (str, optional):</u> The moving average of the signal line, one of the
-same. Defaults to "simple".
+- <u>moving_average (str, optional):</u> The moving average that smooths each Rate of Change. Options are:
+"simple" (Simple Moving Average), "exponential" (Exponential Moving Average),
+"double_exponential" (Double Exponential Moving Average), "triangular" (Triangular Moving
+Average), "weighted" (Weighted Moving Average), "hull" (Hull Moving Average),
+"kaufman_adaptive" (Kaufman Adaptive Moving Average). Defaults to "simple".
+- <u>signal_moving_average (str, optional):</u> The moving average of the signal line. Options are:
+"simple" (Simple Moving Average), "exponential" (Exponential Moving Average),
+"double_exponential" (Double Exponential Moving Average), "triangular" (Triangular Moving
+Average), "weighted" (Weighted Moving Average), "hull" (Hull Moving Average),
+"kaufman_adaptive" (Kaufman Adaptive Moving Average). Defaults to "simple".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the KST and Signal Line.
@@ -7258,8 +7501,8 @@ KST is in percent. TA-Lib starts the KST on the first signal value.
 `signalmatype` divided by 100: from the first value for the simple, weighted and triangular
 averages, and after the warm-up for the recursive ones, since TA-Lib starts their recursion
 later (within 0.01% after about 85 periods for exponential averages).
-- If `growth` is set to True, the method calculates the growth of the KST and Signal
-Line using the specified `lag`.
+- When growth is requested, the method calculates the growth of the KST and Signal
+Line over the given lag.
 
 **As an example:**
 
@@ -7289,7 +7532,7 @@ Which returns:
 ---
 
 ## get_coppock_curve
-Calculate the Coppock Curve for a given price series.
+Calculate the Coppock Curve: a weighted moving average of the sum of a long and a short rate of change, which shows long-term buying opportunities after a decline.
 
 The Coppock Curve is a long-term momentum indicator that Edwin Coppock designed for monthly closes of a stock index, to time buying after a bear market (Coppock, 1962, "Practical Relative Strength Charting", Trendex Research Group, first presented in Barron's). He took the 11 and 14 months from the time an Episcopal bishop told him mourning takes, as the time investors need to get over a loss.
 
@@ -7303,18 +7546,20 @@ $$
 \operatorname{ROC}(\text{Close},\; n) = \frac{\operatorname{Close}(t)}{\operatorname{Close}(t - n)} - 1
 $$
 
-with WMA the linearly Weighted Moving Average, so the defaults give WMA10(ROC14 + ROC11). The windows count periods of the chosen `period`: the curve as Coppock defined it is period="monthly", the default "daily" applies the same windows to days, as the other technical indicators do. The classic signal is the curve turning up while below zero; Coppock did not use it for sell signals. The Rates of Change are decimals, so the curve is a weighted sum of decimal returns (0.30 where charting platforms show 30).
-
-For more information, see the following sources:
-
-- Referenced against TA-Lib's COPPOCK ([https://ta-lib.org/functions/coppock.html](https://ta-lib.org/functions/coppock.html){:target="_blank"}).
+with WMA the linearly Weighted Moving Average, so the defaults give WMA10(ROC14 + ROC11). The windows count periods of the chosen `period`: the curve as Coppock defined it is monthly, the default of daily periods applies the same windows to days, as the other technical indicators do. The classic signal is the curve turning up while below zero; Coppock did not use it for sell signals. The Rates of Change are decimals, so the curve is a weighted sum of decimal returns (0.30 where charting platforms show 30).
 
 **Also known as:** Coppock Indicator, Coppock Guide.
 
+**References:**
+
+- library | Referenced against TA-Lib's [COPPOCK](https://ta-lib.org/functions/coppock.html){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>long_roc_window (int, optional):</u> Number of periods of the longer Rate of Change.
@@ -7351,8 +7596,8 @@ periods after the first price: 23 months with the defaults on monthly data, so s
 about two years before the first value you need.
 - The Coppock Curve is a decimal and agrees with TA-Lib's COPPOCK divided by 100, since TA-Lib's
 is in percent.
-- If `growth` is set to True, the method calculates the growth of the Coppock Curve
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Coppock Curve
+over the given lag.
 
 **As an example:**
 
@@ -7382,7 +7627,7 @@ Which returns:
 ---
 
 ## get_fisher_transform
-Calculate the Fisher Transform for a given price series.
+Calculate the Fisher Transform: the prices' position within their range turned into a near-normal distribution, which makes the turning points sharper and easier to see.
 
 The Fisher Transform of Ehlers (2002) turns the position of the median price within its recent range into a series that is close to normally distributed. An oscillator of the position spends most of its time in the middle and gives vague turning points; the transform stretches the values near the edges of the range, so the extremes, and the turns after them, become sharp and rare. The trigger is the previous value of the transform, and the transform crossing its trigger marks a turn.
 
@@ -7414,20 +7659,22 @@ $$
 
 Value and Fisher Transform start from 0, as in Ehlers' published formula. The transform is centred on zero and bounded by ln(1999), about -7.6 and 7.6.
 
-For more information, see the following sources:
-
-- Ehlers, J.F. (2002). "Using the Fisher Transform." Technical Analysis of Stocks & Commodities, 20(11).
-- Ehlers, J.F. (2004). "Cybernetic Analysis for Stocks and Futures." Wiley.
-- Referenced against TA-Lib's FISHER ([https://ta-lib.org/functions/fisher.html](https://ta-lib.org/functions/fisher.html){:target="_blank"}).
-- pandas-ta-classic: fisher ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: FISH ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** Fisher, Ehlers Fisher Transform, FISHT.
+
+**References:**
+
+- paper | Ehlers, J.F. (2002). "Using the Fisher Transform." Technical Analysis of Stocks & Commodities, 20(11).
+- paper | Ehlers, J.F. (2004). "Cybernetic Analysis for Stocks and Futures." Wiley.
+- library | Referenced against TA-Lib's [FISHER](https://ta-lib.org/functions/fisher.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [fisher](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/fisher.py#L36){:target="_blank"}
+- library | Shares similar logic as finta's [FISH](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1827){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -7462,8 +7709,8 @@ transform decays towards zero.
 - pandas-ta-classic's fisher (9 periods by default) starts one period later and equals it after the
 first values; finta's FISH smooths with exponential averages of 5 and 3 periods instead of
 Ehlers' constants, a different series.
-- If `growth` is set to True, the method calculates the growth of the Fisher Transform and trigger
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Fisher Transform and trigger
+over the given lag.
 
 **As an example:**
 
@@ -7493,7 +7740,7 @@ Which returns:
 ---
 
 ## get_inverse_fisher_transform_rsi
-Calculate the Inverse Fisher Transform of the RSI for a given price series.
+Calculate the Inverse Fisher Transform of the RSI: the smoothed Relative Strength Index squeezed between -1 and 1, which makes its overbought and oversold signals clearer.
 
 The inverse Fisher transform (the hyperbolic tangent) of Ehlers (2004) squeezes a series into the range from -1 to 1 with most values close to the edges. Applied to a rescaled and smoothed short Relative Strength Index, it turns the RSI into a nearly binary signal that switches quickly between overbought and oversold. Ehlers buys when it crosses above -0.5 and sells when it crosses below 0.5.
 
@@ -7513,17 +7760,19 @@ $$
 
 Ehlers uses a 5-period RSI and a 9-period weighted moving average.
 
-For more information, see the following sources:
-
-- Ehlers, J.F. (2004). "The Inverse Fisher Transform." Technical Analysis of Stocks & Commodities, 22(5).
-- finta: IFT_RSI ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** IFT RSI, IFTRSI, Inverse Fisher RSI.
+
+**References:**
+
+- paper | Ehlers, J.F. (2004). "The Inverse Fisher Transform." Technical Analysis of Stocks & Commodities, 22(5).
+- library | Shares similar logic as finta's [IFT_RSI](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L714){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rsi_window (int, optional):</u> The number of periods of the RSI. Defaults to 5.
@@ -7556,8 +7805,8 @@ as TA-Lib's RSI), so the IFT RSI starts `rsi_window` + `wma_window` - 1 periods 
 first price.
 - finta's IFT_RSI returns (Value $$2^{2} - 1$$) / (Value $$2^{2} + 1$$) instead of the hyperbolic tangent, with an
 RSI from an unseeded exponential average; this follows Ehlers' formula.
-- If `growth` is set to True, the method calculates the growth of the IFT RSI
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the IFT RSI
+over the given lag.
 
 **As an example:**
 
@@ -7587,7 +7836,7 @@ Which returns:
 ---
 
 ## get_kdj_indicator
-Calculate the KDJ indicator for a given price series.
+Calculate the KDJ indicator: the Stochastic Oscillator's %K and %D with the J line that leads them, to show overbought and oversold levels and turning points.
 
 The KDJ indicator is a stochastic oscillator, widely used in Chinese and other Asian markets, that smooths the raw stochastic with Wilder's average instead of a simple one and adds a third line, J, which extrapolates K away from D. J leaves the 0 to 100 range when the momentum is strong, so J above 100 (or below 0) is read as overbought (or oversold) before K and D get there, and K crossing D is the trade signal, as with the stochastic.
 
@@ -7611,18 +7860,20 @@ $$
 
 Wilder's moving average is the recursion $$K (t) = K (t - 1)$$ + (RSV(t) - K(t - 1)) / k_window, written SMA(RSV, 3, 1) in the formula language of Asian charting platforms. The KDJ has no single primary source; it extends Lane's stochastic (see `get_stochastic_oscillator`).
 
-For more information, see the following sources:
-
-- Lane, G.C. (1984). "Lane's Stochastics." Technical Analysis of Stocks & Commodities, 2(3).
-- Referenced against TA-Lib's KDJ ([https://ta-lib.org/functions/kdj.html](https://ta-lib.org/functions/kdj.html){:target="_blank"}).
-- pandas-ta-classic: kdj ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** KDJ, KDJ stochastic, random index.
+
+**References:**
+
+- paper | Lane, G.C. (1984). "Lane's Stochastics." Technical Analysis of Stocks & Commodities, 2(3).
+- library | Referenced against TA-Lib's [KDJ](https://ta-lib.org/functions/kdj.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [kdj](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/kdj.py#L17){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -7661,8 +7912,8 @@ TA-Lib starts K on the first D. Platforms that start K and D at 50 differ in the
 dozen periods.
 - A window without a range has no RSV (NaN), where TA-Lib and pandas-ta-classic use 0; the averages
 carry on over it.
-- If `growth` is set to True, the method calculates the growth of the K, D and J
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the K, D and J
+over the given lag.
 
 **As an example:**
 
@@ -7692,7 +7943,7 @@ Which returns:
 ---
 
 ## get_premier_stochastic_oscillator
-Calculate the Premier Stochastic Oscillator (PSO) for a given price series.
+Calculate the Premier Stochastic Oscillator (PSO): the smoothed and normalised Stochastic %K squeezed between -1 and 1, which gives clearer overbought and oversold signals.
 
 The Premier Stochastic Oscillator of Leibfarth (2008) rescales a short stochastic around zero, smooths it twice with an exponential average and squeezes the result between -1 and 1 with the inverse Fisher transform. The smoothing removes the noise of the stochastic and the transform keeps the oscillator near its extremes most of the time, so a reading that crosses back through 0.9 or -0.9 (or 0.2 and -0.2) stands out.
 
@@ -7716,17 +7967,19 @@ $$
 
 Leibfarth uses an 8-period stochastic and a smoothing of 5 periods (the square root of 25).
 
-For more information, see the following sources:
-
-- Leibfarth, L. (2008). "Premier Stochastic Oscillator." Technical Analysis of Stocks & Commodities, 26(8).
-- Referenced against TA-Lib's PSO ([https://ta-lib.org/functions/pso.html](https://ta-lib.org/functions/pso.html){:target="_blank"}).
-
 **Also known as:** PSO, Premier Stochastic.
+
+**References:**
+
+- paper | Leibfarth, L. (2008). "Premier Stochastic Oscillator." Technical Analysis of Stocks & Commodities, 26(8).
+- library | Referenced against TA-Lib's [PSO](https://ta-lib.org/functions/pso.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -7760,8 +8013,8 @@ the PSO for each asset in the Toolkit instance.
 missing before it, so the PSO starts `window` + 2 * `smooth_window` - 3 periods after the
 first price.
 - A window without a range has no %K (NaN), where TA-Lib uses 50; the averages carry on over it.
-- If `growth` is set to True, the method calculates the growth of the PSO
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the PSO
+over the given lag.
 
 **As an example:**
 
@@ -7791,7 +8044,7 @@ Which returns:
 ---
 
 ## get_stochastic_momentum_index
-Calculate the Stochastic Momentum Index (SMI) for a given price series.
+Calculate the Stochastic Momentum Index (SMI): where the close lies relative to the middle of the high-low range of a window, smoothed, from -100 to 100.
 
 The Stochastic Momentum Index of Blau (1993) measures where the close sits relative to the midpoint of the high-low range, rather than to its low as the stochastic does, and smooths both the distance and the range twice with an exponential average before dividing. It runs from -100 (a close on the low) to +100 (a close on the high) around zero, is less erratic than the stochastic, and is read with its signal line and the levels -40 and 40.
 
@@ -7815,18 +8068,20 @@ $$
 
 Blau uses a 13-period range, smoothed over 25 and then 2 periods.
 
-For more information, see the following sources:
-
-- Blau, W. (1993). "Stochastic Momentum." Technical Analysis of Stocks & Commodities, 11(1).
-- Blau, W. (1995). "Momentum, Direction, and Divergence." Wiley.
-- Referenced against TA-Lib's SMI ([https://ta-lib.org/functions/smi.html](https://ta-lib.org/functions/smi.html){:target="_blank"}).
-
 **Also known as:** SMI, Blau's stochastic momentum.
+
+**References:**
+
+- paper | Blau, W. (1993). "Stochastic Momentum." Technical Analysis of Stocks & Commodities, 11(1).
+- paper | Blau, W. (1995). "Momentum, Direction, and Divergence." Wiley.
+- library | Referenced against TA-Lib's [SMI](https://ta-lib.org/functions/smi.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -7863,8 +8118,8 @@ values and is missing before it, so the SMI starts `window` + `long_window` +
 `short_window` - 3 periods after the first price and the signal line `signal_window` - 1
 periods later; TA-Lib starts both on the first signal value.
 - A stretch in which the smoothed range is zero has no SMI (NaN), where TA-Lib returns 0.
-- If `growth` is set to True, the method calculates the growth of the SMI and signal line
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the SMI and signal line
+over the given lag.
 
 **As an example:**
 
@@ -7894,7 +8149,7 @@ Which returns:
 ---
 
 ## get_schaff_trend_cycle
-Calculate the Schaff Trend Cycle (STC) for a given price series.
+Calculate the Schaff Trend Cycle (STC): a stochastic of the MACD, applied twice, from 0 to 100, which shows the turns of a trend faster than the MACD.
 
 The Schaff Trend Cycle of Schaff (2002, 2008) applies a smoothed stochastic twice to the MACD line: it measures where the MACD sits within its range over the last cycle, smooths that, and does the same again. The result moves between 0 and 100 and turns earlier than the MACD, as it follows the MACD's cycle rather than its level. A turn up from below 25 is read as bullish and a turn down from above 75 as bearish.
 
@@ -7922,21 +8177,23 @@ $$
 
 A fraction over a window without a range keeps its previous value and each smoothing starts on its first input, as in Schaff (2008). Schaff uses 23, 50 and 10 with a factor of 0.5.
 
-For more information, see the following sources:
-
-- Schaff, D. (2008). "Releasing the Code to the Schaff Trend Cycle." FX-Strategy.com.
-- Schaff, D. (2002). "Catching Currency Moves with the Schaff Trend Cycle Indicator." Chartpoint, July/August 2002.
-- Referenced against TA-Lib's STC ([https://ta-lib.org/functions/stc.html](https://ta-lib.org/functions/stc.html){:target="_blank"}).
-- pandas-ta-classic: stc ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- ta: STCIndicator ([https://github.com/bukosabino/ta](https://github.com/bukosabino/ta){:target="_blank"}).
-- finta: STC ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** STC, Schaff Trend Cycle indicator.
+
+**References:**
+
+- paper | Schaff, D. (2008). "Releasing the Code to the Schaff Trend Cycle." FX-Strategy.com.
+- paper | Schaff, D. (2002). "Catching Currency Moves with the Schaff Trend Cycle Indicator." Chartpoint, July/August 2002.
+- library | Referenced against TA-Lib's [STC](https://ta-lib.org/functions/stc.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [stc](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/stc.py#L100){:target="_blank"}
+- library | Shares similar logic as ta's [STCIndicator](https://github.com/bukosabino/ta/blob/0.11.0/ta/trend.py#L1093){:target="_blank"}
+- library | Shares similar logic as finta's [STC](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L2121){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>short_window (int, optional):</u> The number of periods of the short EMA of the MACD.
@@ -7977,8 +8234,8 @@ default windows; on the same MACD line the two stochastic stages agree with TA-L
 first values, and ta's STCIndicator, which smooths with a 3-period EMA (a factor of 0.5)
 without a seed, within 1e-6 after about 500 periods. finta's STC smooths with 3-period
 simple averages, a different series.
-- If `growth` is set to True, the method calculates the growth of the STC
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the STC
+over the given lag.
 
 **As an example:**
 
@@ -8008,7 +8265,7 @@ Which returns:
 ---
 
 ## get_wavetrend_oscillator
-Calculate the WaveTrend Oscillator for a given price series.
+Calculate the WaveTrend Oscillator: how far the typical price lies from its average in units of its average distance, smoothed, to show overbought and oversold levels and turning points.
 
 The WaveTrend Oscillator of LazyBear (2014) is a Commodity Channel Index built from exponential averages: the distance of the typical price from its EMA, divided by 0.015 times the EMA of that absolute distance, and smoothed with a longer EMA. Its signal line is a short simple average. Readings beyond 53 or 60 (or -53 and -60) are read as overbought (or oversold), and the oscillator crossing its signal line there as a turn.
 
@@ -8040,18 +8297,20 @@ $$
 
 LazyBear's parameters are 10, 21 and 4.
 
-For more information, see the following sources:
-
-- LazyBear (2014). "WaveTrend Oscillator [WT]." TradingView published script.
-- Referenced against TA-Lib's WAVETREND ([https://ta-lib.org/functions/wavetrend.html](https://ta-lib.org/functions/wavetrend.html){:target="_blank"}).
-- finta: WTO ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** WaveTrend, WT, WTO, WT1 and WT2.
+
+**References:**
+
+- paper | LazyBear (2014). "WaveTrend Oscillator [WT]." TradingView published script.
+- library | Referenced against TA-Lib's [WAVETREND](https://ta-lib.org/functions/wavetrend.html){:target="_blank"}
+- library | Shares similar logic as finta's [WTO](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1802){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -8089,8 +8348,8 @@ of its first values and is missing before it, so the WaveTrend starts 2 * `chann
 1 periods later. finta's WTO uses averages without a seed and equals it after the first
 values.
 - A stretch without any distance from the average has no CI (NaN), where TA-Lib returns 0.
-- If `growth` is set to True, the method calculates the growth of the WaveTrend and signal line
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the WaveTrend and signal line
+over the given lag.
 
 **As an example:**
 
@@ -8120,7 +8379,7 @@ Which returns:
 ---
 
 ## get_derivative_oscillator
-Calculate the Derivative Oscillator for a given price series.
+Calculate the Derivative Oscillator: a double-smoothed Relative Strength Index minus its average, which shows the momentum of the RSI itself.
 
 The Derivative Oscillator of Constance Brown (1994) smooths the Relative Strength Index twice with an exponential average and subtracts a simple average of the result, the way the MACD histogram subtracts the signal line from the MACD. It shows the momentum of the smoothed RSI: a crossing of zero marks a turn of the RSI, and the distance from zero how far the smoothed RSI has moved from its mean.
 
@@ -8136,18 +8395,20 @@ $$
 
 Brown uses a 14-period RSI, smoothed over 5 and then 3 periods, and a 9-period signal.
 
-For more information, see the following sources:
-
-- Brown, C.M. (1994). "The Derivative Oscillator: A New Approach for an Old Problem." MTA Journal, 42.
-- Brown, C.M. (1999). "Technical Analysis for the Trading Professional." McGraw-Hill.
-- Referenced against TA-Lib's DOSC ([https://ta-lib.org/functions/dosc.html](https://ta-lib.org/functions/dosc.html){:target="_blank"}).
-
 **Also known as:** DOSC, Brown's Derivative Oscillator.
+
+**References:**
+
+- paper | Brown, C.M. (1994). "The Derivative Oscillator: A New Approach for an Old Problem." MTA Journal, 42.
+- paper | Brown, C.M. (1999). "Technical Analysis for the Trading Professional." McGraw-Hill.
+- library | Referenced against TA-Lib's [DOSC](https://ta-lib.org/functions/dosc.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the RSI. Defaults to 14.
@@ -8180,8 +8441,8 @@ pd.Series or pd.DataFrame: Derivative Oscillator values, in RSI points around ze
 the Derivative Oscillator for each asset in the Toolkit instance.
 - The Derivative Oscillator agrees with TA-Lib's DOSC and starts `window` + `first_window` +
 `second_window` + `signal_window` - 3 periods after the first price.
-- If `growth` is set to True, the method calculates the growth of the Derivative Oscillator
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Derivative Oscillator
+over the given lag.
 
 **As an example:**
 
@@ -8211,7 +8472,7 @@ Which returns:
 ---
 
 ## get_swing_index
-Calculate Wilder's Swing Index and Accumulative Swing Index for a given price series.
+Calculate Wilder's Swing Index and Accumulative Swing Index: the strength of each period's move compared with the previous period, and its running total, which shows the real direction of the prices.
 
 The Swing Index of Wilder (1978) weighs the change of the close against the previous period's open and close and against the range of the current period, to measure the real direction of a period's move. Wilder accumulates it into the Accumulative Swing Index, a line that follows the price but filters out the moves that the open, high and low do not confirm: a breakout of the ASI through a previous high or low swing point confirms a breakout of the price.
 
@@ -8247,17 +8508,20 @@ $$
 
 The limit move is the largest move a futures contract may make in one period. A stock has none, so `limit_move` is a scale in price units: the Swing Index stays within -100 and 100 only for moves within it, and only the shape of the ASI, not its level, carries meaning.
 
-For more information, see the following sources:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research, section VIII "The Swing Index."
-- Referenced against TA-Lib's SI and ASI ([https://ta-lib.org/functions/si.html](https://ta-lib.org/functions/si.html){:target="_blank"}, [https://ta-lib.org/functions/asi.html](https://ta-lib.org/functions/asi.html){:target="_blank"}).
-
 **Also known as:** SI, ASI, Wilder Swing Index, Accumulation Swing Index.
+
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research, section VIII "The Swing Index."
+- library | Referenced against TA-Lib's [SI](https://ta-lib.org/functions/si.html){:target="_blank"}
+- library | Referenced against TA-Lib's [ASI](https://ta-lib.org/functions/asi.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -8291,8 +8555,8 @@ which gives the first period 0. The ASI accumulates from the first date of the T
 data.
 - A period without any move (R equal to 0) has no Swing Index (NaN), where TA-Lib uses 0; the ASI
 carries on over it. Neither is rounded, where Wilder rounded to whole numbers by hand.
-- If `growth` is set to True, the method calculates the growth of the Swing Index and Accumulative Swing Index
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Swing Index and Accumulative Swing Index
+over the given lag.
 
 **As an example:**
 
@@ -8322,7 +8586,7 @@ Which returns:
 ---
 
 ## get_quantitative_qualitative_estimation
-Calculate the Quantitative Qualitative Estimation (QQE) for a given price series.
+Calculate the Quantitative Qualitative Estimation (QQE): a smoothed Relative Strength Index with a trailing stop line a multiple of its own average move away, whose crossings show the turns of a trend.
 
 The Quantitative Qualitative Estimation smooths the Relative Strength Index with an exponential average (the fast line) and trails it with a stop line (the QQE, the slow line), placed a multiple of the RSI's own average move away, in the way an Average True Range stop trails the price. The stop only moves towards the RSI while the RSI moves away from it and jumps to the other side when the RSI crosses it, so the RSI crossing the QQE line marks a change of trend. The QQE is a community indicator of the MetaTrader platform without a published primary source.
 
@@ -8337,7 +8601,7 @@ $$
 $$
 
 $$
-\text{Distance} = \text{factor} \cdot \text{Average Move}
+\text{Distance} = \text{multiplier} \cdot \text{Average Move}
 $$
 
 $$
@@ -8354,22 +8618,24 @@ $$
 
 The EMA over 2 * window - 1 periods has the smoothing constant 1 / window of Wilder's average. The common parameters are 14, 5 and 4.236.
 
-For more information, see the following sources:
-
-- pandas-ta-classic: qqe ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** QQE, QQE fast and slow line.
+
+**References:**
+
+- library | Referenced against pandas-ta-classic's [qqe](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/qqe.py#L71){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the RSI. Defaults to 14.
 - <u>smooth_window (int, optional):</u> The number of periods of the EMA of the RSI. Defaults
 to 5.
-- <u>factor (float, optional):</u> The multiple of the average move of the RSI Moving Average
+- <u>multiplier (float, optional):</u> The multiple of the average move of the RSI Moving Average
 that sets the distance of the QQE line. Defaults to 4.236.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -8401,8 +8667,8 @@ periods later, at the RSI Moving Average minus the distance.
 when the RSI Moving Average crosses the band on the other side, which can keep it on the
 old side for a few more periods (3 of 757 days on the test data); this follows the
 original MetaTrader indicator, which switches on the period of the crossing.
-- If `growth` is set to True, the method calculates the growth of the QQE and RSI Moving Average
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the QQE and RSI Moving Average
+over the given lag.
 
 **As an example:**
 
@@ -8432,7 +8698,7 @@ Which returns:
 ---
 
 ## get_price_zone_oscillator
-Calculate the Price Zone Oscillator (PZO) for a given price series.
+Calculate the Price Zone Oscillator (PZO): the share of the recent closes that moved up, from -100 to 100, which shows overbought and oversold levels and the direction of a trend.
 
 The Price Zone Oscillator of Khalil and Steckler (2011) counts each close as positive when it closed above the previous close and as negative when it closed below, and divides the EMA of these signed closes by the EMA of the closes. It is thereby the share of the recent price action that went up, on a scale of -100 to 100: above 40 is overbought and below -40 oversold in a trendless market, while in a trend Khalil and Steckler use the crossings of zero, 15 and -5.
 
@@ -8448,17 +8714,19 @@ $$
 
 Both EMAs run over the periods with a change, so they start on the same period.
 
-For more information, see the following sources:
-
-- Khalil, W. & Steckler, D. (2011). "Entering The Price Zone." Technical Analysis of Stocks & Commodities, 29(6), 28-35.
-- finta: PZO ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** PZO.
+
+**References:**
+
+- paper | Khalil, W. & Steckler, D. (2011). "Entering The Price Zone." Technical Analysis of Stocks & Commodities, 29(6), 28-35.
+- library | Shares similar logic as finta's [PZO](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1542){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the EMAs. Defaults to 14.
@@ -8487,8 +8755,8 @@ the PZO for each asset in the Toolkit instance.
 - Every EMA is seeded with the simple average of its first values and is missing before it, so the PZO
 starts `window` periods after the first price. finta's PZO uses averages without a seed
 and equals it after the first values.
-- If `growth` is set to True, the method calculates the growth of the PZO
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the PZO
+over the given lag.
 
 **As an example:**
 
@@ -8518,14 +8786,14 @@ Which returns:
 ---
 
 ## get_inertia
-Calculate Dorsey's Inertia for a given price series.
+Calculate Dorsey's Inertia: the Relative Volatility Index smoothed with a linear regression, which shows the direction of a trend, up above 50 and down below it.
 
 Inertia is Dorsey's Relative Volatility Index (RVI) smoothed with a linear regression: the end point of the least-squares line through the last 20 RVI values. Dorsey regarded a trend as momentum that persists, inertia, with its direction given by the direction of volatility, so Inertia above 50 marks an up trend and below 50 a down trend. The regression smooths the RVI with less lag than a moving average.
 
 The formula is as follows:
 
 $$
-\text{RVI} = \text{Relative Volatility Index}(\text{Close},\; \text{rvi\_window},\; \text{std\_window}),\;\; \text{or}\;\; \text{with method} = \frac{\text{"refined"} \;(\operatorname{RVI}(\text{High}) + \operatorname{RVI}(\text{Low}))}{2}
+\text{RVI} = \text{Relative Volatility Index}(\text{Close},\; \text{rvi\_window},\; \text{std\_window}),\;\; \text{or}\;\; \text{for the refined RVI} \;\frac{\operatorname{RVI}(\text{High}) + \operatorname{RVI}(\text{Low})}{2}
 $$
 
 $$
@@ -8534,18 +8802,20 @@ $$
 
 with the RVI of `get_relative_volatility_index` (Wilder's smoothing of the standard deviation on up and down periods) and the linear regression of `get_linear_regression`.
 
-For more information, see the following sources:
-
-- Dorsey, D. (1995). "Refining the Relative Volatility Index." Technical Analysis of Stocks & Commodities, 13(9).
-- Dorsey, D. (1993). "The Relative Volatility Index." Technical Analysis of Stocks & Commodities, 11(6).
-- Referenced against pandas-ta-classic's inertia ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** INERTIA, Dorsey Inertia.
+
+**References:**
+
+- paper | Dorsey, D. (1995). "Refining the Relative Volatility Index." Technical Analysis of Stocks & Commodities, 13(9).
+- paper | Dorsey, D. (1993). "The Relative Volatility Index." Technical Analysis of Stocks & Commodities, 11(6).
+- library | Referenced against pandas-ta-classic's [inertia](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/inertia.py#L61){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the linear regression. Defaults to 20.
@@ -8553,8 +8823,9 @@ Defaults to "Adj Close".
 Defaults to 14.
 - <u>std_window (int, optional):</u> The number of periods of the standard deviation in the RVI.
 Defaults to 10.
-- <u>method (str, optional):</u> "original" for the RVI of the close or "refined" for the average of
-the RVI of the highs and of the lows (Dorsey, 1995). Defaults to "original".
+- <u>method (str, optional):</u> The Relative Volatility Index it uses. Options are: "original" (the RVI of
+the close), "refined" (the average of the RVI of the highs and of the lows; Dorsey, 1995).
+Defaults to "original".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Inertia.
@@ -8578,11 +8849,11 @@ pd.Series or pd.DataFrame: Inertia values, around 0 to 100.
 - The method retrieves historical data based on the specified `period` and calculates
 the Inertia for each asset in the Toolkit instance.
 - Equals the linear regression of `get_relative_volatility_index` with the same parameters,
-and pandas-ta-classic's inertia with mamode="rma" and `std_window` equal to `rvi_window`. By
+and pandas-ta-classic's inertia with Wilder's smoothing and `std_window` equal to `rvi_window`. By
 default pandas-ta-classic smooths its RVI with an EMA and takes the standard deviation over
 the RVI window. The linear regression can overshoot the 0 to 100 range of the RVI.
-- If `growth` is set to True, the method calculates the growth of the Inertia
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Inertia
+over the given lag.
 
 **As an example:**
 
@@ -8612,7 +8883,7 @@ Which returns:
 ---
 
 ## get_bias
-Calculate the Bias for a given price series: the distance of the close from its moving average.
+Calculate the Bias: the distance of the price from its moving average, as a share of that average.
 
 The Bias, or deviation rate, is a standard indicator on Asian trading platforms. It measures how far the close has run from its moving average as a share of that average: a price far above its average is read as overbought and likely to return to it, and far below as oversold. What counts as far depends on the security and the window, so it is usually compared with the Bias's own history.
 
@@ -8624,22 +8895,26 @@ $$
 
 with MA the Simple Moving Average by default.
 
-For more information, see the following sources:
-
-- pandas-ta-classic: bias ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}). The definition is the one of pandas-ta (Kevin Johnson), continued as pandas-ta-classic, which notes that the indicator has no single primary source; it is a standard indicator on Asian trading platforms.
-
 **Also known as:** BIAS, deviation rate, BIAS ratio, distance to the moving average.
+
+**References:**
+
+- library | Referenced against pandas-ta-classic's [bias](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/bias.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the moving average. Defaults to 26.
-- <u>moving_average (str, optional):</u> The moving average: "simple", "exponential",
-"double_exponential", "triangular", "weighted", "hull" or "kaufman_adaptive".
-Defaults to "simple".
+- <u>moving_average (str, optional):</u> The moving average. Options are: "simple" (Simple Moving Average),
+"exponential" (Exponential Moving Average), "double_exponential" (Double Exponential Moving
+Average), "triangular" (Triangular Moving Average), "weighted" (Weighted Moving Average),
+"hull" (Hull Moving Average), "kaufman_adaptive" (Kaufman Adaptive Moving Average). Defaults to
+"simple".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Bias.
@@ -8663,8 +8938,10 @@ pd.Series or pd.DataFrame: Bias values as decimals (0.05 is 5% above the average
 - The method retrieves historical data based on the specified `period` and calculates
 the Bias for each asset in the Toolkit instance.
 - Equals pandas-ta-classic's bias, also a decimal; some platforms multiply it by 100.
-- If `growth` is set to True, the method calculates the growth of the Bias
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Bias
+over the given lag.
+- The indicator has no single primary source; it is a standard indicator on Asian trading platforms, defined
+here as in pandas-ta-classic.
 
 **As an example:**
 
@@ -8694,7 +8971,9 @@ Which returns:
 ---
 
 ## get_brar
-Calculate the AR and BR sentiment indicators (BRAR) for a given price series.
+Calculate the AR and BR sentiment indicators (BRAR), which show how popular a security is and how willing the market is to buy it.
+
+They set how far the prices rose against how far they fell, measured from the open (AR) and from the previous close (BR).
 
 AR (popularity) compares how far the price rose above the open with how far it fell below it over the window, and BR (willingness) does the same against the previous close, which also counts the gaps between periods. Both are 100 when the upward and downward moves balance. AR from 150 and BR from 300 are read as overheated and AR below 50 and BR below 40 as depressed; BR crossing AR from below is a buy signal.
 
@@ -8708,16 +8987,18 @@ $$
 \text{BR} = \frac{100 \cdot \operatorname{Sum}(\max(\text{High} - \operatorname{Close}(t - 1),\; 0),\; \text{window})}{\operatorname{Sum}(\max(\operatorname{Close}(t - 1) - \text{Low},\; 0),\; \text{window})}
 $$
 
-For more information, see the following sources:
-
-- pandas-ta-classic: brar ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}). The definition is the one of pandas-ta (Kevin Johnson), continued as pandas-ta-classic, which notes that the indicator has no single primary source; it is a standard indicator on Asian trading platforms.
-
 **Also known as:** BRAR, AR and BR, popularity and willingness indicators, sentiment indicator.
+
+**References:**
+
+- library | Referenced against pandas-ta-classic's [brar](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/brar.py#L18){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the sums. Defaults to 26.
@@ -8745,8 +9026,10 @@ pd.Series or pd.DataFrame: AR and BR, 100 for a balance.
 the AR and BR for each asset in the Toolkit instance.
 - Equals pandas-ta-classic's brar, on its scale of 100 for a balance. A window without any
 downward move has no AR or BR (missing) where pandas-ta-classic gives an infinite value.
-- If `growth` is set to True, the method calculates the growth of the AR and BR
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the AR and BR
+over the given lag.
+- The indicator has no single primary source; it is a standard indicator on Asian trading platforms, defined
+here as in pandas-ta-classic.
 
 **As an example:**
 
@@ -8776,7 +9059,7 @@ Which returns:
 ---
 
 ## get_pretty_good_oscillator
-Calculate Johnson's Pretty Good Oscillator (PGO) for a given price series.
+Calculate Johnson's Pretty Good Oscillator (PGO): how far the close lies from its moving average, in units of the Average True Range, which shows breakouts from a range.
 
 The Pretty Good Oscillator of Mark Johnson measures the distance of the close from its Simple Moving Average in units of the average true range, so the distance compares across securities and periods of different volatility. Johnson used it for breakouts: a close more than 3 average ranges above its average is a long entry, more than 3 below a short entry, and the trade is closed when the oscillator returns to zero.
 
@@ -8788,17 +9071,19 @@ $$
 
 with ATR Wilder's Average True Range and the EMA seeded with a simple average.
 
-For more information, see the following sources:
-
-- Johnson, M. "Pretty Good Oscillator." FM Labs technical analysis library ([https://www.fmlabs.com/reference/default.htm?url=PGO.htm](https://www.fmlabs.com/reference/default.htm?url=PGO.htm){:target="_blank"}).
-- Referenced against pandas-ta-classic's pgo ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** PGO, Pretty Good Oscillator.
+
+**References:**
+
+- paper | Johnson, M. "Pretty Good Oscillator." FM Labs technical analysis library ([https://www.fmlabs.com/reference/default.htm?url=PGO.htm](https://www.fmlabs.com/reference/default.htm?url=PGO.htm){:target="_blank"}).
+- library | Referenced against pandas-ta-classic's [pgo](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/pgo.py#L14){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the SMA, the ATR and its EMA. Defaults to 14.
@@ -8828,8 +9113,8 @@ the PGO for each asset in the Toolkit instance.
 1e-7 after 200 periods):</u> the Toolkit's ATR includes the High — Low of the first period, as
 StockCharts does. A period without any range has no PGO (missing) where pandas-ta-classic
 gives 0.
-- If `growth` is set to True, the method calculates the growth of the PGO
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the PGO
+over the given lag.
 
 **As an example:**
 
@@ -8859,9 +9144,9 @@ Which returns:
 ---
 
 ## get_psychological_line
-Calculate the Psychological Line (PSL) for a given price series.
+Calculate the Psychological Line (PSL): the share of periods in a window that closed higher, which shows whether buyers or sellers have the upper hand.
 
-The Psychological Line is the percentage of the last `window` periods that closed higher, a measure of the mood of the market: after many periods up in a row buyers may be exhausted (overbought above 75) and after many down sellers (oversold below 25). With method="open" it counts the periods that closed above their own open instead.
+The Psychological Line is the percentage of the last `window` periods that closed higher, a measure of the mood of the market: after many periods up in a row buyers may be exhausted (overbought above 75) and after many down sellers (oversold below 25). The open-based form counts the periods that closed above their own open instead.
 
 The formula is as follows:
 
@@ -8869,23 +9154,25 @@ $$
 \text{PSL} = \frac{100 \cdot \operatorname{Count}(\operatorname{Close}(t) > \operatorname{Close}(t - 1),\; \text{window})}{\text{window}}
 $$
 
-or with method="open", 100 × Count(Close > Open, window) / window.
-
-For more information, see the following sources:
-
-- pandas-ta-classic: psl ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}). The definition is the one of pandas-ta (Kevin Johnson), continued as pandas-ta-classic, which notes that the indicator has no single primary source; it is a standard indicator on Asian trading platforms.
+or in the open-based form, 100 × Count(Close > Open, window) / window.
 
 **Also known as:** PSL, PSY, psychological line, psychological index.
 
+**References:**
+
+- library | Referenced against pandas-ta-classic's [psl](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/psl.py#L19){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods counted. Defaults to 12.
-- <u>method (str, optional):</u> "close" to count the periods that closed above the previous close,
-or "open" for those that closed above their open. Defaults to "close".
+- <u>method (str, optional):</u> What counts as an up period. Options are: "close" (a close above the
+previous close), "open" (a close above the period's open). Defaults to "close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the PSL.
@@ -8909,8 +9196,10 @@ pd.Series or pd.DataFrame: PSL values, between 0 and 100.
 - The method retrieves historical data based on the specified `period` and calculates
 the PSL for each asset in the Toolkit instance.
 - Equals pandas-ta-classic's psl, also on the scale of 0 to 100.
-- If `growth` is set to True, the method calculates the growth of the PSL
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the PSL
+over the given lag.
+- The indicator has no single primary source; it is a standard indicator on Asian trading platforms, defined
+here as in pandas-ta-classic.
 
 **As an example:**
 
@@ -8940,7 +9229,7 @@ Which returns:
 ---
 
 ## get_volatility_based_momentum
-Calculate the Volatility-Based Momentum (VBM) for a given price series.
+Calculate the Volatility-Based Momentum (VBM): the change of the price over a window in units of the Average True Range, which compares momentum across tickers of different volatility.
 
 Volatility-Based Momentum is the change in the close over `window` periods in units of the Average True Range, instead of as a share of the earlier close as in the Rate of Change. A move of 3 average ranges is then large for any security, whatever its price or volatility, which makes the momentum comparable across securities and over time.
 
@@ -8952,18 +9241,20 @@ $$
 
 with ATR Wilder's Average True Range.
 
-For more information, see the following sources:
-
-- Pring, M.J. (1991). "Technical Analysis Explained." 3rd ed. McGraw-Hill (momentum).
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research (Average True Range).
-- finta: VBM ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}), by Peerchemist, which defines the indicator.
-
 **Also known as:** VBM, volatility-based momentum, volatility adjusted momentum.
+
+**References:**
+
+- paper | Pring, M.J. (1991). "Technical Analysis Explained." 3rd ed. McGraw-Hill (momentum).
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research (Average True Range).
+- library | Shares similar logic as finta's [VBM](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L664){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the price change. Defaults to 12.
@@ -8993,8 +9284,8 @@ the VBM for each asset in the Toolkit instance.
 - finta documents this formula, but its VBM subtracts the earlier close twice
 (Close.diff(n) — Close.shift(n)) and averages the true range with a simple moving average,
 so its values differ.
-- If `growth` is set to True, the method calculates the growth of the VBM
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the VBM
+over the given lag.
 
 **As an example:**
 
@@ -9024,7 +9315,7 @@ Which returns:
 ---
 
 ## get_archer_moving_average_trends
-Calculate Archer's Moving Averages Trends (AMAT) for a given price series.
+Calculate Archer's Moving Averages Trends (AMAT): whether a fast and a slow moving average both rise (a long run) or both fall (a short run), which shows the direction of a trend.
 
 AMAT flags a long run when the short moving average rose over the last `lookback` periods while the long one moved (a rising long average confirms the up trend, a falling one marks a potential bottom), and a short run when the short average fell while the long one moved (a potential top when the long one still rose). Both flags are 0 when the short average is flat or the long one did not move.
 
@@ -9040,26 +9331,30 @@ $$
 
 with MA the exponential moving average by default.
 
-For more information, see the following sources:
-
-- Archer's TradingView script "Archer Moving Averages Trends", which defines the indicator; there is no published primary source.
-- Referenced against pandas-ta-classic's amat ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** AMAT, Archer Moving Averages Trends.
+
+**References:**
+
+- paper | Archer's TradingView script "Archer Moving Averages Trends", which defines the indicator; there is no published primary source.
+- library | Referenced against pandas-ta-classic's [amat](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/amat.py#L15){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>short_window (int, optional):</u> The number of periods of the short moving average. Defaults to 8.
 - <u>long_window (int, optional):</u> The number of periods of the long moving average. Defaults to 21.
 - <u>lookback (int, optional):</u> The number of periods over which the averages rise or fall.
 Defaults to 2.
-- <u>moving_average (str, optional):</u> The moving average: "simple", "exponential",
-"double_exponential", "triangular", "weighted", "hull" or "kaufman_adaptive".
-Defaults to "exponential".
+- <u>moving_average (str, optional):</u> The moving average. Options are: "simple" (Simple Moving Average),
+"exponential" (Exponential Moving Average), "double_exponential" (Double Exponential Moving
+Average), "triangular" (Triangular Moving Average), "weighted" (Weighted Moving Average),
+"hull" (Hull Moving Average), "kaufman_adaptive" (Kaufman Adaptive Moving Average). Defaults to
+"exponential".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the AMAT.
@@ -9083,8 +9378,8 @@ pd.Series or pd.DataFrame: Long Run and Short Run, 1 when the run holds and 0 ot
 - The method retrieves historical data based on the specified `period` and calculates
 the AMAT for each asset in the Toolkit instance.
 - Equals pandas-ta-classic's amat (its long_run and short_run columns).
-- If `growth` is set to True, the method calculates the growth of the AMAT
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the AMAT
+over the given lag.
 
 **As an example:**
 
@@ -9114,7 +9409,7 @@ Which returns:
 ---
 
 ## get_ttm_trend
-Calculate Carter's TTM Trend for a given price series.
+Calculate Carter's TTM Trend: whether the close lies above the average midpoint of the previous bars (1) or not (-1), which shows the direction of the trend.
 
 The TTM Trend of John Carter colours each bar by the short-term trend: up (1) when the close is above the average midpoint, (High + Low) / 2, of the previous six bars, and down (-1) when it is not. Carter uses it to stay in a trade while the bars keep their colour and to avoid trading against it; two bars of the opposite colour in a row signal that the trend has turned.
 
@@ -9128,17 +9423,19 @@ $$
 \text{TTM Trend} = 1 \;\text{if Close} > \text{Average Midpoint},\;\; \text{else -1}
 $$
 
-For more information, see the following sources:
-
-- Carter, J.F. (2005). "Mastering the Trade: Proven Techniques for Profiting from Intraday and Swing Trading Setups." McGraw-Hill.
-- Referenced against pandas-ta-classic's ttm_trend ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** TTM Trend, TTM_TRND.
+
+**References:**
+
+- paper | Carter, J.F. (2005). "Mastering the Trade: Proven Techniques for Profiting from Intraday and Swing Trading Setups." McGraw-Hill.
+- library | Referenced against pandas-ta-classic's [ttm_trend](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/ttm_trend.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of earlier bars of the average midpoint. Defaults to 6.
@@ -9165,8 +9462,8 @@ pd.Series or pd.DataFrame: 1 for an up trend and -1 for a down trend.
 - The method retrieves historical data based on the specified `period` and calculates
 the TTM Trend for each asset in the Toolkit instance.
 - Equals pandas-ta-classic's ttm_trend. It starts `window` periods after the first price.
-- If `growth` is set to True, the method calculates the growth of the TTM Trend
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the TTM Trend
+over the given lag.
 
 **As an example:**
 
@@ -9206,18 +9503,20 @@ $$
 \text{CTI} = \operatorname{Correlation}(\text{Close},\; x,\; \text{window}),\;\; \text{with}\;\; \text{time}\; x = 0,\; \ldots,\; \text{window} - 1 \;\text{from the oldest price of the window to the latest}
 $$
 
-For more information, see the following sources:
-
-- Ehlers, J.F. (2020). "Correlation As A Trend Indicator." Technical Analysis of Stocks & Commodities, 38(5), 24-27.
-- Referenced against TA-Lib's CTI ([https://ta-lib.org/functions/cti.html](https://ta-lib.org/functions/cti.html){:target="_blank"}).
-- pandas-ta-classic: cti ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** CTI, correlation trend, Ehlers correlation trend indicator.
+
+**References:**
+
+- paper | Ehlers, J.F. (2020). "Correlation As A Trend Indicator." Technical Analysis of Stocks & Commodities, 38(5), 24-27.
+- library | Referenced against TA-Lib's [CTI](https://ta-lib.org/functions/cti.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [cti](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/cti.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods, at least 2. Defaults to 20.
@@ -9246,8 +9545,8 @@ Correlation Trend Indicator values between -1 and 1.
 CTI for each asset in the Toolkit instance.
 - The CTI agrees with TA-Lib's CTI and pandas-ta-classic's cti (whose default window is 12).
 - A window of flat prices has no correlation and is missing, where TA-Lib gives 0.
-- If `growth` is set to True, the method calculates the growth of the CTI
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the CTI
+over the given lag.
 
 **As an example:**
 
@@ -9291,19 +9590,22 @@ $$
 \text{Forecast Oscillator} = \frac{\text{Close} - \text{Time Series Forecast}(t - 1)}{\text{Close}}
 $$
 
-For more information, see the following sources:
-
-- Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
-- Referenced against TA-Lib's FOSC ([https://ta-lib.org/functions/fosc.html](https://ta-lib.org/functions/fosc.html){:target="_blank"}).
-- Tulip Indicators: fosc ([https://tulipindicators.org/fosc](https://tulipindicators.org/fosc){:target="_blank"}).
-- pandas-ta-classic: fosc and cfo ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** FOSC, Chande Forecast Oscillator, CFO, forecast error.
+
+**References:**
+
+- paper | Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
+- library | Referenced against TA-Lib's [FOSC](https://ta-lib.org/functions/fosc.html){:target="_blank"}
+- library | Referenced against Tulip Indicators' [fosc](https://tulipindicators.org/fosc){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [fosc](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/fosc.py#L12){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [cfo](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/cfo.py#L17){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods the forecast line is fitted over, at
@@ -9335,8 +9637,8 @@ Forecast Oscillator for each asset in the Toolkit instance.
 where they give a percentage.
 - pandas-ta-classic's fosc and cfo compare the price with the forecast of the same period, a line fitted
 through that price, rather than with the forecast made the period before.
-- If `growth` is set to True, the method calculates the growth of the Forecast Oscillator
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Forecast Oscillator
+over the given lag.
 
 **As an example:**
 
@@ -9388,17 +9690,19 @@ $$
 \text{Projection Oscillator} = \frac{\text{Close} - \text{Lower Band}}{\text{Upper Band} - \text{Lower Band}}
 $$
 
-For more information, see the following sources:
-
-- Widner, M. (1995). "Signaling Change with Projection Bands." Technical Analysis of Stocks & Commodities, 13(7), 275-281.
-- pandas-ta-classic: po ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** PO, Projection Oscillator, Projection Bands, Widner.
+
+**References:**
+
+- paper | Widner, M. (1995). "Signaling Change with Projection Bands." Technical Analysis of Stocks & Commodities, 13(7), 275-281.
+- library | Shares similar logic as pandas-ta-classic's [po](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/po.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods, at least 2. Defaults to 14.
@@ -9431,8 +9735,8 @@ end point of its linear regression in percent, 100 * (Close - Linear Regression)
 which follows from `get_linear_regression`.
 - With the dividend-adjusted close (the default), the high and low are adjusted by the same factor, so
 the close stays within the high and low of its period.
-- If `growth` is set to True, the method calculates the growth of the Projection Oscillator
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Projection Oscillator
+over the given lag.
 
 **As an example:**
 
@@ -9462,7 +9766,7 @@ Which returns:
 ---
 
 ## get_trend_detection_index
-Calculate M.H. Pee's Trend Detection Index (TDI) and its Direction Indicator for a given price series.
+Calculate M.H. Pee's Trend Detection Index (TDI) and its Direction Indicator: how strongly the momentum keeps one sign over a window, which shows whether the prices trend and in which direction.
 
 The Trend Detection Index tells a trending market from a consolidating one. It compares the net momentum over the window with how much the momentum moved over a longer window: when the momentum keeps one sign, its sum outweighs the absolute momentum of the earlier periods and the TDI is positive (a trend); when it changes sign, the sum cancels out and the TDI is negative (a consolidation). The Direction Indicator, the sum of the momentum, says which way the trend goes.
 
@@ -9482,17 +9786,19 @@ $$
 
 Pee buys when both the TDI and the Direction Indicator are positive, and sells when the TDI is positive and the Direction Indicator negative. A negative TDI says to stay out, or to trade the range. Both are in price units, so they compare over time but not across stocks with different prices.
 
-For more information, see the following sources:
-
-- Pee, M.H. (2001). "Trend Detection Index." Technical Analysis of Stocks & Commodities, 19(10).
-- Referenced against TTR's TDI ([https://cran.r-project.org/package=TTR](https://cran.r-project.org/package=TTR){:target="_blank"}).
-
 **Also known as:** TDI, trend detection index, Pee's trend detection index.
+
+**References:**
+
+- paper | Pee, M.H. (2001). "Trend Detection Index." Technical Analysis of Stocks & Commodities, 19(10).
+- library | Referenced against TTR (R)'s [TDI](https://github.com/joshuaulrich/TTR/blob/v0.24.4/R/TDI.R#L63){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of the momentum and of the Direction
@@ -9526,8 +9832,8 @@ Trend Detection Index for each asset in the Toolkit instance.
 TTR's TDI sets the first `window` momentum values, which have no earlier price, to 0, so
 both start `window` periods earlier there, with sums that include those zeros; from
 then on the two agree.
-- If `growth` is set to True, the method calculates the growth of the Trend Detection
-Index using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Trend Detection
+Index over the given lag.
 
 **As an example:**
 
@@ -9557,7 +9863,9 @@ Which returns:
 ---
 
 ## get_dv_intermediate_oscillator
-Calculate David Varadi's DV Intermediate Oscillator (DVI) for a given price series.
+Calculate David Varadi's DV Intermediate Oscillator (DVI), from 0 to 1, which shows how stretched the price is.
+
+It blends rankings of how far the price stands from its short average and of the balance of up and down days.
 
 The DVI is a smooth oscillator between 0 and 1 that combines two rankings over the last `window` periods. The magnitude ranks how far the price stands above or below its 3-period average, smoothed over a short and a long window; the stretch ranks the number of up days against down days over a short and a long window. Varadi weights the magnitude 0.8 and the stretch 0.2.
 
@@ -9593,17 +9901,19 @@ $$
 
 The Percent Rank is the share of the previous `window` values that are lower than the latest one, as in `get_percent_rank`. A DVI above 0.5 marks a price stretched upwards relative to the past year and one below 0.5 a price stretched downwards. Varadi uses it for short-term mean reversion: buy below 0.5 and sell above it, preferably in the direction of the longer trend.
 
-For more information, see the following sources:
-
-- Varadi, D. (2009). "What is the DVI?" CSS Analytics, December 13, 2009 ([https://cssanalytics.wordpress.com/2009/12/13/what-is-the-dvi/](https://cssanalytics.wordpress.com/2009/12/13/what-is-the-dvi/){:target="_blank"}).
-- Referenced against TTR's DVI ([https://cran.r-project.org/package=TTR](https://cran.r-project.org/package=TTR){:target="_blank"}).
-
 **Also known as:** DVI, DV Intermediate, DV indicator.
+
+**References:**
+
+- paper | Varadi, D. (2009). "What is the DVI?" CSS Analytics, December 13, 2009 ([https://cssanalytics.wordpress.com/2009/12/13/what-is-the-dvi/](https://cssanalytics.wordpress.com/2009/12/13/what-is-the-dvi/){:target="_blank"}).
+- library | Referenced against TTR (R)'s [DVI](https://github.com/joshuaulrich/TTR/blob/v0.24.4/R/DVI.R#L50){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of previous periods of the Percent Ranks. Defaults to
@@ -9641,8 +9951,8 @@ equal values, as lower, so its rank lies between 1/n and 1. Without equal values
 magnitude rank with n = `window` + 1 equals (`window` * DVI Magnitude + 1) / (`window` + 1);
 the stretch takes few distinct values, which TTR counts as lower when equal.
 - An unchanged close counts as a down day, as in TTR's DVI.
-- If `growth` is set to True, the method calculates the growth of the DVI using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the DVI over the
+given lag.
 
 **As an example:**
 
@@ -9672,12 +9982,14 @@ Which returns:
 ---
 
 ## collect_overlap_indicators
-Calculates and collects various overlap-based indicators based on the provided data.
+Collect the overlap indicators of every ticker in one table: the moving averages, bands and levels drawn on the same scale as the prices.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>window (int, optional):</u> The window size for calculating indicators.
 Defaults to 14.
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
@@ -9703,8 +10015,8 @@ pd.Series or pd.DataFrame: Overlap-based indicators calculated based on the spec
 **Notes:**
 
 - The method calculates several overlap-based indicators for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -9738,98 +10050,98 @@ Which returns:
 ---
 
 ## get_moving_average
-Calculate a Moving Average (MA) of a given price series: the simple, exponential, double exponential, triple exponential, zero lag exponential, Wilder, triangular, weighted, Hull, sine weighted, Fibonacci weighted or Pascal's weighted moving average, an adaptive average (Kaufman's, Tillson's T3, the Arnaud Legoux, McGinley Dynamic, variable index dynamic, fractal adaptive and Holt-Winters moving averages), a volume weighted average (the volume weighted, elastic volume weighted and volume adjusted moving averages) or one of Ehlers' filters (the SuperSmoother filter and the Hilbert transform instantaneous trendline).
+Calculate the Simple Moving Average (SMA): the average price over a window, which smooths the prices to show their trend.
 
 A Moving Average smooths out price data by averaging the price over a specified number of periods. The variants differ in how they weight the prices within the window: equally (simple), with exponentially decaying weights (exponential, double and triple exponential, zero lag exponential and Wilder), with weights that peak in the middle of the window (triangular, sine and Pascal's weighted), with linearly increasing weights (weighted), with weights that grow with the Fibonacci numbers (Fibonacci weighted), with a Gaussian curve (Arnaud Legoux), with a combination of weighted averages that reduces the lag (Hull) or with the volume traded (volume weighted, elastic volume weighted and volume adjusted). The adaptive averages change their speed with the market: with the efficiency of the price move (Kaufman), the strength of the trend (variable index dynamic), the fractal dimension of the prices (fractal adaptive), the distance of the price from the average (McGinley Dynamic) or the velocity and acceleration of the price (Holt-Winters). Tillson's T3 applies a generalized DEMA three times for a smooth average with little lag, Ehlers' SuperSmoother is a low-pass filter that removes the cycles shorter than the window, and his instantaneous trendline averages the price over its dominant cycle, measured with the Hilbert transform.
 
 The formula is as follows, per method:
 
 $$
-\text{"simple":}\;\; \text{SMA} = \frac{\text{Sum of Prices}}{\text{Number of Prices}}
+\text{Simple Moving Average:}\;\; \text{SMA} = \frac{\text{Sum of Prices}}{\text{Number of Prices}}
 $$
 
 $$
-\text{"exponential":}\;\; \text{the first EMA is SMA(Close, Window), on the Window-th period},\;\; \text{and}\;\; \text{EMA} = (\text{Close} - \text{Previous EMA}) \cdot \frac{2}{1 + \text{Window}} + \text{Previous EMA}
+\text{Exponential Moving Average:}\;\; \text{the first EMA is SMA(Close, Window), on the Window-th period},\;\; \text{and}\;\; \text{EMA} = (\text{Close} - \text{Previous EMA}) \cdot \frac{2}{1 + \text{Window}} + \text{Previous EMA}
 $$
 
 $$
-\text{"double\_exponential":}\;\; \text{DEMA} = 2 \cdot \operatorname{EMA}(\text{Close},\; \text{Window}) - \operatorname{EMA}(\operatorname{EMA}(\text{Close},\; \text{Window}),\; \text{Window})
+\text{Double Exponential Moving Average:}\;\; \text{DEMA} = 2 \cdot \operatorname{EMA}(\text{Close},\; \text{Window}) - \operatorname{EMA}(\operatorname{EMA}(\text{Close},\; \text{Window}),\; \text{Window})
 $$
 
 $$
-\text{"triple\_exponential":}\;\; \text{TEMA} = 3 \cdot \text{EMA1} - 3 \cdot \text{EMA2} + \text{EMA3},\;\; \text{with}\;\; \text{EMA1} = \operatorname{EMA}(\text{Close},\; \text{Window}),\;\; \text{EMA2} = \operatorname{EMA}(\text{EMA1},\; \text{Window})\;\;\text{and}\;\; \text{EMA3} = \operatorname{EMA}(\text{EMA2},\; \text{Window})
+\text{Triple Exponential Moving Average:}\;\; \text{TEMA} = 3 \cdot \text{EMA1} - 3 \cdot \text{EMA2} + \text{EMA3},\;\; \text{with}\;\; \text{EMA1} = \operatorname{EMA}(\text{Close},\; \text{Window}),\;\; \text{EMA2} = \operatorname{EMA}(\text{EMA1},\; \text{Window})\;\;\text{and}\;\; \text{EMA3} = \operatorname{EMA}(\text{EMA2},\; \text{Window})
 $$
 
 $$
-\text{"zero\_lag":}\;\; \text{ZLEMA} = \operatorname{EMA}(2 \cdot \text{Close} - \operatorname{Close}(t - \text{Lag}),\; \text{Window}),\;\; \text{with}\;\; \text{Lag} = \frac{\text{Window} - 1}{2 \;\text{rounded down}}
+\text{Zero Lag Exponential Moving Average:}\;\; \text{ZLEMA} = \operatorname{EMA}(2 \cdot \text{Close} - \operatorname{Close}(t - \text{Lag}),\; \text{Window}),\;\; \text{with}\;\; \text{Lag} = \frac{\text{Window} - 1}{2 \;\text{rounded down}}
 $$
 
 $$
-\text{"wilder":}\;\; \text{the first value is SMA(Close, Window), on the Window-th period},\;\; \text{and}\;\; \text{RMA} = \text{Previous RMA} + \frac{\text{Close} - \text{Previous RMA}}{\text{Window}}
+\text{Wilder's Smoothed Moving Average:}\;\; \text{the first value is SMA(Close, Window), on the Window-th period},\;\; \text{and}\;\; \text{RMA} = \text{Previous RMA} + \frac{\text{Close} - \text{Previous RMA}}{\text{Window}}
 $$
 
 $$
-\text{"triangular":}\;\; \text{TMA} = \operatorname{SMA}(\operatorname{SMA}(\text{Close},\; \text{Sub-window Length}\; 1),\; \text{Sub-window Length}\; 2),\;\; \text{with both sub-windows} \;\frac{\text{Window} + 1}{2} \;\text{for an odd window and} \;\frac{\text{Window}}{2} \;\text{and} \;\frac{\text{Window}}{2} + 1 \;\text{for an even window} \;(\text{TA-Lib's TRIMA convention})
+\text{Triangular Moving Average:}\;\; \text{TMA} = \operatorname{SMA}(\operatorname{SMA}(\text{Close},\; \text{Sub-window Length}\; 1),\; \text{Sub-window Length}\; 2),\;\; \text{with both sub-windows} \;\frac{\text{Window} + 1}{2} \;\text{for an odd window and} \;\frac{\text{Window}}{2} \;\text{and} \;\frac{\text{Window}}{2} + 1 \;\text{for an even window} \;(\text{TA-Lib's TRIMA convention})
 $$
 
 $$
-\text{"weighted":}\;\; \text{WMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with weights 1 to Window from the oldest to the latest price}
+\text{Weighted Moving Average:}\;\; \text{WMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with weights 1 to Window from the oldest to the latest price}
 $$
 
 $$
-\text{"hull":}\;\; \text{HMA} = \operatorname{WMA}\left(2 \cdot \operatorname{WMA}\left(\text{Close},\; \frac{\text{Window}}{2}\right) - \operatorname{WMA}(\text{Close},\; \text{Window}),\; \sqrt{\text{Window}}\right)
+\text{Hull Moving Average:}\;\; \text{HMA} = \operatorname{WMA}\left(2 \cdot \operatorname{WMA}\left(\text{Close},\; \frac{\text{Window}}{2}\right) - \operatorname{WMA}(\text{Close},\; \text{Window}),\; \sqrt{\text{Window}}\right)
 $$
 
 $$
-\text{"sine":}\;\; \text{SINWMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with}\;\; \text{weights} \;\sin\left(\frac{i \cdot \pi}{\text{Window} + 1}\right) \;\text{for}\; i = 1 \;\text{to Window}
+\text{Sine Weighted Moving Average:}\;\; \text{SINWMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with}\;\; \text{weights} \;\sin\left(\frac{i \cdot \pi}{\text{Window} + 1}\right) \;\text{for}\; i = 1 \;\text{to Window}
 $$
 
 $$
-\text{"fibonacci":}\;\; \text{FWMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with the Fibonacci numbers 1, 1, 2, 3, 5, ... from the oldest to the latest price}
+\text{Fibonacci Weighted Moving Average:}\;\; \text{FWMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with the Fibonacci numbers 1, 1, 2, 3, 5, ... from the oldest to the latest price}
 $$
 
 $$
-\text{"pascal":}\;\; \text{PWMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with the binomial coefficients of row Window} \;\mathord{-} 1 \;\text{of Pascal's triangle}
+\text{Pascal's Weighted Moving Average:}\;\; \text{PWMA} = \frac{\text{Sum of} \;(\text{Price} \cdot \text{Weight})}{\text{Sum of Weights}},\;\; \text{with the binomial coefficients of row Window} \;\mathord{-} 1 \;\text{of Pascal's triangle}
 $$
 
 $$
-\text{"kaufman\_adaptive":}\;\; \text{Change} = \left|\operatorname{Close}(t) - \operatorname{Close}(t - \text{Window})\right|,\;\; \text{Volatility} = \operatorname{Sum}(\left|\operatorname{Close}(i) - \operatorname{Close}(i - 1)\right|,\; \text{Window}),\;\; \text{Efficiency Ratio} \;(\text{ER}) = \frac{\text{Change}}{\text{Volatility, Fastest SC}} = \frac{2}{\text{Fast Window} + 1},\;\; \text{Slowest SC} = \frac{2}{\text{Slow Window} + 1},\;\; \text{Smoothing Constant} \;(\text{SC}) = \left[\text{ER} \cdot (\text{Fastest SC} - \text{Slowest SC}) + \text{Slowest SC}\right]^{2}\;\;\text{and}\;\; \operatorname{KAMA}(t) = \operatorname{KAMA}(t-1) + \text{SC} \cdot (\operatorname{Close}(t) - \operatorname{KAMA}(t-1))
+\text{Kaufman Adaptive Moving Average:}\;\; \text{Change} = \left|\operatorname{Close}(t) - \operatorname{Close}(t - \text{Window})\right|,\;\; \text{Volatility} = \operatorname{Sum}(\left|\operatorname{Close}(i) - \operatorname{Close}(i - 1)\right|,\; \text{Window}),\;\; \text{Efficiency Ratio} \;(\text{ER}) = \frac{\text{Change}}{\text{Volatility, Fastest SC}} = \frac{2}{\text{Fast Window} + 1},\;\; \text{Slowest SC} = \frac{2}{\text{Slow Window} + 1},\;\; \text{Smoothing Constant} \;(\text{SC}) = \left[\text{ER} \cdot (\text{Fastest SC} - \text{Slowest SC}) + \text{Slowest SC}\right]^{2}\;\;\text{and}\;\; \operatorname{KAMA}(t) = \operatorname{KAMA}(t-1) + \text{SC} \cdot (\operatorname{Close}(t) - \operatorname{KAMA}(t-1))
 $$
 
 $$
-\text{"t3":}\;\; E_{1} = \operatorname{EMA}(\text{Close},\; \text{Window}),\;\; E_{2} = \operatorname{EMA}(E_{1},\; \text{Window}),\; \ldots,\; E_{6} = \operatorname{EMA}(E_{5},\; \text{Window}),\;\; c_{1} = - a^{3},\;\; c_{2} = 3a^{2} + 3a^{3},\;\; c_{3} = - 6a^{2} - 3a - 3a^{3},\;\; c_{4} = 1 + 3a + a^{3} + 3a^{2} \;\text{with a the Volume Factor},\;\; \text{and}\;\; T_{3} = c_{1} \cdot E_{6} + c_{2} \cdot E_{5} + c_{3} \cdot E_{4} + c_{4} \cdot E_{3}
+\text{T3 Moving Average:}\;\; E_{1} = \operatorname{EMA}(\text{Close},\; \text{Window}),\;\; E_{2} = \operatorname{EMA}(E_{1},\; \text{Window}),\; \ldots,\; E_{6} = \operatorname{EMA}(E_{5},\; \text{Window}),\;\; c_{1} = - a^{3},\;\; c_{2} = 3a^{2} + 3a^{3},\;\; c_{3} = - 6a^{2} - 3a - 3a^{3},\;\; c_{4} = 1 + 3a + a^{3} + 3a^{2} \;\text{with a the Volume Factor},\;\; \text{and}\;\; T_{3} = c_{1} \cdot E_{6} + c_{2} \cdot E_{5} + c_{3} \cdot E_{4} + c_{4} \cdot E_{3}
 $$
 
 $$
-\text{"arnaud\_legoux":}\;\; m = \left\lfloor \text{Offset} \cdot (\text{Window} - 1) \right\rfloor,\;\; s = \frac{\text{Window}}{\text{Sigma, Weight}(i)} = \exp\left(- \frac{(i - m)^{2}}{2 \cdot s^{2}}\right) \;\text{for}\; i = 0 \;(\text{the oldest price}) \;\text{to Window} - 1,\;\; \text{and}\;\; \text{ALMA} = \frac{\operatorname{Sum}(\operatorname{Weight}(i) \cdot \operatorname{Price}(i))}{\operatorname{Sum}(\operatorname{Weight}(i))}
+\text{Arnaud Legoux Moving Average:}\;\; m = \left\lfloor \text{Offset} \cdot (\text{Window} - 1) \right\rfloor,\;\; s = \frac{\text{Window}}{\text{Sigma, Weight}(i)} = \exp\left(- \frac{(i - m)^{2}}{2 \cdot s^{2}}\right) \;\text{for}\; i = 0 \;(\text{the oldest price}) \;\text{to Window} - 1,\;\; \text{and}\;\; \text{ALMA} = \frac{\operatorname{Sum}(\operatorname{Weight}(i) \cdot \operatorname{Price}(i))}{\operatorname{Sum}(\operatorname{Weight}(i))}
 $$
 
 $$
-\text{"volume\_weighted":}\;\; \text{VWMA} = \frac{\operatorname{Sum}(\text{Close} \cdot \text{Volume},\; \text{Window})}{\operatorname{Sum}(\text{Volume},\; \text{Window})}
+\text{Volume Weighted Moving Average:}\;\; \text{VWMA} = \frac{\operatorname{Sum}(\text{Close} \cdot \text{Volume},\; \text{Window})}{\operatorname{Sum}(\text{Volume},\; \text{Window})}
 $$
 
 $$
-\text{"mcginley":}\;\; \text{the first MD is SMA(Close, Window), on the Window-th period},\;\; \text{and}\;\; \operatorname{MD}(t) = \operatorname{MD}(t-1) + \frac{\operatorname{Close}(t) - \operatorname{MD}(t-1)}{\text{Constant} \cdot \text{Window} \cdot \left(\frac{\operatorname{Close}(t)}{\operatorname{MD}(t-1)}\right)^{4}}
+\text{McGinley Dynamic:}\;\; \text{the first MD is SMA(Close, Window), on the Window-th period},\;\; \text{and}\;\; \operatorname{MD}(t) = \operatorname{MD}(t-1) + \frac{\operatorname{Close}(t) - \operatorname{MD}(t-1)}{\text{Constant} \cdot \text{Window} \cdot \left(\frac{\operatorname{Close}(t)}{\operatorname{MD}(t-1)}\right)^{4}}
 $$
 
 $$
-\text{"variable\_index\_dynamic":}\;\; \text{Gains} = \operatorname{Sum}(\max(\operatorname{Close}(t) - \operatorname{Close}(t-1),\; 0),\; \text{CMO Window}),\;\; \text{Losses} = \operatorname{Sum}(\max(\operatorname{Close}(t-1) - \operatorname{Close}(t),\; 0),\; \text{CMO Window}),\;\; \left|\text{CMO}\right| = \frac{\left|\text{Gains} - \text{Losses}\right|}{\text{Gains} + \text{Losses}} \;\text{and 0 when prices did not move},\;\; \text{Alpha} = \frac{2}{\text{Window} + 1},\;\; \text{and}\;\; \operatorname{VIDYA}(t) = \text{Alpha} \cdot \left|\operatorname{CMO}(t)\right| \cdot \operatorname{Close}(t) + (1 - \text{Alpha} \cdot \left|\operatorname{CMO}(t)\right|) \cdot \operatorname{VIDYA}(t-1)
+\text{Variable Index Dynamic Average:}\;\; \text{Gains} = \operatorname{Sum}(\max(\operatorname{Close}(t) - \operatorname{Close}(t-1),\; 0),\; \text{CMO Window}),\;\; \text{Losses} = \operatorname{Sum}(\max(\operatorname{Close}(t-1) - \operatorname{Close}(t),\; 0),\; \text{CMO Window}),\;\; \left|\text{CMO}\right| = \frac{\left|\text{Gains} - \text{Losses}\right|}{\text{Gains} + \text{Losses}} \;\text{and 0 when prices did not move},\;\; \text{Alpha} = \frac{2}{\text{Window} + 1},\;\; \text{and}\;\; \operatorname{VIDYA}(t) = \text{Alpha} \cdot \left|\operatorname{CMO}(t)\right| \cdot \operatorname{Close}(t) + (1 - \text{Alpha} \cdot \left|\operatorname{CMO}(t)\right|) \cdot \operatorname{VIDYA}(t-1)
 $$
 
 $$
-\text{"fractal\_adaptive":}\;\; \text{Price} = \frac{\text{High} + \text{Low}}{2},\;\; N_{1} = \frac{\text{Highest High} - \text{Lowest Low}}{\frac{\text{Window}}{2}} \;\text{over the latest} \;\frac{\text{Window}}{2 \;\text{periods}},\;\; N_{2} \;\text{the same over the} \;\frac{\text{Window}}{2 \;\text{periods before}},\;\; N_{3} = \frac{\text{Highest High} - \text{Lowest Low}}{\text{Window}} \;\text{over the whole window},\;\; D = \frac{\log(N_{1} + N_{2}) - \log(N_{3})}{\log(2)},\;\; \text{Alpha} = \exp(- 4.6 \cdot (D - 1)) \;\text{limited to between}\; 0.01 \;\text{and}\; 1,\;\; \text{and}\;\; \operatorname{FRAMA}(t) = \operatorname{Alpha}(t) \cdot \operatorname{Price}(t) + (1 - \operatorname{Alpha}(t)) \cdot \operatorname{FRAMA}(t-1)
+\text{Fractal Adaptive Moving Average:}\;\; \text{Price} = \frac{\text{High} + \text{Low}}{2},\;\; N_{1} = \frac{\text{Highest High} - \text{Lowest Low}}{\frac{\text{Window}}{2}} \;\text{over the latest} \;\frac{\text{Window}}{2 \;\text{periods}},\;\; N_{2} \;\text{the same over the} \;\frac{\text{Window}}{2 \;\text{periods before}},\;\; N_{3} = \frac{\text{Highest High} - \text{Lowest Low}}{\text{Window}} \;\text{over the whole window},\;\; D = \frac{\log(N_{1} + N_{2}) - \log(N_{3})}{\log(2)},\;\; \text{Alpha} = \exp(- 4.6 \cdot (D - 1)) \;\text{limited to between}\; 0.01 \;\text{and}\; 1,\;\; \text{and}\;\; \operatorname{FRAMA}(t) = \operatorname{Alpha}(t) \cdot \operatorname{Price}(t) + (1 - \operatorname{Alpha}(t)) \cdot \operatorname{FRAMA}(t-1)
 $$
 
 $$
-\text{"holt\_winters":}\;\; F(t) = (1 - \text{Level Smoothing}) \cdot (F(t-1) + V(t-1) + 0.5 \cdot A(t-1)) + \text{Level Smoothing} \cdot \operatorname{Close}(t),\;\; V(t) = (1 - \text{Velocity Smoothing}) \cdot (V(t-1) + A(t-1)) + \text{Velocity Smoothing} \cdot (F(t) - F(t-1)),\;\; A(t) = (1 - \text{Acceleration Smoothing}) \cdot A(t-1) + \text{Acceleration Smoothing} \cdot (V(t) - V(t-1))\;\;\text{and}\;\; \operatorname{HWMA}(t) = F(t) + V(t) + 0.5 \cdot A(t),\;\; \text{with } F \text{ starting at the first close and } V \text{ and A at 0}
+\text{Holt-Winters Moving Average:}\;\; F(t) = (1 - \text{Level Smoothing}) \cdot (F(t-1) + V(t-1) + 0.5 \cdot A(t-1)) + \text{Level Smoothing} \cdot \operatorname{Close}(t),\;\; V(t) = (1 - \text{Velocity Smoothing}) \cdot (V(t-1) + A(t-1)) + \text{Velocity Smoothing} \cdot (F(t) - F(t-1)),\;\; A(t) = (1 - \text{Acceleration Smoothing}) \cdot A(t-1) + \text{Acceleration Smoothing} \cdot (V(t) - V(t-1))\;\;\text{and}\;\; \operatorname{HWMA}(t) = F(t) + V(t) + 0.5 \cdot A(t),\;\; \text{with } F \text{ starting at the first close and } V \text{ and A at 0}
 $$
 
 $$
-\text{"elastic\_volume\_weighted":}\;\; \text{Volume Sum} = \operatorname{Sum}(\text{Volume},\; \text{Window})\;\;\text{and}\;\; \operatorname{eVWMA}(t) = \frac{(\text{Volume Sum} - \operatorname{Volume}(t)) \cdot \operatorname{eVWMA}(t-1) + \operatorname{Volume}(t) \cdot \operatorname{Close}(t)}{\text{Volume Sum}}
+\text{Elastic Volume Weighted Moving Average:}\;\; \text{Volume Sum} = \operatorname{Sum}(\text{Volume},\; \text{Window})\;\;\text{and}\;\; \operatorname{eVWMA}(t) = \frac{(\text{Volume Sum} - \operatorname{Volume}(t)) \cdot \operatorname{eVWMA}(t-1) + \operatorname{Volume}(t) \cdot \operatorname{Close}(t)}{\text{Volume Sum}}
 $$
 
 $$
-\text{"volume\_adjusted":}\;\; \operatorname{Weight}(t) = \frac{\operatorname{Close}(t) \cdot \operatorname{Volume}(t)}{\operatorname{SMA}(\text{Volume},\; \text{Window}) (t)}\;\;\text{and}\;\; \text{VAMA} = \frac{\operatorname{Sum}(\text{Weight} \cdot \text{Close},\; \text{Window})}{\operatorname{Sum}(\text{Weight},\; \text{Window})}
+\text{Volume Adjusted Moving Average:}\;\; \operatorname{Weight}(t) = \frac{\operatorname{Close}(t) \cdot \operatorname{Volume}(t)}{\operatorname{SMA}(\text{Volume},\; \text{Window}) (t)}\;\;\text{and}\;\; \text{VAMA} = \frac{\operatorname{Sum}(\text{Weight} \cdot \text{Close},\; \text{Window})}{\operatorname{Sum}(\text{Weight},\; \text{Window})}
 $$
 
 $$
@@ -9837,47 +10149,78 @@ $$
 $$
 
 $$
-\text{"hilbert\_trendline":}\;\; \text{Smooth} = \frac{4 \cdot \text{Price} + 3 \cdot \operatorname{Price}(t-1) + 2 \cdot \operatorname{Price}(t-2) + \operatorname{Price}(t-3)}{10},\;\; H(x) = (0.0962 \cdot x + 0.5769 \cdot x(t-2) - 0.5769 \cdot x(t-4) - 0.0962 \cdot x(t-6)) \cdot (0.075 \cdot \operatorname{Period}(t-1) + 0.54),\;\; \text{Detrender} = H(\text{Smooth}),\;\; Q_{1} = H(\text{Detrender}),\;\; I_{1} = \operatorname{Detrender}(t-3),\;\; I_{2} = 0.2 \cdot (I_{1} - H(Q_{1})) + 0.8 \cdot \operatorname{I2}(t-1),\;\; Q_{2} = 0.2 \cdot (Q_{1} + H(I_{1})) + 0.8 \cdot \operatorname{Q2}(t-1),\;\; \text{Re} = 0.2 \cdot (I_{2} \cdot \operatorname{I2}(t-1) + Q_{2} \cdot \operatorname{Q2}(t-1)) + 0.8 \cdot \operatorname{Re}(t-1),\;\; \text{Im} = 0.2 \cdot (I_{2} \cdot \operatorname{Q2}(t-1) - Q_{2} \cdot \operatorname{I2}(t-1)) + 0.8 \cdot \operatorname{Im}(t-1),\;\; \text{Period} = \frac{360}{\operatorname{arctan}\left(\frac{\text{Im}}{\text{Re}}\right) \;\text{in degrees}},\;\; \text{limited to between 0.67 and 1.5 times Period(t-1) and to between 6 and 50 periods},\;\; \text{then smoothed as}\; 0.2 \cdot \text{Period} + 0.8 \cdot \operatorname{Period}(t-1),\;\; \text{Dominant Cycle Period} = 0.33 \cdot \text{Period} + 0.67 \cdot \text{Dominant Cycle Period}(t-1),\;\; N = \text{the Dominant Cycle Period rounded to the nearest whole period},\;\; \text{Average} = \text{the simple average of the latest}\; N \;\text{prices},\;\; \text{and}\;\; \text{Trendline} = \frac{4 \cdot \text{Average} + 3 \cdot \operatorname{Average}(t-1) + 2 \cdot \operatorname{Average}(t-2) + \operatorname{Average}(t-3)}{10}
+\text{Hilbert Transform Instantaneous Trendline:}\;\; \text{Smooth} = \frac{4 \cdot \text{Price} + 3 \cdot \operatorname{Price}(t-1) + 2 \cdot \operatorname{Price}(t-2) + \operatorname{Price}(t-3)}{10},\;\; H(x) = (0.0962 \cdot x + 0.5769 \cdot x(t-2) - 0.5769 \cdot x(t-4) - 0.0962 \cdot x(t-6)) \cdot (0.075 \cdot \operatorname{Period}(t-1) + 0.54),\;\; \text{Detrender} = H(\text{Smooth}),\;\; Q_{1} = H(\text{Detrender}),\;\; I_{1} = \operatorname{Detrender}(t-3),\;\; I_{2} = 0.2 \cdot (I_{1} - H(Q_{1})) + 0.8 \cdot \operatorname{I2}(t-1),\;\; Q_{2} = 0.2 \cdot (Q_{1} + H(I_{1})) + 0.8 \cdot \operatorname{Q2}(t-1),\;\; \text{Re} = 0.2 \cdot (I_{2} \cdot \operatorname{I2}(t-1) + Q_{2} \cdot \operatorname{Q2}(t-1)) + 0.8 \cdot \operatorname{Re}(t-1),\;\; \text{Im} = 0.2 \cdot (I_{2} \cdot \operatorname{Q2}(t-1) - Q_{2} \cdot \operatorname{I2}(t-1)) + 0.8 \cdot \operatorname{Im}(t-1),\;\; \text{Period} = \frac{360}{\operatorname{arctan}\left(\frac{\text{Im}}{\text{Re}}\right) \;\text{in degrees}},\;\; \text{limited to between 0.67 and 1.5 times Period(t-1) and to between 6 and 50 periods},\;\; \text{then smoothed as}\; 0.2 \cdot \text{Period} + 0.8 \cdot \operatorname{Period}(t-1),\;\; \text{Dominant Cycle Period} = 0.33 \cdot \text{Period} + 0.67 \cdot \text{Dominant Cycle Period}(t-1),\;\; N = \text{the Dominant Cycle Period rounded to the nearest whole period},\;\; \text{Average} = \text{the simple average of the latest}\; N \;\text{prices},\;\; \text{and}\;\; \text{Trendline} = \frac{4 \cdot \text{Average} + 3 \cdot \operatorname{Average}(t-1) + 2 \cdot \operatorname{Average}(t-2) + \operatorname{Average}(t-3)}{10}
 $$
 
 Seeding the EMA with a simple average, as TA-Lib and StockCharts do, leaves the first Window - 1 periods of the price history empty. The DEMA, TRIX, MACD, Percentage Price Oscillator, Force Index, Elder Ray Index, Keltner Channels and Chaikin and McClellan Oscillators use the same EMA and start once their own EMAs are seeded; TEMA starts at period 3 * (Window - 1) and ZLEMA at period Lag + Window - 1. Wilder's average is the smoothing of the RSI, ATR and ADX, an EMA with a smoothing factor of 1 / Window instead of 2 / (Window + 1). The triangular moving average is also the symmetric weighted moving average, with weights 1, 2, ..., 2, 1. The MESA Adaptive Moving Average, which returns MAMA and FAMA, is `get_mesa_adaptive_moving_average`.
 
-For more information, see the following sources:
-
-- Mulloy, P.G. (1994). "Smoothing Data with Faster Moving Averages." Technical Analysis of Stocks & Commodities, 12(1).
-- Mulloy, P.G. (1994). "Smoothing Data with Less Lag." Technical Analysis of Stocks & Commodities, 12(2).
-- Ehlers, J.F. & Way, R. (2010). "Zero Lag (Well, Almost)." Technical Analysis of Stocks & Commodities, November 2010.
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Hull, A. (2005). "Hull Moving Average."
-- Everget (2018). "Sine Weighted Moving Average." TradingView script.
-- Kaufman, P.J. (1998). "Trading Systems and Methods." 3rd ed. Wiley.
-- Tillson, T. (1998). "Smoothing Techniques for More Accurate Signals." Technical Analysis of Stocks & Commodities, 16(1).
-- Legoux, A. & Kouzis-Loukas, D. (2009). "ALMA: Arnaud Legoux Moving Average." arnaudlegoux.com.
-- Dormeier, B.P. (2011). "Investing with Volume Analysis." FT Press.
-- McGinley, J.R. (1997). "The McGinley Dynamic." Journal of Technical Analysis (Market Technicians Association).
-- Chande, T.S. (1992). "Adapting Moving Averages to Market Volatility." Technical Analysis of Stocks & Commodities, 10(3).
-- Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
-- Ehlers, J.F. (2005). "Fractal Adaptive Moving Averages." Technical Analysis of Stocks & Commodities, 23(10), 81-82.
-- Holt, C.C. (1957). "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages." ONR Memorandum 52, Carnegie Institute of Technology (reprinted in the International Journal of Forecasting, 20(1), 2004).
-- Winters, P.R. (1960). "Forecasting Sales by Exponentially Weighted Moving Averages." Management Science, 6(3), 324-342.
-- MQL5 Code Base: HWMA ([https://www.mql5.com/en/code/20856](https://www.mql5.com/en/code/20856){:target="_blank"}).
-- Fries, C.P. (2001). "Elastic Moving Averages." Technical Analysis of Stocks & Commodities, 19(6), 52-56 ([https://www.christian-fries.de/evwma/](https://www.christian-fries.de/evwma/){:target="_blank"}).
-- Arms, R.W. Jr. (1983). "Volume Cycles in the Stock Market: Market Timing Through Equivolume Charting." Dow Jones-Irwin, on adjusting prices for the volume traded.
-- Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
-- Ehlers, J.F. (2004). "Cybernetic Analysis for Stocks and Futures." John Wiley & Sons.
-- Ehlers, J.F. (2013). "Cycle Analytics for Traders: Advanced Technical Trading Concepts." John Wiley & Sons.
-- Ehlers, J.F. (2014). "Predictive And Successful Indicators." Technical Analysis of Stocks & Commodities, 32(1), 16-25.
-- TA-Lib: SMA, EMA, DEMA, TEMA, ZLEMA, RMA, TRIMA, WMA, HMA, KAMA, T3, ALMA, VWMA, MCGD, VIDYA, FRAMA and HT_TRENDLINE, the reference implementations ([https://ta-lib.org/functions/](https://ta-lib.org/functions/){:target="_blank"}).
-- Referenced against pandas-ta-classic's swma, sinwma, fwma, pwma, t3, alma, vwma, mcgd, vidya, hwma, ssf and ht_trendline ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}). The Fibonacci and Pascal's weighted averages are defined in pandas-ta by Kevin Johnson.
-- Referenced against finta's FRAMA, EVWMA and VAMA ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}). The volume adjusted moving average is defined in finta by Peerchemist; it has no published source.
-- Tulip Indicators: vwma ([https://tulipindicators.org/vwma](https://tulipindicators.org/vwma){:target="_blank"}).
-
 **Also known as:** MA, SMA, simple moving average, EMA, exponential moving average, DEMA, double exponential moving average, TEMA, triple exponential moving average, ZLEMA, ZLMA, zero lag moving average, RMA, SMMA, Wilder's smoothing, smoothed moving average, TRIMA, TMA, triangular moving average, SWMA, symmetric weighted moving average, WMA, weighted moving average, linear weighted moving average, HMA, Hull moving average, SINWMA, sine weighted moving average, FWMA, Fibonacci weighted moving average, PWMA, Pascal's weighted moving average, KAMA, Kaufman Adaptive Moving Average, Kaufman's Adaptive Moving Average, T3, Tillson T3, T3 moving average, ALMA, Arnaud Legoux moving average, VWMA, volume weighted moving average, MCGD, McGinley Dynamic, McGinley Dynamic Indicator, VIDYA, variable index dynamic average, Chande's dynamic average, FRAMA, fractal adaptive moving average, HWMA, Holt-Winters moving average, Holt-Winter moving average, eVWMA, EVWMA, elastic volume weighted moving average, VAMA, volume adjusted moving average, SSF, SuperSmoother, super smoother filter, Ehlers' SuperSmoother, HT_TRENDLINE, Hilbert transform instantaneous trendline, instantaneous trendline.
+
+**References:**
+
+- paper | Mulloy, P.G. (1994). "Smoothing Data with Faster Moving Averages." Technical Analysis of Stocks & Commodities, 12(1).
+- paper | Mulloy, P.G. (1994). "Smoothing Data with Less Lag." Technical Analysis of Stocks & Commodities, 12(2).
+- paper | Ehlers, J.F. & Way, R. (2010). "Zero Lag (Well, Almost)." Technical Analysis of Stocks & Commodities, November 2010.
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- paper | Hull, A. (2005). "Hull Moving Average."
+- paper | Everget (2018). "Sine Weighted Moving Average." TradingView script.
+- paper | Kaufman, P.J. (1998). "Trading Systems and Methods." 3rd ed. Wiley.
+- paper | Tillson, T. (1998). "Smoothing Techniques for More Accurate Signals." Technical Analysis of Stocks & Commodities, 16(1).
+- paper | Legoux, A. & Kouzis-Loukas, D. (2009). "ALMA: Arnaud Legoux Moving Average." arnaudlegoux.com.
+- paper | Dormeier, B.P. (2011). "Investing with Volume Analysis." FT Press.
+- paper | McGinley, J.R. (1997). "The McGinley Dynamic." Journal of Technical Analysis (Market Technicians Association).
+- paper | Chande, T.S. (1992). "Adapting Moving Averages to Market Volatility." Technical Analysis of Stocks & Commodities, 10(3).
+- paper | Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." Wiley.
+- paper | Ehlers, J.F. (2005). "Fractal Adaptive Moving Averages." Technical Analysis of Stocks & Commodities, 23(10), 81-82.
+- paper | Holt, C.C. (1957). "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages." ONR Memorandum 52, Carnegie Institute of Technology (reprinted in the International Journal of Forecasting, 20(1), 2004).
+- paper | Winters, P.R. (1960). "Forecasting Sales by Exponentially Weighted Moving Averages." Management Science, 6(3), 324-342.
+- paper | MQL5 Code Base: HWMA ([https://www.mql5.com/en/code/20856](https://www.mql5.com/en/code/20856){:target="_blank"}).
+- paper | Fries, C.P. (2001). "Elastic Moving Averages." Technical Analysis of Stocks & Commodities, 19(6), 52-56 ([https://www.christian-fries.de/evwma/](https://www.christian-fries.de/evwma/){:target="_blank"}).
+- paper | Arms, R.W. Jr. (1983). "Volume Cycles in the Stock Market: Market Timing Through Equivolume Charting." Dow Jones-Irwin, on adjusting prices for the volume traded.
+- paper | Ehlers, J.F. (2001). "Rocket Science for Traders: Digital Signal Processing Applications." John Wiley & Sons.
+- paper | Ehlers, J.F. (2004). "Cybernetic Analysis for Stocks and Futures." John Wiley & Sons.
+- paper | Ehlers, J.F. (2013). "Cycle Analytics for Traders: Advanced Technical Trading Concepts." John Wiley & Sons.
+- paper | Ehlers, J.F. (2014). "Predictive And Successful Indicators." Technical Analysis of Stocks & Commodities, 32(1), 16-25.
+- library | Referenced against TA-Lib's [SMA](https://ta-lib.org/functions/sma.html){:target="_blank"}
+- library | Referenced against TA-Lib's [EMA](https://ta-lib.org/functions/ema.html){:target="_blank"}
+- library | Referenced against TA-Lib's [DEMA](https://ta-lib.org/functions/dema.html){:target="_blank"}
+- library | Referenced against TA-Lib's [TEMA](https://ta-lib.org/functions/tema.html){:target="_blank"}
+- library | Referenced against TA-Lib's [ZLEMA](https://ta-lib.org/functions/zlema.html){:target="_blank"}
+- library | Referenced against TA-Lib's [TRIMA](https://ta-lib.org/functions/trima.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [swma](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/swma.py#L18){:target="_blank"}
+- library | Referenced against TA-Lib's [WMA](https://ta-lib.org/functions/wma.html){:target="_blank"}
+- library | Referenced against TA-Lib's [HMA](https://ta-lib.org/functions/hma.html){:target="_blank"}
+- library | Referenced against TA-Lib's [KAMA](https://ta-lib.org/functions/kama.html){:target="_blank"}
+- library | Referenced against TA-Lib's [T3](https://ta-lib.org/functions/t3.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [t3](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/t3.py#L14){:target="_blank"}
+- library | Referenced against TA-Lib's [ALMA](https://ta-lib.org/functions/alma.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [alma](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/alma.py#L12){:target="_blank"}
+- library | Referenced against TA-Lib's [VWMA](https://ta-lib.org/functions/vwma.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [vwma](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/vwma.py#L13){:target="_blank"}
+- library | Referenced against TA-Lib's [MCGD](https://ta-lib.org/functions/mcgd.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [mcgd](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/mcgd.py#L28){:target="_blank"}
+- library | Referenced against TA-Lib's [VIDYA](https://ta-lib.org/functions/vidya.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [vidya](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/vidya.py#L27){:target="_blank"}
+- library | Referenced against TA-Lib's [FRAMA](https://ta-lib.org/functions/frama.html){:target="_blank"}
+- library | Referenced against finta's [FRAMA](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L463){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [sinwma](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/sinwma.py#L12){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [fwma](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/fwma.py#L17){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [pwma](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/pwma.py#L17){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [hwma](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/hwma.py#L31){:target="_blank"}
+- library | Referenced against finta's [EVWMA](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L381){:target="_blank"}
+- library | Referenced against finta's [VAMA](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L226){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [ssf](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/ssf.py#L28){:target="_blank"} (SuperSmoother)
+- library | Referenced against TA-Lib's [HT_TRENDLINE](https://ta-lib.org/functions/ht_trendline.html){:target="_blank"} (Hilbert Transform Instantaneous Trendline)
+- library | Referenced against pandas-ta-classic's [ht_trendline](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/ht_trendline.py#L14){:target="_blank"} (Hilbert Transform Instantaneous Trendline)
+- library | Shares similar logic as TA-Lib's [RMA](https://ta-lib.org/functions/rma.html){:target="_blank"}
+- library | Shares similar logic as Tulip Indicators' [vwma](https://tulipindicators.org/vwma){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int &#124; None, optional):</u> Number of periods to consider for the moving average:
@@ -9898,16 +10241,24 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> The moving average: "simple", "exponential",
-"double_exponential", "triple_exponential", "zero_lag", "wilder", "triangular",
-"weighted", "hull", "sine", "fibonacci", "pascal", "kaufman_adaptive", "t3",
-"arnaud_legoux", "volume_weighted", "mcginley", "variable_index_dynamic",
-"fractal_adaptive", "holt_winters", "elastic_volume_weighted", "volume_adjusted",
-"super_smoother" or "hilbert_trendline". Defaults to "simple".
-- <u>fast_window (int, optional):</u> The number of periods that corresponds to the fastest EMA
+- <u>method (str, optional):</u> The moving average. Options are: "simple" (Simple Moving Average),
+"exponential" (Exponential Moving Average), "double_exponential" (Double Exponential Moving
+Average), "triple_exponential" (Triple Exponential Moving Average), "zero_lag" (Zero Lag
+Exponential Moving Average), "wilder" (Wilder's Moving Average), "triangular" (Triangular Moving
+Average), "weighted" (Weighted Moving Average), "hull" (Hull Moving Average), "sine" (Sine
+Weighted Moving Average), "fibonacci" (Fibonacci Weighted Moving Average), "pascal" (Pascal
+Weighted Moving Average), "kaufman_adaptive" (Kaufman Adaptive Moving Average), "t3" (Tillson T3
+Moving Average), "arnaud_legoux" (Arnaud Legoux Moving Average), "volume_weighted" (Volume
+Weighted Moving Average), "mcginley" (McGinley Dynamic), "variable_index_dynamic" (Variable
+Index Dynamic Average), "fractal_adaptive" (Fractal Adaptive Moving Average),
+"holt_winters" (Holt-Winters Moving Average), "elastic_volume_weighted" (Elastic Volume Weighted
+Moving Average), "volume_adjusted" (Volume Adjusted Moving Average), "super_smoother" (Ehlers'
+SuperSmoother filter), "hilbert_trendline" (Hilbert Transform Instantaneous Trendline). Defaults
+to "simple".
+- <u>short_window (int, optional):</u> The number of periods that corresponds to the fastest EMA
 constant, used when the Efficiency Ratio is at its maximum (1.0). Only used when
 method="kaufman_adaptive". Defaults to 2.
-- <u>slow_window (int, optional):</u> The number of periods that corresponds to the slowest EMA
+- <u>long_window (int, optional):</u> The number of periods that corresponds to the slowest EMA
 constant, used when the Efficiency Ratio is at its minimum (0.0). Only used when
 method="kaufman_adaptive". Defaults to 30.
 - <u>volume_factor (float, optional):</u> The volume factor a of the T3, between 0 and 1. Only
@@ -9930,8 +10281,9 @@ between 0 and 1. Only used when method="holt_winters". Defaults to 0.2.
 between 0 and 1. Only used when method="holt_winters". Defaults to 0.1.
 - <u>acceleration_smoothing (float, optional):</u> The smoothing factor of the acceleration of
 the HWMA, between 0 and 1. Only used when method="holt_winters". Defaults to 0.1.
-- <u>poles (int, optional):</u> The number of poles of the SuperSmoother filter, 2 or 3. Only
-used when method="super_smoother". Defaults to 2.
+- <u>poles (int, optional):</u> The number of poles of the SuperSmoother filter. Options are: 2 (the two-pole
+SuperSmoother), 3 (the three-pole SuperSmoother). Only used when method="super_smoother".
+Defaults to 2.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -9953,25 +10305,25 @@ averages agree with pandas-ta-classic's swma, sinwma, fwma and pwma.
 - finta's TEMA, SMMA and SSMA start their exponential averages on the first price (with
 pandas' ewm) instead of seeding them with a simple average over the window, so they
 differ during the warm-up and converge afterwards.
-- "kaufman_adaptive": with the default `fast_window` of 2 and `slow_window` of 30, which
+- Kaufman Adaptive Moving Average: with the default `short_window` of 2 and `long_window` of 30, which
 TA-Lib fixes, the KAMA agrees with TA-Lib's KAMA.
-- "t3": each of the six EMAs is seeded with the simple average of its first `window`
+- T3 Moving Average: each of the six EMAs is seeded with the simple average of its first `window`
 values, so the T3 starts at period 6 * (window - 1). It agrees with TA-Lib's T3 and
 pandas-ta-classic's t3.
-- "arnaud_legoux": the peak m is rounded down to a whole period, and the ALMA agrees with
+- Arnaud Legoux Moving Average: the peak m is rounded down to a whole period, and the ALMA agrees with
 TA-Lib's ALMA. pandas-ta-classic's alma measures the offset from the latest price and
-keeps m unrounded: its alma(offset=0.85) equals this ALMA with an offset of 0.15 and an
+keeps m unrounded: its alma with an offset of 0.85 equals this ALMA with an offset of 0.15 and an
 unrounded peak, so it puts the weight on the older prices.
-- "volume_weighted": the VWMA differs from the rolling VWAP
+- Volume Weighted Moving Average: the VWMA differs from the rolling VWAP
 (`get_volume_weighted_average_price`) only in the price it averages: the close instead
 of the typical price (High + Low + Close) / 3. It agrees with TA-Lib's VWMA and
 pandas-ta-classic's vwma. A window without any volume has no average (NaN).
-- "mcginley": the recursion is seeded with the simple average of the first `window`
+- McGinley Dynamic: the recursion is seeded with the simple average of the first `window`
 prices, as the Toolkit seeds its exponential moving averages. TA-Lib's MCGD and
 pandas-ta-classic's mcgd start the recursion from the first price instead. The
 difference fades by about a factor 1 - 1 / window per period: with the default window
 of 14 the two agree to 0.01% within about 70 periods.
-- "variable_index_dynamic": the volatility index is the absolute Chande Momentum
+- Variable Index Dynamic Average: the volatility index is the absolute Chande Momentum
 Oscillator over unsmoothed sums (Chande & Kroll, 1994), as in TA-Lib and
 pandas-ta-classic. Chande's 1992 article and Tulip Indicators' vidya use the ratio of a
 short to a long standard deviation instead. The recursion is seeded with the simple
@@ -9981,7 +10333,7 @@ it agrees with pandas-ta-classic's vidya. TA-Lib starts the recursion from the f
 price, with the oscillator over the changes available so far, and shows it from period
 `cmo_window` on. The difference fades by a factor 1 - Alpha * &#124;CMO&#124; per period: with the
 defaults the two agree to 0.01% within about 100 periods.
-- "fractal_adaptive": FRAMA averages the median price of the high and low, which with the
+- Fractal Adaptive Moving Average: FRAMA averages the median price of the high and low, which with the
 default `close_column` of "Adj Close" are adjusted for dividends in the same way as the
 close. The recursion is seeded with the simple average of the first `window` median
 prices, on the window-th period, as the Toolkit seeds its exponential moving averages.
@@ -9991,21 +10343,21 @@ show, so TA-Lib's FRAMA starts one period later. The difference fades by a facto
 45 periods. A half without a range still gives a dimension, as in TA-Lib: a flat latest
 half next to a moving earlier one is a dimension of 1, so FRAMA moves to the price.
 Without any range in the window, or in both halves, the last dimension is kept.
-- "holt_winters": the HWMA agrees with pandas-ta-classic's hwma. The recursion starts on
+- Holt-Winters Moving Average: the HWMA agrees with pandas-ta-classic's hwma. The recursion starts on
 each ticker's first close, as in the MQL5 indicator, so there is no warm-up: the weight
 of the start fades by a factor 1 - Level Smoothing per period, and the first values of
 the price history lean on that close. The channel around it is
 `get_holt_winters_channel`.
-- "elastic_volume_weighted": Fries divides by the number of shares outstanding (the
+- Elastic Volume Weighted Moving Average: Fries divides by the number of shares outstanding (the
 float); the volume over the window stands in for it, as in finta. The recursion is
 seeded with the simple average of the first `window` closes, as the Toolkit seeds its
 exponential moving averages. finta starts it from 0, so its eVWMA climbs from 0 to the
 price; after that start has faded, about 300 periods with the default window, the two
 are equal. A window without any volume keeps the last average.
-- "volume_adjusted": the VAMA agrees with finta's VAMA; its weight multiplies the volume
+- Volume Adjusted Moving Average: the VAMA agrees with finta's VAMA; its weight multiplies the volume
 ratio by the close as well, so it is the traded value relative to the average volume.
 A window without any volume has no average (NaN).
-- "super_smoother": the two-pole filter (Ehlers, 2013) also averages the last two prices,
+- SuperSmoother: the two-pole filter (Ehlers, 2013) also averages the last two prices,
 which removes the two-period cycle completely; the three-pole filter (Ehlers, 2004) is
 smoother at the cost of more lag. The filter equals the price on the first two (three)
 periods of each ticker's own history and runs from there, as pandas-ta-classic starts
@@ -10014,12 +10366,14 @@ pandas-ta-classic's ssf. Its two-pole ssf filters the price itself rather than t
 average of the last two prices, which differs by up to 2% on daily prices; applied to
 that average the two are equal. √2, √3 and $$\pi$$ are exact, where Ehlers' listings write
 1.414 and 3.14159.
-- "hilbert_trendline": equals TA-Lib's HT_TRENDLINE and pandas-ta-classic's ht_trendline.
+- Hilbert Transform Instantaneous Trendline: equals TA-Lib's HT_TRENDLINE and pandas-ta-classic's ht_trendline.
 The recursion starts from zero on the 37th period of each ticker's own history, as in
 TA-Lib, and the first 63 periods (TA-Lib's lookback) are NaN. Ehlers compares the
 trendline with the smoothed price (or MAMA) to tell a trend from a cycle.
-- If `growth` is set to True, the method calculates the growth of the MA
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the MA
+over the given lag.
+- The Volume Adjusted Moving Average follows finta's definition, which has no published source, and the
+Fibonacci and Pascal's weighted averages follow pandas-ta-classic's.
 
 **As an example:**
 
@@ -10049,7 +10403,7 @@ Which returns:
 ---
 
 ## get_trix
-Calculate the Trix (Triple Exponential Moving Average) for a given price series.
+Calculate the TRIX (Triple Exponential Moving Average oscillator): the rate of change of a triple exponential moving average, which shows momentum without the noise of the shortest moves.
 
 Trix is a momentum oscillator that calculates the percentage rate of change of a triple exponentially smoothed moving average. It helps identify overbought and oversold conditions in a market. With a `signal_window` it adds the signal line, an EMA of the TRIX whose crossings Hutson read as signals, and the histogram, the TRIX minus its signal line.
 
@@ -10081,16 +10435,19 @@ $$
 
 **Also known as:** triple smoothed EMA, rate of change oscillator, TRIX signal, TRIXH, TRIX histogram.
 
-For more information, see the following sources:
+**References:**
 
-- Hutson, J.K. (1983). "Good TRIX." Technical Analysis of Stocks & Commodities, 1(5), 105-108.
-- Referenced against TA-Lib's TRIX ([https://ta-lib.org/functions/trix.html](https://ta-lib.org/functions/trix.html){:target="_blank"}).
-- pandas-ta-classic: trix and trixh, with the signal line and histogram ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
+- paper | Hutson, J.K. (1983). "Good TRIX." Technical Analysis of Stocks & Commodities, 1(5), 105-108.
+- library | Referenced against TA-Lib's [TRIX](https://ta-lib.org/functions/trix.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [trix](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/trix.py#L18){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [trixh](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/trixh.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods of each of the three exponential moving
@@ -10126,8 +10483,8 @@ percent.
 - The signal line is an EMA seeded with the simple average of its first values, as every
 EMA of the Toolkit, and agrees with TA-Lib's EMA of the TRIX. pandas-ta-classic's trixh takes
 a simple moving average of the TRIX as its signal line instead.
-- If `growth` is set to True, the method calculates the growth of the Trix
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Trix
+over the given lag.
 - Daily TRIX values are small (a few hundredths of a percent), so four decimals keep
 about one significant digit. Pass a higher `rounding` (or None) for more precision.
 
@@ -10166,40 +10523,53 @@ A price transform condenses the open, high, low and close of a period into one p
 The formula is as follows, per method:
 
 $$
-\text{"average":}\;\; \text{Average Price} = \frac{\text{Open} + \text{High} + \text{Low} + \text{Close}}{4}
+\text{Average price:}\;\; \text{Average Price} = \frac{\text{Open} + \text{High} + \text{Low} + \text{Close}}{4}
 $$
 
 $$
-\text{"median":}\;\; \text{Median Price} = \frac{\text{High} + \text{Low}}{2}
+\text{Median price:}\;\; \text{Median Price} = \frac{\text{High} + \text{Low}}{2}
 $$
 
 $$
-\text{"typical":}\;\; \text{Typical Price} = \frac{\text{High} + \text{Low} + \text{Close}}{3}
+\text{Typical price:}\;\; \text{Typical Price} = \frac{\text{High} + \text{Low} + \text{Close}}{3}
 $$
 
 $$
-\text{"weighted\_close":}\;\; \text{Weighted Close Price} = \frac{\text{High} + \text{Low} + 2 \cdot \text{Close}}{4}
+\text{Weighted close price:}\;\; \text{Weighted Close Price} = \frac{\text{High} + \text{Low} + 2 \cdot \text{Close}}{4}
 $$
-
-For more information, see the following sources:
-
-- Lambert, D.R. (1980). "Commodity Channel Index: Tool for Trading Cyclic Trends." Commodities, October 1980, the typical price of the CCI.
-- Referenced against TA-Lib's AVGPRICE, MEDPRICE, TYPPRICE and WCLPRICE ([https://ta-lib.org/functions/](https://ta-lib.org/functions/){:target="_blank"}).
-- pandas-ta-classic: ohlc4, hl2, hlc3 and wcp ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: TP ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-- Tulip Indicators: avgprice, medprice, typprice and wcprice ([https://tulipindicators.org](https://tulipindicators.org){:target="_blank"}).
 
 **Also known as:** AVGPRICE, average price, OHLC4, MEDPRICE, median price, HL2, TYPPRICE, typical price, HLC3, pivot price, WCLPRICE, weighted close price, HLCC4.
 
+**References:**
+
+- paper | Lambert, D.R. (1980). "Commodity Channel Index: Tool for Trading Cyclic Trends." Commodities, October 1980, the typical price of the CCI.
+- library | Referenced against TA-Lib's [AVGPRICE](https://ta-lib.org/functions/avgprice.html){:target="_blank"}
+- library | Referenced against TA-Lib's [MEDPRICE](https://ta-lib.org/functions/medprice.html){:target="_blank"}
+- library | Referenced against TA-Lib's [TYPPRICE](https://ta-lib.org/functions/typprice.html){:target="_blank"}
+- library | Referenced against TA-Lib's [WCLPRICE](https://ta-lib.org/functions/wclprice.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [ohlc4](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/ohlc4.py#L12){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [hl2](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/hl2.py#L12){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [hlc3](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/hlc3.py#L12){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [wcp](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/wcp.py#L12){:target="_blank"}
+- library | Shares similar logic as finta's [TP](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1405){:target="_blank"}
+- library | Shares similar logic as Tulip Indicators' [avgprice](https://tulipindicators.org/avgprice){:target="_blank"}
+- library | Shares similar logic as Tulip Indicators' [medprice](https://tulipindicators.org/medprice){:target="_blank"}
+- library | Shares similar logic as Tulip Indicators' [typprice](https://tulipindicators.org/typprice){:target="_blank"}
+- library | Shares similar logic as Tulip Indicators' [wcprice](https://tulipindicators.org/wcprice){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
-- <u>method (str, optional):</u> The price: "average", "median", "typical" or "weighted_close".
-Defaults to "typical".
+- <u>method (str, optional):</u> The price. Options are: "average" (the average of the open, high, low and
+close), "median" (the average of the high and low), "typical" (the average of the high, low and
+close), "weighted_close" (the weighted close, (high + low + 2 × close) / 4). Defaults to
+"typical".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the price.
@@ -10223,8 +10593,8 @@ pd.DataFrame or pd.Series: The price of each period.
 - The method retrieves historical data based on the specified `period` and calculates
 the price for each asset in the Toolkit instance.
 - The four prices agree with TA-Lib's AVGPRICE, MEDPRICE, TYPPRICE and WCLPRICE.
-- If `growth` is set to True, the method calculates the growth of the price using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the price over the
+given lag.
 
 **As an example:**
 
@@ -10261,31 +10631,35 @@ The midpoint is the centre of the range the price covered over the window, a mov
 The formula is as follows, per method:
 
 $$
-\text{"close":}\;\; \text{Midpoint} = \frac{\text{Highest Close}(\text{Window}) + \text{Lowest Close}(\text{Window})}{2}
+\text{Midpoint of the closes:}\;\; \text{Midpoint} = \frac{\text{Highest Close}(\text{Window}) + \text{Lowest Close}(\text{Window})}{2}
 $$
 
 $$
-\text{"high\_low":}\;\; \text{Midpoint Price} = \frac{\text{Highest High}(\text{Window}) + \text{Lowest Low}(\text{Window})}{2}
+\text{Midpoint price:}\;\; \text{Midpoint Price} = \frac{\text{Highest High}(\text{Window}) + \text{Lowest Low}(\text{Window})}{2}
 $$
-
-For more information, see the following sources:
-
-- Donchian, R.D. (1960). "Commodities: High Finance in Copper." Financial Analysts Journal, 16(6), 133-142.
-- Referenced against TA-Lib's MIDPOINT and MIDPRICE ([https://ta-lib.org/functions/midpoint.html](https://ta-lib.org/functions/midpoint.html){:target="_blank"}, [https://ta-lib.org/functions/midprice.html](https://ta-lib.org/functions/midprice.html){:target="_blank"}).
-- pandas-ta-classic: midpoint and midprice ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
 
 **Also known as:** MIDPOINT, midpoint over period, MIDPRICE, midpoint price, Donchian middle line.
 
+**References:**
+
+- paper | Donchian, R.D. (1960). "Commodities: High Finance in Copper." Financial Analysts Journal, 16(6), 133-142.
+- library | Referenced against TA-Lib's [MIDPOINT](https://ta-lib.org/functions/midpoint.html){:target="_blank"}
+- library | Referenced against TA-Lib's [MIDPRICE](https://ta-lib.org/functions/midprice.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [midpoint](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/midpoint.py#L12){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [midprice](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/midprice.py#L12){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted for
 dividends in the same way.
 - <u>window (int, optional):</u> The number of periods, including the current one. Defaults to 14.
-- <u>method (str, optional):</u> "close" for the midpoint of the closes (MIDPOINT) or "high_low"
-for that of the highs and lows (MIDPRICE). Defaults to "close".
+- <u>method (str, optional):</u> Options are: "close" (the midpoint of the closes, MIDPOINT), "high_low" (the
+midpoint of the highs and lows, MIDPRICE). Defaults to "close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the midpoint.
@@ -10311,8 +10685,8 @@ the midpoint for each asset in the Toolkit instance.
 - The midpoint agrees with TA-Lib's MIDPOINT and the midpoint price its MIDPRICE. The middle
 line of `get_donchian_channels` ends one period earlier, so it differs whenever the
 current period sets a new high or low.
-- If `growth` is set to True, the method calculates the growth of the midpoint using
-the specified `lag`.
+- When growth is requested, the method calculates the growth of the midpoint over
+the given lag.
 
 **As an example:**
 
@@ -10342,14 +10716,14 @@ Which returns:
 ---
 
 ## get_holt_winters_channel
-Calculate the Holt-Winters Channel for a given price series.
+Calculate the Holt-Winters Channel: bands a multiple of the smoothed standard deviation around the Holt-Winters Moving Average, which widen when the price strays from its trend.
 
 The channel draws bands around the Holt-Winters Moving Average at a multiple of an exponentially smoothed standard deviation of the close from the average. It widens when the price strays from its trend and narrows when it follows it, so a close outside the channel marks a move the trend does not explain.
 
 The formula is as follows:
 
 $$
-\text{Middle Band} = \text{HWMA} \;(\text{see} \;\text{get\_moving\_average} \;\text{with method} = \text{"holt\_winters"})
+\text{Middle Band} = \text{HWMA} \;(\text{the Holt-Winters Moving Average of} \;\text{get\_moving\_average})
 $$
 
 $$
@@ -10364,19 +10738,21 @@ $$
 \text{Lower Band} = \operatorname{HWMA}(t) - \text{Multiplier} \cdot \sqrt{\operatorname{Var}(t-1)}
 $$
 
-For more information, see the following sources:
-
-- Holt, C.C. (1957). "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages." ONR Memorandum 52, Carnegie Institute of Technology.
-- Winters, P.R. (1960). "Forecasting Sales by Exponentially Weighted Moving Averages." Management Science, 6(3), 324-342.
-- MQL5 Code Base: HWC ([https://www.mql5.com/en/code/20857](https://www.mql5.com/en/code/20857){:target="_blank"}).
-- Referenced against pandas-ta-classic's hwc ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** HWC, Holt-Winters channel, Holt-Winter channel.
+
+**References:**
+
+- paper | Holt, C.C. (1957). "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages." ONR Memorandum 52, Carnegie Institute of Technology.
+- paper | Winters, P.R. (1960). "Forecasting Sales by Exponentially Weighted Moving Averages." Management Science, 6(3), 324-342.
+- paper | MQL5 Code Base: HWC ([https://www.mql5.com/en/code/20857](https://www.mql5.com/en/code/20857){:target="_blank"}).
+- library | Referenced against pandas-ta-classic's [hwc](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/hwc.py#L75){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>level_smoothing (float, optional):</u> The smoothing factor of the level. Defaults to 0.2.
@@ -10411,8 +10787,8 @@ the channel for each asset in the Toolkit instance.
 to the period before, which holds the deviations up to two periods before, as in the
 MQL5 indicator. Since the average starts on the first close, the bands open from the
 fourth close on.
-- If `growth` is set to True, the method calculates the growth of the bands using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the bands over the
+given lag.
 
 **As an example:**
 
@@ -10442,7 +10818,7 @@ Which returns:
 ---
 
 ## get_gann_hilo_activator
-Calculate the Gann HiLo Activator for a given price series.
+Calculate the Gann HiLo Activator: a trailing stop drawn from a moving average of the lows in an uptrend and of the highs in a downtrend, which flips when the close crosses the other average.
 
 The HiLo Activator is a trailing stop drawn from a moving average of the highs and one of the lows. A close above the previous average of the highs turns the trend up, after which the line follows the average of the lows beneath the price; a close below the previous average of the lows turns it down, after which the line follows the average of the highs above the price. A close between the two averages keeps the trend, so the line only flips side on a clear break.
 
@@ -10460,17 +10836,19 @@ $$
 \text{HiLo Activator}(t) = \text{Low Average}(t) \;\text{when the trend is}\; 1,\;\; \text{High Average(} t \text{) when it is -1}
 $$
 
-For more information, see the following sources:
-
-- Krausz, R. (1998). "The New Gann Swing Chartist." Technical Analysis of Stocks & Commodities, 16(2).
-- pandas-ta-classic: hilo ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** HiLo, Gann HiLo, Gann HiLo Activator, HiLo Activator.
+
+**References:**
+
+- paper | Krausz, R. (1998). "The New Gann Swing Chartist." Technical Analysis of Stocks & Commodities, 16(2).
+- library | Shares similar logic as pandas-ta-classic's [hilo](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/hilo.py#L40){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted for
 dividends in the same way.
@@ -10506,8 +10884,8 @@ between the two averages instead, so the two are equal on every period with a cl
 beyond an average and differ on the others.
 - The defaults are those of pandas-ta-classic and TradingView (13 and 21 periods);
 Krausz used three-period averages of both.
-- If `growth` is set to True, the method calculates the growth of the activator using
-the specified `lag`.
+- When growth is requested, the method calculates the growth of the activator over
+the given lag.
 
 **As an example:**
 
@@ -10537,7 +10915,7 @@ Which returns:
 ---
 
 ## get_zigzag
-Calculate the Zig Zag for a given price series, as it is known on every period.
+Calculate the Zig Zag: the swing highs and lows of the prices, ignoring moves smaller than a threshold, which shows the trend's turning points.
 
 The Zig Zag filters out moves smaller than the sensitivity. It follows the highest high of a rising leg until the low falls the sensitivity below it, which confirms that high as a swing high and starts a falling leg from that low, and the lowest low of a falling leg until the high rises the sensitivity above it. Drawn on a chart, the lines between the confirmed swing highs and lows are the zig zag, which shows the waves of the market without the noise in between.
 
@@ -10553,17 +10931,19 @@ $$
 
 - A leg only turns once at least Minimum Trend Length periods have passed since its extreme
 
-For more information, see the following sources:
-
-- Merrill, A.A. (1977). "Filtered Waves: Basic Theory." Analysis Press.
-- Referenced against TA-Lib's ZIGZAG ([https://ta-lib.org/functions/zigzag.html](https://ta-lib.org/functions/zigzag.html){:target="_blank"}).
-
 **Also known as:** ZIGZAG, Zig Zag, swing filter, filtered waves.
+
+**References:**
+
+- paper | Merrill, A.A. (1977). "Filtered Waves: Basic Theory." Analysis Press.
+- library | Referenced against TA-Lib's [ZIGZAG](https://ta-lib.org/functions/zigzag.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted for
 dividends in the same way.
@@ -10604,8 +10984,8 @@ period the Trend Direction turns.
 - The first leg starts falling from the first low, as in TA-Lib, and the first
 `minimum_trend_length` periods are empty. A price equal to the extreme moves the pivot
 to the later period.
-- If `growth` is set to True, the method calculates the growth of the values using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the values over the
+given lag.
 
 **As an example:**
 
@@ -10635,7 +11015,7 @@ Which returns:
 ---
 
 ## get_volume_weighted_average_price
-Calculate the Volume Weighted Average Price (VWAP) for a given price series.
+Calculate the Volume Weighted Average Price (VWAP): the average price weighted by volume since an anchor date, the price at which most volume traded.
 
 The Volume Weighted Average Price (VWAP) weighs the typical price of each period by its traded volume over a rolling window, giving a more volume-informed view of the average price than a plain moving average.
 
@@ -10655,30 +11035,33 @@ $$
 
 The VWAP that trading desks use as an execution benchmark is calculated from the trades of a single session and resets every day. By default this method computes a rolling VWAP over several periods from the high, low, close and volume of each period, which works as a volume-weighted moving average. With an `anchor` the sums start at a fixed point instead: the first period ("all"), the start of every day, week, month, quarter or year (with intraday data and "daily" the session VWAP), or a date such as an earnings release or a market low, the anchored VWAP that shows the average price paid since that event.
 
-For more information, see the following sources:
-
-- Berkowitz, S.A., Logue, D.E., & Noser, E.A. Jr. (1988). "The Total Cost of Transactions on the NYSE." Journal of Finance, 43(1), 97-112.
-- Shannon, B. (2023). "Maximum Trading Gains With Anchored VWAP." Alphatrends Publishing.
-- Referenced against TA-Lib's VWAP ([https://ta-lib.org/functions/vwap.html](https://ta-lib.org/functions/vwap.html){:target="_blank"}).
-- pandas-ta-classic: vwap with an anchor ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: VWAP ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** VWAP, anchored VWAP, AVWAP, session VWAP, cumulative VWAP.
+
+**References:**
+
+- paper | Berkowitz, S.A., Logue, D.E., & Noser, E.A. Jr. (1988). "The Total Cost of Transactions on the NYSE." Journal of Finance, 43(1), 97-112.
+- paper | Shannon, B. (2023). "Maximum Trading Gains With Anchored VWAP." Alphatrends Publishing.
+- library | Referenced against TA-Lib's [VWAP](https://ta-lib.org/functions/vwap.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [vwap](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/overlap/vwap.py#L18){:target="_blank"}
+- library | Shares similar logic as finta's [VWAP](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L411){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
 - <u>window (int, optional):</u> Number of periods to consider for the VWAP.
 The number of periods (time intervals) over which to calculate the VWAP, when there is
 no anchor. Defaults to 14.
-- <u>anchor (str &#124; None, optional):</u> Where the sums start: "all" for the first period, "daily",
-"weekly", "monthly", "quarterly" or "yearly" for the start of every such period, or a
-date such as "2024-08-05" for the VWAP from that date on (empty before it). Defaults
-to None, which takes the rolling `window`.
+- <u>anchor (str &#124; None, optional):</u> Where the sums start. Options are: "all" (the first period),
+"daily" (the start of every day), "weekly" (the start of every week), "monthly" (the start of
+every month), "quarterly" (the start of every quarter), "yearly" (the start of every year), or a
+date such as "2024-08-05" for the VWAP from that date on (empty before it). Defaults to None,
+which takes the rolling `window`.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the VWAP.
@@ -10703,13 +11086,13 @@ Volume Weighted Average Price (VWAP) values.
 - The method retrieves historical data based on the specified `period` and calculates the
 VWAP for each asset in the Toolkit instance.
 - The VWAP is taken over a rolling `window` by default. TA-Lib's VWAP accumulates the
-typical price times volume from the first period on, which is `anchor="all"` here (equal
-to TA-Lib's VWAP), and pandas-ta-classic's vwap starts the sums at every calendar period
-of its anchor, which is `anchor="daily"`, "weekly", "monthly", "quarterly" or "yearly".
-- The anchor "all" starts on the first period of the price history the Toolkit loaded,
+typical price times volume from the first period on, which is the anchor of all periods here
+(equal to TA-Lib's VWAP), and pandas-ta-classic's vwap starts the sums at every calendar period
+of its anchor, which is the daily, weekly, monthly, quarterly or yearly anchor here.
+- The anchor of all periods starts on the first period of the price history the Toolkit loaded,
 which can be before `start_date`.
-- If `growth` is set to True, the method calculates the growth of the VWAP
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the VWAP
+over the given lag.
 
 **As an example:**
 
@@ -10740,7 +11123,7 @@ Which returns:
 ---
 
 ## get_parabolic_sar
-Calculate the Parabolic Stop and Reverse (SAR) for a given price series.
+Calculate the Parabolic Stop and Reverse (SAR): a trailing stop that speeds up as the trend extends and flips side when the price crosses it.
 
 The Parabolic SAR is a trend-following indicator that trails price action, flipping from below to above price (and vice versa) whenever the trend reverses. The acceleration factor increases as the trend extends, causing the SAR to converge towards price over time.
 
@@ -10760,18 +11143,22 @@ $$
 
 The extended parameters (separate acceleration factors for short trades, a start value and an offset on reverse) are those of TA-Lib's SAREXT; the defaults give Wilder's SAR.
 
-For more information, see the following sources:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Referenced against TA-Lib's SAR and SAREXT ([https://ta-lib.org/functions/sar.html](https://ta-lib.org/functions/sar.html){:target="_blank"}, [https://ta-lib.org/functions/sarext.html](https://ta-lib.org/functions/sarext.html){:target="_blank"}).
-- pandas-ta-classic: psar and sarext ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** Parabolic SAR, stop and reverse, PSAR, SAREXT, extended parabolic SAR.
+
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- library | Referenced against TA-Lib's [SAR](https://ta-lib.org/functions/sar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [SAREXT](https://ta-lib.org/functions/sarext.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [psar](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/psar.py#L73){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [sarext](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/sarext.py#L156){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>af_start (float, optional):</u> Initial acceleration factor. Defaults to 0.02.
@@ -10817,8 +11204,8 @@ Parabolic SAR for each asset in the Toolkit instance.
 its SAREXT for any acceleration factors, start value and offset on reverse. TA-Lib's
 SAREXT returns the SAR negated during a short trade to mark the direction; here it is
 always the price level.
-- If `growth` is set to True, the method calculates the growth of the Parabolic SAR
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Parabolic SAR
+over the given lag.
 
 **As an example:**
 
@@ -10848,55 +11235,59 @@ Which returns:
 ---
 
 ## get_pivot_points
-Calculate the Pivot Points for a given price series.
+Calculate the Pivot Points: the levels of support and resistance derived from the previous period's high, low and close.
 
 Pivot Points are calculated from the previous period's high, low and close prices and are used to identify potential support and resistance levels for the current period. The classic (floor trader) pivots are the default; the Fibonacci, Camarilla, Woodie and DeMark pivots place the levels differently, and the central pivot range adds a zone around the pivot point whose width reflects the previous period's range.
 
 The formula is as follows, with H, L, C and O the previous period's high, low, close and open:
 
 $$
-\text{"classic":}\;\; \text{Pivot Point} \;(P) = \frac{H + L + C}{3},\;\; \text{Resistance}\; 1 = 2 \cdot P - L,\;\; \text{Support}\; 1 = 2 \cdot P - H,\;\; \text{Resistance}\; 2 = P + (H - L),\;\; \text{Support}\; 2 = P - (H - L),\;\; \text{Resistance}\; 3 = H + 2 \cdot (P - L),\;\; \text{Support}\; 3 = L - 2 \cdot (H - P)
+\text{Classic:}\;\; \text{Pivot Point} \;(P) = \frac{H + L + C}{3},\;\; \text{Resistance}\; 1 = 2 \cdot P - L,\;\; \text{Support}\; 1 = 2 \cdot P - H,\;\; \text{Resistance}\; 2 = P + (H - L),\;\; \text{Support}\; 2 = P - (H - L),\;\; \text{Resistance}\; 3 = H + 2 \cdot (P - L),\;\; \text{Support}\; 3 = L - 2 \cdot (H - P)
 $$
 
 $$
-\text{"fibonacci":}\;\; P = \frac{H + L + C}{3},\;\; \text{Resistance}\; n = P + \text{Ratio} \cdot (H - L)\;\;\text{and}\;\; \text{Support}\; n = P - \text{Ratio} \cdot (H - L),\;\; \text{with the ratios 0.382, 0.618 and 1.0}
+\text{Fibonacci:}\;\; P = \frac{H + L + C}{3},\;\; \text{Resistance}\; n = P + \text{Ratio} \cdot (H - L)\;\;\text{and}\;\; \text{Support}\; n = P - \text{Ratio} \cdot (H - L),\;\; \text{with the ratios 0.382, 0.618 and 1.0}
 $$
 
 $$
-\text{"camarilla":}\;\; P = \frac{H + L + C}{3},\;\; \text{Resistance}\; n = C + \frac{(H - L) \cdot 1.1}{\text{Divisor}}\;\;\text{and}\;\; \text{Support}\; n = C - \frac{(H - L) \cdot 1.1}{\text{Divisor}},\;\; \text{with the divisors 12, 6, 4 and 2}
+\text{Camarilla:}\;\; P = \frac{H + L + C}{3},\;\; \text{Resistance}\; n = C + \frac{(H - L) \cdot 1.1}{\text{Divisor}}\;\;\text{and}\;\; \text{Support}\; n = C - \frac{(H - L) \cdot 1.1}{\text{Divisor}},\;\; \text{with the divisors 12, 6, 4 and 2}
 $$
 
 $$
-\text{"woodie":}\;\; P = \frac{H + L + 2 \cdot C}{4},\;\; \text{Resistance}\; 1 = 2 \cdot P - L,\;\; \text{Support}\; 1 = 2 \cdot P - H,\;\; \text{Resistance}\; 2 = P + (H - L),\;\; \text{Support}\; 2 = P - (H - L)
+\text{Woodie:}\;\; P = \frac{H + L + 2 \cdot C}{4},\;\; \text{Resistance}\; 1 = 2 \cdot P - L,\;\; \text{Support}\; 1 = 2 \cdot P - H,\;\; \text{Resistance}\; 2 = P + (H - L),\;\; \text{Support}\; 2 = P - (H - L)
 $$
 
 $$
-\text{"demark":}\;\; X = H + 2 \cdot L + C \;\text{when}\; C < O,\;\; 2 \cdot H + L + C \;\text{when}\; C > O \;\text{and}\; H + L + 2 \cdot C \;\text{otherwise};\;\; P = \frac{X}{4},\;\; \text{Resistance}\; 1 = \frac{X}{2} - L,\;\; \text{Support}\; 1 = \frac{X}{2} - H
+\text{DeMark:}\;\; X = H + 2 \cdot L + C \;\text{when}\; C < O,\;\; 2 \cdot H + L + C \;\text{when}\; C > O \;\text{and}\; H + L + 2 \cdot C \;\text{otherwise};\;\; P = \frac{X}{4},\;\; \text{Resistance}\; 1 = \frac{X}{2} - L,\;\; \text{Support}\; 1 = \frac{X}{2} - H
 $$
 
 $$
 \text{Central pivot range:}\;\; \text{Bottom Central Pivot} = \frac{H + L}{2},\;\; \text{Top Central Pivot} = 2 \cdot P - \text{Bottom Central Pivot}
 $$
 
-For more information, see the following sources:
-
-- Person, J.L. (2004). "A Complete Guide to Technical Trading Tactics." Wiley.
-- DeMark, T.R. (1994). "The New Science of Technical Analysis." Wiley.
-- Ochoa, F. (2010). "Secrets of a Pivot Boss: Revealing Proven Methods for Profiting in the Market." 311 Publishing.
-- Referenced against pandas-ta-classic's cpr of the classic, Fibonacci, Camarilla and Woodie pivots and the central pivot range ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: PIVOT and PIVOT_FIB ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** pivot points, floor trader pivots, Fibonacci pivots, Camarilla pivots, Woodie pivots, DeMark pivots, central pivot range, CPR.
+
+**References:**
+
+- paper | Person, J.L. (2004). "A Complete Guide to Technical Trading Tactics." Wiley.
+- paper | DeMark, T.R. (1994). "The New Science of Technical Analysis." Wiley.
+- paper | Ochoa, F. (2010). "Secrets of a Pivot Boss: Revealing Proven Methods for Profiting in the Market." 311 Publishing.
+- library | Referenced against pandas-ta-classic's [cpr](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/cpr.py#L76){:target="_blank"}
+- library | Shares similar logic as finta's [PIVOT](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1123){:target="_blank"}
+- library | Shares similar logic as finta's [PIVOT_FIB](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1162){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
-- <u>method (str, optional):</u> The pivots: "classic", "fibonacci", "camarilla", "woodie" or
-"demark". Defaults to "classic".
+- <u>method (str, optional):</u> The pivots. Options are: "classic" (classic floor pivots),
+"fibonacci" (Fibonacci pivots), "camarilla" (Camarilla pivots), "woodie" (Woodie's pivots),
+"demark" (DeMark's pivots). Defaults to "classic".
 - <u>central_pivot_range (bool, optional):</u> Whether to add the Top and Bottom Central Pivot.
 Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -10928,8 +11319,8 @@ Pivot Points for each asset in the Toolkit instance.
 pandas-ta-classic's cpr; the classic and Fibonacci pivots also agree with finta's PIVOT and
 PIVOT_FIB, which add a fourth level. The Woodie pivot weights the previous close twice,
 as in pandas-ta-classic; some charting packages take the current open instead.
-- If `growth` is set to True, the method calculates the growth of the Pivot Points
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Pivot Points
+over the given lag.
 
 **As an example:**
 
@@ -10961,7 +11352,7 @@ Which returns:
 ---
 
 ## get_support_resistance_levels
-Retrieves the support and resistance levels for the specified period and assets.
+Calculate the support and resistance levels: the prices at which the prices repeatedly stopped falling (support) or rising (resistance).
 
 The Support and Resistance Levels are price levels where the price tends to stop and reverse.
 
@@ -10993,19 +11384,21 @@ $$
 
 Where Close is the `close_column`, the Adj Close by default (the Close for intraday data).
 
-For more information, see the following sources:
-
-- Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-
 **Also known as:** support levels, resistance levels, pivot points.
+
+**References:**
+
+- paper | Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
 
 **Args:**
 
 - <u>sensitivity (float, optional):</u> The sensitivity parameter to determine the significance of the peaks
 and valleys. A higher sensitivity value will result in fewer support and resistance levels
 being identified. Defaults to 0.05.
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for calculating support and resistance levels.
@@ -11075,7 +11468,7 @@ Which returns:
 ---
 
 ## get_fibonacci_retracement_levels
-Calculate the Fibonacci Retracement Levels for a given price series.
+Calculate the Fibonacci Retracement Levels: the prices at the Fibonacci ratios of the range between the high and the low, where a pullback may find support or resistance.
 
 Fibonacci Retracement Levels are horizontal price levels, derived from ratios found in the Fibonacci sequence, that traders watch as potential support (during a pullback within an uptrend) or resistance (during a bounce within a downtrend) zones. For every date, the swing high and swing low are taken as the rolling maximum high and rolling minimum low over the specified `window`, and the retracement levels are derived from that high/low pair.
 
@@ -11093,19 +11486,20 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> The number of periods over which the rolling swing high
 (maximum) and swing low (minimum) are determined. Defaults to 14.
 - <u>levels (list[float] &#124; None, optional):</u> The Fibonacci ratios to calculate levels for.
 Defaults to the standard [0.0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0].
-- <u>trend (str, optional):</u> Whether to compute retracement levels for an "uptrend"
-(levels measured down from the high — the conventional direction, used when a
-prior move was up and price is now pulling back) or a "downtrend" (levels
-measured up from the low, used when a prior move was down and price is now
-bouncing). Defaults to "uptrend".
+- <u>trend (str, optional):</u> The direction of the prior move. Options are: "uptrend" (levels measured down
+from the high — the conventional direction, used when a prior move was up and price is now
+pulling back), "downtrend" (levels measured up from the low, used when a prior move was down and
+price is now bouncing). Defaults to "uptrend".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the retracement levels.
@@ -11146,8 +11540,8 @@ multi-column indicator in this module (e.g. Pivot Points' Resistance/Support lev
 indicator is a practitioner tool derived from the Fibonacci sequence's ratios rather
 than a published financial model. The standard textbook treatment is Murphy, J.J.
 (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-- If `growth` is set to True, the method calculates the growth of the retracement levels
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the retracement levels
+over the given lag.
 
 **As an example:**
 
@@ -11177,7 +11571,9 @@ Which returns:
 ---
 
 ## get_guppy_multiple_moving_averages
-Calculate Daryl Guppy's Multiple Moving Averages (GMMA) for a given price series, with the spreads of the two groups.
+Calculate Daryl Guppy's Multiple Moving Averages (GMMA), whose spread and order show the strength of the traders' and the investors' trend.
+
+They are a group of short and a group of long exponential moving averages, returned with the spreads of the two groups.
 
 The Guppy Multiple Moving Averages are two groups of Exponential Moving Averages: a short group of 3 to 15 periods that follows the traders, and a long group of 30 to 60 periods that follows the investors. A trend is up when the short group lies above the long group and down when it lies below, and a change of trend shows where the groups cross.
 
@@ -11205,17 +11601,19 @@ $$
 
 Guppy reads the spread within each group as the conviction of that group: a long group that widens confirms the trend, one that compresses warns that the investors are changing their minds, and a short group that compresses near the long group marks a pause in which the traders test the trend. The Group Spread is positive when the short group lies above the long group, and its sign changes where the groups cross.
 
-For more information, see the following sources:
-
-- Guppy, D. (2004). "Trend Trading: A Seven-Step Approach to Success." Wiley.
-- Referenced against TTR's GMMA ([https://cran.r-project.org/package=TTR](https://cran.r-project.org/package=TTR){:target="_blank"}).
-
 **Also known as:** GMMA, Guppy multiple moving average, Guppy ribbons.
+
+**References:**
+
+- paper | Guppy, D. (2004). "Trend Trading: A Seven-Step Approach to Success." Wiley.
+- library | Referenced against TTR (R)'s [GMMA](https://github.com/joshuaulrich/TTR/blob/v0.24.4/R/GMMA.R#L55){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>short_windows (list[int] &#124; None, optional):</u> The windows of the short group. Defaults to
@@ -11246,11 +11644,11 @@ price units.
 
 - The method retrieves historical data based on the specified `period` and calculates the
 averages for each asset in the Toolkit instance.
-- The averages are those of `get_moving_average` with method="exponential", seeded with the
+- The averages are the exponential moving averages of `get_moving_average`, seeded with the
 simple average of their first `n` prices, and equal TTR's GMMA. The spreads start once
 every average of their groups has started; TTR's GMMA returns the averages only.
-- If `growth` is set to True, the method calculates the growth of the averages using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the averages over the
+given lag.
 
 **As an example:**
 
@@ -11282,7 +11680,9 @@ Which returns:
 ---
 
 ## get_candlestick_patterns
-Recognise 62 classic candlestick patterns in every ticker's candles, with the definitions of TA-Lib's CDL functions. Candlestick charting reads the open, high, low and close of a period as one candle: the real body between the open and the close and the shadows up to the high and down to the low. Certain shapes and sequences are read as a sign that a move is ending or continuing.
+Recognise 62 classic candlestick patterns in every ticker's candles: the shapes of one to five candles that traders read as a reversal or a continuation of the trend.
+
+Candlestick charting reads the open, high, low and close of a period as one candle: the real body between the open and the close and the shadows up to the high and down to the low. Certain shapes and sequences are read as a sign that a move is ending or continuing.
 
 Each pattern is 1 on the candle that completes it as a bullish pattern, -1 as a bearish pattern and 0 otherwise (TA-Lib's +100 and -100 divided by 100). The weaker engulfing, harami and harami cross, where one end of the two real bodies is equal, are 0.8 and -0.8 (TA-Lib's 80). The dojis (doji, dragonfly, gravestone and long-legged doji, rickshaw man and takuri) are indecision rather than a direction and are 1 when present; a marubozu, a spinning top, a belt-hold, a closing marubozu, a high-wave, long line and short line candle and an inside bar take the colour of the candle (1 white, -1 black). A hikkake and a modified hikkake are 1 or -1 on the candle that completes them and 2 or -2 on the later candle that confirms them (TA-Lib's +200 and -200 divided by 100, like every other value).
 
@@ -11336,20 +11736,82 @@ The patterns:
 
 Sizes are relative to the ticker's own recent candles, as in TA-Lib: a real body is long (short) when it is longer (shorter) than the average real body of the 10 previous candles, a doji's body is at most 10% and a very short shadow less than 10% of their average high-low range, a short shadow is shorter than their average shadow (half the average sum of both shadows), a long shadow is longer than the candle's own real body and a very long shadow longer than twice that body, "near" is within 20% and "far" at least 60% of the average high-low range of the 5 previous candles, and two prices are the same ("equal") when they are within 5% of that range.
 
-For more information, see the following sources:
-
-- Nison, S. (1991). "Japanese Candlestick Charting Techniques." New York Institute of Finance.
-- Bulkowski, T.N. (2008). "Encyclopedia of Candlestick Charts." Wiley.
-- Chesler, D. (2004). "Trading False Moves with the Hikkake Pattern." Active Trader, April 2004.
-- Referenced against TA-Lib's CDL functions ([https://ta-lib.org/functions/](https://ta-lib.org/functions/){:target="_blank"}).
-- pandas-ta-classic: cdl_inside, for the inside bar ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** candlestick patterns, candle patterns, CDL, Japanese candlesticks, belt hold, dragonfly doji, gravestone doji, long-legged doji, rickshaw man, takuri, high wave, inside bar, counterattack lines, meeting lines, doji star, harami cross, homing pigeon, in neck, on neck, thrusting line, kicker, matching low, separating lines, three inside up, three inside down, three outside up, three outside down, morning doji star, evening doji star, two crows, three stars in the south, abandoned baby, advance block, deliberation, stalled pattern, upside gap side-by-side white lines, downside gap side-by-side white lines, identical three crows, stick sandwich, upside tasuki gap, downside tasuki gap, tri star, unique three river bottom, upside gap two crows, upside gap three methods, downside gap three methods, three line strike, concealing baby swallow, breakaway, ladder bottom, mat hold, rising three methods, falling three methods, hikkake, modified hikkake.
+
+**References:**
+
+- paper | Nison, S. (1991). "Japanese Candlestick Charting Techniques." New York Institute of Finance.
+- paper | Bulkowski, T.N. (2008). "Encyclopedia of Candlestick Charts." Wiley.
+- paper | Chesler, D. (2004). "Trading False Moves with the Hikkake Pattern." Active Trader, April 2004.
+- library | Referenced against TA-Lib's [CDL2CROWS](https://ta-lib.org/functions/cdl2crows.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDL3BLACKCROWS](https://ta-lib.org/functions/cdl3blackcrows.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDL3INSIDE](https://ta-lib.org/functions/cdl3inside.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDL3LINESTRIKE](https://ta-lib.org/functions/cdl3linestrike.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDL3OUTSIDE](https://ta-lib.org/functions/cdl3outside.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDL3STARSINSOUTH](https://ta-lib.org/functions/cdl3starsinsouth.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDL3WHITESOLDIERS](https://ta-lib.org/functions/cdl3whitesoldiers.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLABANDONEDBABY](https://ta-lib.org/functions/cdlabandonedbaby.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLADVANCEBLOCK](https://ta-lib.org/functions/cdladvanceblock.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLBELTHOLD](https://ta-lib.org/functions/cdlbelthold.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLBREAKAWAY](https://ta-lib.org/functions/cdlbreakaway.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLCLOSINGMARUBOZU](https://ta-lib.org/functions/cdlclosingmarubozu.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLCONCEALBABYSWALL](https://ta-lib.org/functions/cdlconcealbabyswall.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLCOUNTERATTACK](https://ta-lib.org/functions/cdlcounterattack.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLDARKCLOUDCOVER](https://ta-lib.org/functions/cdldarkcloudcover.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLDOJI](https://ta-lib.org/functions/cdldoji.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLDOJISTAR](https://ta-lib.org/functions/cdldojistar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLDRAGONFLYDOJI](https://ta-lib.org/functions/cdldragonflydoji.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLENGULFING](https://ta-lib.org/functions/cdlengulfing.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLEVENINGDOJISTAR](https://ta-lib.org/functions/cdleveningdojistar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLEVENINGSTAR](https://ta-lib.org/functions/cdleveningstar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLGAPSIDESIDEWHITE](https://ta-lib.org/functions/cdlgapsidesidewhite.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLGRAVESTONEDOJI](https://ta-lib.org/functions/cdlgravestonedoji.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHAMMER](https://ta-lib.org/functions/cdlhammer.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHANGINGMAN](https://ta-lib.org/functions/cdlhangingman.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHARAMI](https://ta-lib.org/functions/cdlharami.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHARAMICROSS](https://ta-lib.org/functions/cdlharamicross.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHIGHWAVE](https://ta-lib.org/functions/cdlhighwave.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHIKKAKE](https://ta-lib.org/functions/cdlhikkake.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHIKKAKEMOD](https://ta-lib.org/functions/cdlhikkakemod.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLHOMINGPIGEON](https://ta-lib.org/functions/cdlhomingpigeon.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLIDENTICAL3CROWS](https://ta-lib.org/functions/cdlidentical3crows.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLINNECK](https://ta-lib.org/functions/cdlinneck.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLINVERTEDHAMMER](https://ta-lib.org/functions/cdlinvertedhammer.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLKICKING](https://ta-lib.org/functions/cdlkicking.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLKICKINGBYLENGTH](https://ta-lib.org/functions/cdlkickingbylength.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLLADDERBOTTOM](https://ta-lib.org/functions/cdlladderbottom.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLLONGLEGGEDDOJI](https://ta-lib.org/functions/cdllongleggeddoji.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLLONGLINE](https://ta-lib.org/functions/cdllongline.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLMARUBOZU](https://ta-lib.org/functions/cdlmarubozu.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLMATCHINGLOW](https://ta-lib.org/functions/cdlmatchinglow.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLMATHOLD](https://ta-lib.org/functions/cdlmathold.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLMORNINGDOJISTAR](https://ta-lib.org/functions/cdlmorningdojistar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLMORNINGSTAR](https://ta-lib.org/functions/cdlmorningstar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLONNECK](https://ta-lib.org/functions/cdlonneck.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLPIERCING](https://ta-lib.org/functions/cdlpiercing.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLRICKSHAWMAN](https://ta-lib.org/functions/cdlrickshawman.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLRISEFALL3METHODS](https://ta-lib.org/functions/cdlrisefall3methods.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLSEPARATINGLINES](https://ta-lib.org/functions/cdlseparatinglines.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLSHOOTINGSTAR](https://ta-lib.org/functions/cdlshootingstar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLSHORTLINE](https://ta-lib.org/functions/cdlshortline.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLSPINNINGTOP](https://ta-lib.org/functions/cdlspinningtop.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLSTALLEDPATTERN](https://ta-lib.org/functions/cdlstalledpattern.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLSTICKSANDWICH](https://ta-lib.org/functions/cdlsticksandwich.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLTAKURI](https://ta-lib.org/functions/cdltakuri.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLTASUKIGAP](https://ta-lib.org/functions/cdltasukigap.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLTHRUSTING](https://ta-lib.org/functions/cdlthrusting.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLTRISTAR](https://ta-lib.org/functions/cdltristar.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLUNIQUE3RIVER](https://ta-lib.org/functions/cdlunique3river.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLUPSIDEGAP2CROWS](https://ta-lib.org/functions/cdlupsidegap2crows.html){:target="_blank"}
+- library | Referenced against TA-Lib's [CDLXSIDEGAP3METHODS](https://ta-lib.org/functions/cdlxsidegap3methods.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [cdl_inside](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/candles/cdl_inside.py#L11){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way, so an ex-dividend day doesn't read as a gap. "Close"
@@ -11426,7 +11888,9 @@ Which returns:
 ---
 
 ## get_heikin_ashi
-Calculate the Heikin-Ashi ("average bar") candles of every ticker. Each candle averages the prices of its period, and its open is the midpoint of the previous Heikin-Ashi candle's body, so the candles smooth out the noise of single periods: a trend shows as a run of candles of one colour, often without a shadow on the side of the open, and a small body with long shadows on both sides hints at a turn.
+Calculate the Heikin-Ashi ("average bar") candles of every ticker: candles built from two-period averages, which smooth the noise so the trend stands out.
+
+Each candle averages the prices of its period, and its open is the midpoint of the previous Heikin-Ashi candle's body, so the candles smooth out the noise of single periods: a trend shows as a run of candles of one colour, often without a shadow on the side of the open, and a small body with long shadows on both sides hints at a turn.
 
 The formula is as follows:
 
@@ -11448,18 +11912,20 @@ $$
 
 The HA Open is an exponential average of the previous HA Closes with a smoothing factor of 1/2.
 
-For more information, see the following sources:
-
-- Valcu, D. (2004). "Using the Heikin-Ashi Technique." Technical Analysis of Stocks & Commodities, 22(2).
-- Referenced against TA-Lib's HA ([https://ta-lib.org/functions/](https://ta-lib.org/functions/){:target="_blank"}).
-- pandas-ta-classic: ha ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** Heikin-Ashi, Heikin Ashi, Heiken Ashi, HA candles, average bar.
+
+**References:**
+
+- paper | Valcu, D. (2004). "Using the Heikin-Ashi Technique." Technical Analysis of Stocks & Commodities, 22(2).
+- library | Referenced against TA-Lib's [HA](https://ta-lib.org/functions/ha.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [ha](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/candles/ha.py#L25){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way. "Close" uses the candles as traded (split-adjusted).
@@ -11514,7 +11980,9 @@ Which returns:
 ---
 
 ## get_williams_fractal
-Mark Bill Williams' fractals in every ticker's prices: an up fractal is a high above the highs of the two bars before and the two bars after it, a down fractal a low below their lows. They mark the swing highs and lows of a market; Williams buys a break above the last up fractal and sells a break below the last down fractal.
+Mark Bill Williams' fractals in every ticker's prices: an up fractal is a high above the highs of the two bars before and the two bars after it, a down fractal a low below their lows.
+
+They mark the swing highs and lows of a market; Williams buys a break above the last up fractal and sells a break below the last down fractal.
 
 A fractal needs the bars after it, so it is only known `right_bars` periods later. It is therefore marked on the bar that confirms it, two periods after the high or low with the defaults, and never on the bar of the high or low itself: the value on a date only uses the prices up to that date, so it can be used in a backtest as it is. The fractal's price is the High (Low) `right_bars` periods before the marked date.
 
@@ -11528,18 +11996,20 @@ $$
 \text{Down Fractal} \;(t) = 1 \;\text{if Low} \;(t - \text{right\_bars}) < \text{every other Low from}\; t - \text{left\_bars} - \text{right\_bars} \;\text{to}\; t,\;\; \text{else 0}
 $$
 
-For more information, see the following sources:
-
-- Williams, B.M. (1995). "Trading Chaos: Applying Expert Techniques to Maximize Your Profits." Wiley.
-- Referenced against TA-Lib's FRACTAL ([https://ta-lib.org/functions/](https://ta-lib.org/functions/){:target="_blank"}).
-- finta: WILLIAMS_FRACTAL ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** Williams Fractal, fractals, swing high, swing low, FRACTAL.
+
+**References:**
+
+- paper | Williams, B.M. (1995). "Trading Chaos: Applying Expert Techniques to Maximize Your Profits." Wiley.
+- library | Referenced against TA-Lib's [FRACTAL](https://ta-lib.org/functions/fractal.html){:target="_blank"}
+- library | Shares similar logic as finta's [WILLIAMS_FRACTAL](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L2205){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted for
 dividends in the same way. "Close" uses the prices as traded (split-adjusted).
@@ -11597,7 +12067,9 @@ Which returns:
 ---
 
 ## get_td_sequential
-Count Tom DeMark's TD Sequential for every ticker: the TD Setup of nine closes in a row beyond the close four bars earlier, and the TD Countdown to 13 that follows it. DeMark designed it to find where a trend exhausts itself: a completed buy setup (nine lower closes) and above all a completed buy countdown (13) point to a low, a completed sell setup and countdown to a high.
+Count Tom DeMark's TD Sequential for every ticker: the TD Setup of nine closes in a row beyond the close four bars earlier, and the TD Countdown to 13 that follows it.
+
+DeMark designed it to find where a trend exhausts itself: a completed buy setup (nine lower closes) and above all a completed buy countdown (13) point to a low, a completed sell setup and countdown to a high.
 
 The rules are DeMark's:
 
@@ -11606,20 +12078,22 @@ The rules are DeMark's:
 - TD Buy Countdown: starts on the bar that completes a buy setup and counts every bar, not necessarily in a row, that closes at or below the low two bars earlier, up to 13. The 13th bar also needs a low at or below the close of the eighth countdown bar, else the countdown waits at 12. The TD Sell Countdown counts closes at or above the high two bars earlier, its 13th bar a high at or above the close of the eighth.
 - Cancellation: a buy countdown ends when a sell setup completes (which starts the sell countdown) or when a close rises above the TDST level of its setup, the highest true high (the high, or the previous close when higher) of its nine bars; a sell countdown ends on a completed buy setup or a close below the lowest true low of its setup.
 
-For more information, see the following sources:
-
-- DeMark, T.R. (1994). "The New Science of Technical Analysis." Wiley.
-- Perl, J. (2008). "DeMark Indicators." Bloomberg Press.
-- Referenced against pandas-ta-classic's td_seq ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}), which counts the setup only.
-
 TD Sequential, TD Setup, TD Countdown and TDST are Tom DeMark's names for his indicator and its parts.
 
 **Also known as:** TD Sequential, DeMark Sequential, Tom DeMark, TD Setup, TD Countdown, TDST, TD9, TD13, DeMark 9 13, td_seq.
 
+**References:**
+
+- paper | DeMark, T.R. (1994). "The New Science of Technical Analysis." Wiley.
+- paper | Perl, J. (2008). "DeMark Indicators." Bloomberg Press.
+- library | Referenced against pandas-ta-classic's [td_seq](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/td_seq.py#L31){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted for
 dividends in the same way. "Close" uses the prices as traded (split-adjusted).
@@ -11644,6 +12118,7 @@ earlier, also one without a price flip before it, and continues past 9 up to 13;
 bars of a setup that starts on a flip, its counts 1 to 9 are the same as here.
 - The counts carry over from the ticker's own first bar, so the first setups after the
 Toolkit's start date depend on where the history starts; the first four bars are empty.
+- pandas-ta-classic's td_seq counts the TD Setup only.
 
 **As an example:**
 
@@ -11675,7 +12150,9 @@ Which returns:
 ---
 
 ## get_liquidity_sweep
-Mark the liquidity sweeps in every ticker's candles: a candle that trades through the lowest low (or highest high) of the previous 15 bars, where stop orders tend to rest, and closes back inside with a long wick. Traders read it as a stop hunt that has run its course, so a sweep below the lows (bullish) hints at a move up and a sweep above the highs (bearish) at a move down.
+Mark the liquidity sweeps in every ticker's candles: a candle that trades through the lowest low (or highest high) of the previous 15 bars, where stop orders tend to rest, and closes back inside with a long wick.
+
+Traders read it as a stop hunt that has run its course, so a sweep below the lows (bullish) hints at a move up and a sweep above the highs (bearish) at a move down.
 
 The formula is as follows:
 
@@ -11691,16 +12168,18 @@ The real body is &#124;Close - Open&#124;, the lower shadow runs from the bottom
 
 The liquidity sweep (or stop hunt) is a pattern defined by the ICT (Inner Circle Trader) and Smart Money Concepts community, without a primary publication. The measurable form with a swing over the previous 15 bars and a wick longer than 1.5 times the body is pandas-ta-classic's.
 
-For more information, see the following sources:
-
-- Referenced against pandas-ta-classic's smc_sweep ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** liquidity sweep, liquidity grab, stop hunt, stop run, smart money concepts, SMC, ICT, swing failure, smc_sweep.
+
+**References:**
+
+- library | Referenced against pandas-ta-classic's [smc_sweep](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/smc_sweep.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way. "Close" uses the candles as traded (split-adjusted).
@@ -11756,7 +12235,9 @@ Which returns:
 ---
 
 ## get_signals
-Turn the moving averages, the MACD, the RSI, the Bollinger Bands and new highs and lows into the events traders act on: the period a line is crossed. The indicators themselves are available as `get_moving_average`, `get_moving_average_convergence_divergence`, `get_relative_strength_index` and `get_bollinger_bands`, and give the same values.
+Turn moving averages, the MACD, the RSI, the Bollinger Bands and new highs and lows into the events traders act on: the period a line is crossed.
+
+The indicators themselves are available as `get_moving_average`, `get_moving_average_convergence_divergence`, `get_relative_strength_index` and `get_bollinger_bands`, and give the same values.
 
 Every signal is 1 on the period a line is crossed upwards, -1 on the period it is crossed downwards and 0 otherwise:
 
@@ -11768,20 +12249,22 @@ Every signal is 1 on the period a line is crossed upwards, -1 on the period it i
 - Lower Bollinger Band: the price recovering above (1) or breaking down below (-1) the lower band.
 - New High/Low: a close above every close of the previous `high_low_window` periods (1), a 52-week high with daily prices by default, or below every one of them (-1).
 
-For more information, see the following books and papers:
-
-- Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-- Appel, G. (1979). "The Moving Average Convergence-Divergence Trading Method." Signalert Corp.
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Bollinger, J. (2001). "Bollinger on Bollinger Bands." McGraw-Hill.
-- Brock, W., Lakonishok, J., and LeBaron, B. (1992). "Simple Technical Trading Rules and the Stochastic Properties of Stock Returns." The Journal of Finance, 47(5), 1731-1764.
-
 **Also known as:** trading signals, golden cross, death cross, crossovers, breakouts, MACD crossover, RSI signal, 52-week high, new high.
+
+**References:**
+
+- paper | Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
+- paper | Appel, G. (1979). "The Moving Average Convergence-Divergence Trading Method." Signalert Corp.
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- paper | Bollinger, J. (2001). "Bollinger on Bollinger Bands." McGraw-Hill.
+- paper | Brock, W., Lakonishok, J., and LeBaron, B. (1992). "Simple Technical Trading Rules and the Stochastic Properties of Stock Returns." The Journal of Finance, 47(5), 1731-1764.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>short_window (int, optional):</u> The window of the short moving average. Defaults to 50.
@@ -11851,7 +12334,9 @@ Which returns:
 ---
 
 ## get_indicator_summary
-Summarise the history of a technical indicator per ticker in a single row instead of the series itself: where the latest value ranks in its own history, the lowest and highest value with their dates, how many periods the indicator spent below or above a threshold, when it last crossed into that zone and how the price did afterwards. This answers questions such as "how oversold is the RSI compared with the last five years, and what happened after the previous times it fell below 30?" without the thousands of daily values behind it.
+Summarise the history of a technical indicator per ticker in a single row instead of the series itself.
+
+The row holds where the latest value ranks in its own history, the lowest and highest value with their dates, how many periods the indicator spent below or above a threshold, when it last crossed into that zone and how the price did afterwards. This answers questions such as "how oversold is the RSI compared with the last five years, and what happened after the previous times it fell below 30?" without the thousands of daily values behind it.
 
 Each value is ranked against its own history up to that date, so the percentile of a crossing in the past only uses the values known at that time:
 
@@ -11869,12 +12354,12 @@ $$
 
 A crossing below `below` is the period the indicator falls below the line, entering the zone, and a crossing above `above` the period it rises above the line (the same crossings as `get_signals`). The average forward return after the crossings is shown next to the average forward return over every period, so the effect of the signal can be read against the drift of the share itself.
 
-For more information, see the following books:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
-
 **Also known as:** indicator statistics, indicator percentile, oversold history, event study, forward returns after a signal, RSI below 30.
+
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- paper | Murphy, J.J. (1999). "Technical Analysis of the Financial Markets." New York Institute of Finance.
 
 **Args:**
 
@@ -11921,7 +12406,7 @@ listed without a return and left out of the averages.
 - Crossings close together overlap in their forward returns, so a handful of
 crossings says little about the signal in general.
 - The returns are measured over the periods of the indicator: trading days by
-default, weeks with period="weekly".
+default, weeks for weekly periods.
 
 **As an example:**
 
@@ -11967,20 +12452,22 @@ Which returns:
 ---
 
 ## get_seasonality
-Calculate the seasonality of every ticker's returns: the average return per calendar month (from monthly returns) or per day of the week (from daily returns), with the median, the hit rate (the share of positive returns), the t-statistic of the average and the number of observations. Well-known examples are the January effect and the "sell in May" pattern. A pattern needs many years and a t-statistic well above 2 before it says much, and even then it can fade once it is widely traded on.
+Calculate the seasonality of every ticker's returns: the average return per calendar month or per day of the week.
+
+Monthly returns give the months and daily returns the days of the week, each with the median, the hit rate (the share of positive returns), the t-statistic of the average and the number of observations. Well-known examples are the January effect and the "sell in May" pattern. A pattern needs many years and a t-statistic well above 2 before it says much, and even then it can fade once it is widely traded on.
 
 A monthly return runs from one month's last close to the next, so a final month that is not complete yet (an end date before that month's last business day, as with the default end date of today) is left out rather than averaged as a full month. The Benchmark is included as a ticker, so its seasonality is there to compare with; a Portfolio is left out.
 
-For more information, see the following paper:
-
-- Heston, S.L. and Sadka, R. (2008). "Seasonality in the Cross-Section of Stock Returns." Journal of Financial Economics, 87(2), 418-445.
-
 **Also known as:** seasonality, monthly seasonality, day of the week effect, January effect, calendar anomalies.
+
+**References:**
+
+- paper | Heston, S.L. and Sadka, R. (2008). "Seasonality in the Cross-Section of Stock Returns." Journal of Financial Economics, 87(2), 418-445.
 
 **Args:**
 
-- <u>frequency (str, optional):</u> "month" (per calendar month) or "weekday" (per day of
-the week). Defaults to "month".
+- <u>frequency (str, optional):</u> Options are: "month" (per calendar month), "weekday" (per day of the
+week). Defaults to "month".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -12032,24 +12519,27 @@ Which returns:
 ---
 
 ## get_relative_strength
-Calculate the relative strength of every ticker against the Benchmark and against the other tickers. Relative strength investing buys what has been outperforming, the momentum effect that has held across markets and decades.
+Calculate the relative strength of every ticker against the Benchmark and against the other tickers: which tickers outperform and by how much.
+
+Relative strength investing buys what has been outperforming, the momentum effect that has held across markets and decades.
 
 - Relative Strength: the price divided by the Benchmark's, set to 1 on the first date. It rises while the ticker outperforms the Benchmark.
 - Mansfield Relative Strength: the relative strength against its own moving average (of `window` periods, a year by default) minus 1. Above zero the ticker is gaining on the Benchmark.
-- Relative Strength Rating: the ticker's performance over the last year, the last quarter weighing most (the 3, 6, 9 and 12-month returns weighted 0.4, 0.2, 0.2 and 0.2), ranked against the other tickers from 1 (weakest) to 99 (strongest), from daily prices. Investor's Business Daily publishes the original rating with a proprietary formula; this weighting is its common public approximation. Tickers with the same score share the highest rank among them, so the rating reads as the share of the other tickers outperformed or matched and tied leaders both rate 99. It needs many tickers to be meaningful, such as the constituents of an index (see `Discovery.get_index_constituents`, whose `date=` gives the members on a past date; today's members leave out the companies removed from the index since).
-
-For more information, see the following papers and books:
-
-- Jegadeesh, N. and Titman, S. (1993). "Returns to Buying Winners and Selling Losers: Implications for Stock Market Efficiency." The Journal of Finance, 48(1), 65-91.
-- Weinstein, S. (1988). "Stan Weinstein's Secrets for Profiting in Bull and Bear Markets." Dow Jones-Irwin.
-- O'Neil, W.J. (1988). "How to Make Money in Stocks." McGraw-Hill.
+- Relative Strength Rating: the ticker's performance over the last year, the last quarter weighing most (the 3, 6, 9 and 12-month returns weighted 0.4, 0.2, 0.2 and 0.2), ranked against the other tickers from 1 (weakest) to 99 (strongest), from daily prices. Investor's Business Daily publishes the original rating with a proprietary formula; this weighting is its common public approximation. Tickers with the same score share the highest rank among them, so the rating reads as the share of the other tickers outperformed or matched and tied leaders both rate 99. It needs many tickers to be meaningful, such as the constituents of an index (see `Discovery.get_index_constituents`, whose date argument gives the members on a past date; today's members leave out the companies removed from the index since).
 
 **Also known as:** relative strength, price relative, Mansfield relative strength, RS rating, relative performance.
 
+**References:**
+
+- paper | Jegadeesh, N. and Titman, S. (1993). "Returns to Buying Winners and Selling Losers: Implications for Stock Market Efficiency." The Journal of Finance, 48(1), 65-91.
+- paper | Weinstein, S. (1988). "Stan Weinstein's Secrets for Profiting in Bull and Bear Markets." Dow Jones-Irwin.
+- paper | O'Neil, W.J. (1988). "How to Make Money in Stocks." McGraw-Hill.
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are: "daily" (daily
+prices), "weekly" (weekly prices), "monthly" (monthly prices), "quarterly" (quarterly prices),
+"yearly" (yearly prices). Defaults to "daily".
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
 - <u>window (int &#124; None, optional):</u> The moving average window of the Mansfield relative
@@ -12098,12 +12588,14 @@ Which returns:
 ---
 
 ## collect_volatility_indicators
-Calculates and collects various volatility indicators based on the provided data.
+Collect the volatility indicators of every ticker in one table: how widely the prices move and the bands and channels around them.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>window (int, optional):</u> The window size for calculating indicators.
 Defaults to 14. The Bollinger Bands and their %B and BandWidth keep their own
 window of 20 periods (with 2 standard deviations), as defined by Bollinger, and
@@ -12135,8 +12627,8 @@ pd.Series or pd.DataFrame: Volatility indicators calculated based on the specifi
 - The method calculates several volatility-based indicators for each asset in the Toolkit instance.
 - The Standard Deviation Channel is left out: it is fitted over the whole date range at
 once, so its values depend on later prices.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -12170,13 +12662,13 @@ Which returns:
 ---
 
 ## get_bollinger_bands
-Calculate the Bollinger Bands for a given price series, or with method="price_bands" the Price Bands.
+Calculate the Bollinger Bands or the Price Bands: bands around a moving average, a number of standard deviations wide, which show how high or low the price is relative to its recent volatility.
 
 Bollinger Bands are a volatility indicator that consists of three lines: an upper band, a middle band (simple moving average), and a lower band. The upper and lower bands are calculated as the moving average plus and minus a specified number of standard deviations, respectively.
 
 Price Bands are a variant of the Bollinger Bands whose width comes from the distance between the moving average and a fast moving average of the price, rather than from the distance between the price and the moving average. The fast average filters out the noise of single periods, so a spike widens the bands less than it widens the Bollinger Bands, and the bands react to sustained moves away from the average instead.
 
-The formula for method="standard" is as follows:
+The formula for the Bollinger Bands is as follows:
 
 $$
 \text{Middle Band} = \operatorname{SMA}(\text{Close},\; \text{Window}),\;\; \text{or another moving average with moving\_average}
@@ -12190,14 +12682,14 @@ $$
 \text{Lower Band} = \text{Middle Band} - (\text{Num Std Dev} \cdot \text{Std Dev})
 $$
 
-The formula for method="price_bands" is as follows:
+The formula for the Price Bands is as follows:
 
 $$
 \text{Middle Band} = \operatorname{SMA}(\text{Close},\; \text{window}),\;\; \text{or another moving average with moving\_average}
 $$
 
 $$
-\text{Deviation} = \text{Middle Band} - \operatorname{SMA}(\text{Close},\; \text{fast\_window})
+\text{Deviation} = \text{Middle Band} - \operatorname{SMA}(\text{Close},\; \text{short\_window})
 $$
 
 $$
@@ -12216,19 +12708,22 @@ The standard deviation is the *population* standard deviation (dividing by n), a
 
 The band width tracks volatility: bands that narrow sharply (a squeeze) often precede a larger move, without saying in which direction. A close at or beyond a band is not a sell or buy signal by itself, since prices can walk along a band in a trend. The defaults are Bollinger's own setting, a 20-period average with 2 standard deviations, as on most charting platforms. The Price Bands are read the same way, but since their width follows the smoothed price, they are narrower than the Bollinger Bands of the same window and a close outside them is more common.
 
-For more information, see the following sources:
-
-- Bollinger, J. (2001). "Bollinger on Bollinger Bands." McGraw-Hill.
-- Referenced against TA-Lib's BBANDS ([https://ta-lib.org/functions/bbands.html](https://ta-lib.org/functions/bbands.html){:target="_blank"}).
-- pandas-ta-classic: bbands ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- The Price Bands are defined by Brian G. Peterson in TTR's PBands, after the bands of Bollinger (2001), and referenced against TTR's PBands ([https://cran.r-project.org/package=TTR](https://cran.r-project.org/package=TTR){:target="_blank"}).
-
 **Also known as:** Bollinger Bands, BB, volatility bands, price channels, PBands, price bands, smoothed Bollinger Bands.
+
+**References:**
+
+- paper | Bollinger, J. (2001). "Bollinger on Bollinger Bands." McGraw-Hill.
+- paper | The Price Bands are defined by Brian G. Peterson in TTR's PBands, after the bands of Bollinger (2001), and referenced against TTR's PBands ([https://cran.r-project.org/package=TTR](https://cran.r-project.org/package=TTR){:target="_blank"}).
+- library | Referenced against TA-Lib's [BBANDS](https://ta-lib.org/functions/bbands.html){:target="_blank"}
+- library | Referenced against TTR (R)'s [PBands](https://github.com/joshuaulrich/TTR/blob/v0.24.4/R/priceBands.R#L68){:target="_blank"} (Price Bands)
+- library | Shares similar logic as pandas-ta-classic's [bbands](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/bbands.py#L48){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for moving average calculation.
@@ -12238,13 +12733,18 @@ and the standard deviation. Defaults to 20, as in TTR's PBands.
 Defaults to 2.
 - <u>moving_average (str, optional):</u> The moving average of the middle band (and, with
 method="price_bands", of the fast average), one of the window-only methods of
-`get_moving_average`: "simple", "exponential", "double_exponential",
-"triple_exponential", "zero_lag", "wilder", "triangular", "weighted", "hull", "sine",
-"fibonacci" or "pascal". Defaults to "simple", Bollinger's own.
-- <u>fast_window (int, optional):</u> The number of periods of the fast moving average, with
+`get_moving_average`. Options are: "simple" (Simple Moving Average), "exponential" (Exponential
+Moving Average), "double_exponential" (Double Exponential Moving Average),
+"triple_exponential" (Triple Exponential Moving Average), "zero_lag" (Zero Lag Exponential
+Moving Average), "wilder" (Wilder's Moving Average), "triangular" (Triangular Moving Average),
+"weighted" (Weighted Moving Average), "hull" (Hull Moving Average), "sine" (Sine Weighted Moving
+Average), "fibonacci" (Fibonacci Weighted Moving Average), "pascal" (Pascal Weighted Moving
+Average). Defaults to "simple", Bollinger's own.
+- <u>short_window (int, optional):</u> The number of periods of the fast moving average, with
 method="price_bands" only. Defaults to 2.
-- <u>method (str, optional):</u> "standard" for the Bollinger Bands or "price_bands" for the
-Price Bands, whose width comes from the fast moving average. Defaults to "standard".
+- <u>method (str, optional):</u> The variant of the bands. Options are: "standard" (the Bollinger Bands),
+"price_bands" (the Price Bands, whose width comes from the fast moving average). Defaults to
+"standard".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the bands.
@@ -12268,9 +12768,9 @@ The Close and the Bollinger Bands or Price Bands (upper, middle, lower), in pric
 
 - The method retrieves historical data based on the specified `period` and calculates the
 Bollinger Bands or Price Bands for each asset in the Toolkit instance.
-- The bands agree with TA-Lib's BBANDS with a simple moving average (`matype=0`), and with the
-exponential, weighted, double exponential, triple exponential and triangular averages its
-`matype` 1 to 5. The standard deviation stays the one around the simple average of the
+- The bands agree with TA-Lib's BBANDS with a simple moving average, and with the exponential,
+weighted, double exponential, triple exponential and triangular averages its moving average
+types 1 to 5. The standard deviation stays the one around the simple average of the
 window, as in TA-Lib, whatever the middle band.
 - The standard deviation of the Price Bands is the population one (dividing by `window`), as
 in TTR's PBands. The Price Bands start on period 2 * `window` — 2.
@@ -12278,8 +12778,8 @@ in TTR's PBands. The Price Bands start on period 2 * `window` — 2.
 of the deviation divided by the width to the middle band. That adds a number of standard
 deviations to a price, so the shift does not scale with the price, and the Toolkit
 leaves it out.
-- If `growth` is set to True, the method calculates the growth of the bands
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the bands
+over the given lag.
 
 **As an example:**
 
@@ -12309,7 +12809,7 @@ Which returns:
 ---
 
 ## get_bollinger_percent_b_and_bandwidth
-Calculate the Bollinger %B and BandWidth for a given price series.
+Calculate the Bollinger %B and BandWidth: where the close lies within the Bollinger Bands and how wide the bands are, which show overbought and oversold levels and squeezes of volatility.
 
 Bollinger (2001, "Bollinger on Bollinger Bands") derived two indicators from his bands. %B places the close within the bands: 0 is on the lower band, 0.5 on the middle band and 1 on the upper band, with values below 0 or above 1 for a close outside the bands. BandWidth is the distance between the bands relative to the middle band, a measure of volatility that can be compared across securities and over time.
 
@@ -12333,16 +12833,19 @@ $$
 
 The bands are those of get_bollinger_bands, with the *population* standard deviation (dividing by n) that Bollinger specifies and TA-Lib and StockCharts implement, and the defaults are Bollinger's own 20 periods and 2 standard deviations. Both results are decimals: a BandWidth of 0.10 means bands 10% of the middle band apart (StockCharts multiplies it by 100). A BandWidth at a six-month low marks what Bollinger calls the Squeeze, which often precedes a larger move without saying in which direction; %B above 1 or below 0 shows a close outside the bands, which in a trend can last for weeks.
 
-For more information, see the following sources:
-
-- Referenced against TA-Lib's PERCENTB and BBW ([https://ta-lib.org/functions/percentb.html](https://ta-lib.org/functions/percentb.html){:target="_blank"}, [https://ta-lib.org/functions/bbw.html](https://ta-lib.org/functions/bbw.html){:target="_blank"}).
-
 **Also known as:** Percent B, %b, Bollinger Band Width, BBW, Bollinger Squeeze.
+
+**References:**
+
+- library | Referenced against TA-Lib's [PERCENTB](https://ta-lib.org/functions/percentb.html){:target="_blank"}
+- library | Referenced against TA-Lib's [BBW](https://ta-lib.org/functions/bbw.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods of the moving average and standard deviation.
@@ -12373,10 +12876,10 @@ pd.Series or pd.DataFrame: %B and BandWidth values, both decimals.
 %B and BandWidth for each asset in the Toolkit instance.
 - A window of identical prices gives bands without width, which leaves %B missing and
 BandWidth at 0.
-- With a simple moving average (`matype=0`), %B agrees with TA-Lib's PERCENTB and BandWidth
+- With a simple moving average, %B agrees with TA-Lib's PERCENTB and BandWidth
 agrees with TA-Lib's BBW divided by 100, since TA-Lib's BBW is in percent.
-- If `growth` is set to True, the method calculates the growth of %B and BandWidth
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of %B and BandWidth
+over the given lag.
 
 **As an example:**
 
@@ -12406,7 +12909,7 @@ Which returns:
 ---
 
 ## get_true_range
-Calculate the True Range (TR) for a given price series.
+Calculate the True Range (TR): the range of a period including any gap from the previous close, the basic measure of how far the price moved.
 
 The True Range (TR) is a measure of market volatility that considers the differences between the high and low prices and the previous closing price. It provides insights into the price movement of an asset.
 
@@ -12416,17 +12919,19 @@ $$
 \text{TR} = \max(\text{high} - \text{low},\; \operatorname{abs}(\text{high} - \text{previous\_close}),\; \operatorname{abs}(\text{low} - \text{previous\_close}))
 $$
 
-For more information, see the following sources:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Referenced against TA-Lib's TRANGE ([https://ta-lib.org/functions/trange.html](https://ta-lib.org/functions/trange.html){:target="_blank"}).
-
 **Also known as:** TR, true range.
+
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- library | Referenced against TA-Lib's [TRANGE](https://ta-lib.org/functions/trange.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -12454,8 +12959,8 @@ pd.Series or pd.DataFrame: True Range values.
 True Range for each asset in the Toolkit instance.
 - The True Range agrees with TA-Lib's TRANGE from the second period on. The first period, which
 has no previous close, is High — Low here and empty in TA-Lib.
-- If `growth` is set to True, the method calculates the growth of the True Range
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the True Range
+over the given lag.
 
 **As an example:**
 
@@ -12485,36 +12990,25 @@ Which returns:
 ---
 
 ## get_average_true_range
-Calculate the Average True Range (ATR) of a given price series, normalized by the close (NATR) or as the Average Day Range (ADR).
+Calculate the Average True Range (ATR), normalised by the close (NATR) or as the Average Day Range (ADR): the average range of the periods, a measure of how much the price moves.
 
-The Average True Range (ATR) is a technical indicator that measures the volatility of an asset's price movements over a specified number of periods. It provides insights into the potential price range of an asset, which can help traders and investors make more informed decisions. The Normalized Average True Range (method="normalized") is the Average True Range divided by the close, so the average range is a share of the price: unlike the ATR, which is in price units, it compares across stocks with different prices and over periods in which the price changed a lot. The Average Day Range (method="day_range") is the simple average of the High - Low range: unlike the Average True Range it leaves out the gaps between periods, so it measures how far the price moves within a period, a basis for intraday targets and stops (for example a stop half an ADR away).
+The Average True Range (ATR) is a technical indicator that measures the volatility of an asset's price movements over a specified number of periods. It provides insights into the potential price range of an asset, which can help traders and investors make more informed decisions. The Normalized Average True Range is the Average True Range divided by the close, so the average range is a share of the price: unlike the ATR, which is in price units, it compares across stocks with different prices and over periods in which the price changed a lot. The Average Day Range is the simple average of the High - Low range: unlike the Average True Range it leaves out the gaps between periods, so it measures how far the price moves within a period, a basis for intraday targets and stops (for example a stop half an ADR away).
 
 The formula is as follows, per method:
 
 $$
-\text{"standard":}\;\; \text{TR} = \max(\text{high} - \text{low},\; \operatorname{abs}(\text{high} - \text{previous\_close}),\; \operatorname{abs}(\text{low} - \text{previous\_close}))\;\;\text{and}\;\; \text{ATR} = \text{Wilder's Smoothed Moving Average of TR over} \;\text{window} \;\text{periods}
+\text{Average True Range:}\;\; \text{TR} = \max(\text{high} - \text{low},\; \operatorname{abs}(\text{high} - \text{previous\_close}),\; \operatorname{abs}(\text{low} - \text{previous\_close}))\;\;\text{and}\;\; \text{ATR} = \text{Wilder's Smoothed Moving Average of TR over} \;\text{window} \;\text{periods}
 $$
 
 $$
-\text{"normalized":}\;\; \text{NATR} = \frac{\operatorname{ATR}(\text{window})}{\text{Close}},\;\; \text{where the ATR uses Wilder's smoothing};\;\; \text{0.02 is an average range of 2\% of the close}
+\text{Normalized Average True Range:}\;\; \text{NATR} = \frac{\operatorname{ATR}(\text{window})}{\text{Close}},\;\; \text{where the ATR uses Wilder's smoothing};\;\; \text{0.02 is an average range of 2\% of the close}
 $$
 
 $$
-\text{"day\_range":}\;\; \text{ADR} = \operatorname{SMA}(\text{High} - \text{Low},\; \text{window})
+\text{Average Day Range:}\;\; \text{ADR} = \operatorname{SMA}(\text{High} - \text{Low},\; \text{window})
 $$
 
 The ATR is in price units, which makes it the common basis for stop distances (for example two ATRs below the entry) and for sizing positions to equal risk. For the same reason it cannot be compared across stocks or over long periods in which the price changed a lot; divide it by the price for a percentage volatility. It measures how far price moves, not in which direction.
-
-For more information, see the following sources:
-
-- Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
-- Referenced against TA-Lib's ATR ([https://ta-lib.org/functions/atr.html](https://ta-lib.org/functions/atr.html){:target="_blank"}).
-- Forman, J. (2006). "Cross-Market Evaluations With Normalized Average True Range." Technical Analysis of Stocks & Commodities, 24(5).
-- Referenced against TA-Lib's NATR ([https://ta-lib.org/functions/natr.html](https://ta-lib.org/functions/natr.html){:target="_blank"}).
-- pandas-ta-classic: natr ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- Tulip Indicators: natr ([https://tulipindicators.org/natr](https://tulipindicators.org/natr){:target="_blank"}).
-- Keltner, C.W. (1960). "How to Make Money in Commodities." The Keltner Statistical Service, whose channel is the average day range around the typical price.
-- Referenced against TA-Lib's ADR ([https://ta-lib.org/functions/adr.html](https://ta-lib.org/functions/adr.html){:target="_blank"}).
 
 **Also known as:** ATR, volatility indicator, NATR, normalized average true range, ATR percent, ATRP, ADR, average day range, average daily range, average high-low range.
 
@@ -12522,10 +13016,23 @@ See `volatility_model.get_average_true_range` for the full formula; Wilder's smo
 
 The first period has no previous close, so its True Range is High - Low and the first ATR is the average of the first `window` True Ranges (the StockCharts convention; TA-Lib starts one period later).
 
+**References:**
+
+- paper | Wilder, J.W. Jr. (1978). "New Concepts in Technical Trading Systems." Trend Research.
+- paper | Forman, J. (2006). "Cross-Market Evaluations With Normalized Average True Range." Technical Analysis of Stocks & Commodities, 24(5).
+- paper | Keltner, C.W. (1960). "How to Make Money in Commodities." The Keltner Statistical Service, whose channel is the average day range around the typical price.
+- library | Referenced against TA-Lib's [ATR](https://ta-lib.org/functions/atr.html){:target="_blank"}
+- library | Referenced against TA-Lib's [NATR](https://ta-lib.org/functions/natr.html){:target="_blank"}
+- library | Referenced against TA-Lib's [ADR](https://ta-lib.org/functions/adr.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [natr](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/natr.py#L20){:target="_blank"}
+- library | Shares similar logic as Tulip Indicators' [natr](https://tulipindicators.org/natr){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -12542,8 +13049,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "standard" for the ATR, "normalized" for the NATR (a decimal of
-the close) or "day_range" for the Average Day Range. Defaults to "standard".
+- <u>method (str, optional):</u> Options are: "standard" (the ATR), "normalized" (the NATR, a decimal of the
+close), "day_range" (the Average Day Range). Defaults to "standard".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -12551,9 +13058,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: ATR values per ticker in price units, or their growth (if growth is True).
-With method="normalized" the NATR as decimals and with method="day_range" the ADR in
-price units.
+pd.DataFrame: ATR values per ticker in price units, or their growth when growth is requested.
+For the NATR the values are decimals and for the ADR price units.
 
 **Notes:**
 
@@ -12562,10 +13068,10 @@ price units.
 - Because the True Range starts on the first period, the ATR starts one period before
 TA-Lib's ATR and differs from it until the two converge (within 0.01% after about 80
 periods with the default window).
-- "normalized": the ATR is the one above (the StockCharts seeding), so the NATR starts one
+- Normalized Average True Range: the ATR is the one above (the StockCharts seeding), so the NATR starts one
 period before TA-Lib's NATR and equals it, divided by 100, once the seeds have converged
 (within 1e-8 after about 150 periods with the default window).
-- "day_range": equals TA-Lib's ADR.
+- Average Day Range: equals TA-Lib's ADR.
 
 **As an example:**
 
@@ -12595,7 +13101,7 @@ Which returns:
 ---
 
 ## get_mass_index
-Calculate the Mass Index for a given price series.
+Calculate the Mass Index: the sum of the ratios of an exponential moving average of the high-low range to its own average, which signals a reversal when the range widens and then narrows.
 
 The Mass Index, developed by Donald Dorsey, looks for reversals in the width of the trading range rather than in price. It divides an EMA of the High - Low range by an EMA of that EMA, a ratio above 1 while the range widens and below 1 while it narrows, and sums the ratio over `sum_window` periods.
 
@@ -12615,17 +13121,19 @@ $$
 
 With the default windows a range that neither widens nor narrows gives a Mass Index of 25. Dorsey's "reversal bulge" is the index rising above 27 and then falling back below 26.5, after which the current trend is expected to reverse. The index does not say in which direction, so it is read together with a trend indicator such as a moving average. The ratio has no unit, so the level can be compared across stocks.
 
-For more information, see the following sources:
-
-- Dorsey, D. (1992). "The Mass Index." Technical Analysis of Stocks & Commodities, 10(6), 265-267.
-- Referenced against TA-Lib's MASSI ([https://ta-lib.org/functions/massi.html](https://ta-lib.org/functions/massi.html){:target="_blank"}).
-
 **Also known as:** Mass Index, MI. See `volatility_model.get_mass_index` for the references.
+
+**References:**
+
+- paper | Dorsey, D. (1992). "The Mass Index." Technical Analysis of Stocks & Commodities, 10(6), 265-267.
+- library | Referenced against TA-Lib's [MASSI](https://ta-lib.org/functions/massi.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The close the high and low are taken on the basis of.
 Defaults to "Adj Close", in which case the high and low prices are adjusted
 for dividends in the same way.
@@ -12656,8 +13164,8 @@ pd.Series or pd.DataFrame: Mass Index values.
 - Both EMAs are seeded with the simple average of their first values, as in TA-Lib and on
 StockCharts, so the first Mass Index is on period 2 × (`ema_window` — 1) + `sum_window`,
 the 41st with the default windows. The Mass Index agrees with TA-Lib's MASSI.
-- If `growth` is set to True, the method calculates the growth of the indicator values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the indicator values
+over the given lag.
 
 **As an example:**
 
@@ -12687,11 +13195,13 @@ Which returns:
 ---
 
 ## get_supertrend
-Calculate the Supertrend indicator for a given price series, of the price or of its moving average (the Profit Maximizer).
+Calculate the Supertrend or the Profit Maximizer: a trailing stop that shows the direction of the trend and flips when it is crossed.
+
+The stop is a multiple of the Average True Range away from the price, or for the Profit Maximizer from its moving average.
 
 The Supertrend indicator plots a single trailing line that flips between sitting below price (in an uptrend) and above price (in a downtrend). The line is built from two bands offset from the median price ((High + Low) / 2) by a multiple of the Average True Range, which are then "ratcheted" period over period - each band can only move in the direction that tightens around price - so that the active band only flips to the other side once the closing price actually crosses it. This makes Supertrend both a trend filter (the flip direction signals a trend change) and a trailing stop-loss level.
 
-The Profit Maximizer (method="profit_maximizer") applies the Supertrend's trailing logic to a moving average instead of the price: two stops a multiple of the Average True Range below and above an Exponential Moving Average of the median price, each of which only tightens while the average stays on its side. The trend turns down when the average falls below the long stop and up when it rises above the short stop, and PMax is the active stop. Because the average is smoother than the price, PMax flips less often than the Supertrend.
+The Profit Maximizer applies the Supertrend's trailing logic to a moving average instead of the price: two stops a multiple of the Average True Range below and above an Exponential Moving Average of the median price, each of which only tightens while the average stays on its side. The trend turns down when the average falls below the long stop and up when it rises above the short stop, and PMax is the active stop. Because the average is smoother than the price, PMax flips less often than the Supertrend.
 
 The formula is as follows, per method:
 
@@ -12735,18 +13245,20 @@ $$
 \text{PMax} = \text{Long Stop in an uptrend and Short Stop in a downtrend}
 $$
 
-For more information, see the following sources:
-
-- Referenced against TA-Lib's SUPERTREND ([https://ta-lib.org/functions/supertrend.html](https://ta-lib.org/functions/supertrend.html){:target="_blank"}).
-- Ozbilgic, K. (2020). "Profit Maximizer - PMax." TradingView script.
-- pandas-ta-classic: pmax ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** Supertrend, SuperTrend, PMax, Profit Maximizer.
+
+**References:**
+
+- library | Referenced against TA-Lib's [SUPERTREND](https://ta-lib.org/functions/supertrend.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [pmax](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/pmax.py#L51){:target="_blank"} (Profit Maximizer)
+- paper | Shares similar logic as Ozbilgic, K. (2020). "Profit Maximizer - PMax." TradingView script.
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -12765,8 +13277,8 @@ Defaults to 1.
 - <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
 combined with growth=True, standardizes the growth values instead of the raw
 values. Defaults to False.
-- <u>method (str, optional):</u> "standard" for the Supertrend or "profit_maximizer" for the
-Profit Maximizer (PMax). Defaults to "standard".
+- <u>method (str, optional):</u> Options are: "standard" (the Supertrend), "profit_maximizer" (the Profit
+Maximizer, PMax). Defaults to "standard".
 - <u>atr_window (int, optional):</u> The number of periods of the Average True Range of the
 Profit Maximizer. Only used when method="profit_maximizer". Defaults to 10, as
 defined by Ozbilgic.
@@ -12779,7 +13291,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.Series or pd.DataFrame:
 Supertrend (the trailing indicator line) and Trend Direction (1 for an uptrend
-and -1 for a downtrend) values, or with method="profit_maximizer" PMax (the active
+and -1 for a downtrend) values, or for the Profit Maximizer PMax (the active
 stop, in price units) and Trend Direction.
 
 **Notes:**
@@ -12795,11 +13307,11 @@ is no prior period to determine the starting direction from.
 Supertrend starts one period before TA-Lib's SUPERTREND and differs from it until the two
 converge (within 0.01% after about 40 periods with the defaults). The Trend Direction
 agrees with TA-Lib's `trend` from TA-Lib's first value.
-- "profit_maximizer": this follows Ozbilgic's script (EMA of the median price, Wilder's ATR,
+- Profit Maximizer: this follows Ozbilgic's script (EMA of the median price, Wilder's ATR,
 starting in an uptrend). pandas-ta-classic's pmax averages the close and turns the trend on
 the close instead of the average, so it differs by design.
-- If `growth` is set to True, the method calculates the growth of the Supertrend and
-Trend Direction values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Supertrend and
+Trend Direction values over the given lag.
 
 **As an example:**
 
@@ -12829,7 +13341,7 @@ Which returns:
 ---
 
 ## get_chandelier_exit
-Calculate the Chandelier Exit for a given price series.
+Calculate the Chandelier Exit: a trailing stop a multiple of the Average True Range below the highest high (or above the lowest low), which keeps a trade open while the trend lasts.
 
 The Chandelier Exit, developed by Chuck Le Beau, is a trailing stop set a multiple of the Average True Range away from the most extreme price of the last `window` periods: the long exit "hangs" below the highest high like a chandelier from a ceiling, and the short exit sits above the lowest low.
 
@@ -12847,15 +13359,18 @@ A long position is closed when the price closes below the long exit, and a short
 
 **Also known as:** Chandelier Exit, Chandelier Stop, CE.
 
-For more information, see the following sources:
+**References:**
 
-- Le Beau, C. & Lucas, D.W. (1992). "Technical Traders Guide to Computer Analysis of the Futures Market." Business One Irwin.
-- Elder, A. (2002). "Come Into My Trading Room." John Wiley & Sons, which popularised the exit.
+- paper | Le Beau, C. & Lucas, D.W. (1992). "Technical Traders Guide to Computer Analysis of the Futures Market." Business One Irwin.
+- paper | Elder, A. (2002). "Come Into My Trading Room." John Wiley & Sons, which popularised the exit.
+- library | Shares similar logic as TA-Lib's [CE](https://ta-lib.org/functions/ce.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -12890,8 +13405,8 @@ period. The highest high and the lowest low include the current period.
 - Because the ATR is seeded as on StockCharts, the first exits differ from those built on
 TA-Lib's ATR, which starts the True Range on the second period, until the two converge
 (within 0.01% after about 80 periods with the defaults).
-- If `growth` is set to True, the method calculates the growth of the Long Exit and Short Exit
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Long Exit and Short Exit
+over the given lag.
 
 **As an example:**
 
@@ -12921,7 +13436,7 @@ Which returns:
 ---
 
 ## get_keltner_channels
-Calculate the Keltner Channels for a given price series, or the Aberration bands.
+Calculate the Keltner Channels or the Aberration bands: bands a multiple of the Average True Range above and below an average of the price, which show breakouts and overbought and oversold levels.
 
 The Keltner Channels consist of three lines: a middle line, the Exponential Moving Average (EMA) of the closing prices, and an upper and a lower line a multiple of the Average True Range (ATR) above and below it.
 
@@ -12932,39 +13447,41 @@ $$
 $$
 
 $$
-\text{Upper Line} = \text{Middle Line} + \text{atr\_multiplier} \cdot \operatorname{ATR}(\text{atr\_window})
+\text{Upper Line} = \text{Middle Line} + \text{multiplier} \cdot \operatorname{ATR}(\text{atr\_window})
 $$
 
 $$
-\text{Lower Line} = \text{Middle Line} - \text{atr\_multiplier} \cdot \operatorname{ATR}(\text{atr\_window}),\;\; \text{where the ATR uses Wilder's smoothing}
+\text{Lower Line} = \text{Middle Line} - \text{multiplier} \cdot \operatorname{ATR}(\text{atr\_window}),\;\; \text{where the ATR uses Wilder's smoothing}
 $$
 
-With method="original" the channel is Keltner's own: a simple average of the typical price with the average High - Low range on either side.
+Keltner's original channel is a simple average of the typical price with the average High - Low range on either side.
 
 - Middle Line = SMA((High + Low + Close) / 3, window)
-- Upper Line = Middle Line + atr_multiplier * SMA(High - Low, window)
-- Lower Line = Middle Line - atr_multiplier * SMA(High - Low, window)
+- Upper Line = Middle Line + multiplier * SMA(High - Low, window)
+- Lower Line = Middle Line - multiplier * SMA(High - Low, window)
 
-With method="aberration" the channel is the Aberration bands, which place one Average True Range above and below a short simple average of the typical price. They come from Keith Fitschen's Aberration breakout system, which buys a close above the upper band and sells a close below the lower band.
+The Aberration bands place one Average True Range above and below a short simple average of the typical price. They come from Keith Fitschen's Aberration breakout system, which buys a close above the upper band and sells a close below the lower band.
 
 - Middle Band = SMA((High + Low + Close) / 3, window)
 - Upper Band = Middle Band + ATR(atr_window)
 - Lower Band = Middle Band - ATR(atr_window)
 
-For more information, see the following sources:
-
-- Keltner, C.W. (1960). "How to Make Money in Commodities." The Keltner Statistical Service.
-- Referenced against TA-Lib's KC ([https://ta-lib.org/functions/kc.html](https://ta-lib.org/functions/kc.html){:target="_blank"}).
-- ta: volatility.KeltnerChannel ([https://github.com/bukosabino/ta](https://github.com/bukosabino/ta){:target="_blank"}), whose default original_version=True is the original channel.
-- Fitschen, K. (2013). "Building Reliable Trading Systems." John Wiley & Sons, on the Aberration system (1993), to which the Aberration bands are attributed; no definitive source of the formula exists.
-- pandas-ta-classic: aberration ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** Keltner Channels, KC, ATR-based bands, volatility channels, ABER, Aberration, Aberration bands.
+
+**References:**
+
+- paper | Keltner, C.W. (1960). "How to Make Money in Commodities." The Keltner Statistical Service.
+- paper | Fitschen, K. (2013). "Building Reliable Trading Systems." John Wiley & Sons, on the Aberration system (1993), to which the Aberration bands are attributed; no definitive source of the formula exists.
+- library | Referenced against TA-Lib's [KC](https://ta-lib.org/functions/kc.html){:target="_blank"}
+- library | Referenced against ta's [KeltnerChannel](https://github.com/bukosabino/ta/blob/0.11.0/ta/volatility.py#L183){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [aberration](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/aberration.py#L14){:target="_blank"} (Aberration)
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -12975,13 +13492,12 @@ middle line), or of the simple average of the typical price ("original" and
 - <u>atr_window (int &#124; None, optional):</u> Number of periods for ATR calculation. Not used by
 "original". Defaults to None, which uses 10, as on StockCharts, and 15 for
 "aberration", as in pandas-ta-classic.
-- <u>atr_multiplier (float, optional):</u> Multiplier for ATR (or, for the original channel, the
+- <u>multiplier (float, optional):</u> Multiplier for ATR (or, for the original channel, the
 average range) to determine channel width. Defaults to 2; Keltner's original channel
-uses 1 (method="original", atr_multiplier=1). Not used by "aberration", whose bands
-sit one ATR away.
-- <u>method (str, optional):</u> "exponential" for the EMA of the close with ATR bands (StockCharts),
-"original" for Keltner's simple average of the typical price with average range
-bands or "aberration" for the Aberration bands. Defaults to "exponential".
+uses 1. Not used by "aberration", whose bands sit one ATR away.
+- <u>method (str, optional):</u> The channels. Options are: "exponential" (the EMA of the close with ATR
+bands, as StockCharts), "original" (Keltner's simple average of the typical price with average
+range bands), "aberration" (the Aberration bands). Defaults to "exponential".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the channels.
@@ -12999,7 +13515,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.Series or pd.DataFrame: Keltner Channels ("Upper Line", "Middle Line" and "Lower
-Line"), or with method="aberration" the "Upper Band", "Middle Band" and "Lower Band", in
+Line"), or for the Aberration bands the "Upper Band", "Middle Band" and "Lower Band", in
 price units.
 
 **Notes:**
@@ -13010,11 +13526,12 @@ for each asset in the Toolkit instance.
 the typical price ((High + Low + Close) / 3) and starts its ATR one period later, so the
 channels differ throughout (by about 0.3% on daily data).
 - The original channel uses `window` for both averages (Keltner used 10 days with one
-average range, atr_multiplier=1) and no ATR, so `atr_window` does not apply. With
-atr_multiplier=1 it agrees with ta's KeltnerChannel with original_version=True.
-- "aberration": the ATR is that of `get_average_true_range`; pandas-ta-classic seeds its ATR
+average range, a multiplier of 1) and no ATR, so `atr_window` does not apply. With
+a multiplier of 1 it agrees with ta's KeltnerChannel in its original version.
+- Aberration bands: the ATR is that of `get_average_true_range`; pandas-ta-classic seeds its ATR
 one period later and its bands equal these once the seeds have converged.
-- If `growth` is set to True, the method calculates the growth of the channels using the specified `lag`.
+- When growth is requested, the method calculates the growth of the channels over the given lag.
+- ta's KeltnerChannel defaults to Keltner's original channel.
 
 **As an example:**
 
@@ -13044,7 +13561,7 @@ Which returns:
 ---
 
 ## get_donchian_channels
-Calculate the Donchian Channels for a given price series.
+Calculate the Donchian Channels: the highest high and the lowest low of the previous periods, whose breakouts signal the start of a trend.
 
 Donchian Channels plot the highest high and lowest low over the `window` periods *preceding* the current one, with the middle line being the average of the two. They are used to identify breakouts and the overall volatility of the price range.
 
@@ -13064,18 +13581,20 @@ $$
 
 The current period is deliberately excluded from the lookback, per Donchian's original breakout rule and StockCharts' Price Channels definition - including it would make a channel break impossible by construction.
 
-For more information, see the following sources:
-
-- Donchian, R.D. (1960). "Commodities: High Finance in Copper." Financial Analysts Journal, 16(6), 133-142.
-- Kaufman, P.J. (2013). "Trading Systems and Methods." 5th ed. Wiley.
-- Referenced against TA-Lib's DONCHIAN ([https://ta-lib.org/functions/donchian.html](https://ta-lib.org/functions/donchian.html){:target="_blank"}).
-
 **Also known as:** Donchian Channels, price channel breakout.
+
+**References:**
+
+- paper | Donchian, R.D. (1960). "Commodities: High Finance in Copper." Financial Analysts Journal, 16(6), 133-142.
+- paper | Kaufman, P.J. (2013). "Trading Systems and Methods." 5th ed. Wiley.
+- library | Referenced against TA-Lib's [DONCHIAN](https://ta-lib.org/functions/donchian.html){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int, optional):</u> Number of periods for the Donchian Channels.
@@ -13106,8 +13625,8 @@ pd.Series or pd.DataFrame: Donchian Channels (upper, middle, lower).
 - The method retrieves historical data based on the specified `period` and calculates Donchian Channels
 for each asset in the Toolkit instance.
 - TA-Lib's DONCHIAN includes the current period, so each channel here agrees with TA-Lib's of the
-previous period; with include_current=True it agrees with TA-Lib's DONCHIAN.
-- If `growth` is set to True, the method calculates the growth of the channels using the specified `lag`.
+previous period; including the current period, it agrees with TA-Lib's DONCHIAN.
+- When growth is requested, the method calculates the growth of the channels over the given lag.
 
 **As an example:**
 
@@ -13137,7 +13656,7 @@ Which returns:
 ---
 
 ## get_volatility_cone
-Retrieves the Volatility Cone for the specified period and assets.
+Calculate the Volatility Cone for the specified period: the range of the historical annualised realised volatility over several windows, which shows whether the current volatility is high or low for each window.
 
 The Volatility Cone summarizes the distribution of historical annualized realized volatility over a range of rolling windows, showing how the current realized volatility for each window compares to its own historical range. It is commonly used to judge whether current (or implied) volatility is cheap or expensive relative to history.
 
@@ -13161,19 +13680,21 @@ Where Close is the `close_column`, the Adj Close by default (the Close for intra
 
 Options traders compare implied volatility with the cone at the matching horizon: implied volatility near the top of the historical range for that window suggests options are expensive relative to history, near the bottom cheap. The percentiles depend on the sample, so a period that includes a crash widens the cone for as long as it stays in the data; five years of daily data or more gives a more stable picture than one.
 
-For more information, see the following sources:
-
-- Burghardt, G. & Lane, M. (1990). "How to Tell if Options are Cheap." Journal of Portfolio Management, 16(2), 72-78.
-- Natenberg, S. (1994). "Option Volatility and Pricing." McGraw-Hill.
-
 **Also known as:** volatility cone, realized volatility term structure.
+
+**References:**
+
+- paper | Burghardt, G. & Lane, M. (1990). "How to Tell if Options are Cheap." Journal of Portfolio Management, 16(2), 72-78.
+- paper | Natenberg, S. (1994). "Option Volatility and Pricing." McGraw-Hill.
 
 **Args:**
 
 - <u>windows (list[int] &#124; None, optional):</u> The rolling windows (in periods) to
 calculate realized volatility for. Defaults to [10, 20, 30, 60, 90, 120].
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -13228,7 +13749,7 @@ Which returns:
 ---
 
 ## get_chaikin_volatility
-Calculate Chaikin's Volatility of a given price series.
+Calculate Chaikin's Volatility: the percentage change of the average high-low range over a window, which shows whether the range is widening or narrowing.
 
 Chaikin's Volatility is the rate of change of an Exponential Moving Average of the High - Low range: how much wider or narrower the average range is than `roc_window` periods ago. Chaikin read a sharp rise over a short time as a sign of an approaching bottom (panic selling) and a long decline as typical of a maturing top.
 
@@ -13244,19 +13765,21 @@ $$
 
 The result is a decimal: 0.25 is an average range 25% wider than `roc_window` periods ago.
 
-For more information, see the following sources:
-
-- Achelis, S.B. (2000). "Technical Analysis from A to Z." 2nd ed. McGraw-Hill, "Chaikin's Volatility".
-- Referenced against TA-Lib's CVI ([https://ta-lib.org/functions/cvi.html](https://ta-lib.org/functions/cvi.html){:target="_blank"}).
-- pandas-ta-classic: cvi ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- Tulip Indicators: cvi ([https://tulipindicators.org/cvi](https://tulipindicators.org/cvi){:target="_blank"}).
-
 **Also known as:** CV, CVI, Chaikin Volatility Indicator.
+
+**References:**
+
+- paper | Achelis, S.B. (2000). "Technical Analysis from A to Z." 2nd ed. McGraw-Hill, "Chaikin's Volatility".
+- library | Referenced against TA-Lib's [CVI](https://ta-lib.org/functions/cvi.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [cvi](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/cvi.py#L12){:target="_blank"}
+- library | Shares similar logic as Tulip Indicators' [cvi](https://tulipindicators.org/cvi){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -13316,7 +13839,7 @@ Which returns:
 ---
 
 ## get_relative_volatility_index
-Calculate Dorsey's Relative Volatility Index (RVI) of a given price series.
+Calculate Dorsey's Relative Volatility Index (RVI): the standard deviation of the up periods against that of the down periods, from 0 to 100, which shows the direction of volatility.
 
 The Relative Volatility Index is built like the Relative Strength Index, but measures the direction of volatility instead of the size of price changes: on a period that closes higher, the standard deviation of the last `std_window` closes counts as upward volatility, and on one that closes lower as downward volatility. Dorsey designed it to confirm other signals: buy signals when the RVI is above 50 and sell signals when it is below 50. The refined RVI averages the RVI of the highs and of the lows.
 
@@ -13340,19 +13863,22 @@ $$
 
 Wilder is Wilder's smoothing, seeded with a simple average. The RVI runs from 0 to 100.
 
-For more information, see the following sources:
-
-- Dorsey, D. (1993). "The Relative Volatility Index." Technical Analysis of Stocks & Commodities, 11(6).
-- Dorsey, D. (1995). "Refining the Relative Volatility Index." Technical Analysis of Stocks & Commodities, 13(9).
-- Referenced against TA-Lib's RVI and RVIR ([https://ta-lib.org/functions/rvi.html](https://ta-lib.org/functions/rvi.html){:target="_blank"}, [https://ta-lib.org/functions/rvir.html](https://ta-lib.org/functions/rvir.html){:target="_blank"}).
-- pandas-ta-classic: rvi ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** RVI, RVIR, Relative Volatility Index. Not to be confused with the Relative Vigor Index (`get_relative_vigor_index`).
+
+**References:**
+
+- paper | Dorsey, D. (1993). "The Relative Volatility Index." Technical Analysis of Stocks & Commodities, 11(6).
+- paper | Dorsey, D. (1995). "Refining the Relative Volatility Index." Technical Analysis of Stocks & Commodities, 13(9).
+- library | Referenced against TA-Lib's [RVI](https://ta-lib.org/functions/rvi.html){:target="_blank"}
+- library | Referenced against TA-Lib's [RVIR](https://ta-lib.org/functions/rvir.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [rvi](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/rvi.py#L61){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -13360,9 +13886,8 @@ for dividends in the same way.
 as defined by Dorsey.
 - <u>std_window (int, optional):</u> The number of periods of the standard deviation. Defaults
 to 10, as defined by Dorsey.
-- <u>method (str, optional):</u> "original" for the RVI of the close (Dorsey, 1993) or "refined"
-for the average of the RVI of the highs and the lows (Dorsey, 1995). Defaults to
-"original".
+- <u>method (str, optional):</u> Options are: "original" (the RVI of the close; Dorsey, 1993), "refined" (the
+average of the RVI of the highs and the lows; Dorsey, 1995). Defaults to "original".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the RVI.
@@ -13417,14 +13942,14 @@ Which returns:
 ---
 
 ## get_acceleration_bands
-Calculate Headley's Acceleration Bands of a given price series.
+Calculate Headley's Acceleration Bands: bands around a moving average that widen with the range of the candles, whose breakouts show an accelerating trend.
 
 Acceleration Bands place an envelope around a simple average of the close whose width follows the High - Low range of each period relative to its price. Headley used a close outside the bands as the start of an accelerating move (a breakout) and a close back inside them as the end of it.
 
 The formula is as follows:
 
 $$
-\text{Range Ratio} = \frac{\text{factor} \cdot (\text{High} - \text{Low})}{\text{High} + \text{Low}}
+\text{Range Ratio} = \frac{\text{multiplier} \cdot (\text{High} - \text{Low})}{\text{High} + \text{Low}}
 $$
 
 $$
@@ -13439,24 +13964,26 @@ $$
 \text{Lower Band} = \operatorname{SMA}(\text{Low} \cdot (1 - \text{Range Ratio}),\; \text{window})
 $$
 
-For more information, see the following sources:
-
-- Headley, P. (2002). "Big Trends in Trading: Strategies to Master Major Market Moves." John Wiley & Sons.
-- Referenced against TA-Lib's ACCBANDS ([https://ta-lib.org/functions/accbands.html](https://ta-lib.org/functions/accbands.html){:target="_blank"}).
-- pandas-ta-classic: accbands ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** ACCBANDS, Price Headley's Acceleration Bands.
+
+**References:**
+
+- paper | Headley, P. (2002). "Big Trends in Trading: Strategies to Master Major Market Moves." John Wiley & Sons.
+- library | Referenced against TA-Lib's [ACCBANDS](https://ta-lib.org/functions/accbands.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [accbands](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/accbands.py#L17){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
 - <u>window (int, optional):</u> The number of periods of the simple averages. Defaults to 20,
 as defined by Headley.
-- <u>factor (float, optional):</u> The multiplier of the relative range. Defaults to 4.0, as
+- <u>multiplier (float, optional):</u> The multiplier of the relative range. Defaults to 4.0, as
 defined by Headley.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -13508,7 +14035,7 @@ Which returns:
 ---
 
 ## get_chande_kroll_stop
-Calculate the Chande Kroll Stop of a given price series.
+Calculate the Chande Kroll Stop: a long and a short stop a multiple of the Average True Range from the recent extremes, which shows where a trend would be broken.
 
 The Chande Kroll Stop is a pair of trailing stops a multiple of the Average True Range from the extreme price of the last `window` periods, smoothed a second time by taking the extreme of those first stops over `stop_window` periods. The high stop trails below the highs and the low stop above the lows: a close below the high stop exits a long position, a close above the low stop exits a short one, and a close above both lines marks an uptrend.
 
@@ -13530,18 +14057,20 @@ $$
 \text{Low Stop} = \operatorname{Lowest}(\text{First Low Stop},\; \text{stop\_window})
 $$
 
-For more information, see the following sources:
-
-- Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." John Wiley & Sons.
-- Referenced against TA-Lib's CKSP ([https://ta-lib.org/functions/cksp.html](https://ta-lib.org/functions/cksp.html){:target="_blank"}).
-- pandas-ta-classic: cksp ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** CKSP, Chande Kroll stop loss. Chande and Kroll call the high stop the "stop short" and the low stop the "stop long".
+
+**References:**
+
+- paper | Chande, T.S. & Kroll, S. (1994). "The New Technical Trader." John Wiley & Sons.
+- library | Referenced against TA-Lib's [CKSP](https://ta-lib.org/functions/cksp.html){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [cksp](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/cksp.py#L12){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -13603,7 +14132,7 @@ Which returns:
 ---
 
 ## get_adaptive_price_zone
-Calculate Leibfarth's Adaptive Price Zone (APZ) of a given price series.
+Calculate Leibfarth's Adaptive Price Zone (APZ): bands around a double-smoothed exponential moving average that adapt to the range, which show turning points in a sideways market.
 
 The Adaptive Price Zone is a band around a fast, double-smoothed Exponential Moving Average of the close, with a width that is the same double-smoothed average of the High - Low range. Both averages use the square root of `window` as their period, so the zone follows the price closely. Leibfarth designed it for markets without a trend (an ADX below 30): a close above the zone is a chance to sell, and a close below it a chance to buy, in anticipation of a reversal.
 
@@ -13629,17 +14158,19 @@ $$
 \text{Lower Band} = \text{Middle Band} - \text{multiplier} \cdot \text{Range}
 $$
 
-For more information, see the following sources:
-
-- Leibfarth, L. (2006). "Trading With An Adaptive Price Zone." Technical Analysis of Stocks & Commodities, 24(9).
-- finta: TA.APZ ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
-
 **Also known as:** APZ, Adaptive Price Zone.
+
+**References:**
+
+- paper | Leibfarth, L. (2006). "Trading With An Adaptive Price Zone." Technical Analysis of Stocks & Commodities, 24(9).
+- library | Shares similar logic as finta's [APZ](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1907){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -13701,7 +14232,7 @@ Which returns:
 ---
 
 ## get_price_distance
-Calculate the Price Distance of a given price series.
+Calculate the Price Distance: the distance the price travelled within each period, including the gap from the previous close, a measure of how much the price moves.
 
 The Price Distance estimates how far the price travelled within a period: twice the High - Low range (down to the low and up to the high, or the reverse), less the open-to-close body that the range already covers once, plus the gap from the previous close to the open.
 
@@ -13711,17 +14242,19 @@ $$
 \text{Price Distance} = 2 \cdot (\text{High} - \text{Low}) - \left|\text{Close} - \text{Open}\right| + \left|\text{Open} - \text{Previous Close}\right|
 $$
 
-For more information, see the following sources:
-
-- ProRealCode, "Price Distance" indicator.
-- pandas-ta-classic: pdist ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** PDIST, price distance volatility.
+
+**References:**
+
+- paper | ProRealCode, "Price Distance" indicator.
+- library | Referenced against pandas-ta-classic's [pdist](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/pdist.py#L17){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -13776,7 +14309,7 @@ Which returns:
 ---
 
 ## get_market_thermometer
-Calculate Elder's Market Thermometer of a given price series.
+Calculate Elder's Market Thermometer: how far each period's range pushes outside that of the previous period, which shows how hot or quiet the market is.
 
 The Market Thermometer measures how far each period's range pushes outside the previous one: the larger of the rise of the high above the previous high and the fall of the low below the previous low, or 0 for an inside period. Elder compares it with its Exponential Moving Average: a temperature far above the average (Elder uses three times) marks a burst of volatility in which to take profits, and several periods below the average a quiet market that often precedes an explosive move.
 
@@ -13790,17 +14323,19 @@ $$
 \text{Thermometer Average} = \operatorname{EMA}(\text{Thermometer},\; \text{window})
 $$
 
-For more information, see the following sources:
-
-- Elder, A. (2002). "Come Into My Trading Room." John Wiley & Sons.
-- pandas-ta-classic: thermo ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** THERMO, Elder's thermometer, market temperature.
+
+**References:**
+
+- paper | Elder, A. (2002). "Come Into My Trading Room." John Wiley & Sons.
+- library | Shares similar logic as pandas-ta-classic's [thermo](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/volatility/thermo.py#L18){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -13858,7 +14393,7 @@ Which returns:
 ---
 
 ## get_squeeze_momentum
-Calculate the Squeeze Momentum (TTM Squeeze) of a given price series.
+Calculate the Squeeze Momentum (TTM Squeeze): whether the Bollinger Bands lie inside the Keltner Channels (a squeeze of volatility) and the momentum that shows the direction of the breakout.
 
 The squeeze compares two volatility bands around the same simple average of the close: Bollinger Bands, which follow the standard deviation, and a Keltner Channel, which follows the average True Range. When the Bollinger Bands contract inside the Keltner Channel, volatility is unusually low and the market is "in a squeeze". Carter trades the release of the squeeze (the first period the bands leave the channel) in the direction of the momentum, LazyBear's linear regression of the close relative to the middle of its recent range and its average.
 
@@ -13884,22 +14419,25 @@ $$
 \text{Momentum} = \text{Linear Regression}\left(\text{Close} - \frac{\frac{\text{Highest High} + \text{Lowest Low}}{2} + \text{Middle}}{2},\; \text{window}\right)
 $$
 
-With the default multipliers 2, 1.5 and 1 (the wide, normal and narrow channels of the TTM Squeeze Pro), the Squeeze is 0 without a squeeze and 1, 2 or 3 for a low, normal or high compression. Carter's original squeeze (a Keltner Channel of 1.5) is on from 2; `keltner_multipliers=[1.5]` returns it as 1 (on) or 0 (off).
-
-For more information, see the following sources:
-
-- Carter, J.F. (2005). "Mastering the Trade." McGraw-Hill, chapter 11.
-- LazyBear (2014). "Squeeze Momentum Indicator." TradingView script.
-- Referenced against TA-Lib's SQZMOM ([https://ta-lib.org/functions/sqzmom.html](https://ta-lib.org/functions/sqzmom.html){:target="_blank"}).
-- pandas-ta-classic: squeeze and squeeze_pro ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-- finta: TA.SQZMI ([https://github.com/peerchemist/finta](https://github.com/peerchemist/finta){:target="_blank"}).
+With the default multipliers 2, 1.5 and 1 (the wide, normal and narrow channels of the TTM Squeeze Pro), the Squeeze is 0 without a squeeze and 1, 2 or 3 for a low, normal or high compression. Carter's original squeeze (a Keltner Channel of 1.5) is on from 2; a single Keltner multiplier of 1.5 returns it as 1 (on) or 0 (off).
 
 **Also known as:** TTM Squeeze, Squeeze Pro, SQZ, SQZMOM, squeeze momentum indicator.
 
+**References:**
+
+- paper | Carter, J.F. (2005). "Mastering the Trade." McGraw-Hill, chapter 11.
+- paper | LazyBear (2014). "Squeeze Momentum Indicator." TradingView script.
+- library | Referenced against TA-Lib's [SQZMOM](https://ta-lib.org/functions/sqzmom.html){:target="_blank"}
+- library | Referenced against pandas-ta-classic's [squeeze](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/squeeze.py#L94){:target="_blank"}
+- library | Shares similar logic as pandas-ta-classic's [squeeze_pro](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/momentum/squeeze_pro.py#L17){:target="_blank"}
+- library | Shares similar logic as finta's [SQZMI](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1941){:target="_blank"}
+
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
@@ -13931,7 +14469,7 @@ Channels the Bollinger Bands lie inside).
 
 **Notes:**
 
-- The Momentum agrees with TA-Lib's SQZMOM and pandas-ta-classic's `squeeze(lazybear=True)`.
+- The Momentum agrees with TA-Lib's SQZMOM and pandas-ta-classic's `squeeze` in LazyBear's form.
 The Squeeze agrees with TA-Lib's squeeze output, with 0 instead of -1 for no squeeze. It starts
 on the `window`-th period, while TA-Lib reports it from the first Momentum on.
 - The Keltner Channel here is LazyBear's (a simple average of the close and of the True
@@ -13966,7 +14504,9 @@ Which returns:
 ---
 
 ## get_standard_deviation_channel
-Calculate the Standard Deviation Channel of a price series: one least-squares line through all prices of the Toolkit's date range (or the last `window` of them), with bands at a number of standard deviations of the prices above and below it.
+Calculate the Standard Deviation Channel: a least-squares line through the prices with bands a number of standard deviations above and below it.
+
+The line runs through all prices of the Toolkit's date range, or the last `window` of them.
 
 The channel shows the trend of the whole period and how far the prices stray from it: a price near an outer band lies far from the trend of the period. It is the thinkorswim study StDevAll, which draws the regression line of all bars (InertiaAll) with bands at 1, 2 and 3 standard deviations.
 
@@ -13986,17 +14526,19 @@ $$
 
 with the sample standard deviation (ddof=1) of the prices of the period.
 
-For more information, see the following sources:
-
-- thinkorswim (TD Ameritrade). thinkScript studies StDevAll and InertiaAll.
-- Referenced against pandas-ta-classic's tos_stdevall ([https://github.com/xgboosted/pandas-ta-classic](https://github.com/xgboosted/pandas-ta-classic){:target="_blank"}).
-
 **Also known as:** standard deviation channel, StDevAll, linear regression channel, regression bands.
+
+**References:**
+
+- paper | thinkorswim (TD Ameritrade). thinkScript studies StDevAll and InertiaAll.
+- library | Referenced against pandas-ta-classic's [tos_stdevall](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/statistics/tos_stdevall.py#L15){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close".
 - <u>window (int &#124; None, optional):</u> The number of latest periods the line is fitted over,
@@ -14030,8 +14572,8 @@ Standard Deviation Channel for each asset in the Toolkit instance.
 - The line is fitted over the whole period at once, so every value depends on the later prices of the
 period and the channel is redrawn when the date range changes. It describes a period and is not a
 signal that was known at the time, which is why `collect_volatility_indicators` leaves it out.
-- If `growth` is set to True, the method calculates the growth of the Standard Deviation Channel
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Standard Deviation Channel
+over the given lag.
 
 **As an example:**
 
@@ -14061,7 +14603,7 @@ Which returns:
 ---
 
 ## get_signal_to_noise_ratio
-Calculate the Signal-to-Noise Ratio (SNR) for a given price series.
+Calculate the Signal-to-Noise Ratio (SNR): the net move of the close over a window divided by the Average True Range, which shows how cleanly the price trends.
 
 The Signal-to-Noise Ratio divides the net move of the close over the window (the signal) by the Average True Range over the same window (the noise). A ratio of 5 means the price moved five times its average range in `window` periods, a market that trends cleanly, while a ratio near 0 means the price moved a lot but went nowhere. Skeggs and Hill use it to measure how much trend a market offers a trend follower.
 
@@ -14081,17 +14623,19 @@ $$
 
 Because the ATR includes the gaps between periods, the noise covers the overnight moves a close-to-close measure would miss. The ratio says how far the price trended, not in which direction.
 
-For more information, see the following sources:
-
-- Skeggs, J. and Hill, A. (2015). "Back in Black Part 2: The Opportunity Set for Trend Following." Man AHL.
-- Referenced against TTR's SNR ([https://cran.r-project.org/package=TTR](https://cran.r-project.org/package=TTR){:target="_blank"}), by Peter Carl.
-
 **Also known as:** SNR, signal to noise ratio, trend strength ratio.
+
+**References:**
+
+- paper | Skeggs, J. and Hill, A. (2015). "Back in Black Part 2: The Opportunity Set for Trend Following." Man AHL.
+- library | Referenced against TTR (R)'s [SNR](https://github.com/joshuaulrich/TTR/blob/v0.24.4/R/SNR.R#L47){:target="_blank"}
 
 **Args:**
 
-- <u>period (str, optional):</u> The time period to consider for historical data.
-Can be "intraday", "daily", "weekly", "monthly", "quarterly" or "yearly". Defaults to "daily".
+- <u>period (str, optional):</u> The time period to consider for historical data. Options are:
+"intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
+"monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
+to "daily".
 - <u>close_column (str, optional):</u> The column name for closing prices in the historical data.
 Defaults to "Adj Close", in which case the high and low prices are adjusted for
 dividends in the same way.
@@ -14125,8 +14669,8 @@ StockCharts convention). TTR's ATR starts one period later, so the ratio equals 
 SNR once the seeds of the averages have converged (within 0.01% after about 100
 periods with the default window).
 - A window without any range (an ATR of 0) has no ratio.
-- If `growth` is set to True, the method calculates the growth of the Signal-to-Noise
-Ratio using the specified `lag`.
+- When growth is requested, the method calculates the growth of the Signal-to-Noise
+Ratio over the given lag.
 
 **As an example:**
 

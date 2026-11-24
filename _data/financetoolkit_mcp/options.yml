@@ -89,16 +89,6 @@ get_binary_option:
     strike_price_range: 0.1
     strike_step_size: 5
     expiration_time_range: 91
-get_bjerksund_stensland:
-  question: What were American calls on Verizon worth under the Bjerksund-Stensland model at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $1 steps?
-  tool: options
-  arguments:
-    tickers: VZ
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 1
-    expiration_time_range: 91
 get_monte_carlo_option_price:
   question: What were calls on Costco worth at the end of 2025 in a Monte Carlo simulation of 10,000 price paths, for the expiries of 7, 14 and 30 January 2026 and strikes within 10% of the share price in $10 steps?
   tool: options

@@ -29,7 +29,9 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/models.md %}
 
 ## get_factor_analysis
-Factor analysis (predictive power) of the models: whether the tickers that score high on a model, such as the Piotroski F-Score or the Altman Z-Score, go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the model score of the tickers at the end of the period and their return over the following horizon: 1 means the score ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
+Factor analysis (predictive power) of the models.
+
+Whether the tickers that score high on a model, such as the Piotroski F-Score or the Altman Z-Score, go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the model score of the tickers at the end of the period and their return over the following horizon: 1 means the score ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
 The summary has a row per model and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the skewness and excess kurtosis of the IC, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the annualized alpha and the beta of the factor-weighted long-short portfolio against the equally weighted tickers, the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the score from one period to the next. With detail, it returns one part of the analysis per period, quantile or group for a single model.
 
@@ -67,6 +69,16 @@ $$
 
 The models are calculated per statement period and each period's score applies from the end of the fiscal period, or with point_in_time from the day it was filed, never earlier, so no day uses figures that were not known yet. The returns use the dividend and split adjusted close and start at the close of the period the score belongs to. Each ticker keeps its own history: a ticker without a score or a return in a period is left out of that period only.
 
+**References:**
+
+- library | Shares similar logic as alphalens' [factor_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L28){:target="_blank"}
+- library | Shares similar logic as alphalens' [mean_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L461){:target="_blank"}
+- library | Shares similar logic as alphalens' [factor_weights](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L131){:target="_blank"}
+- library | Shares similar logic as alphalens' [factor_returns](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L210){:target="_blank"}
+- library | Shares similar logic as alphalens' [quantile_turnover](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L575){:target="_blank"}
+- library | Shares similar logic as alphalens' [factor_rank_autocorrelation](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L620){:target="_blank"}
+- library | Shares similar logic as alphalens' [average_cumulative_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L758){:target="_blank"} (event returns)
+
 **Args:**
 
 - <u>metrics (str &#124; list[str], optional):</u> A model method name with one value per
@@ -78,8 +90,8 @@ scores. "all" adds the accruals ratio, Tobin's Q, the sustainable and internal
 growth rates, the magic formula and the Merton distance to default. The
 valuation models and the analyses with several components and no score are not
 in the collections.
-- <u>period (str, optional):</u> The frequency at which the models are evaluated: daily,
-weekly, monthly, quarterly or yearly. Defaults to "monthly".
+- <u>period (str, optional):</u> The frequency at which the models are evaluated. Options are: "daily", "weekly",
+"monthly", "quarterly", "yearly". Defaults to "monthly".
 - <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
 returns cover. Defaults to None, which uses about a period, a quarter and a
 year ahead (1, 3 and 12 months for monthly).
@@ -87,21 +99,19 @@ year ahead (1, 3 and 12 months for monthly).
 period. Defaults to 5.
 - <u>periods_apart (int, optional):</u> The number of periods between the dates the
 quantile turnover and the rank autocorrelation compare. Defaults to 1.
-- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single model
-instead of the summary: "information_coefficient" (per period and horizon),
-"information_coefficient_by_month" or "information_coefficient_by_year" (the mean IC
-per calendar month or year), "group_information_coefficient" (the IC statistics
-within each group, needs group), "quantile_returns" (the mean forward return per
-quantile and horizon), "quantile_returns_by_date" (per period),
-"quantile_return_statistics" (the mean, its standard error and both per single
-period), "quantile_statistics" (the range, mean and count of the factor values in
-each quantile), "quantile_turnover" (per period and quantile),
-"rank_autocorrelation" (per period), "factor_weights" (the weights of the
-factor-weighted long-short portfolio per period and ticker), "factor_returns" (its
-return per period and horizon), "cumulative_returns" (the growth of 1 in it and in
-each quantile) or "event_returns" (the mean price path of each quantile from the
-longest horizon before to the longest horizon after the periods it is formed).
-Defaults to None.
+- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single model instead of the
+summary. Options are: "information_coefficient" (per period and horizon),
+"information_coefficient_by_month" (the mean IC per calendar month),
+"information_coefficient_by_year" (the mean IC per calendar year), "group_information_coefficient"
+(the IC statistics within each group, needs group), "quantile_returns" (the mean forward return per
+quantile and horizon), "quantile_returns_by_date" (per period), "quantile_return_statistics" (the
+mean, its standard error and both per single period), "quantile_statistics" (the range, mean and
+count of the factor values in each quantile), "quantile_turnover" (per period and quantile),
+"rank_autocorrelation" (per period), "factor_weights" (the weights of the factor-weighted long-short
+portfolio per period and ticker), "factor_returns" (its return per period and horizon),
+"cumulative_returns" (the growth of 1 in it and in each quantile), "event_returns" (the mean price
+path of each quantile from the longest horizon before to the longest horizon after the periods it is
+formed). Defaults to None.
 - <u>column (str &#124; None, optional):</u> The component to use of a model, e.g.
 "Working Capital to Total Assets" of the Altman Z-Score. Defaults to None,
 which uses the model's score (its last row).
@@ -115,12 +125,11 @@ a group-neutral analysis, in which the IC is group-adjusted and the
 factor-weighted portfolio neutral within each group. Without group the IC
 stays the same, as subtracting one mean from every ticker keeps their ranks.
 Defaults to False.
-- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period:
-"quantile" (equally sized), "equal_width" (bins of equal width between the lowest
-and highest value), "zero_aware" (half of the quantiles for the negative and half
-for the zero and positive values, for a signal centred on zero; needs an even number
-of quantiles) or "group" (equally sized within each group, needs group). Defaults to
-"quantile".
+- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period. Options are: "quantile"
+(equally sized), "equal_width" (bins of equal width between the lowest and highest value),
+"zero_aware" (half of the quantiles for the negative and half for the zero and positive values, for
+a signal centred on zero; needs an even number of quantiles), "group" (equally sized within each
+group, needs group). Defaults to "quantile".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the models that take them, e.g. trailing=4 or
@@ -164,12 +173,11 @@ of Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period
 1945-1964." Journal of Finance 23(2); the event returns follow MacKinlay, A.C.
 (1997). "Event Studies in Economics and Finance." Journal of Economic Literature
 35(1).
-- Referenced against alphalens-reloaded
-([https://github.com/stefan-jansen/alphalens-reloaded](https://github.com/stefan-jansen/alphalens-reloaded){:target="_blank"}). Its top minus bottom
-spread is half of the one here (a gross exposure of one rather than two), it
-drops a period and ticker without every horizon's return where each horizon
-here uses its own, and its event returns average the single-period returns at
-each offset where these are the price paths rebased to the period itself.
+- Unlike alphalens, whose top minus bottom spread is half of the one here (a gross
+exposure of one rather than two), each horizon here uses its own returns where
+alphalens drops a period and ticker without every horizon's return, and the event
+returns are the price paths rebased to the period itself where alphalens averages
+the single-period returns at each offset.
 
 Also known as: predictive power, information coefficient, factor testing, alpha signal
 
@@ -193,7 +201,7 @@ toolkit.models.get_factor_analysis(
 
 Which returns:
 
-|                                      |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |    Beta |   Quantile Turnover |   Rank Autocorrelation |
+|                                      |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   P-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |    Beta |   Quantile Turnover |   Rank Autocorrelation |
 |:-------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|--------------:|--------------:|-----------------:|---------------:|-------------------:|-------------------:|--------:|--------------------:|-----------------------:|
 | ('get_piotroski_score', '12 Months') |   -0.1353 |                  0.3685 |                -0.3672 |       -3.6724 |    0.0004 |        0.3723 |       -0.1763 |             0.31 |            100 |            -0.1482 |             0.0279 | -0.3828 |              0.0787 |                 0.93   |
 | ('get_altman_z_score', '12 Months')  |    0.1179 |                  0.3915 |                 0.3011 |        3.0112 |    0.0033 |       -0.657  |       -0.2792 |             0.66 |            100 |             0.1564 |            -0.1619 |  1.2913 |              0.0258 |                 0.9939 |
@@ -201,7 +209,9 @@ Which returns:
 ---
 
 ## get_kaplan_zingales_index
-Calculates the Kaplan-Zingales (KZ) index of financial constraints, a measure of how hard it is for a firm to fund its investments with external finance, as constructed by Lamont, Polk and Saa-Requejo (2001). Kaplan and Zingales (1997) read the annual reports of the 49 low-dividend manufacturing firms of Fazzari, Hubbard and Petersen (1988), classified every firm-year from not to undoubtedly financially constrained and related the classes to accounting ratios with an ordered logit. Lamont, Polk and Saa-Requejo use Steven Kaplan's re-estimation of that logit on the five ratios available in Compustat as an index.
+Calculates the Kaplan-Zingales (KZ) index of financial constraints: how hard it is for a firm to fund its investments with external finance.
+
+It is the index as constructed by Lamont, Polk and Saa-Requejo (2001). Kaplan and Zingales (1997) read the annual reports of the 49 low-dividend manufacturing firms of Fazzari, Hubbard and Petersen (1988), classified every firm-year from not to undoubtedly financially constrained and related the classes to accounting ratios with an ordered logit. Lamont, Polk and Saa-Requejo use Steven Kaplan's re-estimation of that logit on the five ratios available in Compustat as an index.
 
 The formula is as follows:
 
@@ -244,6 +254,11 @@ The Kaplan-Zingales index can be interpreted as follows:
 
 **Also known as:** KZ index, Kaplan-Zingales, financing constraints, external finance.
 
+**References:**
+
+- paper | Lamont, Owen, Christopher Polk and Jesus Saa-Requejo. "Financial Constraints and Stock Returns." The Review of Financial Studies, Vol. 14, No. 2, 2001, pp. 529-554.
+- paper | Kaplan, Steven N. and Luigi Zingales. "Do Investment-Cash Flow Sensitivities Provide Useful Measures of Financing Constraints?" The Quarterly Journal of Economics, Vol. 112, No. 1, 1997, pp. 169-215.
+
 **Args:**
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -284,12 +299,6 @@ Hadlock and Pierce (2010) find that it classifies firms with characteristics of
 unconstrained firms as constrained, which get_whited_wu_index and
 get_size_age_index address.
 
-References:
-- Lamont, Owen, Christopher Polk and Jesus Saa-Requejo. "Financial Constraints and Stock
-Returns." The Review of Financial Studies, Vol. 14, No. 2, 2001, pp. 529-554.
-- Kaplan, Steven N. and Luigi Zingales. "Do Investment-Cash Flow Sensitivities Provide Useful
-Measures of Financing Constraints?" The Quarterly Journal of Economics, Vol. 112, No. 1,
-1997, pp. 169-215.
 
 **As an example:**
 
@@ -317,7 +326,9 @@ Which returns:
 ---
 
 ## get_whited_wu_index
-Calculates the Whited-Wu (WW) index of financial constraints, the shadow value of external funds that Whited and Wu (2006) estimate from the Euler equation of a firm's investment on quarterly Compustat data for 1975-2001. Where the Kaplan-Zingales index comes from a classification of a few firms, this index is the cost of external finance implied by how firms invest, and leaves out Tobin's Q, which measures investment opportunities with much error. Sales growth and the industry's sales growth take its place: a constrained firm is one with good investment opportunities (a growing industry) it cannot fund (it grows less).
+Calculates the Whited-Wu (WW) index of financial constraints: how hard it is for a firm to fund its investments with external finance.
+
+It is the shadow value of external funds that Whited and Wu (2006) estimate from the Euler equation of a firm's investment on quarterly Compustat data for 1975-2001. Where the Kaplan-Zingales index comes from a classification of a few firms, this index is the cost of external finance implied by how firms invest, and leaves out Tobin's Q, which measures investment opportunities with much error. Sales growth and the industry's sales growth take its place: a constrained firm is one with good investment opportunities (a growing industry) it cannot fund (it grows less).
 
 The formula is as follows:
 
@@ -365,6 +376,12 @@ The Whited-Wu index can be interpreted as follows:
 
 **Also known as:** WW index, Whited-Wu, financing constraints, shadow cost of external funds.
 
+**References:**
+
+- paper | Whited, Toni M. and Guojun Wu. "Financial Constraints Risk." The Review of Financial Studies, Vol. 19, No. 2, 2006, pp. 531-559.
+- paper | Hennessy, Christopher A. and Toni M. Whited. "How Costly Is External Financing? Evidence from a Structural Estimation." The Journal of Finance, Vol. 62, No. 4, 2007, pp. 1705-1745.
+- paper | Farre-Mensa, Joan and Alexander Ljungqvist. "Do Measures of Financial Constraints Measure Financial Constraints?" The Review of Financial Studies, Vol. 29, No. 2, 2016, pp. 271-308.
+
 **Args:**
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -403,13 +420,6 @@ reporting in a currency other than the US dollar the LNTA term (and the index) s
 by -0.044 times the log of the exchange rate; compare such companies within their
 currency, or retrieve the statements converted to US dollars.
 
-References:
-- Whited, Toni M. and Guojun Wu. "Financial Constraints Risk." The Review of Financial Studies,
-Vol. 19, No. 2, 2006, pp. 531-559.
-- Hennessy, Christopher A. and Toni M. Whited. "How Costly Is External Financing? Evidence from
-a Structural Estimation." The Journal of Finance, Vol. 62, No. 4, 2007, pp. 1705-1745.
-- Farre-Mensa, Joan and Alexander Ljungqvist. "Do Measures of Financial Constraints Measure
-Financial Constraints?" The Review of Financial Studies, Vol. 29, No. 2, 2016, pp. 271-308.
 
 **As an example:**
 
@@ -438,7 +448,9 @@ Which returns:
 ---
 
 ## get_size_age_index
-Calculates the size-age (SA) index of financial constraints of Hadlock and Pierce (2010). They coded the financial constraints of a random sample of firms from the text of their 10-K filings (1995-2004) and found that, of the usual measures, only size and age predict the constraints well: the Kaplan-Zingales ratios do not, once size and age are known. The index is their ordered logit on size and age alone, so it needs no market data and has few of the accounting choices that move the other indices.
+Calculates the size-age (SA) index of financial constraints of Hadlock and Pierce (2010).
+
+They coded the financial constraints of a random sample of firms from the text of their 10-K filings (1995-2004) and found that, of the usual measures, only size and age predict the constraints well: the Kaplan-Zingales ratios do not, once size and age are known. The index is their ordered logit on size and age alone, so it needs no market data and has few of the accounting choices that move the other indices.
 
 The formula is as follows:
 
@@ -470,6 +482,10 @@ The size-age index can be interpreted as follows:
 
 **Also known as:** SA index, Hadlock-Pierce index, HP index, financing constraints.
 
+**References:**
+
+- paper | Hadlock, Charles J. and Joshua R. Pierce. "New Evidence on Measuring Financial Constraints: Moving Beyond the KZ Index." The Review of Financial Studies, Vol. 23, No. 5, 2010, pp. 1909-1940.
+
 **Args:**
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -499,10 +515,6 @@ US price level, as in Hadlock and Pierce's US sample, so for a company reporting
 another currency the Size is only indicative unless the statements are converted to
 US dollars.
 
-References:
-- Hadlock, Charles J. and Joshua R. Pierce. "New Evidence on Measuring Financial
-Constraints: Moving Beyond the KZ Index." The Review of Financial Studies, Vol. 23, No. 5,
-2010, pp. 1909-1940.
 
 **As an example:**
 
@@ -531,7 +543,9 @@ Which returns:
 ---
 
 ## get_altman_z_score
-Calculates the Altman Z-Score, a financial metric used to predict the likelihood of a company going bankrupt. The Altman Z-Score is calculated using several financial ratios, including working capital to total assets, retained earnings to total assets, earnings before interest and taxes (EBIT) to total assets, equity to book value of total liabilities, and (for manufacturers) sales to total assets. Altman estimated four versions, chosen with `model`: the original Z-Score for listed manufacturers, the Z'-Score for private manufacturers, the Z''-Score for non-manufacturers and the Z''-EM score for emerging market companies.
+Calculates the Altman Z-Score, a financial metric used to predict the likelihood of a company going bankrupt.
+
+The Altman Z-Score is calculated using several financial ratios, including working capital to total assets, retained earnings to total assets, earnings before interest and taxes (EBIT) to total assets, equity to book value of total liabilities, and (for manufacturers) sales to total assets. Altman estimated four versions, chosen with `model`: the original Z-Score for listed manufacturers, the Z'-Score for private manufacturers, the Z''-Score for non-manufacturers and the Z''-EM score for emerging market companies.
 
 The formula is as follows:
 
@@ -548,7 +562,7 @@ $$
 $$
 
 $$
-\text{Market Value to Total Liabilities} \;(X_{4},\; \text{"original"}) = \frac{\text{Market Value of Equity}}{\text{Total Liabilities}}
+\text{Market Value to Total Liabilities} \;(X_{4},\; \text{the original model}) = \frac{\text{Market Value of Equity}}{\text{Total Liabilities}}
 $$
 
 $$
@@ -556,7 +570,7 @@ $$
 $$
 
 $$
-\text{Sales to Total Assets} \;(X_{5},\; \text{"original"} \;\text{and}\; \text{"private"}) = \frac{\text{Sales}}{\text{Total Assets}}
+\text{Sales to Total Assets} \;(X_{5},\; \text{the original and private models}) = \frac{\text{Sales}}{\text{Total Assets}}
 $$
 
 $$
@@ -586,13 +600,22 @@ The original Z-Score was estimated on US listed manufacturers, and its threshold
 
 **Also known as:** Altman Z-score, Z'-Score, Z''-Score, Z''-EM, emerging market score, bankruptcy prediction, financial distress score.
 
+**References:**
+
+- paper | Altman, E. I. (1968). Financial Ratios, Discriminant Analysis and the Prediction of Corporate Bankruptcy. The Journal of Finance, 23(4), 589-609.
+- paper | Altman, E. I. (1983). Corporate Financial Distress: A Complete Guide to Predicting, Avoiding, and Dealing with Bankruptcy. John Wiley & Sons.
+- paper | Altman, E. I. (2000). Predicting Financial Distress of Companies: Revisiting the Z-Score and ZETA Models. Working paper, New York University.
+- paper | Altman, E. I., Hartzell, J. and Peck, M. (1995). Emerging Markets Corporate Bonds: A Scoring System. Salomon Brothers.
+- paper | Altman, E. I. (2005). An Emerging Market Credit Scoring System for Corporate Bonds. Emerging Markets Review, 6(4), 311-323.
+
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares outstanding in the market value of equity of
 the "original" model. Defaults to True.
-- <u>model (str, optional):</u> The model to use: "original" (listed manufacturers, market value of
-equity), "private" (Z', book value of equity), "non-manufacturing" (Z'', book value of equity,
-no sales term) or "emerging" (Z''-EM, Z'' plus 3.25). Defaults to "original".
+- <u>method (str, optional):</u> The variant of the Altman Z-Score. Options are: "original" (listed
+manufacturers, market value of equity), "private" (Z', book value of equity), "non-manufacturing"
+(Z'', book value of equity, no sales term) or "emerging" (Z''-EM, Z'' plus 3.25). Defaults to
+"original".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -628,17 +651,6 @@ price, and the Z''-Score and Z''-EM score leave out sales to total assets.
 filing day with point_in_time) times the period's weighted average shares, taken at the date
 of the balance sheet it is compared with.
 
-References:
-- Altman, E. I. (1968). Financial Ratios, Discriminant Analysis and the Prediction of Corporate
-Bankruptcy. The Journal of Finance, 23(4), 589-609.
-- Altman, E. I. (1983). Corporate Financial Distress: A Complete Guide to Predicting, Avoiding, and
-Dealing with Bankruptcy. John Wiley & Sons.
-- Altman, E. I. (2000). Predicting Financial Distress of Companies: Revisiting the Z-Score and ZETA
-Models. Working paper, New York University.
-- Altman, E. I., Hartzell, J. and Peck, M. (1995). Emerging Markets Corporate Bonds: A Scoring System.
-Salomon Brothers.
-- Altman, E. I. (2005). An Emerging Market Credit Scoring System for Corporate Bonds. Emerging
-Markets Review, 6(4), 311-323.
 
 **As an example:**
 
@@ -652,7 +664,7 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.models.get_altman_z_score(model="non-manufacturing").xs("Altman Z-Score", level=1)
+toolkit.models.get_altman_z_score(method="non-manufacturing").xs("Altman Z-Score", level=1)
 ```
 
 Which returns:
@@ -666,7 +678,9 @@ Which returns:
 ---
 
 ## get_ohlson_o_score
-Calculates the Ohlson O-Score, a financial metric used to predict the likelihood of a company going bankrupt. Unlike the Altman Z-Score, which is built with multiple discriminant analysis, the O-Score's coefficients come from a fitted logistic regression (logit) model. This is why the two models are usually reported side by side rather than one being treated as a replacement for the other: the Z-Score is only meaningful compared against Altman's empirically derived threshold bands, while the O-Score is directly interpretable as a probability of bankruptcy once passed through the logistic transform.
+Calculates the Ohlson O-Score, a financial metric used to predict the likelihood of a company going bankrupt.
+
+Unlike the Altman Z-Score, which is built with multiple discriminant analysis, the O-Score's coefficients come from a fitted logistic regression (logit) model. This is why the two models are usually reported side by side rather than one being treated as a replacement for the other: the Z-Score is only meaningful compared against Altman's empirically derived threshold bands, while the O-Score is directly interpretable as a probability of bankruptcy once passed through the logistic transform.
 
 The formula is as follows:
 
@@ -721,6 +735,10 @@ The Ohlson O-Score can be interpreted as follows:
 
 **Also known as:** Ohlson O-Score, bankruptcy prediction, financial distress score.
 
+**References:**
+
+- paper | Ohlson, James A. "Financial Ratios and the Probabilistic Prediction of Bankruptcy." Journal of Accounting Research, Vol. 18, No. 1, 1980, pp. 109-131.
+
 **Args:**
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -761,9 +779,6 @@ companions, using the same normalized financial statements as their input.
 - As with the other bankruptcy and distress models, this is a probabilistic, not a
 definitive, indicator and should be combined with further fundamental analysis.
 
-References:
-- Ohlson, James A. "Financial Ratios and the Probabilistic Prediction of Bankruptcy." Journal of
-Accounting Research, Vol. 18, No. 1, 1980, pp. 109-131.
 
 Note that the first year is NaN because the Change in Net Income and Negative Income
 Indicator components require a prior year to compare against. On quarterly data both
@@ -795,7 +810,9 @@ Which returns:
 ---
 
 ## get_zmijewski_score
-Calculates the Zmijewski Score, a financial metric used to predict the likelihood of a company going bankrupt. It is a simpler, three-variable model compared to both the Altman Z-Score and the Ohlson O-Score, and is commonly used as a robustness check when those two models disagree, since it is estimated on a different sample and with a different statistical technique (a probit model rather than discriminant analysis or logistic regression).
+Calculates the Zmijewski Score, a financial metric used to predict the likelihood of a company going bankrupt.
+
+It is a simpler, three-variable model compared to both the Altman Z-Score and the Ohlson O-Score, and is commonly used as a robustness check when those two models disagree, since it is estimated on a different sample and with a different statistical technique (a probit model rather than discriminant analysis or logistic regression).
 
 The formula is as follows:
 
@@ -824,6 +841,10 @@ The Zmijewski Score can be interpreted as follows:
 - A higher X (and therefore a higher bankruptcy probability) indicates a higher likelihood of financial distress.
 
 **Also known as:** Zmijewski Score, ZFC score, bankruptcy prediction, financial distress score.
+
+**References:**
+
+- paper | Zmijewski, Mark E. "Methodological Issues Related to the Estimation of Financial Distress Prediction Models." Journal of Accounting Research, Vol. 22, 1984, pp. 59-82.
 
 **Args:**
 
@@ -860,9 +881,6 @@ logistic transform to the Zmijewski Score instead would produce an incorrect pro
 a probabilistic, not a definitive, indicator and should be combined with further fundamental
 analysis.
 
-References:
-- Zmijewski, Mark E. "Methodological Issues Related to the Estimation of Financial Distress
-Prediction Models." Journal of Accounting Research, Vol. 22, 1984, pp. 59-82.
 
 **As an example:**
 
@@ -890,7 +908,9 @@ Which returns:
 ---
 
 ## get_springate_score
-Calculates the Springate Score, a financial metric used to predict the likelihood of a company going bankrupt. It follows the same multiple discriminant analysis methodology as the Altman Z-Score, but was calibrated on a smaller, Canadian-firm sample using four financial ratios instead of five.
+Calculates the Springate Score, a financial metric used to predict the likelihood of a company going bankrupt.
+
+It follows the same multiple discriminant analysis methodology as the Altman Z-Score, but was calibrated on a smaller, Canadian-firm sample using four financial ratios instead of five.
 
 The formula is as follows:
 
@@ -920,6 +940,10 @@ The Springate Score can be interpreted as follows:
 - A Springate Score of greater than 0.862 indicates a low likelihood of bankruptcy.
 
 **Also known as:** Springate Score, S-Score, bankruptcy prediction, financial distress score.
+
+**References:**
+
+- paper | Springate, Gordon L.V. "Predicting the Possibility of Failure in a Canadian Firm." Unpublished M.B.A. Research Project, Simon Fraser University, 1978.
 
 **Args:**
 
@@ -953,9 +977,6 @@ combined with further fundamental analysis.
 - EBIT is the reported Operating Income, as in the Altman Z-Score calculation elsewhere
 in this module.
 
-References:
-- Springate, Gordon L.V. "Predicting the Possibility of Failure in a Canadian Firm."
-Unpublished M.B.A. Research Project, Simon Fraser University, 1978.
 
 **As an example:**
 
@@ -983,7 +1004,9 @@ Which returns:
 ---
 
 ## get_grover_score
-Calculates the Grover Score, a financial metric used to predict the likelihood of a company going bankrupt. It was developed by re-estimating the coefficients of a reduced-form Altman Z-Score and adding a Return on Assets term, using a sample that paired each of Altman's original bankrupt firms with a matched non-bankrupt firm from the same industry and year.
+Calculates the Grover Score, a financial metric used to predict the likelihood of a company going bankrupt.
+
+It was developed by re-estimating the coefficients of a reduced-form Altman Z-Score and adding a Return on Assets term, using a sample that paired each of Altman's original bankrupt firms with a matched non-bankrupt firm from the same industry and year.
 
 The formula is as follows:
 
@@ -1009,6 +1032,10 @@ The Grover Score can be interpreted as follows:
 - A Grover Score of 0.01 or higher indicates a low likelihood of bankruptcy (per some secondary sources), leaving a gray area in between the two thresholds.
 
 **Also known as:** Grover Score, G-Score, bankruptcy prediction, financial distress score.
+
+**References:**
+
+- paper | Grover, Jeffrey S. "Validating the Grover Bankruptcy Model." Doctoral dissertation, University of North Texas, 2003.
 
 **Args:**
 
@@ -1042,9 +1069,6 @@ in this module. Return on
 Assets uses the point-in-time Total Assets balance (not averaged), matching the
 original Grover (2001) specification.
 
-References:
-- Grover, Jeffrey S. "Validating the Grover Bankruptcy Model." Doctoral dissertation,
-University of North Texas, 2003.
 
 **As an example:**
 
@@ -1072,7 +1096,9 @@ Which returns:
 ---
 
 ## get_fulmer_h_score
-Calculates the Fulmer H-Score, a financial metric used to predict the likelihood of a company going bankrupt. Unlike the Altman Z-Score, which was built on relatively large, listed manufacturing companies, the Fulmer H-Score was calibrated on a matched-pair sample of small, failed and non-failed U.S. companies, using nine financial ratios selected via step-wise multiple discriminant analysis.
+Calculates the Fulmer H-Score, a financial metric used to predict the likelihood of a company going bankrupt.
+
+Unlike the Altman Z-Score, which was built on relatively large, listed manufacturing companies, the Fulmer H-Score was calibrated on a matched-pair sample of small, failed and non-failed U.S. companies, using nine financial ratios selected via step-wise multiple discriminant analysis.
 
 The formula is as follows:
 
@@ -1125,6 +1151,10 @@ The Fulmer H-Score can be interpreted as follows:
 
 **Also known as:** Fulmer H-Score, H factor, bankruptcy prediction, financial distress score.
 
+**References:**
+
+- paper | Fulmer, John G., James E. Moon, Thomas A. Gavin, and Michael J. Erwin. "A Bankruptcy Classification Model for Small Firms." Journal of Commercial Bank Lending, Vol. 66, No. 11, 1984, pp. 25-37.
+
 **Args:**
 
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
@@ -1165,10 +1195,6 @@ in this module.
 probabilistic, not a definitive, indicator and should be combined with further
 fundamental analysis.
 
-References:
-- Fulmer, John G., James E. Moon, Thomas A. Gavin, and Michael J. Erwin. "A
-Bankruptcy Classification Model for Small Firms." Journal of Commercial Bank
-Lending, Vol. 66, No. 11, 1984, pp. 25-37.
 
 **As an example:**
 
@@ -1196,7 +1222,9 @@ Which returns:
 ---
 
 ## get_taffler_z_score
-Calculates the Taffler z-score, a discriminant model of financial distress estimated on UK listed industrial companies (Taffler, 1983). It combines profitability, working capital, financial risk and liquidity, and Agarwal and Taffler (2007) showed that it kept its predictive ability over 25 years of UK data. A negative score places a company in the at-risk region.
+Calculates the Taffler z-score, a discriminant model of financial distress estimated on UK listed industrial companies (Taffler, 1983).
+
+It combines profitability, working capital, financial risk and liquidity, and Agarwal and Taffler (2007) showed that it kept its predictive ability over 25 years of UK data. A negative score places a company in the at-risk region.
 
 The formula is as follows:
 
@@ -1230,6 +1258,11 @@ The Taffler z-score can be interpreted as follows:
 - A score above zero indicates a solvent profile; the higher, the safer.
 
 **Also known as:** Taffler Z-Score, UK z-score, bankruptcy prediction, financial distress score.
+
+**References:**
+
+- paper | Taffler, R. J. (1983). The Assessment of Company Solvency and Performance Using a Statistical Model. Accounting and Business Research, 13(52), 295-308.
+- paper | Agarwal, V. and Taffler, R. J. (2007). Twenty-Five Years of the Taffler z-Score Model: Does It Really Have Predictive Ability? Accounting and Business Research, 37(4), 285-300.
 
 **Args:**
 
@@ -1267,11 +1300,6 @@ meant for financial companies and is best read as a trend for companies elsewher
 - As with the Altman Z-Score and the other scores in this module, this is a probabilistic, not a
 definitive, indicator and should be combined with further fundamental analysis.
 
-References:
-- Taffler, R. J. (1983). The Assessment of Company Solvency and Performance Using a Statistical
-Model. Accounting and Business Research, 13(52), 295-308.
-- Agarwal, V. and Taffler, R. J. (2007). Twenty-Five Years of the Taffler z-Score Model: Does It
-Really Have Predictive Ability? Accounting and Business Research, 37(4), 285-300.
 
 **As an example:**
 
@@ -1299,7 +1327,9 @@ Which returns:
 ---
 
 ## get_merton_distance_to_default
-Calculate the distance to default and probability of default with the Merton (1974) structural credit model. Equity is seen as a call option on the company's assets with its debt as strike price: shareholders receive what is left after the debt is repaid. The market value and volatility of the assets, which cannot be observed, are solved from the market value and volatility of the equity:
+Calculate the distance to default and probability of default with the Merton (1974) structural credit model.
+
+Equity is seen as a call option on the company's assets with its debt as strike price: shareholders receive what is left after the debt is repaid. The market value and volatility of the assets, which cannot be observed, are solved from the market value and volatility of the equity:
 
 $$
 E = V N(d_{1}) - D e^{- rT} N(d_{2})
@@ -1331,16 +1361,16 @@ The market capitalization, the equity volatility and the risk free rate are meas
 
 The risk free rate is the Toolkit's (the 10-year Treasury yield unless set otherwise with `risk_free_rate`) on that day, converted from its semi-annual bond-equivalent quote to continuous compounding, where Vassalou and Xing (2004) and Bharath and Shumway (2008) use the one-year rate for a one-year horizon; the difference moves the distance to default only slightly.
 
-For more information, see the following papers:
-
-- Merton, R.C. (1974). "On the Pricing of Corporate Debt: The Risk Structure of Interest Rates." The Journal of Finance, 29(2), 449-470.
-- Crosbie, P. and Bohn, J. (2003). "Modeling Default Risk." Moody's KMV.
-- Vassalou, M. and Xing, Y. (2004). "Default Risk in Equity Returns." The Journal of Finance, 59(2), 831-868.
-- Bharath, S.T. and Shumway, T. (2008). "Forecasting Default with the Merton Distance to Default Model." The Review of Financial Studies, 21(3), 1339-1369.
-
-The debt value and credit spread are referenced against FinancePy's MertonFirm.
-
 **Also known as:** KMV model, structural credit model, expected default frequency, Merton credit spread.
+
+**References:**
+
+- paper | Merton, R.C. (1974). "On the Pricing of Corporate Debt: The Risk Structure of Interest Rates." The Journal of Finance, 29(2), 449-470.
+- paper | Crosbie, P. and Bohn, J. (2003). "Modeling Default Risk." Moody's KMV.
+- paper | Vassalou, M. and Xing, Y. (2004). "Default Risk in Equity Returns." The Journal of Finance, 59(2), 831-868.
+- paper | Bharath, S.T. and Shumway, T. (2008). "Forecasting Default with the Merton Distance to Default Model." The Review of Financial Studies, 21(3), 1339-1369.
+- library | Referenced against FinancePy's [MertonFirm.credit_spread](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/merton_firm.py#L124){:target="_blank"}
+- library | Referenced against FinancePy's [MertonFirm.debt_value](https://github.com/domokane/FinancePy/blob/V1.1.2/financepy/models/merton_firm.py#L109){:target="_blank"}
 
 **Args:**
 
@@ -1401,7 +1431,9 @@ Which returns:
 ---
 
 ## get_campbell_hilscher_szilagyi_score
-Calculate the probability of failure of Campbell, Hilscher and Szilagyi (2008), a logit model that combines accounting figures with market data to predict failure: a bankruptcy filing, a delisting or a D (default) rating. It measures profitability and leverage against the market value of the assets rather than the book value, and adds the excess return of the shares, their volatility, the company's size, its cash, its market-to-book ratio and its share price. In the paper it predicts failure better than Shumway's (2001) model and than the Merton distance to default.
+Calculate the probability of failure of Campbell, Hilscher and Szilagyi (2008), a logit model that combines accounting figures with market data to predict failure.
+
+Failure is a bankruptcy filing, a delisting or a D (default) rating. It measures profitability and leverage against the market value of the assets rather than the book value, and adds the excess return of the shares, their volatility, the company's size, its cash, its market-to-book ratio and its share price. In the paper it predicts failure better than Shumway's (2001) model and than the Merton distance to default.
 
 The model is the 12-month-ahead logit of Table IV, column (3), of the paper:
 
@@ -1457,6 +1489,13 @@ The probability is that of failing in the month 12 months ahead, given that the 
 
 **Also known as:** CHS model, failure probability, distress risk, default probability, LPFD.
 
+**References:**
+
+- paper | Campbell, J.Y., Hilscher, J. and Szilagyi, J. (2008). "In Search of Distress Risk." The Journal of Finance, 63(6), 2899-2939.
+- paper | Cohen, R.B., Polk, C. and Vuolteenaho, T. (2003). "The Value Spread." The Journal of Finance, 58(2), 609-641.
+- paper | Davis, J.L., Fama, E.F. and French, K.R. (2000). "Characteristics, Covariances, and Average Returns: 1929 to 1997." The Journal of Finance, 55(1), 389-406.
+- paper | Shumway, T. (2001). "Forecasting Bankruptcy More Accurately: A Simple Hazard Model." The Journal of Business, 74(1), 101-124.
+
 **Args:**
 
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -1507,15 +1546,6 @@ fiscal period end.
 is compared with the dollar total of the S&P 500, which moves RSIZE by the log
 of the exchange rate (about 0.004 on the score for the euro).
 
-References:
-- Campbell, J.Y., Hilscher, J. and Szilagyi, J. (2008). "In Search of Distress Risk."
-The Journal of Finance, 63(6), 2899-2939.
-- Cohen, R.B., Polk, C. and Vuolteenaho, T. (2003). "The Value Spread." The Journal
-of Finance, 58(2), 609-641.
-- Davis, J.L., Fama, E.F. and French, K.R. (2000). "Characteristics, Covariances, and
-Average Returns: 1929 to 1997." The Journal of Finance, 55(1), 389-406.
-- Shumway, T. (2001). "Forecasting Bankruptcy More Accurately: A Simple Hazard
-Model." The Journal of Business, 74(1), 101-124.
 
 **As an example:**
 
@@ -1550,9 +1580,11 @@ Which returns:
 ---
 
 ## get_shumway_score
-Calculate the bankruptcy probability of Shumway's (2001) hazard model, which combines two accounting ratios of Zmijewski's model with three market variables: the company's size relative to the market, its excess return over the past year and the volatility of its returns that the market does not explain. Shumway estimated it as a discrete-time hazard model (a logit on every firm year), which uses every year a company is observed rather than one per company, and found that the market variables predict bankruptcy better than most accounting ratios.
+Calculate the bankruptcy probability of Shumway's (2001) hazard model, which combines two accounting ratios of Zmijewski's model with three market variables.
 
-The model is Table 6 of the paper, panel B (model="combined") or panel A (model="market"):
+The market variables are the company's size relative to the market, its excess return over the past year and the volatility of its returns that the market does not explain. Shumway estimated it as a discrete-time hazard model (a logit on every firm year), which uses every year a company is observed rather than one per company, and found that the market variables predict bankruptcy better than most accounting ratios.
+
+The model is Table 6 of the paper, panel B (the combined model) or panel A (the market model):
 
 $$
 \text{Combined:}\;\; H = - 13.303 - \frac{1.982 \;\text{NI}}{\text{TA}} + \frac{3.593 \;\text{TL}}{\text{TA}} - 0.467 \;\text{RELSIZE} - 1.809 \;\text{EXRET} + 5.791 \;\text{SIGMA}
@@ -1590,18 +1622,18 @@ $$
 
 The probability is that of a bankruptcy filing in the year after the period, the statements and market data being known at its end. For comparison, 300 of the 39,745 firm years in Shumway's sample ended in bankruptcy (0.75%).
 
-For more information, see the following sources:
-
-- Shumway, T. (2001). "Forecasting Bankruptcy More Accurately: A Simple Hazard Model." The Journal of Business, 74(1), 101-124.
-- Zmijewski, M. E. (1984). "Methodological Issues Related to the Estimation of Financial Distress Prediction Models." Journal of Accounting Research, 22, 59-82.
-
 **Also known as:** Shumway hazard model, hazard model bankruptcy probability, Shumway score.
+
+**References:**
+
+- paper | Shumway, T. (2001). "Forecasting Bankruptcy More Accurately: A Simple Hazard Model." The Journal of Business, 74(1), 101-124.
+- paper | Zmijewski, M. E. (1984). "Methodological Issues Related to the Estimation of Financial Distress Prediction Models." Journal of Accounting Research, 22, 59-82.
 
 **Args:**
 
-- <u>model (str, optional):</u> "combined" for the market and accounting variables (Table 6,
-panel B) or "market" for the market variables only (panel A), which also works
-for companies without statements. Defaults to "combined".
+- <u>method (str, optional):</u> The variant of the hazard model. Options are: "combined" (the
+market and accounting variables, Table 6, panel B) or "market" (the market variables only,
+panel A, which also works for companies without statements). Defaults to "combined".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -1671,7 +1703,9 @@ Which returns:
 ---
 
 ## get_synthetic_credit_rating
-Calculate a synthetic credit rating and the cost of debt that comes with it, from the interest coverage ratio (EBIT divided by interest expense), following Aswath Damodaran. Most companies have no traded bonds or rating of their own; the coverage ratio is the measure that explains ratings best, so it is mapped to the rating that companies with a similar ratio have, and to that rating's default spread over the risk free rate:
+Calculate a synthetic credit rating and the cost of debt that comes with it, from the interest coverage ratio (EBIT divided by interest expense), following Aswath Damodaran.
+
+Most companies have no traded bonds or rating of their own; the coverage ratio is the measure that explains ratings best, so it is mapped to the rating that companies with a similar ratio have, and to that rating's default spread over the risk free rate:
 
 - Interest Coverage Ratio = EBIT / Interest Expense
 - Rating and Default Spread from Damodaran's synthetic rating table
@@ -1679,19 +1713,18 @@ Calculate a synthetic credit rating and the cost of debt that comes with it, fro
 
 The table, with this year's default spreads, is read from Damodaran's website. Large and small companies use different coverage ranges, as smaller companies need a higher coverage for the same rating.
 
-For more information, see the following book and data:
-
-- Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 8.
-- Damodaran, A. "Ratings, Interest Coverage Ratios and Default Spread." [https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ratings.html](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ratings.html){:target="_blank"}
-
 **Also known as:** implied credit rating, interest coverage rating, cost of debt.
+
+**References:**
+
+- paper | Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 8.
+- paper | Damodaran, A. "Ratings, Interest Coverage Ratios and Default Spread." [https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ratings.html](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ratings.html){:target="_blank"}
 
 **Args:**
 
-- <u>firm_type (str, optional):</u> The table to use: "large" (market capitalization above
-five billion), "small" (smaller and riskier firms), "financial" (banks and
-other financial firms) or "auto", which picks large or small from the market
-capitalization of every period. Defaults to "auto".
+- <u>firm_type (str, optional):</u> The table to use. Options are: "large" (market capitalization above five
+billion), "small" (smaller and riskier firms), "financial" (banks and other financial firms), "auto"
+(large or small from the market capitalization of every period). Defaults to "auto".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -1758,11 +1791,11 @@ Which returns:
 ## get_dupont_analysis
 Perform a Dupont analysis to breakdown the return on equity (ROE) into its components.
 
-The Dupont analysis is a method used to dissect and understand the factors that drive a company's return on equity (ROE). It breaks down the ROE into three key components: Net Profit Margin, Asset Turnover, and Equity Multiplier. The extended (five-factor) Dupont analysis, method="extended", splits the Net Profit Margin further into three separate drivers - the Tax Burden, the Interest Burden and the Operating Profit Margin - so that the effect of taxation, of financing costs and of operating performance on the return on equity can be read separately.
+The Dupont analysis is a method used to dissect and understand the factors that drive a company's return on equity (ROE). It breaks down the ROE into three key components: Net Profit Margin, Asset Turnover, and Equity Multiplier. The extended (five-factor) Dupont analysis splits the Net Profit Margin further into three separate drivers - the Tax Burden, the Interest Burden and the Operating Profit Margin - so that the effect of taxation, of financing costs and of operating performance on the return on equity can be read separately.
 
 The formula is as follows:
 
-With method="standard":
+For the standard (three-factor) analysis:
 
 $$
 \text{Net Profit Margin} = \frac{\text{Net Income}}{\text{Revenue}}
@@ -1780,7 +1813,7 @@ $$
 \text{ROE} = \text{Net Profit Margin} \cdot \text{Asset Turnover} \cdot \text{Equity Multiplier}
 $$
 
-With method="extended":
+For the extended (five-factor) analysis:
 
 $$
 \text{Interest Burden Ratio} = \frac{\text{Income Before Tax}}{\text{Operating Income}}
@@ -1825,8 +1858,8 @@ period ends that open and close those periods, so trailing=1 equals the default 
 of the opening and closing balance. E.g. 4 with quarterly data gives the trailing twelve
 months (TTM). The window counts calendar periods, so a period without a report makes it
 NaN. Defaults to None.
-- <u>method (str, optional):</u> "standard" for the three-factor decomposition or "extended" for the
-five-factor decomposition. Defaults to "standard".
+- <u>method (str, optional):</u> Options are: "standard" (the three-factor decomposition), "extended" (the
+five-factor decomposition). Defaults to "standard".
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -1835,8 +1868,8 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: DataFrame containing Dupont analysis results, including Net Profit Margin, Asset
-Turnover, Equity Multiplier, and the calculated ROE values. With
-method="extended" the Interest Burden Ratio, Tax Burden Ratio and Operating
+Turnover, Equity Multiplier, and the calculated ROE values. In
+the extended analysis the Interest Burden Ratio, Tax Burden Ratio and Operating
 Profit Margin take the place of the Net Profit Margin.
 
 **Notes:**
@@ -2036,7 +2069,9 @@ Which returns:
 ---
 
 ## get_return_decomposition
-The Return Decomposition splits the share price return over a window into the growth of the Earnings per Share and the change of the Price-to-Earnings ratio (the multiple), and adds the dividends paid over the window for the total return. It shows whether a share rose because the company earned more or because investors paid more for the same earnings, e.g. a share whose earnings beat expectations but whose price fell because its multiple contracted.
+The Return Decomposition splits the share price return over a window into the growth of the Earnings per Share and the change of the Price-to-Earnings ratio.
+
+The ratio is the multiple, and it adds the dividends paid over the window for the total return. It shows whether a share rose because the company earned more or because investors paid more for the same earnings, e.g. a share whose earnings beat expectations but whose price fell because its multiple contracted.
 
 Since the share price equals the Earnings per Share times the P/E ratio, the price relative over a window is the product of the earnings relative and the multiple relative, which is the earnings and valuation split of equity returns used in return attribution (e.g. Bogle, "Common Sense on Mutual Funds", and the building blocks of Grinold and Kroner, "The Equity Risk Premium", 2002).
 
@@ -2062,7 +2097,7 @@ $$
 \text{Total Return} = \text{Price Return} + \text{Dividend Return}
 $$
 
-With logarithmic=True the parts are log returns that add up: ln(1 + Total Return) = ln(1 + EPS Growth) + ln(1 + P/E Change) + ln(1 + Dividends / Price_t).
+In logarithmic form the parts are log returns that add up: ln(1 + Total Return) = ln(1 + EPS Growth) + ln(1 + P/E Change) + ln(1 + Dividends / Price_t).
 
 **Also known as:** earnings and multiple decomposition, P/E expansion and contraction, multiple expansion, return attribution by earnings growth and re-rating.
 
@@ -2100,7 +2135,7 @@ average (diluted) shares, as in `ratios.get_earnings_per_share`.
 - The P/E ratio has no meaning when the earnings are zero or negative, so the EPS Growth
 and P/E Change are NaN when the Earnings per Share at either end of the window is not
 positive. The Price Return, Dividend Return and Total Return remain; the growth of the
-earnings themselves is `ratios.get_earnings_per_share(growth=True)`.
+earnings themselves is the growth of `ratios.get_earnings_per_share`.
 - Dividends are added as paid, without reinvestment, so the Total Return differs slightly
 from a return on the dividend-adjusted price.
 - The price is the close on the last trading day of each fiscal period (the filing day
@@ -2141,7 +2176,9 @@ Which returns:
 ---
 
 ## get_sustainable_growth_rate
-The Sustainable Growth Rate (SGR) is the maximum rate at which a company can grow its revenue, using internally generated funds only, without having to raise additional equity or increase its financial leverage.
+The Sustainable Growth Rate (SGR) is the maximum rate at which a company can grow its revenue without new equity or more leverage.
+
+It uses internally generated funds only.
 
 The formula is as follows:
 
@@ -2218,7 +2255,9 @@ Which returns:
 ---
 
 ## get_internal_growth_rate
-The Internal Growth Rate (IGR) is the maximum rate at which a company can grow its revenue using only its retained earnings, without raising any external financing (neither debt nor equity).
+The Internal Growth Rate (IGR) is the maximum rate at which a company can grow its revenue using only its retained earnings.
+
+It raises no external financing, neither debt nor equity.
 
 The formula is as follows:
 
@@ -2293,7 +2332,9 @@ Which returns:
 ---
 
 ## get_fundamental_growth_rate
-Calculate Damodaran's fundamental growth rate of operating income: the growth that a company's reinvestment produces at its return on capital, with the reinvestment rate and the sales-to-capital ratio it is built from. Where the sustainable growth rate grows the equity with the retained net income, this grows the operating income with the capital reinvested in the operations, the growth a discounted cash flow valuation of the firm assumes.
+Calculate Damodaran's fundamental growth rate of operating income.
+
+It is the growth that a company's reinvestment produces at its return on capital, with the reinvestment rate and the sales-to-capital ratio it is built from. Where the sustainable growth rate grows the equity with the retained net income, this grows the operating income with the capital reinvested in the operations, the growth a discounted cash flow valuation of the firm assumes.
 
 The formula is as follows:
 
@@ -2331,11 +2372,11 @@ $$
 
 The reinvestment is NOPAT minus the Free Cash Flow to Firm of `get_free_cash_flow_to_firm`, so a company that reinvests less than its depreciation has a negative reinvestment rate and a negative fundamental growth. The sales-to-capital ratio links revenue growth to the reinvestment it needs: Reinvestment = Change in Revenue / Sales to Capital.
 
-For more information, see the following sources:
-
-- Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 11 (Estimating Growth) and chapter 12 (Closure in Valuation).
-
 **Also known as:** Damodaran reinvestment rate, fundamental growth, expected growth in EBIT, reinvestment rate times return on capital, sales to capital ratio, sales to invested capital.
+
+**References:**
+
+- paper | Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 11 (Estimating Growth) and chapter 12 (Closure in Valuation).
 
 **Args:**
 
@@ -2409,7 +2450,9 @@ Which returns:
 ---
 
 ## get_rule_of_40
-Calculate the Rule of 40 score: the revenue growth plus the profit margin, the measure of software and other subscription companies that trade growth against profitability. A score of 40% (0.40) or more is seen as healthy: a company growing 30% a year should keep a margin of at least 10%, one that grows 10% a margin of 30%.
+Calculate the Rule of 40 score: the revenue growth plus the profit margin, the measure of software and other subscription companies that trade growth against profitability.
+
+A score of 40% (0.40) or more is seen as healthy: a company growing 30% a year should keep a margin of at least 10%, one that grows 10% a margin of 30%.
 
 The formula is as follows:
 
@@ -2427,15 +2470,15 @@ $$
 
 The rule comes from venture capital practice for software companies (attributed to Brad Feld, 2015) and has no academic source; investors use the free cash flow margin and the EBITDA margin, which the `margin` parameter chooses between.
 
-For more information, see the following sources:
-
-- Feld, B. (2015). "The Rule of 40% For a Healthy SaaS Company." Feld Thoughts ([https://feld.com/archives/2015/02/rule-40-healthy-saas-company/](https://feld.com/archives/2015/02/rule-40-healthy-saas-company/){:target="_blank"}).
-
 **Also known as:** Rule of 40, 40% rule, growth plus margin, SaaS rule of 40.
+
+**References:**
+
+- paper | Feld, B. (2015). "The Rule of 40% For a Healthy SaaS Company." Feld Thoughts ([https://feld.com/archives/2015/02/rule-40-healthy-saas-company/](https://feld.com/archives/2015/02/rule-40-healthy-saas-company/){:target="_blank"}).
 
 **Args:**
 
-- <u>margin (str, optional):</u> The margin to add: "free_cash_flow" (Free Cash Flow / Revenue) or
+- <u>margin (str, optional):</u> The margin to add. Options are: "free_cash_flow" (Free Cash Flow / Revenue),
 "ebitda" (EBITDA / Revenue). Defaults to "free_cash_flow".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
@@ -2518,7 +2561,7 @@ Piotroski designed the F-Score to separate winners from losers among value stock
 
 Following Piotroski (2000), the Return on Assets, the Operating Cash Flow in the accruals signal and the Asset Turnover are scaled by the total assets at the beginning of the period, while the leverage signal divides long-term debt by the average of the beginning and ending total assets.
 
-The formula is as follows, where (t-1) is the same period a year earlier (the previous column on yearly data, four quarters back on quarterly data, so quarterly comparisons are year over year) and Beginning Total Assets are the total assets at the end of the previous period (`trailing` periods back when set, one year earlier with trailing=4 on quarterly data):
+The formula is as follows, where (t-1) is the same period a year earlier (the previous column on yearly data, four quarters back on quarterly data, so quarterly comparisons are year over year) and Beginning Total Assets are the total assets at the end of the previous period (`trailing` periods back when set, one year earlier with four trailing quarters):
 
 $$
 \text{Return on Assets} \;(\text{ROA}) = \frac{\text{Net Income}}{\text{Beginning Total Assets}}
@@ -2618,7 +2661,9 @@ Which returns:
 ---
 
 ## get_beneish_m_score
-The Beneish M-Score is a probabilistic model, developed by Messod Beneish, that uses eight financial ratios derived from a company's financial statements to identify whether a company has manipulated its earnings. It is a natural companion to the Altman Z-Score and Piotroski F-Score, using the same normalized financial statements as its input.
+The Beneish M-Score shows how likely it is that a company has manipulated its earnings.
+
+It is a probabilistic model, developed by Messod Beneish, that uses eight financial ratios derived from a company's financial statements to identify whether a company has manipulated its earnings. It is a natural companion to the Altman Z-Score and Piotroski F-Score, using the same normalized financial statements as its input.
 
 The formula is as follows, where (t-1) is the same period a year earlier (the previous column on yearly data, four quarters back on quarterly data, so quarterly comparisons are year over year):
 
@@ -2660,7 +2705,7 @@ $$
 
 With `trailing`, the flows are summed over the trailing periods, while the balance sheet items are taken at the end of each period.
 
-The five-variable model of Beneish (1997), with model="five", leaves out SGAI, LVGI and TATA:
+The five-variable model of Beneish (1997) leaves out SGAI, LVGI and TATA:
 
 $$
 \text{M-Score} \;(\text{five variables}) = - 6.065 + 0.823 \cdot \text{DSRI} + 0.906 \cdot \text{GMI} + 0.593 \cdot \text{AQI} + 0.717 \cdot \text{SGI} + 0.107 \cdot \text{DEPI}
@@ -2670,11 +2715,17 @@ The -1.78 threshold belongs to the eight-variable model; the five-variable versi
 
 **Also known as:** Beneish M-Score, earnings manipulation score.
 
+**References:**
+
+- paper | Beneish, Messod D. "Detecting GAAP Violation: Implications for Assessing Earnings Management among Firms with Extreme Financial Performance." Journal of Accounting and Public Policy, Vol. 16, No. 3, 1997, pp. 271-309.
+- paper | Beneish, Messod D. "The Detection of Earnings Manipulation." Financial Analysts Journal, Vol. 55, No. 5, 1999, pp. 24-36.
+- paper | Beneish, Messod D., Charles M. C. Lee, and D. Craig Nichols. "Earnings Manipulation and Expected Returns." Financial Analysts Journal, Vol. 69, No. 2, 2013, pp. 57-82.
+
 **Args:**
 
-- <u>model (str, optional):</u> The model: "eight" for the eight-variable model of Beneish (1999) or
-"five" for the five-variable model of Beneish (1997), which returns its five indices
-and score. Defaults to "eight".
+- <u>method (str, optional):</u> The variant of the M-Score. Options are: "eight" (the eight-variable
+model of Beneish, 1999) or "five" (the five-variable model of Beneish, 1997, which returns its
+five indices and score). Defaults to "eight".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -2707,14 +2758,6 @@ Beneish, Lee and Nichols (2013), rather than the balance sheet form of Beneish (
 - The Depreciation Index uses Depreciation and Amortization, since statements report the two
 as one line, where Beneish (1999) uses depreciation alone.
 
-References:
-- Beneish, Messod D. "Detecting GAAP Violation: Implications for Assessing Earnings
-Management among Firms with Extreme Financial Performance." Journal of Accounting and
-Public Policy, Vol. 16, No. 3, 1997, pp. 271-309.
-- Beneish, Messod D. "The Detection of Earnings Manipulation." Financial Analysts Journal,
-Vol. 55, No. 5, 1999, pp. 24-36.
-- Beneish, Messod D., Charles M. C. Lee, and D. Craig Nichols. "Earnings Manipulation and
-Expected Returns." Financial Analysts Journal, Vol. 69, No. 2, 2013, pp. 57-82.
 
 **As an example:**
 
@@ -2742,7 +2785,9 @@ Which returns:
 ---
 
 ## get_magic_formula
-Calculate Joel Greenblatt's Magic Formula ranking. Companies are ranked on two measures and the ranks are added; the lowest total combines a good business with a low price:
+Calculate Joel Greenblatt's Magic Formula ranking, which shows the good businesses at a low price.
+
+Companies are ranked on two measures and the ranks are added; the lowest total combines a good business with a low price:
 
 $$
 \text{Earnings Yield} = \frac{\text{EBIT}}{\text{Enterprise Value}} \;(\text{how cheap the company is})
@@ -2754,11 +2799,11 @@ $$
 
 Net working capital excludes cash and short-term debt, so the return on capital measures the operating business. The ranking is across the Toolkit's tickers, so pass the universe to choose from.
 
-For more information, see the following book:
-
-- Greenblatt, J. (2006). "The Little Book That Beats the Market." Wiley.
-
 **Also known as:** Greenblatt formula, earnings yield and return on capital ranking.
+
+**References:**
+
+- paper | Greenblatt, J. (2006). "The Little Book That Beats the Market." Wiley.
 
 **Args:**
 
@@ -2816,7 +2861,11 @@ Which returns:
 ---
 
 ## get_mohanram_g_score
-Calculate Partha Mohanram's G-Score, a score from 0 to 8 that separates winners from losers among growth (low book-to-market) companies, where value measures such as the Piotroski F-Score say little. Each signal is 1 when the company does better than the median of its peers, the Toolkit's tickers:
+Calculate Partha Mohanram's G-Score, which separates winners from losers among growth companies.
+
+It is a score from 0 to 8 for companies with a low book-to-market ratio, where value measures such as the Piotroski F-Score say little.
+
+Each signal is 1 when the company does better than the median of its peers, the Toolkit's tickers:
 
 - Profitability: return on assets (G1) and cash flow return on assets (G2) above the median, and cash flow above net income (G3).
 - Naive extrapolation: a lower than median variance of the return on assets (G4) and of revenue growth (G5).
@@ -2824,11 +2873,11 @@ Calculate Partha Mohanram's G-Score, a score from 0 to 8 that separates winners 
 
 As in the paper, the return on assets, the cash flow return on assets and the three intensities are scaled by the total assets at the start of the year, the variances are taken over the past five years with at least three available, and a signal that cannot be calculated for a company (a missing item, or too short a history) scores 0.
 
-For more information, see the following paper:
-
-- Mohanram, P.S. (2005). "Separating Winners from Losers among Low Book-to-Market Stocks using Financial Statement Analysis." Review of Accounting Studies, 10, 133-170.
-
 **Also known as:** G-Score, growth stock score.
+
+**References:**
+
+- paper | Mohanram, P.S. (2005). "Separating Winners from Losers among Low Book-to-Market Stocks using Financial Statement Analysis." Review of Accounting Studies, 10, 133-170.
 
 **Args:**
 
@@ -2901,7 +2950,9 @@ Which returns:
 ---
 
 ## get_dechow_f_score
-Calculate the Dechow F-Score, the probability that a company's financial statements are misstated relative to the average company. It was estimated on companies the SEC charged with misstating their earnings, and combines:
+Calculate the Dechow F-Score, the probability that a company's financial statements are misstated relative to the average company.
+
+It was estimated on companies the SEC charged with misstating their earnings, and combines:
 
 - Accrual quality: RSST accruals (the change in non-cash working capital, non-current operating assets and financial assets), the changes in receivables and inventory, and the share of soft assets (assets other than cash and short-term investments and net property, plant and equipment).
 - Performance: the change in cash sales and in return on assets.
@@ -2911,11 +2962,11 @@ Predicted Value = -7.893 + 0.790 RSST Accruals + 2.518 ΔReceivables + 1.191 ΔI
 
 An F-Score of 1 is average risk; above 1 the risk is elevated, above 1.85 substantial and above 2.45 high.
 
-For more information, see the following paper:
-
-- Dechow, P.M., Ge, W., Larson, C.R. and Sloan, R.G. (2011). "Predicting Material Accounting Misstatements." Contemporary Accounting Research, 28(1), 17-82.
-
 **Also known as:** F-Score (Dechow), misstatement score, earnings manipulation probability.
+
+**References:**
+
+- paper | Dechow, P.M., Ge, W., Larson, C.R. and Sloan, R.G. (2011). "Predicting Material Accounting Misstatements." Contemporary Accounting Research, 28(1), 17-82.
 
 **Args:**
 
@@ -2977,7 +3028,9 @@ Which returns:
 ---
 
 ## get_montier_c_score
-Calculate James Montier's C-Score, a count from 0 to 6 of warning signs that a company is "cooking the books". Each sign is 1 when present:
+Calculate James Montier's C-Score, a count from 0 to 6 of warning signs that a company is "cooking the books".
+
+Each sign is 1 when present:
 
 - A growing gap between net income and cash flow from operations.
 - Rising days sales outstanding: receivables growing faster than sales.
@@ -2988,11 +3041,11 @@ Calculate James Montier's C-Score, a count from 0 to 6 of warning signs that a c
 
 Montier found that companies scoring 5 or 6 underperformed the market markedly.
 
-For more information, see the following paper:
-
-- Montier, J. (2008). "Cooking the Books, or, More Sailing Under the Black Flag." Société Générale, Mind Matters.
-
 **Also known as:** C-Score, cooking the books score.
+
+**References:**
+
+- paper | Montier, J. (2008). "Cooking the Books, or, More Sailing Under the Black Flag." Société Générale, Mind Matters.
 
 **Args:**
 
@@ -3051,7 +3104,9 @@ Which returns:
 ---
 
 ## get_quality_score
-The Quality Score follows the Quality Minus Junk (QMJ) score of Asness, Frazzini and Pedersen (2019): a company is of high quality when it is profitable, growing, safe and pays out to its shareholders. Every measure is ranked across the tickers given in each period and turned into a z-score, each of the four components is the z-score of the average of its measures, and the Quality Score is the z-score of their sum. A positive score is a higher quality than the average of the tickers given.
+The Quality Score follows the Quality Minus Junk (QMJ) score of Asness, Frazzini and Pedersen (2019).
+
+A company is of high quality when it is profitable, growing, safe and pays out to its shareholders. Every measure is ranked across the tickers given in each period and turned into a z-score, each of the four components is the z-score of the average of its measures, and the Quality Score is the z-score of their sum. A positive score is a higher quality than the average of the tickers given.
 
 The measures are as follows (a higher value is a higher quality, so the measures marked "low" enter with a minus sign):
 
@@ -3138,7 +3193,9 @@ Which returns:
 ---
 
 ## get_accrual_quality
-Calculate the accrual quality of Dechow and Dichev (2002): how well a company's working capital accruals map into its operating cash flows of the year before, the year itself and the year after. Accruals anticipate cash flows (a sale on credit is collected next year), so accruals that the cash flows do not explain are estimation errors; their standard deviation measures the quality of the accruals and of the earnings they are part of. A higher value means lower quality. Francis et al. (2005) found that companies with poor accrual quality have a higher cost of capital.
+Calculate the accrual quality of Dechow and Dichev (2002).
+
+How well a company's working capital accruals map into its operating cash flows of the year before, the year itself and the year after. Accruals anticipate cash flows (a sale on credit is collected next year), so accruals that the cash flows do not explain are estimation errors; their standard deviation measures the quality of the accruals and of the earnings they are part of. A higher value means lower quality. Francis et al. (2005) found that companies with poor accrual quality have a higher cost of capital.
 
 The regression is estimated per company over the `window` years before the period:
 
@@ -3147,7 +3204,7 @@ $$
 $$
 
 $$
-\text{McNichols (2002)},\;\; \text{method} = \text{"mcnichols":} \;\text{Delta WC} \;(t) = b_{0} + b_{1} \;\text{CFO} \;(t - 1) + b_{2} \;\text{CFO} \;(t) + b_{3} \;\text{CFO} \;(t + 1) + b_{4} \Delta \;\text{Revenue} \;(t) + b_{5} \;\text{PP\&E} \;(t) + e (t)
+\text{McNichols (2002):}\;\; \text{Delta WC} \;(t) = b_{0} + b_{1} \;\text{CFO} \;(t - 1) + b_{2} \;\text{CFO} \;(t) + b_{3} \;\text{CFO} \;(t + 1) + b_{4} \Delta \;\text{Revenue} \;(t) + b_{5} \;\text{PP\&E} \;(t) + e (t)
 $$
 
 $$
@@ -3156,18 +3213,19 @@ $$
 
 with ΔWC the increase in working capital (minus the Change in Working Capital of the cash flow statement: the change in receivables and inventory less the change in payables, taxes payable and other working capital) and every variable divided by the average total assets of its year.
 
-For more information, see the following sources:
-
-- Dechow, P. M. and Dichev, I. D. (2002). "The Quality of Accruals and Earnings: The Role of Accrual Estimation Errors." The Accounting Review, 77(Supplement), 35-59.
-- McNichols, M. F. (2002). "Discussion of The Quality of Accruals and Earnings: The Role of Accrual Estimation Errors." The Accounting Review, 77(Supplement), 61-69.
-- Francis, J., LaFond, R., Olsson, P. and Schipper, K. (2005). "The Market Pricing of Accruals Quality." Journal of Accounting and Economics, 39(2), 295-327.
-
 **Also known as:** Dechow-Dichev model, accruals quality, AQ, DD model, McNichols model.
+
+**References:**
+
+- paper | Dechow, P. M. and Dichev, I. D. (2002). "The Quality of Accruals and Earnings: The Role of Accrual Estimation Errors." The Accounting Review, 77(Supplement), 35-59.
+- paper | McNichols, M. F. (2002). "Discussion of The Quality of Accruals and Earnings: The Role of Accrual Estimation Errors." The Accounting Review, 77(Supplement), 61-69.
+- paper | Francis, J., LaFond, R., Olsson, P. and Schipper, K. (2005). "The Market Pricing of Accruals Quality." Journal of Accounting and Economics, 39(2), 295-327.
 
 **Args:**
 
-- <u>method (str, optional):</u> "dechow_dichev" or "mcnichols" (adds the change in revenue and
-the property, plant and equipment). Defaults to "dechow_dichev".
+- <u>method (str, optional):</u> Options are: "dechow_dichev" (Dechow and Dichev, 2002), "mcnichols" (McNichols,
+2002, which adds the change in revenue and the property, plant and equipment). Defaults to
+"dechow_dichev".
 - <u>window (int, optional):</u> The number of years every regression is estimated on. Dechow
 and Dichev required at least 8 years per company. Defaults to 8.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -3220,7 +3278,9 @@ Which returns:
 ---
 
 ## get_earnings_attributes
-Calculate the accounting-based earnings attributes of Francis, LaFond, Olsson and Schipper (2004): the persistence, predictability and smoothness of a company's earnings over the past years. Persistent and predictable earnings are more useful to forecast with, and the paper finds that companies with less favourable attributes have a higher cost of equity. Together with the accrual quality (`get_accrual_quality`) they are the paper's accounting attributes.
+Calculate the accounting-based earnings attributes of Francis, LaFond, Olsson and Schipper (2004).
+
+These are the persistence, predictability and smoothness of a company's earnings over the past years. Persistent and predictable earnings are more useful to forecast with, and the paper finds that companies with less favourable attributes have a higher cost of equity. Together with the accrual quality (`get_accrual_quality`) they are the paper's accounting attributes.
 
 The formula is as follows, each over the `window` years up to the period:
 
@@ -3238,11 +3298,11 @@ $$
 
 with EPS the net income from continuing operations (the earnings before extraordinary items of the paper) over the weighted average shares. A persistence near 1 means earnings shocks last; larger predictability and smoothness values mean less predictable and less smooth earnings (as in the paper, larger values are less desirable).
 
-For more information, see the following sources:
-
-- Francis, J., LaFond, R., Olsson, P. M. and Schipper, K. (2004). "Costs of Equity and Earnings Attributes." The Accounting Review, 79(4), 967-1010.
-
 **Also known as:** earnings persistence, earnings predictability, earnings smoothness, earnings quality attributes, Francis LaFond Olsson Schipper.
+
+**References:**
+
+- paper | Francis, J., LaFond, R., Olsson, P. M. and Schipper, K. (2004). "Costs of Equity and Earnings Attributes." The Accounting Review, 79(4), 967-1010.
 
 **Args:**
 
@@ -3298,7 +3358,9 @@ Which returns:
 ---
 
 ## get_graham_criteria
-Calculate the seven criteria Benjamin Graham sets for the stocks of the defensive investor in The Intelligent Investor (chapter 14), with the number met: an adequate size, a strong financial condition, earnings stability, a dividend record, earnings growth, a moderate price to earnings and a moderate price to assets. Graham meant them as a minimum of quality and a maximum of price for an investor who does not want to analyse companies in depth.
+Calculate the seven criteria Benjamin Graham sets for the stocks of the defensive investor in The Intelligent Investor (chapter 14), with the number met.
+
+They are an adequate size, a strong financial condition, earnings stability, a dividend record, earnings growth, a moderate price to earnings and a moderate price to assets. Graham meant them as a minimum of quality and a maximum of price for an investor who does not want to analyse companies in depth.
 
 The formula is as follows:
 
@@ -3330,11 +3392,11 @@ $$
 
 Every criterion is 1 when met, 0 when not and NaN when the statements do not go back far enough (the dividend record needs 20 years of statements, the earnings growth 13).
 
-For more information, see the following sources:
-
-- Graham, B. (1973). "The Intelligent Investor." Harper & Row, 4th revised edition, chapter 14 (Stock Selection for the Defensive Investor).
-
 **Also known as:** Graham defensive investor criteria, Graham screen, Graham's seven criteria, defensive stock selection.
+
+**References:**
+
+- paper | Graham, B. (1973). "The Intelligent Investor." Harper & Row, 4th revised edition, chapter 14 (Stock Selection for the Defensive Investor).
 
 **Args:**
 
@@ -3397,20 +3459,22 @@ Which returns:
 ---
 
 ## get_accruals_ratio
-Calculate the accruals ratios: the part of earnings that is not backed by cash, relative to the average of the total assets at the start and the end of the year. Richard Sloan showed that earnings driven by accruals are less persistent than cash earnings and that companies with high accruals earn lower future returns (the accrual anomaly).
+Calculate the accruals ratios: the part of earnings that is not backed by cash, relative to the average of the total assets at the start and the end of the year.
+
+Richard Sloan showed that earnings driven by accruals are less persistent than cash earnings and that companies with high accruals earn lower future returns (the accrual anomaly).
 
 - Balance Sheet Accruals Ratio = [(ΔCurrent Assets - ΔCash) - (ΔCurrent Liabilities - ΔShort-term Debt - ΔTaxes Payable) - Depreciation] / Average Total Assets
 - Cash Flow Accruals Ratio = (Net Income - Cash Flow from Operations - Cash Flow from Investing) / Average Total Assets
 
 The balance sheet version is Sloan's (1996). The cash flow version, earnings minus free cash flow, takes the accruals from the cash flow statement instead: Hribar and Collins (2002) showed that balance sheet changes misstate accruals when a company acquires, divests or discontinues operations (their own measure is earnings before extraordinary items minus cash flow from operations), and subtracting the investing cash flow as well counts the investment in long-term operating assets as an accrual, as the broad accruals of Richardson, Sloan, Soliman and Tuna (2005) do. Values near zero or negative are a sign of high earnings quality.
 
-For more information, see the following papers:
-
-- Sloan, R.G. (1996). "Do Stock Prices Fully Reflect Information in Accruals and Cash Flows about Future Earnings?" The Accounting Review, 71(3), 289-315.
-- Hribar, P. and Collins, D.W. (2002). "Errors in Estimating Accruals: Implications for Empirical Research." Journal of Accounting Research, 40(1), 105-134.
-- Richardson, S.A., Sloan, R.G., Soliman, M.T. and Tuna, I. (2005). "Accrual Reliability, Earnings Persistence and Stock Prices." Journal of Accounting and Economics, 39(3), 437-485.
-
 **Also known as:** Sloan ratio, accrual ratio, earnings quality ratio.
+
+**References:**
+
+- paper | Sloan, R.G. (1996). "Do Stock Prices Fully Reflect Information in Accruals and Cash Flows about Future Earnings?" The Accounting Review, 71(3), 289-315.
+- paper | Hribar, P. and Collins, D.W. (2002). "Errors in Estimating Accruals: Implications for Empirical Research." Journal of Accounting Research, 40(1), 105-134.
+- paper | Richardson, S.A., Sloan, R.G., Soliman, M.T. and Tuna, I. (2005). "Accrual Reliability, Earnings Persistence and Stock Prices." Journal of Accounting and Economics, 39(3), 437-485.
 
 **Args:**
 
@@ -3460,7 +3524,9 @@ Which returns:
 ---
 
 ## get_discretionary_accruals
-Calculate the discretionary accruals of the modified Jones model, the part of a company's accruals that its change in revenues and its fixed assets do not explain and that is therefore attributed to management's discretion. Jones (1991) modelled the accruals a company needs as a function of its change in revenues (working capital moves with sales) and its property, plant and equipment (depreciation). Dechow, Sloan and Sweeney (1995) subtracted the change in receivables from the change in revenues, because revenue booked on credit can itself be managed, and found this modified model the most powerful at detecting earnings management. Large positive discretionary accruals point at earnings that were managed up.
+Calculate the discretionary accruals of the modified Jones model.
+
+They are the part of a company's accruals that its change in revenues and its fixed assets do not explain and that is therefore attributed to management's discretion. Jones (1991) modelled the accruals a company needs as a function of its change in revenues (working capital moves with sales) and its property, plant and equipment (depreciation). Dechow, Sloan and Sweeney (1995) subtracted the change in receivables from the change in revenues, because revenue booked on credit can itself be managed, and found this modified model the most powerful at detecting earnings management. Large positive discretionary accruals point at earnings that were managed up.
 
 The formula is as follows:
 
@@ -3480,26 +3546,26 @@ $$
 \text{Discretionary Accruals} = \text{Total Accruals} - \text{Non-Discretionary Accruals}
 $$
 
-Here A(t-1) is the total assets at the start of the year, ΔRevenue and ΔReceivables the changes over the year and PPE the property, plant and equipment at the end of it. The coefficients a1, a2 and a3 are estimated with ordinary least squares without an intercept, as in Jones (1991); with intercept=True a constant a0 is added to the estimation and the Non-Discretionary Accruals (Kothari, Leone and Wasley, 2005).
-
-For more information, see the following papers:
-
-- Jones, J.J. (1991). "Earnings Management During Import Relief Investigations." Journal of Accounting Research, 29(2), 193-228.
-- Dechow, P.M., Sloan, R.G. and Sweeney, A.P. (1995). "Detecting Earnings Management." The Accounting Review, 70(2), 193-225.
-- Kothari, S.P., Leone, A.J. and Wasley, C.E. (2005). "Performance Matched Discretionary Accrual Measures." Journal of Accounting and Economics, 39(1), 163-197.
+Here A(t-1) is the total assets at the start of the year, ΔRevenue and ΔReceivables the changes over the year and PPE the property, plant and equipment at the end of it. The coefficients a1, a2 and a3 are estimated with ordinary least squares without an intercept, as in Jones (1991); with an intercept a constant a0 is added to the estimation and the Non-Discretionary Accruals (Kothari, Leone and Wasley, 2005).
 
 **Also known as:** modified Jones model, abnormal accruals, Jones model, earnings management.
 
+**References:**
+
+- paper | Jones, J.J. (1991). "Earnings Management During Import Relief Investigations." Journal of Accounting Research, 29(2), 193-228.
+- paper | Dechow, P.M., Sloan, R.G. and Sweeney, A.P. (1995). "Detecting Earnings Management." The Accounting Review, 70(2), 193-225.
+- paper | Kothari, S.P., Leone, A.J. and Wasley, C.E. (2005). "Performance Matched Discretionary Accrual Measures." Journal of Accounting and Economics, 39(1), 163-197.
+- library | Referenced against statsmodels' [OLS](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html){:target="_blank"} (time series)
+- library | Referenced against statsmodels' [OLS](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.html){:target="_blank"} (with an intercept)
+
 **Args:**
 
-- <u>method (str, optional):</u> How the coefficients are estimated. "time_series"
-estimates them for every year on the company's own earlier years, as Jones
-(1991) and Dechow, Sloan and Sweeney (1995) did, with the change in revenues
-in the estimation and the change in receivables subtracted only for the year
-itself. "cross_section" estimates them per year across the tickers of the
-Toolkit, with the change in revenues minus the change in receivables in the
-estimation as well, which is meaningful with many companies of one industry.
-Defaults to "time_series".
+- <u>method (str, optional):</u> How the coefficients are estimated. Options are: "time_series" (for every year
+on the company's own earlier years, as Jones (1991) and Dechow, Sloan and Sweeney (1995) did, with
+the change in revenues in the estimation and the change in receivables subtracted only for the year
+itself), "cross_section" (per year across the tickers of the Toolkit, with the change in revenues
+minus the change in receivables in the estimation as well, which is meaningful with many companies
+of one industry). Defaults to "time_series".
 - <u>min_observations (int, optional):</u> The fewest observations a regression is
 estimated on: earlier years of the company with "time_series", tickers with
 "cross_section". At least 3, the number of coefficients. Defaults to 10, the
@@ -3550,13 +3616,13 @@ years, in which case only the Total Accruals are returned. Lowering
 - The cross-section design uses the companies of the same year, so it needs at
 least `min_observations` tickers that report every input. Many later papers
 estimate it per industry and year and add an intercept (Kothari, Leone and
-Wasley, 2005), which `intercept=True` does.
+Wasley, 2005), which the intercept option does.
 - Without an intercept the PPE term carries the average level of the accruals, so a
 company whose PPE intensity or size trends away from its estimation years gets
 discretionary accruals of one sign. In the example below AAPL's and MSFT's PPE
 averaged about 0.11 of their beginning assets in the estimation years and is 0.15
 to 0.17 (AAPL) and 0.24 to 0.45 (MSFT) in the years shown, where their
-discretionary accruals are positive in every year. `intercept=True` removes this
+discretionary accruals are positive in every year. An intercept removes this
 level bias within the estimation years at the cost of a degree of freedom, and
 gives both companies discretionary accruals of either sign in these years.
 - The expanding window of the time series design starts at the first year loaded,
@@ -3612,7 +3678,7 @@ Cash and marketable securities are deducted together (Damodaran), the same Enter
 The formula is as follows:
 
 $$
-\text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average Shares Diluted} \;(\text{Weighted Average Shares when diluted} = \text{False}),\;\; \text{with the share price the traded close at the end of each quarter or year}
+\text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average Shares Diluted} \;(\text{Weighted Average Shares without dilution}),\;\; \text{with the share price the traded close at the end of each quarter or year}
 $$
 
 $$
@@ -3707,6 +3773,10 @@ Because the book value of assets leaves out most intangibles (brands, software, 
 
 **Also known as:** Tobin's Q, Q ratio.
 
+**References:**
+
+- paper | Tobin, James. "A General Equilibrium Approach to Monetary Theory." Journal of Money, Credit and Banking, Vol. 1, No. 1, 1969, pp. 15-29.
+
 **Args:**
 
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -3736,9 +3806,6 @@ Capital calculation elsewhere in this module.
 period's weighted average shares) and the balances are taken at the end of the period,
 the same date, on yearly and quarterly data alike.
 
-References:
-- Tobin, James. "A General Equilibrium Approach to Monetary Theory." Journal of Money,
-Credit and Banking, Vol. 1, No. 1, 1969, pp. 15-29.
 
 **As an example:**
 
@@ -3766,7 +3833,9 @@ Which returns:
 ---
 
 ## get_weighted_average_cost_of_capital
-The Weighted Average Cost of Capital (WACC) is a financial metric used to estimate the cost of capital for a company. It represents the average rate of return a company must pay to its investors for using their capital. WACC takes into account the cost of both equity and debt, weighted by their respective proportions in the company's capital structure.
+The Weighted Average Cost of Capital (WACC) is a financial metric used to estimate the cost of capital for a company.
+
+It represents the average rate of return a company must pay to its investors for using their capital. WACC takes into account the cost of both equity and debt, weighted by their respective proportions in the company's capital structure.
 
 The formula is as follows:
 
@@ -3847,10 +3916,11 @@ table does not cover) it is the benchmark's average return above the risk-free r
 data, which a short or strong sample makes large: about 15% a year for the S&P 500 over
 2022-2026. Set `market_risk_premium` to use one premium for every company. Beta is estimated
 from the period's daily returns. With quarterly data the rates are per quarter, the risk-free yield divided by four.
-- With `trailing` set, the Interest Expense is summed over the trailing periods, so the Cost of
-Debt covers that span, the risk-free rate and premium of the Cost of Equity are the per-period
-rates times `trailing` and the Beta is estimated from the daily returns of the trailing periods.
-With quarterly data and trailing=4, every rate is an annual rate on a year of daily returns.
+- With `trailing` set, the Interest Expense is summed over the trailing periods, so the
+Cost of Debt covers that span, the risk-free rate and premium of the Cost of Equity
+are the per-period rates times `trailing` and the Beta is estimated from the daily
+returns of the trailing periods. With quarterly data and four trailing quarters, every
+rate is an annual rate on a year of daily returns.
 - The Market Value of Debt is approximated as the Total Debt.
 - The capital weights are taken at the end of the fiscal period, also with `trailing` set: the
 Market Value of Equity is the closing share price on that day times the period's weighted
@@ -3893,7 +3963,9 @@ Which returns:
 ---
 
 ## get_implied_cost_of_capital
-Calculate Easton's (2004) implied cost of equity capital, the expected rate of return on equity at which the share price equals the value of the next two years of earnings expected by analysts. Where the Cost of Equity of `get_weighted_average_cost_of_capital` is the return the Capital Asset Pricing Model (CAPM) requires from a beta and a market risk premium, this is the return the market price itself implies (ex-ante).
+Calculate Easton's (2004) implied cost of equity capital: the return on equity the share price implies.
+
+It is the expected rate of return on equity at which the share price equals the value of the next two years of earnings expected by analysts. Where the Cost of Equity of `get_weighted_average_cost_of_capital` is the return the Capital Asset Pricing Model (CAPM) requires from a beta and a market risk premium, this is the return the market price itself implies (ex-ante).
 
 The formula is as follows:
 
@@ -3993,7 +4065,9 @@ Which returns:
 ---
 
 ## get_economic_value_added
-Economic Value Added (EVA) is a measure of a company's financial performance that represents the value created in excess of the required return of the company's capital providers. It captures whether a company is generating returns above its true cost of capital, which distinguishes it from purely accounting-based measures such as Net Income.
+Economic Value Added (EVA) shows the value a company creates above the return its capital providers require.
+
+It captures whether a company is generating returns above its true cost of capital, which distinguishes it from purely accounting-based measures such as Net Income.
 
 The formula is as follows:
 
@@ -4021,12 +4095,12 @@ EVA is mostly used to compare value creation across business units or companies 
 
 The EVA Spread, the return on capital above its cost (Stewart, 1991), compares value creation between companies of different sizes.
 
-For more information, see the following sources:
-
-- Stewart, G. B. (1991). "The Quest for Value." HarperBusiness.
-- Stern, J. M., Stewart, G. B. and Chew, D. H. (1995). "The EVA Financial Management System." Journal of Applied Corporate Finance, 8(2), 32-46.
-
 **Also known as:** EVA, economic profit, EVA spread, economic spread, ROIC minus WACC.
+
+**References:**
+
+- paper | Stewart, G. B. (1991). "The Quest for Value." HarperBusiness.
+- paper | Stern, J. M., Stewart, G. B. and Chew, D. H. (1995). "The EVA Financial Management System." Journal of Applied Corporate Finance, 8(2), 32-46.
 
 **Args:**
 
@@ -4071,10 +4145,11 @@ the period ends that open and close the period (the trailing + 1 period ends wit
 `trailing` set), i.e. the capital employed over the course of the period rather than its
 closing balance, consistent with the Return on Invested Capital calculation in the Ratios
 module.
-- The Weighted Average Cost of Capital comes from `get_weighted_average_cost_of_capital`,
-with the market risk premium given by `market_risk_premium` (by default the equity risk
-premium of the company's country) and the same `trailing`, so that it
-covers the span of the NOPAT (an annual rate for trailing=4 with quarterly data).
+- The Weighted Average Cost of Capital comes from
+`get_weighted_average_cost_of_capital`, with the market risk premium given by
+`market_risk_premium` (by default the equity risk premium of the company's country)
+and the same `trailing`, so that it covers the span of the NOPAT (an annual rate for
+four trailing quarters).
 
 **As an example:**
 
@@ -4102,7 +4177,9 @@ Which returns:
 ---
 
 ## get_market_value_added
-Market Value Added (MVA) is a measure of a company's financial performance that represents the difference between the current market value of a company (both its equity and its debt) and the total capital that has historically been invested in it. It is the market-priced counterpart to Economic Value Added (EVA): where EVA measures a single period's excess return over the cost of capital, MVA reflects the market's cumulative, forward-looking verdict on all of a company's expected future EVA.
+Market Value Added (MVA) shows the difference between a company's market value and the capital invested in it.
+
+The market value is that of both its equity and its debt, and the capital is all that has historically been invested. It is the market-priced counterpart to Economic Value Added (EVA): where EVA measures a single period's excess return over the cost of capital, MVA reflects the market's cumulative, forward-looking verdict on all of a company's expected future EVA.
 
 The formula is as follows:
 
@@ -4119,6 +4196,10 @@ $$
 $$
 
 **Also known as:** MVA, market value added.
+
+**References:**
+
+- paper | Stern, Joel M., G. Bennett Stewart, and Donald H. Chew. "The EVA Financial Management System." Journal of Applied Corporate Finance, Vol. 8, No. 2, 1995, pp. 32-46.
 
 **Args:**
 
@@ -4157,9 +4238,6 @@ the MVA is the market value of equity minus the book Total Equity.
 - With `trailing` set, the Invested Capital is the average of the closing balances of
 the trailing periods, while the market values stay those at the end of the period.
 
-References:
-- Stern, Joel M., G. Bennett Stewart, and Donald H. Chew. "The EVA Financial
-Management System." Journal of Applied Corporate Finance, Vol. 8, No. 2, 1995, pp. 32-46.
 
 **As an example:**
 
@@ -4187,7 +4265,9 @@ Which returns:
 ---
 
 ## get_return_on_incremental_invested_capital
-Calculate the Return on Incremental Invested Capital (ROIIC): the growth in after-tax operating profit over the capital invested to produce it. Where the Return on Invested Capital measures the return on all the capital in place, ROIIC measures the return on the newest investments, which shows whether growth creates value: growth adds value only while the ROIIC exceeds the cost of capital.
+Calculate the Return on Incremental Invested Capital (ROIIC): the growth in after-tax operating profit over the capital invested to produce it.
+
+Where the Return on Invested Capital measures the return on all the capital in place, ROIIC measures the return on the newest investments, which shows whether growth creates value: growth adds value only while the ROIIC exceeds the cost of capital.
 
 The formula is as follows, with n the number of years:
 
@@ -4205,12 +4285,12 @@ $$
 
 Following Mauboussin and Callahan, the invested capital is lagged by a year: the capital invested in a year earns its profit in the years after. A longer span (`years`, often 3 or 5) smooths the lumpy year-to-year changes.
 
-For more information, see the following sources:
-
-- Mauboussin, M. J. and Callahan, D. (2014). "Calculating Return on Invested Capital." Credit Suisse Global Financial Strategies.
-- Koller, T., Goedhart, M. and Wessels, D. (2020). "Valuation: Measuring and Managing the Value of Companies." Wiley, 7th edition.
-
 **Also known as:** ROIIC, incremental ROIC, return on new invested capital, RONIC.
+
+**References:**
+
+- paper | Mauboussin, M. J. and Callahan, D. (2014). "Calculating Return on Invested Capital." Credit Suisse Global Financial Strategies.
+- paper | Koller, T., Goedhart, M. and Wessels, D. (2020). "Valuation: Measuring and Managing the Value of Companies." Wiley, 7th edition.
 
 **Args:**
 
@@ -4272,7 +4352,9 @@ Which returns:
 ---
 
 ## get_owner_earnings
-Calculate Warren Buffett's owner earnings: the cash a business could pay its owners while keeping its competitive position and unit volume. Buffett defines them in the 1986 Berkshire Hathaway letter as the reported earnings plus depreciation, depletion and amortization and other non-cash charges, less the average yearly capital expenditure the business needs to keep its position (and any additional working capital that requires).
+Calculate Warren Buffett's owner earnings: the cash a business could pay its owners while keeping its competitive position and unit volume.
+
+Buffett defines them in the 1986 Berkshire Hathaway letter as the reported earnings plus depreciation, depletion and amortization and other non-cash charges, less the average yearly capital expenditure the business needs to keep its position (and any additional working capital that requires).
 
 The formula is as follows:
 
@@ -4284,22 +4366,23 @@ $$
 \text{Owner Earnings per Share} = \frac{\text{Owner Earnings}}{\text{Weighted Average Shares Diluted}}
 $$
 
-The statements do not split the capital expenditure into maintenance and growth, which Buffett himself calls a guess. `method` chooses the estimate of the maintenance part:
+The statements do not split the capital expenditure into maintenance and growth, which Buffett himself calls a guess. There are two estimates of the maintenance part:
 
-- "total": all the capital expenditure, the conservative estimate (owner earnings then differ from the free cash flow only by the non-cash items other than depreciation).
-- "greenwald": the capital expenditure minus the growth capital expenditure, the investment the growth in revenue required at the company's ratio of property, plant and equipment to revenue a year earlier (Greenwald et al., 2001): Maintenance Capital Expenditure = Capital Expenditure - PP&E / Revenue (t - 1) * max(Change in Revenue, 0), at least 0.
-
-For more information, see the following sources:
-
-- Buffett, W. E. (1986). "Chairman's Letter." Berkshire Hathaway Inc. Annual Report 1986, appendix on purchase-price accounting adjustments and owner earnings.
-- Greenwald, B. C. N., Kahn, J., Sonkin, P. D. and van Biema, M. (2001). "Value Investing: From Graham to Buffett and Beyond." Wiley, chapter 6.
+- Total: all the capital expenditure, the conservative estimate (owner earnings then differ from the free cash flow only by the non-cash items other than depreciation).
+- Greenwald: the capital expenditure minus the growth capital expenditure, the investment the growth in revenue required at the company's ratio of property, plant and equipment to revenue a year earlier (Greenwald et al., 2001): Maintenance Capital Expenditure = Capital Expenditure - PP&E / Revenue (t - 1) * max(Change in Revenue, 0), at least 0.
 
 **Also known as:** owner earnings, Buffett owner earnings, maintenance free cash flow.
 
+**References:**
+
+- paper | Buffett, W. E. (1986). "Chairman's Letter." Berkshire Hathaway Inc. Annual Report 1986, appendix on purchase-price accounting adjustments and owner earnings.
+- paper | Greenwald, B. C. N., Kahn, J., Sonkin, P. D. and van Biema, M. (2001). "Value Investing: From Graham to Buffett and Beyond." Wiley, chapter 6.
+
 **Args:**
 
-- <u>method (str, optional):</u> The estimate of the maintenance capital expenditure: "total" or
-"greenwald". Defaults to "total".
+- <u>method (str, optional):</u> The estimate of the maintenance capital expenditure. Options are: "total" (all
+the capital expenditure), "greenwald" (the capital expenditure minus the growth capital expenditure,
+Greenwald et al., 2001). Defaults to "total".
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -4327,9 +4410,9 @@ an increase in working capital (a use of cash) is positive and lowers the owner 
 - Depreciation and Amortization is that of the cash flow statement; other non-cash charges
 (such as share-based compensation) are not added back, as Buffett adds back only the
 charges that do not reflect an economic cost.
-- With method="greenwald" on quarterly data, the change in revenue is measured against the
-same period a year earlier and divided over the four quarters of that year when `trailing`
-is not set.
+- With Greenwald's estimate on quarterly data, the change in revenue is measured against
+the same period a year earlier and divided over the four quarters of that year when
+`trailing` is not set.
 
 **As an example:**
 
@@ -4357,7 +4440,9 @@ Which returns:
 ---
 
 ## get_unlevered_beta
-Calculate the unlevered (asset) beta of Hamada (1972): the beta each company's shares would have without debt, its business risk apart from its financial leverage. Unlevered betas can be compared across companies with different amounts of debt, averaged over an industry and relevered at a company's own leverage (Damodaran's bottom-up beta, see `wacc_model.get_relevered_beta`).
+Calculate the unlevered (asset) beta of Hamada (1972): the beta each company's shares would have without debt, its business risk apart from its financial leverage.
+
+Unlevered betas can be compared across companies with different amounts of debt, averaged over an industry and relevered at a company's own leverage (Damodaran's bottom-up beta, see `wacc_model.get_relevered_beta`).
 
 The formula is as follows:
 
@@ -4373,12 +4458,12 @@ $$
 \text{Unlevered Beta} = \frac{\text{Levered Beta}}{1 + (1 - \text{Tax Rate}) \cdot \text{Debt to Equity}}
 $$
 
-For more information, see the following sources:
-
-- Hamada, R. S. (1972). "The Effect of the Firm's Capital Structure on the Systematic Risk of Common Stocks." The Journal of Finance, 27(2), 435-452.
-- Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 8.
-
 **Also known as:** asset beta, unlevered beta, Hamada equation, business risk beta.
+
+**References:**
+
+- paper | Hamada, R. S. (1972). "The Effect of the Firm's Capital Structure on the Systematic Risk of Common Stocks." The Journal of Finance, 27(2), 435-452.
+- paper | Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 8.
 
 **Args:**
 
@@ -4438,7 +4523,9 @@ Which returns:
 ---
 
 ## get_capitalized_research_and_development
-Capitalize the research and development expenses as Aswath Damodaran does: accounting treats R&D as an expense, while it is an investment whose benefit lasts several years. Every year's R&D becomes an asset amortized straight-line over its amortizable life, which changes the operating income, the net income, the book equity, the invested capital and with them the return on capital of research-intensive companies.
+Capitalize the research and development expenses as Aswath Damodaran does: accounting treats R&D as an expense, while it is an investment whose benefit lasts several years.
+
+Every year's R&D becomes an asset amortized straight-line over its amortizable life, which changes the operating income, the net income, the book equity, the invested capital and with them the return on capital of research-intensive companies.
 
 The formula is as follows, with n the amortizable life in years:
 
@@ -4472,13 +4559,13 @@ $$
 
 The expense of the current year is not amortized yet, and that of n years ago is written off in full this year, as in Damodaran's R&D converter.
 
-For more information, see the following sources:
-
-- Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 9.
-- Damodaran, A. "R&D Converter" (R&D.xls), [https://pages.stern.nyu.edu/~adamodar/New_Home_Page/spreadsh.htm](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/spreadsh.htm){:target="_blank"}
-- Lev, B. and Sougiannis, T. (1996). "The Capitalization, Amortization, and Value-Relevance of R&D." Journal of Accounting and Economics, 21(1), 107-138.
-
 **Also known as:** R&D capitalization, research asset, capitalized R&D, adjusted operating income for R&D.
+
+**References:**
+
+- paper | Damodaran, A. (2012). "Investment Valuation." Wiley, 3rd edition, chapter 9.
+- paper | Damodaran, A. "R&D Converter" (R&D.xls), [https://pages.stern.nyu.edu/~adamodar/New_Home_Page/spreadsh.htm](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/spreadsh.htm){:target="_blank"}
+- paper | Lev, B. and Sougiannis, T. (1996). "The Capitalization, Amortization, and Value-Relevance of R&D." Journal of Accounting and Economics, 21(1), 107-138.
 
 **Args:**
 
@@ -4548,7 +4635,9 @@ Which returns:
 ---
 
 ## get_cash_flow_return_on_investment
-Calculate the Cash Flow Return on Investment (CFROI) of Bartley Madden (the HOLT model): the internal rate of return of a company's assets seen as one project. The gross investment buys a gross cash flow for every year of the life of the depreciating assets, and the non-depreciating assets (working capital) come back at the end. Where the return on invested capital divides an accounting profit by depreciated book values, the CFROI compares cash flows with the original cost of the assets, which makes companies with old and new assets comparable.
+Calculate the Cash Flow Return on Investment (CFROI) of Bartley Madden (the HOLT model): the internal rate of return of a company's assets seen as one project.
+
+The gross investment buys a gross cash flow for every year of the life of the depreciating assets, and the non-depreciating assets (working capital) come back at the end. Where the return on invested capital divides an accounting profit by depreciated book values, the CFROI compares cash flows with the original cost of the assets, which makes companies with old and new assets comparable.
 
 The formula is as follows, solved for the CFROI:
 
@@ -4578,12 +4667,12 @@ $$
 
 This is the simplified, nominal form of Madden's model that the statements allow. HOLT's CFROI also restates the gross investment and the cash flows for inflation (a real return), capitalizes operating leases and R&D and adds the rental expense to the cash flow; practitioner versions differ in these choices, so the levels are best compared between companies and over time rather than with a published CFROI.
 
-For more information, see the following sources:
-
-- Madden, B. J. (1999). "CFROI Valuation: A Total System Approach to Valuing the Firm." Butterworth-Heinemann.
-- Madden, B. J. (2010). "Wealth Creation: A Systems Mindset for Building and Investing in Businesses for the Long Term." Wiley.
-
 **Also known as:** CFROI, HOLT CFROI, cash flow return on investment, Madden CFROI.
+
+**References:**
+
+- paper | Madden, B. J. (1999). "CFROI Valuation: A Total System Approach to Valuing the Firm." Butterworth-Heinemann.
+- paper | Madden, B. J. (2010). "Wealth Creation: A Systems Mindset for Building and Investing in Businesses for the Long Term." Wiley.
 
 **Args:**
 
@@ -4646,7 +4735,9 @@ Which returns:
 ---
 
 ## get_intrinsic_valuation
-Intrinsic value is a fundamental concept in finance and investing that represents the true worth or value of an asset, security, or investment, independent of its current market price or prevailing market sentiment. It is a concept often associated with the value investing philosophy, made famous by legendary investors like Benjamin Graham and Warren Buffett. Understanding intrinsic value is crucial for investors looking to make informed decisions about where to allocate their capital.
+Intrinsic value shows what a share is worth by its discounted future cash flows, independent of its market price.
+
+It is a fundamental concept in finance and investing that represents the true worth of an asset, security, or investment, independent of prevailing market sentiment. It is a concept often associated with the value investing philosophy, made famous by legendary investors like Benjamin Graham and Warren Buffett. Understanding intrinsic value is crucial for investors looking to make informed decisions about where to allocate their capital.
 
 This functionality uses DCF, or Discounted Cash Flow which is a widely used financial valuation method that allows investors and analysts to estimate the intrinsic value of an investment or business based on its expected future cash flows. It is a fundamental tool in finance and investment analysis, providing a systematic way to assess the present value of future cash flows while considering the time value of money.
 
@@ -4697,10 +4788,11 @@ ticker. Defaults to None, which uses the Weighted Average Cost of Capital of eac
 period valued, calculated over a year (the last 4 quarters with quarterly data, with a beta of
 their daily returns).
 - <u>periods (int, optional):</u> The number of periods to use for the cash flow projections. Defaults to 5.
-- <u>cash_flow_type (str, optional):</u> The type of cash flow to use for the cash flow projections.
-Defaults to "Free Cash Flow to Firm". The other options are "Free Cash Flow" and "Operating
-Cash Flow" as reported on the cash flow statement; both are after interest, so discounting
-them at the WACC and subtracting the debt counts the cost of debt twice.
+- <u>cash_flow_type (str, optional):</u> The type of cash flow to use for the cash flow projections. Both
+reported cash flows are after interest, so discounting them at the WACC and subtracting the debt
+counts the cost of debt twice. Options are: "Free Cash Flow to Firm", "Free Cash Flow" (as
+reported on the cash flow statement), "Operating Cash Flow" (as reported on the cash flow
+statement). Defaults to "Free Cash Flow to Firm".
 - <u>trailing (int &#124; None, optional):</u> The number of trailing periods to sum for the base cash flow.
 The window counts calendar periods, so a period without a report makes it NaN.
 When set, uses the sum of the latest N consecutive calendar periods that are all reported instead
@@ -4718,8 +4810,9 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: DataFrame containing the intrinsic value and its components for each ticker, or
-with `historical=True` the intrinsic value per share for each ticker (rows) and period (columns).
+pd.DataFrame: DataFrame containing the intrinsic value and its components for each
+ticker, or for the historical valuation the intrinsic value per share for each
+ticker (rows) and period (columns).
 
 **Notes:**
 
@@ -4738,9 +4831,10 @@ recent period. Short Term Investments are added back with the cash, the same cas
 securities `get_enterprise_value_breakdown` deducts, and count as 0 when the balance sheet has no
 such row.
 - The Equity Value is divided by the Weighted Average Shares Diluted of the most recent period.
-- With `historical=True` no period uses figures reported after it, so the series shows what this
-DCF gave at each period end, with the growth and WACC known at that period end when they are not given. A period whose cash flow, cash, debt or
-shares are missing is NaN, while the single valuation takes the most recent value of each.
+- In the historical valuation no period uses figures reported after it, so the series
+shows what this DCF gave at each period end, with the growth and WACC known at that
+period end when they are not given. A period whose cash flow, cash, debt or shares are
+missing is NaN, while the single valuation takes the most recent value of each.
 
 **As an example:**
 
@@ -4765,7 +4859,7 @@ Which returns:
 | CRM  |       67.9174 |
 | INTU |      172.144  |
 
-And the same valuation for every period with `historical=True`:
+And the same valuation for every period:
 
 ```python
 toolkit.models.get_intrinsic_valuation(historical=True)
@@ -4782,7 +4876,9 @@ toolkit.models.get_intrinsic_valuation(historical=True)
 ---
 
 ## get_free_cash_flow_to_firm
-Free Cash Flow to the Firm (FCFF) is the cash flow available to all providers of capital, both debt and equity holders, after the company has paid all of its operating expenses and invested in the assets needed to sustain its operations. Because it is measured before any financing cash flows, FCFF is capital-structure neutral, making it the cash flow base typically discounted at the Weighted Average Cost of Capital (WACC) when valuing the Enterprise Value of a company directly.
+Free Cash Flow to the Firm (FCFF) is the cash flow available to all providers of capital, both debt and equity holders.
+
+It is what is left after the company has paid all of its operating expenses and invested in the assets needed to sustain its operations. Because it is measured before any financing cash flows, FCFF is capital-structure neutral, making it the cash flow base typically discounted at the Weighted Average Cost of Capital (WACC) when valuing the Enterprise Value of a company directly.
 
 The formula is as follows:
 
@@ -4855,7 +4951,9 @@ Which returns:
 ---
 
 ## get_free_cash_flow_to_equity
-Free Cash Flow to Equity (FCFE) is the cash flow available to a company's common equity holders after all operating expenses, reinvestment needs, and net payments to (or from) debt holders have been accounted for. Unlike FCFF, FCFE is a levered cash flow measure and should be discounted at the Cost of Equity, not the Weighted Average Cost of Capital, when used to value equity directly.
+Free Cash Flow to Equity (FCFE) is the cash flow available to a company's common equity holders.
+
+It is what is left after all operating expenses, reinvestment needs, and net payments to (or from) debt holders have been accounted for. Unlike FCFF, FCFE is a levered cash flow measure and should be discounted at the Cost of Equity, not the Weighted Average Cost of Capital, when used to value equity directly.
 
 The formula is as follows:
 
@@ -4922,7 +5020,9 @@ Which returns:
 ---
 
 ## get_gordon_growth_model
-The Gordon Growth Model, also known as the Dividend Discount Model (DDM) with Constant Growth, is a method used to estimate the intrinsic value of a stock based on its expected future dividends. The model assumes that dividends will grow at a constant rate indefinitely.
+The Gordon Growth Model shows the intrinsic value of a stock from its expected future dividends.
+
+It is also known as the Dividend Discount Model (DDM) with Constant Growth. The model assumes that dividends will grow at a constant rate indefinitely.
 
 The formula is as follows:
 
@@ -5014,7 +5114,9 @@ Which returns:
 ---
 
 ## get_two_stage_dividend_discount_model
-The Two-Stage Dividend Discount Model extends the (single-stage) Gordon Growth Model to companies that are not expected to grow at a constant rate forever. It explicitly projects and discounts dividends over an initial high-growth phase, and then values everything from the end of that phase onward as a perpetuity growing at a lower, more sustainable stable rate (a Gordon Growth terminal value).
+The Two-Stage Dividend Discount Model extends the (single-stage) Gordon Growth Model to companies that are not expected to grow at a constant rate forever.
+
+It explicitly projects and discounts dividends over an initial high-growth phase, and then values everything from the end of that phase onward as a perpetuity growing at a lower, more sustainable stable rate (a Gordon Growth terminal value).
 
 The formula is as follows:
 
@@ -5116,7 +5218,9 @@ Which returns:
 ---
 
 ## get_h_model
-The H-Model of Fuller and Hsia (1984) values a stock whose dividend growth starts at a high rate and declines linearly to a stable rate over a number of years, after which it grows at the stable rate forever. It is a closed-form approximation of the three-stage dividend discount model (see `get_two_stage_dividend_discount_model` with `transition_periods`): the Gordon Growth Model at the stable rate plus the value of the extra growth during the decline, which is about half the high-growth period (H) times the extra growth.
+The H-Model of Fuller and Hsia (1984) shows the value of a stock whose dividend growth declines linearly to a stable rate.
+
+The growth starts at a high rate and declines over a number of years, after which it grows at the stable rate forever. It is a closed-form approximation of the three-stage dividend discount model (see `get_two_stage_dividend_discount_model` with `transition_periods`): the Gordon Growth Model at the stable rate plus the value of the extra growth during the decline, which is about half the high-growth period (H) times the extra growth.
 
 The formula is as follows:
 
@@ -5204,7 +5308,9 @@ Which returns:
 ---
 
 ## get_justified_multiples
-The justified multiples are the Price-to-Earnings and Price-to-Book ratios the dividend discount and residual income models imply for a company with a constant payout ratio, Return on Equity and growth rate. Comparing them with the actual multiples shows whether the market prices a company above or below what its profitability, payout and growth justify at a given required rate of return.
+The justified multiples are the Price-to-Earnings and Price-to-Book ratios that a company's fundamentals justify.
+
+They are the multiples the dividend discount and residual income models imply for a constant payout ratio, Return on Equity and growth rate. Comparing them with the actual multiples shows whether the market prices a company above or below what its profitability, payout and growth justify at a given required rate of return.
 
 The formula is as follows:
 
@@ -5311,7 +5417,9 @@ Which returns:
 ---
 
 ## get_residual_income
-Residual Income is a measure of the profit a company generates in excess of the return required by its equity holders. It is the equity-side counterpart to Economic Value Added (EVA), and underpins the Residual Income Model, an alternative equity valuation lens to a traditional Discounted Cash Flow (DCF) that is particularly useful when a company's free cash flows are negative or unpredictable but its accounting earnings are more stable.
+Residual Income is a measure of the profit a company generates in excess of the return required by its equity holders.
+
+It is the equity-side counterpart to Economic Value Added (EVA), and underpins the Residual Income Model, an alternative equity valuation lens to a traditional Discounted Cash Flow (DCF) that is particularly useful when a company's free cash flows are negative or unpredictable but its accounting earnings are more stable.
 
 The formula is as follows:
 
@@ -5320,6 +5428,10 @@ $$
 $$
 
 **Also known as:** RI, economic profit (equity variant), abnormal earnings.
+
+**References:**
+
+- paper | Ohlson, James A. "Earnings, Book Values, and Dividends in Equity Valuation." Contemporary Accounting Research, Vol. 11, No. 2, 1995, pp. 661-687.
 
 **Args:**
 
@@ -5351,21 +5463,18 @@ equity holders required given the capital they have invested. A negative Residua
 Income indicates the company failed to earn its equity holders' required return, even
 if it still reported a positive Net Income.
 - The Cost of Equity follows from the Capital Asset Pricing Model (CAPM), as in
-`get_weighted_average_cost_of_capital`: the risk-free rate of the period plus Beta times
-the market risk premium, by default the equity risk premium of the company's country
-(see `market_risk_premium`). It covers the span of the Net Income: a
-quarter with quarterly data, and the per-period rate times `trailing` when the Net Income
-is a trailing sum (an annual rate for trailing twelve months, trailing=4 with quarterly data),
-with the Beta estimated from the daily returns of the same trailing periods.
+`get_weighted_average_cost_of_capital`: the risk-free rate of the period plus Beta
+times the market risk premium, by default the equity risk premium of the company's
+country (see `market_risk_premium`). It covers the span of the Net Income: a quarter
+with quarterly data, and the per-period rate times `trailing` when the Net Income is a
+trailing sum (an annual rate for the trailing twelve months of quarterly data), with
+the Beta estimated from the daily returns of the same trailing periods.
 - The Book Value of Equity is the Total Shareholder Equity minus Preferred Stock at the
 beginning of the period (the previous period's closing balance, or that of `trailing` periods
 back with `trailing` set), the capital the shareholders had invested while the Net Income was
 earned. Preferred equity is excluded since Residual Income (like Net Income) belongs to common
 equity holders only.
 
-References:
-- Ohlson, James A. "Earnings, Book Values, and Dividends in Equity Valuation."
-Contemporary Accounting Research, Vol. 11, No. 2, 1995, pp. 661-687.
 
 **As an example:**
 
@@ -5393,7 +5502,9 @@ Which returns:
 ---
 
 ## get_present_value_of_growth_opportunities
-The Present Value of Growth Opportunities (PVGO) is a financial metric that represents the present value of a company's future growth opportunities. It is calculated as the difference between the share price and the value of the company's current earnings as a perpetuity without growth, i.e. Earnings per Share divided by the Cost of Equity.
+The Present Value of Growth Opportunities (PVGO) is a financial metric that represents the present value of a company's future growth opportunities.
+
+It is calculated as the difference between the share price and the value of the company's current earnings as a perpetuity without growth, i.e. Earnings per Share divided by the Cost of Equity.
 
 The formula is as follows:
 
@@ -5439,8 +5550,9 @@ pd.DataFrame: DataFrame containing the PVGO values.
 the share price and the Earnings per Share are equity-only, per-share quantities (Brealey, Myers
 and Allen, "Principles of Corporate Finance"; Bodie, Kane and Marcus, "Investments"). The Cost of
 Equity is the CAPM Cost of Equity of `get_weighted_average_cost_of_capital`.
-- The Cost of Equity uses the same `trailing` as the Earnings per Share, so both cover the same
-span (with quarterly data, a quarter without `trailing` and a year with trailing=4).
+- The Cost of Equity uses the same `trailing` as the Earnings per Share, so both cover
+the same span (with quarterly data, a quarter without `trailing` and a year with four
+trailing quarters).
 - When the Earnings per Share is negative, the no-growth value is negative and the PVGO
 exceeds the share price, which has no meaningful interpretation.
 
@@ -5512,8 +5624,8 @@ pd.DataFrame: DataFrame containing the Graham Number values.
 
 - Graham's limits of 15 times earnings and 1.5 times book value refer to annual earnings, so
 with quarterly data the Earnings per Share are the sum of the last four quarters by default.
-- Earnings and Book Value per Share use the Weighted Average Shares Diluted (or the Weighted
-Average Shares with diluted=False).
+- Earnings and Book Value per Share use the Weighted Average Shares Diluted (or the
+Weighted Average Shares without dilution).
 - Only the Earnings per Share are trailing: the earnings are a flow over the trailing periods,
 divided by the average shares over those periods. The Book Value per Share is a stock, the Total
 Shareholder Equity minus the Preferred Stock at the end of the period divided by the shares of
@@ -5545,9 +5657,9 @@ Which returns:
 ---
 
 ## get_graham_intrinsic_value
-Calculate the intrinsic value of a share with Benjamin Graham's growth formula, the value of a growth stock from its earnings, their expected growth and the yield of high grade corporate bonds.
+Calculate the intrinsic value of a share with Benjamin Graham's growth formula.
 
-Graham gave the formula in The Intelligent Investor (fourth revised edition, 1973, chapter 11) as Earnings per Share x (8.5 + 2g), with 8.5 the price-to-earnings ratio of a company without growth and g the growth rate of its earnings expected over the next 7 to 10 years, in percent. In 1974 he scaled it by 4.4 / Y, with 4.4 the average yield of AAA corporate bonds in 1962 and Y their current yield, so that the value falls when interest rates rise.
+It is the value of a growth stock from its earnings, their expected growth and the yield of high grade corporate bonds. Graham gave the formula in The Intelligent Investor (fourth revised edition, 1973, chapter 11) as Earnings per Share x (8.5 + 2g), with 8.5 the price-to-earnings ratio of a company without growth and g the growth rate of its earnings expected over the next 7 to 10 years, in percent. In 1974 he scaled it by 4.4 / Y, with 4.4 the average yield of AAA corporate bonds in 1962 and Y their current yield, so that the value falls when interest rates rise.
 
 The formula is as follows:
 
@@ -5597,10 +5709,10 @@ pd.DataFrame: DataFrame containing the intrinsic value per share.
 
 **Notes:**
 
-- Graham's formula takes the earnings of the last twelve months, so with quarterly data the
-Earnings per Share are the sum of the last four quarters by default; it is the Net Income divided
-by the Weighted Average Shares Diluted (or the Weighted Average Shares with diluted=False), as in
-`get_graham_number`.
+- Graham's formula takes the earnings of the last twelve months, so with quarterly data
+the Earnings per Share are the sum of the last four quarters by default; it is the Net
+Income divided by the Weighted Average Shares Diluted (or the Weighted Average Shares
+without dilution), as in `get_graham_number`.
 - The default growth rate looks back, while Graham's g is the growth expected ahead: pass a
 growth_rate (e.g. from analyst estimates, see `toolkit.get_analyst_estimates`) to value on a
 forecast. Each period only uses the earnings up to it, and the bond yield of the end of that
@@ -5638,7 +5750,9 @@ Which returns:
 ---
 
 ## get_reverse_discounted_cash_flow
-Calculate the growth rate the share price implies, a reverse Discounted Cash Flow (DCF). Instead of estimating growth to arrive at a value, it takes the current share price as given and solves for the yearly cash flow growth over the projection periods at which the DCF value per share equals that price. The answer is the market's expectation, which can then be compared with the company's history: an implied growth far above what the company has achieved signals optimism.
+Calculate the growth rate the share price implies, a reverse Discounted Cash Flow (DCF).
+
+Instead of estimating growth to arrive at a value, it takes the current share price as given and solves for the yearly cash flow growth over the projection periods at which the DCF value per share equals that price. The answer is the market's expectation, which can then be compared with the company's history: an implied growth far above what the company has achieved signals optimism.
 
 The DCF is the same as in `get_intrinsic_valuation`, by default on the Free Cash Flow to the Firm:
 
@@ -5658,11 +5772,11 @@ $$
 \text{Implied Growth Rate solves} \;\frac{\text{Equity Value}}{\text{Shares Outstanding}} = \text{Share Price}
 $$
 
-For more information, see the following book:
-
-- Rappaport, A. and Mauboussin, M.J. (2001). "Expectations Investing: Reading Stock Prices for Better Returns." Harvard Business School Press.
-
 **Also known as:** reverse DCF, market-implied growth, expectations investing.
+
+**References:**
+
+- paper | Rappaport, A. and Mauboussin, M.J. (2001). "Expectations Investing: Reading Stock Prices for Better Returns." Harvard Business School Press.
 
 **Args:**
 
@@ -5675,12 +5789,11 @@ which uses the latest Weighted Average Cost of Capital of each company,
 calculated over a year (the last 4 quarters with quarterly data) whatever
 `trailing` the cash flows use, as the rate is a yearly one.
 - <u>periods (int, optional):</u> The number of projection periods. Defaults to 5.
-- <u>cash_flow_type (str, optional):</u> The cash flow to project: "Free Cash Flow to
-Firm" (see `get_free_cash_flow_to_firm`), the cash flow to debt and equity
-holders that the WACC discounts into an enterprise value; or "Free Cash Flow"
-or "Operating Cash Flow" as reported, which are after interest (cash flows
-to equity), so that discounting them at the WACC and subtracting the debt
-counts the cost of debt twice. Defaults to "Free Cash Flow to Firm".
+- <u>cash_flow_type (str, optional):</u> The cash flow to project. The reported cash flows are after interest
+(cash flows to equity), so that discounting them at the WACC and subtracting the debt counts the
+cost of debt twice. Options are: "Free Cash Flow to Firm" (see get_free_cash_flow_to_firm, the cash
+flow to debt and equity holders that the WACC discounts into an enterprise value), "Free Cash Flow"
+(as reported), "Operating Cash Flow" (as reported). Defaults to "Free Cash Flow to Firm".
 - <u>trailing (int &#124; None, optional):</u> Sum the cash flow over this many periods (e.g.
 4 quarters) instead of taking the latest one. The window counts calendar
 periods, so a period without a report makes it NaN. Defaults to None, which
@@ -5736,7 +5849,9 @@ Which returns:
 ---
 
 ## get_earnings_power_value
-Calculate the Earnings Power Value (EPV), the value of a company's current earnings if they never grew. Bruce Greenwald uses it to separate what is known (today's earnings power) from what is speculative (growth): the operating margin is averaged over several years and applied to the latest yearly revenue, taxed, and capitalized at the cost of capital.
+Calculate the Earnings Power Value (EPV), the value of a company's current earnings if they never grew.
+
+Bruce Greenwald uses it to separate what is known (today's earnings power) from what is speculative (growth): the operating margin is averaged over several years and applied to the latest yearly revenue, taxed, and capitalized at the cost of capital.
 
 - Normalized Operating Income = Average Operating Margin * Latest Revenue
 - NOPAT = Normalized Operating Income * (1 - Average Tax Rate)
@@ -5745,11 +5860,11 @@ Calculate the Earnings Power Value (EPV), the value of a company's current earni
 
 A share price well above the EPV per share means the market pays for growth, which only adds value when the company earns more than its cost of capital on it.
 
-For more information, see the following book:
-
-- Greenwald, B.C.N., Kahn, J., Sonkin, P.D. and van Biema, M. (2001). "Value Investing: From Graham to Buffett and Beyond." Wiley.
-
 **Also known as:** EPV, no-growth value, Greenwald valuation.
+
+**References:**
+
+- paper | Greenwald, B.C.N., Kahn, J., Sonkin, P.D. and van Biema, M. (2001). "Value Investing: From Graham to Buffett and Beyond." Wiley.
 
 **Args:**
 
@@ -5816,15 +5931,17 @@ Which returns:
 ---
 
 ## get_monte_carlo_intrinsic_valuation
-Calculate the distribution of the intrinsic value per share when the inputs of the Discounted Cash Flow model are uncertain. A single DCF value hides how sensitive it is to its assumptions; here the growth rate, the perpetual growth rate and the discount rate are drawn from normal distributions around their expected values in every simulation, and the DCF of `get_intrinsic_valuation` is calculated for each draw. The spread of the outcomes, and the probability that the value exceeds the share price, show how robust the conclusion is.
+Calculate the distribution of the intrinsic value per share when the inputs of the Discounted Cash Flow model are uncertain.
+
+A single DCF value hides how sensitive it is to its assumptions; here the growth rate, the perpetual growth rate and the discount rate are drawn from normal distributions around their expected values in every simulation, and the DCF of `get_intrinsic_valuation` is calculated for each draw. The spread of the outcomes, and the probability that the value exceeds the share price, show how robust the conclusion is.
 
 Draws in which the discount rate does not exceed the perpetual growth rate by at least half a percentage point are redrawn, as the terminal value is undefined there.
 
-For more information, see the following book:
-
-- Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for Determining the Value of Any Asset." Wiley, 3rd edition, chapter 33 (probabilistic approaches).
-
 **Also known as:** Monte Carlo DCF, probabilistic valuation, DCF simulation.
+
+**References:**
+
+- paper | Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for Determining the Value of Any Asset." Wiley, 3rd edition, chapter 33 (probabilistic approaches).
 
 **Args:**
 
@@ -5848,12 +5965,11 @@ rate is a yearly one.
 deviation. Defaults to 0.01.
 - <u>periods (int, optional):</u> The number of projection periods. Defaults to 5.
 - <u>simulations (int, optional):</u> The number of simulations. Defaults to 10,000.
-- <u>cash_flow_type (str, optional):</u> The cash flow to project: "Free Cash Flow to
-Firm" (see `get_free_cash_flow_to_firm`), the cash flow to debt and equity
-holders that the WACC discounts into an enterprise value; or "Free Cash Flow"
-or "Operating Cash Flow" as reported, which are after interest (cash flows
-to equity), so that discounting them at the WACC and subtracting the debt
-counts the cost of debt twice. Defaults to "Free Cash Flow to Firm".
+- <u>cash_flow_type (str, optional):</u> The cash flow to project. The reported cash flows are after interest
+(cash flows to equity), so that discounting them at the WACC and subtracting the debt counts the
+cost of debt twice. Options are: "Free Cash Flow to Firm" (see get_free_cash_flow_to_firm, the cash
+flow to debt and equity holders that the WACC discounts into an enterprise value), "Free Cash Flow"
+(as reported), "Operating Cash Flow" (as reported). Defaults to "Free Cash Flow to Firm".
 - <u>trailing (int &#124; None, optional):</u> Sum the cash flow over this many periods (e.g.
 4 quarters) instead of taking the latest one. The window counts calendar
 periods, so a period without a report makes it NaN. Defaults to None, which
@@ -5899,18 +6015,20 @@ Which returns:
 ---
 
 ## get_peer_comparison
-Compare every company with its peers on valuation, profitability, growth and leverage. For each metric it shows the company's latest value, the median and mean of its peers and the company's percentile among them (the share of peers with a lower value), which tells at a glance whether a company is expensive or cheap, and better or worse run, than comparable companies.
+Compare every company with its peers on valuation, profitability, growth and leverage.
 
-The metrics are the Price-to-Earnings, EV-to-EBITDA, Price-to-Book and Price-to-Sales ratios, the Gross, Operating and Net Profit Margin, the Return on Equity and on Invested Capital, Revenue Growth, the Debt-to-Equity ratio and the Dividend Yield, all of the latest period up to the Toolkit's end date: the fiscal year, or with quarterly=True the quarter, with the ratios over the trailing year and the Revenue Growth over the same quarter a year earlier. The peers are retrieved with the Toolkit's settings (quarterly, point_in_time and convert_currency), so the Company column equals the Toolkit's own ratios of that period.
+For each metric it shows the company's latest value, the median and mean of its peers and the company's percentile among them (the share of peers with a lower value), which tells at a glance whether a company is expensive or cheap, and better or worse run, than comparable companies.
+
+The metrics are the Price-to-Earnings, EV-to-EBITDA, Price-to-Book and Price-to-Sales ratios, the Gross, Operating and Net Profit Margin, the Return on Equity and on Invested Capital, Revenue Growth, the Debt-to-Equity ratio and the Dividend Yield, all of the latest period up to the Toolkit's end date: the fiscal year, or with quarterly data the quarter, with the ratios over the trailing year and the Revenue Growth over the same quarter a year earlier. The peers are retrieved with the Toolkit's settings (quarterly, point_in_time and convert_currency), so the Company column equals the Toolkit's own ratios of that period.
 
 The Peer Mean of the four valuation multiples is the harmonic mean of the positive values, the standard average of multiples: the arithmetic mean is dominated by peers with earnings (or book value, or sales) close to zero, and a negative multiple says nothing about the price paid. The other metrics use the arithmetic mean.
 
-For more information, see the following papers:
-
-- Baker, M. and Ruback, R.S. (1999). "Estimating Industry Multiples." Working paper, Harvard University.
-- Liu, J., Nissim, D. and Thomas, J. (2002). "Equity Valuation Using Multiples." Journal of Accounting Research, 40(1), 135-172.
-
 **Also known as:** comparable companies analysis, comps, relative valuation, peer group analysis.
+
+**References:**
+
+- paper | Baker, M. and Ruback, R.S. (1999). "Estimating Industry Multiples." Working paper, Harvard University.
+- paper | Liu, J., Nissim, D. and Thomas, J. (2002). "Equity Valuation Using Multiples." Journal of Accounting Research, 40(1), 135-172.
 
 **Args:**
 

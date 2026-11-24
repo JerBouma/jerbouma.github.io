@@ -91,7 +91,15 @@ module DocsMetricPages
       "get_option_adjusted_spread" => ["option-adjusted-spread", nil],
       "get_derivative_price"       => ["black-model", nil],
     },
+    "options" => { "get_bjerksund_stensland" => ["bjerksund-stensland-model", "get_american_option"] },
     "econometrics" => {
+      "get_rolling_correlation" => ["rolling-correlation", "get_correlation"],
+      "get_rolling_median" => ["rolling-median", "get_percentile"],
+      "get_rolling_percentile" => ["rolling-percentile", "get_percentile"],
+      "get_rolling_z_score" => ["rolling-z-score", "get_z_score"],
+      "get_rolling_mean_absolute_deviation" => ["rolling-mean-absolute-deviation", "get_mean_absolute_deviation"],
+      "get_rolling_standard_error" => ["rolling-standard-error", "get_standard_error"],
+      "get_rolling_entropy" => ["rolling-entropy", "get_entropy"],
       "get_rmse"                    => ["root-mean-squared-error-rmse", "get_forecast_error"],
       "get_mae"                     => ["mean-absolute-error-mae", "get_forecast_error"],
       "get_logistic_regression"     => ["logistic-regression", "get_binary_choice_regression"],
@@ -103,6 +111,8 @@ module DocsMetricPages
       "get_white_test"              => ["white-test", "get_heteroskedasticity_test"],
     },
     "performance" => {
+      "get_treynor_mazuy_model" => ["treynor-mazuy-model", "get_market_timing_model"],
+      "get_henriksson_merton_model" => ["henriksson-merton-model", "get_market_timing_model"],
       "get_jensens_alpha" => ["jensen-s-alpha", "get_alpha"],
     },
     "portfolio-optimization" => {
@@ -111,6 +121,9 @@ module DocsMetricPages
       "get_maximum_cvar_ratio_weights" => ["maximum-cvar-ratio", "get_mean_risk_weights"],
     },
     "ratios" => {
+      "get_net_income_per_ebt" => ["net-income-per-ebt", "get_tax_burden_ratio"],
+      "get_ebt_to_ebit" => ["ebt-to-ebit", "get_interest_burden_ratio"],
+      "get_ebit_to_revenue" => ["ebit-to-revenue", "get_operating_margin"],
       "get_reinvestment_rate" => ["reinvestment-rate", "get_retention_ratio"],
     },
     "risk" => {
@@ -214,7 +227,27 @@ module DocsMetricPages
     desc      = body[0...desc_end].strip
     args      = args_at ? body[args_at...(code_at || body.length)].sub(/\*\*As an example:\*\*\s*\z/, "").strip : ""
     example   = code_at ? body[code_at..].strip : ""
-    { :description => desc, :arguments => args, :example => example }
+    refs      = desc[REFERENCES].to_s
+    desc      = desc.sub(REFERENCES, "").strip
+    { :description => desc, :arguments => args, :example => example, :references => refs }
+  end
+
+  # docs.py ends a description with "**References:**" and one line per source:
+  # "- paper | <citation>" or "- library | Referenced against X's [Y](url)".
+  REFERENCES = /\n*\*\*References:\*\*\n\n(?:- (?:paper|library) \| .*(?:\n|\z))+/
+
+  # The papers and libraries as one labelled list, for the method pages (with
+  # a heading) and for the functions left on the module pages (without).
+  def references_list(refs)
+    items = refs.scan(/^- (paper|library) \| (.*)$/).map do |kind, text|
+      %(- <span class="docs-refs__kind">#{kind.capitalize}</span> #{text})
+    end
+    items.join("\n") + "\n{: .docs-refs}\n\n"
+  end
+
+  def references_section(refs)
+    return "" if refs.to_s.empty?
+    "## References\n{: #references}\n\n" + references_list(refs)
   end
 
   # A display formula ($$ on its own lines) is left out of plain text; an inline
@@ -501,6 +534,7 @@ module DocsMetricPages
       out << "`#{fn_name}` accepts the following parameters.\n{: .docs-boilerplate}\n\n"
       out << parameters_table(site, fn_name, parameters) << "\n"
     end
+    out << references_section(parts[:references])
     unless related.empty?
       # same pill buttons as the module switcher on the docs pages
       pills = related.map do |r|
@@ -781,7 +815,7 @@ module DocsMetricPages
             (base ? "; the [#{base[:title]}](#{base[:url]}) page has the function's full description." : ".")
     example = variant["example"] ? variant["example"].strip : variant_example(parts[:example], fn_name, variant["argument"], variant["drop"])
     example += "\n\nWhich returns:\n\n#{variant['output'].strip}" if variant["output"]
-    { :description => text, :arguments => parts[:arguments], :example => example }
+    { :description => text, :arguments => parts[:arguments], :example => example, :references => parts[:references] }
   end
 
   def generate(site)
@@ -874,6 +908,7 @@ module DocsMetricPages
         name = Regexp.last_match(1).downcase
         urls[name] || collector?(key, name) || (key == "toolkit" && CLASSES.key?(name)) ? "" : Regexp.last_match(0)
       end
+      remaining = remaining.gsub(REFERENCES) { |block| "\n\n**References:**\n\n" + references_list(block) }
       # pages that include their own walkthrough (_includes/financetoolkit-getting-started)
       # already have a Getting Started section, so they don't get a generated one
       started = if intro.include?("financetoolkit-getting-started/") then ""

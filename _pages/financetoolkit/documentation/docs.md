@@ -32,7 +32,9 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/getting-started.md %}
 
 ## ratios
-The Ratios Module contains over 50+ ratios that can be used to analyse companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
+Give access to the Ratios module, the ratios that show the valuation, profitability, solvency, liquidity and efficiency of companies.
+
+These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
 Some examples of ratios are the Current Ratio, Debt to Equity Ratio, Return on Assets (ROA), Return on Equity (ROE), Return on Invested Capital (ROIC), Return on Capital Employed (ROCE), Price to Earnings Ratio (P/E), Price to Book Ratio (P/B), Price to Sales Ratio (P/S), Price to Cash Flow Ratio (P/CF), Price to Free Cash Flow Ratio (P/FCF), Dividend Yield and Dividend Payout Ratio.
 
@@ -75,17 +77,16 @@ Which returns:
 | Return on Capital Employed                  |  0.4831 |  0.6009 |  0.5514 |   0.6534 |   0.6872 |
 | Return on Tangible Assets                   |  0.2806 |  0.2836 |  0.275  |   0.2613 |   0.3093 |
 | Income Quality Ratio                        |  1.0988 |  1.2239 |  1.1397 |   1.2616 |   0.9953 |
-| Net Income per EBT                          |  0.867  |  0.838  |  0.8528 |   0.7591 |   0.8439 |
 | Free Cash Flow to Operating Cash Flow Ratio |  0.8935 |  0.9123 |  0.9009 |   0.9201 |   0.8859 |
-| EBT to EBIT Ratio                           |  0.9764 |  0.976  |  0.9666 |   1      |   1      |
-| EBIT to Revenue                             |  0.3058 |  0.3095 |  0.307  |   0.3158 |   0.3189 |
 | Cash Tax Rate                               |  0.2324 |  0.1643 |  0.1642 |   0.2114 |   0.3267 |
 | Tax Rate Divergence                         |  0.0994 |  0.0023 |  0.017  |  -0.0295 |   0.1706 |
 
 ---
 
 ## models
-Gives access to the Models module. The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
+Give access to the Models module, the valuation and decomposition models of companies, such as DuPont and the discounted cash flow.
+
+The Models module is meant to execute well-known models such as DUPONT and the Discounted Cash Flow (DCF) model. These models are also directly related to the data retrieved from the Toolkit module.
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/models](https://www.jeroenbouma.com/projects/financetoolkit/docs/models){:target="_blank"}
 
@@ -120,7 +121,9 @@ Which returns:
 ---
 
 ## options
-This gives access to the Options module. The Options Module is meant to provide Options valuations based on real market data. This includes the Black-Scholes model and in the future the Binomial model and the Monte Carlo model. It also includes all available first-order, second-order and third-order Greeks such as Delta, Gamma, Theta, Vega, Rho, Charm, Vanna, Vomma, Veta, Speed and Zomma.
+Give access to the Options module, the option prices and Greeks of the tickers.
+
+The Options Module is meant to provide Options valuations based on real market data. This includes the Black-Scholes model and in the future the Binomial model and the Monte Carlo model. It also includes all available first-order, second-order and third-order Greeks such as Delta, Gamma, Theta, Vega, Rho, Charm, Vanna, Vomma, Veta, Speed and Zomma.
 
 It gives insights in the sensitivity of an option to changes in the underlying asset price, volatility, years to maturity, dividend yilds and interest rates and several derivatives of these sensitivities.
 
@@ -174,7 +177,9 @@ Which returns:
 ---
 
 ## technicals
-This gives access to the Technicals module. The Technicals Module contains nearly 50 Technical Indicators that can be used to analyse companies. These indicators are divided into 3 categories: breadth, overlap and volatility. Each indicator is calculated using the data from the Toolkit module, from a year of prices before the start date onwards, so that averages smoothed over a window (RSI, ATR, ADX, MACD and moving averages) have their full history on the start date and an indicator's value on a day doesn't depend on the start date. Running totals (On-Balance Volume, Accumulation/Distribution Line, Negative and Positive Volume Index and the market breadth totals) start at the start date.
+Give access to the Technicals module, the technical indicators of the tickers' prices.
+
+The Technicals Module contains nearly 50 Technical Indicators that can be used to analyse companies. These indicators are divided into 3 categories: breadth, overlap and volatility. Each indicator is calculated using the data from the Toolkit module, from a year of prices before the start date onwards, so that averages smoothed over a window (RSI, ATR, ADX, MACD and moving averages) have their full history on the start date and an indicator's value on a day doesn't depend on the start date. Running totals (On-Balance Volume, Accumulation/Distribution Line, Negative and Positive Volume Index and the market breadth totals) start at the start date.
 
 Some examples of technical indicators are the Average Directional Index (ADX), the Accumulation/Distribution Line (ADL), the Average True Range (ATR), the Bollinger Bands (BBANDS), the Commodity Channel Index (CCI), the Chaikin Oscillator (CHO), the Chaikin Money Flow (CMF), the Double Exponential Moving Average (DEMA), the Exponential Moving Average (EMA) and the Moving Average Convergence Divergence (MACD).
 
@@ -207,7 +212,9 @@ Which returns:
 ---
 
 ## performance
-This gives access to the Performance module. The Performance Module is meant to calculate metrics related to the risk-return relationship. These are things such as Beta, Sharpe Ratio, Sortino Ratio, CAPM, Alpha and the Treynor Ratio.
+Give access to the Performance module, the risk-adjusted returns of the tickers against a benchmark.
+
+The Performance Module is meant to calculate metrics related to the risk-return relationship. These are things such as Beta, Sharpe Ratio, Sortino Ratio, CAPM, Alpha and the Treynor Ratio.
 
 It gives insights in the performance a stock has to e.g. a benchmark that is not easily identified by looking at the raw data. This class is closely related to the Risk class which highlights things such as Value at Risk (VaR) and Maximum Drawdown.
 
@@ -254,7 +261,9 @@ Which returns:
 ---
 
 ## risk
-This gives access to the Risk module. The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models. It also houses cross-asset systemic risk and liquidity measures (CoVaR, Marginal Expected Shortfall, SRISK, Tail Dependence, Amihud Illiquidity, Roll Spread).
+Give access to the Risk module, the measures of the downside and volatility of the tickers' returns.
+
+The Risk Module is meant to calculate metrics related to risk such as Value at Risk (VaR), Conditional Value at Risk (cVaR), EMWA/GARCH models and similar models. It also houses cross-asset systemic risk and liquidity measures (CoVaR, Marginal Expected Shortfall, SRISK, Tail Dependence, Amihud Illiquidity, Roll Spread).
 
 Note that the time-series diagnostic and econometric tests (unit root tests, cointegration, Granger causality, ARCH-LM, Jarque-Bera and similar tests) live in the separate Econometrics module instead.
 
@@ -287,7 +296,9 @@ Which returns:
 ---
 
 ## econometrics
-This gives access to the Econometrics module, which runs this Toolkit's price/return data through least squares and test statistics of its own and the estimators of `statsmodels` and `linearmodels` -- regression (OLS/WLS/GLS/Logit/Probit/Quantile), panel data (Fixed/Random Effects, Hausman), causal inference (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching), specification/hypothesis tests (Breusch-Pagan, White, Durbin-Watson, VIF, RESET, Chow, t/F/LR/Wald tests), stationarity (Augmented Dickey-Fuller, KPSS, Phillips-Perron, Zivot-Andrews unit root tests), long-run equilibrium relationships (Engle-Granger and Johansen cointegration), predictive lead-lag relationships (Granger causality), model/ residual diagnostics (ARCH-LM, Jarque-Bera, Ljung-Box, Variance Ratio, CUSUM), forecast comparison (Diebold-Mariano), and time series forecasting (ARIMA, VAR, VECM).
+Give access to the Econometrics module, the regressions and statistical tests of the tickers' returns.
+
+The module runs this Toolkit's price/return data through least squares and test statistics of its own and the estimators of `statsmodels` and `linearmodels` -- regression (OLS/WLS/GLS/Logit/Probit/Quantile), panel data (Fixed/Random Effects, Hausman), causal inference (IV-2SLS, Difference-in-Differences, Regression Discontinuity, Propensity Score Matching), specification/hypothesis tests (Breusch-Pagan, White, Durbin-Watson, VIF, RESET, Chow, t/F/LR/Wald tests), stationarity (Augmented Dickey-Fuller, KPSS, Phillips-Perron, Zivot-Andrews unit root tests), long-run equilibrium relationships (Engle-Granger and Johansen cointegration), predictive lead-lag relationships (Granger causality), model/ residual diagnostics (ARCH-LM, Jarque-Bera, Ljung-Box, Variance Ratio, CUSUM), forecast comparison (Diebold-Mariano), and time series forecasting (ARIMA, VAR, VECM).
 
 This class is closely related to the Risk class, which houses the risk measures (VaR, CVaR, GARCH) that these tests often inform the choice of.
 
@@ -299,7 +310,12 @@ See the following link for more information: [https://www.jeroenbouma.com/projec
 ```python
 from financetoolkit import Toolkit
 
-toolkit = Toolkit(["AAPL", "TSLA"], api_key="FINANCIAL_MODELING_PREP_KEY")
+toolkit = Toolkit(
+    ["AAPL", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2015-01-01",
+    end_date="2025-12-31",
+)
 
 toolkit.econometrics.get_unit_root_test(period='yearly')
 ```
@@ -307,6 +323,8 @@ toolkit.econometrics.get_unit_root_test(period='yearly')
 ---
 
 ## etf
+Give access to the ETF module, the analysis of the funds of the Toolkit.
+
 The ETF module analyzes the Toolkit's exchange traded funds (and other funds): their holdings, sector and country weightings, profile and premium or discount to NAV, how closely they track the Benchmark, how concentrated and how much alike they are, what their holdings are valued at and how liquid they are.
 
 See the following link for more information: [https://www.jeroenbouma.com/projects/financetoolkit/docs/etf](https://www.jeroenbouma.com/projects/financetoolkit/docs/etf){:target="_blank"}
@@ -323,7 +341,9 @@ toolkit.etf.get_profile()
 ---
 
 ## portfolio
-This gives access to the Portfolio Construction module, which builds and examines portfolios from the assets of this Toolkit: optimal weights (minimum variance, maximum Sharpe ratio, mean-variance, risk parity, Hierarchical Risk Parity, inverse volatility, minimum CVaR, Black-Litterman, maximum diversification, minimum tracking error and growth optimal), the efficient frontier, risk contributions, historical stress tests, look-through exposure of funds and a Brinson-Fachler attribution against the benchmark.
+Give access to the Portfolio Construction module, the optimal weights and analysis of portfolios of the tickers.
+
+The module builds and examines portfolios from the assets of this Toolkit: optimal weights (minimum variance, maximum Sharpe ratio, mean-variance, risk parity, Hierarchical Risk Parity, inverse volatility, minimum CVaR, Black-Litterman, maximum diversification, minimum tracking error and growth optimal), the efficient frontier, risk contributions, historical stress tests, look-through exposure of funds and a Brinson-Fachler attribution against the benchmark.
 
 When the Toolkit comes from a Portfolio (`Portfolio.toolkit`), the methods that take weights use the Portfolio's latest weights by default.
 
@@ -348,7 +368,9 @@ toolkit.portfolio.get_risk_parity_weights()
 ---
 
 ## fixedincome
-This gives access to the Fixed Income module. This module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration, the Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
+Give access to the Fixed Income module, the bond prices, yields and rates.
+
+This module contains a wide variety of fixed income related calculations such as the Effective Yield, the Macaulay Duration, the Modified Duration, the Convexity, the Yield to Maturity and models such as Black and Bachelier to valuate derivative instruments such as Swaptions.
 
 Next to that, it is also possible to acquire Central Bank Rates and ICE BofA Indices such as the ICE BofA US High Yield Index, the ICE BofA US Corporate Index and the ICE BofA US Treasury Index.
 
@@ -388,7 +410,9 @@ Which returns:
 ---
 
 ## economics
-This gives access to the Economics module. This module contains a wide variety of economic data obtained from OECD. These include things such as the Consumer Price Index (CPI), the Producer Price Index (PPI), the Unemployment Rate, the GDP Growth Rate, the Long and Short Term Interest Rate and the Consumer Confidence Index.
+Give access to the Economics module, the macroeconomic data of countries.
+
+This module contains a wide variety of economic data obtained from OECD. These include things such as the Consumer Price Index (CPI), the Producer Price Index (PPI), the Unemployment Rate, the GDP Growth Rate, the Long and Short Term Interest Rate and the Consumer Confidence Index.
 
 Note that this class can also be directly accessed by importing the Economics class directly via from financetoolkit import Economics. This is useful if you only want to use the Economics class and not the other classes within the Toolkit module.
 
@@ -418,7 +442,9 @@ Which returns:
 ---
 
 ## get_profile
-Obtain the profile of the specified tickers. These include important metrics such as the beta, market capitalization, currency, isin, industry, and ipo date that give an overall understanding about the company.
+Get the profile of every ticker: what the company is, where it is listed and how large it is.
+
+These include important metrics such as the beta, market capitalization, currency, isin, industry, and ipo date that give an overall understanding about the company.
 
 **Also known as:** company description, sector, industry, CEO, employee count.
 
@@ -461,6 +487,8 @@ Which returns:
 ---
 
 ## get_quote
+Get the latest quote of every ticker, its price and trading statistics.
+
 Get the quote of the specified tickers: the price and its change, the day's open, low and high, the previous close, the year low and high, the 50 and 200 day average prices, the volume, the market capitalization, the exchange and the time of the quote.
 
 **Also known as:** real-time price, current stock price, live quote.
@@ -502,7 +530,9 @@ Which returns:
 ---
 
 ## get_rating
-Get the rating of the specified tickers: a letter rating and an overall score based on six scores from 1 (weak) to 5 (strong). These scores are categorized as follows:
+Get the rating of the specified tickers: a letter rating and an overall score based on six scores from 1 (weak) to 5 (strong).
+
+These scores are categorized as follows:
 
 - An overall rating (the letter rating and the Rating Score)
 
@@ -559,7 +589,7 @@ Which returns:
 ## get_analyst_estimates
 Obtain analyst estimates regarding revenues, EBITDA, EBIT, Net Income SGA Expenses and EPS, with the number of analysts behind the revenue ("Number of Analysts Revenue") and the EPS ("Number of Analysts EPS") consensus.
 
-The estimates are the current consensus for each fiscal period, labelled like the financial statements with the calendar year (or quarter) holding most of the fiscal period: NVIDIA's fiscal year ending in January 2029 is 2028. The source has no date on which each estimate was made. The analyst counts show how much an estimate rests on: far-out years are often covered by a few analysts for EPS while many more still give a revenue estimate, and a consensus of one or two analysts is an opinion rather than a consensus. The forward ratios (e.g. `get_forward_price_earnings_ratio`) take `min_analysts` to leave such periods out.
+The estimates are the current consensus for each fiscal period, labelled like the financial statements with the calendar year (or quarter) holding most of the fiscal period: NVIDIA's fiscal year ending in January 2029 is 2028. The source has no date on which each estimate was made. The analyst counts show how much an estimate rests on: far-out years are often covered by a few analysts for EPS while many more still give a revenue estimate, and a consensus of one or two analysts is an opinion rather than a consensus. The forward ratios (e.g. `get_forward_price_earnings_ratio`) take a minimum number of analysts to leave such periods out.
 
 Note that this information requires a Premium FMP subscription.
 
@@ -612,9 +642,11 @@ Which returns:
 ---
 
 ## get_earnings_calendar
-Obtain Earnings Calendars for any range of companies. You have the option to obtain the actual dates or to convert to the corresponding quarters.
+Get the earnings releases of the tickers, the reported and expected earnings per share and revenue.
 
-Filtered to this Toolkit instance's start_date and end_date; when the end_date is today or later (the default), the scheduled releases after today are included too, with the estimates and without reported figures yet.
+You have the option to obtain the actual dates or to convert to the corresponding quarters.
+
+Filtered to this Toolkit instance's start and end date; when the end date is today or later (the default), the scheduled releases after today are included too, with the estimates and without reported figures yet.
 
 Note that this information requires a Premium FMP subscription.
 
@@ -672,13 +704,13 @@ Which returns:
 Calculate how far each reported EPS and revenue came in above or below the analyst consensus, and how the share price reacted to it, in one table per announcement.
 
 - The EPS Surprise and Revenue Surprise are (reported - estimate) / &#124;estimate&#124;.
-- The SUE (standardized unexpected earnings) divides the EPS surprise (reported - estimate) by the standard deviation (ddof=1) of the EPS surprises of the sue_window announcements before it. Only surprises known at the time are used, so it can be compared across companies and over time. This follows Livnat and Mendenhall (2006), "Comparing the Post-Earnings Announcement Drift for Surprises Calculated from Analyst and Time Series Forecasts", with the analyst consensus as the expectation. Bernard and Thomas (1989), "Post-Earnings-Announcement Drift: Delayed Price Response or Risk Premium?", scale a time-series surprise the same way and show that shares keep drifting in the direction of the SUE for weeks after the announcement.
+- The SUE (standardized unexpected earnings) divides the EPS surprise (reported - estimate) by the sample standard deviation of the EPS surprises of the announcements in the SUE window before it. Only surprises known at the time are used, so it can be compared across companies and over time. This follows Livnat and Mendenhall (2006), "Comparing the Post-Earnings Announcement Drift for Surprises Calculated from Analyst and Time Series Forecasts", with the analyst consensus as the expectation. Bernard and Thomas (1989), "Post-Earnings-Announcement Drift: Delayed Price Response or Risk Premium?", scale a time-series surprise the same way and show that shares keep drifting in the direction of the SUE for weeks after the announcement.
 - The Reaction compounds the share's (dividend-adjusted) returns over the trading days from window days before to window days after the announcement. Day 0 is the announcement date or, when that isn't a trading day, the next one.
 - The Benchmark Reaction is the benchmark's return between the same dates, and the Abnormal Reaction is the Reaction minus the Benchmark Reaction (a market-adjusted return). Both need the Toolkit's benchmark_ticker.
 
 The source doesn't say whether a company reported before the open or after the close. The default window of 1 covers days -1, 0 and +1, so the reaction is captured either way: on day 0 for a report before the open and on day +1 for one after the close. This is the three-day window of the post-earnings drift literature.
 
-Each ticker's own trading days are used. An announcement too close to the start_date or end_date of the Toolkit for its window has no reaction, and the SUE needs sue_window earlier announcements. The full reporting history is retrieved for this, so it is usually available.
+Each ticker's own trading days are used. An announcement too close to the start date or end date of the Toolkit for its window has no reaction, and the SUE needs as many earlier announcements as its window. The full reporting history is retrieved for this, so it is usually available.
 
 Note that this information requires a Premium FMP subscription.
 
@@ -734,7 +766,9 @@ Which returns:
 ---
 
 ## get_stock_news
-Obtain the latest news articles for the tickers of this Toolkit instance, whether they are stocks, cryptocurrencies or currency pairs. Qualitative companion to the toolkit's quantitative data. Automatically filtered to this Toolkit instance's start_date and end_date.
+Obtain the latest news articles for the tickers of this Toolkit instance, whether they are stocks, cryptocurrencies or currency pairs.
+
+Qualitative companion to the toolkit's quantitative data. Automatically filtered to this Toolkit instance's start and end date.
 
 Each ticker is matched with the right news feed. A currency pair such as EURUSD or EURUSD=X is searched in the forex news. Any other ticker is searched in both the stock and the crypto news, since a ticker such as BTCUSD cannot be told apart from a stock by its format; the feed it does not belong to simply returns nothing.
 
@@ -784,7 +818,9 @@ Which returns:
 ---
 
 ## get_press_releases
-Obtain the latest official company press releases for the tickers of this Toolkit instance, such as earnings announcements and corporate communications. Automatically filtered to this Toolkit instance's start_date and end_date.
+Obtain the latest official company press releases for the tickers of this Toolkit instance, such as earnings announcements and corporate communications.
+
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** corporate announcements, company press release feed.
 
@@ -924,7 +960,9 @@ Which returns:
 ---
 
 ## get_historical_data
-Returns historical data for the specified tickers. This contains the following columns:
+Get the historical prices, volumes, dividends and returns of the tickers.
+
+This contains the following columns:
 
 - Open: The opening price for the period.
 - High: The highest price for the period.
@@ -940,17 +978,18 @@ Volatility, Excess Return and Excess Volatility are not included here. These are
 
 If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
 
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+Important to note is that when an API key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by enforcing Yahoo Finance as the source. If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Also known as:** OHLCV, price history, open high low close volume.
 
 **Args:**
 
-- <u>enforce_source (str, optional):</u> A string containing the historical source you wish to enforce.
-This can be either FinancialModelingPrep or YahooFinance. Defaults to no enforcement.
-- <u>period (str):</u> The interval at which the historical data should be
-returned - daily, weekly, monthly, quarterly, or yearly.
-Defaults to "daily".
+- <u>enforce_source (str, optional):</u> The historical source to enforce. Options are:
+"FinancialModelingPrep" (Financial Modeling Prep), "YahooFinance" (Yahoo Finance). Defaults to no
+enforcement.
+- <u>period (str):</u> The interval at which the historical data should be returned. Options are: "daily"
+(daily data), "weekly" (weekly data), "monthly" (monthly data), "quarterly" (quarterly data),
+"yearly" (yearly data). Defaults to "daily".
 - <u>return_column (str):</u> The column to use for the return calculation. Defaults to "Adj Close".
 - <u>include_dividends (bool):</u> Defines whether to include dividends in the return calculation.
 Defaults to True.
@@ -1004,7 +1043,9 @@ Which returns:
 ---
 
 ## get_intraday_data
-Returns intraday historical data for the specified tickers. This contains the following columns:
+Get the intraday prices, volumes and returns of the tickers.
+
+This contains the following columns:
 
 - Open: The opening price for the period.
 - High: The highest price for the period.
@@ -1018,18 +1059,18 @@ Volatility is not included here. This is available as a dedicated calculation in
 
 Keep in mind that this data is available for a shorter period. This means that the start date is ignored if the difference between the start and end date is bigger than the maximum period.
 
-The data covers the start date to the end date of the Toolkit, both days included. It is retrieved once per period, return_column and fill_nan, so calling again with other values retrieves it again.
+The data covers the start date to the end date of the Toolkit, both days included. It is retrieved once per period, return column and NaN filling, so calling again with other values retrieves it again.
 
 If a benchmark ticker is selected, it also calculates the benchmark ticker together with the results. By default this is set to "SPY" (S&P 500 Index) but can be any ticker. This is relevant for calculations for models such as CAPM, Alpha and Beta.
 
-Please note that this functionality is only available through Financial Modeling Prep. Therefore, an api_key is required to use this functionality.
+Please note that this functionality is only available through Financial Modeling Prep. Therefore, an API key is required to use this functionality.
 
 **Also known as:** tick data, minute data, intraday price history.
 
 **Args:**
 
-- <u>period (str, optional):</u> The intraday interval to fetch (e.g. "1min", "5min", "1hour").
-Defaults to "1hour".
+- <u>period (str, optional):</u> The intraday interval to fetch. Options are: "1min" (1 minute), "5min"
+(5 minutes), "15min" (15 minutes), "30min" (30 minutes), "1hour" (1 hour). Defaults to "1hour".
 - <u>return_column (str, optional):</u> The column to use for the return calculation. Defaults to "Close".
 - <u>fill_nan (bool, optional):</u> Defines whether to forward fill NaN values. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> Defines the number of decimal places to round the data to. Defaults to
@@ -1071,7 +1112,9 @@ Which returns:
 ---
 
 ## get_dividend_calendar
-Obtain Dividend Calendars for any range of companies. It includes the following columns:
+Get the dividends of the tickers with their declaration, record and payment dates.
+
+It includes the following columns:
 
 - Date: The date of the dividend.
 - Adj Dividend: The adjusted dividend amount.
@@ -1083,7 +1126,7 @@ Obtain Dividend Calendars for any range of companies. It includes the following 
 
 If a company does not pay any dividend, the function will mention that it was not able to find any dividend data for that company.
 
-Filtered to this Toolkit instance's start_date and end_date; when the end_date is today or later (the default), the dividends scheduled after today are included too.
+Filtered to this Toolkit instance's start and end date; when the end date is today or later (the default), the dividends scheduled after today are included too.
 
 **Also known as:** dividend dates, ex-dividend date, dividend history.
 
@@ -1144,6 +1187,8 @@ Which returns:
 ---
 
 ## get_esg_scores
+Get the Environmental, Social and Governance (ESG) scores of the tickers.
+
 ESG scores, which stands for Environmental, Social, and Governance scores, are a crucial metric used by investors and organizations to assess a company's sustainability and ethical practices. These scores provide valuable insights into a company's performance in three key areas:
 
 - Environmental (E): The environmental component evaluates a company's impact on the planet and its efforts to mitigate environmental risks. It includes factors like carbon emissions, energy efficiency, water management, and waste reduction. A high environmental score indicates a company's commitment to eco-friendly practices and reducing its ecological footprint.
@@ -1196,6 +1241,8 @@ Which returns:
 ---
 
 ## get_market_risk_premium
+Get the equity risk premium of every country, the extra return investors require there for holding equities.
+
 Obtains the equity risk premium by country -- the equity risk premium of a mature market plus a country risk premium, the country's default spread scaled by the volatility of its equities relative to its bonds, following the approach popularized by Aswath Damodaran -- which is widely used to calibrate country-specific costs of equity and discount rates in a multi-country setting.
 
 In a cost of equity the premium is applied in one of two common ways: beta times the Total Equity Risk Premium, or beta times the mature market premium with the Country Risk Premium added on top. For a company that earns its revenue in several countries the premium is often weighted by where the revenue comes from rather than by where the company is listed.
@@ -1251,7 +1298,9 @@ Which returns:
 ---
 
 ## get_commitment_of_traders
-Obtains the CFTC Commitment of Traders (COT) report for the tickers the Toolkit was initialized with. Published weekly by the U.S. Commodity Futures Trading Commission, it breaks down open interest in futures markets by trader type -- Non-Commercial (large speculators), Commercial (hedgers) and Non-Reportable (small traders) -- and is widely used to gauge positioning and sentiment in commodity, currency, interest rate and stock index futures markets.
+Obtains the CFTC Commitment of Traders (COT) report for the tickers the Toolkit was initialized with.
+
+Published weekly by the U.S. Commodity Futures Trading Commission, it breaks down open interest in futures markets by trader type -- Non-Commercial (large speculators), Commercial (hedgers) and Non-Reportable (small traders) -- and is widely used to gauge positioning and sentiment in commodity, currency, interest rate and stock index futures markets.
 
 Note that this data is only available for CFTC-tracked futures markets. Tickers without a corresponding futures contract (e.g. most individual equities) return no data.
 
@@ -1299,7 +1348,9 @@ Which returns:
 ---
 
 ## get_executives
-Obtain the key executives of each company: their title, pay, gender, year of birth and whether they are still active. This shows who leads the company and how the leadership team is composed, which is useful when assessing management quality or when following a change at the top.
+Obtain the key executives of each company: their title, pay, gender, year of birth and whether they are still active.
+
+This shows who leads the company and how the leadership team is composed, which is useful when assessing management quality or when following a change at the top.
 
 **Also known as:** management team, company officers, leadership.
 
@@ -1350,9 +1401,11 @@ Which returns:
 ---
 
 ## get_executive_compensation
-Obtain the compensation of each company's executives per year as reported in the proxy statement (DEF 14A): salary, bonus, stock and option awards, incentive plan compensation, other compensation and the total. Comparing pay with the company's performance shows how well management incentives are aligned with shareholders.
+Obtain the compensation of each company's executives per year as reported in the proxy statement (DEF 14A): salary, bonus, stock and option awards, incentive plan compensation, other compensation and the total.
 
-Automatically filtered to the years of this Toolkit instance's start_date and end_date.
+Comparing pay with the company's performance shows how well management incentives are aligned with shareholders.
+
+Automatically filtered to the years of this Toolkit instance's start and end date.
 
 **Also known as:** executive pay, management compensation, proxy statement compensation.
 
@@ -1396,7 +1449,9 @@ Which returns:
 ---
 
 ## get_company_notes
-Obtain the securities other than common stock that each company has registered for listing, mostly notes with their coupon and maturity in the title (e.g. "1.625% Notes due 2026") and the exchange they are listed on. The list can include notes that have since matured or been redeemed and other securities such as depositary shares of preferred stock, so it shows which debt a company has listed rather than what is outstanding today.
+Obtain the securities other than common stock that each company has registered for listing, mostly notes with their coupon and maturity in the title (e.g. "1.625% Notes due 2026") and the exchange they are listed on.
+
+The list can include notes that have since matured or been redeemed and other securities such as depositary shares of preferred stock, so it shows which debt a company has listed rather than what is outstanding today.
 
 **Also known as:** listed debt, bonds issued, debt securities.
 
@@ -1444,9 +1499,11 @@ Which returns:
 ---
 
 ## get_employee_count
-Obtain the number of employees each company reported in its annual filings over time. The most recent row is the current employee count and the rows before it show how the workforce developed, which can be set against revenue or profit to see how productive the workforce is.
+Obtain the number of employees each company reported in its annual filings over time.
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+The most recent row is the current employee count and the rows before it show how the workforce developed, which can be set against revenue or profit to see how productive the workforce is.
+
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** headcount, number of employees, workforce size.
 
@@ -1497,7 +1554,9 @@ Which returns:
 ---
 
 ## get_shares_float
-Obtain the free float of each company: the number of shares available for public trading, the number of shares outstanding and the free float as the share of the outstanding shares that can be traded (as a decimal). A low free float means few shares change hands, which tends to make a stock less liquid and more volatile.
+Obtain the free float of each company: the number of shares available for public trading, the number of shares outstanding and the free float as the share of the outstanding shares that can be traded (as a decimal).
+
+A low free float means few shares change hands, which tends to make a stock less liquid and more volatile.
 
 **Also known as:** free float, float shares, public float, share liquidity.
 
@@ -1537,11 +1596,13 @@ Which returns:
 ---
 
 ## get_mergers_acquisitions
-Obtain the mergers and acquisitions each company took part in, as the acquirer or as the target, based on the merger filings (S-4) with the SEC. Every deal comes with the other party, the filing date and a link to the filing.
+Obtain the mergers and acquisitions each company took part in, as the acquirer or as the target, based on the merger filings (S-4) with the SEC.
+
+Every deal comes with the other party, the filing date and a link to the filing.
 
 The search uses the company name from the profile, so the profile is retrieved first when it is not available yet. Deals of companies with a similar name are left out: only the deals in which the ticker itself is involved are kept.
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** M&A, acquisitions, mergers, takeovers.
 
@@ -1584,9 +1645,11 @@ Which returns:
 ---
 
 ## get_stock_splits
-Obtain the stock splits of each company, with the split ratio as a numerator and denominator: a 4-for-1 split has numerator 4 and denominator 1, while a reverse split has a numerator smaller than its denominator. Splits change the number of shares but not the value of the company, which is why historical prices are adjusted for them.
+Obtain the stock splits of each company, with the split ratio as a numerator and denominator: a 4-for-1 split has numerator 4 and denominator 1, while a reverse split has a numerator smaller than its denominator.
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+Splits change the number of shares but not the value of the company, which is why historical prices are adjusted for them.
+
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** share splits, reverse splits, split history.
 
@@ -1632,11 +1695,13 @@ Which returns:
 ---
 
 ## get_insider_trade_statistics
+Get quarterly statistics on the trades of each company's insiders.
+
 Obtain quarterly statistics on the trades of each company's insiders (officers, directors and large shareholders), based on their Form 4 filings: the number of acquisitions and disposals, their ratio, the number of shares acquired and disposed of, and the number of open market purchases and sales.
 
 Insiders know their company best, so heavy buying can signal confidence while persistent selling can be worth a closer look. Note that many disposals are routine, such as sales to cover taxes on vested stock awards.
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** insider trading, insider transactions, Form 4 statistics.
 
@@ -1685,11 +1750,13 @@ Which returns:
 ---
 
 ## get_institutional_ownership
+Get the institutional ownership of each company per quarter.
+
 Obtain the institutional ownership of each company per quarter, based on the Form 13F filings of institutional investment managers (those managing over $100 million in US equities): the number of holders and its change, the shares and value they hold, their share of the shares outstanding (Ownership) and its change, the positions opened, increased, reduced and closed, the put/call ratio of the options they report and the share of the shares outstanding held by the ten largest holders (Top 10 Ownership).
 
 Institutional ownership shows how widely professional investors hold a company. A rising number of holders and ownership points to growing interest, while many closed and reduced positions can signal the opposite. A high Top 10 Ownership means a few holders can move the share price when they buy or sell, and crowding in a share increases the risk of forced selling (Sias, Starks and Titman, 2006; Gompers and Metrick, 2001, "Institutional Investors and Equity Prices").
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** 13F holdings, institutional holders, institutional investors, ownership concentration.
 
@@ -1752,13 +1819,15 @@ Which returns:
 ---
 
 ## get_short_volume
-Obtain the daily short sale volume of each company from FINRA's Reg SHO files: the number of shares sold short, of which short exempt, the total number of shares reported to FINRA, the short volume ratio (short volume divided by total volume, as a decimal) and the z-score of that ratio against the `window` trading days before it. A ratio well above its usual level means an unusually large share of the day's selling was short selling.
+Get the daily short sale volume of each company.
+
+Obtain the daily short sale volume of each company from FINRA's Reg SHO files: the number of shares sold short, of which short exempt, the total number of shares reported to FINRA, the short volume ratio (short volume divided by total volume, as a decimal) and the z-score of that ratio against the trading days of the window before it. A ratio well above its usual level means an unusually large share of the day's selling was short selling.
 
 This is short sale VOLUME, the shares sold short during a day, not short interest, the short positions still open (which FINRA publishes twice a month through api.finra.org). Most short sales are closed again within days, and market makers sell short to fill buy orders, so a ratio around 0.4 to 0.5 is normal for liquid stocks. The total volume is only the volume reported to FINRA's facilities (the Trade Reporting Facilities, where off-exchange trades are reported, and the Alternative Display Facility), not the consolidated volume of all exchanges, so it is lower than the volume of the historical data. The short volume includes the short exempt volume, and volumes include fractional shares.
 
-FINRA publishes one file per trading day, from August 2018, covering securities listed in the United States only: a ticker with an exchange suffix (such as ASML.AS) has no data. Each day is a separate download of about half a megabyte, so only the `history_days` before the Toolkit's end date are retrieved, by default about three months (some 65 files, a few seconds). The days are cached per ticker, so a rerun only downloads the days that are new.
+FINRA publishes one file per trading day, from August 2018, covering securities listed in the United States only: a ticker with an exchange suffix (such as ASML.AS) has no data. Each day is a separate download of about half a megabyte, so only the days of history before the Toolkit's end date are retrieved, by default about three months (some 65 files, a few seconds). The days are cached per ticker, so a rerun only downloads the days that are new.
 
-The z-score is (ratio − mean) / standard deviation (ddof=1) of the `window` trading days before each day, so a day is not part of its own comparison, and it is empty for the first `window` days. Research finds that heavy short selling predicts lower returns in the following weeks, see Boehmer, Jones and Zhang (2008), "Which Shorts Are Informed?", Journal of Finance 63(2), and Diether, Lee and Werner (2009), "Short-Sale Strategies and Return Predictability", Review of Financial Studies 22(2).
+The z-score is (ratio − mean) / sample standard deviation of the trading days of the window before each day, so a day is not part of its own comparison, and it is empty for the first days of the window. Research finds that heavy short selling predicts lower returns in the following weeks, see Boehmer, Jones and Zhang (2008), "Which Shorts Are Informed?", Journal of Finance 63(2), and Diether, Lee and Werner (2009), "Short-Sale Strategies and Return Predictability", Review of Financial Studies 22(2).
 
 **Also known as:** short sale volume, short volume ratio, daily short volume, Reg SHO short volume.
 
@@ -1814,9 +1883,11 @@ Which returns:
 ---
 
 ## get_stock_grades
-Obtain the grades analysts gave each company: per date and grading company the previous and the new grade, and whether the grade was upgraded, downgraded or maintained. Following how the grades change over time shows how sentiment among analysts develops, with upgrades and downgrades by well-followed firms often moving the share price.
+Obtain the grades analysts gave each company: per date and grading company the previous and the new grade, and whether the grade was upgraded, downgraded or maintained.
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+Following how the grades change over time shows how sentiment among analysts develops, with upgrades and downgrades by well-followed firms often moving the share price.
+
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** analyst ratings, upgrades and downgrades, analyst grades.
 
@@ -1881,7 +1952,9 @@ Which returns:
 ---
 
 ## get_price_targets
-Obtain the analysts' price targets of each company and the measures they are read with. A price target is the share price an analyst expects in about twelve months; the consensus target relative to today's price shows how much upside analysts see, the range of the targets how much they disagree, and the change in the average target whether they have been raising or cutting their targets.
+Obtain the analysts' price targets of each company and the measures they are read with.
+
+A price target is the share price an analyst expects in about twelve months; the consensus target relative to today's price shows how much upside analysts see, the range of the targets how much they disagree, and the change in the average target whether they have been raising or cutting their targets.
 
 The rows are:
 
@@ -1893,7 +1966,7 @@ The rows are:
 - Latest Target Date and Days Since Latest Target: the date of the most recent target and the calendar days since. The consensus is made of every analyst's current target, so when no target was published for a while it can be months old; the Last Month and Last Quarter Count and Average are the recent consensus.
 - Last Month, Last Quarter, Last Year and All Time Count and Average: the number of targets published in each window and their average.
 
-The targets are today's: they are not filtered to this Toolkit instance's start_date and end_date. The targets as they were published over time come from get_price_target_history.
+The targets are today's: they are not filtered to this Toolkit instance's start and end date. The targets as they were published over time come from get_price_target_history.
 
 **Also known as:** analyst price target, consensus price target, target upside, stale price targets.
 
@@ -1960,6 +2033,8 @@ Which returns:
 ---
 
 ## get_price_target_history
+Get every price target analysts published for each company.
+
 Obtain every price target analysts published for each company: per date and analyst company the target (adjusted for stock splits), the share price when it was published and the upside it implied at that moment, and the company's previous target with the change. Following the targets over time shows how analysts revise their expectations, and unlike today's consensus each row only uses what was known on its date.
 
 - Previous Target and Previous Date: the analyst company's target before this one, when it published one in the year before (a price target looks about a year ahead, so an older one no longer stands). Without one, the target is new coverage (an initiation, or a company returning after more than a year).
@@ -1967,7 +2042,7 @@ Obtain every price target analysts published for each company: per date and anal
 
 The median of the latest target per company over a window against the same companies' previous targets follows from these columns, e.g. with history.loc["2026-11-09":].groupby(level="Analyst Company").last().
 
-Automatically filtered to this Toolkit instance's start_date and end_date; the previous targets are looked up over the year before the start_date as well.
+Automatically filtered to this Toolkit instance's start and end date; the previous targets are looked up over the year before the start date as well.
 
 **Also known as:** price target changes, analyst target revisions, price target news.
 
@@ -2035,9 +2110,11 @@ Which returns:
 ---
 
 ## get_analyst_recommendations
-Obtain how many analysts recommend each company as a strong buy, buy, hold, sell or strong sell, per month. Next to the counts come the number of analysts, the share of them recommending a (strong) buy and the mean recommendation on the conventional scale from 1 (strong buy) to 5 (strong sell), as used by I/B/E/S and Zacks. A falling mean recommendation means analysts are turning more positive; changes in consensus recommendations predict returns (Jegadeesh, Kim, Krische and Lee, 2004).
+Obtain how many analysts recommend each company as a strong buy, buy, hold, sell or strong sell, per month.
 
-Automatically filtered to this Toolkit instance's start_date and end_date.
+Next to the counts come the number of analysts, the share of them recommending a (strong) buy and the mean recommendation on the conventional scale from 1 (strong buy) to 5 (strong sell), as used by I/B/E/S and Zacks. A falling mean recommendation means analysts are turning more positive; changes in consensus recommendations predict returns (Jegadeesh, Kim, Krische and Lee, 2004).
+
+Automatically filtered to this Toolkit instance's start and end date.
 
 **Also known as:** analyst consensus, buy/hold/sell ratings, recommendation trends.
 
@@ -2098,9 +2175,11 @@ Which returns:
 ---
 
 ## get_earnings_call_transcripts
-Obtain the earnings call transcripts of each company: the full text of the call, with management's prepared remarks followed by the questions of analysts and the answers. Transcripts explain the numbers in the financial statements in management's own words, and with that are a strong input for text analysis and AI models, e.g. to track sentiment, guidance or recurring themes over time.
+Obtain the earnings call transcripts of each company: the full text of the call, with management's prepared remarks followed by the questions of analysts and the answers.
 
-A transcript is long (often 40,000 to 60,000 characters) and every quarter is a separate request. By default only the most recent transcript is retrieved. With fiscal_period (e.g. "2025Q4") the call of that fiscal quarter is retrieved, and with latest=False every transcript between this Toolkit instance's start_date and end_date. A fiscal period without a transcript is logged together with the most recent periods that do have one. Each transcript is cached on its own, since a published transcript does not change, so a quarter is only retrieved once.
+Transcripts explain the numbers in the financial statements in management's own words, and with that are a strong input for text analysis and AI models, e.g. to track sentiment, guidance or recurring themes over time.
+
+A transcript is long (often 40,000 to 60,000 characters) and every quarter is a separate request. By default only the most recent transcript is retrieved. With a fiscal period (e.g. 2025Q4) the call of that fiscal quarter is retrieved, and beyond the latest every transcript between this Toolkit instance's start and end date. A fiscal period without a transcript is logged together with the most recent periods that do have one. Each transcript is cached on its own, since a published transcript does not change, so a quarter is only retrieved once.
 
 **Also known as:** earnings call, conference call transcript, earnings transcript.
 
@@ -2148,7 +2227,9 @@ Which returns:
 ---
 
 ## get_historical_statistics
-Retrieve statistics about each ticker's historical data. This is especially useful to understand why certain tickers might fluctuate more than others as it could be due to local regulations or the currency the instrument is denoted in. It returns:
+Get statistics about each ticker's historical data, such as its currency, exchange and first trading date.
+
+This is especially useful to understand why certain tickers might fluctuate more than others as it could be due to local regulations or the currency the instrument is denoted in. It returns:
 
 - Currency: The currency the instrument is denoted in.
 - Symbol: The symbol of the instrument.
@@ -2202,7 +2283,9 @@ Which returns:
 ---
 
 ## get_treasury_data
-Retrieve daily, weekly, monthly, quarterly or yearly US Treasury yields for four maturities, 13 weeks, 5 years, 10 years and 30 years, from FinancialModelingPrep or YahooFinance. With the default divide_ohlc_by of 100 the yields are returned as decimals (0.042 is 4.2%).
+Retrieve daily, weekly, monthly, quarterly or yearly US Treasury yields for four maturities, 13 weeks, 5 years, 10 years and 30 years, from FinancialModelingPrep or YahooFinance.
+
+With the default division by 100 the yields are returned as decimals (0.042 is 4.2%).
 
 A week, month, quarter or year holds the first (Open), highest, lowest and last (Close) yield of the period. The risk free rate the Performance, Risk and Models modules use for such a period is instead the average of the daily yields within it, which approximates what a holder earned over the period rather than where the yield happened to close at its end.
 
@@ -2210,13 +2293,15 @@ A week, month, quarter or year holds the first (Open), highest, lowest and last 
 
 **Args:**
 
-- <u>period (str):</u> The interval at which the treasury data should be returned - daily, weekly, monthly, quarterly,
-or yearly. Defaults to "daily".
+- <u>period (str):</u> The interval at which the treasury data should be returned. Options are: "daily"
+(daily data), "weekly" (weekly data), "monthly" (monthly data), "quarterly" (quarterly data),
+"yearly" (yearly data). Defaults to "daily".
 - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
 to True to prevent holes in the dataset. This is especially relevant for
 technical indicators.
-- <u>risk_free_rate (str &#124; None, optional):</u> One maturity to return ('13w', '5y', '10y' or
-'30y'). Defaults to None, which returns all four. The Toolkit's own risk free rate
+- <u>risk_free_rate (str &#124; None, optional):</u> One maturity to return. Options are: "13w" (13-week
+Treasury bill), "5y" (5-year Treasury note), "10y" (10-year Treasury note), "30y" (30-year
+Treasury bond). Defaults to None, which returns all four. The Toolkit's own risk free rate
 stays the maturity set on the Toolkit either way.
 - <u>divide_ohlc_by (int &#124; float &#124; None, optional):</u> A value to divide the yields by. Treasury
 yields are published in percent, so this defaults to 100 to return decimals.
@@ -2224,7 +2309,8 @@ yields are published in percent, so this defaults to 100 to return decimals.
 Defaults to None, which uses the rounding set on the Toolkit.
 - <u>show_errors (bool, optional):</u> Whether to report retrieval errors. Defaults to False.
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
-source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+source. Options are: "FinancialModelingPrep" (Financial Modeling Prep),
+"YahooFinance" (Yahoo Finance). This takes precedence
 over the source set on the Toolkit itself. Defaults to None, which falls back to
 the Toolkit's own enforce_source.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2271,21 +2357,23 @@ Which returns:
 ---
 
 ## get_exchange_rates
-This functionality looks at the exchange rates between the currency of the historical data and the currency of the financial statements. Given that these can deviate from each other, e.g. the historical data is in USD but the financial statements are in EUR, it is important to adjust for this. This is especially relevant for models that use the historical data and the financial statements.
+Get the exchange rates that convert the currency of the historical data into the currency of the financial statements.
+
+Given that these can deviate from each other, e.g. the historical data is in USD but the financial statements are in EUR, it is important to adjust for this. This is especially relevant for models that use the historical data and the financial statements.
 
 This function therefore shows the exchange rates that are used to convert the financial statements to the currency of the historical data. The historical market data is quote currency and the financial statements are base currency.
 
 Note that you can get currency data from any currency as well by supplying the currency as a ticker. For example, if you want to get the exchange rates between USD and EUR you can use USDEUR=X as a ticker.
 
-Important to note is that when an api_key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by setting enforce_source to "YahooFinance". If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
+Important to note is that when an API key is included in the Toolkit initialization that the data collection defaults to FinancialModelingPrep which is a more stable source and utilises your subscription. However, if this is undesired, it can be disabled by enforcing Yahoo Finance as the source. If data collection fails from FinancialModelingPrep it automatically reverts back to YahooFinance.
 
 **Also known as:** currency exchange, FX rates, foreign exchange rates.
 
 **Args:**
 
-- <u>period (str):</u> The interval at which the historical data should be
-returned - daily, weekly, monthly, quarterly, or yearly.
-Defaults to "daily".
+- <u>period (str):</u> The interval at which the exchange rates should be returned. Options are: "daily"
+(daily data), "weekly" (weekly data), "monthly" (monthly data), "quarterly" (quarterly data),
+"yearly" (yearly data). Defaults to "daily".
 - <u>return_column (str):</u> The column to use for the return calculation. Defaults to "Adj Close".
 - <u>fill_nan (bool):</u> Defines whether to forward fill NaN values. This defaults
 to True to prevent holes in the dataset. This is especially relevant for
@@ -2342,7 +2430,9 @@ Which returns:
 ---
 
 ## get_balance_sheet_statement
-Retrieves the balance sheet statement data for the specified tickers. The balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. It shows the company's assets, liabilities, and shareholders' equity. The balance sheet statement is divided into three main sections:
+Get the balance sheet statements of the tickers: their assets, liabilities and equity.
+
+The balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. It shows the company's assets, liabilities, and shareholders' equity. The balance sheet statement is divided into three main sections:
 
 - Assets: Assets are resources owned by the company that have economic value and can be used to generate revenue. Assets are typically divided into current assets and non-current assets.
 - Liabilities: Liabilities are obligations that the company owes to external parties. Liabilities are also divided into current liabilities and non-current liabilities.
@@ -2350,14 +2440,15 @@ Retrieves the balance sheet statement data for the specified tickers. The balanc
 
 Note that the balance sheet statement is a financial statement that provides a snapshot of a company's financial position at a specific point in time. Therefore, trailing results are not available for this statement.
 
-With convert_currency, the statement is converted to the currency of the historical data at the closing rate, the exchange rate at the end of each period (IAS 21.39).
+With currency conversion, the statement is converted to the currency of the historical data at the closing rate, the exchange rate at the end of each period (IAS 21.39).
 
 **Also known as:** assets, liabilities, shareholders equity, financial position.
 
 **Args:**
 
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
-source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+source. Options are: "FinancialModelingPrep" (Financial Modeling Prep),
+"YahooFinance" (Yahoo Finance). This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
@@ -2406,18 +2497,21 @@ Which returns:
 ---
 
 ## get_income_statement
-Retrieves the income statement data for the specified tickers. The income statement is a financial statement that shows a company's revenues and expenses over a specific period. It is used to calculate a company's net income.
+Get the income statements of the tickers: their revenue, expenses and profit.
+
+The income statement is a financial statement that shows a company's revenues and expenses over a specific period. It is used to calculate a company's net income.
 
 As the income statement covers a period, trailing results are available for this statement. A trailing result sums each item over the window, except the Weighted Average Shares, Weighted Average Shares Diluted and Tax Rate for Calcs rows, which keep the value of the latest period.
 
-With convert_currency, the statement is converted to the currency of the historical data at the average exchange rate of each period, as IAS 21.39-40 does for income and expenses. EPS and EPS Diluted are converted as well; share counts and ratios are not.
+With currency conversion, the statement is converted to the currency of the historical data at the average exchange rate of each period, as IAS 21.39-40 does for income and expenses. EPS and EPS Diluted are converted as well; share counts and ratios are not.
 
 **Also known as:** profit and loss, revenue, net income, earnings, P&L statement.
 
 **Args:**
 
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
-source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+source. Options are: "FinancialModelingPrep" (Financial Modeling Prep),
+"YahooFinance" (Yahoo Finance). This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
@@ -2467,18 +2561,21 @@ Which returns:
 ---
 
 ## get_cash_flow_statement
-Retrieves the cash flow statement data for the specified tickers. The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. It breaks the analysis down to operating, investing and financing activities.
+Get the cash flow statements of the tickers: their cash flows from operations, investing and financing.
+
+The cash flow statement is a financial statement that shows how changes in balance sheet accounts and income affect cash and cash equivalents. It breaks the analysis down to operating, investing and financing activities.
 
 As the cash flow statement covers a period, trailing results are available for this statement. A trailing result sums each cash flow over the window, while Cash Beginning of Period is the cash at the beginning of the first period of the window and Cash End of Period the cash at the end of the last one.
 
-With convert_currency, the cash flows are converted to the currency of the historical data at the average exchange rate of each period (IAS 7.25), Cash End of Period at the closing rate of the period and Cash Beginning of Period at the closing rate of the period before, so it equals the Cash End of Period before it. Net Change in Cash is the change in the converted cash and Forex Changes on Cash holds the effect of the exchange rate changes on the cash held (IAS 7.28).
+With currency conversion, the cash flows are converted to the currency of the historical data at the average exchange rate of each period (IAS 7.25), Cash End of Period at the closing rate of the period and Cash Beginning of Period at the closing rate of the period before, so it equals the Cash End of Period before it. Net Change in Cash is the change in the converted cash and Forex Changes on Cash holds the effect of the exchange rate changes on the cash held (IAS 7.28).
 
 **Also known as:** operating cash flow, investing activities, financing activities.
 
 **Args:**
 
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
-source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+source. Options are: "FinancialModelingPrep" (Financial Modeling Prep),
+"YahooFinance" (Yahoo Finance). This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
@@ -2532,7 +2629,9 @@ Which returns:
 ---
 
 ## get_statistics_statement
-Retrieves the filing details of each financial statement period: the reported currency, the CIK, the filing and acceptance dates, the fiscal period and the links to the filing. With convert_currency, the Toolkit uses the reported currency to convert the financial statements to the currency of the historical data.
+Retrieves the filing details of each financial statement period: the reported currency, the CIK, the filing and acceptance dates, the fiscal period and the links to the filing.
+
+With currency conversion, the Toolkit uses the reported currency to convert the financial statements to the currency of the historical data.
 
 Note that this also obtains the balance sheet statement at the same time given that it's the same API call. This is done to reduce the number of API calls to FinancialModelingPrep.
 
@@ -2541,7 +2640,8 @@ Note that this also obtains the balance sheet statement at the same time given t
 **Args:**
 
 - <u>enforce_source (str &#124; None, optional):</u> Forces this specific call to use a given
-source, either "FinancialModelingPrep" or "YahooFinance". This takes precedence
+source. Options are: "FinancialModelingPrep" (Financial Modeling Prep),
+"YahooFinance" (Yahoo Finance). This takes precedence
 over the source set on the Toolkit itself, so one instance can pull historical
 data from Yahoo Finance while still using a FinancialModelingPrep
 key for the financial statements (or the other way around). Defaults to None,
@@ -2586,7 +2686,9 @@ Which returns:
 ---
 
 ## get_normalization_files
-Copies the normalization files to a folder based on path. By default, this is the path of the 'Downloads' folder.
+Copy the normalization files, which map the financial statement fields of the data source, to a folder.
+
+By default, this is the path of the 'Downloads' folder.
 
 This function is relevant if you want to supply your own datasets. See the external datasets guide for how: [https://www.jeroenbouma.com/projects/financetoolkit/docs/external-datasets](https://www.jeroenbouma.com/projects/financetoolkit/docs/external-datasets){:target="_blank"}
 
@@ -2613,7 +2715,7 @@ Show what the cache currently holds, grouped by source and dataset.
 
 The cache stores data per source, per dataset and per entity (a ticker, a country, a series identifier), which makes it possible to remove part of it rather than all of it. This method is the counterpart to clear_cache: it shows what is there so that removing something is an informed decision.
 
-The cache is inspected even when this Toolkit was created with use_cached_data=False, so a cache filled by an earlier session can always be reviewed.
+The cache is inspected even when this Toolkit was created without cached data, so a cache filled by an earlier session can always be reviewed.
 
 **Args:**
 
