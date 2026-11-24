@@ -1167,6 +1167,14 @@
     if (box.ftShown) return;
     box.ftShown = true;
     var src = box.getAttribute('data-src') || DATA;
+    // a chart that carries its own data (the docs pages' example results)
+    if (src === 'inline') {
+      var spec = JSON.parse(box.querySelector('script[type="application/json"]').textContent);
+      loadScript(ECHARTS).then(function () { draw(box, spec); }).catch(function () {
+        box.innerHTML = '<p class="ft-chart__error">The chart could not be loaded.</p>';
+      });
+      return;
+    }
     start(src).then(function (data) {
       var id = box.getAttribute('data-chart');
       if (data.charts[id]) return draw(box, data.charts[id]);
@@ -1189,7 +1197,7 @@
   // the time they scroll into view without competing with the first paint
   window.addEventListener('load', function () {
     boxes.map(function (b) { return b.getAttribute('data-src') || DATA; })
-      .filter(function (src, i, all) { return all.indexOf(src) === i; })
+      .filter(function (src, i, all) { return src !== 'inline' && all.indexOf(src) === i; })
       .forEach(function (src) { start(src).catch(function () {}); });
   });
 

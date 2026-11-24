@@ -334,13 +334,77 @@ module DocsMetricPages
     HTML
   end
 
+  # Tabs (Chart and Table, Python and the MCP question): the first panel shows,
+  # the buttons switch (assets/js/docs-tabs.js). Panels hold Markdown.
+  def tabs(id, panels)
+    out = +%(<div class="docs-tabs" id="#{id}-tabs">\n<div class="docs-tabs__bar" role="tablist">)
+    panels.each_with_index do |(label, _), i|
+      out << %(<button type="button" role="tab" class="docs-tabs__tab#{' is-active' if i.zero?}" aria-selected="#{i.zero?}">#{CGI.escapeHTML(label)}</button>)
+    end
+    out << "</div>\n"
+    panels.each_with_index do |(_, body), i|
+      out << %(<div class="docs-tabs__panel" role="tabpanel" markdown="1"#{' hidden' unless i.zero?}>\n\n#{body.strip}\n\n</div>\n)
+    end
+    out << "</div>\n\n"
+  end
+
+  DATE_LIKE = /\A\d{4}(-\d{2}(-\d{2})?|-?Q\d|M\d{1,2})?( \d{2}:\d{2}(:\d{2})?)?\z/
+
+  def cell_number(text)
+    t = text.to_s.strip.delete(",")
+    return nil if t.empty? || t.casecmp?("nan") || t == "-"
+    Float(t)
+  rescue ArgumentError
+    :text
+  end
+
+  # A line (or, for a few periods, bar) chart of the example's first table when
+  # its rows or columns are periods and every value is a number: one series per
+  # column (dates in the rows) or per row (periods in the columns, as the ratios
+  # have). Left out when there are too many series or their scales differ so much
+  # that the smaller ones would be flat lines.
+  def chart_spec(result, name)
+    table = result[/^\|.*\|[ \t]*\n\|[-:| ]+\|[ \t]*\n(?:\|.*\|[ \t]*(?:\n|\z))+/]
+    return nil unless table
+    rows = table.strip.split("\n").map { |l| l.strip.sub(/\A\|/, "").sub(/\|\z/, "").split("|").map(&:strip) }
+    header, body = rows[0], rows[2..]
+    return nil if body.nil? || body.empty? || header.any? { |h| h.start_with?("(") }
+    values = body.map { |r| r[1..].map { |v| cell_number(v) } }
+    return nil if values.flatten.include?(:text)
+    if body.size >= 4 && body.all? { |r| r[0] =~ DATE_LIKE }
+      x = body.map { |r| r[0] }
+      series = header[1..].each_with_index.map { |h, i| { "name" => h, "data" => values.map { |r| r[i] } } }
+    elsif header.size >= 5 && header[1..].all? { |h| h =~ DATE_LIKE }
+      x = header[1..]
+      series = body.each_with_index.map { |r, i| { "name" => r[0], "data" => values[i] } }
+    else
+      return nil
+    end
+    return nil if series.empty? || series.size > 8
+    peaks = series.map { |se| se["data"].compact.map(&:abs).max.to_f }
+    return nil if peaks.any?(&:zero?) && peaks.all?(&:zero?)
+    nonzero = peaks.reject(&:zero?)
+    return nil if nonzero.empty? || nonzero.max / nonzero.min > 50
+    # bars for a few years or quarters, a line (on its own scale) for anything else
+    periods = x.size <= 6 && x.all? { |v| v =~ /\A\d{4}(-?Q\d)?\z/ }
+    top = nonzero.max
+    format = top < 1 ? "decimal" : top < 10_000 ? "ratio" : "amount"
+    { "type" => periods ? "bar" : "line", "title" => name, "x" => x, "series" => series, "format" => format }
+  end
+
+  def chart_html(spec, name)
+    %(<div class="ft-chart" data-chart="example" data-src="inline" role="figure" aria-label="#{CGI.escapeHTML(name)}: the example's result as a chart">) +
+      %(<script type="application/json">#{JSON.generate(spec).gsub("</", "<\\/")}</script>) +
+      %(<div class="ft-chart__loading" aria-hidden="true"></div></div>)
+  end
+
   # The same through the Finance Toolkit MCP: a question an analyst might ask,
   # from _data/financetoolkit_mcp/<module>.yml (with the tool call that
   # answers it).
   def mcp_question(site, key, fn_name)
     spec = site.data.dig("financetoolkit_mcp", key, fn_name)
     return "" unless spec
-    out = +"Or, after setting up the [Finance Toolkit MCP](/projects/financetoolkit/mcp), ask:\n{: .docs-boilerplate}\n\n"
+    out = +"With the [Finance Toolkit MCP](/projects/financetoolkit/mcp) set up, ask an AI assistant such as Claude or ChatGPT:\n{: .docs-boilerplate}\n\n"
     out << %(<div class="ca-q docs-mcp-question" id="mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
   end
 
@@ -414,14 +478,26 @@ module DocsMetricPages
     # question asks for exactly what the example's first table shows, so it
     # sits between the code and "Which returns:"
     if has_example
-      out << "## #{name} in Python#{' or via the MCP' unless mcp.empty?}\n{: #python-example}\n\n"
-      out << "Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
-      out << "```bash\npip install financetoolkit -U\n```\n\n"
-      out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless parts[:example].empty?
       code, returns, rest = parts[:example].partition(/^Which returns:/)
-      out << code.rstrip << "\n\n" unless code.strip.empty?
-      out << mcp
-      out << returns << rest << "\n\n" unless returns.empty?
+      result = returns.empty? ? "" : rest.strip
+      # the example's result first, as a chart where one fits and as the table
+      unless result.empty?
+        out << "## Example\n{: #example}\n\n"
+        out << "For the example under Calculate It Yourself, `#{fn_name}` returns:\n{: .docs-boilerplate}\n\n"
+        spec = chart_spec(result, name)
+        out << if spec
+                 tabs("result", [["Chart", chart_html(spec, name)], ["Table", result]])
+               else
+                 result + "\n\n"
+               end
+      end
+      # then how to get it: in Python, or by asking through the Finance Toolkit MCP
+      python = +"Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
+      python << "```bash\npip install financetoolkit -U\n```\n\n"
+      python << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless code.strip.empty?
+      python << code.rstrip << "\n" unless code.strip.empty?
+      out << (result.empty? ? "## #{name} in Python\n{: #python-example}\n\n" : "### Calculate It Yourself\n{: #python-example}\n\n")
+      out << (mcp.empty? ? python + "\n" : tabs("source", [["Python", python], ["Ask an AI assistant", mcp]]))
       out << own_data(fn_name, parameters) if key == "econometrics"
     end
     unless parameters.empty?
@@ -437,6 +513,9 @@ module DocsMetricPages
       out << "## #{related_heading(key, related.first[:group])}\n\n"
       out << %(<div class="ft-module-switcher docs-related">\n  #{pills.join("\n  ")}\n</div>\n\n)
     end
+    version = site.time.to_i
+    out << %(<script src="/assets/js/docs-tabs.js?v=#{version}" defer></script>\n) if out.include?("docs-tabs")
+    out << %(<script src="/assets/js/ft-charts.js?v=#{version}" defer></script>\n) if out.include?('data-src="inline"')
     out
   end
 
@@ -463,7 +542,7 @@ module DocsMetricPages
 
   # the Portfolio class runs on its own transactions, so only its presets have an MCP question
   def examples_phrase(key)
-    key == "portfolio" ? "with an example and its parameters" : "showing how to use it with the MCP and in Python"
+    key == "portfolio" ? "with an example and its parameters" : "with what it measures, an example and the code"
   end
 
   def intro_hint(key)

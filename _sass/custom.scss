@@ -7276,3 +7276,39 @@ body.article-document {
     margin-right: auto !important;
   }
 }
+
+// Tabs on the Finance Toolkit method pages: Chart and Table for the example's
+// result, Python and the MCP question for how to get it (assets/js/docs-tabs.js)
+.page__content .docs-tabs {
+  margin: 0 0 1.6em;
+
+  .docs-tabs__bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .docs-tabs__tab {
+    padding: 6px 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    &:hover { color: var(--text-primary); background: rgba(128, 128, 128, 0.08); }
+
+    &.is-active {
+      color: var(--accent-color);
+      border-color: var(--card-hover-border);
+      background: rgba(56, 189, 248, 0.1);
+    }
+  }
+
+  .docs-tabs__panel > :last-child { margin-bottom: 0; }
+}
