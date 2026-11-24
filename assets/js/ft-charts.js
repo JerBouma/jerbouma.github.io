@@ -144,6 +144,14 @@
         }
         case 'number': return v.toFixed(1);
         case 'amount': return Math.round(v).toLocaleString('en-US');
+        // large counts such as volumes: 1.2B, 340M, 12K
+        case 'compact': {
+          var a = Math.abs(v), sign = v < 0 ? '-' : '';
+          if (a >= 1e9) return sign + (a / 1e9).toFixed(a >= 1e10 ? 0 : 1) + 'B';
+          if (a >= 1e6) return sign + (a / 1e6).toFixed(a >= 1e7 ? 0 : 1) + 'M';
+          if (a >= 1e3) return sign + (a / 1e3).toFixed(a >= 1e4 ? 0 : 1) + 'K';
+          return sign + a.toFixed(0);
+        }
         case 'usd': {
           var a = Math.abs(v);
           if (a === 0) return '$0';
@@ -182,7 +190,7 @@
     var isBar = spec.type === 'bar';
     var many = spec.x.length > 60;
     var series = spec.series.map(function (s, i) {
-      var isClose = spec.cloud && s.name === 'Close';
+      var isClose = (spec.cloud || spec.overlay) && s.name === 'Close';
       // a reference line (a threshold such as RSI 70): dashed, muted, no markers
       if (s.reference) {
         return { name: s.name, type: 'line', data: s.data, showSymbol: false, silent: true, z: 1,
@@ -195,14 +203,16 @@
         data: isBar && spec.highlight !== undefined && spec.series.length === 1
           ? s.data.map(function (v, j) { return j === spec.highlight ? { value: v, itemStyle: { color: PALETTE[2] } } : v; })
           : s.data,
-        showSymbol: !many && !isBar,
-        symbolSize: 6,
+        // dots: markers only, for a level that jumps (the Parabolic SAR)
+        showSymbol: s.dots || (!many && !isBar),
+        symbolSize: s.dots ? 3 : 6,
+        showAllSymbol: s.dots ? true : 'auto',
         smooth: false,
         connectNulls: false,
         // one series gets wide bars, several share the room of their category
         barMaxWidth: spec.series.filter(function (x) { return !x.reference; }).length === 1 ? 72 : 34,
         itemStyle: { color: isClose ? css('--text-primary', '#f8fafc') : (s.color || PALETTE[i % PALETTE.length]), borderRadius: isBar && !spec.stack ? [4, 4, 0, 0] : 0 },
-        lineStyle: { width: isClose ? 2.2 : 1.8, type: s.dashed ? 'dashed' : 'solid' },
+        lineStyle: { width: s.dots ? 0 : isClose ? 2.2 : 1.8, type: s.dashed ? 'dashed' : 'solid' },
         emphasis: { focus: 'series' },
         smooth: !!spec.smooth,
         // area: fill under the line, fading out (drawdowns, cumulative values)
@@ -229,7 +239,7 @@
         data: spec.markers.map(function (m) { return { name: m.label || '', xAxis: m.x }; }) };
     }
     if (spec.cloud) series = cloudSeries(spec).concat(series);
-    var legendNames = spec.series.map(function (s) { return s.name; });
+    var legendNames = spec.series.filter(function (s) { return !s.reference; }).map(function (s) { return s.name; });
     // direct labels: a line chart of two to five series names each line at its end,
     // in its colour, instead of a legend to match colours against (FT, Datawrapper).
     // Phones keep the legend, where the names would take a third of the width.
