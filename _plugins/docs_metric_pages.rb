@@ -127,6 +127,7 @@ module DocsMetricPages
       "get_reinvestment_rate" => ["reinvestment-rate", "get_retention_ratio"],
     },
     "risk" => {
+      "get_move_significance" => ["move-significance", "/projects/financetoolkit/docs/econometrics/move-significance"],
       "get_corwin_schultz_spread" => ["corwin-schultz-spread", "get_bid_ask_spread"],
       "get_abdi_ranaldo_spread"   => ["abdi-ranaldo-spread", "get_bid_ask_spread"],
       "get_edge_spread"           => ["edge-spread", "get_bid_ask_spread"],
@@ -821,6 +822,7 @@ module DocsMetricPages
   def generate(site)
     seen_descriptions = []
     built = []
+    moved = []
     pages = site.pages.each_with_object({}) { |page, map| map[page.url] = page if page.url.start_with?(DOCS_ROOT) }
     toolkit_page = pages[DOCS_ROOT]
     toolkit_sections = toolkit_page ? toolkit_page.content.scan(SECTION).to_h { |fn, body| [fn.downcase, body] } : {}
@@ -926,11 +928,14 @@ module DocsMetricPages
         forward["using-external-datasets"] = "#{DOCS_ROOT}/external-datasets"
       end
       Array(REMOVED[key]).each do |anchor, (old_slug, replacement)|
-        target = urls[replacement] || cls[:url]
+        # a replacement in another module is its page's URL, built later
+        moved_away = replacement.to_s.start_with?("/")
+        target = moved_away ? replacement : (urls[replacement] || cls[:url])
         forward[anchor] = target unless anchor.include?("-")
         URL_MAP["#{cls[:url]}##{anchor}"] = target
         old = "#{cls[:url]}/#{old_slug}"
         next if old == target
+        next moved << [old, target] if moved_away
         page = built.find { |pg, _, _| pg.url == target }&.first || class_page
         page.data["redirect_from"] = Array(page.data["redirect_from"]) | [old, "#{old}/"]
       end
@@ -966,6 +971,10 @@ module DocsMetricPages
       end
     end
 
+    moved.each do |old, target|
+      page = built.find { |pg, _, _| pg.url == target }&.first or raise "No page at #{target} for #{old}"
+      page.data["redirect_from"] = Array(page.data["redirect_from"]) | [old, "#{old}/"]
+    end
     distinct_titles(built)
     rewrite_navigation(site)
   end

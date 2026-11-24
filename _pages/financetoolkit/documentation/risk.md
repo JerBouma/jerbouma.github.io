@@ -1547,101 +1547,6 @@ Which returns:
 
 ---
 
-## get_move_significance
-Calculate how unusual each move of an investment portfolio or asset is: the return in units of its trailing volatility and of its trailing Value at Risk, its percentile among the earlier moves and the date of the last move at least as large in the same direction.
-
-A return only says how far a price moved, not whether that is a lot for the asset: a 3% day is ordinary for a volatile growth stock and exceptional for a utility or an index. Dividing the return by the volatility of the returns before it (the "sigma" of a move) makes moves comparable across assets and calm or turbulent markets, the percentile says how many earlier moves were smaller, and "largest since" gives the familiar headline ("the biggest one-day fall since March 2020"). The VaR Multiple measures the move against the historic Value at Risk of the same earlier returns instead of their standard deviation, so it does not assume normal returns: a fall with a VaR Multiple below -1 is a VaR exceedance, worse than the loss the trailing VaR expected on all but a share alpha of days. When the trailing quantile is not a loss (every earlier return was a gain or nearly so), the VaR Multiple is NaN. Ties count half, as in `get_level_significance`.
-
-The formula is as follows:
-
-$$
-\text{Volatility Multiple}(t) = \frac{\operatorname{Return}(t)}{\sigma(\operatorname{Return}(t - \text{window}),\; \ldots,\; \operatorname{Return}(t - 1))}
-$$
-
-$$
-\text{VaR Multiple}(t) = \frac{\operatorname{Return}(t)}{\left|\operatorname{Quantile}(\operatorname{Return}(t - \text{window}),\; \ldots,\; \operatorname{Return}(t - 1) ; \alpha)\right|}
-$$
-
-$$
-\operatorname{Percentile}(t) = \frac{\operatorname{Count}(\left|\operatorname{Return}(s)\right| < \left|\operatorname{Return}(t)\right|,\; s < t) + 0.5 \cdot \operatorname{Count}(\left|\operatorname{Return}(s)\right| = \left|\operatorname{Return}(t)\right|,\; s < t)}{\operatorname{Count}(s < t)}
-$$
-
-$$
-\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Return}(s) \leq \operatorname{Return}(t)) \;\text{if Return}(t) < 0
-$$
-
-$$
-\text{Largest Since}(t) = \max(s < t \text{:} \;\text{Return}(s) \geq \operatorname{Return}(t)) \;\text{if Return}(t) > 0
-$$
-
-The volatility $$\sigma$$ has n - 1 in the denominator and the quantile is the historic Value at Risk, interpolated linearly as in `get_value_at_risk`.
-
-Each measure only uses the returns before the period itself, so a move is never part of the volatility or the history it is measured against (no look-ahead). Largest Since compares falls with falls and rises with rises, as a headline does: a 6% fall is the largest fall since the last fall of 6% or more, whatever the rises in between.
-
-**Also known as:** sigma move, standardized return, biggest move since, return z-score, worst day since, VaR exceedance, VaR breach ratio.
-
-**Args:**
-
-- <u>period (str, optional):</u> The data frequency for returns. Options are: "daily", "weekly", "monthly",
-"quarterly", "yearly". Defaults to "daily".
-- <u>window (int &#124; None, optional):</u> The number of earlier returns the volatility is
-measured over, which the percentile also needs at least. Defaults to None, which
-uses a year of observations with a minimum of 20 (252 daily, 52 weekly and 20
-monthly, quarterly or yearly returns).
-- <u>alpha (float, optional):</u> The tail probability of the trailing historic Value at Risk
-the VaR Multiple divides by (0.05 for the 95% VaR). Defaults to 0.05.
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
-Defaults to None, which uses the rounding of the Toolkit (4 unless set otherwise).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Return, Volatility Multiple, VaR Multiple, Percentile and Largest Since
-(the date as text) per asset, with time as the index and the measures and tickers as the column
-levels.
-
-**Notes:**
-
-- The returns are total returns (Adj Close), compounded within each period for a period
-other than daily.
-- `get_value_at_risk` reports the VaR as a return (negative for a loss); the VaR Multiple
-divides by its size, so its sign is the move's, like the Volatility Multiple.
-- The history a move is compared with starts at the Toolkit's start_date: the volatility,
-the VaR and the percentile are NaN until `window` returns are available, and Largest Since is
-NaN when no earlier move in the data was as large, which makes the move the largest
-since the start_date. Choose an early start_date for a long history.
-- Each ticker uses its own history, so a ticker that listed later starts later.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["NVDA", "KO"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2015-01-01",
-    end_date="2025-12-31",
-)
-
-significance = toolkit.risk.get_move_significance()
-
-significance.loc["2025-01-27"].unstack(level=0)
-```
-
-Which returns:
-
-|           |   Return |   Volatility Multiple |   VaR Multiple |   Percentile | Largest Since   |
-|:----------|---------:|----------------------:|---------------:|-------------:|:----------------|
-| NVDA      |  -0.1697 |               -5.0682 |        -3.4613 |       0.9976 | 2020-03-16      |
-| KO        |   0.0315 |                3.8515 |         2.3126 |       0.981  | 2022-11-10      |
-| Benchmark |  -0.0141 |               -1.76   |        -1.026  |       0.8632 | 2025-01-10      |
-
----
-
 ## get_autocorrelation
 Calculate the Autocorrelation Function (ACF) of each asset's daily returns: how strongly a return is related to the returns before it, for a range of lags.
 
@@ -3640,7 +3545,7 @@ The drawdown series, also known as the underwater curve, shows the whole history
 
 Losses and gains are not symmetric: after a fall of 20% the asset needs a gain of 25% to be back at its high, after a fall of 50% a gain of 100%. The recovery version of the series shows that gain, the return needed from each period's value to get back to the running peak.
 
-With the Deepest Since dates, every period below the peak also gets the last earlier date with a drawdown at least as deep, the familiar headline ("the deepest drawdown since April"), as `get_move_significance` gives the "largest since" date of a single move.
+With the Deepest Since dates, every period below the peak also gets the last earlier date with a drawdown at least as deep, the familiar headline ("the deepest drawdown since April"), as `get_move_significance` (Econometrics) gives the "largest since" date of a single move.
 
 The formula is as follows:
 

@@ -863,8 +863,8 @@ $$
 
 **References:**
 
+- paper | Twiggs, C. (2003). "Twiggs Money Flow." Incredible Charts ([https://www.incrediblecharts.com/indicators/twiggs_money_flow.php](https://www.incrediblecharts.com/indicators/twiggs_money_flow.php){:target="_blank"}).
 - library | Referenced against TA-Lib's [CMF](https://ta-lib.org/functions/cmf.html){:target="_blank"}
-- paper | Referenced against Twiggs, C. (2003). "Twiggs Money Flow." Incredible Charts ([https://www.incrediblecharts.com/indicators/twiggs_money_flow.php](https://www.incrediblecharts.com/indicators/twiggs_money_flow.php){:target="_blank"}).
 
 **Args:**
 
@@ -2194,9 +2194,9 @@ Both lines are ratios around 1 (the usual pressure on the usual volume). Buying 
 
 **References:**
 
+- paper | Williams, L.R. (1985). "The Ultimate Oscillator." Technical Analysis of Stocks & Commodities, 3(4), for a similar buying pressure measured from the lower of the low and the previous close.
 - library | Referenced against finta's [BASP](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1671){:target="_blank"}
 - library | Referenced against finta's [BASPN](https://github.com/peerchemist/finta/blob/1.3/finta/finta.py#L1691){:target="_blank"}
-- paper | Referenced against Williams, L.R. (1985). "The Ultimate Oscillator." Technical Analysis of Stocks & Commodities, 3(4), for a similar buying pressure measured from the lower of the low and the previous close.
 
 **Args:**
 
@@ -13249,9 +13249,9 @@ $$
 
 **References:**
 
+- paper | Ozbilgic, K. (2020). "Profit Maximizer - PMax." TradingView script.
 - library | Referenced against TA-Lib's [SUPERTREND](https://ta-lib.org/functions/supertrend.html){:target="_blank"}
 - library | Shares similar logic as pandas-ta-classic's [pmax](https://github.com/xgboosted/pandas-ta-classic/blob/0.9.0/pandas_ta_classic/trend/pmax.py#L51){:target="_blank"} (Profit Maximizer)
-- paper | Shares similar logic as Ozbilgic, K. (2020). "Profit Maximizer - PMax." TradingView script.
 
 **Args:**
 

@@ -779,7 +779,7 @@ Calculate the returns-based style analysis (Sharpe, 1992) of every ticker: the m
 
 The R Squared is the share of the ticker's variance the styles explain; what they do not explain is the Selection Return (the return of the manager's own choices, annualized) with its volatility, the Tracking Error. These three are in-sample: they are measured over the same returns the weights are fitted to, which flatters the fit, as the weights are chosen to explain exactly those returns.
 
-A window estimates the weights over a rolling number of periods instead, which shows how a fund's style drifts over time, and adds Sharpe's out-of-sample measure of selection: the Out-of-Sample Selection Return of a date is the ticker's return of that period minus the return of that period of the style mix estimated over the window that ends one period earlier (Sharpe uses the previous 60 months). It is a return per period, not annualized, and NaN for the first window, which has no earlier estimate. Its average shows whether the manager added value beyond a passive mix of the styles the fund was known to follow.
+A rolling window estimates the weights over a set number of periods instead, which shows how a fund's style drifts over time, and adds Sharpe's out-of-sample measure of selection: the Out-of-Sample Selection Return of a date is the ticker's return of that period minus the return of that period of the style mix estimated over the window that ends one period earlier (Sharpe uses the previous 60 months). It is a return per period, not annualized, and NaN for the first window, which has no earlier estimate. Its average shows whether the manager added value beyond a passive mix of the styles the fund was known to follow.
 
 By default the styles are Sharpe's asset classes as ETFs: IWD and IWF for US large cap value and growth, IWN and IWO for small cap value and growth, AGG for bonds and BIL for cash. Style tickers that are not in the Toolkit are retrieved for the same dates, and every Toolkit ticker that is not a style is analyzed against them. "Benchmark" can be one of them.
 
@@ -796,8 +796,8 @@ list or a comma-separated string. Defaults to None, which uses IWD, IWF, IWN, IW
 AGG and BIL.
 - <u>period (str, optional):</u> The return frequency. Options are: "daily", "weekly", "monthly",
 "quarterly", "yearly". Defaults to "monthly".
-- <u>window (int &#124; None, optional):</u> The number of periods to estimate the weights over on a
-rolling basis, which adds the Out-of-Sample Selection Return. Defaults to None,
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window to estimate
+the weights over, which adds the Out-of-Sample Selection Return. Defaults to None,
 which uses every period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
@@ -809,7 +809,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per ticker the weight of every style, the R Squared, the Selection Return
-and the Tracking Error, or with a window the same and the Out-of-Sample Selection
+and the Tracking Error, or with a rolling window the same and the Out-of-Sample Selection
 Return per date (the last date of every window) and ticker. A ticker with no more
 returns than there are styles (in a window) is NaN.
 
@@ -1121,7 +1121,7 @@ $$
 
 Where $$\widehat{\text{SR}}$$ is the observed Sharpe ratio, $$S (\gamma_{3})$$ is the skewness and $$K (\gamma_{4})$$ the non-excess (raw) kurtosis of the same returns, n is the number of return observations, N is `n_trials`, Var[SR_trials] is the variance of the Sharpe ratios observed across those N trials, $$\gamma \approx 0.5772$$ is the Euler-Mascheroni constant and $$\Phi$$ is the standard normal CDF. Since DSR = PSR(SR*), it is always less than or equal to the Probabilistic Sharpe Ratio computed against a benchmark of 0.
 
-This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_rolling_sharpe_ratio`) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of non-overlapping `trials_window`-sized windows in that return history (at least 1): overlapping windows share most of their returns, so counting each of them as a trial would overstate N (Bailey and Lopez de Prado, 2014). That series is built from the same returns as the Sharpe ratio being deflated, so both are on the same scale: the daily excess returns (the observations within each period) for the Sharpe ratio per period, and the excess returns of `period` itself for a rolling Sharpe ratio. This treats each window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
+This codebase does not track "N literal strategy trials" - there is no record of how many parameter combinations were tried before arriving at the current Toolkit configuration. As a documented approximation, `Var[SR_trials]` is estimated from the variance of an auxiliary *rolling* Sharpe ratio series (see `get_sharpe_ratio` with a window) computed over a `trials_window`-sized window across the full return history, and `n_trials` defaults to the number of non-overlapping `trials_window`-sized windows in that return history (at least 1): overlapping windows share most of their returns, so counting each of them as a trial would overstate N (Bailey and Lopez de Prado, 2014). That series is built from the same returns as the Sharpe ratio being deflated, so both are on the same scale: the daily excess returns (the observations within each period) for the Sharpe ratio per period, and the excess returns of `period` itself for a rolling Sharpe ratio. This treats each window as if it were one "trial" - a reasonable proxy for how dispersed the Sharpe ratio could plausibly have been under different choices, but not a substitute for passing the actual number of variations tried (via `n_trials`) when that is known, since the quality of the correction depends directly on it.
 
 **See definition:** [https://en.wikipedia.org/wiki/Sharpe_ratio](https://en.wikipedia.org/wiki/Sharpe_ratio){:target="_blank"}
 
@@ -4858,7 +4858,7 @@ quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Beta and
 the residual standard deviation are estimated over a rolling window of this many periods
 across the full return history instead of per `period`, the residuals of each window from
-the regression over that window (see `performance_model.get_rolling_appraisal_ratio`).
+the regression over that window (see `performance_model.get_appraisal_ratio`).
 Defaults to None.
 - <u>method (str, optional):</u> The ratio, as described above. Options are: "appraisal" (Jensen's Alpha
 per unit of residual risk), "modified" (Jensen's Alpha per unit of Beta), "alternative"

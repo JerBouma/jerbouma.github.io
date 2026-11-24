@@ -1962,8 +1962,9 @@ $$
 - <u>period (str, optional):</u> The data frequency (daily, weekly, monthly, quarterly, or
 yearly). Defaults to "daily".
 - <u>column (str, optional):</u> The price column. Defaults to "Adj Close".
-- <u>window (int &#124; None, optional):</u> The rolling window of the z-score. Defaults to
-None, which uses the full sample.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window for the
+mean and standard deviation of the z-score. Defaults to None, which uses the full
+sample.
 - <u>entry_z_score (float, optional):</u> The z-score at which a position is opened.
 Defaults to 2.0.
 - <u>exit_z_score (float, optional):</u> The z-score whose crossing on the way back closes
@@ -2004,7 +2005,7 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.econometrics.get_pairs_trading(window=60)
+toolkit.econometrics.get_pairs_trading(rolling=60)
 ```
 
 Which returns:
@@ -4218,7 +4219,7 @@ Which returns:
 ## get_level_significance
 Calculate how unusual the latest value of every series is: its percentile in the series' own history and the last dates the series was at least as high ("the highest since") and at least as low ("the lowest since"), next to its change since the first observation and the highest and lowest values of the range with their dates and the change from them.
 
-Where `get_move_significance` (Risk) measures how unusual a move is, this measures how unusual a level is, which is the question for rates and macroeconomic series: a 10-year yield of 5.13% is "the highest since May 2002" when no month since then was as high, and an unemployment rate can be the lowest in decades without any single large move. Through the Toolkit it measures the prices of the tickers ("the highest close since"); with `Econometrics(data=...)` any series, such as the interest rates, inflation or unemployment of `Economics` and the yield curves of `FixedIncome`.
+Where `get_move_significance` measures how unusual a move is, this measures how unusual a level is, which is the question for rates and macroeconomic series: a 10-year yield of 5.13% is "the highest since May 2002" when no month since then was as high, and an unemployment rate can be the lowest in decades without any single large move. Through the Toolkit it measures the prices of the tickers ("the highest close since"); with `Econometrics(data=...)` any series, such as the interest rates, inflation or unemployment of `Economics` and the yield curves of `FixedIncome`.
 
 The formula is as follows:
 
@@ -4410,7 +4411,7 @@ Which returns:
 ## get_move_significance
 Calculate how unusual each move of every series is: the change in units of its trailing volatility and of its trailing Value at Risk, its percentile among the earlier moves and the date of the last move at least as large in the same direction ("the largest one-day rise since").
 
-This is `get_move_significance` (Risk) for any series rather than the returns of the Toolkit's tickers: when the Econometrics data takes differences as its changes, a yield, rate or spread moves in points, so a rise of the 2-year Treasury yield from 4.56% to 4.73% is a move of 0.0017, measured against the earlier daily moves of the same yield. Where `get_level_significance` asks how unusual a level is, this asks how unusual a change is.
+A return only says how far a price moved, not whether that is a lot for the asset: a 3% day is ordinary for a volatile growth stock and exceptional for a utility or an index. Dividing the change by the volatility of the changes before it (the "sigma" of a move) makes moves comparable across series and calm or turbulent markets, the percentile says how many earlier moves were smaller, and "largest since" gives the familiar headline ("the biggest one-day fall since March 2020"). Through the Toolkit the changes are the returns of its tickers (total returns from Adj Close, compounded within each period for a period other than daily), and of the benchmark when it is included, so the Toolkit's Econometrics gives the significance of every return. With `Econometrics(data=...)` it measures any series, and when the data takes differences as its changes a yield, rate or spread moves in points, so a rise of the 2-year Treasury yield from 4.56% to 4.73% is a move of 0.0017, measured against the earlier daily moves of the same yield. Where `get_level_significance` asks how unusual a level is, this asks how unusual a change is.
 
 The formula is as follows:
 

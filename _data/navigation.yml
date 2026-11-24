@@ -1479,8 +1479,6 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_tail_ratio
       - title: "Hill Estimator"
         url: /projects/financetoolkit/docs/risk#get_hill_estimator
-      - title: Move Significance
-        url: /projects/financetoolkit/docs/risk#get_move_significance
       - title: Marginal Expected Shortfall (MES)
         url: /projects/financetoolkit/docs/risk#get_marginal_expected_shortfall
       - title: SRISK

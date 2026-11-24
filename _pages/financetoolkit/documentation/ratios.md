@@ -10865,6 +10865,22 @@ $$
 
 The ratios are calculated daily from the closing price where they can be (daily values) and otherwise per statement period. Statement figures apply from the end of each fiscal period, or with point-in-time data from the day they were filed, never earlier, so no day uses figures that were not known yet. The returns use the dividend and split adjusted close and start at the close of the period the ratio belongs to. Each ticker keeps its own history: a ticker without a ratio or a return in a period is left out of that period only.
 
+**References:**
+
+- paper | Grinold, R.C. and Kahn, R.N. (2000). "Active Portfolio Management." 2nd ed. McGraw-Hill, for the information coefficient.
+- paper | Qian, E., Hua, R. and Sorensen, E. (2007). "Quantitative Equity Portfolio Management." Chapman & Hall/CRC, for the factor-weighted portfolio and the demeaned and group-neutral returns.
+- paper | Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period 1945-1964." Journal of Finance, 23(2), for the alpha.
+- paper | MacKinlay, A.C. (1997). "Event Studies in Economics and Finance." Journal of Economic Literature, 35(1), for the event returns.
+- library | Referenced against alphalens' [factor_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L28){:target="_blank"}
+- library | Referenced against alphalens' [mean_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L80){:target="_blank"}
+- library | Referenced against alphalens' [mean_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L461){:target="_blank"}
+- library | Referenced against alphalens' [factor_weights](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L131){:target="_blank"}
+- library | Referenced against alphalens' [factor_returns](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L210){:target="_blank"}
+- library | Referenced against alphalens' [factor_alpha_beta](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L265){:target="_blank"}
+- library | Referenced against alphalens' [quantile_turnover](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L575){:target="_blank"}
+- library | Referenced against alphalens' [factor_rank_autocorrelation](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L620){:target="_blank"}
+- library | Shares similar logic as alphalens' [average_cumulative_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L758){:target="_blank"}
+
 **Args:**
 
 - <u>metrics (str &#124; list[str], optional):</u> A ratio method name, e.g.
@@ -10951,16 +10967,7 @@ overlap too, so its alpha and beta are averages rather than tests.
 - The cumulative returns split the capital over as many portfolios as the horizon
 has periods, started on consecutive periods and each rebalanced once per
 horizon; a value shows when its holding period ends, so the series starts at 1.
-- The IC is that of Grinold, R.C. and Kahn, R.N. (2000). "Active Portfolio
-Management." 2nd ed. McGraw-Hill; the factor-weighted portfolio, the demeaned
-and group-neutral returns that of Qian, E., Hua, R. and Sorensen, E. (2007).
-"Quantitative Equity Portfolio Management." Chapman & Hall/CRC; the alpha that
-of Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period
-1945-1964." Journal of Finance 23(2); the event returns follow MacKinlay, A.C.
-(1997). "Event Studies in Economics and Finance." Journal of Economic Literature
-35(1).
-- Referenced against alphalens-reloaded
-([https://github.com/stefan-jansen/alphalens-reloaded](https://github.com/stefan-jansen/alphalens-reloaded){:target="_blank"}). Its top minus bottom
+- Where it differs from alphalens: its top minus bottom
 spread is half of the one here (a gross exposure of one rather than two), it
 drops a period and ticker without every horizon's return where each horizon
 here uses its own, and its event returns average the single-period returns at
