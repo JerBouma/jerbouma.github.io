@@ -1,0 +1,1 @@
+{"index":"","columns":["Engle-Granger Statistic","P-Value","Critical Value 5%","Cointegrated (5%)"],"rows":[["('KO', 'PEP')",-1.0287,0.8973,-3.341,0.0],["('PEP', 'KO')",-2.0562,0.4993,-3.341,0.0]],"total":2}

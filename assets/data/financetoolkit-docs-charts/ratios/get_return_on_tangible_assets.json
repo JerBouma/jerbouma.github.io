@@ -1,0 +1,1 @@
+{"charts":{"get_return_on_tangible_assets":{"title":"Return on Tangible Assets","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"NUE","data":[0.3474,0.3215,0.1685,0.074,0.0641]},{"name":"RS","data":[0.2441,0.2715,0.1831,0.1229,0.1049]},{"name":"STLD","data":[0.3172,0.3069,0.1778,0.1082,0.0795]}],"format":"percent"}}}

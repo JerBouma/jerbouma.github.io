@@ -1,0 +1,1 @@
+{"charts":{"get_best_fitting_copula":{"title":"Copula Fit (AIC)","type":"hbar","x":["Student-T","Gaussian","Gumbel","Frank","Clayton"],"series":[{"name":"AIC","data":[-1889.9,-1822.25,-1782.3,-1651.76,-1513.22]}],"format":"ratio","subtitle":"Akaike information criterion per copula family; lower is a better fit"}}}

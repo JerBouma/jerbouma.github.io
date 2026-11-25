@@ -376,57 +376,6 @@ module DocsMetricPages
     out << "</div>\n\n"
   end
 
-  PERIOD_LIKE = /\A\d{4}(-?Q\d)?\z/
-  DATE_LIKE = /\A\d{4}(-\d{2}(-\d{2})?|-?Q\d|M\d{1,2})?( \d{2}:\d{2}(:\d{2})?)?\z/
-
-  def cell_number(text)
-    t = text.to_s.strip.delete(",")
-    return nil if t.empty? || t.casecmp?("nan") || t == "-"
-    Float(t)
-  rescue ArgumentError
-    :text
-  end
-
-  # A line (or, for a few periods, bar) chart of the example's first table when
-  # its rows or columns are periods and every value is a number: one series per
-  # column (dates in the rows) or per row (periods in the columns, as the ratios
-  # have). Left out when there are too many series or their scales differ so much
-  # that the smaller ones would be flat lines.
-  def chart_spec(result, name)
-    table = result[/^\|.*\|[ \t]*\n\|[-:| ]+\|[ \t]*\n(?:\|.*\|[ \t]*(?:\n|\z))+/]
-    return nil unless table
-    rows = table.strip.split("\n").map { |l| l.strip.sub(/\A\|/, "").sub(/\|\z/, "").split("|").map(&:strip) }
-    header, body = rows[0], rows[2..]
-    return nil if body.nil? || body.empty? || header.any? { |h| h.start_with?("(") }
-    values = body.map { |r| r[1..].map { |v| cell_number(v) } }
-    return nil if values.flatten.include?(:text)
-    if body.size >= 4 && body.all? { |r| r[0] =~ PERIOD_LIKE }
-      x = body.map { |r| r[0] }
-      series = header[1..].each_with_index.map { |h, i| { "name" => h, "data" => values.map { |r| r[i] } } }
-    elsif header.size >= 5 && header[1..].all? { |h| h =~ PERIOD_LIKE }
-      x = header[1..]
-      series = body.each_with_index.map { |r, i| { "name" => r[0], "data" => values[i] } }
-    else
-      return nil
-    end
-    return nil if series.empty? || series.size > 8 || series.any? { |se| se["name"].start_with?("(") }
-    peaks = series.map { |se| se["data"].compact.map(&:abs).max.to_f }
-    return nil if peaks.any?(&:zero?) && peaks.all?(&:zero?)
-    nonzero = peaks.reject(&:zero?)
-    return nil if nonzero.empty? || nonzero.max / nonzero.min > 50
-    # bars for a few years or quarters, a line (on its own scale) for anything else
-    periods = x.size <= 6 && x.all? { |v| v =~ /\A\d{4}(-?Q\d)?\z/ }
-    top = nonzero.max
-    format = top < 1 ? "decimal" : top < 10_000 ? "ratio" : "amount"
-    { "type" => periods ? "bar" : "line", "title" => name, "x" => x, "series" => series, "format" => format }
-  end
-
-  def chart_html(spec, name)
-    %(<div class="ft-chart" data-chart="example" data-src="inline" role="figure" aria-label="#{CGI.escapeHTML(name)}: the example's result as a chart">) +
-      %(<script type="application/json">#{JSON.generate(spec).gsub("</", "<\\/")}</script>) +
-      %(<div class="ft-chart__loading" aria-hidden="true"></div></div>)
-  end
-
   # The same through the Finance Toolkit MCP: a question an analyst might ask,
   # from _data/financetoolkit_mcp/<module>.yml (with the tool call that
   # answers it).
@@ -522,7 +471,7 @@ module DocsMetricPages
       python << "```bash\npip install financetoolkit -U\n```\n\n"
       python << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless code.strip.empty?
       python << code.rstrip << "\n" unless code.strip.empty?
-      out << "## Example\n{: #python-example}\n\n"
+      # the example follows the description without a heading of its own
       out << (mcp.empty? ? python + "\n" : tabs("source", [["Python", python], ["MCP", mcp]]))
       unless result.empty?
         out << "Which returns:\n\n"
@@ -531,8 +480,6 @@ module DocsMetricPages
         own = "/assets/data/financetoolkit-docs-charts/#{key}/#{fn_name}.json"
         chart = if mcp_key == fn_name && File.exist?(File.join(site.source, own))
                   %(<div class="ft-chart" data-chart="#{fn_name}" data-src="#{own}?v=#{site.time.to_i}" role="figure" aria-label="#{CGI.escapeHTML(name)}"><div class="ft-chart__loading" aria-hidden="true"></div></div>)
-                elsif (spec = chart_spec(result, name))
-                  chart_html(spec, name)
                 end
         out << (chart ? tabs("result", [["Chart", chart], ["Table", result]]) : result + "\n\n")
       end

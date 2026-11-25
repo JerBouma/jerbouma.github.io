@@ -1,0 +1,1 @@
+{"charts":{"get_growth_optimal_weights":{"title":"Growth Optimal Weights","type":"hbar","x":["Cash","XOM","MSFT","AAPL","JNJ"],"series":[{"name":"Weight","data":[0.5,0.2,0.2,0.1,0.0]}],"format":"percent","subtitle":"Half Kelly, at most 40% per asset; the rest stays in cash"}}}

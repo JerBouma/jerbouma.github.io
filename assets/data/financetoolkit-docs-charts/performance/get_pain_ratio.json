@@ -1,0 +1,1 @@
+{"charts":{"get_pain_ratio":{"title":"Pain Ratio","type":"bar","x":["2022","2023","2024","2025"],"series":[{"name":"HD","data":[-1.0216,1.0884,1.7045,-1.3355]},{"name":"LOW","data":[-1.1848,1.3693,1.3511,-0.4223]},{"name":"TGT","data":[-1.468,-0.2573,-0.5582,-1.0867]}],"format":"ratio","subtitle":"Excess return divided by the Pain Index, per year"}}}

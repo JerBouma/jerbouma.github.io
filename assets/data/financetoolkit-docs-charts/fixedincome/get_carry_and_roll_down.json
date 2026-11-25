@@ -1,0 +1,1 @@
+{"charts":{"get_carry_and_roll_down":{"title":"Carry and Roll-Down","type":"bar","x":["2Y","5Y","10Y","30Y"],"series":[{"name":"2026-10-23","data":[0.0022,0.0019,0.003,0.002]}],"format":"percent","subtitle":"Expected 12-month return from carry and roll-down by maturity, the last day","cards":false}}}

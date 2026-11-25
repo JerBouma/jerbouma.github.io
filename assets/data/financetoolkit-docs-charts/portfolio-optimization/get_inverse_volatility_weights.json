@@ -1,0 +1,1 @@
+{"charts":{"get_inverse_volatility_weights":{"title":"Inverse Volatility Weights","type":"hbar","x":["JNJ","MSFT","XOM","AAPL"],"series":[{"name":"Weight","data":[0.3483,0.2267,0.2157,0.2092]}],"format":"percent"}}}

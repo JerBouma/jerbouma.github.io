@@ -1,0 +1,1 @@
+{"charts":{"get_implied_move":{"title":"Implied Move","type":"bar","x":["AAPL \u00b7 2027-02-19","NVDA \u00b7 2027-03-19"],"series":[{"name":"Implied Move","data":[0.1059,0.2484]}],"format":"percent","subtitle":"At-the-money straddle price as a share of the stock price, for the expiration after earnings"}}}

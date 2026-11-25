@@ -1,0 +1,1 @@
+{"index":"","columns":["F-Statistic","P-Value","Granger-Causes (5%)"],"rows":[["('CLUSD', 'XLE')",3.8159,0.002,1.0],["('XLE', 'CLUSD')",1.6041,0.156,0.0]],"total":2}

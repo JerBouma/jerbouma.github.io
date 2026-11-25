@@ -1,0 +1,386 @@
+ratios:
+  chart: line
+  expr: "profitability_ratios.loc['AAPL']"
+  transpose: true
+  columns: [Gross Margin, Operating Margin, Net Profit Margin]
+  format: percent
+  title: Profit Margins
+
+models:
+  chart: tabs
+  expr: "dupont_analysis.loc['AMZN']"
+  title: Extended DuPont Analysis
+  tabs:
+    - label: Return on Equity
+      chart: bar
+      transpose: true
+      columns: [Return on Equity]
+      format: percent
+    - label: Components
+      chart: line
+      transpose: true
+      columns: [Interest Burden Ratio, Tax Burden Ratio, Operating Profit Margin, Asset Turnover, Equity Multiplier]
+      format: ratio
+      subtitle: Return on equity is the product of the five components
+
+options:
+  chart: tabs
+  title: Option Greeks by Strike
+  tabs:
+    - label: Delta
+      chart: line
+      columns: [Delta]
+      format: ratio
+    - label: Gamma
+      chart: line
+      columns: [Gamma]
+      format: decimal
+    - label: Vega
+      chart: line
+      columns: [Vega]
+      format: ratio
+    - label: Theta
+      chart: line
+      columns: [Theta]
+      format: ratio
+
+technicals:
+  chart: ta
+  price: "AAPL"
+  price_name: AAPL
+  lower:
+    series:
+      - {column: "AAPL", name: "ADX", color: "#a78bfa"}
+    levels: [25]
+    min: 0
+    format: number
+  zoom: 252
+  title: Average Directional Index
+  subtitle: Above 25 is usually read as a trending market
+
+performance:
+  chart: bar
+  format: percent
+  title: CAPM Expected Return
+  subtitle: Per quarter, from the risk-free rate, beta and the market return
+
+risk:
+  chart: bar
+  columns: [{0: Value at Risk}]
+  format: percent
+  title: Value at Risk
+  subtitle: The yearly loss that is exceeded with 5% probability
+
+econometrics:
+  chart: none
+  reason: Unit root test statistics, read as a table
+
+etf:
+  chart: none
+  reason: Fund profiles, read as text
+
+portfolio:
+  chart: hbar
+  drop: [Portfolio]
+  sort: desc
+  format: percent
+  title: Risk Parity Weights
+
+fixedincome:
+  chart: line
+  format: percent
+  title: ICE BofA Effective Yield by Rating
+
+economics:
+  chart: line
+  format: number
+  title: Consumer Price Index
+  subtitle: Index level, 2015 = 100
+
+get_profile:
+  chart: none
+  reason: Company profile details, read as text
+
+get_quote:
+  chart: line
+  transpose: true
+  columns: [Year Low, Price, Year High]
+  dots: [Year Low, Price, Year High]
+  format: usd
+  title: Price Within the 52-Week Range
+
+get_rating:
+  chart: bar
+  expr: "rating[['DCF Score', 'ROE Score', 'ROA Score', 'DE Score', 'PE Score', 'PB Score']].iloc[[-1]].T.set_axis(['Score'], axis=1)"
+  format: number
+  min: 0
+  max: 5
+  title: Rating Scores
+  subtitle: Each criterion scored from 1 to 5, the latest rating
+
+get_analyst_estimates:
+  chart: bar
+  ticker: Estimated EPS Average
+  transpose: true
+  format: usd
+  title: Estimated EPS
+  subtitle: Consensus average per fiscal year
+
+get_earnings_calendar:
+  chart: line
+  columns: [EPS, Estimated EPS]
+  dots: [EPS, Estimated EPS]
+  format: usd
+  title: Earnings per Share and Estimate
+  subtitle: Reported EPS against the consensus estimate per quarter
+
+get_earnings_surprise:
+  chart: tabs
+  title: Earnings Surprise
+  tabs:
+    - label: Surprise
+      chart: bar
+      columns: [EPS Surprise, Revenue Surprise]
+      format: percent
+      subtitle: Reported against the consensus estimate
+    - label: Price Reaction
+      chart: bar
+      columns: [Reaction, Abnormal Reaction]
+      format: percent
+      subtitle: Return around the announcement; abnormal is net of the market
+
+get_stock_news:
+  chart: none
+  reason: News headlines, read as text
+
+get_press_releases:
+  chart: none
+  reason: Press releases, read as text
+
+get_revenue_geographic_segmentation:
+  chart: bar
+  transpose: true
+  stack: true
+  format: compact
+  title: Revenue by Region
+
+get_revenue_product_segmentation:
+  chart: bar
+  transpose: true
+  stack: true
+  format: compact
+  title: Revenue by Product
+
+get_historical_data:
+  chart: line
+  format: usd
+  title: Close Price
+
+get_intraday_data:
+  chart: line
+  axis2: [Benchmark]
+  format: usd
+  format2: usd
+  title: Hourly Close Price
+
+get_dividend_calendar:
+  chart: bar
+  columns: [Dividend]
+  format: usd
+  title: Dividend per Share
+  subtitle: Per payment
+
+get_esg_scores:
+  chart: line
+  format: number
+  title: ESG Score
+
+get_market_risk_premium:
+  chart: bar
+  expr: "market_risk_premium.loc[['United States', 'Germany', 'Japan', 'Brazil', 'India', 'South Africa'], ['Country Risk Premium', 'Total Equity Risk Premium']]"
+  derive:
+    Mature Market Premium: "f['Total Equity Risk Premium'] - f['Country Risk Premium']"
+  columns: [Mature Market Premium, Country Risk Premium]
+  stack: true
+  format: percent
+  title: Equity Risk Premium by Country
+  subtitle: The mature market premium plus each country's risk premium
+
+get_commitment_of_traders:
+  chart: line
+  derive:
+    Net Position: "f['Non-Commercial Long'] - f['Non-Commercial Short']"
+  columns: [Non-Commercial Long, Non-Commercial Short, Net Position]
+  area: [Net Position]
+  format: compact
+  title: Non-Commercial Positions
+  subtitle: Open futures contracts held by speculators, per week
+
+get_executives:
+  chart: none
+  reason: Names and titles, read as a table
+
+get_executive_compensation:
+  chart: hbar
+  ticker: 2025
+  level: 0
+  derive:
+    Salary and Incentive Pay: "f['Salary'] + f['Incentive Plan Compensation']"
+  columns: [Salary and Incentive Pay]
+  sort: desc
+  format: compact
+  title: Executive Compensation
+  subtitle: Salary plus incentive plan compensation
+
+get_company_notes:
+  chart: none
+  reason: A list of listed notes, read as a table
+
+get_employee_count:
+  chart: bar
+  format: compact
+  title: Employees
+
+get_shares_float:
+  chart: bar
+  transpose: true
+  columns: [Free Float]
+  format: percent
+  min: 0
+  max: 1
+  title: Free Float
+  subtitle: Share of outstanding shares available for trading
+
+get_mergers_acquisitions:
+  chart: none
+  reason: A list of deals, read as a table
+
+get_stock_splits:
+  chart: none
+  reason: A list of split events, read as a table
+
+get_insider_trade_statistics:
+  chart: bar
+  columns: [Acquired Transactions, Disposed Transactions]
+  format: number
+  title: Insider Transactions
+  subtitle: Number of acquisitions and disposals per quarter
+
+get_institutional_ownership:
+  chart: tabs
+  title: Institutional Ownership
+  tabs:
+    - label: Ownership
+      chart: line
+      columns: [Ownership, Top 10 Ownership]
+      format: percent
+      subtitle: Share of outstanding shares held by institutions
+    - label: Positions
+      chart: bar
+      columns: [New Positions, Closed Positions]
+      format: number
+      subtitle: Institutions opening or closing a position per quarter
+
+get_short_volume:
+  chart: tabs
+  title: Short Volume
+  tabs:
+    - label: Short Volume Ratio
+      chart: line
+      columns: [Short Volume Ratio]
+      format: percent
+      subtitle: Short volume as a share of total volume per day
+    - label: Volume
+      chart: bar
+      columns: [Total Volume, Short Volume]
+      format: compact
+
+get_stock_grades:
+  chart: none
+  reason: Analyst grade changes, read as a table
+
+get_price_targets:
+  chart: line
+  transpose: true
+  columns: [Target Low, Price, Target Consensus, Target High]
+  dots: [Target Low, Price, Target Consensus, Target High]
+  format: usd
+  title: Price and Analyst Price Targets
+  subtitle: The lowest, average and highest target against the current price
+
+get_price_target_history:
+  chart: hbar
+  columns: [Price Target]
+  sort: desc
+  format: usd
+  title: Price Targets by Analyst
+
+get_analyst_recommendations:
+  chart: tabs
+  title: Analyst Recommendations
+  tabs:
+    - label: AAPL
+      chart: bar
+      ticker: AAPL
+      level: 0
+      columns: [Strong Buy, Buy, Hold, Sell, Strong Sell]
+      stack: true
+      format: number
+      colors: {Strong Buy: "#15803d", Buy: "#4ade80", Hold: "#facc15", Sell: "#f87171", Strong Sell: "#b91c1c"}
+    - label: NVDA
+      chart: bar
+      ticker: NVDA
+      level: 0
+      columns: [Strong Buy, Buy, Hold, Sell, Strong Sell]
+      stack: true
+      format: number
+      colors: {Strong Buy: "#15803d", Buy: "#4ade80", Hold: "#facc15", Sell: "#f87171", Strong Sell: "#b91c1c"}
+
+get_earnings_call_transcripts:
+  chart: none
+  reason: A transcript, read as text
+
+get_historical_statistics:
+  chart: none
+  expr: "toolkit.get_historical_statistics().loc[['Currency', 'Exchange Name', 'Instrument Type', 'First Trade Date', 'Exchange Timezone Name']]"
+  reason: Exchange and listing details, read as text
+
+get_treasury_data:
+  chart: line
+  format: percent
+  title: Treasury Yields
+  subtitle: Monthly close per maturity
+
+get_exchange_rates:
+  chart: line
+  columns: [Close]
+  format: decimal
+  title: Exchange Rate
+  subtitle: Monthly close
+
+get_balance_sheet_statement:
+  chart: bar
+  transpose: true
+  format: compact
+  title: Total Debt
+
+get_income_statement:
+  chart: bar
+  transpose: true
+  format: compact
+  title: Revenue and Net Income
+
+get_cash_flow_statement:
+  chart: bar
+  transpose: true
+  format: compact
+  levels: [0]
+  title: Cash Flows
+
+get_statistics_statement:
+  chart: none
+  reason: Filing dates, read as a table
+
+get_cache_contents:
+  chart: none
+  reason: A list of what the cache holds, read as a table

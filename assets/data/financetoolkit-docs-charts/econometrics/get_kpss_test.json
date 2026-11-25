@@ -1,0 +1,1 @@
+{"charts":{"get_kpss_test":{"title":"KPSS Statistic","type":"bar","x":["^GSPC","^N225"],"series":[{"name":"KPSS Statistic","data":[4.7842,4.7398]},{"name":"Critical Value 5%","data":[0.463,0.463]}],"format":"ratio","subtitle":"Above the 5% critical value, stationarity is rejected"}}}

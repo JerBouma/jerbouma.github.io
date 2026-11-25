@@ -1,0 +1,1 @@
+{"charts":{"get_funds_from_operations_to_debt_ratio":{"title":"Funds From Operations to Debt","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"HSY","data":[0.3762,0.4597,0.5067,0.5537,0.3099]},{"name":"T","data":[0.1839,0.0361,0.2232,0.2132,null]},{"name":"UNP","data":[0.2823,0.2588,0.253,0.293,0.3285]}],"format":"percent"}}}

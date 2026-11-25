@@ -1,0 +1,1157 @@
+# Financial ratios, drawn as fundamentals sites draw them: rates, margins, returns and
+# multiples as a line per company over the years; days, amounts, per-share figures and
+# signed yearly changes as grouped bars per year; standard thresholds as reference lines.
+
+get_asset_turnover_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Asset Turnover
+  subtitle: Revenue per unit of average total assets
+
+get_inventory_turnover_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Inventory Turnover
+  subtitle: 'Cost of goods sold per unit of average inventory: times a year'
+
+get_days_of_inventory_outstanding:
+  chart: bar
+  transpose: true
+  format: number
+  title: Days of Inventory Outstanding
+  subtitle: Days
+
+get_days_of_sales_outstanding:
+  chart: bar
+  transpose: true
+  format: number
+  title: Days of Sales Outstanding
+  subtitle: Days
+
+get_operating_cycle:
+  chart: bar
+  transpose: true
+  format: number
+  title: Operating Cycle
+  subtitle: Days of inventory plus days of sales outstanding
+
+get_accounts_payables_turnover_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Accounts Payable Turnover
+  subtitle: Times a year
+
+get_days_of_accounts_payable_outstanding:
+  chart: bar
+  transpose: true
+  format: number
+  title: Days of Payables Outstanding
+  subtitle: Days
+
+get_cash_conversion_cycle:
+  chart: bar
+  transpose: true
+  format: number
+  title: Cash Conversion Cycle
+  subtitle: Days; below zero, suppliers finance the working capital
+  levels:
+  - 0
+
+get_cash_conversion_efficiency:
+  chart: line
+  transpose: true
+  format: percent
+  title: Cash Conversion Efficiency
+  subtitle: Operating cash flow as a share of revenue
+
+get_receivables_turnover:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Receivables Turnover
+  subtitle: Times a year
+
+get_sga_to_revenue_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: SG&A to Revenue
+
+get_fixed_asset_turnover:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Fixed Asset Turnover
+  subtitle: Revenue per unit of average fixed assets
+
+get_working_capital_turnover_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Working Capital Turnover
+  subtitle: Revenue per unit of working capital
+
+get_operating_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Operating Ratio
+  subtitle: Operating expenses and cost of goods sold as a share of revenue
+
+get_research_and_development_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: R&D to Revenue
+
+get_selling_and_marketing_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Sales and Marketing to Revenue
+
+get_general_and_administrative_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: G&A to Revenue
+
+get_stock_based_compensation_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Stock-Based Compensation to Revenue
+
+get_deferred_revenue_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Deferred Revenue Ratio
+
+get_capex_intensity:
+  chart: line
+  transpose: true
+  format: percent
+  title: Capex Intensity
+  subtitle: Capital expenditure as a share of revenue
+
+get_capex_to_depreciation_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Capex to Depreciation
+  subtitle: Above 1 the asset base grows, below 1 it shrinks
+  levels:
+  - 1
+
+get_net_capital_expenditure:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Net Capital Expenditure
+  subtitle: Capital expenditure minus depreciation and amortization
+  columns:
+  - MSFT
+  - AMZN
+  - GOOGL
+  - META
+
+get_asset_growth:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Asset Growth
+  subtitle: Yearly change in total assets
+  levels:
+  - 0
+
+get_net_operating_assets:
+  chart: line
+  transpose: true
+  format: percent
+  title: Net Operating Assets
+  subtitle: As a share of total assets at the start of the year
+
+get_current_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Current Ratio
+  subtitle: Below 1, current liabilities exceed current assets
+  levels:
+  - 1
+
+get_quick_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Quick Ratio
+  subtitle: Below 1, liquid assets do not cover current liabilities
+  levels:
+  - 1
+
+get_cash_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Cash Ratio
+  subtitle: Cash and short term investments per unit of current liabilities
+
+get_working_capital:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Working Capital
+  subtitle: Current assets minus current liabilities
+  levels:
+  - 0
+
+get_operating_cash_flow_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Operating Cash Flow Ratio
+  subtitle: Operating cash flow per unit of current liabilities
+
+get_operating_cash_flow_sales_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Operating Cash Flow to Sales
+
+get_short_term_coverage_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Short Term Coverage
+  subtitle: Operating cash flow per unit of short term debt; below 1 it does not cover it
+  levels:
+  - 1
+
+get_defensive_interval_ratio:
+  chart: bar
+  transpose: true
+  format: number
+  title: Defensive Interval
+  subtitle: Days cash, short term investments and receivables cover the daily operating expenses
+
+get_gross_margin:
+  chart: line
+  transpose: true
+  format: percent
+  title: Gross Margin
+
+get_operating_margin:
+  chart: line
+  transpose: true
+  format: percent
+  title: Operating Margin
+
+get_net_profit_margin:
+  chart: line
+  transpose: true
+  format: percent
+  title: Net Profit Margin
+
+get_ebitda_margin:
+  chart: line
+  transpose: true
+  format: percent
+  title: EBITDA Margin
+
+get_interest_burden_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Interest Burden
+  subtitle: Pre-tax income as a share of operating income
+
+get_income_before_tax_profit_margin:
+  chart: line
+  transpose: true
+  format: percent
+  title: Pre-Tax Profit Margin
+
+get_effective_tax_rate:
+  chart: line
+  transpose: true
+  format: percent
+  title: Effective Tax Rate
+
+get_return_on_assets:
+  chart: line
+  transpose: true
+  format: percent
+  title: Return on Assets
+
+get_cash_return_on_assets:
+  chart: line
+  transpose: true
+  format: percent
+  title: Cash Return on Assets
+
+get_return_on_equity:
+  chart: line
+  transpose: true
+  format: percent
+  title: Return on Equity
+
+get_return_on_invested_capital:
+  chart: line
+  transpose: true
+  format: percent
+  title: Return on Invested Capital
+
+get_return_on_net_operating_assets:
+  chart: line
+  transpose: true
+  format: percent
+  title: Return on Net Operating Assets
+  columns:
+  - KO
+  - DUK
+  subtitle: 'Apple is left out: its net operating assets are close to zero, which makes the ratio run into the thousands of percent'
+
+get_net_borrowing_cost:
+  chart: line
+  transpose: true
+  format: percent
+  title: Net Borrowing Cost
+  subtitle: After-tax net financial expense per unit of net financial obligations
+  levels:
+  - 0
+
+get_financial_leverage:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Financial Leverage
+  subtitle: Net financial obligations per unit of common equity; below zero, net financial assets
+  levels:
+  - 0
+
+get_income_quality_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Income Quality
+  subtitle: Operating cash flow per unit of net income; above 1, earnings are backed by cash
+  levels:
+  - 1
+
+get_return_on_tangible_assets:
+  chart: line
+  transpose: true
+  format: percent
+  title: Return on Tangible Assets
+
+get_return_on_capital_employed:
+  chart: line
+  transpose: true
+  format: percent
+  title: Return on Capital Employed
+
+get_net_income_per_ebt:
+  chart: line
+  transpose: true
+  format: percent
+  title: Net Income per EBT
+  subtitle: The share of pre-tax income kept after tax
+
+get_free_cash_flow_operating_cash_flow_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Free Cash Flow to Operating Cash Flow
+  subtitle: The share of operating cash flow left after capital expenditure
+  levels:
+  - 0
+
+get_free_cash_flow_margin:
+  chart: line
+  transpose: true
+  format: percent
+  title: Free Cash Flow Margin
+
+get_tax_burden_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Tax Burden
+  subtitle: Net income as a share of pre-tax income
+
+get_EBT_to_EBIT:
+  chart: line
+  transpose: true
+  format: percent
+  title: EBT to EBIT
+  subtitle: Pre-tax income as a share of EBIT
+
+get_EBIT_to_revenue:
+  chart: line
+  transpose: true
+  format: percent
+  title: EBIT to Revenue
+
+get_cash_tax_rate:
+  chart: line
+  transpose: true
+  format: percent
+  title: Cash Tax Rate
+  subtitle: Income taxes paid as a share of pre-tax income
+
+get_tax_rate_divergence:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Tax Rate Divergence
+  subtitle: Cash tax rate minus effective tax rate, in percentage points
+  levels:
+  - 0
+
+get_gross_profitability:
+  chart: line
+  transpose: true
+  format: percent
+  title: Gross Profitability
+  subtitle: Gross profit over total assets (Novy-Marx)
+
+get_operating_profitability:
+  chart: line
+  transpose: true
+  format: percent
+  title: Operating Profitability
+  subtitle: Operating profit after interest over book equity (Fama and French)
+
+get_cash_based_operating_profitability:
+  chart: line
+  transpose: true
+  format: percent
+  title: Cash-Based Operating Profitability
+  subtitle: Over total assets (Ball, Gerakos, Linnainmaa and Nikolaev)
+
+get_cash_return_on_invested_capital:
+  chart: line
+  transpose: true
+  format: percent
+  title: Cash Return on Invested Capital
+
+get_free_cash_flow_conversion:
+  chart: line
+  transpose: true
+  format: percent
+  title: Free Cash Flow Conversion
+  subtitle: Free cash flow as a share of net income
+  levels:
+  - 1
+
+get_free_cash_flow_to_ebitda_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Free Cash Flow to EBITDA
+
+get_percent_accruals:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Percent Accruals
+  subtitle: Accruals as a share of net income (Hafzalla, Lundholm and Van Winkle)
+  levels:
+  - 0
+
+get_debt_to_assets_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Debt to Assets
+
+get_asset_coverage_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Asset Coverage
+  subtitle: Tangible assets net of non-debt current liabilities per unit of debt
+
+get_debt_to_equity_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Debt to Equity
+
+get_interest_coverage_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Interest Coverage
+  subtitle: EBIT per unit of interest expense; below 1 it does not cover the interest
+  levels:
+  - 1
+
+get_equity_multiplier:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Equity Multiplier
+  subtitle: Total assets per unit of equity
+
+get_debt_service_coverage_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Debt Service Coverage
+  subtitle: EBITDA over interest and debt due within a year; below 1 it does not cover them
+  levels:
+  - 1
+
+get_free_cash_flow_yield:
+  chart: line
+  transpose: true
+  format: percent
+  title: Free Cash Flow Yield
+  subtitle: Free cash flow over market cap
+
+get_net_debt_to_ebitda_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Net Debt to EBITDA
+
+get_net_debt_to_equity_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Net Debt to Equity
+
+get_gross_debt_to_ebitda_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Gross Debt to EBITDA
+
+get_cash_flow_coverage_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Cash Flow Coverage
+  subtitle: Operating cash flow per unit of total debt
+
+get_capex_coverage_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Capex Coverage
+  subtitle: Operating cash flow per unit of capital expenditure; below 1 it does not cover it
+  levels:
+  - 1
+
+get_capex_dividend_coverage_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Capex and Dividend Coverage
+  subtitle: Operating cash flow per unit of capital expenditure plus dividends
+  levels:
+  - 1
+
+get_debt_to_capital_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Debt to Capital
+
+get_preferred_dividend_coverage_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Preferred Dividend Coverage
+  subtitle: Net income per unit of preferred dividends
+
+get_interest_paid_to_expense_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Interest Paid to Interest Expense
+  subtitle: Cash interest paid per unit of reported interest expense
+  levels:
+  - 1
+
+get_ebitda_interest_coverage_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EBITDA Interest Coverage
+  levels:
+  - 1
+
+get_ebitda_minus_capex_interest_coverage_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EBITDA Minus Capex Interest Coverage
+  levels:
+  - 1
+
+get_cash_interest_coverage_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Cash Interest Coverage
+  levels:
+  - 1
+
+get_funds_from_operations_to_debt_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Funds From Operations to Debt
+
+get_discretionary_cash_flow_to_debt_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Discretionary Cash Flow to Debt
+  levels:
+  - 0
+
+get_degree_of_operating_leverage:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Degree of Operating Leverage
+  subtitle: Percentage change in operating income per percentage change in revenue
+  levels:
+  - 1
+
+get_degree_of_financial_leverage:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Degree of Financial Leverage
+  subtitle: Percentage change in net income per percentage change in operating income
+  levels:
+  - 1
+
+get_degree_of_total_leverage:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Degree of Total Leverage
+  subtitle: Percentage change in net income per percentage change in revenue
+  levels:
+  - 1
+
+get_earnings_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Earnings per Share
+
+get_revenue_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Revenue per Share
+
+get_price_to_earnings_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Price to Earnings
+
+get_cyclically_adjusted_price_to_earnings_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Cyclically Adjusted Price to Earnings
+  subtitle: Price over the ten-year average of inflation-adjusted earnings (Shiller CAPE)
+
+get_price_to_earnings_growth_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Price to Earnings Growth
+  subtitle: P/E over earnings growth in percent; Lynch's rule of thumb puts fair value at 1
+  levels:
+  - 1
+
+get_dividend_adjusted_price_to_earnings_growth_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Dividend-Adjusted PEG
+  subtitle: P/E over earnings growth plus dividend yield, in percent
+  levels:
+  - 1
+
+get_forward_price_earnings_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Forward Price to Earnings
+  subtitle: Current price over the analysts' consensus earnings per fiscal year
+
+get_forward_price_earnings_growth_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Forward PEG
+  subtitle: Forward P/E over expected earnings growth in percent
+  levels:
+  - 1
+
+get_book_value_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Book Value per Share
+
+get_price_to_book_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Price to Book
+  levels:
+  - 1
+
+get_interest_debt_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Interest-Bearing Debt per Share
+
+get_capex_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Capex per Share
+
+get_dividend_yield:
+  chart: line
+  transpose: true
+  format: percent
+  title: Dividend Yield
+
+get_weighted_dividend_yield:
+  chart: line
+  transpose: true
+  format: percent
+  title: Weighted Dividend Yield
+  subtitle: Dividends paid per weighted average share over the price
+
+get_price_to_cash_flow_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Price to Cash Flow
+
+get_price_to_free_cash_flow_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Price to Free Cash Flow
+
+get_price_to_sales_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Price to Sales
+
+get_market_cap:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Market Cap
+  columns:
+  - AAPL
+  - MSFT
+  - GOOGL
+
+get_enterprise_value:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Enterprise Value
+
+get_ev_to_sales_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EV to Sales
+
+get_ev_to_ebitda_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EV to EBITDA
+
+get_ev_to_operating_cashflow_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EV to Operating Cash Flow
+
+get_earnings_yield:
+  chart: line
+  transpose: true
+  format: percent
+  title: Earnings Yield
+  subtitle: Earnings per share over the price
+  levels:
+  - 0
+
+get_dividend_payout_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Dividend Payout Ratio
+  subtitle: Dividends as a share of net income
+
+get_reinvestment_rate:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Reinvestment Rate
+  subtitle: The share of net income kept after dividends
+  levels:
+  - 0
+
+get_tangible_asset_value:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Tangible Asset Value
+  subtitle: Total assets minus liabilities, goodwill and intangible assets
+  levels:
+  - 0
+
+get_net_current_asset_value:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Net Current Asset Value
+  subtitle: Current assets minus total liabilities (Graham)
+  levels:
+  - 0
+
+get_ev_to_ebit:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EV to EBIT
+
+get_ev_to_free_cash_flow_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EV to Free Cash Flow
+
+get_buyback_yield:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Buyback Yield
+  subtitle: Net share repurchases over market cap
+
+get_shareholder_yield:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Shareholder Yield
+  subtitle: Dividends plus net share repurchases over market cap
+
+get_sbc_adjusted_free_cash_flow:
+  chart: bar
+  transpose: true
+  format: usd
+  title: SBC-Adjusted Free Cash Flow
+  subtitle: Free cash flow minus stock-based compensation
+
+get_free_cash_flow_payout_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Free Cash Flow Payout Ratio
+  subtitle: Dividends as a share of free cash flow; above 100% they exceed it
+  levels:
+  - 1
+
+get_ev_to_invested_capital_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: EV to Invested Capital
+
+get_price_to_tangible_book_ratio:
+  chart: line
+  transpose: true
+  format: multiple
+  title: Price to Tangible Book
+  levels:
+  - 1
+
+get_net_share_issuance:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Net Share Issuance
+  subtitle: Log change in split-adjusted shares over a year (Pontiff and Woodgate)
+  levels:
+  - 0
+
+get_composite_equity_issuance:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Composite Equity Issuance
+  subtitle: Five-year market cap growth not explained by the stock return (Daniel and Titman)
+  levels:
+  - 0
+
+get_net_external_financing:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Net External Financing
+  subtitle: Net cash raised from shareholders and lenders over average total assets (Bradshaw, Richardson and Sloan)
+  levels:
+  - 0
+
+get_market_cap_to_gdp:
+  chart: line
+  format: percent
+  title: Market Cap to GDP
+  subtitle: The basket's combined market cap as a share of China's nominal GDP
+
+get_factor_analysis:
+  chart: coef
+  ticker: 12 Months
+  level: 1
+  rows:
+  - get_price_to_earnings_ratio: Price to Earnings
+  - get_price_to_book_ratio: Price to Book
+  - get_return_on_equity: Return on Equity
+  derive:
+    SE: f['Mean IC'] / f['t-Statistic']
+  coef: Mean IC
+  se: SE
+  p: p-Value
+  format: ratio
+  title: Information Coefficient
+  subtitle: Mean rank correlation of each ratio with the next 12 months' return, with its 95% interval
+
+collect_custom_ratios:
+  chart: tabs
+  title: Custom Ratios
+  tabs:
+  - label: Defensive Interval
+    chart: line
+    transpose: true
+    columns:
+    - Defensive Interval
+    format: number
+    subtitle: Days the quick assets cover the cash operating expenses
+  - label: Quick Assets and Cash Expenses
+    chart: bar
+    transpose: true
+    columns:
+    - Quick Assets
+    - Cash Op Expenses
+    format: usd
+
+collect_efficiency_ratios:
+  chart: tabs
+  title: Efficiency Ratios
+  tabs:
+  - label: Working Capital Cycle
+    chart: bar
+    transpose: true
+    columns: &id004
+    - Days of Inventory Outstanding
+    - Days of Sales Outstanding
+    - Days of Accounts Payable Outstanding
+    - Cash Conversion Cycle
+    format: number
+    levels:
+    - 0
+    subtitle: Days
+  - label: Asset Turnover
+    chart: line
+    transpose: true
+    columns:
+    - Asset Turnover Ratio
+    - Fixed Asset Turnover
+    format: ratio
+    subtitle: Revenue per unit of assets
+  - label: Cost Ratios
+    chart: line
+    transpose: true
+    columns:
+    - SGA-to-Revenue Ratio
+    - R&D Intensity Ratio
+    - SBC to Revenue Ratio
+    - Capex Intensity
+    format: percent
+    subtitle: As a share of revenue
+
+collect_liquidity_ratios:
+  chart: tabs
+  title: Liquidity Ratios
+  tabs:
+  - label: Liquidity Ratios
+    chart: line
+    transpose: true
+    columns: &id003
+    - Current Ratio
+    - Quick Ratio
+    - Cash Ratio
+    format: ratio
+    levels:
+    - 1
+  - label: Working Capital
+    chart: bar
+    transpose: true
+    columns:
+    - Working Capital
+    format: usd
+    levels:
+    - 0
+  - label: Operating Cash Flow
+    chart: line
+    transpose: true
+    columns:
+    - Operating Cash Flow Ratio
+    - Operating Cash Flow to Sales Ratio
+    format: percent
+
+collect_profitability_ratios:
+  chart: tabs
+  title: Profitability Ratios
+  tabs:
+  - label: Margins
+    chart: line
+    transpose: true
+    columns: &id001
+    - Gross Margin
+    - Operating Margin
+    - EBITDA Margin
+    - Net Profit Margin
+    - Free Cash Flow Margin
+    format: percent
+  - label: Returns
+    chart: line
+    transpose: true
+    columns: &id002
+    - Return on Assets
+    - Return on Equity
+    - Return on Invested Capital
+    - Return on Capital Employed
+    format: percent
+  - label: Cash Quality
+    chart: line
+    transpose: true
+    columns:
+    - Income Quality Ratio
+    - Free Cash Flow Conversion
+    format: ratio
+    levels:
+    - 1
+    subtitle: Operating and free cash flow per unit of net income
+
+collect_solvency_ratios:
+  chart: tabs
+  title: Solvency Ratios
+  tabs:
+  - label: Leverage
+    chart: line
+    transpose: true
+    columns:
+    - Debt-to-Assets Ratio
+    - Debt-to-Capital Ratio
+    format: percent
+  - label: Debt to EBITDA
+    chart: line
+    transpose: true
+    columns:
+    - Gross Debt to EBITDA Ratio
+    - Net-Debt to EBITDA Ratio
+    format: multiple
+  - label: Coverage
+    chart: line
+    transpose: true
+    columns:
+    - Debt Service Coverage Ratio
+    - CAPEX Coverage Ratio
+    - Dividend CAPEX Coverage Ratio
+    format: multiple
+    levels:
+    - 1
+
+collect_valuation_ratios:
+  chart: tabs
+  title: Valuation Ratios
+  tabs:
+  - label: Multiples
+    chart: line
+    transpose: true
+    columns: &id005
+    - Price-to-Earnings
+    - Price-to-Free-Cash-Flow
+    - EV-to-EBITDA
+    - Price-to-Sales
+    format: multiple
+  - label: Yields
+    chart: line
+    transpose: true
+    columns:
+    - Earnings Yield
+    - Dividend Yield
+    - Buyback Yield
+    - Shareholder Yield
+    format: percent
+  - label: Per Share
+    chart: bar
+    transpose: true
+    columns:
+    - Earnings per Share
+    - Book Value per Share
+    - Revenue per Share
+    format: price
+
+collect_all_ratios:
+  chart: tabs
+  title: All Ratios
+  tabs:
+  - label: Margins
+    chart: line
+    transpose: true
+    columns: *id001
+    format: percent
+  - label: Returns
+    chart: line
+    transpose: true
+    columns: *id002
+    format: percent
+  - label: Liquidity
+    chart: line
+    transpose: true
+    columns: *id003
+    format: ratio
+    levels:
+    - 1
+  - label: Working Capital Cycle
+    chart: bar
+    transpose: true
+    columns: *id004
+    format: number
+    levels:
+    - 0
+    subtitle: Days
+  - label: Valuation
+    chart: line
+    transpose: true
+    columns: *id005
+    format: multiple

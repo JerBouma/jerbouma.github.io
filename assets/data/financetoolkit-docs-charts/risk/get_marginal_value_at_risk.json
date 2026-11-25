@@ -1,0 +1,1 @@
+{"charts":{"get_marginal_value_at_risk":{"title":"Marginal Value at Risk","type":"hbar","x":["VTI","TLT","GLD"],"series":[{"name":"Marginal VaR","data":[-0.0159,-0.0078,-0.0053]}],"format":"percent","subtitle":"Change in the portfolio's Value at Risk per unit of extra weight in each asset"}}}

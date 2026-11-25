@@ -1,0 +1,1 @@
+{"charts":{"get_amihud_illiquidity":{"title":"Amihud Illiquidity","type":"hbar","x":["LYFT","ETSY","SNAP","Benchmark"],"series":[{"name":"Amihud Illiquidity","data":[0.1277,0.0768,0.0634,0.0002]}],"format":"decimal","subtitle":"Price impact per dollar traded (absolute return per billion dollars of volume)"}}}

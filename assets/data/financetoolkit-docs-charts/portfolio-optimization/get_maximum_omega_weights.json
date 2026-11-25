@@ -1,0 +1,1 @@
+{"charts":{"get_maximum_omega_weights":{"title":"Maximum Omega Ratio Weights","type":"hbar","x":["XOM","MSFT","JNJ","AAPL"],"series":[{"name":"Weight","data":[0.3903,0.2818,0.2663,0.0616]}],"format":"percent"}}}

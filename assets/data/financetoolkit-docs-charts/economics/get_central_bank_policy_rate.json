@@ -1,0 +1,1 @@
+{"charts":{"get_central_bank_policy_rate":{"title":"Central Bank Policy Rate","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"Netherlands","data":[-0.005,0.0044,0.0362,0.0356,0.0213]},{"name":"Germany","data":[-0.005,0.0044,0.0362,0.0356,0.0213]},{"name":"United States","data":[0.0012,0.0438,0.0538,0.0438,0.0362]}],"format":"percent"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_risk_contributions":{"title":"Weight and Risk Contribution","type":"bar","x":["AAPL","MSFT","JNJ","XOM"],"series":[{"name":"Weight","data":[0.4,0.3,0.2,0.1]},{"name":"Percentage Contribution","data":[0.5368,0.3487,0.0625,0.052]}],"format":"percent","subtitle":"Each asset's share of the capital and of the portfolio's CVaR","cards":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_risk_parity_weights":{"title":"Risk Parity Weights","type":"bar","x":["AAPL","MSFT","JNJ","XOM"],"series":[{"name":"Weight","data":[0.1991,0.2388,0.3,0.2621]},{"name":"Risk Contribution","data":[0.2763,0.2816,0.1575,0.2846]}],"format":"percent","subtitle":"Weights set so that each asset adds an equal share of the risk","cards":false}}}

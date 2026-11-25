@@ -1,0 +1,1 @@
+{"charts":{"get_ev_to_invested_capital_ratio":{"title":"EV to Invested Capital","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[18.6291,18.8365,22.2424,32.1523,29.6073]},{"name":"F","data":[1.2546,1.0247,1.0422,0.97,1.0985]},{"name":"KO","data":[5.1209,5.6096,5.0137,5.2427,4.9835]}],"format":"multiple"}}}

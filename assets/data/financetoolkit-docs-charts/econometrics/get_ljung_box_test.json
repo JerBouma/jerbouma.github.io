@@ -1,0 +1,1 @@
+{"charts":{"get_ljung_box_test":{"title":"Ljung-Box Statistic","type":"bar","x":["WMT","COST","TGT"],"series":[{"name":"Ljung-Box Statistic","data":[12.9482,10.9639,12.0004]},{"name":"Critical Value 5%","data":[18.307,18.307,18.307]}],"format":"number","subtitle":"Against the 5% critical value of a chi-squared with 10 lags; above it, returns are autocorrelated"}}}

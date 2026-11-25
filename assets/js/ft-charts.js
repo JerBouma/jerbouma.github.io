@@ -153,14 +153,17 @@
           return sign + a.toFixed(0);
         }
         case 'usd': {
-          var a = Math.abs(v);
+          // the sign before the dollar: -$5B
+          var a = Math.abs(v), sign = v < 0 ? '-$' : '$';
           if (a === 0) return '$0';
-          if (a >= 1e12) return '$' + (v / 1e12).toFixed(2) + 'T';
-          if (a >= 1e9) return '$' + (v / 1e9).toFixed(0) + 'B';
-          return '$' + (v / 1e6).toFixed(0) + 'M';
+          if (a >= 1e12) return sign + (a / 1e12).toFixed(2) + 'T';
+          if (a >= 1e9) return sign + (a / 1e9).toFixed(a >= 1e10 ? 0 : 1) + 'B';
+          if (a >= 1e6) return sign + (a / 1e6).toFixed(a >= 1e7 ? 0 : 1) + 'M';
+          if (a >= 1e3) return sign + (a / 1e3).toFixed(a >= 1e4 ? 0 : 1) + 'K';
+          return sign + a.toFixed(2);
         }
         case 'multiple': return v.toFixed(2) + 'x';
-        case 'price': return '$' + v.toFixed(2);
+        case 'price': return (v < 0 ? '-$' : '$') + (Math.abs(v) >= 1000 ? Math.round(Math.abs(v)).toLocaleString('en-US') : Math.abs(v).toFixed(2));
         case 'ratio': return v.toFixed(2);
         // small values such as daily variances or option Greeks: three significant digits
         case 'decimal': return v === 0 ? '0' : Math.abs(v) >= 1 ? v.toFixed(2) : String(Number(v.toPrecision(3)));
@@ -177,8 +180,8 @@
     var low = a.data.map(function (v, i) { return v === null || b.data[i] === null ? null : Math.min(v, b.data[i]); });
     var band = a.data.map(function (v, i) { return v === null || b.data[i] === null ? null : Math.abs(v - b.data[i]); });
     return [
-      { name: '_low', type: 'line', data: low, stack: 'cloud', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
-      { name: 'Cloud', type: 'line', data: band, stack: 'cloud', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.18)' }, tooltip: { show: false }, silent: true }
+      { name: '_low', type: 'line', data: low, stack: 'cloud', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+      { name: 'Cloud', type: 'line', data: band, stack: 'cloud', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.18)' }, tooltip: { show: false }, silent: true }
     ];
   }
 
@@ -238,6 +241,28 @@
         label: { color: muted, fontSize: 11, formatter: '{b}' },
         data: spec.markers.map(function (m) { return { name: m.label || '', xAxis: m.x }; }) };
     }
+    // zones: shaded ranges of the value axis with a meaning, such as the Altman Z-Score's
+    // distress zone; red, amber or green (tone) and labelled at their left edge
+    if (spec.zones && series.length) {
+      var tones = { bad: 'rgba(239, 68, 68, 0.10)', mid: 'rgba(245, 158, 11, 0.09)', good: 'rgba(34, 197, 94, 0.10)' };
+      var area = series[0].markArea || { silent: true, data: [] };
+      area.silent = true;
+      // an open edge reaches just past the data, so the zone fills the plot without stretching it
+      var vals = [];
+      spec.series.forEach(function (s) { if (!s.reference) s.data.forEach(function (v) { if (typeof v === 'number') vals.push(v); }); });
+      var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals), pad = (hi - lo || Math.abs(hi) || 1) * 0.08;
+      // bars grow from zero, so the axis always holds zero: an open edge reaches it too
+      if (isBar) { lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
+      var none = function (v) { return v === null || v === undefined; };
+      area.data = (area.data || []).concat(spec.zones.filter(function (z) {
+        return (none(z.from) || z.from < hi + pad) && (none(z.to) || z.to > lo - pad);
+      }).map(function (z) {
+        return [{ name: z.label || '', yAxis: none(z.from) ? Math.min(isBar && lo === 0 ? 0 : lo - pad, z.to) : z.from,
+                  itemStyle: { color: tones[z.tone] || tones.mid }, label: { color: muted, fontSize: 11, position: 'insideTopLeft' } },
+                { yAxis: none(z.to) ? Math.max(hi + pad, z.from) : z.to }];
+      }));
+      series[0].markArea = area;
+    }
     if (spec.cloud) series = cloudSeries(spec).concat(series);
     var legendNames = spec.series.filter(function (s) { return !s.reference; }).map(function (s) { return s.name; });
     // direct labels: a line chart of two to five series names each line at its end,
@@ -247,6 +272,8 @@
     var direct = !isBar && !spec.stack && !spec.cloud && spec.legend !== true && spec.directLabels !== false &&
       lines.length >= 2 && lines.length <= 5 && window.innerWidth >= 700 && !lines.some(function (s) { return s.axis === 1; }) &&
       lines.every(function (s) { return s.data.length && s.data[s.data.length - 1] !== null && s.data[s.data.length - 1] !== undefined; });
+    // one series named like its tab: the tab already says it, no legend
+    var solo = lines.length === 1 && spec.label !== undefined && String(lines[0].name) === String(spec.label);
     var labelRoom = 0;
     if (direct) {
       series.forEach(function (se, i) {
@@ -263,8 +290,8 @@
       animationDuration: 600,
       color: PALETTE,
       textStyle: { fontFamily: 'inherit', color: text, fontSize: 13 },
-      grid: { left: 8, right: direct ? labelRoom : 28, top: direct ? 16 : 44, bottom: 12 + (spec.xname ? 26 : 0), containLabel: true },
-      legend: { show: !direct, data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
+      grid: { left: 8, right: direct ? labelRoom : 28, top: direct || solo ? 16 : 44, bottom: 12 + (spec.xname ? 26 : 0), containLabel: true },
+      legend: { show: !direct && !solo, data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
       tooltip: {
         trigger: 'axis',
         backgroundColor: css('--masthead-bg', '#0f1115'),
@@ -536,8 +563,8 @@
           xAxis: { type: 'category', data: chart.x, boundaryGap: false, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12, interval: function (i) { return i === 0 || i === last; } } },
           yAxis: { type: 'value', show: false, scale: true },
           series: [
-            { name: '_low', type: 'line', data: low, stack: 'gap', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
-            { name: '_gap', type: 'line', data: band, stack: 'gap', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.14)' }, tooltip: { show: false }, silent: true }
+            { name: '_low', type: 'line', data: low, stack: 'gap', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+            { name: '_gap', type: 'line', data: band, stack: 'gap', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.14)' }, tooltip: { show: false }, silent: true }
           ].concat(lines)
         }, true);
       });
@@ -558,6 +585,8 @@
   function asCards(chart) {
     if (chart.cards !== undefined) return !!chart.cards;
     if (chart.type !== 'bar' || chart.stack || !chart.series || !chart.x) return false;
+    // a level to read the bars against (p-value 0.05, ratio 1) needs the axis, not cards
+    if (chart.series.some(function (s) { return s.reference; })) return false;
     var series = chart.series.filter(function (s) { return !s.reference; });
     if (!series.length || series.some(function (s) { return s.axis === 1; })) return false;
     if (chart.x.length * series.length > 6) return false;
@@ -668,7 +697,7 @@
           // highlight: index of a bar to set apart, e.g. the share price next to model values
           data: chart.series[0].data.map(function (v, i) { return i === chart.highlight ? { value: v, itemStyle: { color: PALETTE[2] } } : v; }).reverse(),
           itemStyle: { color: PALETTE[0], borderRadius: [0, 4, 4, 0] },
-          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return fmt(p.value); } }
+          label: { show: chart.labels !== false, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return fmt(p.value); } }
         }]
       }, true);
     }
@@ -760,7 +789,8 @@
         xAxis: { type: 'value', scale: true, splitNumber: 4, name: chart.xname, nameLocation: 'middle', nameGap: 28, nameTextStyle: { color: c.muted }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fx, hideOverlap: true } },
         yAxis: { type: 'value', scale: true, name: chart.yname, nameTextStyle: { color: c.muted, align: 'left' }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fy } },
         series: [{
-          type: 'scatter', symbolSize: 18,
+          // labels: false for a cloud of unnamed points (simulations): small dots, no names
+          type: 'scatter', symbolSize: chart.labels === false ? 9 : 18,
           // pos: where a point's name goes when it would cover a neighbour ('left', 'top', 'topleft', 'bottom', 'bottomleft')
           // points in the right-hand third carry their name on the left, so the plot
           // can use the full width instead of keeping a margin free for labels
@@ -776,7 +806,7 @@
             else if (pos) d.label = { position: pos };
             return d;
           }),
-          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } },
+          label: { show: chart.labels !== false, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } },
           // points close together: push their names apart instead of printing them over each other
           labelLayout: { moveOverlap: 'shiftY' },
           markLine: lines.length ? { silent: true, symbol: 'none', lineStyle: { type: 'dashed', width: 1.5, color: c.muted }, data: lines } : undefined
@@ -798,7 +828,11 @@
     var data = [];
     chart.values.forEach(function (row, i) { row.forEach(function (v, j) { if (v !== null) data.push([j, i, v]); }); });
     // cell labels: in the chart's format (e.g. percent), else two decimals
-    var cell = chart.format ? formatter(chart.format) : function (v) { return v.toFixed(chart.digits !== undefined ? chart.digits : 2); };
+    // 0/1 flags (a crisis year or not): the colour says it, no number in each cell
+    // a large grid (holdings by year) reads by colour; the values stay in the tooltip
+    var crowded = chart.x.length > 12 || chart.y.length > 15;
+    var binary = chart.values.every(function (row) { return row.every(function (v) { return v === null || v === 0 || v === 1; }); });
+    var cell = chart.digits !== undefined ? function (v) { return v.toFixed(chart.digits); } : chart.format ? formatter(chart.format) : function (v) { return v.toFixed(2); };
     function draw() {
       var c = axisColors();
       inst.setOption({
@@ -809,7 +843,7 @@
         xAxis: { type: 'category', data: chart.x, splitArea: { show: false }, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0, rotate: n > 6 ? 40 : 0 } },
         yAxis: { type: 'category', data: chart.y, inverse: true, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0 } },
         visualMap: { min: chart.min !== undefined ? chart.min : -1, max: chart.max !== undefined ? chart.max : 1, calculable: false, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 120, textStyle: { color: c.muted }, inRange: { color: (function (c) { return chart.reverse ? c.slice().reverse() : c; })(chart.scale === 'sequential' ? ['rgba(148,163,184,0.15)', '#38bdf8'] : ['#f472b6', 'rgba(148,163,184,0.15)', '#38bdf8']) } },
-        series: [{ type: 'heatmap', data: data, label: { show: true, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return cell(p.data[2]); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]
+        series: [{ type: 'heatmap', data: data, label: { show: !binary && !crowded, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return cell(p.data[2]); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]
       }, true);
     }
     draw();
@@ -832,8 +866,8 @@
     var mid = chart.center || 'median', outer = chart.range || '5–95%';
     function band(low, high, name, color, opacity, stack) {
       return [
-        { name: '_' + stack, type: 'line', data: low, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
-        { name: name, type: 'line', data: high.map(function (v, i) { return v === null || low[i] === null ? null : v - low[i]; }), stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: color, opacity: opacity }, tooltip: { show: false }, silent: true }
+        { name: '_' + stack, type: 'line', data: low, stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+        { name: name, type: 'line', data: high.map(function (v, i) { return v === null || low[i] === null ? null : v - low[i]; }), stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: color, opacity: opacity }, tooltip: { show: false }, silent: true }
       ];
     }
     var c = axisColors(), series = [], legend = [];
@@ -891,6 +925,15 @@
     instances.push({ draw: draw });
   }
 
+
+  // tabs with their own subtitle: one line under the title that follows the active tab
+  function tabSubtitle(title, chart, specs) {
+    if (chart.subtitle || !specs.some(function (s) { return s.subtitle; })) return function () {};
+    var sub = document.createElement('p');
+    sub.className = 'ft-chart__subtitle';
+    title.insertAdjacentElement('afterend', sub);
+    return function (i) { sub.textContent = specs[i].subtitle || ''; sub.hidden = !specs[i].subtitle; };
+  }
 
   // Tab buttons that would wrap onto more lines become one dropdown with the same
   // choices; the buttons come back when there is room again
@@ -955,11 +998,13 @@
       return sub;
     });
     compactTabs(tabs);
+    var subtitle = tabSubtitle(title, chart, chart.panels);
     var drawn = [];
     function show(i) {
+      subtitle(i);
       subs.forEach(function (sub, j) { sub.hidden = j !== i; });
       Array.prototype.forEach.call(tabs.children, function (x, j) { x.classList.toggle('is-active', j === i); });
-      if (!drawn[i]) { drawn[i] = true; render(subs[i], Object.assign({}, chart.panels[i], { title: '' })); }
+      if (!drawn[i]) { drawn[i] = true; render(subs[i], Object.assign({}, chart.panels[i], { title: '', subtitle: '' })); }
     }
     Array.prototype.forEach.call(tabs.children, function (b, i) { b.addEventListener('click', function () { show(i); }); });
     show(0);
@@ -1034,8 +1079,8 @@
             var width = dn.data.map(function (v, i) { return on(i) ? Math.abs(up.data[i] - v) : null; });
             var stack = 'band' + side;
             series.unshift(
-              { name: '_low' + side, type: 'line', data: low, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 },
-              { name: '_band' + side, type: 'line', data: width, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: fade(colors[side], 0.14) }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 });
+              { name: '_low' + side, type: 'line', data: low, stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 },
+              { name: '_band' + side, type: 'line', data: width, stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: fade(colors[side], 0.14) }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 });
           });
         }
       }
@@ -1087,6 +1132,9 @@
   function render(box, chart) {
     if (chart.type === 'ta') return renderTa(box, chart);
     if (chart.type === 'panels') return renderPanels(box, chart);
+    // tabs holding another kind of chart (coefficients, a scatter, horizontal bars...) draw as panels
+    if (chart.type === 'tabs' && chart.tabs.some(function (s) { return ['line', 'bar', 'area', 'fan', undefined].indexOf(s.type) < 0 || asCards(s); }))
+      return renderPanels(box, Object.assign({}, chart, { panels: chart.tabs }));
     if (asCards(chart)) return renderCards(box, chart);
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
@@ -1127,9 +1175,11 @@
     box.appendChild(canvas);
     if (tabs) compactTabs(tabs);
 
+    var subtitle = specs.length > 1 ? tabSubtitle(title, chart, specs) : function () {};
     var instance = initChart(canvas);
     var current = 0;
-    function draw() { instance.setOption(specs[current].type === 'fan' ? fanOption(specs[current]) : option(specs[current]), true); }
+    subtitle(0);
+    function draw() { subtitle(current); instance.setOption(specs[current].type === 'fan' ? fanOption(specs[current]) : option(specs[current]), true); }
     draw();
     instances.push({ instance: instance, draw: draw });
     if (tabs) {

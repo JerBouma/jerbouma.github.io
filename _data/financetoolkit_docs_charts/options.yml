@@ -1,0 +1,464 @@
+get_option_chains:
+  chart: none
+  reason: An option chain is a quote sheet, read per strike as a table
+
+collect_all_greeks:
+  chart: tabs
+  title: Option Greeks
+  tabs:
+    - label: Delta
+      chart: line
+      columns: [Delta]
+      format: decimal
+      xname: Strike price
+      subtitle: By strike, for the example's valuation date and expiration
+    - label: Gamma
+      chart: line
+      columns: [Gamma]
+      format: decimal
+      xname: Strike price
+      subtitle: By strike, for the example's valuation date and expiration
+    - label: Vega
+      chart: line
+      columns: [Vega]
+      format: decimal
+      xname: Strike price
+      subtitle: By strike, for the example's valuation date and expiration
+    - label: Theta
+      chart: line
+      columns: [Theta]
+      format: decimal
+      xname: Strike price
+      subtitle: By strike, for the example's valuation date and expiration
+
+collect_first_order_greeks:
+  chart: tabs
+  title: First-Order Greeks
+  expr: "(lambda f: f.loc[:, [c for c in f.columns if c[0] in set(f.columns.get_level_values(0).unique()[[0, 7, -1]])]])(toolkit.options.collect_first_order_greeks().loc['AAPL'])"
+  tabs:
+    - label: Delta
+      chart: line
+      ticker: Delta
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in price per 1 change in the stock price; by strike, a line per expiration
+    - label: Vega
+      chart: line
+      ticker: Vega
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in price per 1 point change in volatility; by strike, a line per expiration
+    - label: Theta
+      chart: line
+      ticker: Theta
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in price per day; by strike, a line per expiration
+    - label: Rho
+      chart: line
+      ticker: Rho
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in price per 1 point change in the rate; by strike, a line per expiration
+
+collect_second_order_greeks:
+  chart: tabs
+  title: Second-Order Greeks
+  expr: "(lambda f: f.loc[:, [c for c in f.columns if c[0] in set(f.columns.get_level_values(0).unique()[[0, 7, -1]])]])(toolkit.options.collect_second_order_greeks().loc['AAPL'])"
+  tabs:
+    - label: Gamma
+      chart: line
+      ticker: Gamma
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in delta per 1 change in the stock price; by strike, a line per expiration
+    - label: Vanna
+      chart: line
+      ticker: Vanna
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in delta per 1 point change in volatility; by strike, a line per expiration
+    - label: Charm
+      chart: line
+      ticker: Charm
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in delta per day; by strike, a line per expiration
+    - label: Vomma
+      chart: line
+      ticker: Vomma
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in vega per 1 point change in volatility; by strike, a line per expiration
+
+collect_third_order_greeks:
+  chart: tabs
+  title: Third-Order Greeks
+  expr: "(lambda f: f.loc[:, [c for c in f.columns if c[0] in set(f.columns.get_level_values(0).unique()[[0, 7, -1]])]])(toolkit.options.collect_third_order_greeks().loc['MU'])"
+  tabs:
+    - label: Speed
+      chart: line
+      ticker: Speed
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in gamma per 1 change in the stock price; by strike, a line per expiration
+    - label: Zomma
+      chart: line
+      ticker: Zomma
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in gamma per 1 point change in volatility; by strike, a line per expiration
+    - label: Color
+      chart: line
+      ticker: Color
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in gamma per day; by strike, a line per expiration
+    - label: Ultima
+      chart: line
+      ticker: Ultima
+      level: 1
+      format: decimal
+      xname: Strike price
+      subtitle: Change in vomma per 1 point change in volatility; by strike, a line per expiration
+
+get_delta:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Delta
+  subtitle: Call option; change in price per 1 change in the stock price; by strike, a line per expiration
+
+get_dual_delta:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Dual Delta
+  subtitle: Change in the option price per 1 change in the strike price; by strike, a line per expiration
+
+get_vega:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Vega
+  subtitle: Change in the option price per 1 point change in volatility; by strike, a line per expiration
+
+get_theta:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Theta
+  subtitle: Change in the option price per day that passes; by strike, a line per expiration
+
+get_rho:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Rho
+  subtitle: Change in the option price per 1 point change in the risk-free rate; by strike, a line per expiration
+
+get_epsilon:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Epsilon
+  subtitle: Change in the option price per 1 point change in the dividend yield; by strike, a line per expiration
+
+get_lambda:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Lambda
+  subtitle: Percentage change in the option price per percentage change in the stock price; by strike, a line per expiration
+
+get_gamma:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Gamma
+  subtitle: Change in delta per 1 change in the stock price; by strike, a line per expiration
+
+get_dual_gamma:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Dual Gamma
+  subtitle: Change in dual delta per 1 change in the strike price; by strike, a line per expiration
+
+get_vanna:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Vanna
+  subtitle: Change in delta per 1 point change in volatility; by strike, a line per expiration
+
+get_charm:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Charm
+  subtitle: Change in delta per day that passes; by strike, a line per expiration
+
+get_vomma:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Vomma
+  subtitle: Change in vega per 1 point change in volatility; by strike, a line per expiration
+
+get_vera:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Vera
+  subtitle: Change in rho per 1 point change in volatility; by strike, a line per expiration
+
+get_veta:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Veta
+  subtitle: Change in vega per day that passes; by strike, a line per expiration
+
+get_partial_derivative:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Partial Derivative
+  subtitle: Risk-neutral probability density from the second derivative to the strike; by strike, a line per expiration
+
+get_speed:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Speed
+  subtitle: Change in gamma per 1 change in the stock price; by strike, a line per expiration
+
+get_zomma:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Zomma
+  subtitle: Change in gamma per 1 point change in volatility; by strike, a line per expiration
+
+get_color:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Color
+  subtitle: Change in gamma per day that passes; by strike, a line per expiration
+
+get_ultima:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Ultima
+  subtitle: Change in vomma per 1 point change in volatility; by strike, a line per expiration
+
+get_black_scholes_model:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Black-Scholes Call Price
+  subtitle: By strike, a line per expiration
+
+get_put_call_parity:
+  chart: none
+  reason: Black-Scholes call and put prices satisfy parity by construction, so the gap is zero at every strike
+
+get_garman_kohlhagen:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Garman-Kohlhagen Call Price
+  subtitle: By strike, a line per expiration
+
+get_binary_option:
+  chart: line
+  format: decimal
+  xname: Strike price
+  title: Binary Call Price
+  subtitle: By strike, a line per expiration
+
+get_bjerksund_stensland:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Bjerksund-Stensland Call Price
+  subtitle: By strike, a line per expiration
+
+get_monte_carlo_option_price:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Monte Carlo Call Price
+  subtitle: By strike, a line per expiration
+
+get_barrier_option:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Barrier Option Price
+  subtitle: By strike, a line per expiration
+
+get_asian_option:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Asian Call Price
+  subtitle: By strike, a line per expiration
+
+
+get_put_call_ratio:
+  chart: bar
+  columns: [Volume Put-Call Ratio, Open Interest Put-Call Ratio]
+  format: ratio
+  cards: false
+  levels: [1]
+  title: Put-Call Ratio
+  subtitle: Put over call volume and open interest, per expiration and for all expirations together
+
+get_max_pain:
+  chart: line
+  ticker: AAPL
+  level: 0
+  columns: [Max Pain, Stock Price]
+  dots: [Max Pain]
+  format: price
+  title: Max Pain and Stock Price
+  subtitle: Strike where option holders lose the most at expiration, per expiration
+
+get_gamma_exposure:
+  chart: bar
+  columns: [Call Gamma Exposure, Put Gamma Exposure, Net Gamma Exposure]
+  format: compact
+  cards: false
+  levels: [0]
+  title: Dealer Gamma Exposure
+  subtitle: Dollar gamma per 1% move in the stock, from calls, puts and net
+
+get_implied_volatility_term_structure:
+  chart: line
+  expr: "toolkit.options.get_implied_volatility_term_structure(number_of_expirations=5).set_index('Days to Expiration', append=True)['At-the-Money Volatility'].droplevel('Expiration').unstack('Ticker')"
+  format: percent
+  xname: Days to expiration
+  title: Implied Volatility Term Structure
+  subtitle: At-the-money implied volatility by days to expiration
+
+get_volatility_skew:
+  chart: line
+  transpose: true
+  rows:
+    - 25-Delta Put Volatility: 25-delta put
+    - At-the-Money Volatility: At the money
+    - 25-Delta Call Volatility: 25-delta call
+  format: percent
+  title: Volatility Skew
+  subtitle: Implied volatility at the 25-delta put, at the money and the 25-delta call, a line per expiration
+
+get_implied_move:
+  chart: bar
+  columns: [Implied Move]
+  format: percent
+  title: Implied Move
+  subtitle: At-the-money straddle price as a share of the stock price, for the expiration after earnings
+
+get_model_free_implied_volatility:
+  chart: bar
+  columns: [Model-Free Implied Volatility]
+  format: percent
+  title: Model-Free Implied Volatility
+  subtitle: VIX method, interpolated to 30 days
+
+get_volatility_risk_premium:
+  chart: bar
+  columns: [Implied Volatility, Realized Volatility]
+  format: percent
+  cards: false
+  title: Implied and Realized Volatility
+  subtitle: The gap between them is the volatility risk premium
+
+get_risk_neutral_moments:
+  chart: tabs
+  title: Risk-Neutral Moments
+  tabs:
+    - label: Volatility
+      chart: bar
+      columns: [Volatility]
+      format: percent
+      cards: false
+      subtitle: Per expiration
+    - label: Skewness
+      chart: bar
+      columns: [Skewness]
+      format: ratio
+      cards: false
+      levels: [0]
+      subtitle: Per expiration; below zero the left tail is heavier
+    - label: Kurtosis
+      chart: bar
+      columns: [Kurtosis]
+      format: ratio
+      cards: false
+      levels: [3]
+      subtitle: Per expiration; a normal distribution has 3
+
+get_skew_index:
+  chart: bar
+  columns: [SKEW Index]
+  format: number
+  title: SKEW Index
+  subtitle: 100 means a normal distribution; higher means more tail risk on the downside
+
+get_binomial_model:
+  chart: none
+  reason: A binomial tree holds a value per node, which reads as a table of up and down moves
+
+get_stock_price_simulation:
+  chart: line
+  transpose: true
+  format: price
+  title: Binomial Stock Price Paths
+  subtitle: Stock price at each step, a line per sequence of up and down moves
+
+get_strategy_payoff:
+  chart: line
+  area: [TSLA]
+  format: price
+  levels: [0]
+  xname: Stock price at expiration
+  title: Strategy Payoff
+  subtitle: Profit or loss at expiration by stock price
+
+get_implied_volatility:
+  chart: line
+  format: percent
+  xname: Strike price
+  title: Implied Volatility Smile
+  subtitle: By strike, for the nearest expiration
+
+get_volatility_surface:
+  chart: line
+  format: percent
+  xname: Strike price
+  title: Implied Volatility Surface
+  subtitle: Implied volatility by strike, a line per expiration
+
+get_risk_neutral_density:
+  chart: area
+  expr: "toolkit.options.get_risk_neutral_density(strike_price_range=0.1, number_of_strikes=81).rename(index=lambda v: round(v, 1))"
+  format: decimal
+  xname: Strike price
+  title: Risk-Neutral Density
+  subtitle: Probability density of the price at expiration implied by option prices

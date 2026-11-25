@@ -1,0 +1,1 @@
+{"charts":{"get_resampled_efficient_weights":{"title":"Resampled Efficient Weights","type":"hbar","x":["XOM","MSFT","JNJ","AAPL"],"series":[{"name":"Weight","data":[0.4275,0.2604,0.2146,0.0974]}],"format":"percent","subtitle":"The average of the optimal weights over resampled histories"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_poverty_rate":{"title":"Poverty Rate","type":"line","x":["2012","2013","2014","2015","2016","2017","2018","2019","2020"],"series":[{"name":"Portugal","data":[0.1295,0.135,0.135,0.1255,0.1246,0.1067,0.1038,0.1058,0.1279]}],"format":"percent","subtitle":"Share of people below half the median household income"}}}

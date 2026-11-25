@@ -1,0 +1,1 @@
+{"index":"","columns":["T-Statistic","Degrees of Freedom","P-Value","Mean A","Mean B"],"rows":[["('MSFT', 'ORCL')",-0.5252,2176.18,0.5995,0.0008,0.0012],["('MSFT', 'SAP')",0.1485,2504.2,0.882,0.0008,0.0007],["('ORCL', 'SAP')",0.6375,2209.52,0.5239,0.0012,0.0007]],"total":3}

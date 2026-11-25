@@ -1,0 +1,1 @@
+{"charts":{"get_supply_chain_pressure_index":{"title":"Global Supply Chain Pressure Index","type":"bar","x":["2026-05","2026-06","2026-07","2026-08","2026-09","2026-10"],"series":[{"name":"World","data":[1.8017,1.2026,0.9511,1.271,1.3612,1.2619]}],"format":"ratio","subtitle":"Standard deviations from the average"}}}

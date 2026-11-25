@@ -1,0 +1,1 @@
+{"charts":{"get_yield_to_maturity":{"title":"Yield to Maturity","type":"line","x":["2028-10-31","2029-10-31","2031-10-31","2033-10-31","2036-08-15","2046-11-15","2056-08-15"],"series":[{"name":"Yield to Maturity","data":[0.0446,0.0453,0.0459,0.0469,0.0483,0.0533,0.0525]}],"format":"percent","subtitle":"Per Treasury security, by maturity"}}}

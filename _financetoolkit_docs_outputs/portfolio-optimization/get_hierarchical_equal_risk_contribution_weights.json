@@ -1,0 +1,1 @@
+{"index":"","columns":["Weight","Volatility","Sharpe Ratio","Risk Contribution","Cluster"],"rows":[["AAPL",0.2917,0.2786,0.5725,0.412,1.0],["MSFT",0.3425,0.2571,0.6534,0.435,1.0],["JNJ",0.2644,0.1674,0.3823,0.1007,2.0],["XOM",0.1014,0.2702,0.9526,0.0523,3.0],["Portfolio",1.0,0.1715,0.8577,1.0,null]],"total":5}

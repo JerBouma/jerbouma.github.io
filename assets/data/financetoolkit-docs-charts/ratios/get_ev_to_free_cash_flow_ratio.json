@@ -1,0 +1,1 @@
+{"charts":{"get_ev_to_free_cash_flow_ratio":{"title":"EV to Free Cash Flow","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"MA","data":[41.9184,32.0227,35.3215,34.7836,31.9679]},{"name":"V","data":[33.9431,21.5735,24.4519,30.202,31.4257]}],"format":"multiple"}}}

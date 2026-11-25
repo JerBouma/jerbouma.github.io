@@ -1,0 +1,1 @@
+{"charts":{"get_ulcer_index":{"title":"Ulcer Index","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BA","data":[0.0564,0.0917,0.0442,0.0696,0.0642]},{"name":"AIR.PA","data":[0.041,0.0606,0.0289,0.0423,0.05]},{"name":"Benchmark","data":[0.0131,0.0481,0.0198,0.0164,0.027]}],"format":"percent","subtitle":"Root mean square of the drawdowns, per year"}}}

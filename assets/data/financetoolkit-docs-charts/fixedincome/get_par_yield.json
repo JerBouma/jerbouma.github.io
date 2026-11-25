@@ -1,0 +1,1 @@
+{"charts":{"get_par_yield":{"title":"Par Yield Curve","type":"line","x":["1","4","8","15","25"],"series":[{"name":"Par Yield","data":[0.0428,0.0456,0.0475,0.0505,0.0526]}],"format":"percent","xname":"Years to maturity"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_variance_ratio_test":{"title":"Variance Ratio","type":"bar","x":["XLE","XLF","XLK"],"series":[{"name":"Variance Ratio","data":[1.0251,1.0249,0.961]},{"name":"1","data":[1,1,1],"reference":true}],"format":"ratio","subtitle":"1 is a random walk; above 1 returns trend, below 1 they revert","cards":false}}}

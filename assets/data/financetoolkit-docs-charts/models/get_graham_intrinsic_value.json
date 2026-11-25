@@ -1,0 +1,1 @@
+{"charts":{"get_graham_intrinsic_value":{"title":"Graham Intrinsic Value","type":"bar","x":["2023","2024","2025"],"series":[{"name":"JNJ","data":[630.081,51.9832,349.49]},{"name":"KO","data":[72.556,50.1366,76.9353]},{"name":"PEP","data":[160.224,138.396,74.4379]}],"format":"price","subtitle":"Per share, Graham's growth formula scaled by the AAA corporate bond yield"}}}

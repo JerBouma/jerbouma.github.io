@@ -1,0 +1,406 @@
+# Performance metrics, drawn as portfolio analytics tools draw them: a statistic per
+# calendar year and asset as grouped bars (Morningstar-style calendar-year columns),
+# factor loadings and style weights as bars, correlation and covariance matrices as
+# heatmaps, a cross-section of assets as horizontal bars and the information
+# coefficient of a factor with its 95% interval.
+
+collect_all_metrics:
+  chart: tabs
+  title: Performance Metrics
+  tabs:
+    - label: Sharpe and Sortino
+      chart: bar
+      rows: ["2021", "2022", "2023", "2024", "2025"]
+      columns: [Sharpe Ratio, Sortino Ratio]
+      format: ratio
+      subtitle: Excess return per unit of volatility and of downside deviation, per year
+    - label: Alpha
+      chart: bar
+      rows: ["2021", "2022", "2023", "2024", "2025"]
+      columns: [Alpha, Jensen's Alpha]
+      format: percent
+      subtitle: Return beyond the benchmark and beyond what the CAPM expects, per year
+    - label: Beta
+      chart: bar
+      rows: ["2021", "2022", "2023", "2024", "2025"]
+      columns: [Beta]
+      levels: [1]
+      format: ratio
+      subtitle: Sensitivity to the benchmark; 1 moves with the market
+
+get_beta:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: Beta
+  subtitle: Per calendar year; 1 moves one for one with the benchmark
+
+get_beta_implied_return:
+  chart: bar
+  transpose: true
+  columns: [Implied Return, Residual]
+  stack: true
+  format: percent
+  title: Beta-Implied Return and Residual
+  subtitle: The day's return split into the part the Beta explains and the part specific to the stock
+
+get_capital_asset_pricing_model:
+  chart: bar
+  format: percent
+  title: CAPM Expected Return
+  subtitle: Risk-free rate plus Beta times the market risk premium, per year
+
+get_factor_asset_correlations:
+  chart: hbar
+  transpose: true
+  format: ratio
+  title: Correlation with the Fama-French Factors
+  subtitle: Correlation of the stock's daily returns with each factor's returns
+
+get_factor_correlations:
+  chart: heatmap
+  ticker: "2025"
+  level: 0
+  min: -1
+  max: 1
+  title: Factor Correlations
+  subtitle: Correlation of the daily returns of the five Fama-French factors
+
+get_fama_and_french_model:
+  chart: bar
+  transpose: true
+  rows:
+    - {Mkt-RF Slope: Market}
+    - {SMB Slope: Size (SMB)}
+    - {HML Slope: Value (HML)}
+    - {RMW Slope: Profitability (RMW)}
+    - {CMA Slope: Investment (CMA)}
+  format: ratio
+  title: Fama-French Factor Loadings
+  subtitle: The slope on each factor, a bar per year
+
+get_carhart_four_factor_model:
+  chart: bar
+  transpose: true
+  rows:
+    - {Mkt-RF Slope: Market}
+    - {SMB Slope: Size (SMB)}
+    - {HML Slope: Value (HML)}
+    - {MOM Slope: Momentum (MOM)}
+  format: ratio
+  title: Carhart Factor Loadings
+  subtitle: The slope on each factor, a bar per quarter
+
+get_style_analysis:
+  chart: bar
+  columns:
+    - {IWD: Large Value}
+    - {IWF: Large Growth}
+    - {IWO: Small Growth}
+    - {BIL: Cash}
+  stack: true
+  format: percent
+  title: Style Weights
+  subtitle: The mix of style indices that best tracks each fund's returns (Sharpe style analysis)
+
+get_alpha:
+  chart: bar
+  format: percent
+  title: Alpha
+  subtitle: Return minus the benchmark's return, per year
+
+get_jensens_alpha:
+  chart: bar
+  format: percent
+  title: Jensen's Alpha
+  subtitle: Return beyond what the CAPM expects given the Beta, per year
+
+get_treynor_ratio:
+  chart: bar
+  format: ratio
+  title: Treynor Ratio
+  subtitle: Excess return per unit of Beta, per year
+
+get_sharpe_ratio:
+  chart: bar
+  format: ratio
+  title: Sharpe Ratio
+  subtitle: Annualized excess return per unit of volatility, per year
+
+get_sortino_ratio:
+  chart: bar
+  format: ratio
+  title: Sortino Ratio
+  subtitle: Excess return per unit of downside deviation, per year
+
+get_safety_first_ratio:
+  chart: bar
+  format: ratio
+  title: Roy's Safety-First Ratio
+  subtitle: Return above the 2% threshold per unit of volatility, per year
+
+get_upside_potential_ratio:
+  chart: bar
+  format: ratio
+  title: Upside Potential Ratio
+  subtitle: Upside above the threshold per unit of downside deviation, per year
+
+get_ulcer_performance_index:
+  chart: bar
+  format: ratio
+  title: Ulcer Performance Index
+  subtitle: Excess return per unit of the Ulcer Index, per year
+
+get_calmar_ratio:
+  chart: bar
+  format: ratio
+  title: Calmar Ratio
+  subtitle: Excess return divided by the maximum drawdown, per year
+
+get_sterling_ratio:
+  chart: bar
+  format: ratio
+  title: Sterling Ratio
+  subtitle: Excess return divided by the average drawdown, per year
+
+get_burke_ratio:
+  chart: bar
+  format: ratio
+  title: Burke Ratio
+  subtitle: Excess return divided by the square root of the summed squared drawdowns, per year
+
+get_pain_ratio:
+  chart: bar
+  format: ratio
+  title: Pain Ratio
+  subtitle: Excess return divided by the Pain Index, per year
+
+get_m2_ratio:
+  chart: bar
+  format: percent
+  title: Modigliani-Modigliani Measure (M2)
+  subtitle: The return at the benchmark's volatility, per year
+
+get_tracking_error:
+  chart: bar
+  format: percent
+  title: Tracking Error
+  subtitle: Volatility of the return difference with the benchmark, per year
+
+get_information_ratio:
+  chart: bar
+  format: ratio
+  title: Information Ratio
+  subtitle: Active return per unit of tracking error, per year
+
+get_upside_capture_ratio:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: Upside Capture Ratio
+  subtitle: Share of the benchmark's gains captured in its up periods; above 1 gains more
+
+get_downside_capture_ratio:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: Downside Capture Ratio
+  subtitle: Share of the benchmark's losses taken in its down periods; below 1 loses less
+
+get_win_rate:
+  chart: bar
+  levels: [0.5]
+  format: percent
+  title: Win Rate
+  subtitle: Share of days the asset beat its benchmark, per year
+
+get_kappa_ratio:
+  chart: bar
+  format: ratio
+  title: Kappa Ratio
+  subtitle: Excess return over the threshold per unit of the lower partial moment, per year
+
+get_omega_ratio:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: Omega Ratio
+  subtitle: Gains above the threshold divided by losses below it; above 1 gains outweigh losses
+
+get_morningstar_risk_adjusted_return:
+  chart: bar
+  format: percent
+  title: Morningstar Risk-Adjusted Return
+  subtitle: Return after Morningstar's penalty for volatility, per year
+
+get_morningstar_risk:
+  chart: bar
+  format: percent
+  title: Morningstar Risk
+  subtitle: The return Morningstar deducts as its penalty for volatility, per year
+
+get_gain_to_pain_ratio:
+  chart: bar
+  format: ratio
+  title: Gain-to-Pain Ratio
+  subtitle: Sum of the returns divided by the sum of the losses, per year
+
+get_kelly_criterion:
+  chart: bar
+  format: percent
+  title: Kelly Criterion
+  subtitle: The share of capital that maximizes long-run growth, per year
+
+get_return_statistics:
+  chart: tabs
+  title: Return Statistics
+  tabs:
+    - label: Win Rate
+      chart: bar
+      transpose: true
+      columns: [Win Rate]
+      levels: [0.5]
+      format: percent
+      subtitle: Share of days with a positive return
+    - label: Wins and Losses
+      chart: bar
+      transpose: true
+      columns: [Average Win, Average Loss]
+      format: percent
+      subtitle: Average positive and negative daily return
+    - label: Payoff
+      chart: bar
+      transpose: true
+      columns: [Payoff Ratio, Profit Factor, Common Sense Ratio]
+      levels: [1]
+      format: ratio
+      subtitle: Wins against losses; above 1 the wins outweigh the losses
+    - label: Streaks
+      chart: bar
+      transpose: true
+      columns: [Max Consecutive Wins, Max Consecutive Losses]
+      format: number
+      subtitle: The longest run of up days and of down days
+
+get_compound_growth_rate:
+  chart: hbar
+  transpose: true
+  columns:
+    - {Compound Annual Growth Rate (CAGR): CAGR}
+  sort: desc
+  format: percent
+  title: Compound Annual Growth Rate
+  subtitle: The constant yearly return that turns the first price into the last
+
+get_returns:
+  chart: bar
+  format: percent
+  title: Annual Returns
+  subtitle: Calendar-year return of each asset and the benchmark
+
+get_excess_return:
+  chart: bar
+  format: percent
+  title: Excess Return
+  subtitle: Return above the risk-free rate, per year
+
+get_correlation_matrix:
+  chart: heatmap
+  min: -1
+  max: 1
+  title: Correlation Matrix
+  subtitle: Correlation of the monthly returns
+
+get_covariance_matrix:
+  chart: heatmap
+  format: decimal
+  min: -0.002
+  max: 0.002
+  title: Covariance Matrix
+  subtitle: Covariance of the monthly returns; the diagonal is each asset's variance
+
+get_appraisal_ratio:
+  chart: bar
+  format: ratio
+  title: Appraisal Ratio
+  subtitle: Jensen's Alpha per unit of specific (unsystematic) risk, per year
+
+get_fama_decomposition:
+  chart: bar
+  format: percent
+  title: Fama Selectivity
+  subtitle: Return from security selection beyond the CAPM, per year
+
+get_starr_ratio:
+  chart: bar
+  format: ratio
+  title: STARR Ratio
+  subtitle: Excess return per unit of Conditional Value at Risk, per year
+
+get_rachev_ratio:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: Rachev Ratio
+  subtitle: Expected tail gain divided by expected tail loss; above 1 the right tail is larger
+
+get_treynor_mazuy_model:
+  chart: tabs
+  title: Treynor-Mazuy Model
+  tabs:
+    - label: Market Timing (Gamma)
+      chart: bar
+      columns: [Gamma]
+      format: ratio
+      subtitle: The quadratic term per year; positive suggests market-timing skill
+    - label: Beta
+      chart: bar
+      columns: [Beta]
+      levels: [1]
+      format: ratio
+      subtitle: The market exposure per year
+
+get_henriksson_merton_model:
+  chart: bar
+  columns: [Beta, Up Market Beta]
+  format: ratio
+  title: Henriksson-Merton Model
+  subtitle: The market Beta and the extra Beta in up markets, per year; a positive Up Market Beta suggests timing skill
+
+get_factor_analysis:
+  chart: coef
+  ticker: Custom Factor
+  level: 0
+  derive:
+    Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
+  coef: Mean IC
+  se: Standard Error
+  p: p-Value
+  title: Information Coefficient
+  subtitle: Mean rank correlation of the factor with the later return, per horizon, with its 95% interval
+
+get_sharpe_ratio_standard_error:
+  chart: bar
+  format: decimal
+  title: Sharpe Ratio Standard Error
+  subtitle: Standard error of the Sharpe Ratio, per year
+
+get_minimum_track_record_length:
+  chart: bar
+  log: true
+  format: compact
+  yname: Observations
+  title: Minimum Track Record Length
+  subtitle: Observations needed to be 95% sure the Sharpe Ratio is above zero (log scale)
+
+get_coskewness:
+  chart: bar
+  format: ratio
+  title: Coskewness
+  subtitle: How the asset's returns move with the benchmark's squared returns, per year
+
+get_cokurtosis:
+  chart: bar
+  format: ratio
+  title: Cokurtosis
+  subtitle: How the asset's returns move with the benchmark's cubed returns, per year

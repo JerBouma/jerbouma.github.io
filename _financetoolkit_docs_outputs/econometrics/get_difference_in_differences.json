@@ -1,0 +1,1 @@
+{"index":"","columns":["Coefficient","Std. Error","t-Statistic","P-Value"],"rows":[["Intercept",-0.0126,0.0262,-0.4796,0.6324],["Treated",0.0669,0.0371,1.8059,0.0736],["Post",0.0291,0.0362,0.8043,0.4229],["Treated x Post",-0.0246,0.0511,-0.4813,0.6312]],"total":4}

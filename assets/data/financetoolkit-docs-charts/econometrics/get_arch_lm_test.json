@@ -1,0 +1,1 @@
+{"charts":{"get_arch_lm_test":{"title":"ARCH-LM Statistic","type":"bar","x":["BTCUSD","^GSPC","EURUSD"],"series":[{"name":"ARCH-LM Statistic","data":[55.2237,143.561,82.99]},{"name":"Critical Value 5%","data":[11.0705,11.0705,11.0705]}],"format":"number","subtitle":"Against the 5% critical value of a chi-squared with 5 lags; above it, volatility clusters"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_asset_turnover_ratio":{"title":"Asset Turnover","type":"line","x":["2021","2022","2023","2024"],"series":[{"name":"BBY","data":[2.8307,2.7801,2.8243,2.7919]},{"name":"DG","data":[1.3114,1.366,1.2923,1.3116]},{"name":"TGT","data":[2.018,2.0368,1.9765,1.884]}],"format":"ratio","subtitle":"Revenue per unit of average total assets"}}}

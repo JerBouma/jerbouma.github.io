@@ -1,0 +1,1 @@
+{"index":"","columns":["^GSPC","^N225"],"rows":[["KPSS Statistic",4.7842,4.7398],["P-Value",0.01,0.01],["Lags Used",20.0,20.0],["Observations",1255.0,1223.0],["Critical Value 1%",0.739,0.739],["Critical Value 2.5%",0.574,0.574],["Critical Value 5%",0.463,0.463],["Critical Value 10%",0.347,0.347],["Reject Stationarity (5%)",1.0,1.0]],"total":9}

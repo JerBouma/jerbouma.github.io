@@ -1,0 +1,1 @@
+{"charts":{"get_mean_variance_weights":{"title":"Mean-Variance Weights","type":"hbar","x":["XOM","MSFT","AAPL","JNJ"],"series":[{"name":"Weight","data":[0.8145,0.4237,0.0069,-0.2452]}],"format":"percent","subtitle":"A negative weight is a short position"}}}

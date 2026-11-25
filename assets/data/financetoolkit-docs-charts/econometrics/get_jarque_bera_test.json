@@ -1,0 +1,1 @@
+{"charts":{"get_jarque_bera_test":{"title":"Jarque-Bera Statistic","type":"bar","x":["^GSPC","BTCUSD","TLT"],"series":[{"name":"Jarque-Bera Statistic","data":[2.7207,1.0825,0.7932]},{"name":"Critical Value 5%","data":[5.9915,5.9915,5.9915]}],"format":"ratio","subtitle":"Against the 5% critical value of a chi-squared with 2 degrees of freedom; above it, returns are not normal"}}}
