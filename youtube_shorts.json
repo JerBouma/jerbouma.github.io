@@ -1,5 +1,12 @@
 [
   {
+    "id": "qq-3R5Uj3lY",
+    "title": "200-day moving average, explained: what a break below it tells you #SP500 #StockMarket #Shorts",
+    "published": "2026-11-24T17:18:27+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nThe 200-day simple moving average is the average closing price of the last 200 trading days: SMA200 = (P_t + ... + P_t−199) / 200. Each day the newest close comes in and the oldest drops out. One day is only one part in 200, so the average moves slowly.\n\nThe S&P 500 first closed below its 200-day average on 17 Nov 2026, the first time since 7 April. On Friday 20 Nov it closed at 6,910.39, 6% under the average of 7,348.58 and the furthest below it since April 2025, as the AI sell-off got worse (AP). Monday's close of 7,237.17 was still under the average of 7,350.10.\n\nThe signal tells you the trend turned. It does not tell you how far a fall goes. After the January 2022 crossing the index fell another 19% by 12 October while the Fed raised its rate from 0.08% to 4.33%. After the 19 March 2026 crossing it fell 4% more and was back above the average on 8 April.\n\nData: Finance Toolkit MCP (FinancialModelingPrep, Yahoo Finance, Federal Reserve Bank of New York). News: AP (20 Nov 2026), TokenPost (18 Nov 2026).\n\nhttps://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice. #SP500 #StockMarket #Shorts",
+    "series": "finance"
+  },
+  {
     "id": "5A9nZqpvzOo",
     "title": "Market cap, explained: how Nvidia gained $947B in half an hour #Nvidia #Investing #Shorts",
     "published": "2026-11-23T19:17:32+00:00",
