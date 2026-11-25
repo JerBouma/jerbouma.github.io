@@ -1,0 +1,1 @@
+{"charts":{"get_tracking":{"title":"Tracking Difference and Tracking Error","type":"bar","x":["VOO","IVV","SPYM"],"series":[{"name":"Tracking Difference","data":[0.0008,0.0007,0.0006]},{"name":"Tracking Error","data":[0.0011,0.0019,0.0016]}],"format":"percent","subtitle":"Against SPY, from monthly returns"}}}

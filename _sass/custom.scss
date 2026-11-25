@@ -6376,7 +6376,7 @@ body.ft-overview .page__content {
     list-style: none;
     > li {
       display: grid;
-      grid-template-columns: minmax(64px, auto) 1fr auto;
+      grid-template-columns: minmax(64px, max-content) minmax(24px, 1fr) auto;
       align-items: center;
       gap: 10px;
       margin: 0 0 8px !important;
@@ -6387,8 +6387,9 @@ body.ft-overview .page__content {
 
   &__who {
     display: flex; align-items: center; gap: 6px;
+    min-width: 0;
     color: var(--text-secondary);
-    white-space: nowrap;
+    line-height: 1.25;
     i { width: 9px; height: 9px; border-radius: 3px; flex: none; }
   }
 
@@ -6645,7 +6646,7 @@ body.ft-overview .page__content {
   }
 }
 
-#python-example, #mcp-question, #parameters { scroll-margin-top: 90px; }
+#mcp-question, #parameters { scroll-margin-top: 90px; }
 
 // ── Finance Database explorer (_pages/financedatabase/explorer.md, assets/js/fd-explorer.js)
 .fdx {
@@ -7333,3 +7334,55 @@ body.article-document {
   letter-spacing: 0.06em;
   opacity: 0.65;
 }
+// Tabs on the Finance Toolkit method pages: Chart and Table for the example's
+// result, Python and the MCP question for how to get it (assets/js/docs-tabs.js)
+.page__content .docs-tabs {
+  margin: 0 0 1.6em;
+
+  .docs-tabs__bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .docs-tabs__tab {
+    padding: 6px 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    &:hover { color: var(--text-primary); background: rgba(128, 128, 128, 0.08); }
+
+    &.is-active {
+      color: var(--accent-color);
+      border-color: var(--card-hover-border);
+      background: rgba(56, 189, 248, 0.1);
+    }
+  }
+
+  .docs-tabs__panel > :last-child { margin-bottom: 0; }
+}
+
+// The full result of an example: every row, scrolling in a box with a fixed header
+.page__content .docs-output {
+  max-height: 460px;
+  overflow: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+
+  // the site wraps every table in a scroller of its own; here the box scrolls, so the header sticks to it
+  .table-scroll { overflow: visible !important; border: 0 !important; margin: 0 !important; border-radius: 0 !important; }
+  table { margin: 0 !important; border: 0; font-size: 13px; width: 100%; display: table; overflow: visible !important; }
+  // a solid header (the card colour is see-through) so rows don't show through it
+  thead th { position: sticky; top: 0; z-index: 1; background: var(--masthead-bg) !important; white-space: nowrap; }
+  th, td { padding: 6px 12px !important; text-align: right; white-space: nowrap !important; }
+  th:first-child { text-align: left; }
+}
+.page__content p.docs-output__count { margin: 6px 0 0; color: var(--text-muted); font-size: 13px; }

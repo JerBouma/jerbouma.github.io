@@ -1,0 +1,1 @@
+{"charts":{"get_wls":{"title":"WLS Coefficient","type":"coef","x":["MSFT"],"coef":[0.636],"low":[0.518988],"high":[0.753012],"p":[0.0],"format":"ratio","subtitle":"Estimate with its 95% confidence interval"}}}

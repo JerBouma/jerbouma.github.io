@@ -1,0 +1,277 @@
+# Portfolio optimization: weights as horizontal bars, largest first; risk budgeting methods as
+# their weight next to their share of the risk; the efficient frontier and backtests as risk
+# against return.
+
+get_risk_contributions:
+  chart: bar
+  drop: [Total, Portfolio]
+  columns: [Weight, Percentage Contribution]
+  cards: false
+  format: percent
+  title: Weight and Risk Contribution
+  subtitle: Each asset's share of the capital and of the portfolio's CVaR
+
+get_diversification_metrics:
+  chart: none
+  reason: Four single numbers on different scales, which the table shows best
+
+get_portfolio_risk_metrics:
+  chart: none
+  reason: Single numbers on different scales (returns, ratios, drawdowns) for the portfolio and its benchmark
+
+get_discrete_allocation:
+  chart: bar
+  drop: [Total, Cash, Leftover, Portfolio]
+  columns: [Target Weight, Weight]
+  cards: false
+  format: percent
+  title: Target and Allocated Weights
+  subtitle: The weight after buying whole shares against the optimizer's target
+
+get_optimization_backtest:
+  chart: tabs
+  title: Optimization Backtest
+  tabs:
+  - label: Risk and Return
+    chart: scatter
+    xcol: Annualized Volatility
+    ycol: Annualized Return
+    xformat: percent
+    yformat: percent
+    xname: Annualized volatility
+    yname: Annualized return
+    positions: {Risk Parity: top, Maximum Diversification: left, Inverse Volatility: bottom}
+    subtitle: Out of sample, after transaction costs
+  - label: Sharpe Ratio
+    chart: hbar
+    columns: [Sharpe Ratio]
+    sort: desc
+    format: ratio
+    subtitle: Out of sample, after transaction costs
+  - label: Maximum Drawdown
+    chart: hbar
+    columns: [Maximum Drawdown]
+    sort: desc
+    format: percent
+    subtitle: Out of sample, the largest fall from a peak
+
+get_stress_test:
+  chart: bar
+  columns: [Portfolio Return, Benchmark Return]
+  cards: false
+  format: percent
+  title: Stress Test Returns
+  subtitle: Buy and hold from the S&P 500's peak to its trough in each crisis
+
+get_look_through_exposure:
+  chart: tabs
+  title: Sector Exposure
+  tabs:
+  - label: Exposure
+    chart: hbar
+    drop: [Total]
+    columns: [Exposure]
+    sort: desc
+    format: percent
+    subtitle: Share of the portfolio per sector, looking through the ETFs to their holdings
+  - label: Active Exposure
+    chart: hbar
+    drop: [Total]
+    columns: [Active Exposure]
+    sort: desc
+    format: percent
+    subtitle: Portfolio minus benchmark exposure per sector
+
+get_brinson_attribution:
+  chart: tabs
+  title: Brinson Attribution
+  tabs:
+  - label: Total Effect
+    chart: hbar
+    drop: [Total]
+    columns: [Total Effect]
+    sort: desc
+    format: percent
+    subtitle: Contribution of each sector to the return relative to the benchmark
+  - label: Effects
+    chart: bar
+    drop: [Total]
+    columns: [Allocation Effect, Selection Effect, Interaction Effect]
+    stack: true
+    format: percent
+    subtitle: Allocation, selection and interaction per sector (Brinson-Fachler)
+
+get_minimum_variance_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Minimum Variance Weights
+
+get_maximum_sharpe_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Maximum Sharpe Ratio Weights
+
+get_mean_variance_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Mean-Variance Weights
+  subtitle: A negative weight is a short position
+
+get_efficient_frontier:
+  chart: tabs
+  title: Efficient Frontier
+  tabs:
+  - label: Frontier
+    chart: scatter
+    xcol: Volatility
+    ycol: Expected Return
+    xformat: percent
+    yformat: percent
+    xname: Volatility
+    yname: Expected return
+    subtitle: Each point is a portfolio on the frontier, numbered from the lowest risk
+  - label: Weights
+    chart: bar
+    columns: [AAPL, MSFT, JNJ, XOM]
+    stack: true
+    format: percent
+    xname: Portfolio
+    subtitle: The weights of each frontier portfolio, from the lowest risk to the highest
+
+get_risk_parity_weights:
+  chart: bar
+  drop: [Portfolio]
+  columns: [Weight, Risk Contribution]
+  cards: false
+  format: percent
+  title: Risk Parity Weights
+  subtitle: Weights set so that each asset adds an equal share of the risk
+
+get_hierarchical_risk_parity_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Hierarchical Risk Parity Weights
+
+get_hierarchical_equal_risk_contribution_weights:
+  chart: bar
+  drop: [Portfolio]
+  columns: [Weight, Risk Contribution]
+  cards: false
+  format: percent
+  title: Hierarchical Equal Risk Contribution Weights
+  subtitle: Risk is split equally between clusters, then within them
+
+get_nested_clustered_optimization_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Nested Clustered Optimization Weights
+
+get_inverse_volatility_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Inverse Volatility Weights
+
+get_minimum_cvar_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Minimum CVaR Weights
+
+get_minimum_drawdown_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Minimum Drawdown Weights
+  subtitle: Weights that minimize the conditional drawdown at risk
+
+get_maximum_omega_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Maximum Omega Ratio Weights
+
+get_maximum_cvar_ratio_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Maximum CVaR Ratio Weights
+  subtitle: Weights that maximize the excess return per unit of CVaR
+
+get_maximum_diversification_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Maximum Diversification Weights
+
+get_minimum_tracking_error_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Minimum Tracking Error Weights
+
+get_growth_optimal_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Growth Optimal Weights
+  subtitle: Half Kelly, at most 40% per asset; the rest stays in cash
+
+get_resampled_efficient_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Resampled Efficient Weights
+  subtitle: The average of the optimal weights over resampled histories
+
+get_black_litterman_weights:
+  chart: tabs
+  title: Black-Litterman
+  tabs:
+  - label: Weights
+    chart: bar
+    drop: [Portfolio]
+    columns: [Market Weight, Weight]
+    cards: false
+    format: percent
+    subtitle: Market capitalization weights and the weights after the views
+  - label: Returns
+    chart: bar
+    drop: [Portfolio]
+    columns: [Implied Return, Black-Litterman Return]
+    cards: false
+    format: percent
+    subtitle: Returns implied by the market weights and after blending in the views

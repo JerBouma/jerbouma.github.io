@@ -1,0 +1,1 @@
+{"charts":{"get_arima_forecast":{"title":"ARIMA Forecast","type":"line","x":["1","2","3","4","5","6","7","8","9","10"],"series":[{"name":"GCUSD","data":[4348.34,4348.38,4350.82,4352.47,4354.38,4356.2,4358.05,4359.89,4361.73,4363.57]}],"format":"price","subtitle":"Gold price, the steps ahead of the last close","xname":"Step"}}}

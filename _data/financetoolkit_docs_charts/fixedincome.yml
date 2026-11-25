@@ -1,0 +1,444 @@
+collect_bond_statistics:
+  chart: tabs
+  title: Bond Statistics
+  expr: statistics.loc[:, "Maturity":]
+  tabs:
+    - label: Yield
+      chart: line
+      x: Maturity
+      columns: [Yield to Maturity, Current Yield]
+      format: percent
+      subtitle: Per bond, by maturity
+    - label: Duration
+      chart: bar
+      x: Maturity
+      columns: [Macaulay's Duration, Modified Duration, Effective Duration]
+      format: number
+      subtitle: In years, per bond by maturity
+    - label: Convexity
+      chart: bar
+      x: Maturity
+      columns: [Convexity]
+      format: number
+      subtitle: Per bond, by maturity
+
+get_present_value:
+  chart: bar
+  x: Maturity
+  derive:
+    Present Value Minus Price: "f['Present Value'] - f['Price']"
+  columns: [Present Value Minus Price]
+  format: ratio
+  cards: false
+  title: Present Value Minus Market Price
+  subtitle: Per 100 of face value, by maturity; above zero the bond trades below its discounted cash flows
+
+get_duration:
+  chart: bar
+  x: Maturity
+  columns: [Modified Duration]
+  format: number
+  cards: false
+  title: Modified Duration
+  subtitle: In years, per bond by maturity
+
+get_yield_to_maturity:
+  chart: line
+  x: Maturity
+  columns: [Yield to Maturity]
+  format: percent
+  title: Yield to Maturity
+  subtitle: Per Treasury security, by maturity
+
+get_z_spread:
+  chart: line
+  x: Maturity
+  columns: [Z-Spread]
+  dots: [Z-Spread]
+  format: percent
+  title: Z-Spread
+  subtitle: Per bond, by maturity, over the Treasury zero curve
+
+get_key_rate_duration:
+  chart: bar
+  stack: true
+  x: Maturity
+  columns: [2Y, 5Y, 10Y, 30Y]
+  format: number
+  title: Key Rate Durations
+  subtitle: Per bond by maturity, stacked by key rate; the parts add up to the bond's duration
+
+get_taylor_price_change:
+  chart: bar
+  x: Maturity
+  columns: [Price Change]
+  format: percent
+  cards: false
+  title: Price Change for a 1 Point Rise in Yield
+  subtitle: Duration and convexity estimate, per bond by maturity
+
+get_bond_equivalent_yield:
+  chart: line
+  x: Maturity
+  columns: [Discount Yield, Bond-Equivalent Yield]
+  format: percent
+  title: Treasury Bill Yields
+  subtitle: Per bill, by maturity
+
+get_ice_bofa_option_adjusted_spread:
+  chart: line
+  format: percent
+  title: Option-Adjusted Spread
+  subtitle: ICE BofA US corporate indices, by maturity bucket
+
+get_ice_bofa_effective_yield:
+  chart: line
+  format: percent
+  title: Effective Yield
+  subtitle: ICE BofA US corporate indices, by rating
+
+get_ice_bofa_total_return:
+  chart: line
+  derive:
+    1-3 Years: "f['1-3 Years'] / f['1-3 Years'].dropna().iloc[0] * 100"
+    3-5 Years: "f['3-5 Years'] / f['3-5 Years'].dropna().iloc[0] * 100"
+    5-7 Years: "f['5-7 Years'] / f['5-7 Years'].dropna().iloc[0] * 100"
+    7-10 Years: "f['7-10 Years'] / f['7-10 Years'].dropna().iloc[0] * 100"
+    10-15 Years: "f['10-15 Years'] / f['10-15 Years'].dropna().iloc[0] * 100"
+    15+ Years: "f['15+ Years'] / f['15+ Years'].dropna().iloc[0] * 100"
+  format: number
+  title: Total Return Index
+  subtitle: ICE BofA US corporate indices by maturity bucket, rebased to 100 on the first day
+
+get_ice_bofa_yield_to_worst:
+  chart: line
+  format: percent
+  title: Yield to Worst
+  subtitle: ICE BofA US corporate indices, by rating
+
+get_hqm_corporate_bond_yield_curve:
+  chart: line
+  transpose: true
+  format: percent
+  title: HQM Corporate Bond Yield Curve
+  subtitle: By maturity, a line per month
+
+get_hqm_corporate_bond_spread:
+  chart: line
+  format: percent
+  title: HQM Corporate Bond Spread
+  subtitle: Over Treasuries, by maturity
+
+get_corporate_bond_yields:
+  chart: line
+  format: percent
+  title: Corporate Bond Spreads
+  subtitle: Over government bonds, by rating and maturity
+
+get_rating_transition_matrix:
+  chart: heatmap
+  scale: sequential
+  min: 0
+  max: 1
+  format: percent
+  title: Rating Transition Matrix
+  subtitle: Share of issuers moving from the rating on the left to the rating on top within a year
+
+get_default_rates:
+  chart: bar
+  format: percent
+  title: Default Rates
+  subtitle: Share of issuers per rating that defaulted within the year
+
+get_implied_default_probability:
+  chart: line
+  transpose: true
+  rows:
+    - 1Y Default Probability: 1Y
+    - 3Y Default Probability: 3Y
+    - 5Y Default Probability: 5Y
+    - 10Y Default Probability: 10Y
+  format: percent
+  xname: Horizon
+  title: Implied Cumulative Default Probability
+  subtitle: From credit spreads, a line per rating
+
+get_moodys_corporate_bond_yields:
+  chart: line
+  area: [Baa - Aaa]
+  format: percent
+  title: Moody's Corporate Bond Spreads
+  subtitle: Aaa and Baa over Treasuries, and the gap between them
+
+get_excess_bond_premium:
+  chart: line
+  columns: [GZ Credit Spread, Excess Bond Premium, Recession Probability]
+  axis2: [Recession Probability]
+  format: percent
+  format2: percent
+  levels: [0]
+  title: GZ Credit Spread and Excess Bond Premium
+  subtitle: Recession probability on the right axis
+
+get_corporate_borrowing_cost:
+  chart: line
+  format: percent
+  title: Corporate Borrowing Cost
+  subtitle: Composite cost of bank borrowing for firms
+
+get_financial_stress_index:
+  chart: line
+  format: decimal
+  title: Financial Stress Index
+  subtitle: ECB CLIFS, from 0 (no stress) upward
+
+get_forward_rate:
+  chart: line
+  transpose: true
+  columns:
+    - 1: From year 1
+    - 2: From year 2
+    - 5: From year 5
+  format: percent
+  xname: Far maturity (years)
+  title: Forward Rates
+  subtitle: Rate from the near maturity (a line each) to the far maturity on the axis
+
+get_par_yield:
+  chart: line
+  format: percent
+  xname: Years to maturity
+  title: Par Yield Curve
+
+get_yield_curve_spread:
+  chart: bar
+  columns:
+    - 3M: Over 3M
+    - 2Y: Over 2Y
+  format: percent
+  cards: false
+  levels: [0]
+  title: Yield Curve Spreads
+  subtitle: Long maturity on the axis minus the short maturity
+
+get_breakeven_inflation_rate:
+  chart: line
+  columns: [Nominal Yield, Real Yield, Breakeven Inflation Rate]
+  format: percent
+  title: Breakeven Inflation by Maturity
+  subtitle: Nominal minus real (TIPS) Treasury yield
+
+get_government_bond_yield:
+  chart: line
+  format: percent
+  title: Long-Term Government Bond Yield
+
+get_government_bond_yield_curve:
+  chart: line
+  transpose: true
+  format: percent
+  title: Government Bond Yield Curve
+  subtitle: Germany by maturity, a line per day
+
+get_treasury_rates:
+  chart: line
+  format: percent
+  title: Treasury Rates
+
+get_zero_coupon_curve:
+  chart: line
+  transpose: true
+  format: percent
+  title: Zero-Coupon Yield Curve
+  subtitle: United States by maturity, a line per day
+
+get_nelson_siegel_svensson:
+  chart: line
+  ticker: Germany
+  level: 0
+  columns: [Beta 0, Beta 1, Beta 2, Beta 3]
+  format: percent
+  title: Nelson-Siegel-Svensson Factors
+  subtitle: Level (Beta 0), slope (Beta 1) and curvature (Beta 2 and 3)
+
+get_carry_and_roll_down:
+  chart: bar
+  expr: "carry_and_roll_down['United States']['Total'].iloc[[-1]].T"
+  format: percent
+  cards: false
+  title: Carry and Roll-Down
+  subtitle: Expected 12-month return from carry and roll-down by maturity, the last day
+
+get_yield_curve_principal_components:
+  chart: line
+  drop: [Explained Variance]
+  format: decimal
+  levels: [0]
+  title: Yield Curve Principal Components
+  subtitle: Loading per maturity; PC1 is the level, PC2 the slope, PC3 the curvature
+
+get_term_premium:
+  chart: line
+  format: percent
+  title: Term Premium
+  subtitle: ACM estimate, by maturity
+
+get_eiopa_risk_free_rate:
+  chart: line
+  expr: "curves.loc[:, (slice(None), ['1Y', '10Y', '30Y', '60Y', '150Y'])].iloc[-1].unstack(0)"
+  rows: [1Y, 10Y, 30Y, 60Y, 150Y]
+  format: percent
+  title: EIOPA Risk-Free Rate Curve
+  subtitle: By maturity, the last month of the example
+
+get_eiopa_symmetric_adjustment:
+  chart: tabs
+  title: EIOPA Symmetric Adjustment
+  tabs:
+    - label: Symmetric Adjustment
+      chart: line
+      columns: [Symmetric Adjustment]
+      format: percent
+      levels: [-0.1, 0.1]
+      subtitle: Capped at plus and minus 10%
+    - label: Equity Charges
+      chart: line
+      columns: [Type 1 Equity Charge, Type 2 Equity Charge]
+      format: percent
+      subtitle: Standard formula charge including the adjustment
+
+get_bank_of_england_yield_curve:
+  chart: line
+  transpose: true
+  format: percent
+  title: Bank of England Yield Curve
+  subtitle: By maturity, a line per month
+
+get_loan_payment:
+  chart: line
+  columns: [Payment, Rate]
+  axis2: [Rate]
+  format: amount
+  format2: percent
+  title: Monthly Mortgage Payment
+  subtitle: At the 30-year mortgage rate of the week (right axis)
+
+get_affordable_loan:
+  chart: line
+  columns: [Affordable Loan, Rate]
+  axis2: [Rate]
+  format: amount
+  format2: percent
+  title: Affordable Loan
+  subtitle: For a fixed monthly payment, at the 30-year mortgage rate of the week (right axis)
+
+get_amortization_schedule:
+  chart: bar
+  stack: true
+  columns: [Principal, Interest]
+  format: amount
+  xname: Payment number
+  title: Amortization Schedule
+  subtitle: Each monthly payment split into principal and interest
+
+get_treasury_auctions:
+  chart: tabs
+  title: Treasury Auction Results
+  tabs:
+    - label: Bid-to-Cover
+      chart: bar
+      columns: [Bid-to-Cover Ratio]
+      format: ratio
+      subtitle: Bids received per dollar offered, per auction
+    - label: Yield
+      chart: bar
+      columns: [Yield]
+      format: percent
+      subtitle: High yield, per auction
+    - label: Indirect Bidders
+      chart: bar
+      columns: [Indirect Bidder Share]
+      format: percent
+      subtitle: Share awarded to indirect bidders, per auction
+
+get_bond_universe:
+  chart: tabs
+  title: Bond Universe
+  tabs:
+    - label: Yield to Maturity
+      chart: line
+      x: Maturity
+      columns: [Yield to Maturity]
+      dots: [Yield to Maturity]
+      format: percent
+      subtitle: Per bond, by maturity
+    - label: G-Spread
+      chart: line
+      x: Maturity
+      columns: [G-Spread]
+      dots: [G-Spread]
+      format: percent
+      subtitle: Over the Treasury curve, per bond by maturity
+
+get_issuer_spreads:
+  chart: line
+  transpose: true
+  rows: [2Y, 5Y, 10Y]
+  format: percent
+  title: Issuer Credit Spread Curves
+  subtitle: Over Treasuries by maturity, a line per issuer
+
+get_treasury_securities:
+  chart: line
+  x: Maturity
+  columns: [Yield to Maturity]
+  dots: [Yield to Maturity]
+  format: percent
+  title: Yield to Maturity
+  subtitle: Per Treasury security, by maturity
+
+get_euribor_rates:
+  chart: line
+  format: percent
+  title: Euribor Rates
+
+get_european_central_bank_rates:
+  chart: line
+  columns: [Lending, Refinancing, Deposit]
+  format: percent
+  title: ECB Policy Rates
+
+get_federal_reserve_rates:
+  chart: line
+  columns: [Rate, 1st Percentile, 99th Percentile]
+  cloud: [1st Percentile, 99th Percentile]
+  format: percent
+  title: Effective Federal Funds Rate
+  subtitle: With the 1st to 99th percentile range of the day's trades
+
+get_short_rate_model:
+  chart: line
+  rows:
+    - Zero Rate 1M: 1M
+    - Zero Rate 3M: 3M
+    - Zero Rate 6M: 6M
+    - Zero Rate 1Y: 1Y
+    - Zero Rate 2Y: 2Y
+    - Zero Rate 3Y: 3Y
+    - Zero Rate 5Y: 5Y
+    - Zero Rate 7Y: 7Y
+    - Zero Rate 10Y: 10Y
+    - Zero Rate 20Y: 20Y
+    - Zero Rate 30Y: 30Y
+  format: percent
+  title: Model and Market Zero Curves
+  subtitle: Zero rates by maturity from the fitted Vasicek and CIR models and the market
+
+get_short_rate_simulation:
+  chart: line
+  columns: [95%, 75%, 50%, 25%, 5%]
+  cloud: [5%, 95%]
+  format: percent
+  xname: Years
+  title: Simulated Short Rate
+  subtitle: Percentiles of the simulated paths, the 5% to 95% range shaded

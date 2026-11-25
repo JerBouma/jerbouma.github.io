@@ -1,0 +1,1 @@
+{"charts":{"get_roll_spread":{"title":"Relative Roll Spread","type":"bar","x":["KO","PEP","PG","Benchmark"],"series":[{"name":"Relative Roll Spread","data":[0.0028,0.0045,0.005,0.0041]}],"format":"percent","subtitle":"Bid-ask spread implied by the serial covariance of price changes, as a share of the price"}}}

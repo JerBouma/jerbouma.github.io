@@ -1,0 +1,1 @@
+{"charts":{"get_srisk":{"title":"SRISK","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"SRISK","data":[96880600000.0,127491000000.0,125313000000.0,99795300000.0,88671200000.0]}],"format":"compact","subtitle":"Expected capital shortfall in a 40% market decline over six months, per year"}}}

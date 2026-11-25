@@ -1,0 +1,1 @@
+{"charts":{"get_discretionary_accruals":{"title":"Discretionary Accruals","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[0.0919,0.0203,0.0312,0.0012,0.0808]},{"name":"MSFT","data":[0.0563,0.0485,0.063,0.0223,0.039]}],"format":"percent","subtitle":"Total accruals minus those the modified Jones model expects, over lagged total assets"}}}

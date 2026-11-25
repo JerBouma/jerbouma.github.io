@@ -1,0 +1,1 @@
+{"charts":{"get_price_to_free_cash_flow_ratio":{"title":"Price to Free Cash Flow","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"ADBE","data":[43.0908,21.7497,40.4961,29.4892,13.8749]},{"name":"CRM","data":[42.8888,26.5272,29.1211,26.7666,null]},{"name":"INTU","data":[46.2982,34.9198,30.0688,38.9672,36.4667]}],"format":"multiple"}}}

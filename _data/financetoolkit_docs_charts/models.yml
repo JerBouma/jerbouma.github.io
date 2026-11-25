@@ -1,0 +1,530 @@
+# Models: a company's score per year as grouped bars (a few years per company), with the
+# zones of the model's paper where it has them; scores that run negative or are read against
+# a cutoff as lines with their zones; valuations against the share price; decompositions as
+# their components.
+
+get_factor_analysis:
+  chart: coef
+  ticker: 12 Months
+  level: 1
+  rows:
+  - get_piotroski_score: Piotroski Score
+  - get_altman_z_score: Altman Z-Score
+  derive:
+    Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
+  coef: Mean IC
+  se: Standard Error
+  p: p-Value
+  format: ratio
+  title: Mean Information Coefficient
+  subtitle: Rank correlation with the return 12 months ahead, with its 95% interval
+
+get_kaplan_zingales_index:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Kaplan-Zingales Index
+  subtitle: Higher is more financially constrained
+
+get_whited_wu_index:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Whited-Wu Index
+  subtitle: Higher (less negative) is more financially constrained
+
+get_size_age_index:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Size-Age Index
+  subtitle: Higher (less negative) is more financially constrained; size and age are capped
+
+get_altman_z_score:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Altman Z''-Score
+  subtitle: Non-manufacturing model; zones of Altman, Hartzell and Peck (1995)
+  zones:
+  - {to: 1.1, label: Distress, tone: bad}
+  - {from: 1.1, to: 2.6, label: Grey, tone: mid}
+  - {from: 2.6, label: Safe, tone: good}
+
+get_ohlson_o_score:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Ohlson O-Score
+  subtitle: Above -3.23, a probability of bankruptcy above Ohlson's 3.8% cutoff
+  zones:
+  - {from: -3.23, label: Above the cutoff, tone: bad}
+
+get_zmijewski_score:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Zmijewski Score
+  subtitle: Above 0, a probability of bankruptcy above 50%
+  zones:
+  - {from: 0, label: Distress, tone: bad}
+
+get_springate_score:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Springate Score
+  subtitle: Below 0.862, a high likelihood of bankruptcy
+  zones:
+  - {to: 0.862, label: Failing, tone: bad}
+
+get_grover_score:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Grover Score
+  subtitle: Failing at -0.02 or lower, healthy at 0.01 or higher
+  zones:
+  - {to: -0.02, label: Failing, tone: bad}
+  - {from: -0.02, to: 0.01, label: Grey, tone: mid}
+  - {from: 0.01, label: Healthy, tone: good}
+
+get_fulmer_h_score:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Fulmer H-Score
+  subtitle: Below 0, the model predicts failure
+
+get_taffler_z_score:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Taffler Z-Score
+  subtitle: Below 0, the profile of companies that failed
+  zones:
+  - {to: 0, label: At risk, tone: bad}
+
+get_synthetic_credit_rating:
+  chart: bar
+  ticker: Default Spread
+  transpose: true
+  format: percent
+  title: Default Spread
+  subtitle: The spread over the risk free rate of the rating the interest coverage maps to (Damodaran)
+
+get_sustainable_growth_rate:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Sustainable Growth Rate
+  subtitle: Return on equity times the retention ratio
+
+get_internal_growth_rate:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Internal Growth Rate
+  subtitle: Growth possible from retained earnings alone, without outside financing
+
+get_piotroski_score:
+  chart: bar
+  transpose: true
+  format: number
+  digits: 0
+  min: 0
+  max: 9
+  title: Piotroski F-Score
+  subtitle: Nine signals of 0 or 1; Piotroski's high group scores 8 or 9, the low group 0 or 1
+  zones:
+  - {from: 7.5, to: 9, label: High, tone: good}
+  - {from: 0, to: 1.5, label: Low, tone: bad}
+
+get_beneish_m_score:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Beneish M-Score
+  subtitle: Above -1.78, the profile of an earnings manipulator (eight-variable model)
+  zones:
+  - {from: -1.78, label: Likely manipulator, tone: bad}
+
+get_magic_formula:
+  chart: heatmap
+  scale: sequential
+  reverse: true
+  min: 1
+  max: 5
+  digits: 0
+  title: Magic Formula Rank
+  subtitle: Rank on earnings yield plus rank on return on capital; 1 is the most attractive
+
+get_mohanram_g_score:
+  chart: bar
+  transpose: true
+  format: number
+  min: 0
+  max: 8
+  title: Mohanram G-Score
+  subtitle: Eight signals against the median of the tickers; Mohanram's high group scores 6 to 8
+  zones:
+  - {from: 5.5, to: 8, label: High, tone: good}
+
+get_dechow_f_score:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Dechow F-Score
+  subtitle: 1 is the average risk of a misstatement; elevated above 1, substantial above 1.85, high above 2.45
+  zones:
+  - {from: 1, to: 1.85, label: Above normal, tone: mid}
+  - {from: 1.85, to: 2.45, label: Substantial, tone: bad}
+  - {from: 2.45, label: High, tone: bad}
+
+get_montier_c_score:
+  chart: bar
+  transpose: true
+  format: number
+  min: 0
+  max: 6
+  title: Montier C-Score
+  subtitle: Six warning signs of 0 or 1; Montier found scores of 5 or 6 underperformed
+  zones:
+  - {from: 4.5, to: 6, label: 5 or 6, tone: bad}
+
+get_quality_score:
+  chart: heatmap
+  min: -2
+  max: 2
+  format: ratio
+  title: Quality Score
+  subtitle: Z-score across the tickers each year (Quality Minus Junk); above 0 is higher quality
+
+get_accruals_ratio:
+  chart: tabs
+  title: Accruals Ratio
+  tabs:
+  - label: Balance Sheet
+    ticker: Balance Sheet Accruals Ratio
+    transpose: true
+    chart: bar
+    format: percent
+    subtitle: Sloan's accruals over average total assets; lower is higher earnings quality
+  - label: Cash Flow
+    ticker: Cash Flow Accruals Ratio
+    transpose: true
+    chart: bar
+    format: percent
+    subtitle: Net income minus operating and investing cash flows, over average total assets
+
+get_discretionary_accruals:
+  chart: bar
+  ticker: Discretionary Accruals
+  transpose: true
+  format: percent
+  title: Discretionary Accruals
+  subtitle: Total accruals minus those the modified Jones model expects, over lagged total assets
+
+get_enterprise_value_breakdown:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Enterprise Value Breakdown
+  subtitle: Market capitalization plus total debt minus cash
+
+get_tobins_q_ratio:
+  chart: bar
+  transpose: true
+  format: ratio
+  title: Tobin's Q
+  subtitle: Market value over the replacement cost of the assets; 1 is parity
+  levels: [1]
+
+get_weighted_average_cost_of_capital:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Weighted Average Cost of Capital
+
+get_implied_cost_of_capital:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Implied Cost of Capital
+  subtitle: Easton's PEG model, the return at which the share price equals two years of expected earnings
+
+get_economic_value_added:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Economic Value Added
+  subtitle: Operating profit after tax minus the cost of the capital employed
+
+get_market_value_added:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Market Value Added
+  subtitle: Market value minus the capital invested
+
+get_free_cash_flow_to_firm:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Free Cash Flow to Firm
+
+get_free_cash_flow_to_equity:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Free Cash Flow to Equity
+
+get_residual_income:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Residual Income
+  subtitle: Net income minus the cost of equity times last year's book value of equity
+
+get_present_value_of_growth_opportunities:
+  chart: bar
+  format: price
+  title: Present Value of Growth Opportunities
+  subtitle: Share price minus earnings per share over the cost of equity
+
+get_graham_number:
+  chart: bar
+  transpose: true
+  format: price
+  title: Graham Number
+  subtitle: Square root of 22.5 times earnings per share times book value per share
+
+get_graham_intrinsic_value:
+  chart: bar
+  transpose: true
+  format: price
+  title: Graham Intrinsic Value
+  subtitle: Per share, Graham's growth formula scaled by the AAA corporate bond yield
+
+get_reverse_discounted_cash_flow:
+  chart: bar
+  columns: [Implied Growth Rate, Historical Growth Rate]
+  cards: false
+  format: percent
+  title: Implied and Historical Growth
+  subtitle: The growth the share price implies at a 9% cost of capital, against the growth so far
+
+get_monte_carlo_intrinsic_valuation:
+  chart: tabs
+  title: Intrinsic Value Distribution
+  tabs:
+  - label: AAPL
+    chart: hbar
+    transpose: true
+    rows: [95th Percentile, 75th Percentile, 50th Percentile, 25th Percentile, 5th Percentile, Share Price]
+    columns: [AAPL]
+    highlight: 5
+    format: price
+    subtitle: Percentiles of the simulated value per share, against the share price
+  - label: MSFT
+    chart: hbar
+    transpose: true
+    rows: [95th Percentile, 75th Percentile, 50th Percentile, 25th Percentile, 5th Percentile, Share Price]
+    columns: [MSFT]
+    highlight: 5
+    format: price
+    subtitle: Percentiles of the simulated value per share, against the share price
+
+get_merton_distance_to_default:
+  chart: tabs
+  title: Merton Distance to Default
+  tabs:
+  - label: Asset Value
+    chart: line
+    transpose: true
+    columns: [Asset Value, Default Point]
+    format: usd
+    subtitle: The implied market value of the assets against the default point (short-term debt plus half the long-term debt)
+  - label: Distance to Default
+    chart: bar
+    transpose: true
+    columns: [Distance to Default]
+    format: ratio
+    subtitle: Standard deviations of the asset value above the default point
+  - label: Probability of Default
+    chart: bar
+    transpose: true
+    columns: [Probability of Default]
+    format: percent
+    subtitle: The normal probability of falling below the default point within the horizon
+
+get_campbell_hilscher_szilagyi_score:
+  chart: bar
+  transpose: true
+  columns: [Failure Probability]
+  format: percent
+  title: Failure Probability
+  subtitle: Campbell, Hilscher and Szilagyi; the probability of failing in the month 12 months ahead
+
+get_dupont_analysis:
+  chart: tabs
+  title: DuPont Analysis
+  tabs:
+  - label: Return on Equity
+    chart: bar
+    transpose: true
+    columns: [Return on Equity]
+    format: percent
+    subtitle: Net profit margin times asset turnover times the equity multiplier
+  - label: Net Profit Margin
+    chart: bar
+    transpose: true
+    columns: [Net Profit Margin]
+    format: percent
+  - label: Asset Turnover
+    chart: bar
+    transpose: true
+    columns: [Asset Turnover]
+    format: ratio
+    subtitle: Revenue over total assets
+  - label: Equity Multiplier
+    chart: bar
+    transpose: true
+    columns: [Equity Multiplier]
+    format: ratio
+    subtitle: Total assets over equity
+
+get_extended_dupont_analysis:
+  chart: tabs
+  title: Extended DuPont Analysis
+  tabs:
+  - label: Return on Equity
+    chart: bar
+    transpose: true
+    columns: [Return on Equity]
+    format: percent
+    subtitle: The product of the five components
+  - label: Burdens
+    chart: line
+    transpose: true
+    columns: [Interest Burden Ratio, Tax Burden Ratio]
+    format: ratio
+    subtitle: Pre-tax income over EBIT, and net income over pre-tax income
+  - label: Operating Margin
+    chart: bar
+    transpose: true
+    columns: [Operating Profit Margin]
+    format: percent
+  - label: Turnover and Leverage
+    chart: line
+    transpose: true
+    columns: [Asset Turnover, Equity Multiplier]
+    format: ratio
+    subtitle: Revenue over assets, and assets over equity
+
+get_nissim_penman_decomposition:
+  chart: tabs
+  title: Nissim-Penman Decomposition
+  tabs:
+  - label: Return on Equity
+    chart: bar
+    transpose: true
+    columns: [Return on Net Operating Assets, Leverage Effect]
+    stack: true
+    format: percent
+    subtitle: Return on common equity as the operating return plus the effect of financial leverage
+  - label: Spread
+    chart: line
+    transpose: true
+    columns: [Return on Net Operating Assets, Net Borrowing Cost]
+    format: percent
+    subtitle: The gap between the two is the spread that leverage multiplies
+  - label: Financial Leverage
+    chart: bar
+    transpose: true
+    columns: [Financial Leverage]
+    format: ratio
+    subtitle: Net financial obligations over common equity
+
+get_return_decomposition:
+  chart: tabs
+  title: Return Decomposition
+  tabs:
+  - label: AMD
+    chart: bar
+    ticker: AMD
+    level: 0
+    transpose: true
+    columns: [EPS Growth, P/E Change, Dividend Return, Total Return]
+    format: percent
+    subtitle: The yearly total return split into earnings growth, the change in the P/E and dividends
+  - label: MSFT
+    chart: bar
+    ticker: MSFT
+    level: 0
+    transpose: true
+    columns: [EPS Growth, P/E Change, Dividend Return, Total Return]
+    format: percent
+    subtitle: The yearly total return split into earnings growth, the change in the P/E and dividends
+
+get_intrinsic_valuation:
+  chart: bar
+  columns:
+  - Periods = 5: Intrinsic Value
+  format: price
+  title: Intrinsic Value
+  subtitle: Per share, discounted cash flows over five periods
+
+get_gordon_growth_model:
+  chart: bar
+  format: price
+  title: Gordon Growth Model Value
+  subtitle: Per share, next year's dividend over the cost of equity minus the growth rate
+
+get_two_stage_dividend_discount_model:
+  chart: bar
+  columns:
+  - High-Growth Periods = 5: Intrinsic Value
+  format: price
+  title: Two-Stage Dividend Discount Model Value
+  subtitle: Per share, five years of high growth, then stable growth
+
+get_h_model:
+  chart: bar
+  format: price
+  title: H-Model Value
+  subtitle: Per share, growth fading linearly from the high to the stable rate
+
+get_justified_multiples:
+  chart: tabs
+  title: Justified Multiples
+  tabs:
+  - label: P/E
+    chart: line
+    transpose: true
+    columns: [Justified Trailing P/E, {Price-to-Earnings Ratio: Actual P/E}]
+    format: multiple
+    subtitle: The P/E the payout, return on equity and growth justify, against the market's
+  - label: P/B
+    chart: line
+    transpose: true
+    columns: [Justified P/B, {Price-to-Book Ratio: Actual P/B}]
+    format: multiple
+    subtitle: The P/B the return on equity and growth justify, against the market's
+
+get_earnings_power_value:
+  chart: bar
+  columns: [Earnings Power Value per Share, Share Price]
+  cards: false
+  format: price
+  title: Earnings Power Value
+  subtitle: Per share, the value of today's normalized earnings without growth, against the share price
+
+get_peer_comparison:
+  chart: hbar
+  ticker: MSFT
+  level: 0
+  columns: [Percentile]
+  format: percent
+  title: Percentile Among Peers
+  subtitle: Where the company ranks among its peers on each metric; 100% is the highest value

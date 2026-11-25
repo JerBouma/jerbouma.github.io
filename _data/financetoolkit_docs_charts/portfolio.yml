@@ -1,0 +1,88 @@
+# Portfolio: holdings as horizontal bars (weights and returns per position), the value of the
+# portfolio over time as a line; transaction lists and settings have no chart.
+
+get_presets:
+  chart: none
+  reason: A list of preset portfolios with their holdings and rebalancing, which is text
+
+from_preset:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Return]
+  sort: desc
+  format: percent
+  title: Return per Holding
+  subtitle: Since the first purchase, including dividends
+
+toolkit:
+  chart: heatmap
+  min: -0.4
+  max: 0.4
+  format: percent
+  title: Net Profit Margin
+  subtitle: Every holding and the portfolio as a whole, per year
+
+read_portfolio_dataset:
+  chart: none
+  reason: The list of transactions as it is read in, which the table shows
+
+collect_benchmark_historical_data:
+  chart: line
+  columns: [Cumulative Return]
+  format: ratio
+  title: Benchmark Cumulative Return
+  subtitle: Growth of 1 invested in the benchmark
+
+collect_historical_data:
+  chart: none
+  reason: Daily prices and returns of 26 holdings, more series than one chart can show; get_positions_overview charts the portfolio's value
+
+get_positions_overview:
+  chart: line
+  ticker: Current Value
+  level: 0
+  derive:
+    Portfolio Value: "f.sum(axis=1, min_count=1)"
+  columns: [Portfolio Value]
+  format: amount
+  title: Portfolio Value
+  subtitle: The market value of all positions held, in US dollars
+
+get_portfolio_overview:
+  chart: tabs
+  title: Portfolio Overview
+  tabs:
+  - label: Return
+    chart: hbar
+    drop: [Portfolio]
+    columns: [Return]
+    sort: desc
+    format: percent
+    subtitle: Since the first purchase, including dividends
+  - label: Weight
+    chart: hbar
+    drop: [Portfolio]
+    columns: [Weight]
+    sort: desc
+    format: percent
+    subtitle: Share of the portfolio's latest value
+
+get_portfolio_performance:
+  chart: none
+  reason: A weekly record per holding (volume, amounts, weights and return); the holdings are charted on get_portfolio_overview
+
+get_transactions_overview:
+  chart: none
+  reason: A list of every transaction with its result, which the table shows
+
+get_transactions_performance:
+  chart: none
+  reason: The result of every transaction per quarter against the benchmark, a list the table shows
+
+get_money_weighted_return:
+  chart: hbar
+  columns: [Money-Weighted Return]
+  sort: desc
+  format: percent
+  title: Money-Weighted Return
+  subtitle: Annualized internal rate of return of each position's cash flows

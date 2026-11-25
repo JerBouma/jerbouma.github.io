@@ -1,0 +1,1 @@
+{"charts":{"get_ev_to_sales_ratio":{"title":"EV to Sales","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CRM","data":[8.683,5.3919,7.889,8.7129,null]},{"name":"NOW","data":[22.1821,10.6245,15.902,19.7984,11.7871]},{"name":"WDAY","data":[12.2069,6.9755,10.0151,7.8017,null]}],"format":"multiple"}}}

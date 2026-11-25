@@ -1,0 +1,1 @@
+{"charts":{"get_move_significance":{"title":"Move in Standard Deviations","type":"bar","x":["2 Year","10 Year"],"series":[{"name":"Volatility Multiple","data":[3.5345,2.2808]}],"format":"ratio","subtitle":"The day's change in the yield divided by its usual daily volatility"}}}

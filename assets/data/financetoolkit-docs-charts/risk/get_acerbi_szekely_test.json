@@ -1,0 +1,1 @@
+{"charts":{"get_acerbi_szekely_test":{"title":"Acerbi-Szekely Test P-Value","type":"bar","x":["BA","DAL","CCL","Benchmark"],"series":[{"name":"P-Value","data":[0.176,0.0779,0.1962,0.0897]},{"name":"0.05","data":[0.05,0.05,0.05,0.05],"reference":true}],"format":"ratio","subtitle":"Below the 0.05 line the Expected Shortfall underestimates the tail losses","cards":false}}}

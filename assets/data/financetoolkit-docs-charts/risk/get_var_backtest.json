@@ -1,0 +1,1 @@
+{"charts":{"get_var_backtest":{"title":"Kupiec Test P-Value","type":"bar","x":["EURUSD","USDJPY","GBPUSD","Benchmark"],"series":[{"name":"P-Value","data":[0.1479,0.1759,0.841,0.677]},{"name":"0.05","data":[0.05,0.05,0.05,0.05],"reference":true}],"format":"ratio","subtitle":"Below the 0.05 line the number of VaR breaches is inconsistent with the model"}}}

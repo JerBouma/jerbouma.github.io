@@ -1,0 +1,803 @@
+# Technical indicators, drawn as charting packages draw them (chart: ta): the price as
+# candlesticks with the overlays on it, the indicator in a panel underneath with its usual levels.
+
+get_bollinger_bands:
+  chart: ta
+  ticker: "USDJPY"
+  price: "USDJPY"
+  price_name: USD/JPY
+  overlays:
+    - {column: "Upper Band", color: "#818cf8"}
+    - {column: "Middle Band", color: "#f97316", dashed: true}
+    - {column: "Lower Band", color: "#818cf8"}
+  fill: [Upper Band, Lower Band]
+  zoom: 252
+  title: Bollinger Bands
+
+get_keltner_channels:
+  chart: ta
+  ticker: "^GDAXI"
+  price: "^GDAXI"
+  price_name: DAX
+  format: amount
+  overlays:
+    - {column: "Upper Line", color: "#818cf8"}
+    - {column: "Middle Line", color: "#f97316", dashed: true}
+    - {column: "Lower Line", color: "#818cf8"}
+  fill: [Upper Line, Lower Line]
+  zoom: 252
+  title: Keltner Channels
+
+get_donchian_channels:
+  chart: ta
+  ticker: "HGUSD"
+  price: "HGUSD"
+  price_name: Copper
+  overlays:
+    - {column: "Upper Channel", color: "#818cf8"}
+    - {column: "Middle Channel", color: "#f97316", dashed: true}
+    - {column: "Lower Channel", color: "#818cf8"}
+  fill: [Upper Channel, Lower Channel]
+  zoom: 252
+  title: Donchian Channels
+
+get_ichimoku_cloud:
+  chart: ta
+  ticker: "^N225"
+  price: "^N225"
+  price_name: Nikkei 225
+  format: amount
+  overlays:
+    - {column: "Conversion Line", color: "#38bdf8"}
+    - {column: "Base Line", color: "#f97316"}
+    - {column: "Leading Span A", color: "#22c55e"}
+    - {column: "Leading Span B", color: "#ef4444"}
+  fill: [Leading Span A, Leading Span B]
+  fill_colors: ["#22c55e", "#ef4444"]
+  zoom: 252
+  title: Ichimoku Cloud
+  subtitle: The cloud is green where Leading Span A is above Leading Span B, red where it is below
+
+get_supertrend:
+  chart: ta
+  ticker: "SHOP"
+  price: "SHOP"
+  price_name: Shopify
+  derive:
+    Uptrend: "f['Supertrend'].where(f['Trend Direction'] == 1)"
+    Downtrend: "f['Supertrend'].where(f['Trend Direction'] == -1)"
+  overlays:
+    - {column: "Uptrend", color: "#22c55e"}
+    - {column: "Downtrend", color: "#ef4444"}
+  zoom: 252
+  title: Supertrend
+
+get_moving_average:
+  chart: ta
+  price: "^GSPC"
+  price_name: S&P 500
+  format: amount
+  overlays:
+    - {column: "^GSPC", name: "50-Day Moving Average", color: "#f97316"}
+  zoom: 252
+  title: Moving Average
+
+get_kaufman_adaptive_moving_average:
+  chart: ta
+  price: "^STOXX50E"
+  price_name: Euro Stoxx 50
+  format: amount
+  overlays:
+    - {column: "^STOXX50E", name: "KAMA", color: "#f97316"}
+  zoom: 252
+  title: Kaufman Adaptive Moving Average
+
+get_volume_weighted_average_price:
+  chart: ta
+  price: "SPY"
+  price_name: SPY
+  overlays:
+    - {column: "SPY", name: "VWAP", color: "#f97316"}
+  zoom: 252
+  title: Volume Weighted Average Price
+
+get_parabolic_sar:
+  chart: ta
+  price: "CLUSD"
+  price_name: Crude oil
+  overlays:
+    - {column: "CLUSD", name: "Parabolic SAR", color: "#38bdf8", dots: true}
+  zoom: 252
+  title: Parabolic SAR
+  subtitle: Dots below the price mark an uptrend, above it a downtrend
+
+get_chandelier_exit:
+  chart: ta
+  ticker: "TSLA"
+  price: "TSLA"
+  price_name: Tesla
+  overlays:
+    - {column: "Long Exit", color: "#22c55e"}
+    - {column: "Short Exit", color: "#ef4444"}
+  zoom: 252
+  title: Chandelier Exit
+
+get_support_resistance_levels:
+  chart: ta
+  ticker: "GCUSD"
+  price: "GCUSD"
+  price_name: Gold
+  format: amount
+  overlays:
+    - {column: "Resistance", color: "#ef4444"}
+    - {column: "Support", color: "#22c55e"}
+  zoom: 252
+  title: Support and Resistance Levels
+
+get_pivot_points:
+  chart: ta
+  price: "EURUSD"
+  price_name: EUR/USD
+  overlays:
+    - {column: "Resistance 2", color: "#ef4444", dashed: true, step: true}
+    - {column: "Resistance 1", color: "#ef4444", step: true}
+    - {column: "Pivot Point", color: "#f97316", step: true}
+    - {column: "Support 1", color: "#22c55e", step: true}
+    - {column: "Support 2", color: "#22c55e", dashed: true, step: true}
+  zoom: 40
+  title: Pivot Points
+
+get_fibonacci_retracement_levels:
+  chart: ta
+  ticker: "BTCUSD"
+  price: "BTCUSD"
+  price_name: BTC/USD
+  format: amount
+  overlays:
+    - {column: "0.0%", color: "#94a3b8"}
+    - {column: "23.6%", color: "#38bdf8"}
+    - {column: "38.2%", color: "#818cf8"}
+    - {column: "50.0%", color: "#f97316"}
+    - {column: "61.8%", color: "#a78bfa"}
+    - {column: "78.6%", color: "#f472b6"}
+    - {column: "100.0%", color: "#94a3b8"}
+  zoom: 90
+  title: Fibonacci Retracement Levels
+
+get_relative_strength_index:
+  chart: ta
+  price: "BTCUSD"
+  price_name: BTC/USD
+  lower:
+    series:
+      - {column: "BTCUSD", name: "RSI", color: "#a78bfa"}
+    levels: [30, 50, 70]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Relative Strength Index
+  subtitle: Above 70 is usually read as overbought, below 30 as oversold
+
+get_stochastic_oscillator:
+  chart: ta
+  ticker: "GBPUSD"
+  price: "GBPUSD"
+  price_name: GBP/USD
+  lower:
+    series:
+      - {column: "Stochastic %K", color: "#38bdf8"}
+      - {column: "Stochastic %D", color: "#f97316"}
+    levels: [20, 80]
+    min: 0
+    max: 100
+    format: number
+  zoom: 126
+  title: Stochastic Oscillator
+  subtitle: Above 80 is usually read as overbought, below 20 as oversold
+
+get_stochastic_relative_strength_index:
+  chart: ta
+  ticker: "NVDA"
+  price: "NVDA"
+  price_name: Nvidia
+  lower:
+    series:
+      - {column: "Stochastic RSI %K", color: "#38bdf8"}
+      - {column: "Stochastic RSI %D", color: "#f97316"}
+    levels: [20, 80]
+    min: 0
+    max: 100
+    format: number
+  zoom: 126
+  title: Stochastic RSI
+
+get_money_flow_index:
+  chart: ta
+  price: "^IXIC"
+  price_name: Nasdaq Composite
+  format: amount
+  lower:
+    series:
+      - {column: "^IXIC", name: "MFI", color: "#a78bfa"}
+    levels: [20, 80]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Money Flow Index
+  subtitle: Above 80 is usually read as overbought, below 20 as oversold
+
+get_williams_percent_r:
+  chart: ta
+  price: "EURUSD"
+  price_name: EUR/USD
+  lower:
+    series:
+      - {column: "EURUSD", name: "Williams %R", color: "#a78bfa"}
+    levels: [-80, -20]
+    min: -100
+    max: 0
+    format: number
+  zoom: 252
+  title: Williams %R
+  subtitle: Above -20 is usually read as overbought, below -80 as oversold
+
+get_commodity_channel_index:
+  chart: ta
+  price: "CLUSD"
+  price_name: Crude oil
+  lower:
+    series:
+      - {column: "CLUSD", name: "CCI", color: "#a78bfa"}
+    levels: [-100, 0, 100]
+    format: number
+  zoom: 252
+  title: Commodity Channel Index
+
+get_ultimate_oscillator:
+  chart: ta
+  price: "^GDAXI"
+  price_name: DAX
+  format: amount
+  lower:
+    series:
+      - {column: "^GDAXI", name: "Ultimate Oscillator", color: "#a78bfa"}
+    levels: [30, 70]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Ultimate Oscillator
+
+get_chande_momentum_oscillator:
+  chart: ta
+  price: "SIUSD"
+  price_name: Silver
+  lower:
+    series:
+      - {column: "SIUSD", name: "CMO", color: "#a78bfa"}
+    levels: [-50, 0, 50]
+    min: -100
+    max: 100
+    format: number
+  zoom: 252
+  title: Chande Momentum Oscillator
+
+get_average_directional_index:
+  chart: ta
+  price: "USDJPY"
+  price_name: USD/JPY
+  lower:
+    series:
+      - {column: "USDJPY", name: "ADX", color: "#a78bfa"}
+    levels: [25]
+    min: 0
+    format: number
+  zoom: 252
+  title: Average Directional Index
+  subtitle: Above 25 is usually read as a trending market
+
+get_choppiness_index:
+  chart: ta
+  price: "EURUSD"
+  price_name: EUR/USD
+  lower:
+    series:
+      - {column: "EURUSD", name: "Choppiness Index", color: "#a78bfa"}
+    levels: [38.2, 61.8]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Choppiness Index
+  subtitle: Above 61.8 is usually read as choppy, below 38.2 as trending
+
+get_aroon_indicator:
+  chart: ta
+  ticker: "GCUSD"
+  price: "GCUSD"
+  price_name: Gold
+  format: amount
+  lower:
+    series:
+      - {column: "Aroon Up", color: "#22c55e"}
+      - {column: "Aroon Down", color: "#ef4444"}
+    levels: [50]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Aroon Indicator
+
+get_vortex_indicator:
+  chart: ta
+  ticker: "AUDUSD"
+  price: "AUDUSD"
+  price_name: AUD/USD
+  lower:
+    series:
+      - {column: "VI+", color: "#22c55e"}
+      - {column: "VI-", color: "#ef4444"}
+    levels: [1]
+    format: decimal
+  zoom: 252
+  title: Vortex Indicator
+
+get_bollinger_percent_b_and_bandwidth:
+  chart: ta
+  ticker: "AAPL"
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "%B", color: "#38bdf8"}
+      - {column: "BandWidth", color: "#f97316"}
+    levels: [0, 1]
+    format: decimal
+  zoom: 252
+  title: Bollinger %B and BandWidth
+  subtitle: "%B above 1 means the price is over the upper band, below 0 under the lower band"
+
+get_mass_index:
+  chart: ta
+  price: "AMZN"
+  price_name: Amazon
+  lower:
+    series:
+      - {column: "AMZN", name: "Mass Index", color: "#a78bfa"}
+    levels: [26.5, 27]
+    format: number
+  zoom: 252
+  title: Mass Index
+  subtitle: A rise above 27 followed by a drop below 26.5 is the classic reversal bulge
+
+get_moving_average_convergence_divergence:
+  chart: ta
+  ticker: "MSFT"
+  price: "MSFT"
+  price_name: Microsoft
+  derive: {Histogram: "f['MACD Line'] - f['Signal Line']"}
+  lower:
+    series:
+      - {column: Histogram, bar: true, signed: true}
+      - {column: "MACD Line", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [0]
+  zoom: 252
+  title: MACD
+
+get_percentage_volume_oscillator:
+  chart: ta
+  ticker: "NVDA"
+  price: "NVDA"
+  price_name: Nvidia
+  lower:
+    series:
+      - {column: Histogram, bar: true, signed: true}
+      - {column: "Percentage Volume Oscillator", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [0]
+  zoom: 252
+  title: Percentage Volume Oscillator
+
+get_percentage_price_oscillator:
+  chart: ta
+  price: "^STOXX50E"
+  price_name: Euro Stoxx 50
+  format: amount
+  lower:
+    series:
+      - {column: "^STOXX50E", name: "PPO", color: "#38bdf8"}
+    levels: [0]
+  zoom: 252
+  title: Percentage Price Oscillator
+
+get_true_strength_index:
+  chart: ta
+  ticker: "MSFT"
+  price: "MSFT"
+  price_name: Microsoft
+  lower:
+    series:
+      - {column: "True Strength Index", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [0]
+  zoom: 252
+  title: True Strength Index
+
+get_know_sure_thing:
+  chart: ta
+  ticker: "^GSPC"
+  price: "^GSPC"
+  price_name: S&P 500
+  format: amount
+  lower:
+    series:
+      - {column: "KST", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [0]
+  zoom: 252
+  title: Know Sure Thing
+
+get_relative_vigor_index:
+  chart: ta
+  ticker: "^HSI"
+  price: "^HSI"
+  price_name: Hang Seng
+  format: amount
+  lower:
+    series:
+      - {column: "Relative Vigor Index", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [0]
+  zoom: 252
+  title: Relative Vigor Index
+
+get_detrended_price_oscillator:
+  chart: ta
+  price: "NGUSD"
+  price_name: Natural gas
+  lower:
+    series:
+      - {column: "NGUSD", name: "DPO", color: "#38bdf8"}
+    levels: [0]
+  zoom: 252
+  title: Detrended Price Oscillator
+
+get_balance_of_power:
+  chart: ta
+  price: "^FTSE"
+  price_name: FTSE 100
+  format: amount
+  lower:
+    series:
+      - {column: "^FTSE", name: "Balance of Power", color: "#38bdf8", bar: true, signed: true}
+    levels: [0]
+  zoom: 126
+  title: Balance of Power
+
+get_awesome_oscillator:
+  chart: ta
+  price: "SOLUSD"
+  price_name: Solana
+  lower:
+    series:
+      - {column: "SOLUSD", name: "Awesome Oscillator", color: "#38bdf8", bar: true, signed: true}
+    levels: [0]
+  zoom: 252
+  title: Awesome Oscillator
+
+get_elder_ray_index:
+  chart: ta
+  ticker: "HGUSD"
+  price: "HGUSD"
+  price_name: Copper
+  lower:
+    series:
+      - {column: Bull Power, bar: true, color: "#22c55e"}
+      - {column: Bear Power, bar: true, color: "#ef4444"}
+    levels: [0]
+  zoom: 252
+  title: Elder-Ray Index
+
+get_rate_of_change:
+  chart: ta
+  price: "GCUSD"
+  price_name: Gold
+  format: amount
+  lower:
+    series:
+      - {column: "GCUSD", name: "Rate of Change", color: "#38bdf8"}
+    levels: [0]
+  zoom: 252
+  title: Rate of Change
+
+get_trix:
+  chart: ta
+  price: "^IXIC"
+  price_name: Nasdaq Composite
+  format: amount
+  lower:
+    series:
+      - {column: "^IXIC", name: "TRIX", color: "#38bdf8"}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: TRIX
+
+get_coppock_curve:
+  chart: ta
+  price: "^GSPC"
+  price_name: S&P 500
+  format: amount
+  price_period: monthly
+  lower:
+    series:
+      - {column: "^GSPC", name: "Coppock Curve", color: "#38bdf8"}
+    levels: [0]
+  zoom: 120
+  title: Coppock Curve
+
+get_true_range:
+  chart: ta
+  price: "NGUSD"
+  price_name: Natural gas
+  lower:
+    series:
+      - {column: "NGUSD", name: "True Range", color: "#38bdf8"}
+  zoom: 252
+  title: True Range
+
+get_average_true_range:
+  chart: ta
+  price: "CLUSD"
+  price_name: Crude oil
+  lower:
+    series:
+      - {column: "CLUSD", name: "ATR", color: "#38bdf8"}
+  zoom: 252
+  title: Average True Range
+
+get_on_balance_volume:
+  chart: ta
+  price: "BTCUSD"
+  price_name: BTC/USD
+  format: amount
+  lower:
+    series:
+      - {column: "BTCUSD", name: "OBV", color: "#38bdf8"}
+    format: compact
+  zoom: 252
+  title: On-Balance Volume
+
+get_accumulation_distribution_line:
+  chart: ta
+  price: "GLD"
+  price_name: GLD
+  lower:
+    series:
+      - {column: "GLD", name: "A/D Line", color: "#38bdf8"}
+    format: compact
+  zoom: 252
+  title: Accumulation/Distribution Line
+
+get_chaikin_oscillator:
+  chart: ta
+  price: "QQQ"
+  price_name: QQQ
+  lower:
+    series:
+      - {column: "QQQ", name: "Chaikin Oscillator", color: "#38bdf8", bar: true, signed: true}
+    levels: [0]
+    format: compact
+  zoom: 252
+  title: Chaikin Oscillator
+
+get_chaikin_money_flow:
+  chart: ta
+  price: "ETHUSD"
+  price_name: ETH/USD
+  format: amount
+  lower:
+    series:
+      - {column: "ETHUSD", name: "CMF", color: "#38bdf8", bar: true, signed: true}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Chaikin Money Flow
+
+get_ease_of_movement:
+  chart: ta
+  price: "^GSPC"
+  price_name: S&P 500
+  format: amount
+  lower:
+    series:
+      - {column: "^GSPC", name: "Ease of Movement", color: "#38bdf8"}
+    levels: [0]
+    format: compact
+  zoom: 252
+  title: Ease of Movement
+
+get_price_volume_trend:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "PVT", color: "#38bdf8"}
+    format: compact
+  zoom: 252
+  title: Price Volume Trend
+
+get_negative_volume_index:
+  chart: ta
+  price: "SPY"
+  price_name: SPY
+  lower:
+    series:
+      - {column: "SPY", name: "NVI", color: "#38bdf8"}
+    format: amount
+  zoom: 252
+  title: Negative Volume Index
+
+get_positive_volume_index:
+  chart: ta
+  price: "SPY"
+  price_name: SPY
+  lower:
+    series:
+      - {column: "SPY", name: "PVI", color: "#38bdf8"}
+    format: amount
+  zoom: 252
+  title: Positive Volume Index
+
+get_force_index:
+  chart: ta
+  price: "TLT"
+  price_name: TLT
+  lower:
+    series:
+      - {column: "TLT", name: "Force Index", color: "#38bdf8", bar: true, signed: true}
+    levels: [0]
+    format: compact
+  zoom: 252
+  title: Force Index
+
+get_mcclellan_oscillator:
+  chart: ta
+  price: "EWJ"
+  price_name: EWJ (Japan)
+  lower:
+    series:
+      - {column: "EWJ", name: "McClellan Oscillator", color: "#38bdf8", bar: true, signed: true}
+    levels: [0]
+  zoom: 252
+  title: McClellan Oscillator
+
+get_advancers_decliners:
+  chart: ta
+  derive:
+    Net Advances: "f.drop(columns='Benchmark').sum(axis=1)"
+    Advance-Decline Line: "f.drop(columns='Benchmark').sum(axis=1).cumsum()"
+  overlays:
+    - {column: Advance-Decline Line, color: "#38bdf8"}
+  lower:
+    series: [{column: Net Advances, bar: true, signed: true}]
+    levels: [0]
+    format: number
+  format: number
+  zoom: 252
+  title: Advancers - Decliners
+  subtitle: Ten iShares country ETFs counted as one market
+
+get_trin:
+  chart: ta
+  price: "XLK"
+  price_name: XLK
+  lower:
+    series:
+      - {column: "XLK", name: "TRIN", color: "#38bdf8"}
+    levels: [1]
+    format: ratio
+  zoom: 252
+  title: TRIN (Arms Index)
+  subtitle: Below 1 more volume goes into advancing stocks, above 1 into declining ones
+
+get_new_highs_new_lows:
+  chart: ta
+  price: "XLK"
+  price_name: XLK
+  lower:
+    series:
+      - {column: "XLK", name: "New Highs - New Lows", color: "#38bdf8", bar: true, signed: true}
+    levels: [0]
+    format: number
+  zoom: 252
+  title: New Highs - New Lows
+
+# Collections, breadth, seasonality and signals
+collect_all_indicators:
+  chart: none
+  title: All Technical Indicators
+  reason: Dozens of indicators on different scales; each has its own page with its chart
+collect_breadth_indicators:
+  chart: none
+  title: Breadth Indicators
+  reason: Indicators on different scales; each has its own page with its chart
+collect_momentum_indicators:
+  chart: none
+  title: Momentum Indicators
+  reason: Indicators on different scales; each has its own page with its chart
+collect_overlap_indicators:
+  chart: none
+  title: Overlap Indicators
+  reason: Indicators on different scales; each has its own page with its chart
+collect_volatility_indicators:
+  chart: none
+  title: Volatility Indicators
+  reason: Indicators on different scales; each has its own page with its chart
+get_volatility_cone:
+  chart: line
+  columns: [Max, 90th Percentile, Median, 10th Percentile, Min, Current]
+  colors: {Current: "#facc15"}
+  format: percent
+  xname: Window (days)
+  title: Volatility Cone
+  subtitle: The range of realized volatility over each window, with the current reading
+get_market_breadth:
+  chart: ta
+  overlays:
+    - {column: Advance-Decline Line, color: "#38bdf8"}
+  lower:
+    series: [{column: Net Advances, bar: true, signed: true}]
+    levels: [0]
+    format: number
+  format: number
+  zoom: 252
+  title: Market Breadth
+  subtitle: The 30 members of the Dow Jones Industrial Average counted as one market
+get_seasonality:
+  chart: bar
+  columns: [Average Return, Median Return]
+  levels: [0]
+  cards: false
+  format: percent
+  title: Seasonality
+  subtitle: The return of each calendar month, averaged over the years of the example
+get_relative_strength:
+  chart: bar
+  latest: true
+  transpose: true
+  levels: [80]
+  cards: false
+  format: number
+  title: Relative Strength Rating
+  subtitle: A 1 to 99 rank of each stock's weighted 12-month return on the last day; 80 and above is the usual cut-off for leaders
+get_factor_analysis:
+  chart: coef
+  rows:
+    - {"('get_rate_of_change', '1 Month')": "Rate of Change, 1 month ahead"}
+    - {"('get_rate_of_change', '12 Months')": "Rate of Change, 12 months ahead"}
+    - {"('get_moving_average', '1 Month')": "Distance from Average, 1 month ahead"}
+    - {"('get_moving_average', '12 Months')": "Distance from Average, 12 months ahead"}
+  derive:
+    SE: f['Mean IC'] / f['t-Statistic']
+  coef: Mean IC
+  se: SE
+  p: p-Value
+  title: Information Coefficient
+  subtitle: The mean rank correlation of each signal with the return that follows, with its 95% interval
+get_candlestick_patterns:
+  chart: none
+  title: Candlestick Patterns
+  reason: A pattern flag per day, read as a list of dates
+get_signals:
+  chart: none
+  title: Signals
+  reason: The days a crossover happened, read as a list of dates
+get_indicator_summary:
+  chart: none
+  title: Indicator Summary
+  reason: One reading per indicator on different scales

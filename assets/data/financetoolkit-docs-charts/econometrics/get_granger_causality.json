@@ -1,0 +1,1 @@
+{"charts":{"get_granger_causality":{"title":"Granger Causality P-Value","type":"bar","x":["CLUSD \u00b7 XLE","XLE \u00b7 CLUSD"],"series":[{"name":"P-Value","data":[0.002,0.156]},{"name":"0.05","data":[0.05,0.05],"reference":true}],"format":"percent","subtitle":"The first ticker Granger-causes the second below the 5% line","cards":false}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_revenue_per_share":{"title":"Revenue per Share","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CAH","data":[552.609,649.914,782.363,918.328,919.744]},{"name":"COR","data":[1026.5,1129.62,1281.45,1467.71,1646.05]},{"name":"MCK","data":[1712.95,1945.93,2303.89,2802.9,null]}],"format":"price"}}}

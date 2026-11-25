@@ -1,0 +1,1 @@
+{"charts":{"risk":{"title":"Value at Risk","type":"bar","x":["AAPL","TSLA","Benchmark"],"series":[{"name":"Value at Risk","data":[-0.2109,-0.5357,-0.1279]}],"format":"percent","subtitle":"The yearly loss that is exceeded with 5% probability"}}}

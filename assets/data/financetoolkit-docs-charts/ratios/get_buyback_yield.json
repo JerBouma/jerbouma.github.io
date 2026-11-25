@@ -1,0 +1,1 @@
+{"charts":{"get_buyback_yield":{"title":"Buyback Yield","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[0.0343,0.0364,0.0286,0.0271,0.0237]},{"name":"AZO","data":[0.0904,0.0947,0.075,0.0523,0.0194]},{"name":"ORLY","data":[0.0511,0.0613,0.0554,0.028,0.0258]}],"format":"percent","subtitle":"Net share repurchases over market cap"}}}

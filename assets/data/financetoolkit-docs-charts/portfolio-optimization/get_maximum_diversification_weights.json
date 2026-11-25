@@ -1,0 +1,1 @@
+{"charts":{"get_maximum_diversification_weights":{"title":"Maximum Diversification Weights","type":"hbar","x":["JNJ","XOM","MSFT","AAPL"],"series":[{"name":"Weight","data":[0.4194,0.2533,0.2346,0.0927]}],"format":"percent"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_shareholder_yield":{"title":"Shareholder Yield","type":"bar","x":["2021","2022","2023","2024"],"series":[{"name":"HD","data":[0.0553,0.0438,0.045,0.0225]},{"name":"LOW","data":[0.092,0.1219,0.0677,0.045]}],"format":"percent","subtitle":"Dividends plus net share repurchases over market cap"}}}

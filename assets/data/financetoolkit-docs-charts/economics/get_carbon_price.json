@@ -1,0 +1,1 @@
+{"charts":{"get_carbon_price":{"title":"EU Carbon Price","type":"line","x":["2026-04","2026-05","2026-06","2026-07","2026-08","2026-09"],"series":[{"name":"European Union","data":[71.8,79.37,78.13,81.22,82.39,84.41]}],"format":"number","subtitle":"Euros per tonne of CO2, EU ETS auction price"}}}

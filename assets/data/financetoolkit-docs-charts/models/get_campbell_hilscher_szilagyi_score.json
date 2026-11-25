@@ -1,0 +1,1 @@
+{"charts":{"get_campbell_hilscher_szilagyi_score":{"title":"Failure Probability","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"Failure Probability","data":[0.0002,0.0007,0.0005,0.0006,0.0006]}],"format":"percent","subtitle":"Campbell, Hilscher and Szilagyi; the probability of failing in the month 12 months ahead"}}}

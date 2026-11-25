@@ -1,0 +1,1 @@
+{"index":"","columns":["Weight","Expected Return","Volatility","Sharpe Ratio","Weight Standard Deviation"],"rows":[["AAPL",0.0974,0.1932,0.2786,0.5725,0.1566],["MSFT",0.2604,0.2017,0.2571,0.6534,0.2124],["JNJ",0.2146,0.0977,0.1674,0.3823,0.2153],["XOM",0.4275,0.2911,0.2702,0.9526,0.23],["Portfolio",1.0,0.2168,0.1626,1.1262,null]],"total":5}

@@ -1,0 +1,1 @@
+{"charts":{"get_analyst_estimates":{"title":"Estimated EPS","type":"bar","x":["2026","2027","2028","2029","2030"],"series":[{"name":"NVDA","data":[9.6221,16.5946,21.8712,26.3718,33.19]},{"name":"AMD","data":[8.0781,17.8307,26.3049,35.1933,45.932]},{"name":"AVGO","data":[11.6826,19.3002,30.617,43.7908,64.01]}],"format":"usd","subtitle":"Consensus average per fiscal year"}}}

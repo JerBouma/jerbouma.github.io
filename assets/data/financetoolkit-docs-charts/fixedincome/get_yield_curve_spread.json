@@ -1,0 +1,1 @@
+{"charts":{"get_yield_curve_spread":{"title":"Yield Curve Spreads","type":"bar","x":["5Y","10Y","30Y"],"series":[{"name":"Over 3M","data":[0.0042,0.0067,0.0108]},{"name":"Over 2Y","data":[0.0013,0.0038,0.0079]},{"name":"0","data":[0,0,0],"reference":true}],"format":"percent","subtitle":"Long maturity on the axis minus the short maturity","cards":false}}}

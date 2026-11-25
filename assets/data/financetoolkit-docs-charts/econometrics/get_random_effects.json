@@ -1,0 +1,1 @@
+{"charts":{"get_random_effects":{"title":"Random Effects Coefficient","type":"coef","x":["Benchmark"],"coef":[0.9788],"low":[0.942932],"high":[1.01467],"p":[0.0],"format":"ratio","subtitle":"Estimate with its 95% confidence interval"}}}

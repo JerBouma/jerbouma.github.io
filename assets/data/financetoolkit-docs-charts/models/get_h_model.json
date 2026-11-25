@@ -1,0 +1,1 @@
+{"charts":{"get_h_model":{"title":"H-Model Value","type":"bar","x":["2022","2023","2024","2025"],"series":[{"name":"KO","data":[76.0315,65.5886,114.962,117.418]},{"name":"PEP","data":[211.179,203.988,382.118,292.094]}],"format":"price","subtitle":"Per share, growth fading linearly from the high to the stable rate"}}}

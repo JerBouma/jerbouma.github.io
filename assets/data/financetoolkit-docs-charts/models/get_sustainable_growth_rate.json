@@ -1,0 +1,1 @@
+{"charts":{"get_sustainable_growth_rate":{"title":"Sustainable Growth Rate","type":"bar","x":["2021","2022","2023","2024"],"series":[{"name":"DECK","data":[0.3129,0.3359,0.4302,0.4584]},{"name":"LULU","data":[0.3812,0.312,0.4923,0.4288]},{"name":"NKE","data":[0.3297,0.2001,0.2521,0.0637]}],"format":"percent","subtitle":"Return on equity times the retention ratio"}}}

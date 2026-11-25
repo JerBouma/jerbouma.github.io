@@ -1,0 +1,1 @@
+{"charts":{"ratios":{"title":"Profit Margins","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"Gross Margin","data":[0.4178,0.4331,0.4413,0.4621,0.4691]},{"name":"Operating Margin","data":[0.2978,0.3029,0.2982,0.3151,0.3197]},{"name":"Net Profit Margin","data":[0.2588,0.2531,0.2531,0.2397,0.2692]}],"format":"percent"}}}

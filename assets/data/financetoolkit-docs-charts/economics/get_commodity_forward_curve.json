@@ -1,0 +1,1 @@
+{"charts":{"get_commodity_forward_curve":{"title":"Crude Oil Futures Curve","type":"line","x":["Front","+1","+2","+3"],"series":[{"name":"2026-10-14","data":[null,93.9,92.83,91.53]},{"name":"2026-10-23","data":[103.27,100.94,98.36,95.68]}],"format":"price","subtitle":"Price per contract, nearest first, on the first and the last day","xname":"Contract"}}}

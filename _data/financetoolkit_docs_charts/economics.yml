@@ -1,0 +1,1128 @@
+# Macroeconomic data by country: a line per country over time (rates and ratios to GDP in percent),
+# bars for short yearly or quarterly series, a tab per country for levels in national currency.
+
+get_consumer_confidence_index:
+  chart: line
+  format: number
+  title: Consumer Confidence
+  subtitle: OECD index, long-term average = 100
+  levels:
+  - 100
+
+get_business_confidence_index:
+  chart: line
+  format: number
+  title: Business Confidence
+  subtitle: OECD index, long-term average = 100
+  levels:
+  - 100
+
+get_composite_leading_indicator:
+  chart: line
+  format: number
+  title: Composite Leading Indicator
+  subtitle: Amplitude adjusted, long-term average = 100
+  levels:
+  - 100
+
+get_share_prices:
+  chart: line
+  format: number
+  title: Share Prices
+  subtitle: Index, 2015 = 100, log scale
+  log: true
+
+get_retail_sales:
+  chart: line
+  format: amount
+  title: Retail Sales
+  subtitle: Millions of US dollars, monthly
+
+get_industrial_production_index:
+  chart: line
+  format: number
+  title: Industrial Production
+  subtitle: Index, 2017 = 100
+
+get_capacity_utilization:
+  chart: line
+  format: percent
+  title: Capacity Utilization
+  subtitle: Share of industrial capacity in use
+
+get_housing_starts:
+  chart: bar
+  format: amount
+  title: Housing Starts
+  subtitle: Thousands of units, seasonally adjusted annual rate
+
+get_real_personal_income:
+  chart: line
+  format: amount
+  title: Real Personal Income Excluding Transfers
+  subtitle: Billions of chained 2017 US dollars
+
+get_recession_indicator:
+  chart: area
+  format: number
+  title: NBER Recession Indicator
+  subtitle: 1 in a month of recession as dated by the NBER, 0 otherwise
+
+get_supply_chain_pressure_index:
+  chart: bar
+  format: ratio
+  title: Global Supply Chain Pressure Index
+  subtitle: Standard deviations from the average
+
+get_chokepoint_transits:
+  chart: bar
+  format: amount
+  title: Chokepoint Transits
+  subtitle: Ships a day by type
+  columns:
+  - Tanker
+  - Cargo
+  stack: true
+
+get_economic_calendar:
+  chart: none
+  title: Economic Calendar
+  reason: A list of scheduled releases with their estimates and outcomes
+
+get_commodity_forward_curve:
+  chart: line
+  format: price
+  title: Crude Oil Futures Curve
+  subtitle: Price per contract, nearest first, on the first and the last day
+  transpose: true
+  derive:
+    '2026-10-14': f.iloc[:, 1]
+    '2026-10-23': f.iloc[:, -1]
+  columns:
+  - '2026-10-14'
+  - '2026-10-23'
+  xname: Contract
+
+get_commodity_term_structure:
+  chart: tabs
+  title: Crude Oil Term Structure
+  tabs:
+  - label: Front and far
+    chart: line
+    format: price
+    columns:
+    - Front: Front contract
+    - Far: Twelfth contract
+    subtitle: Backwardation when the front contract trades above the far one
+  - label: Roll yield
+    chart: line
+    format: percent
+    columns:
+    - Roll Yield
+    levels:
+    - 0
+    subtitle: Annualised; positive in backwardation
+
+get_renewable_energy:
+  chart: line
+  format: percent
+  title: Renewable Energy
+  subtitle: Share of total primary energy supply
+
+get_carbon_footprint:
+  chart: line
+  format: number
+  title: Carbon Footprint
+  subtitle: Tonnes of CO2 equivalent per person
+
+get_carbon_price:
+  chart: line
+  format: number
+  title: EU Carbon Price
+  subtitle: Euros per tonne of CO2, EU ETS auction price
+
+get_climate_scenario:
+  chart: line
+  format: percent
+  title: Long-Term Interest Rate in the Net Zero 2050 Scenario
+  subtitle: NGFS scenario path
+  expr: climate_scenario
+
+get_government_debt:
+  chart: tabs
+  title: Government Debt
+  subtitle: Millions of national currency
+  tabs:
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency
+  - label: Canada
+    chart: bar
+    columns:
+    - Canada
+    format: compact
+    subtitle: Millions of national currency
+  - label: Mexico
+    chart: bar
+    columns:
+    - Mexico
+    format: compact
+    subtitle: Millions of national currency
+
+get_government_debt_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Government Debt to GDP
+
+get_government_revenue:
+  chart: tabs
+  title: Government Revenue
+  subtitle: Millions of national currency
+  tabs:
+  - label: United Kingdom
+    chart: bar
+    columns:
+    - United Kingdom
+    format: compact
+    subtitle: Millions of national currency
+  - label: Canada
+    chart: bar
+    columns:
+    - Canada
+    format: compact
+    subtitle: Millions of national currency
+  - label: Japan
+    chart: bar
+    columns:
+    - Japan
+    format: compact
+    subtitle: Millions of national currency
+
+get_government_revenue_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Government Revenue to GDP
+
+get_government_tax_revenue:
+  chart: tabs
+  title: Government Tax Revenue
+  subtitle: Millions of national currency
+  tabs:
+  - label: Kenya
+    chart: bar
+    columns:
+    - Kenya
+    format: compact
+    subtitle: Millions of national currency
+  - label: South Africa
+    chart: bar
+    columns:
+    - South Africa
+    format: compact
+    subtitle: Millions of national currency
+
+get_government_tax_revenue_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Tax Revenue to GDP
+
+get_government_expenditure:
+  chart: tabs
+  title: Government Expenditure
+  subtitle: Millions of national currency
+  tabs:
+  - label: Japan
+    chart: bar
+    columns:
+    - Japan
+    format: compact
+    subtitle: Millions of national currency
+  - label: China
+    chart: bar
+    columns:
+    - China
+    format: compact
+    subtitle: Millions of national currency
+  - label: India
+    chart: bar
+    columns:
+    - India
+    format: compact
+    subtitle: Millions of national currency
+
+get_government_expenditure_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Government Expenditure to GDP
+
+get_government_deficit:
+  chart: tabs
+  title: Government Deficit
+  subtitle: Millions of national currency; negative is a deficit
+  tabs:
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+  - label: Canada
+    chart: bar
+    columns:
+    - Canada
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+  - label: Mexico
+    chart: bar
+    columns:
+    - Mexico
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+
+get_government_deficit_to_gdp_ratio:
+  chart: bar
+  format: percent
+  title: Government Balance to GDP
+  subtitle: Negative is a deficit
+
+get_government_interest_expenditure:
+  chart: tabs
+  title: Government Interest Expenditure
+  subtitle: Millions of national currency
+  tabs:
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: compact
+    subtitle: Millions of national currency
+  - label: Italy
+    chart: bar
+    columns:
+    - Italy
+    format: compact
+    subtitle: Millions of national currency
+
+get_government_interest_expenditure_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Government Interest Expenditure to GDP
+
+get_government_interest_expenditure_to_revenue_ratio:
+  chart: line
+  format: percent
+  title: Government Interest Expenditure to Revenue
+
+get_government_expenditure_by_function:
+  chart: bar
+  format: compact
+  title: Government Expenditure by Function
+  subtitle: Millions of US dollars
+
+get_government_expenditure_by_function_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Defence Expenditure to GDP
+
+get_trust_in_government:
+  chart: line
+  format: percent
+  title: Trust in Government
+  subtitle: Share of people with confidence in the national government
+
+get_long_run_asset_returns:
+  chart: bar
+  format: percent
+  title: Real Equity Returns
+  subtitle: Yearly total return after inflation
+
+get_millennium_of_macroeconomic_data:
+  chart: tabs
+  title: UK Macroeconomic History
+  expr: millennium
+  tabs:
+  - label: Rates and inflation
+    chart: line
+    format: percent
+    columns:
+    - Bank Rate
+    - Consols / long-term government bond yields: Consol yield
+    - Consumer price inflation
+  - label: Share prices
+    chart: line
+    format: number
+    log: true
+    columns:
+    - Share prices
+    subtitle: Index, log scale
+
+get_scenario_set:
+  chart: line
+  format: percent
+  title: 10-Year Nominal Rate Scenarios
+  subtitle: Median with the 5% to 95% range of the simulated paths
+  expr: scenario_set['Nominal rate 10Y']
+  columns:
+  - 5%
+  - 50%
+  - 95%
+  cloud:
+  - 5%
+  - 95%
+  xname: Years ahead
+
+get_asset_class_proxies:
+  chart: bar
+  format: percent
+  title: Asset Class Proxy Returns
+  subtitle: Monthly total return
+
+get_shiller_stock_market_data:
+  chart: tabs
+  title: Shiller Stock Market Data
+  tabs:
+  - label: Valuation
+    chart: line
+    format: multiple
+    columns:
+    - CAPE
+    - P/E
+    subtitle: 'CAPE: price over ten-year average real earnings'
+  - label: Price and earnings
+    chart: line
+    format: amount
+    columns:
+    - Price
+    - Earnings
+    axis2:
+    - Earnings
+    format2: number
+    subtitle: S&P Composite price (left) and earnings (right)
+
+get_household_savings_rate:
+  chart: bar
+  format: percent
+  title: Household Savings Rate
+  subtitle: Share of gross disposable income saved
+
+get_household_debt_to_income_ratio:
+  chart: bar
+  format: percent
+  title: Household Debt to Income
+  subtitle: Share of gross disposable income
+
+get_unemployment_rate:
+  chart: line
+  format: percent
+  title: Unemployment Rate
+
+get_job_vacancy_rate:
+  chart: line
+  format: percent
+  title: Job Vacancy Rate
+  subtitle: Share of all posts employers are trying to fill
+
+get_misery_index:
+  chart: bar
+  format: percent
+  title: Misery Index
+  subtitle: Unemployment rate plus inflation rate
+
+get_labour_productivity:
+  chart: line
+  format: number
+  title: Labour Productivity
+  subtitle: GDP per hour worked, US dollars at constant prices and PPPs
+
+get_unit_labour_costs:
+  chart: line
+  format: number
+  title: Unit Labour Costs
+  subtitle: Index, 2015 = 100
+
+get_income_inequality:
+  chart: line
+  format: ratio
+  title: Income Inequality
+  subtitle: Gini coefficient of disposable income, 0 is full equality
+  columns:
+  - United States
+  - Germany
+
+get_population_statistics:
+  chart: line
+  format: number
+  title: Population
+  subtitle: Millions of people
+
+get_poverty_rate:
+  chart: line
+  format: percent
+  title: Poverty Rate
+  subtitle: Share of people below half the median household income
+
+get_nonfarm_payrolls:
+  chart: tabs
+  title: Nonfarm Payrolls
+  tabs:
+  - label: Monthly change
+    chart: bar
+    format: amount
+    derive:
+      Change: f['United States'].diff()
+    columns:
+    - Change
+    subtitle: Thousands of jobs added or lost
+  - label: Level
+    chart: line
+    format: amount
+    subtitle: Thousands of jobs
+
+get_initial_jobless_claims:
+  chart: line
+  format: amount
+  title: Initial Jobless Claims
+  subtitle: Weekly, seasonally adjusted
+
+get_continuing_jobless_claims:
+  chart: line
+  format: amount
+  title: Continuing Jobless Claims
+  subtitle: Monthly average of the weekly claims
+
+get_insured_unemployment_rate:
+  chart: line
+  format: percent
+  title: Insured Unemployment Rate
+  subtitle: Continued claims as a share of covered employment
+
+get_life_table:
+  chart: line
+  format: percent
+  title: Probability of Dying Within a Year
+  subtitle: By age, log scale
+  expr: life_table['Germany']
+  transpose: true
+  derive:
+    '2020': f.iloc[:, 0]
+    '2024': f.iloc[:, -1]
+  columns:
+  - '2020'
+  - '2024'
+  log: true
+  xname: Age
+
+get_gross_domestic_product:
+  chart: tabs
+  title: Real Gross Domestic Product
+  subtitle: Millions of national currency
+  tabs:
+  - label: Netherlands
+    chart: bar
+    columns:
+    - Netherlands
+    format: compact
+    subtitle: Millions of national currency
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: compact
+    subtitle: Millions of national currency
+  - label: China
+    chart: bar
+    columns:
+    - China
+    format: compact
+    subtitle: Millions of national currency
+
+get_gross_domestic_product_growth:
+  chart: bar
+  format: percent
+  title: Real GDP Growth
+  subtitle: Quarter on quarter
+
+get_gross_domestic_product_deflator:
+  chart: line
+  format: number
+  title: GDP Deflator
+  subtitle: Index, 2015 = 100
+
+get_real_gross_domestic_product_per_capita:
+  chart: tabs
+  title: Real GDP per Capita
+  subtitle: National currency at constant prices
+  tabs:
+  - label: Netherlands
+    chart: bar
+    columns:
+    - Netherlands
+    format: amount
+    subtitle: National currency at constant prices
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: amount
+    subtitle: National currency at constant prices
+  - label: China
+    chart: bar
+    columns:
+    - China
+    format: amount
+    subtitle: National currency at constant prices
+
+get_output_gap:
+  chart: bar
+  format: percent
+  title: Output Gap
+  subtitle: Actual GDP less potential GDP, as a share of potential GDP
+
+get_total_consumption:
+  chart: tabs
+  title: Total Consumption
+  subtitle: Millions of national currency
+  tabs:
+  - label: Netherlands
+    chart: bar
+    columns:
+    - Netherlands
+    format: compact
+    subtitle: Millions of national currency
+  - label: France
+    chart: bar
+    columns:
+    - France
+    format: compact
+    subtitle: Millions of national currency
+  - label: Poland
+    chart: bar
+    columns:
+    - Poland
+    format: compact
+    subtitle: Millions of national currency
+
+get_total_consumption_to_gdp_ratio:
+  chart: bar
+  format: percent
+  title: Total Consumption to GDP
+
+get_investment:
+  chart: tabs
+  title: Investment
+  subtitle: Millions of national currency
+  tabs:
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency
+  - label: Portugal
+    chart: bar
+    columns:
+    - Portugal
+    format: compact
+    subtitle: Millions of national currency
+  - label: China
+    chart: bar
+    columns:
+    - China
+    format: compact
+    subtitle: Millions of national currency
+
+get_investment_to_gdp_ratio:
+  chart: bar
+  format: percent
+  title: Investment to GDP
+
+get_fixed_investment:
+  chart: tabs
+  title: Fixed Investment
+  subtitle: Millions of national currency
+  tabs:
+  - label: United Kingdom
+    chart: bar
+    columns:
+    - United Kingdom
+    format: compact
+    subtitle: Millions of national currency
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: compact
+    subtitle: Millions of national currency
+  - label: France
+    chart: bar
+    columns:
+    - France
+    format: compact
+    subtitle: Millions of national currency
+
+get_fixed_investment_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Fixed Investment to GDP
+
+get_exports:
+  chart: tabs
+  title: Exports
+  subtitle: Millions of national currency
+  tabs:
+  - label: Netherlands
+    chart: bar
+    columns:
+    - Netherlands
+    format: compact
+    subtitle: Millions of national currency
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: compact
+    subtitle: Millions of national currency
+  - label: China
+    chart: bar
+    columns:
+    - China
+    format: compact
+    subtitle: Millions of national currency
+
+get_exports_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Exports to GDP
+
+get_imports:
+  chart: tabs
+  title: Imports
+  subtitle: Millions of national currency
+  tabs:
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency
+  - label: Canada
+    chart: bar
+    columns:
+    - Canada
+    format: compact
+    subtitle: Millions of national currency
+  - label: Mexico
+    chart: bar
+    columns:
+    - Mexico
+    format: compact
+    subtitle: Millions of national currency
+
+get_imports_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Imports to GDP
+
+get_trade_balance:
+  chart: tabs
+  title: Trade Balance
+  subtitle: Millions of national currency; negative is a deficit
+  tabs:
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+  - label: China
+    chart: bar
+    columns:
+    - China
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+
+get_current_account_balance:
+  chart: tabs
+  title: Current Account Balance
+  subtitle: Millions of national currency; negative is a deficit
+  tabs:
+  - label: France
+    chart: bar
+    columns:
+    - France
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+  - label: Italy
+    chart: bar
+    columns:
+    - Italy
+    format: compact
+    subtitle: Millions of national currency; negative is a deficit
+
+get_current_account_balance_to_gdp_ratio:
+  chart: bar
+  format: percent
+  title: Current Account Balance to GDP
+  subtitle: Negative is a deficit
+
+get_net_international_investment_position:
+  chart: tabs
+  title: Net International Investment Position
+  subtitle: Millions of national currency
+  tabs:
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency
+  - label: Netherlands
+    chart: bar
+    columns:
+    - Netherlands
+    format: compact
+    subtitle: Millions of national currency
+  - label: Spain
+    chart: bar
+    columns:
+    - Spain
+    format: compact
+    subtitle: Millions of national currency
+  - label: Japan
+    chart: bar
+    columns:
+    - Japan
+    format: compact
+    subtitle: Millions of national currency
+
+get_net_international_investment_position_to_gdp_ratio:
+  chart: line
+  format: percent
+  title: Net International Investment Position to GDP
+  subtitle: Foreign assets less foreign liabilities
+  levels:
+  - 0
+
+get_foreign_exchange_reserves:
+  chart: line
+  format: usd
+  title: Foreign Exchange Reserves
+  subtitle: Total reserves including gold, US dollars
+
+get_reserves_import_cover:
+  chart: line
+  format: number
+  title: Reserves in Months of Imports
+  subtitle: 'Dashed line: the three-month rule of thumb for adequate reserves'
+  levels:
+  - 3
+
+get_consumer_price_index:
+  chart: line
+  format: number
+  title: Consumer Price Index
+  subtitle: Index, 2015 = 100
+
+get_inflation_rate:
+  chart: bar
+  format: percent
+  title: Inflation Rate
+  subtitle: 'Dashed line: the ECB''s 2% target'
+  levels:
+  - 0.02
+
+get_purchasing_power:
+  chart: line
+  format: number
+  title: Purchasing Power
+  subtitle: What 100 in cash at the start buys, earning the overnight rate
+  levels:
+  - 100
+
+get_producer_price_index:
+  chart: line
+  format: percent
+  title: Producer Prices
+  subtitle: Change on a year earlier
+  levels:
+  - 0
+
+get_export_price_index:
+  chart: line
+  format: percent
+  title: Export Prices
+  subtitle: Change on a year earlier
+  levels:
+  - 0
+
+get_import_price_index:
+  chart: line
+  format: percent
+  title: Import Prices
+  subtitle: Change on a year earlier
+  levels:
+  - 0
+
+get_house_prices:
+  chart: line
+  format: number
+  title: Real House Prices
+  subtitle: Index, 2015 = 100, adjusted for inflation
+
+get_rent_prices:
+  chart: line
+  format: number
+  title: Rent Prices
+  subtitle: Index, 2015 = 100
+
+get_commercial_real_estate_prices:
+  chart: bar
+  format: percent
+  title: Commercial Real Estate Prices
+  subtitle: Change on a year earlier
+
+get_commodity_prices:
+  chart: line
+  format: number
+  title: Commodity Prices
+  subtitle: Euros; Brent per barrel (left), gold per troy ounce (right)
+  axis2:
+  - Gold
+  format2: amount
+
+get_exchange_rates:
+  chart: line
+  format: number
+  title: Exchange Rates
+  subtitle: National currency per US dollar, log scale
+  log: true
+
+get_real_effective_exchange_rate:
+  chart: line
+  format: number
+  title: Real Effective Exchange Rate
+  subtitle: Index, 2015 = 100; a rise is a real appreciation
+
+get_money_supply:
+  chart: tabs
+  title: M2 Money Supply
+  subtitle: Millions of national currency
+  tabs:
+  - label: Netherlands
+    chart: bar
+    columns:
+    - Netherlands
+    format: compact
+    subtitle: Millions of national currency
+  - label: Germany
+    chart: bar
+    columns:
+    - Germany
+    format: compact
+    subtitle: Millions of national currency
+  - label: United States
+    chart: bar
+    columns:
+    - United States
+    format: compact
+    subtitle: Millions of national currency
+
+get_central_bank_policy_rate:
+  chart: bar
+  format: percent
+  title: Central Bank Policy Rate
+
+get_short_term_interest_rate:
+  chart: line
+  format: percent
+  title: Short-Term Interest Rate
+  subtitle: Three-month rate
+
+get_long_term_interest_rate:
+  chart: line
+  format: percent
+  title: Long-Term Interest Rate
+  subtitle: Ten-year government bond yield
+
+get_overnight_rate:
+  chart: line
+  format: percent
+  title: Overnight Rates
+  subtitle: €STR, TONA, SONIA and SOFR
+
+get_real_interest_rate:
+  chart: line
+  format: percent
+  title: Real Policy Rate
+  subtitle: Policy rate less inflation
+  levels:
+  - 0
+
+get_yield_curve_slope:
+  chart: bar
+  format: percent
+  title: Yield Curve Slope
+  subtitle: Ten-year yield less three-month rate; negative is an inverted curve
+
+get_mortgage_rate_30_year:
+  chart: line
+  format: percent
+  title: 30-Year Fixed Mortgage Rate
+  subtitle: Freddie Mac weekly average
+
+get_outstanding_mortgage_rates:
+  chart: tabs
+  title: Outstanding Mortgage Rates
+  tabs:
+  - label: Share below each rate
+    chart: line
+    format: percent
+    columns:
+    - Below 3%
+    - Below 4%
+    - Below 5%
+    - Below 6%
+    subtitle: Share of outstanding mortgages with a rate below each level
+  - label: Average rate
+    chart: line
+    format: percent
+    columns:
+    - Average Rate
+
+get_real_yield_curve:
+  chart: line
+  format: percent
+  title: 10-Year Real Yield
+  subtitle: Yield of inflation-linked government bonds
+
+get_breakeven_inflation_expectations:
+  chart: line
+  format: percent
+  title: 10-Year Breakeven Inflation
+  subtitle: Nominal yield less real yield
+
+get_yield_decomposition:
+  chart: line
+  format: percent
+  title: 5-Year Yield Decomposition
+  subtitle: Nominal yield = real yield + breakeven inflation
+  columns:
+  - Nominal Yield
+  - Real Yield
+  - Breakeven Inflation
+
+get_inflation_expectations:
+  chart: line
+  format: percent
+  title: 5-Year Inflation Expectations
+  subtitle: Five years ahead, from surveys of professional forecasters
+
+get_sovereign_debt_crisis:
+  chart: heatmap
+  title: Sovereign Debt Crises
+  subtitle: Shaded in a year of crisis
+  transpose: true
+  format: amount
+  min: 0
+  max: 1
+  scale: sequential
+
+get_currency_crisis:
+  chart: heatmap
+  title: Currency Crises
+  subtitle: Shaded in a year of crisis
+  transpose: true
+  format: amount
+  min: 0
+  max: 1
+  scale: sequential
+
+get_banking_crisis:
+  chart: heatmap
+  title: Banking Crises
+  subtitle: Shaded in a year of crisis
+  transpose: true
+  format: amount
+  min: 0
+  max: 1
+  scale: sequential
+
+get_credit_to_gdp_gap:
+  chart: bar
+  format: percent
+  title: Credit-to-GDP Gap
+  subtitle: 'Dashed lines: the Basel III countercyclical buffer starts at a gap of 2 points and is at its maximum at 10'
+  levels:
+  - 0.02
+  - 0.1
+
+get_debt_service_ratio:
+  chart: bar
+  format: percent
+  title: Debt Service Ratio
+  subtitle: Interest and repayments as a share of income, private non-financial sector
+
+get_credit_to_gdp_ratio:
+  chart: bar
+  format: percent
+  title: Credit to GDP
+  subtitle: Credit to the private non-financial sector
+
+get_implied_volatility:
+  chart: line
+  format: percent
+  title: Implied Volatility Term Structure
+  subtitle: A curve per month, by time to expiry
+  transpose: true
+  xname: Time to expiry
+
+get_stress_test_scenario:
+  chart: tabs
+  title: Stress Test Scenario
+  expr: stress_test['United States'][['Real GDP growth', 'Unemployment rate', '10-year Treasury yield', 'BBB corporate yield']]
+  tabs:
+  - label: Economy
+    chart: line
+    format: percent
+    columns:
+    - Real GDP growth
+    - Unemployment rate
+  - label: Yields
+    chart: line
+    format: percent
+    columns:
+    - 10-year Treasury yield
+    - BBB corporate yield
+
+get_market_risk_premium:
+  chart: bar
+  format: percent
+  title: Equity Risk Premium
+  subtitle: Mature market premium plus the country risk premium
+  derive:
+    Mature market premium: f['Total Equity Risk Premium'] - f['Country Risk Premium']
+  columns:
+  - Mature market premium
+  - Country Risk Premium
+  stack: true

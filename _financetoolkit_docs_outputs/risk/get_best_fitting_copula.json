@@ -1,0 +1,1 @@
+{"index":"Copula","columns":["Lower Tail Dependence","Upper Tail Dependence","Log-Likelihood","AIC"],"rows":[["Student-T",0.5608,0.5608,946.95,-1889.9],["Gaussian",0.0,0.0,912.125,-1822.25],["Gumbel",0.0,0.7388,892.15,-1782.3],["Frank",0.0,0.0,826.879,-1651.76],["Clayton",0.7853,0.0,757.612,-1513.22]],"total":5}

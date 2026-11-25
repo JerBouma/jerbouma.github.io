@@ -1,0 +1,1 @@
+{"charts":{"get_duration":{"title":"Modified Duration","type":"bar","x":["2028-10-31","2029-10-31","2031-10-31","2033-10-31","2036-08-15","2046-11-15","2056-08-15"],"series":[{"name":"Modified Duration","data":[1.8777,2.7748,4.3963,5.8687,7.6914,13.6289,14.8801]}],"format":"number","subtitle":"In years, per bond by maturity","cards":false}}}

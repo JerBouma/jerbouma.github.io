@@ -1,0 +1,1 @@
+{"charts":{"get_pain_index":{"title":"Pain Index","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BA","data":[0.1321,0.2629,0.0702,0.3182,0.0715]},{"name":"AIR.PA","data":[0.0404,0.1135,0.031,0.1162,0.0434]},{"name":"Benchmark","data":[0.009,0.139,0.0223,0.0113,0.0278]}],"format":"percent","subtitle":"Average depth of the drawdowns, per year"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_covar":{"title":"CoVaR and Delta-CoVaR","type":"bar","x":["GS","JPM"],"series":[{"name":"CoVaR","data":[-0.0232,-0.0247]},{"name":"Delta-CoVaR","data":[-0.0104,-0.0119]}],"format":"percent","subtitle":"The market's Value at Risk when the firm is in distress, and the change from its normal state"}}}

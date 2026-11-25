@@ -1,0 +1,1 @@
+{"charts":{"get_downside_deviation":{"title":"Downside Deviation","type":"hbar","x":["NEE","Benchmark","SO","DUK"],"series":[{"name":"Downside Deviation","data":[0.0124,0.0081,0.0079,0.0074]}],"format":"percent","subtitle":"Standard deviation of the daily returns below zero"}}}

@@ -1,351 +1,387 @@
 get_mcclellan_oscillator:
-  question: How did the McClellan Oscillator of the iShares MSCI Japan (EWJ), Germany (EWG), Brazil (EWZ), India (INDA) and China Large-Cap (FXI) ETFs, based on their daily up and down closes, move from 24 to 31 December 2025?
+  question: How did the McClellan Oscillator of the iShares MSCI Japan (EWJ), Germany (EWG), Brazil (EWZ), India (INDA) and China Large-Cap (FXI) ETFs, based on their daily up and down closes, move in 2025?
   tool: breadth
   arguments:
     tickers: EWJ,EWG,EWU,EWQ,EWZ,INDA,FXI,EWC,EWA,EWY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: EWJ,EWG,EWZ,INDA,FXI,Benchmark
-    limit: -5
+    limit: -250
 get_advancers_decliners:
-  question: On which trading days from 24 to 31 December 2025 did the iShares MSCI Japan (EWJ), Germany (EWG), Brazil (EWZ), India (INDA) and China Large-Cap (FXI) ETFs close higher or lower than the day before?
+  question: On which trading days in 2025 did the iShares MSCI Japan (EWJ), Germany (EWG), Brazil (EWZ), India (INDA) and China Large-Cap (FXI) ETFs close higher or lower than the day before?
   tool: breadth
   arguments:
     tickers: EWJ,EWG,EWU,EWQ,EWZ,INDA,FXI,EWC,EWA,EWY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: EWJ,EWG,EWZ,INDA,FXI,Benchmark
-    limit: -5
+    limit: -250
 get_on_balance_volume:
-  question: How did the on-balance volume of Bitcoin, counted from the start of 2021, build up from 27 to 31 December 2025?
+  question: How did the on-balance volume of Bitcoin, counted from the start of 2021, build up in 2025?
   tool: breadth
   arguments:
     tickers: BTCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -365
 get_accumulation_distribution_line:
-  question: How did the accumulation/distribution line of the SPDR Gold Shares ETF (GLD), counted from the start of 2021, move from 24 to 31 December 2025?
+  question: How did the accumulation/distribution line of the SPDR Gold Shares ETF (GLD), counted from the start of 2021, move in 2025?
   tool: breadth
   arguments:
     tickers: GLD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_chaikin_oscillator:
-  question: How did the Chaikin Oscillator of the Invesco QQQ swing between buying and selling pressure from 24 to 31 December 2025?
+  question: How did the Chaikin Oscillator of the Invesco QQQ swing between buying and selling pressure in 2025?
   tool: breadth
   arguments:
     tickers: QQQ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_chaikin_money_flow:
-  question: How did the Chaikin Money Flow of Ether and Solana compare from 27 to 31 December 2025?
+  question: How did the Chaikin Money Flow of Ether and Solana compare in 2025?
   tool: breadth
   arguments:
     tickers: ETHUSD,SOLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -365
 get_ease_of_movement:
-  question: How easily did the S&P 500 move relative to its volume from 24 to 31 December 2025, measured by the Ease of Movement?
+  question: How easily did the S&P 500 move relative to its volume in 2025, measured by the Ease of Movement?
   tool: breadth
   arguments:
     tickers: ^GSPC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
+get_negative_volume_index:
+  question: How did the Negative Volume Index of SPY and IWM, counted from the start of 2021, develop in 2025?
+  tool: breadth
+  arguments:
+    tickers: SPY,IWM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: SPY,IWM
+    limit: -250
+    benchmark_ticker: None
+get_positive_volume_index:
+  question: How did the Positive Volume Index of SPY and IWM, counted from the start of 2021, develop in 2025?
+  tool: breadth
+  arguments:
+    tickers: SPY,IWM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: SPY,IWM
+    limit: -250
+    benchmark_ticker: None
 get_money_flow_index:
-  question: How did the Money Flow Index of the Nasdaq Composite move from 24 to 31 December 2025?
+  question: How did the Money Flow Index of the Nasdaq Composite move in 2025?
   tool: momentum
   arguments:
     tickers: ^IXIC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_williams_percent_r:
-  question: How did the Williams %R of the euro against the dollar move between overbought and oversold from 26 to 31 December 2025?
+  question: How did the Williams %R of the euro against the dollar move between overbought and oversold in 2025?
   tool: momentum
   arguments:
     tickers: EURUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -298
 get_aroon_indicator:
-  question: How did the Aroon Up and Aroon Down lines of gold evolve from 26 to 31 December 2025?
+  question: How did the Aroon Up and Aroon Down lines of gold evolve in 2025?
   tool: momentum
   arguments:
     tickers: GCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: GCUSD
-    limit: -5
+    limit: -268
 get_commodity_channel_index:
-  question: How did the Commodity Channel Index of crude oil move from 26 to 31 December 2025?
+  question: How did the Commodity Channel Index of crude oil move in 2025?
   tool: momentum
   arguments:
     tickers: CLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -269
 get_relative_vigor_index:
-  question: How did the Relative Vigor Index of the Hang Seng and its signal line move from 24 to 31 December 2025?
+  question: How did the Relative Vigor Index of the Hang Seng and its signal line move in 2025?
   tool: momentum
   arguments:
     tickers: ^HSI
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: ^HSI
-    limit: -5
+    limit: -259
 get_force_index:
-  question: How did the Force Index of the iShares 20+ Year Treasury Bond ETF (TLT), its price change times volume, move from 24 to 31 December 2025?
+  question: How did the Force Index of the iShares 20+ Year Treasury Bond ETF (TLT), its price change times volume, move in 2025?
   tool: momentum
   arguments:
     tickers: TLT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_ultimate_oscillator:
-  question: What did the Ultimate Oscillator of the DAX, which combines 7, 14 and 28-day buying pressure, show from 24 to 31 December 2025?
+  question: What did the Ultimate Oscillator of the DAX, which combines 7, 14 and 28-day buying pressure, show in 2025?
   tool: momentum
   arguments:
     tickers: ^GDAXI
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -258
+get_percentage_price_oscillator:
+  question: How did the Percentage Price Oscillator of the Euro Stoxx 50 compare with that of the S&P 500 in 2025?
+  tool: momentum
+  arguments:
+    tickers: ^STOXX50E,^GSPC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -258
 get_detrended_price_oscillator:
-  question: How did the price of natural gas cycle around its trend from 26 to 31 December 2025, measured by the Detrended Price Oscillator?
+  question: How did the price of natural gas cycle around its trend in 2025, measured by the Detrended Price Oscillator?
   tool: momentum
   arguments:
     tickers: NGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -268
 get_average_directional_index:
-  question: How strong was the trend of the dollar against the yen from 26 to 31 December 2025, measured by the Average Directional Index?
+  question: How strong was the trend of the dollar against the yen in 2025, measured by the Average Directional Index?
   tool: momentum
   arguments:
     tickers: USDJPY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -301
 get_chande_momentum_oscillator:
-  question: How did the momentum of silver swing from 26 to 31 December 2025, measured by the Chande Momentum Oscillator?
+  question: How did the momentum of silver swing in 2025, measured by the Chande Momentum Oscillator?
   tool: momentum
   arguments:
     tickers: SIUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -268
 get_ichimoku_cloud:
-  question: What did the Ichimoku cloud of the Nikkei 225 look like from 25 to 31 December 2025?
+  question: What did the Ichimoku cloud of the Nikkei 225 look like in 2025?
   tool: momentum
   arguments:
     tickers: ^N225
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: ^N225
-    limit: -5
+    limit: -260
 get_stochastic_oscillator:
-  question: How did the stochastic oscillator %K and %D lines of the pound against the dollar move from 26 to 31 December 2025?
+  question: How did the stochastic oscillator %K and %D lines of the pound against the dollar move in 2025?
   tool: momentum
   arguments:
     tickers: GBPUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: GBPUSD
-    limit: -5
+    limit: -301
 get_moving_average_convergence_divergence:
-  question: How did Microsoft's MACD line move against its signal line from 24 to 31 December 2025, based on prices from October 2024?
+  question: How did Microsoft's MACD line move against its signal line in 2025, based on prices from October 2024?
   tool: momentum
   arguments:
     tickers: MSFT
     start_date: "2024-10-01"
     end_date: "2025-12-31"
     show_columns: MSFT
-    limit: -5
+    limit: -250
 get_relative_strength_index:
-  question: Were Bitcoin and Ether overbought or oversold at any point from 27 to 31 December 2025, judging by their 14-day relative strength index?
+  question: Were Bitcoin and Ether overbought or oversold at any point in 2025, judging by their 14-day relative strength index?
   tool: momentum
   arguments:
     tickers: BTCUSD,ETHUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -365
 get_balance_of_power:
-  question: Did buyers or sellers control the trading days of the FTSE 100 from 24 to 31 December 2025, measured by the Balance of Power?
+  question: Did buyers or sellers control the trading days of the FTSE 100 in 2025, measured by the Balance of Power?
   tool: momentum
   arguments:
     tickers: ^FTSE
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -257
 get_awesome_oscillator:
-  question: How did the momentum of Solana shift from 27 to 31 December 2025, measured by the Awesome Oscillator?
+  question: How did the momentum of Solana shift in 2025, measured by the Awesome Oscillator?
   tool: momentum
   arguments:
     tickers: SOLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -365
 get_vortex_indicator:
-  question: How did the positive and negative Vortex Indicator lines of the Australian dollar against the US dollar move against each other from 26 to 31 December 2025?
+  question: How did the positive and negative Vortex Indicator lines of the Australian dollar against the US dollar move against each other in 2025?
   tool: momentum
   arguments:
     tickers: AUDUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: AUDUSD
-    limit: -5
+    limit: -301
 get_elder_ray_index:
-  question: How did bull power and bear power develop for copper from 26 to 31 December 2025, measured by the Elder Ray Index?
+  question: How did bull power and bear power develop for copper in 2025, measured by the Elder Ray Index?
   tool: momentum
   arguments:
     tickers: HGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: HGUSD
-    limit: -5
+    limit: -268
 get_rate_of_change:
-  question: How did the rate of change of gold and silver compare from 26 to 31 December 2025?
+  question: How did the rate of change of gold and silver compare in 2025?
   tool: momentum
   arguments:
     tickers: GCUSD,SIUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -268
 get_choppiness_index:
-  question: Was the euro against the dollar trending or moving sideways from 26 to 31 December 2025, according to the Choppiness Index?
+  question: Was the euro against the dollar trending or moving sideways in 2025, according to the Choppiness Index?
   tool: momentum
   arguments:
     tickers: EURUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -298
 get_know_sure_thing:
-  question: How did the Know Sure Thing indicator of the S&P 500 and its signal line move from 24 to 31 December 2025?
+  question: How did the Know Sure Thing indicator of the S&P 500 and its signal line move in 2025?
   tool: momentum
   arguments:
     tickers: ^GSPC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: ^GSPC
-    limit: -5
+    limit: -250
 get_moving_average:
-  question: How did the 50-day simple moving average of the S&P 500 move from 24 to 31 December 2025?
+  question: How did the 50-day simple moving average of the S&P 500 move in 2025?
   tool: overlap
   arguments:
     tickers: ^GSPC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     window: 50
-    limit: -5
+    limit: -250
 get_trix:
-  question: How did the TRIX of the Nasdaq Composite move from 24 to 31 December 2025?
+  question: How did the TRIX of the Nasdaq Composite move in 2025?
   tool: overlap
   arguments:
     tickers: ^IXIC
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_bollinger_bands:
-  question: How did the dollar against the yen move within its Bollinger Bands from 26 to 31 December 2025?
+  question: How did the dollar against the yen move within its Bollinger Bands in 2025?
   tool: volatility
   arguments:
     tickers: USDJPY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: USDJPY
-    limit: -5
+    limit: -301
+get_kaufman_adaptive_moving_average:
+  question: How did the Kaufman adaptive moving average of the Euro Stoxx 50 move in 2025?
+  tool: overlap
+  arguments:
+    tickers: ^STOXX50E
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -258
 get_volume_weighted_average_price:
-  question: What was the volume weighted average price of SPY from 24 to 31 December 2025?
+  question: What was the volume weighted average price of SPY in 2025?
   tool: overlap
   arguments:
     tickers: SPY
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: SPY
-    limit: -5
+    limit: -250
     benchmark_ticker: None
 get_parabolic_sar:
-  question: Where did the Parabolic SAR place its trailing stop for crude oil from 26 to 31 December 2025?
+  question: Where did the Parabolic SAR place its trailing stop for crude oil in 2025?
   tool: overlap
   arguments:
     tickers: CLUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -269
 get_pivot_points:
-  question: What were the daily pivot point and the first two support and resistance levels of the euro against the dollar from 26 to 31 December 2025?
+  question: What were the daily pivot point and the first two support and resistance levels of the euro against the dollar in 2025?
   tool: overlap
   arguments:
     tickers: EURUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: EURUSD
-    limit: -5
+    limit: -298
 get_support_resistance_levels:
-  question: Which support and resistance levels did gold establish from 26 to 31 December 2025?
+  question: Which support and resistance levels did gold establish in 2025?
   tool: overlap
   arguments:
     tickers: GCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: GCUSD
-    limit: -5
+    limit: -268
 get_fibonacci_retracement_levels:
-  question: What were the Fibonacci retracement levels of Bitcoin from 27 to 31 December 2025?
+  question: What were the Fibonacci retracement levels of Bitcoin in the last quarter of 2025?
   tool: overlap
   arguments:
     tickers: BTCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: BTCUSD
-    limit: -5
+    limit: -92
 get_true_range:
-  question: How wide was the true range of natural gas on each trading day from 26 to 31 December 2025?
+  question: How wide was the true range of natural gas on each trading day in 2025?
   tool: volatility
   arguments:
     tickers: NGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -268
 get_average_true_range:
-  question: How did the 14-day average true range of crude oil and natural gas compare from 26 to 31 December 2025?
+  question: How did the 14-day average true range of crude oil and natural gas compare in 2025?
   tool: volatility
   arguments:
     tickers: CLUSD,NGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -269
 get_supertrend:
-  question: Where was Shopify's Supertrend level and which way did its trend point from 24 to 31 December 2025, based on prices from the start of 2025?
+  question: Where was Shopify's Supertrend level and which way did its trend point in 2025, based on prices from the start of 2025?
   tool: volatility
   arguments:
     tickers: SHOP
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     show_columns: SHOP
-    limit: -5
+    limit: -250
 get_keltner_channels:
-  question: Where were the Keltner Channels of the DAX from 24 to 31 December 2025?
+  question: Where were the Keltner Channels of the DAX in 2025?
   tool: volatility
   arguments:
     tickers: ^GDAXI
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: ^GDAXI
-    limit: -5
+    limit: -258
 get_donchian_channels:
-  question: What were the 20-day Donchian Channels of copper from 26 to 31 December 2025?
+  question: What were the 20-day Donchian Channels of copper in 2025?
   tool: volatility
   arguments:
     tickers: HGUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     show_columns: HGUSD
-    limit: -5
+    limit: -268
 get_volatility_cone:
   question: How did Bitcoin's realized volatility at the end of 2025 compare with its minimum, 10th percentile, median, 90th percentile and maximum from 2021 to 2025, across windows of 10 to 120 days?
   tool: volatility
@@ -355,16 +391,16 @@ get_volatility_cone:
     end_date: "2025-12-31"
     show_columns: BTCUSD
 get_trin:
-  question: Measured across the 11 Select Sector SPDR ETFs (XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLU, XLRE and XLC) as one market, how did the Arms Index (TRIN) move from 24 to 31 December 2025?
+  question: Measured across the 11 Select Sector SPDR ETFs (XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLU, XLRE and XLC) as one market, how did the Arms Index (TRIN) move in 2025?
   tool: breadth
   arguments:
     tickers: XLK,XLF,XLE,XLV,XLY,XLP,XLI,XLB,XLU,XLRE,XLC
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     show_columns: XLK
-    limit: -5
+    limit: -250
 get_new_highs_new_lows:
-  question: Of the 11 Select Sector SPDR ETFs (XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLU, XLRE and XLC), how many closed at a 20-day high, net of those at a 20-day low, on each trading day from 24 to 31 December 2025?
+  question: Of the 11 Select Sector SPDR ETFs (XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLU, XLRE and XLC), how many closed at a 20-day high, net of those at a 20-day low, on each trading day in 2025?
   tool: breadth
   arguments:
     tickers: XLK,XLF,XLE,XLV,XLY,XLP,XLI,XLB,XLU,XLRE,XLC
@@ -372,15 +408,15 @@ get_new_highs_new_lows:
     end_date: "2025-12-31"
     window: 20
     show_columns: XLK
-    limit: -5
+    limit: -250
 get_market_breadth:
-  question: How did the market breadth of the 30 members of the Dow Jones Industrial Average develop from 24 to 31 December 2025, based on prices from the start of 2024?
+  question: How did the market breadth of the 30 members of the Dow Jones Industrial Average develop in the last quarter of 2025, based on prices from the start of 2024?
   tool: breadth
   arguments:
     tickers: AAPL,AMGN,AMZN,AXP,BA,CAT,CRM,CSCO,CVX,DIS,GS,HD,HON,IBM,JNJ,JPM,KO,MCD,MMM,MRK,MSFT,NKE,NVDA,PG,SHW,TRV,UNH,V,VZ,WMT
     start_date: "2024-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -64
 get_seasonality:
   question: What were Apple's average and median return, hit rate and t-statistic for each calendar month from 2000 to 2025?
   tool: momentum
@@ -390,14 +426,14 @@ get_seasonality:
     end_date: "2025-12-31"
     show_columns: AAPL
 get_relative_strength:
-  question: How did Apple, Microsoft, Nvidia, Amazon and Alphabet score on the 1-99 relative strength rating from 24 to 31 December 2025, based on prices from 2022?
+  question: How did Apple, Microsoft, Nvidia, Amazon and Alphabet score on the 1-99 relative strength rating in 2025, based on prices from 2022?
   tool: momentum
   arguments:
     tickers: AAPL,MSFT,NVDA,AMZN,GOOGL
     start_date: "2022-01-01"
     end_date: "2025-12-31"
     show_columns: Relative Strength Rating
-    limit: -5
+    limit: -250
 get_factor_analysis:
   question: How well did the 200-day rate of change and the distance from the 200-day moving average predict the 1- and 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
   tool: momentum
@@ -446,59 +482,67 @@ get_signals:
     show_columns: Moving Average Crossover
     limit: -5
 get_price_volume_trend:
-  question: How did the price volume trend of Apple and Microsoft, counted from the start of 2021, move from 24 to 31 December 2025?
+  question: How did the price volume trend of Apple and Microsoft, counted from the start of 2021, move in 2025?
   tool: breadth
   arguments:
     tickers: AAPL,MSFT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_percentage_volume_oscillator:
-  question: How did the Percentage Volume Oscillator of Nvidia, with its signal line and histogram, move from 24 to 31 December 2025?
+  question: How did the Percentage Volume Oscillator of Nvidia, with its signal line and histogram, move in the last quarter of 2025?
   tool: momentum
   arguments:
     tickers: NVDA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -64
+get_stochastic_relative_strength_index:
+  question: How did the Stochastic RSI of Nvidia move in 2025?
+  tool: momentum
+  arguments:
+    tickers: NVDA
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
 get_true_strength_index:
-  question: How did the True Strength Index of Microsoft and its signal line move from 24 to 31 December 2025?
+  question: How did the True Strength Index of Microsoft and its signal line move in 2025?
   tool: momentum
   arguments:
     tickers: MSFT
     start_date: "2024-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_coppock_curve:
-  question: How did the monthly Coppock curve of the S&P 500 move from August to December 2025?
+  question: How did the monthly Coppock curve of the S&P 500 move in 2025?
   tool: momentum
   arguments:
     tickers: ^GSPC
     start_date: "2016-01-01"
     end_date: "2025-12-31"
     period: monthly
-    limit: -5
+    limit: -12
 get_bollinger_percent_b_and_bandwidth:
-  question: Where did Apple trade within its Bollinger Bands (%B), and how wide were the bands, from 24 to 31 December 2025?
+  question: Where did Apple trade within its Bollinger Bands (%B), and how wide were the bands, in 2025?
   tool: volatility
   arguments:
     tickers: AAPL
     start_date: "2024-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_mass_index:
-  question: How did the Mass Index of Amazon and Alphabet move from 24 to 31 December 2025?
+  question: How did the Mass Index of Amazon and Alphabet move in 2025?
   tool: volatility
   arguments:
     tickers: AMZN,GOOGL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250
 get_chandelier_exit:
-  question: Where were Tesla's Chandelier Exit stops for long and short positions from 24 to 31 December 2025?
+  question: Where were Tesla's Chandelier Exit stops for long and short positions in 2025?
   tool: volatility
   arguments:
     tickers: TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -250

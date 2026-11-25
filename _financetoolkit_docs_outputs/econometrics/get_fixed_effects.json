@@ -1,0 +1,1 @@
+{"index":"","columns":["Coefficient","Std. Error","t-Statistic","P-Value"],"rows":[["Benchmark",0.5798,0.0183,31.6869,0.0],["Entity Effect: BP",0.0004,null,null,null],["Entity Effect: CVX",0.0004,null,null,null],["Entity Effect: SHEL",0.0005,null,null,null],["Entity Effect: TTE",0.0004,null,null,null],["Entity Effect: XOM",0.0008,null,null,null]],"total":6}

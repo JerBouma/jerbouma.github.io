@@ -1,0 +1,1 @@
+{"charts":{"get_quantile_regression":{"title":"Quantile Regression Coefficients","type":"coef","x":["KRE","Benchmark"],"coef":[0.5291,0.3949],"low":[0.43404,0.172832],"high":[0.62416,0.616968],"p":[1.04079e-27,0.000491334],"format":"ratio","subtitle":"At the 5% quantile, with their 95% confidence interval"}}}

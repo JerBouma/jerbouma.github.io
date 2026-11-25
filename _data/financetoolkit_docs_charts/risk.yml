@@ -1,0 +1,461 @@
+# Risk metrics, drawn as risk reports draw them: a statistic per calendar year and asset
+# as grouped bars, drawdowns as an underwater area below zero, conditional volatility
+# (the square root of a GARCH-type variance) as a line over time, contributions and
+# cross-sections as horizontal bars and an autocorrelation function as a correlogram.
+
+collect_all_metrics:
+  chart: tabs
+  title: Risk Metrics
+  tabs:
+    - label: Value at Risk and Drawdown
+      chart: bar
+      columns: [Value at Risk, Maximum Drawdown]
+      format: percent
+      subtitle: Daily Value at Risk and the deepest fall from a peak, per year
+    - label: Ulcer Index
+      chart: bar
+      columns: [Ulcer Index]
+      format: percent
+      subtitle: Depth and duration of drawdowns combined, per year
+    - label: Skewness and Kurtosis
+      chart: bar
+      columns: [Skewness, Kurtosis]
+      format: ratio
+      subtitle: The shape of the daily return distribution, per year
+
+get_factor_analysis:
+  chart: tabs
+  title: Information Coefficient
+  tabs:
+    - label: 1 Month
+      chart: coef
+      ticker: 1 Month
+      level: 1
+      rows:
+        - {get_volatility: Volatility}
+        - {get_maximum_drawdown: Maximum Drawdown}
+        - {get_skewness: Skewness}
+        - {get_amihud_illiquidity: Amihud Illiquidity}
+      derive:
+        Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
+      coef: Mean IC
+      se: Standard Error
+      p: p-Value
+      subtitle: Mean rank correlation of each metric with the next month's return, with its 95% interval
+    - label: 12 Months
+      chart: coef
+      ticker: 12 Months
+      level: 1
+      rows:
+        - {get_volatility: Volatility}
+        - {get_maximum_drawdown: Maximum Drawdown}
+        - {get_skewness: Skewness}
+        - {get_amihud_illiquidity: Amihud Illiquidity}
+      derive:
+        Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
+      coef: Mean IC
+      se: Standard Error
+      p: p-Value
+      subtitle: Mean rank correlation of each metric with the next twelve months' return, with its 95% interval
+
+get_tail_dependence_coefficient:
+  chart: bar
+  columns: [Lower Tail Dependence, Upper Tail Dependence, Correlation]
+  format: ratio
+  title: Tail Dependence with the Benchmark
+  subtitle: Chance of an extreme day for the asset given one for the benchmark, next to the correlation
+
+get_copula_parameters:
+  chart: none
+  title: Copula Parameters
+  reason: A handful of fitted parameters for one pair of assets, read as a table
+
+get_copula_simulation:
+  chart: scatter
+  xcol: HD
+  ycol: LOW
+  xname: HD
+  yname: LOW
+  xformat: percent
+  yformat: percent
+  labels: false
+  title: Simulated Joint Returns
+  subtitle: Daily returns drawn from the fitted copula, a point per simulation
+
+get_best_fitting_copula:
+  chart: hbar
+  columns: [AIC]
+  title: Copula Fit (AIC)
+  subtitle: Akaike information criterion per copula family; lower is a better fit
+
+get_covar:
+  chart: bar
+  columns: [CoVaR, Delta-CoVaR]
+  format: percent
+  title: CoVaR and Delta-CoVaR
+  subtitle: The market's Value at Risk when the firm is in distress, and the change from its normal state
+
+get_marginal_expected_shortfall:
+  chart: bar
+  format: percent
+  title: Marginal Expected Shortfall
+  subtitle: Average return of the firm on the market's worst 5% of days, per year
+
+get_srisk:
+  chart: bar
+  columns: [SRISK]
+  format: compact
+  title: SRISK
+  subtitle: Expected capital shortfall in a 40% market decline over six months, per year
+
+get_tail_ratio:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: Tail Ratio
+  subtitle: The 95th percentile return over the absolute 5th percentile; above 1 the right tail is larger
+
+get_skewness:
+  chart: bar
+  format: ratio
+  title: Skewness
+  subtitle: Asymmetry of the daily returns per year; 0 is symmetric
+
+get_kurtosis:
+  chart: bar
+  format: ratio
+  title: Excess Kurtosis
+  subtitle: Fatness of the tails of the daily returns per year; 0 is a normal distribution
+
+get_hill_estimator:
+  chart: bar
+  transpose: true
+  columns: [Hill Tail Index]
+  levels: [2, 4]
+  format: ratio
+  title: Hill Tail Index
+  subtitle: Lower is a heavier tail; below 4 the kurtosis and below 2 the variance is infinite
+
+get_variance:
+  chart: bar
+  format: decimal
+  title: Variance
+  subtitle: Variance of the daily returns, annualized, per year
+
+get_mean_absolute_deviation:
+  chart: bar
+  format: percent
+  title: Mean Absolute Deviation
+  subtitle: Average absolute distance of the daily returns from their mean, per year
+
+get_coefficient_of_variation:
+  chart: bar
+  format: ratio
+  title: Coefficient of Variation
+  subtitle: Standard deviation of the daily returns divided by their mean, per year
+
+get_move_significance:
+  chart: bar
+  columns: [Volatility Multiple, VaR Multiple]
+  format: ratio
+  title: Move Significance
+  subtitle: The day's return as a multiple of the volatility and of the Value at Risk
+
+get_autocorrelation:
+  chart: bar
+  levels: [-0.0553, 0.0553]
+  format: ratio
+  xname: Lag (days)
+  title: Autocorrelation of Returns
+  subtitle: Correlation of the daily return with the return a number of days before; dashed lines at ±1.96/√N
+
+get_hurst_exponent:
+  chart: hbar
+  columns: [{0: Hurst Exponent}]
+  sort: desc
+  format: ratio
+  title: Hurst Exponent
+  subtitle: 0.5 is a random walk; above it trends persist, below it they reverse
+
+get_conditional_drawdown_at_risk:
+  chart: bar
+  format: percent
+  title: Conditional Drawdown at Risk
+  subtitle: Average of the worst 5% of drawdowns, per year
+
+get_maximum_drawdown:
+  chart: bar
+  format: percent
+  title: Maximum Drawdown
+  subtitle: The deepest fall from a peak within each year
+
+get_maximum_drawdown_duration:
+  chart: bar
+  format: number
+  yname: Days
+  title: Maximum Drawdown Duration
+  subtitle: Longest time below a previous peak within each year, in trading days
+
+get_maximum_drawdown_recovery_time:
+  chart: bar
+  columns: [HYG, Benchmark]
+  format: number
+  yname: Days
+  title: Maximum Drawdown Recovery Time
+  subtitle: Trading days from the trough back to the peak; no bar where it did not recover within the year (TLT and IEF rarely did)
+
+get_drawdown_series:
+  chart: area
+  format: percent
+  title: Drawdowns
+  subtitle: Fall from the highest value so far, at the end of each quarter
+
+get_drawdown_table:
+  chart: hbar
+  columns: [Drawdown]
+  format: percent
+  title: Largest Drawdowns
+  subtitle: The three deepest falls of each asset from peak to trough
+
+get_ulcer_index:
+  chart: bar
+  format: percent
+  title: Ulcer Index
+  subtitle: Root mean square of the drawdowns, per year
+
+get_pain_index:
+  chart: bar
+  format: percent
+  title: Pain Index
+  subtitle: Average depth of the drawdowns, per year
+
+get_amihud_illiquidity:
+  chart: hbar
+  columns: [{0: Amihud Illiquidity}]
+  sort: desc
+  format: decimal
+  title: Amihud Illiquidity
+  subtitle: Price impact per dollar traded (absolute return per billion dollars of volume)
+
+get_roll_spread:
+  chart: bar
+  transpose: true
+  columns: [Relative Roll Spread]
+  format: percent
+  title: Relative Roll Spread
+  subtitle: Bid-ask spread implied by the serial covariance of price changes, as a share of the price
+
+get_corwin_schultz_spread:
+  chart: bar
+  format: percent
+  title: Corwin-Schultz Spread
+  subtitle: Bid-ask spread estimated from daily highs and lows, per month
+
+get_abdi_ranaldo_spread:
+  chart: bar
+  format: percent
+  title: Abdi-Ranaldo Spread
+  subtitle: Bid-ask spread estimated from close, high and low prices, per month
+
+get_edge_spread:
+  chart: bar
+  format: percent
+  title: EDGE Spread
+  subtitle: Bid-ask spread estimated from open, high, low and close prices, per month
+
+get_share_turnover:
+  chart: bar
+  columns: [SNAP, ETSY, LYFT]
+  format: percent
+  title: Share Turnover
+  subtitle: Volume traded as a share of the shares outstanding, per month
+
+get_idiosyncratic_volatility:
+  chart: bar
+  format: percent
+  title: Idiosyncratic Volatility
+  subtitle: Volatility of the returns the benchmark does not explain, per month
+
+get_value_at_risk:
+  chart: bar
+  format: percent
+  title: Value at Risk
+  subtitle: The daily loss exceeded on 5% of days, per year
+
+get_conditional_value_at_risk:
+  chart: hbar
+  columns: [{0: CVaR}]
+  sort: asc
+  format: percent
+  title: Conditional Value at Risk
+  subtitle: Average daily return on the worst 5% of days
+
+get_entropic_value_at_risk:
+  chart: bar
+  format: percent
+  title: Entropic Value at Risk
+  subtitle: An upper bound on the daily Value at Risk and Conditional Value at Risk, per year
+
+get_marginal_value_at_risk:
+  chart: hbar
+  columns: [Marginal VaR]
+  format: percent
+  title: Marginal Value at Risk
+  subtitle: Change in the portfolio's Value at Risk per unit of extra weight in each asset
+
+get_component_value_at_risk:
+  chart: hbar
+  columns: [Component VaR]
+  highlight: 4
+  format: percent
+  title: Component Value at Risk
+  subtitle: Each asset's share of the portfolio's Value at Risk; the parts add up to the Portfolio bar
+
+get_var_backtest:
+  chart: bar
+  transpose: true
+  columns: [P-Value]
+  levels: [0.05]
+  format: ratio
+  title: Kupiec Test P-Value
+  subtitle: Below the 0.05 line the number of VaR breaches is inconsistent with the model
+
+get_acerbi_szekely_test:
+  chart: bar
+  transpose: true
+  columns: [P-Value]
+  levels: [0.05]
+  cards: false
+  format: ratio
+  title: Acerbi-Szekely Test P-Value
+  subtitle: Below the 0.05 line the Expected Shortfall underestimates the tail losses
+
+get_garch:
+  chart: line
+  chart_expr: 'toolkit.risk.get_garch(rounding=8)'
+  derive:
+    BTCUSD: "np.sqrt(f['BTCUSD'])"
+  columns: [BTCUSD]
+  last: 504
+  format: percent
+  title: GARCH Volatility
+  subtitle: Daily conditional volatility, the square root of the GARCH(1, 1) variance
+
+get_garch_forecast:
+  chart: line
+  chart_expr: 'toolkit.risk.get_garch_forecast(rounding=8)'
+  derive:
+    ^GSPC: "np.sqrt(f['^GSPC'])"
+    Benchmark: "np.sqrt(f['Benchmark'])"
+  format: percent
+  title: GARCH Volatility Forecast
+  subtitle: Daily volatility forecast for the next ten days, the square root of the forecast variance
+
+get_garch_parameters:
+  chart: bar
+  transpose: true
+  columns: [Alpha, Beta]
+  stack: true
+  levels: [1]
+  format: ratio
+  title: GARCH Persistence
+  subtitle: Alpha plus Beta; the closer to 1, the longer a volatility shock lasts
+
+get_gjr_garch:
+  chart: line
+  chart_expr: 'toolkit.risk.get_gjr_garch(rounding=8)'
+  derive:
+    NVDA: "np.sqrt(f['NVDA'])"
+  columns: [NVDA]
+  last: 504
+  format: percent
+  title: GJR-GARCH Volatility
+  subtitle: Daily conditional volatility, the square root of the GJR-GARCH(1, 1, 1) variance
+
+get_gjr_garch_forecast:
+  chart: line
+  chart_expr: 'toolkit.risk.get_gjr_garch_forecast(rounding=8)'
+  derive:
+    CLUSD: "np.sqrt(f['CLUSD'])"
+    Benchmark: "np.sqrt(f['Benchmark'])"
+  format: percent
+  title: GJR-GARCH Volatility Forecast
+  subtitle: Daily volatility forecast for the next ten days, the square root of the forecast variance
+
+get_gjr_garch_parameters:
+  chart: bar
+  transpose: true
+  columns: [Alpha, Gamma, Beta]
+  format: ratio
+  title: GJR-GARCH Parameters
+  subtitle: Reaction to shocks (Alpha), the extra reaction to negative shocks (Gamma) and persistence (Beta)
+
+get_egarch:
+  chart: line
+  chart_expr: 'toolkit.risk.get_egarch(period="quarterly", rounding=8)'
+  derive:
+    AMZN: "np.sqrt(f['AMZN'])"
+    TSLA: "np.sqrt(f['TSLA'])"
+    Benchmark: "np.sqrt(f['Benchmark'])"
+  format: percent
+  title: EGARCH Volatility
+  subtitle: Quarterly conditional volatility, the square root of the EGARCH(1, 1) variance
+
+get_egarch_forecast:
+  chart: line
+  chart_expr: 'toolkit.risk.get_egarch_forecast(period="quarterly", rounding=8)'
+  derive:
+    AMZN: "np.sqrt(f['AMZN'])"
+    TSLA: "np.sqrt(f['TSLA'])"
+    Benchmark: "np.sqrt(f['Benchmark'])"
+  format: percent
+  title: EGARCH Volatility Forecast
+  subtitle: Quarterly volatility forecast, the square root of the forecast variance
+
+get_egarch_parameters:
+  chart: bar
+  transpose: true
+  columns: [Alpha, Gamma, Beta]
+  format: ratio
+  title: EGARCH Parameters
+  subtitle: Reaction to shocks (Alpha), the asymmetry between negative and positive shocks (Gamma) and persistence (Beta)
+
+get_volatility:
+  chart: bar
+  format: percent
+  title: Volatility
+  subtitle: Annualized standard deviation of the daily returns, per year
+
+get_har_rv_forecast:
+  chart: line
+  chart_expr: 'toolkit.risk.get_har_rv_forecast(estimator="squared_return", rounding=8)'
+  derive:
+    SPY: "np.sqrt(f['SPY'])"
+    QQQ: "np.sqrt(f['QQQ'])"
+  columns: [SPY, QQQ]
+  last: 504
+  format: percent
+  title: HAR-RV Volatility Forecast
+  subtitle: Next day's volatility, the square root of the forecast realized variance
+
+get_excess_volatility:
+  chart: bar
+  format: percent
+  title: Excess Volatility
+  subtitle: Annualized volatility of the returns above the risk-free rate, per year
+
+get_downside_deviation:
+  chart: hbar
+  columns: [{0: Downside Deviation}]
+  sort: desc
+  format: percent
+  title: Downside Deviation
+  subtitle: Standard deviation of the daily returns below zero
+
+get_ewma_volatility:
+  chart: line
+  columns: [USDJPY, EURUSD]
+  last: 504
+  format: percent
+  title: EWMA Volatility
+  subtitle: Daily volatility, RiskMetrics exponentially weighted

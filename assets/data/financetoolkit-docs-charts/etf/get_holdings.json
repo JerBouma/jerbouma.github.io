@@ -1,0 +1,1 @@
+{"charts":{"get_holdings":{"title":"Largest Holdings","type":"hbar","x":["AAPL","NVDA","MSFT","AMZN","MU","AMD","TSLA","META","WMT","GOOGL","SPCX","GOOG","AVGO","COST","CSCO"],"series":[{"name":"Weight","data":[0.0878,0.0686,0.063,0.0475,0.038,0.0352,0.0349,0.0306,0.03,0.0285,0.0272,0.0266,0.0257,0.0232,0.0182]}],"format":"percent","subtitle":"QQQ, share of the fund's assets"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_phillips_perron_test":{"title":"Phillips-Perron Statistic","type":"bar","x":["GCUSD","SIUSD"],"series":[{"name":"Phillips-Perron Statistic","data":[3.3901,4.5297]},{"name":"Critical Value 5%","data":[-2.8638,-2.8638]}],"format":"ratio","subtitle":"Below the 5% critical value, the unit root is rejected"}}}

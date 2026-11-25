@@ -1,0 +1,1 @@
+{"charts":{"portfolio":{"title":"Risk Parity Weights","type":"hbar","x":["JNJ","XOM","MSFT","AAPL"],"series":[{"name":"Weight","data":[0.3782,0.2303,0.2129,0.1786]}],"format":"percent"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_population_statistics":{"title":"Population","type":"line","x":["2010","2011","2012","2013","2014","2015","2016","2017","2018","2019"],"series":[{"name":"Japan","data":[128.043,127.831,127.552,127.333,127.262,127.11,126.933,126.706,126.443,126.167]}],"format":"number","subtitle":"Millions of people"}}}

@@ -76,13 +76,13 @@ get_ulcer_index:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_garch:
-  question: What was the GARCH(1,1) conditional variance of Bitcoin and the S&P 500 over the last five days of 2025, fitted on their returns from 2021 to 2025?
+  question: What was the GARCH(1,1) conditional variance of Bitcoin and the S&P 500 in 2025, fitted on their returns from 2021 to 2025?
   tool: risk
   arguments:
     tickers: BTCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -365
 get_garch_forecast:
   question: What variance does a GARCH(1,1) model of the S&P 500, fitted on its returns from 2021 to 2025, forecast for the first ten trading days of 2026?
   tool: risk
@@ -96,6 +96,28 @@ get_garch_parameters:
   arguments:
     tickers: LOW,SBUX,TSLA
     start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_gjr_garch:
+  question: What was the GJR-GARCH conditional variance of Nvidia and the S&P 500 in 2025, fitted on their returns in 2025?
+  tool: risk
+  arguments:
+    tickers: NVDA
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    limit: -249
+get_gjr_garch_forecast:
+  question: What variance does a GJR-GARCH model of crude oil, fitted on its returns from 2021 to 2025, forecast for the first ten trading days of 2026?
+  tool: risk
+  arguments:
+    tickers: CLUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_gjr_garch_parameters:
+  question: How strongly did negative returns raise the volatility of the S&P 500 and the Euro Stoxx 50 from 2021 to 2025, according to the parameters of a GJR-GARCH model?
+  tool: risk
+  arguments:
+    tickers: ^GSPC,^STOXX50E
+    start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_copula_parameters:
   question: What correlation, degrees of freedom and tail dependence does a Student-t copula fitted to the returns of gold and silver from 2021 to 2025 imply?
@@ -219,14 +241,14 @@ get_volatility:
     end_date: "2025-12-31"
     period: yearly
 get_har_rv_forecast:
-  question: What did the HAR-RV model, built on squared daily returns from 2021 to 2025, forecast for the next-day variance of SPY and QQQ on the last five trading days of 2025?
+  question: What did the HAR-RV model, built on squared daily returns from 2021 to 2025, forecast for the next-day variance of SPY and QQQ in 2025?
   tool: risk
   arguments:
     tickers: SPY,QQQ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     estimator: squared_return
-    limit: -5
+    limit: -250
     benchmark_ticker: None
 get_amihud_illiquidity:
   question: How illiquid were Snap, Etsy, Lyft and the S&P 500 from 2021 to 2025, measured by the Amihud price impact per billion dollars traded?
@@ -275,13 +297,13 @@ get_coefficient_of_variation:
     end_date: "2025-12-31"
     period: yearly
 get_ewma_volatility:
-  question: How did the EWMA volatility of the dollar against the yen, the euro against the dollar and the S&P 500 move from 26 to 31 December 2025?
+  question: How did the EWMA volatility of the dollar against the yen, the euro against the dollar and the S&P 500 move in 2025?
   tool: risk
   arguments:
     tickers: USDJPY,EURUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -301
 get_autocorrelation:
   question: Were the daily returns of SPY, QQQ and IWM autocorrelated over the first ten lags from 2021 to 2025?
   tool: risk
@@ -313,6 +335,14 @@ get_drawdown_table:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     top: 3
+get_move_significance:
+  question: How unusual were the moves of Nvidia and Coca-Cola on 27 January 2025, compared with their history since 2015?
+  tool: risk
+  arguments:
+    tickers: "NVDA,KO"
+    start_date: "2015-01-01"
+    end_date: "2025-01-27"
+    limit: -1
 get_factor_analysis:
   question: How well did volatility, maximum drawdown and the other risk metrics predict the 1- and 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
   tool: risk
@@ -345,6 +375,27 @@ get_srisk:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     quarterly: true
+get_corwin_schultz_spread:
+  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily highs and lows with the Corwin-Schultz method?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+get_abdi_ranaldo_spread:
+  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily closes, highs and lows with the Abdi-Ranaldo method?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+get_edge_spread:
+  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily open, high, low and close prices with the EDGE method?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
 get_share_turnover:
   question: What share of their outstanding shares did Snap, Etsy and Lyft trade in each month of the first half of 2025?
   tool: risk

@@ -1,0 +1,1 @@
+{"charts":{"get_ev_to_operating_cashflow_ratio":{"title":"EV to Operating Cash Flow","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CI","data":[14.8285,14.8491,9.4144,9.8596,10.1182]},{"name":"ELV","data":[16.0786,17.0313,16.3969,19.0153,23.6923]},{"name":"UNH","data":[22.6854,20.6807,18.639,21.8009,18.1884]}],"format":"multiple"}}}

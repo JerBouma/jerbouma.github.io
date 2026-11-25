@@ -1,0 +1,1 @@
+{"charts":{"get_minimum_variance_weights":{"title":"Minimum Variance Weights","type":"hbar","x":["JNJ","MSFT","XOM","AAPL"],"series":[{"name":"Weight","data":[0.4,0.3272,0.15,0.1228]}],"format":"percent"}}}

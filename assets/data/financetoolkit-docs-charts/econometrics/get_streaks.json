@@ -1,0 +1,1 @@
+{"charts":{"get_streaks":{"title":"Current Run Against the Longest","type":"bar","x":["Producer Price Index YoY","Inflation Rate YoY"],"series":[{"name":"Run Length","data":[8.0,13.0]},{"name":"Longest Earlier Run Length","data":[17.0,25.0]}],"format":"amount","subtitle":"Months in a row on the same side of zero"}}}
