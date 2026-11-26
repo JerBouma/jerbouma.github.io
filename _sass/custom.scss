@@ -7314,6 +7314,29 @@ body.article-document {
   .docs-tabs__panel > :last-child { margin-bottom: 0; }
 }
 
+// The example of a method page: one framed card under the description holding
+// the code or MCP question and what it returns, with a quiet label on top
+.page__content .docs-example {
+  margin: 1.8em 0 2.2em;
+  padding: 18px 22px 20px;
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  background: rgba(128, 128, 128, 0.04);
+
+  @media (max-width: 600px) { padding: 14px 12px 16px; margin-left: -4px; margin-right: -4px; }
+
+  > :last-child { margin-bottom: 0; }
+
+  p.docs-example__label {
+    margin: 0 0 14px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+}
+
 // The full result of an example: every row, scrolling in a box with a fixed header
 .page__content .docs-output {
   max-height: 460px;

@@ -362,6 +362,18 @@ module DocsMetricPages
     n.to_s.reverse.scan(/\d{1,3}/).join(",").reverse
   end
 
+  # "Example · AAPL, MSFT · 2021 to 2025": the tickers or countries and the
+  # years of the docstring example, read from its code
+  def example_label(code)
+    names = code[/(?:(?:tickers|countries)\s*=\s*|\b[A-Z]\w*\(\s*)\[([^\]]*)\]/m, 1].to_s.scan(/["']([^"']+)["']/).flatten
+    names = names.first(4) + ["#{names.size - 4} more"] if names.size > 5
+    years = %w[start_date end_date].map { |k| code[/#{k}\s*=\s*["'](\d{4})/, 1] }
+    period = if years.all? then years.uniq.join(" to ")
+             elsif years[0] then "since #{years[0]}"
+             end
+    ["Example", names.join(", "), period].reject { |x| x.nil? || x.empty? }.map { |x| CGI.escapeHTML(x) }.join(" · ")
+  end
+
   # Tabs (Chart and Table, Python and the MCP question): the first panel shows,
   # the buttons switch (assets/js/docs-tabs.js). Panels hold Markdown.
   def tabs(id, panels)
@@ -471,7 +483,9 @@ module DocsMetricPages
       python << "```bash\npip install financetoolkit -U\n```\n\n"
       python << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless code.strip.empty?
       python << code.rstrip << "\n" unless code.strip.empty?
-      # the example follows the description without a heading of its own
+      # the example sits in a card of its own under the description: a quiet
+      # label with what it runs on, the code or question, then the result
+      out << %(<div class="docs-example" markdown="1">\n<p class="docs-example__label">#{example_label(code)}</p>\n\n)
       out << (mcp.empty? ? python + "\n" : tabs("source", [["Python", python], ["MCP", mcp]]))
       unless result.empty?
         out << "Which returns:\n\n"
@@ -483,6 +497,7 @@ module DocsMetricPages
                 end
         out << (chart ? tabs("result", [["Chart", chart], ["Table", result]]) : result + "\n\n")
       end
+      out << "\n</div>\n\n"
       out << own_data(fn_name, parameters) if key == "econometrics"
     end
     unless parameters.empty?
