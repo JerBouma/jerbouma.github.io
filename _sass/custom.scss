@@ -7350,6 +7350,48 @@ body.article-document {
   }
 }
 
+// Three cards after a method's example: the module, the MCP server, the Finance Toolkit
+.page__content nav.docs-next {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 2.4em;
+
+  @media (max-width: 900px) { grid-template-columns: 1fr; gap: 8px; }
+
+  .docs-next__card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    align-content: start;
+    padding: 14px 16px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+
+    &:hover { border-color: var(--card-hover-border); transform: translateY(-1px); }
+
+    i {
+      grid-row: span 2;
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-color);
+      font-size: 0.9rem;
+    }
+  }
+
+  .docs-next__title { color: var(--text-primary); font-size: 0.95rem; font-weight: 700; line-height: 1.3; }
+  .docs-next__text { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.45; }
+}
+
 // The full result of an example: every row, scrolling in a box with a fixed header
 .page__content .docs-output {
   max-height: 460px;

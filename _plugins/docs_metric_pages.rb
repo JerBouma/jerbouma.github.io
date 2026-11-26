@@ -362,6 +362,27 @@ module DocsMetricPages
     n.to_s.reverse.scan(/\d{1,3}/).join(",").reverse
   end
 
+  # Where to go after the example: most visitors land on one method page from a search,
+  # so three cards point to the module (its guide and other methods), the MCP server
+  # and the start of the Finance Toolkit
+  def next_steps(key, asked)
+    cls = CLASSES[key]
+    module_card = if key == "toolkit"
+                    ["fa-book-open", "Finance Toolkit Documentation", "Every module, from ratios and models to risk and technical indicators.", cls[:url]]
+                  else
+                    ["fa-layer-group", "The #{cls[:name]} Module", "A guide to the module and every method in it.", cls[:url]]
+                  end
+    cards = [
+      module_card,
+      ["fa-comment-dots", "Ask It in Plain English", asked ? "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask the question above yourself." : "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask for any metric in plain English.", "/projects/financetoolkit/mcp"],
+      ["fa-rocket", "Start with the Finance Toolkit", "What it covers, how to install it and how to get your first ratios.", "/projects/financetoolkit"],
+    ]
+    links = cards.map do |icon, title, text, url|
+      %(<a class="docs-next__card" href="#{url}"><i class="fas #{icon}" aria-hidden="true"></i><span class="docs-next__title">#{title}</span><span class="docs-next__text">#{text}</span></a>)
+    end
+    %(<nav class="docs-next" aria-label="Next steps">\n#{links.join("\n")}\n</nav>\n\n)
+  end
+
   # "Example · AAPL, MSFT · 2021 to 2025": the tickers or countries and the
   # years of the docstring example, read from its code
   def example_label(code)
@@ -502,6 +523,7 @@ module DocsMetricPages
         end
       end
       out << "\n</div>\n\n"
+      out << next_steps(key, !mcp.empty?)
       out << own_data(fn_name, parameters) if key == "econometrics"
     end
     unless parameters.empty?
