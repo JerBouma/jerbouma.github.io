@@ -1,5 +1,12 @@
 [
   {
+    "id": "3ttw5rF-KJs",
+    "title": "Implied growth rate, explained: what Nvidia's price still assumes #Nvidia #StockMarket #Shorts",
+    "published": "2026-11-25T16:47:29+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nThe implied growth rate comes from a reverse discounted cash flow model. A normal valuation guesses the growth and finds a value; the reverse model starts from the price and finds the growth that makes the discounted free cash flow to the firm add up to it. Value at today's price = Σ FCFF₀(1+g)^t / (1+r)^t for five years + terminal value / (1+r)^5, solved for g.\n\nAt Nvidia's price on Wed 25 Nov 2026 ($142.40, New York morning), the model implies 38% a year for five years, at its WACC of 12.6% and 2.5% a year after that. Its free cash flow to the firm grew 90% a year over the past five fiscal years and 53% last year, to $91.5B. At 38% it would reach $458B in five years. About three quarters of the $3.44T value comes after year five, so the reading moves with the discount rate: 28% at 10%, 46% at 15%. Shares fell after a hotter core PCE report (3.3% vs 3.2%) raised bets on a Fed rate rise (Reuters), on top of worries that AI infrastructure spending won't materialize next year (The Motley Fool).\n\nData: Finance Toolkit MCP (FinancialModelingPrep, Yahoo Finance). News: Reuters (25 Nov 2026), The Motley Fool (5 Nov 2026).\nhttps://www.jeroenbouma.com/projects/financetoolkit/mcp\nNot investment advice.\n#Nvidia #StockMarket #Shorts",
+    "series": "finance"
+  },
+  {
     "id": "qq-3R5Uj3lY",
     "title": "200-day moving average, explained: what a break below it tells you #SP500 #StockMarket #Shorts",
     "published": "2026-11-24T17:18:27+00:00",
