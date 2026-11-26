@@ -477,25 +477,29 @@ module DocsMetricPages
         code = code.sub(/(?:\.(?:tail|head)\(\d*\)|\.iloc\[(?:\[[^\]]*\]|[^\],\[]*)\])(\s*```\s*)\z/, '\1')
         result = full
       end
-      # the code in Python or the question through the Finance Toolkit MCP,
-      # then what both return: a chart where one fits, and the table
-      python = +"Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
-      python << "```bash\npip install financetoolkit -U\n```\n\n"
-      python << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless code.strip.empty?
-      python << code.rstrip << "\n" unless code.strip.empty?
       # the example sits in a card of its own under the description: a quiet
-      # label with what it runs on, the code or question, then the result
+      # label with what it runs on, the code and the question, then the result
       out << %(<div class="docs-example" markdown="1">\n<p class="docs-example__label">#{example_label(code)}</p>\n\n)
-      out << (mcp.empty? ? python + "\n" : tabs("source", [["Python", python], ["MCP", mcp]]))
+      # one lead-in with the install, the Python code, then the same question through
+      # the Finance Toolkit MCP right under it (no tabs: both are short)
+      unless code.strip.empty?
+        out << "Install the [Finance Toolkit](/projects/financetoolkit) with `pip install financetoolkit -U`, then call `#{fn_name}`:\n{: .docs-boilerplate}\n\n"
+        out << code.rstrip << "\n\n"
+      end
+      out << mcp.sub("With the [Finance Toolkit MCP]", code.strip.empty? ? "With the [Finance Toolkit MCP]" : "Or, with the [Finance Toolkit MCP]") unless mcp.empty?
       unless result.empty?
         out << "Which returns:\n\n"
-        # a chart of its own (_data/financetoolkit_docs_charts.yml) for results whose
-        # table holds only the last days, else one drawn from a table of periods
+        # the chart (_data/financetoolkit_docs_charts/<module>.yml) with a Table button in its
+        # top right that lays the full table over it; ft-charts.js adds a Data (CSV) button
         own = "/assets/data/financetoolkit-docs-charts/#{key}/#{fn_name}.json"
-        chart = if mcp_key == fn_name && File.exist?(File.join(site.source, own))
-                  %(<div class="ft-chart" data-chart="#{fn_name}" data-src="#{own}?v=#{site.time.to_i}" role="figure" aria-label="#{CGI.escapeHTML(name)}"><div class="ft-chart__loading" aria-hidden="true"></div></div>)
-                end
-        out << (chart ? tabs("result", [["Chart", chart], ["Table", result]]) : result + "\n\n")
+        if mcp_key == fn_name && File.exist?(File.join(site.source, own))
+          out << %(<div class="ft-chart-box docs-result">\n<div class="ft-chart-actions" role="group" aria-label="This result">)
+          out << %(<button type="button" class="ft-chart-action" data-panel="table" aria-expanded="false" title="Every row of the result as a table"><i class="fas fa-table" aria-hidden="true"></i><span>Table</span></button></div>\n)
+          out << %(<div class="ft-chart" data-chart="#{fn_name}" data-src="#{own}?v=#{site.time.to_i}" role="figure" aria-label="#{CGI.escapeHTML(name)}"><div class="ft-chart__loading" aria-hidden="true"></div></div>\n)
+          out << %(<div class="ft-chart-panel docs-result__table" data-panel="table" hidden markdown="1">\n\n#{result}\n\n</div>\n</div>\n\n)
+        else
+          out << result << "\n\n"
+        end
       end
       out << "\n</div>\n\n"
       out << own_data(fn_name, parameters) if key == "econometrics"

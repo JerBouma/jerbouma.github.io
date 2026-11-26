@@ -7337,6 +7337,19 @@ body.article-document {
   }
 }
 
+// The full table laid over a method's chart by its Table button (_includes pattern of the
+// article charts): the panel scrolls, the table keeps its sticky header
+.page__content .docs-result {
+  margin: 0;
+
+  .docs-result__table {
+    display: block;
+    &[hidden] { display: none; }
+    > .docs-output { max-height: none; margin: 0 !important; background: var(--card-bg); }
+    > p.docs-output__count { box-shadow: none; margin: 8px 0 0 !important; width: auto; color: #e2e8f0; }
+  }
+}
+
 // The full result of an example: every row, scrolling in a box with a fixed header
 .page__content .docs-output {
   max-height: 460px;
