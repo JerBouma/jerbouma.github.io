@@ -1,5 +1,10 @@
 <meta charset="utf-8">
 
+<script>
+  // a link with a double slash (jeroenbouma.com//articles/...) serves the same page: show and count
+  // it under its own address, before Plausible reads it
+  if (/^\/\/+/.test(location.pathname)) history.replaceState(null, '', location.pathname.replace(/^\/+/, '/') + location.search + location.hash);
+</script>
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.jeroenbouma.com/js/pa-Kfgiu_bgeinx34i5zIf3J.js"></script>
 <script>

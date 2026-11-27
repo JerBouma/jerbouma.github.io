@@ -1,0 +1,20 @@
+---
+layout: null
+sitemap: false
+permalink: /llms-financetoolkit-docs.txt
+---
+{%- comment -%}
+  Every Finance Toolkit method page, by module, for AI assistants and AI search
+  (linked from /llms.txt). The pages come from _plugins/docs_metric_pages.rb, which
+  gives each one its module, function and a one-line description.
+{%- endcomment -%}
+{%- assign methods = site.pages | where_exp: "p", "p.docs_function" -%}
+{%- assign modules = methods | group_by: "docs_module" -%}
+# Finance Toolkit Documentation: Every Method
+
+> Each page explains one method of the Finance Toolkit (Python): what it measures, the formula, its parameters, a Python example with its full result, and the same question to ask through the Finance Toolkit MCP server. {{ methods.size }} pages in {{ modules.size }} modules.
+{% for m in modules %}{% assign first = m.items | first %}
+## [{{ m.name }}]({{ site.url }}{{ first.docs_module_url }})
+{% assign items = m.items | sort: "title" %}{% for p in items %}
+- [{{ p.title }}]({{ site.url }}{{ p.url }}): `{{ p.docs_function }}`. {{ p.description | strip_newlines }}{% endfor %}
+{% endfor %}
