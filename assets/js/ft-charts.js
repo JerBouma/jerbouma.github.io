@@ -67,7 +67,8 @@
       var full = actions.offsetWidth;
       // the title keeps at least 300px next to the buttons, or the buttons fold away; only the
       // title shares a row with them, so the subtitle and tabs below use the full width
-      var collapse = box.clientWidth - full - 32 < 300;
+      // a docs result has only Table (and Data): those short buttons never fold away
+      var collapse = !box.classList.contains('docs-result') && box.clientWidth - full - 32 < 300;
       actions.classList.toggle('is-collapsed', collapse);
       if (!collapse) menu(false);
       if (head) head.style.paddingRight = (actions.offsetWidth + 16) + 'px';

@@ -39,6 +39,12 @@
     var el = e.target.closest('a[href]');
     if (!el) return;
 
+    // The next-step cards under a docs method's example: which one, from which page
+    if (el.closest('.docs-next')) {
+      track('Docs Next Step', { to: el.getAttribute('href'), page: getPage() });
+      return;
+    }
+
     var href = el.getAttribute('href') || '';
     var fullHref = el.href || '';
     var page = getPage();
