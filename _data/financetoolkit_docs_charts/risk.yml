@@ -40,7 +40,7 @@ get_factor_analysis:
         Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
       coef: Mean IC
       se: Standard Error
-      p: p-Value
+      p: P-Value
       subtitle: Mean rank correlation of each metric with the next month's return, with its 95% interval
     - label: 12 Months
       chart: coef
@@ -55,7 +55,7 @@ get_factor_analysis:
         Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
       coef: Mean IC
       se: Standard Error
-      p: p-Value
+      p: P-Value
       subtitle: Mean rank correlation of each metric with the next twelve months' return, with its 95% interval
 
 get_tail_dependence_coefficient:
@@ -245,24 +245,6 @@ get_roll_spread:
   title: Relative Roll Spread
   subtitle: Bid-ask spread implied by the serial covariance of price changes, as a share of the price
 
-get_corwin_schultz_spread:
-  chart: bar
-  format: percent
-  title: Corwin-Schultz Spread
-  subtitle: Bid-ask spread estimated from daily highs and lows, per month
-
-get_abdi_ranaldo_spread:
-  chart: bar
-  format: percent
-  title: Abdi-Ranaldo Spread
-  subtitle: Bid-ask spread estimated from close, high and low prices, per month
-
-get_edge_spread:
-  chart: bar
-  format: percent
-  title: EDGE Spread
-  subtitle: Bid-ask spread estimated from open, high, low and close prices, per month
-
 get_share_turnover:
   chart: bar
   columns: [SNAP, ETSY, LYFT]
@@ -360,65 +342,6 @@ get_garch_parameters:
   format: ratio
   title: GARCH Persistence
   subtitle: Alpha plus Beta; the closer to 1, the longer a volatility shock lasts
-
-get_gjr_garch:
-  chart: line
-  chart_expr: 'toolkit.risk.get_gjr_garch(rounding=8)'
-  derive:
-    NVDA: "np.sqrt(f['NVDA'])"
-  columns: [NVDA]
-  last: 504
-  format: percent
-  title: GJR-GARCH Volatility
-  subtitle: Daily conditional volatility, the square root of the GJR-GARCH(1, 1, 1) variance
-
-get_gjr_garch_forecast:
-  chart: line
-  chart_expr: 'toolkit.risk.get_gjr_garch_forecast(rounding=8)'
-  derive:
-    CLUSD: "np.sqrt(f['CLUSD'])"
-    Benchmark: "np.sqrt(f['Benchmark'])"
-  format: percent
-  title: GJR-GARCH Volatility Forecast
-  subtitle: Daily volatility forecast for the next ten days, the square root of the forecast variance
-
-get_gjr_garch_parameters:
-  chart: bar
-  transpose: true
-  columns: [Alpha, Gamma, Beta]
-  format: ratio
-  title: GJR-GARCH Parameters
-  subtitle: Reaction to shocks (Alpha), the extra reaction to negative shocks (Gamma) and persistence (Beta)
-
-get_egarch:
-  chart: line
-  chart_expr: 'toolkit.risk.get_egarch(period="quarterly", rounding=8)'
-  derive:
-    AMZN: "np.sqrt(f['AMZN'])"
-    TSLA: "np.sqrt(f['TSLA'])"
-    Benchmark: "np.sqrt(f['Benchmark'])"
-  format: percent
-  title: EGARCH Volatility
-  subtitle: Quarterly conditional volatility, the square root of the EGARCH(1, 1) variance
-
-get_egarch_forecast:
-  chart: line
-  chart_expr: 'toolkit.risk.get_egarch_forecast(period="quarterly", rounding=8)'
-  derive:
-    AMZN: "np.sqrt(f['AMZN'])"
-    TSLA: "np.sqrt(f['TSLA'])"
-    Benchmark: "np.sqrt(f['Benchmark'])"
-  format: percent
-  title: EGARCH Volatility Forecast
-  subtitle: Quarterly volatility forecast, the square root of the forecast variance
-
-get_egarch_parameters:
-  chart: bar
-  transpose: true
-  columns: [Alpha, Gamma, Beta]
-  format: ratio
-  title: EGARCH Parameters
-  subtitle: Reaction to shocks (Alpha), the asymmetry between negative and positive shocks (Gamma) and persistence (Beta)
 
 get_volatility:
   chart: bar

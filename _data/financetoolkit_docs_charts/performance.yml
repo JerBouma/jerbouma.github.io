@@ -109,12 +109,6 @@ get_alpha:
   title: Alpha
   subtitle: Return minus the benchmark's return, per year
 
-get_jensens_alpha:
-  chart: bar
-  format: percent
-  title: Jensen's Alpha
-  subtitle: Return beyond what the CAPM expects given the Beta, per year
-
 get_treynor_ratio:
   chart: bar
   format: ratio
@@ -344,29 +338,6 @@ get_rachev_ratio:
   title: Rachev Ratio
   subtitle: Expected tail gain divided by expected tail loss; above 1 the right tail is larger
 
-get_treynor_mazuy_model:
-  chart: tabs
-  title: Treynor-Mazuy Model
-  tabs:
-    - label: Market Timing (Gamma)
-      chart: bar
-      columns: [Gamma]
-      format: ratio
-      subtitle: The quadratic term per year; positive suggests market-timing skill
-    - label: Beta
-      chart: bar
-      columns: [Beta]
-      levels: [1]
-      format: ratio
-      subtitle: The market exposure per year
-
-get_henriksson_merton_model:
-  chart: bar
-  columns: [Beta, Up Market Beta]
-  format: ratio
-  title: Henriksson-Merton Model
-  subtitle: The market Beta and the extra Beta in up markets, per year; a positive Up Market Beta suggests timing skill
-
 get_factor_analysis:
   chart: coef
   ticker: Custom Factor
@@ -375,7 +346,7 @@ get_factor_analysis:
     Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
   coef: Mean IC
   se: Standard Error
-  p: p-Value
+  p: P-Value
   title: Information Coefficient
   subtitle: Mean rank correlation of the factor with the later return, per horizon, with its 95% interval
 

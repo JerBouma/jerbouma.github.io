@@ -14,7 +14,7 @@ get_factor_analysis:
     Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
   coef: Mean IC
   se: Standard Error
-  p: p-Value
+  p: P-Value
   format: ratio
   title: Mean Information Coefficient
   subtitle: Rank correlation with the return 12 months ahead, with its 95% interval
@@ -393,34 +393,6 @@ get_dupont_analysis:
     columns: [Equity Multiplier]
     format: ratio
     subtitle: Total assets over equity
-
-get_extended_dupont_analysis:
-  chart: tabs
-  title: Extended DuPont Analysis
-  tabs:
-  - label: Return on Equity
-    chart: bar
-    transpose: true
-    columns: [Return on Equity]
-    format: percent
-    subtitle: The product of the five components
-  - label: Burdens
-    chart: line
-    transpose: true
-    columns: [Interest Burden Ratio, Tax Burden Ratio]
-    format: ratio
-    subtitle: Pre-tax income over EBIT, and net income over pre-tax income
-  - label: Operating Margin
-    chart: bar
-    transpose: true
-    columns: [Operating Profit Margin]
-    format: percent
-  - label: Turnover and Leverage
-    chart: line
-    transpose: true
-    columns: [Asset Turnover, Equity Multiplier]
-    format: ratio
-    subtitle: Revenue over assets, and assets over equity
 
 get_nissim_penman_decomposition:
   chart: tabs

@@ -156,7 +156,7 @@ The [pre-commit hooks](/modelling/setting-up-your-project#setting-up-linters) yo
 
 The Model Context Protocol (MCP) is a standard way to connect an assistant to external tools and data. An MCP server can give the assistant access to a database, a documentation source or financial data. In Claude Code, servers shared by a project are listed in a `.mcp.json` file in the repository.
 
-For financial modelling this is useful in two ways. While building, an assistant can look up real data to check its work, for example comparing a calculated ratio with the reported figures. And for analysis, it can run calculations directly. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) is an example: it gives assistants access to the same 700+ transparent calculations as the Python package, so the numbers in a conversation come from documented formulas rather than from the model's memory.
+For financial modelling this is useful in two ways. While building, an assistant can look up real data to check its work, for example comparing a calculated ratio with the reported figures. And for analysis, it can run calculations directly. The [Finance Toolkit MCP server](/projects/financetoolkit/mcp) is an example: it gives assistants access to the same 1100+ transparent calculations as the Python package, so the numbers in a conversation come from documented formulas rather than from the model's memory.
 
 Treat MCP servers like any other dependency: only connect servers you trust, and be careful with servers that can change data rather than only read it.
 

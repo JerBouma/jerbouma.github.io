@@ -54,7 +54,7 @@ Which gives the daily VaR and CVaR of each company against the VaR of the S&P 50
 
 In the first quarter of 2020 the daily VaR of Microsoft, Apple and the S&P 500 reached -5% to -6.7%, against a usual -1% to -3%, and the CVaR of Microsoft hit -9.5%. Meta's worst quarters came in 2022 instead, with a CVaR of -10.5% in the first quarter and -10.8% in the last. The rolling view shows the same year from a monthly angle: with Meta's 31% fall in October 2022 inside the window, its rolling VaR dropped to -31.9%.
 
-VaR also accepts `distribution="gaussian"`, `"studentt"`, `"cornish-fisher"` or `"evt"` (a Peak-over-Threshold fit for the tail) when you'd rather not rely on the historical distribution alone.
+VaR also accepts `method="gaussian"`, `"studentt"`, `"cornish-fisher"`, `"evt"` (a Peak-over-Threshold fit for the tail), `"kernel"` or `"garch"` when you'd rather not rely on the historical distribution alone.
 
 ### The Ulcer Index and Growth
 
@@ -199,6 +199,6 @@ Which returns the statistics per series, with a negative (excess) kurtosis as yo
 | Value at Risk      |   -0.1500 |   -0.1305 |   -0.1305 |   -0.1400 |
 | Entropic Value at Risk |   -0.2176 |   -0.2023 |   -0.1970 |   -0.2311 |
 
-The module covers many more metrics than shown here, among them [GARCH](/projects/financetoolkit/docs/risk#get_garch), [GJR-GARCH](/projects/financetoolkit/docs/risk#get_gjr_garch) and [EGARCH](/projects/financetoolkit/docs/risk#get_egarch) with forecasts, [copulas](/projects/financetoolkit/docs/risk#get_best_fitting_copula), [CoVaR](/projects/financetoolkit/docs/risk#get_covar), [marginal](/projects/financetoolkit/docs/risk#get_marginal_value_at_risk) and [component VaR](/projects/financetoolkit/docs/risk#get_component_value_at_risk) and [VaR backtests](/projects/financetoolkit/docs/risk#get_var_backtest).
+The module covers many more metrics than shown here, among them [GARCH](/projects/financetoolkit/docs/risk#get_garch) with variants such as GJR-GARCH and EGARCH and their [forecasts](/projects/financetoolkit/docs/risk#get_garch_forecast), [copulas](/projects/financetoolkit/docs/risk#get_best_fitting_copula), [CoVaR](/projects/financetoolkit/docs/risk#get_covar), [marginal](/projects/financetoolkit/docs/risk#get_marginal_value_at_risk) and [component VaR](/projects/financetoolkit/docs/risk#get_component_value_at_risk) and [VaR backtests](/projects/financetoolkit/docs/risk#get_var_backtest).
 
 {% include ft-charts-script.html %}

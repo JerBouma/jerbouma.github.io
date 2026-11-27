@@ -296,7 +296,7 @@ inputs = dict(stock_price=100, strike_price=90, years=1, risk_free_rate=0.02,
               volatility=0.25, dividend_yield=0.005)
 
 def price(steps, **kwargs):
-    tree = binomial_trees_model.get_option_payoffs(timesteps=steps, **inputs, **kwargs)
+    tree = binomial_trees_model.get_option_payoffs(time_steps=steps, **inputs, **kwargs)
     return tree.iloc[0, 0]  # the value today, at the root of the tree
 
 call = {n: price(n) for n in range(1, 201)}
@@ -331,7 +331,7 @@ option_pay_off_ec = binomial_trees_model.get_option_payoffs(
     stock_price=100,
     strike_price=90,
     years=1,
-    timesteps=3,
+    time_steps=3,
     volatility=0.25,
     dividend_yield=0.005,
     risk_free_rate=0.02,
@@ -344,7 +344,7 @@ option_pay_off_ep = binomial_trees_model.get_option_payoffs(
     stock_price=100,
     strike_price=90,
     years=1,
-    timesteps=3,
+    time_steps=3,
     volatility=0.25,
     dividend_yield=0.005,
     risk_free_rate=0.02,
@@ -357,7 +357,7 @@ option_pay_off_ac = binomial_trees_model.get_option_payoffs(
     stock_price=100,
     strike_price=90,
     years=1,
-    timesteps=3,
+    time_steps=3,
     volatility=0.25,
     dividend_yield=0.005,
     risk_free_rate=0.02,
@@ -370,7 +370,7 @@ option_pay_off_ap = binomial_trees_model.get_option_payoffs(
     stock_price=100,
     strike_price=90,
     years=1,
-    timesteps=3,
+    time_steps=3,
     volatility=0.25,
     dividend_yield=0.005,
     risk_free_rate=0.02,
@@ -431,7 +431,7 @@ companies = Toolkit(["AAPL", "MSFT"], api_key="FINANCIAL_MODELING_PREP_KEY")
 binomial_results = companies.options.get_binomial_model(
     show_input_info=True,
     time_to_expiration=16/365,
-    timesteps=10 # Example: using 10 timesteps
+    time_steps=10 # Example: using 10 time steps
 )
 ```
 

@@ -82,16 +82,6 @@ get_moving_average:
   zoom: 252
   title: Moving Average
 
-get_kaufman_adaptive_moving_average:
-  chart: ta
-  price: "^STOXX50E"
-  price_name: Euro Stoxx 50
-  format: amount
-  overlays:
-    - {column: "^STOXX50E", name: "KAMA", color: "#f97316"}
-  zoom: 252
-  title: Kaufman Adaptive Moving Average
-
 get_volume_weighted_average_price:
   chart: ta
   price: "SPY"
@@ -195,22 +185,6 @@ get_stochastic_oscillator:
   zoom: 126
   title: Stochastic Oscillator
   subtitle: Above 80 is usually read as overbought, below 20 as oversold
-
-get_stochastic_relative_strength_index:
-  chart: ta
-  ticker: "NVDA"
-  price: "NVDA"
-  price_name: Nvidia
-  lower:
-    series:
-      - {column: "Stochastic RSI %K", color: "#38bdf8"}
-      - {column: "Stochastic RSI %D", color: "#f97316"}
-    levels: [20, 80]
-    min: 0
-    max: 100
-    format: number
-  zoom: 126
-  title: Stochastic RSI
 
 get_money_flow_index:
   chart: ta
@@ -400,18 +374,6 @@ get_percentage_volume_oscillator:
     levels: [0]
   zoom: 252
   title: Percentage Volume Oscillator
-
-get_percentage_price_oscillator:
-  chart: ta
-  price: "^STOXX50E"
-  price_name: Euro Stoxx 50
-  format: amount
-  lower:
-    series:
-      - {column: "^STOXX50E", name: "PPO", color: "#38bdf8"}
-    levels: [0]
-  zoom: 252
-  title: Percentage Price Oscillator
 
 get_true_strength_index:
   chart: ta
@@ -631,28 +593,6 @@ get_price_volume_trend:
   zoom: 252
   title: Price Volume Trend
 
-get_negative_volume_index:
-  chart: ta
-  price: "SPY"
-  price_name: SPY
-  lower:
-    series:
-      - {column: "SPY", name: "NVI", color: "#38bdf8"}
-    format: amount
-  zoom: 252
-  title: Negative Volume Index
-
-get_positive_volume_index:
-  chart: ta
-  price: "SPY"
-  price_name: SPY
-  lower:
-    series:
-      - {column: "SPY", name: "PVI", color: "#38bdf8"}
-    format: amount
-  zoom: 252
-  title: Positive Volume Index
-
 get_force_index:
   chart: ta
   price: "TLT"
@@ -786,7 +726,7 @@ get_factor_analysis:
     SE: f['Mean IC'] / f['t-Statistic']
   coef: Mean IC
   se: SE
-  p: p-Value
+  p: P-Value
   title: Information Coefficient
   subtitle: The mean rank correlation of each signal with the return that follows, with its 95% interval
 get_candlestick_patterns:

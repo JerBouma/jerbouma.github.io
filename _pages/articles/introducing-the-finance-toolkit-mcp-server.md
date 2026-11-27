@@ -3,8 +3,8 @@ title: Introducing the Finance Toolkit MCP Server
 date: 2026-06-12
 last_modified_at: 2026-11-22
 permalink: /articles/introducing-the-finance-toolkit-mcp-server
-excerpt: "The Finance Toolkit MCP server gives Claude, ChatGPT and other AI assistants 700+ documented financial calculations at one hosted URL. Four worked questions show what comes back: semiconductor valuations, European sectors through the 2020 crash, Fama-French factors in South America and Asia's investment cycle."
-description: "The free, hosted Finance Toolkit MCP server gives Claude, ChatGPT and other AI assistants 700+ auditable methods: ratios, risk, factor models and macro data."
+excerpt: "The Finance Toolkit MCP server gives Claude, ChatGPT and other AI assistants 1100+ documented financial calculations at one hosted URL. Four worked questions show what comes back: semiconductor valuations, European sectors through the 2020 crash, Fama-French factors in South America and Asia's investment cycle."
+description: "The free, hosted Finance Toolkit MCP server gives Claude, ChatGPT and other AI assistants 1100+ auditable methods: ratios, risk, factor models and macro data."
 layout: single
 classes: wide-sidebar article-document
 author_profile: false
@@ -13,7 +13,7 @@ tags: [MCP Server]
 share: true
 standfirst: "Five data providers gave five different P/E ratios for Microsoft on the same day. What changes when an AI assistant calculates the number from documented code instead of recalling one?"
 key_points:
-  - "The hosted server puts 700+ Finance Toolkit methods behind 25 tools plus three search tools, at one URL with nothing to install."
+  - "The hosted server puts 1100+ Finance Toolkit methods behind 25 tools plus three search tools, at one URL with nothing to install."
   - "Four worked questions cover nine chipmakers, seven European sector ETFs, 48 Fama-French regressions and six Asian economies, with every tool call listed."
   - "The free FMP plan covers five years of history and 250 requests a day, so the 2015 start of the chip comparison needs a paid plan."
 cover:
@@ -26,13 +26,13 @@ cover:
 ---
 On May 6, 2023, Microsoft's Price-to-Earnings ratio was reported as 28.93 by Stockopedia, 32.05 by Morningstar, 32.66 by Macrotrends, 33.67 by the Wall Street Journal, and 34.4 by Companies Market Cap. Every one of those numbers is "correct." They just use different definitions of earnings, different share counts and different rounding. None of the providers publish the formula, so there is no way to know which one matches the calculation you actually want. Ask an AI assistant for the same number and it inherits the problem: it picks one of those figures from a web search, or recalls one from its training data, and when it finds nothing it may produce a plausible-looking number of its own.
 
-That inconsistency is why I built the Finance Toolkit, an open-source Python library where every ratio, indicator and model is plain, readable code you can audit. The Finance Toolkit MCP server puts the same 700+ methods behind the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"}, so Claude, ChatGPT, Copilot, Cursor and other assistants calculate the number instead of recalling it. It is hosted at one URL, so there is nothing to install. This article shows how to connect it and works through four questions, from semiconductor valuations to Asia's investment cycle, with every tool call and result.
+That inconsistency is why I built the Finance Toolkit, an open-source Python library where every ratio, indicator and model is plain, readable code you can audit. The Finance Toolkit MCP server puts the same 1100+ methods behind the [Model Context Protocol](https://modelcontextprotocol.io){:target="_blank"}, so Claude, ChatGPT, Copilot, Cursor and other assistants calculate the number instead of recalling it. It is hosted at one URL, so there is nothing to install. This article shows how to connect it and works through four questions, from semiconductor valuations to Asia's investment cycle, with every tool call and result.
 
 **The source code for every calculation is on [GitHub](https://github.com/JerBouma/FinanceToolkit){:target="_blank"}. Installation steps for every client are on the [Finance Toolkit MCP server](/projects/financetoolkit/mcp) page.**
 
 <div class="ca-strip">
   <div><strong>1 URL</strong><span>hosted server, nothing to install</span></div>
-  <div><strong>700+</strong><span>financial methods behind 25 tools, plus 3 search tools</span></div>
+  <div><strong>1100+</strong><span>financial methods behind 25 tools, plus 3 search tools</span></div>
   <div><strong>4</strong><span>worked questions below, with every tool call</span></div>
   <div><strong>Free</strong><span>open source, MIT-licensed</span></div>
 </div>
@@ -76,7 +76,7 @@ For Claude Desktop there is also a one-click MCPB bundle on the [latest GitHub r
 
 ## One Engine, Two Front Doors
 
-The Python library and the MCP server run the same calculations. The server groups the 700+ methods into 25 categorical tools, such as `profitability`, `valuation`, `models`, `performance`, `risk`, `momentum` and `macroeconomics`. Each takes an `indicator` that selects the exact metric, for example `valuation` with `indicator='get_price_to_earnings_ratio'`. Three search tools (`search_metric_categories`, `search_by_category` and `search_metrics`) help the assistant find the right one. You never name a tool yourself: you ask in plain English, and the assistant picks the tool, the indicator and the period.
+The Python library and the MCP server run the same calculations. The server groups the 1100+ methods into 25 categorical tools, such as `profitability`, `valuation`, `models`, `performance`, `risk`, `momentum` and `macroeconomics`. Each takes an `indicator` that selects the exact metric, for example `valuation` with `indicator='get_price_to_earnings_ratio'`. Three search tools (`search_metric_categories`, `search_by_category` and `search_metrics`) help the assistant find the right one. You never name a tool yourself: you ask in plain English, and the assistant picks the tool, the indicator and the period.
 
 Every tool call maps to one line of Python, so you can reproduce any answer below. Install the library with `pip install financetoolkit -U`, then:
 

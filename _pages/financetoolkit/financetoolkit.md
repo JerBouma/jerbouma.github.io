@@ -7,8 +7,8 @@ software:
 title: Finance Toolkit
 seo_title: "Finance Toolkit: Python Library for Financial Analysis"
 seo_title_suffix: false
-excerpt: This is a free open-source toolkit written in Python in which 700+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
-description: "The Finance Toolkit is a free open-source Python package with 700+ transparent financial ratios, metrics and models computed from financial statements."
+excerpt: This is a free open-source toolkit written in Python in which 1100+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method. This allows you to not have to rely on metrics from other providers and, given a financial statement, allow for efficient manual calculations. This leads to one uniform method of calculation being applied that is available and understood by everyone.
+description: "The Finance Toolkit is a free open-source Python package with 1100+ transparent financial ratios, metrics and models computed from financial statements."
 classes: wide-sidebar ft-overview
 author_profile: false
 redirect_from:
@@ -28,12 +28,12 @@ image: assets/images/projects/FinanceToolkit.jpg
   <div class="mcp-video-wrapper ft-hero__video">
     <video class="mcp-demo-video" autoplay muted playsinline controls preload="auto" width="1920" height="1080"
            poster="/assets/images/projects/financetoolkit-launch.jpg"
-           aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 700+ metrics.">
+           aria-label="Same metric, same day, different answers across financial websites; the Finance Toolkit gives one consistent, verifiable formula for 1100+ metrics.">
       <source src="/assets/video/financetoolkit-launch.mp4" type="video/mp4">
     </video>
   </div>
   <div class="mcp-facts ft-hero__facts">
-    <div class="mcp-fact"><strong>700+</strong><span>metrics</span></div>
+    <div class="mcp-fact"><strong>1100+</strong><span>metrics</span></div>
     <div class="mcp-fact"><strong>{{ ft_stars.value }}</strong><span>GitHub stars</span></div>
     <div class="mcp-fact"><strong>{{ ft_dl.value }}</strong><span>downloads</span></div>
   </div>
@@ -43,7 +43,7 @@ While browsing a variety of websites, I kept finding that the same financial met
 
 For example, Microsoft's Price-to-Earnings (PE) ratio on the 6th of May, 2023 is reported to be 28.93 (Stockopedia), 32.05 (Morningstar), 32.66 (Macrotrends), 33.09 (Finance Charts), 33.66 (Y Charts), 33.67 (Wall Street Journal), 33.80 (Yahoo Finance) and 34.4 (Companies Market Cap). All of these calculations are correct, but each source applies a different method, which leads to different results. Collecting data from multiple sources can therefore lead to a wrong interpretation of the results, since one source could be using a different calculation method than another. That is, if the method is freely available at all; often it is hidden behind a paid subscription.
 
-**This is why I designed the FinanceToolkit**, an open-source toolkit in which all relevant financial methods ([700+](/projects/financetoolkit/docs)) are written down in the simplest way possible so that the calculation method is completely transparent ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This way you don't have to depend on metrics from providers that don't share their methods. Given a set of financial statements, you can do the calculations yourself with one consistent set of formulas that anyone can read and understand.
+**This is why I designed the FinanceToolkit**, an open-source toolkit in which all relevant financial methods ([1100+](/projects/financetoolkit/docs)) are written down in the simplest way possible so that the calculation method is completely transparent ([proof](https://github.com/JerBouma/FinanceToolkit/blob/main/financetoolkit/ratios/valuation_model.py){:target="_blank"}). This way you don't have to depend on metrics from providers that don't share their methods. Given a set of financial statements, you can do the calculations yourself with one consistent set of formulas that anyone can read and understand.
 
 Beyond Equities, it supports Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Money Markets, Commodities, Key Economic Indicators and more, allowing you to obtain historical data as well as important performance and risk measurements such as the Sharpe Ratio and Value at Risk.
 
@@ -86,7 +86,7 @@ This section is an introduction to the Finance Toolkit. The documentation contai
 
 [Find the Documentation](/projects/financetoolkit/docs){: .btn .btn--warning .btn--large .align-center}
 
-The sections below follow one analysis of the semiconductor sector from start to finish, where each step answers the question the previous one raises: which companies make up the sector, how their shares did, what drives their profits, how much risk came with the returns, what the option market expects next, how the economy shaped all of it, whether a fund is the better way in and how the sector fits into a diversified portfolio. Every module of the Finance Toolkit appears once, but each holds far more than shown here: 700+ methods in total, all described with examples in the [documentation](/projects/financetoolkit/docs).
+The sections below follow one analysis of the semiconductor sector from start to finish, where each step answers the question the previous one raises: which companies make up the sector, how their shares did, what drives their profits, how much risk came with the returns, what the option market expects next, how the economy shaped all of it, whether a fund is the better way in and how the sector fits into a diversified portfolio. Every module of the Finance Toolkit appears once, but each holds far more than shown here: 1100+ methods in total, all described with examples in the [documentation](/projects/financetoolkit/docs).
 
 ### Discovering the Sector
 
@@ -143,7 +143,7 @@ companies = Toolkit(
 )
 ```
 
-[Historical data](/projects/financetoolkit/docs#get_historical_data) comes on a daily, weekly, monthly, quarterly or yearly basis, with the return and cumulative return of each period, and so do the [income statement](/projects/financetoolkit/docs#get_income_statement), [balance sheet](/projects/financetoolkit/docs#get_balance_sheet_statement) and [cash flow statement](/projects/financetoolkit/docs#get_cash_flow_statement) on an annual or quarterly basis. How far a share has travelled is one thing; whether the rally was stretched is another. The [technicals](/projects/financetoolkit/docs/technicals) module answers that with 50+ indicators, such as the Relative Strength Index (RSI), which moves between 0 and 100 and is commonly read as overbought above 70:
+[Historical data](/projects/financetoolkit/docs#get_historical_data) comes on a daily, weekly, monthly, quarterly or yearly basis, with the return and cumulative return of each period, and so do the [income statement](/projects/financetoolkit/docs#get_income_statement), [balance sheet](/projects/financetoolkit/docs#get_balance_sheet_statement) and [cash flow statement](/projects/financetoolkit/docs#get_cash_flow_statement) on an annual or quarterly basis. How far a share has travelled is one thing; whether the rally was stretched is another. The [technicals](/projects/financetoolkit/docs/technicals) module answers that with 150+ indicators and 62 candlestick patterns, among them the Relative Strength Index (RSI), which moves between 0 and 100 and is commonly read as overbought above 70:
 
 ```python
 # Obtain weekly market data for all tickers and the benchmark
@@ -175,7 +175,7 @@ And below the cumulative returns of all three are plotted against the S&P 500, w
 
 ### Zooming in on Competitors
 
-Nvidia's shares outran the other two by far, which raises the question whether its business did as well. From the financial statements the Toolkit calculates 80+ [ratios](/projects/financetoolkit/docs/ratios) in five categories: efficiency, liquidity, profitability, solvency and valuation. Each ratio has its own function, and a `collect_` function returns a whole category at once:
+Nvidia's shares outran the other two by far, which raises the question whether its business did as well. From the financial statements the Toolkit calculates 130+ [ratios](/projects/financetoolkit/docs/ratios) in five categories: efficiency, liquidity, profitability, solvency and valuation. Each ratio has its own function, and a `collect_` function returns a whole category at once:
 
 ```python
 # Collect all Profitability Ratios for all tickers
@@ -199,11 +199,11 @@ And below a few of them are shown with their latest value and their course over 
 
 {% include ft-chart.html id="ratios" label="Profitability ratios of Nvidia" %}
 
-A high return on equity can come from margins, from turnover or from debt. [Models](/projects/financetoolkit/docs/models) combine the ratios to tell these apart: the [Extended DuPont Analysis](/projects/financetoolkit/docs/models#get_extended_dupont_analysis) splits the return on equity into five components that multiply into it: interest burden, tax burden, operating margin, asset turnover and equity multiplier.
+A high return on equity can come from margins, from turnover or from debt. [Models](/projects/financetoolkit/docs/models) combine the ratios to tell these apart: the [Extended DuPont Analysis](/projects/financetoolkit/docs/models#get_dupont_analysis) splits the return on equity into five components that multiply into it: interest burden, tax burden, operating margin, asset turnover and equity multiplier.
 
 ```python
 # Get the Extended DuPont Analysis for all tickers
-extended_dupont_analysis = companies.models.get_extended_dupont_analysis()
+extended_dupont_analysis = companies.models.get_dupont_analysis(method="extended")
 
 # Show the results for Nvidia
 extended_dupont_analysis.loc["NVDA"]
@@ -258,11 +258,11 @@ And below both are plotted for each year, the maximum drawdown together with the
 
 {% include ft-chart.html id="risk" label="Sharpe Ratio and Maximum Drawdown" %}
 
-Together the two modules cover 70+ metrics, such as [Value at Risk](/projects/financetoolkit/docs/risk#get_value_at_risk), [GARCH](/projects/financetoolkit/docs/risk#get_garch), [Jensen's Alpha](/projects/financetoolkit/docs/performance#get_jensens_alpha), the [Capital Asset Pricing Model](/projects/financetoolkit/docs/performance#get_capital_asset_pricing_model) and the [Fama-French factors](/projects/financetoolkit/docs/performance#get_fama_and_french_model). Most of them also accept `rolling=<n>` for a value that moves through time.
+Together the two modules cover 140+ metrics, such as [Value at Risk](/projects/financetoolkit/docs/risk#get_value_at_risk), [GARCH](/projects/financetoolkit/docs/risk#get_garch), [L-moments](/projects/financetoolkit/docs/risk#get_l_moment), [Jensen's Alpha](/projects/financetoolkit/docs/performance#get_alpha), the [Capital Asset Pricing Model](/projects/financetoolkit/docs/performance#get_capital_asset_pricing_model) and the [Fama-French factors](/projects/financetoolkit/docs/performance#get_fama_and_french_model). Most of them also accept `rolling=<n>` for a value that moves through time.
 
 ### What the Option Market Expects
 
-The past shows how much risk came with the returns; the option market puts a price on the risk ahead. The [options](/projects/financetoolkit/docs/options) module prices options with Black-Scholes, the Binomial Model and others, calculates the Greeks up to the third order and reads the live option chains: the put-call ratio, max pain, dealer gamma exposure, the volatility skew and term structure and the implied move. As the chains are those of today, the Toolkit below runs up to today:
+The past shows how much risk came with the returns; the option market puts a price on the risk ahead. The [options](/projects/financetoolkit/docs/options) module prices options with Black-Scholes, the Binomial Model and others, calculates the Greeks up to the third order and reads the live option chains: the put-call ratio, max pain, dealer gamma exposure, the volatility skew and term structure, the implied move and the risk-neutral skewness and kurtosis, also as a SKEW index for any ticker. As the chains are those of today, the Toolkit below runs up to today:
 
 ```python
 # Initialize the Toolkit up to today, as the option chains are live
@@ -288,7 +288,7 @@ Options usually price more risk than follows, as their sellers want to be paid f
 
 All three are listed in the United States and valued on earnings that lie years ahead, which makes US inflation and interest rates the backdrop to their share prices. In 2022, the year the maximum drawdown above shows each of them falling by more than half, inflation reached 9% and the Federal Reserve raised its policy rate from 0.12% to 4.38%.
 
-The [economics](/projects/financetoolkit/docs/economics) module covers 60+ countries with 50+ indicators, from GDP and unemployment to money supply and interest rates, and the [fixed income](/projects/financetoolkit/docs/fixedincome) module adds bond yields, yield curves, central bank rates and bond and derivative valuations. Both are reached through the same Toolkit instance, or on their own with `from financetoolkit import Economics, FixedIncome`:
+The [economics](/projects/financetoolkit/docs/economics) module covers 60+ countries with 100+ indicators, from GDP and unemployment to money supply and interest rates, and the [fixed income](/projects/financetoolkit/docs/fixedincome) module adds bond yields, yield curves (bootstrapped with a choice of interpolation, fitted to Treasury prices and extrapolated with Smith-Wilson), central bank rates, swap, FRA and FX forward rates, inflation swap rates and the forward CPI, calculations on individual bonds and Treasury market analytics (FRN discount margins, TIPS index ratios, forward prices and the futures basis). Both are reached through the same Toolkit instance, or on their own with `from financetoolkit import Economics, FixedIncome`:
 
 ```python
 # Inflation on the same month a year earlier and the Federal Reserve's policy rate
@@ -321,7 +321,7 @@ The curve went from almost zero at the short end in 2021 to above 4% across all 
 
 ### Economic Relations
 
-Rates rose and the shares fell, but a 10-year Treasury yield is made of two parts: the real yield, the return investors demand on top of inflation, and the inflation they expect over those ten years. The [econometrics](/projects/financetoolkit/docs/econometrics) module tells such drivers apart with regressions, tests and forecasts built on `statsmodels` and `linearmodels` (`pip install "financetoolkit[econometrics]"`). Through the Toolkit it analyzes the returns of its tickers, and on its own, through `Econometrics(data=...)`, any data at all, here the monthly returns of the three next to the monthly change in the US 10-year real yield and in 10-year inflation expectations:
+Rates rose and the shares fell, but a 10-year Treasury yield is made of two parts: the real yield, the return investors demand on top of inflation, and the inflation they expect over those ten years. The [econometrics](/projects/financetoolkit/docs/econometrics) module tells such drivers apart with regressions, tests and forecasts; the methods built on `statsmodels` or `linearmodels` need `pip install financetoolkit[econometrics]`. Through the Toolkit it analyzes the returns of its tickers, and on its own, through `Econometrics(data=...)`, any data at all, here the monthly returns of the three next to the monthly change in the US 10-year real yield and in 10-year inflation expectations:
 
 ```python
 import pandas as pd
@@ -368,7 +368,7 @@ A rise of 0.1 percentage point in the real yield went with a monthly return abou
 
 {% include ft-chart.html id="econometrics" label="Coefficients of the real yield and inflation expectations with 95% confidence intervals" %}
 
-The module also covers unit root and cointegration tests, Granger causality, panel data, causal inference, ARIMA, VAR and VECM forecasts, regime switching, a time-varying beta and pairs trading.
+The module also covers unit root and cointegration tests, fractional differentiation, bubble tests (SADF, GSADF) with the dates of each bubble, Granger causality, panel data, causal inference, ARIMA, VAR and VECM forecasts, regime switching, a time-varying beta and pairs trading.
 
 ### Comparing the Sector's ETFs
 
@@ -496,7 +496,7 @@ For any financial statement, I make sure to line it up with the corresponding *c
 
 > **Why do the numbers in the financial statements sometimes deviate from the data from FinancialModelingPrep?**
 
-When looking at a company such as Hyundai Motor Company (ticker: 005380.KS), you will notice that the financial statements are reported in KRW (South Korean won). As this specific ticker is listed on the Korean Exchange, the historical market data will also be reported in KRW. However, if you use the ticker HYMTF, which is listed on the American OTC market, the historical market data will be reported in USD. To deal with this discrepancy, the end of year or end of quarter exchange rate is retrieved which is used to convert the financial statements to USD. This is done to prevent ratio calculations such as the Free Cash Flow Yield (which is based on the market capitalization) or Price Earnings Ratio (which is based on the stock price) from being incorrect. This can be disabled by setting `convert_currency=False` in the Toolkit initialization. I recommend always using the ticker that is listed on the exchange where the company is based.
+When looking at a company such as Hyundai Motor Company (ticker: 005380.KS), you will notice that the financial statements are reported in KRW (South Korean won). As this specific ticker is listed on the Korean Exchange, the historical market data will also be reported in KRW. However, if you use the ticker HYMTF, which is listed on the American OTC market, the historical market data will be reported in USD. To deal with this discrepancy, the financial statements are converted to USD as accounting standards (IAS 21) prescribe: the balance sheet at the exchange rate of the fiscal period end, the income and cash flow statements at the average rate over the fiscal period, and the cash at the beginning of the period at the opening rate, with the difference shown as Forex Changes on Cash. When a company changes its reporting currency, each period is converted from the currency it was reported in. This is done to prevent ratio calculations such as the Free Cash Flow Yield (which is based on the market capitalization) or Price Earnings Ratio (which is based on the stock price) from being incorrect. This can be disabled by setting `convert_currency=False` in the Toolkit initialization. It is recommended to always use the ticker that is listed on the exchange where the company is based.
 
 > **How can I get TTM (Trailing Twelve Months) and Growth metrics?**
 
@@ -547,7 +547,7 @@ This is related to the `benchmark_ticker` parameter which is set to "SPY" (S&P 5
 
 > **Data collection seems to be slow, what could be the issue?**
 
-Generally, it should take less than 15 seconds to retrieve the historical data of 100 tickers. If it takes much longer, this could be due to reaching the API limit (the Starter plan has 250 requests per minute), due to a slow internet connection or due to unoptimized code. As the Finance Toolkit makes use of threading, initializing the Toolkit with a single ticker will result in a slow process. This is because the Toolkit will have to wait for the previous request to finish before it can start the next one. I therefore recommend initializing the Toolkit with all the tickers you want to analyze. If it is taking 10+ minutes consider having a look at [this issue](https://github.com/JerBouma/FinanceToolkit/issues/99#issuecomment-1889726000){:target="_blank"} that managed to resolve the problem.
+Generally, it should take less than 15 seconds to retrieve the historical data of 100 tickers. If it takes much longer, this could be due to reaching the API limit (the Starter plan has 250 requests per minute), due to a slow internet connection or due to unoptimized code. The Finance Toolkit collects data with a bounded pool of worker threads (10 by default, configurable through the `FINANCETOOLKIT_MAX_WORKERS` environment variable) over a shared connection, so it is recommended to initialize the Toolkit with all tickers you want to analyze at once rather than one at a time. If it is taking 10+ minutes consider having a look at [this issue](https://github.com/JerBouma/FinanceToolkit/issues/99#issuecomment-1889726000){:target=\"_blank\"} that managed to resolve the problem.
 
 > **Are you part of FinancialModelingPrep?**
 

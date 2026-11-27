@@ -43,9 +43,9 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["SPY", "QQQ", "DIA", "IWM", "EFA", "EEM"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2019-01-01", end_date="2025-12-31", benchmark_ticker=None)
 
-normal_var = toolkit.risk.get_value_at_risk(period="yearly", within_period=True, distribution="gaussian")
+normal_var = toolkit.risk.get_value_at_risk(period="yearly", within_period=True, method="gaussian")
 historical_var = toolkit.risk.get_value_at_risk(period="yearly", within_period=True)
-normal_cvar = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True, distribution="gaussian")
+normal_cvar = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True, method="gaussian")
 historical_cvar = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True)
 ```
 {% endcapture %}
@@ -145,9 +145,9 @@ from financetoolkit import Toolkit
 
 toolkit = Toolkit(tickers=["SPY", "QQQ", "DIA", "IWM", "EFA", "EEM"], api_key="FINANCIAL_MODELING_PREP_KEY", start_date="2019-01-01", end_date="2025-12-31", benchmark_ticker=None)
 
-normal_cvar_95 = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True, distribution="gaussian")
+normal_cvar_95 = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True, method="gaussian")
 historical_cvar_95 = toolkit.risk.get_conditional_value_at_risk(period="yearly", within_period=True)
-normal_cvar_99 = toolkit.risk.get_conditional_value_at_risk(period="yearly", alpha=0.01, within_period=True, distribution="gaussian")
+normal_cvar_99 = toolkit.risk.get_conditional_value_at_risk(period="yearly", alpha=0.01, within_period=True, method="gaussian")
 historical_cvar_99 = toolkit.risk.get_conditional_value_at_risk(period="yearly", alpha=0.01, within_period=True)
 
 gap_95 = historical_cvar_95 / normal_cvar_95 - 1

@@ -17,7 +17,6 @@ names:
   asset_class: "housing"
   asset_classes: ["Private Equity", "Hedge Funds"]
   asset_tickers: ["AAPL", "MSFT", "GOOGL"]
-  atr_multiplier: 3
   atr_window: 10
   bandwidth: 0.02
   barrier_direction: "up"
@@ -75,7 +74,6 @@ names:
   dividend_yield: 0.02
   dof: 6.0
   donor_tickers: ["MSFT", "GOOGL", "AMZN"]
-  duration_type: "macaulay"
   empirical_margins: false
   end_date: "2025-12-31"
   end_of_period: true
@@ -115,7 +113,6 @@ names:
   horizon: 5
   impact: "High"
   include_benchmark: true
-  include_constant: false
   include_daily_residuals: true
   include_dividends: true
   include_payoff: true
@@ -129,7 +126,6 @@ names:
   is_etf: false
   is_receiver: false
   k: 0.05
-  k_ar_diff: 2
   kernel: "triangular"
   key_rate_maturity: [2, 5, 10]
   knock_type: "in"
@@ -152,13 +148,11 @@ names:
   maturity: false
   maturity_years: [1, 5, 10, 30]
   max_iterations: 200
-  maxlags: 5
   method_a: "ewma"
   method_b: "rolling"
   minimum_acceptable_return: 0.001
   monthly_window: 21
   multiplier: 2.0
-  n_simulations: 5000
   n_trials: 20
   name_columns: ["Description"]
   near_maturity: 2.0
@@ -198,7 +192,6 @@ names:
   quantiles: [0.05, 0.5, 0.95]
   quarterly: true
   query: "META"
-  random_state: 1
   rate_of_return: 0.08
   rate_type: "short_term"
   rating_type: "sovereign"
@@ -261,8 +254,8 @@ names:
   ticker_b: "MSFT"
   ticker_columns: ["Symbol"]
   time_effects: true
+  time_steps: 100
   time_to_expiration: 2
-  timesteps: 100
   tolerance: 1.0e-06
   trailing: 4
   train_fraction: 0.7
@@ -301,7 +294,7 @@ names:
 functions:
   get_acerbi_szekely_test:
     n_bootstrap: 5000
-    window_size: 52
+    window: 52
   get_alpha:
     period: "quarterly"
   get_altman_z_score:
@@ -315,8 +308,6 @@ functions:
   get_arima_forecast:
     column: "Close"
     q: 2
-  get_augmented_dickey_fuller:
-    max_lag: 12
   get_autocorrelation:
     lags: 20
   get_awesome_oscillator:
@@ -330,13 +321,8 @@ functions:
     show_columns: ["Days Sales in Receivables Index", "Beneish M-Score"]
   get_beta:
     period: "quarterly"
-  get_bond_equivalent_yield:
-    show_input_info: false
   get_breakeven_inflation_expectations:
     rolling: 20
-  get_breakeven_inflation_rate:
-    maturity: [5, 10]
-    show_input_info: false
   get_burke_ratio:
     period: "quarterly"
     within_period: false
@@ -382,7 +368,7 @@ functions:
   get_covariance_matrix:
     period: "quarterly"
   get_diebold_mariano_test:
-    window_size: 26
+    window: 26
   get_dividend_calendar:
     show_columns: ["Dividend", "Payment Date"]
   get_donchian_channels:
@@ -393,8 +379,6 @@ functions:
     rolling: 20
   get_dupont_analysis:
     show_columns: ["Net Profit Margin", "Return on Equity"]
-  get_duration:
-    show_input_info: false
   get_earnings_calendar:
     show_columns: ["EPS", "Estimated EPS"]
     start_date: "2025-01-01"
@@ -402,10 +386,6 @@ functions:
     start_date: "2025-01-01"
   get_economic_value_added:
     show_columns: ["Invested Capital", "Economic Value Added"]
-  get_egarch:
-    time_steps: 252
-  get_egarch_forecast:
-    time_steps: 20
   get_eiopa_risk_free_rate:
     countries: ["Euro Area", "United Kingdom"]
     curve: "spot_with_va"
@@ -416,9 +396,6 @@ functions:
     show_columns: ["Market Capitalization", "Enterprise Value"]
   get_esg_scores:
     show_columns: ["Environmental Score", "ESG Score"]
-  get_etf_holdings:
-    limit: 10
-    show_columns: ["Name", "Weight"]
   get_european_central_bank_rates:
     rate: "deposit"
   get_excess_return:
@@ -429,8 +406,6 @@ functions:
     show_columns: ["Salary", "Total"]
   get_executives:
     show_columns: ["Title", "Pay"]
-  get_extended_dupont_analysis:
-    show_columns: ["Operating Profit Margin", "Return on Equity"]
   get_factor_asset_correlations:
     period: "quarterly"
     show_columns: ["Mkt-RF", "HML"]
@@ -448,8 +423,6 @@ functions:
     countries: ["Euro Area", "United States"]
   get_fixed_effects:
     independent_tickers: "Benchmark"
-  get_forward_rate:
-    show_input_info: false
   get_free_cash_flow_to_equity:
     show_columns: ["Net Borrowing", "Free Cash Flow to Equity"]
   get_free_cash_flow_to_firm:
@@ -462,11 +435,7 @@ functions:
   get_garch:
     time_steps: 252
   get_garch_forecast:
-    time_steps: 20
-  get_gjr_garch:
-    time_steps: 252
-  get_gjr_garch_forecast:
-    time_steps: 20
+    forecast_steps: 20
   get_government_bond_yield:
     period: "quarterly"
   get_granger_causality:
@@ -475,8 +444,6 @@ functions:
     show_columns: ["Return on Assets", "Grover Score"]
   get_hausman_test:
     independent_tickers: "Benchmark"
-  get_henriksson_merton_model:
-    period: "quarterly"
   get_historical_data:
     include_dividends: false
     show_columns: ["Close", "Return"]
@@ -514,14 +481,11 @@ functions:
     start_date: "2025-01-01"
   get_ipo_prospectuses:
     start_date: "2025-01-01"
-  get_jensens_alpha:
-    period: "quarterly"
   get_johansen_cointegration:
     column: "Close"
   get_kappa_ratio:
     period: "quarterly"
   get_key_rate_duration:
-    show_input_info: false
     yield_change: 0.001
   get_know_sure_thing:
     signal_window: 6
@@ -541,6 +505,8 @@ functions:
     period: "quarterly"
   get_marginal_value_at_risk:
     weights: {"AAPL": 0.6, "MSFT": 0.4}
+  get_market_timing_model:
+    period: "quarterly"
   get_market_value_added:
     show_columns: ["Invested Capital", "Market Value Added"]
   get_mean_absolute_deviation:
@@ -570,19 +536,11 @@ functions:
     countries: ["United States", "Euro Area"]
     rolling: 20
   get_par_yield:
-    show_input_info: false
     years_to_maturity: [2, 5, 10]
-  get_percentage_price_oscillator:
-    long_window: 26
-    short_window: 12
-  get_phillips_perron_test:
-    lags: 8
   get_piotroski_score:
     show_columns: ["Accruals Criteria", "Piotroski Score"]
   get_portfolio_performance:
     period: "quarterly"
-  get_present_value:
-    show_input_info: false
   get_press_releases:
     show_columns: ["Publisher", "Title"]
     start_date: "2025-01-01"
@@ -659,7 +617,6 @@ functions:
   get_tail_ratio:
     rolling: 20
   get_taylor_price_change:
-    show_input_info: false
     yield_change: 0.005
   get_tobins_q_ratio:
     show_columns: ["Market Value of Equity", "Tobin's Q Ratio"]
@@ -669,24 +626,24 @@ functions:
     period: "quarterly"
   get_treasury_data:
     risk_free_rate: "5y"
-  get_treynor_mazuy_model:
-    period: "quarterly"
   get_treynor_ratio:
     period: "quarterly"
   get_ulcer_index:
     period: "quarterly"
-    rolling: 20
+    window: 20
   get_ulcer_performance_index:
     period: "quarterly"
     rolling: 20
   get_unemployment_rate:
     period: "quarterly"
+  get_unit_root_test:
+    max_lag: 12
   get_upside_capture_ratio:
     period: "quarterly"
   get_value_at_risk:
     rolling: 20
   get_var_backtest:
-    window_size: 52
+    window: 52
   get_variance:
     period: "quarterly"
   get_variance_decomposition:
@@ -705,16 +662,6 @@ functions:
     period: "quarterly"
   get_yield_curve_slope:
     period: "quarterly"
-  get_yield_curve_spread:
-    show_input_info: false
-  get_yield_to_maturity:
-    guess: 0.04
-    show_input_info: false
-  get_z_spread:
-    guess: 0.02
-    show_input_info: false
-  get_zivot_andrews_test:
-    max_lag: 12
   get_zmijewski_score:
     show_columns: ["Zmijewski Score", "Zmijewski Bankruptcy Probability"]
   search_crypto_news:

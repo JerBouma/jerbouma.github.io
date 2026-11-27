@@ -27,7 +27,7 @@ CAPM gives the return you would expect from a stock given its Beta, the market r
 Every function takes a `period` of `weekly`, `monthly`, `quarterly` or `yearly`, and calculates Beta, variances and returns from the daily data within each period. To calculate Jensen's Alpha per quarter, the CAPM expected return per year and, to compare it with, the actual return per year:
 
 ```python
-jensens_alpha = companies.performance.get_jensens_alpha(period="quarterly")
+jensens_alpha = companies.performance.get_alpha(method="jensen", period="quarterly")
 
 capm = companies.performance.get_capital_asset_pricing_model(period="yearly")
 
@@ -147,6 +147,6 @@ Which returns the daily factor returns and the risk-free rate as decimal fractio
 | 1963-07-05 |   0.0040 |  0.0008 | -0.0027 |  0.0009 | -0.0034 | 0.0001 |
 | 1963-07-08 |  -0.0063 |  0.0004 | -0.0018 | -0.0029 |  0.0014 | 0.0001 |
 
-The module covers many more measures, among them the [Information Ratio](/projects/financetoolkit/docs/performance#get_information_ratio), [upside](/projects/financetoolkit/docs/performance#get_upside_capture_ratio) and [downside capture ratios](/projects/financetoolkit/docs/performance#get_downside_capture_ratio), the [Calmar](/projects/financetoolkit/docs/performance#get_calmar_ratio) and [Omega Ratios](/projects/financetoolkit/docs/performance#get_omega_ratio), the [Carhart four-factor model](/projects/financetoolkit/docs/performance#get_carhart_four_factor_model) and market-timing models such as [Treynor-Mazuy](/projects/financetoolkit/docs/performance#get_treynor_mazuy_model).
+The module covers many more measures, among them the [Information Ratio](/projects/financetoolkit/docs/performance#get_information_ratio), [upside](/projects/financetoolkit/docs/performance#get_upside_capture_ratio) and [downside capture ratios](/projects/financetoolkit/docs/performance#get_downside_capture_ratio), the [Calmar](/projects/financetoolkit/docs/performance#get_calmar_ratio) and [Omega Ratios](/projects/financetoolkit/docs/performance#get_omega_ratio), the [Carhart four-factor model](/projects/financetoolkit/docs/performance#get_carhart_four_factor_model) and the [Treynor-Mazuy and Henriksson-Merton](/projects/financetoolkit/docs/performance#get_market_timing_model) market-timing models.
 
 {% include ft-charts-script.html %}

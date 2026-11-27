@@ -45,7 +45,7 @@ get_binomial_model:
     strike_price_range: 0
     strike_step_size: 1
     time_to_expiration: 1
-    timesteps: 5
+    time_steps: 5
 get_stock_price_simulation:
   question: Which share prices can AMD reach in a one-year binomial tree with five steps from the close of 31 December 2025, for each unique combination of up and down moves?
   tool: options
@@ -54,7 +54,7 @@ get_stock_price_simulation:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     time_to_expiration: 1
-    timesteps: 5
+    time_steps: 5
     show_unique_combinations: true
 get_put_call_parity:
   question: Did Black-Scholes call and put prices on Johnson & Johnson satisfy put-call parity at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 10% of the share price in $5 steps?

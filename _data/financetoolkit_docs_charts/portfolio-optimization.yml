@@ -189,23 +189,6 @@ get_inverse_volatility_weights:
   format: percent
   title: Inverse Volatility Weights
 
-get_minimum_cvar_weights:
-  chart: hbar
-  drop: [Portfolio]
-  columns: [Weight]
-  sort: desc
-  format: percent
-  title: Minimum CVaR Weights
-
-get_minimum_drawdown_weights:
-  chart: hbar
-  drop: [Portfolio]
-  columns: [Weight]
-  sort: desc
-  format: percent
-  title: Minimum Drawdown Weights
-  subtitle: Weights that minimize the conditional drawdown at risk
-
 get_maximum_omega_weights:
   chart: hbar
   drop: [Portfolio]
@@ -213,15 +196,6 @@ get_maximum_omega_weights:
   sort: desc
   format: percent
   title: Maximum Omega Ratio Weights
-
-get_maximum_cvar_ratio_weights:
-  chart: hbar
-  drop: [Portfolio]
-  columns: [Weight]
-  sort: desc
-  format: percent
-  title: Maximum CVaR Ratio Weights
-  subtitle: Weights that maximize the excess return per unit of CVaR
 
 get_maximum_diversification_weights:
   chart: hbar

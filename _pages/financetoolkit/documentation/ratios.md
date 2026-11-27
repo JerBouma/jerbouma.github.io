@@ -2,8 +2,8 @@
 title: Ratios
 seo_title: "Financial Ratios in Python | Finance Toolkit"
 seo_title_suffix: false
-excerpt: The Ratios Module contains 80+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
-description: "Calculate 80+ financial ratios in Python from financial statements: efficiency, liquidity, profitability, solvency and valuation, with formulas and examples."
+excerpt: The Ratios Module contains 130+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
+description: "Calculate 130+ financial ratios in Python from financial statements: efficiency, liquidity, profitability, solvency and valuation, with formulas and examples."
 author_profile: false
 permalink: /projects/financetoolkit/docs/ratios
 classes: wide-sidebar
@@ -17,7 +17,7 @@ sidebar:
     nav: "financetoolkit-docs-ratios"
 ---
 
-The Ratios Module contains 80+ ratios divided into 5 categories: efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
+The Ratios Module contains 130+ ratios divided into 5 categories: efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
 Use it in Claude, ChatGPT or another AI assistant through the [Finance Toolkit MCP](/projects/financetoolkit/mcp), or install the Python package:
 

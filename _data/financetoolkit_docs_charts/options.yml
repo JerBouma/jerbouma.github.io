@@ -291,13 +291,6 @@ get_binary_option:
   title: Binary Call Price
   subtitle: By strike, a line per expiration
 
-get_bjerksund_stensland:
-  chart: line
-  format: price
-  xname: Strike price
-  title: Bjerksund-Stensland Call Price
-  subtitle: By strike, a line per expiration
-
 get_monte_carlo_option_price:
   chart: line
   format: price
@@ -318,7 +311,6 @@ get_asian_option:
   xname: Strike price
   title: Asian Call Price
   subtitle: By strike, a line per expiration
-
 
 get_put_call_ratio:
   chart: bar

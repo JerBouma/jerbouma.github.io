@@ -21,8 +21,8 @@ def build() -> dict:
         "type": "coef",
         "x": list(rows.index),
         "coef": [round(float(c), 4) for c in rows["Coefficient"]],
-        "low": [round(float(c - 1.96 * se), 4) for c, se in zip(rows["Coefficient"], rows["Std. Error"])],
-        "high": [round(float(c + 1.96 * se), 4) for c, se in zip(rows["Coefficient"], rows["Std. Error"])],
+        "low": [round(float(c - 1.96 * se), 4) for c, se in zip(rows["Coefficient"], rows["Standard Error"])],
+        "high": [round(float(c + 1.96 * se), 4) for c, se in zip(rows["Coefficient"], rows["Standard Error"])],
         "p": [round(float(p), 4) for p in rows["P-Value"]],
     }
 
@@ -53,7 +53,7 @@ def build() -> dict:
     spec["series"][1]["axis"] = 1
     charts["econometrics-prices"] = spec
 
-    LAST["adf"] = companies.econometrics.get_augmented_dickey_fuller(period="quarterly")
+    LAST["adf"] = companies.econometrics.get_unit_root_test(method="augmented_dickey_fuller", period="quarterly")
     LAST["cointegration"] = companies.econometrics.get_engle_granger_cointegration(period="quarterly")
 
     fixed_effects = companies.econometrics.get_fixed_effects(

@@ -97,28 +97,6 @@ get_garch_parameters:
     tickers: LOW,SBUX,TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-get_gjr_garch:
-  question: What was the GJR-GARCH conditional variance of Nvidia and the S&P 500 in 2025, fitted on their returns in 2025?
-  tool: risk
-  arguments:
-    tickers: NVDA
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    limit: -249
-get_gjr_garch_forecast:
-  question: What variance does a GJR-GARCH model of crude oil, fitted on its returns from 2021 to 2025, forecast for the first ten trading days of 2026?
-  tool: risk
-  arguments:
-    tickers: CLUSD
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_gjr_garch_parameters:
-  question: How strongly did negative returns raise the volatility of the S&P 500 and the Euro Stoxx 50 from 2021 to 2025, according to the parameters of a GJR-GARCH model?
-  tool: risk
-  arguments:
-    tickers: ^GSPC,^STOXX50E
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_copula_parameters:
   question: What correlation, degrees of freedom and tail dependence does a Student-t copula fitted to the returns of gold and silver from 2021 to 2025 imply?
   tool: risk
@@ -138,7 +116,7 @@ get_copula_simulation:
     end_date: "2025-12-31"
     ticker_a: HD
     ticker_b: LOW
-    n_simulations: 30
+    simulations: 30
     limit: 5
 get_best_fitting_copula:
   question: Which copula best describes the dependence between the returns of Visa and Mastercard from 2021 to 2025, and what are each copula's tail dependence, log-likelihood and AIC?
@@ -375,27 +353,6 @@ get_srisk:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     quarterly: true
-get_corwin_schultz_spread:
-  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily highs and lows with the Corwin-Schultz method?
-  tool: risk
-  arguments:
-    tickers: SNAP,ETSY,LYFT
-    start_date: "2025-01-01"
-    end_date: "2025-06-30"
-get_abdi_ranaldo_spread:
-  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily closes, highs and lows with the Abdi-Ranaldo method?
-  tool: risk
-  arguments:
-    tickers: SNAP,ETSY,LYFT
-    start_date: "2025-01-01"
-    end_date: "2025-06-30"
-get_edge_spread:
-  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily open, high, low and close prices with the EDGE method?
-  tool: risk
-  arguments:
-    tickers: SNAP,ETSY,LYFT
-    start_date: "2025-01-01"
-    end_date: "2025-06-30"
 get_share_turnover:
   question: What share of their outstanding shares did Snap, Etsy and Lyft trade in each month of the first half of 2025?
   tool: risk

@@ -99,7 +99,7 @@ get_altman_z_score:
     tickers: "MCD,NFLX,UBER"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    model: non-manufacturing
+    method: non-manufacturing
     show_columns: Altman Z-Score
 get_piotroski_score:
   question: What was the Piotroski F-Score of Ford, General Motors and Tesla from 2022 to 2025?

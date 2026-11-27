@@ -111,7 +111,7 @@ def build() -> dict:
     print("OI top:\n", window["Open Interest"].sort_values().tail(6).to_string())
 
     # the binomial tree of stock prices, and where its 1,024 paths end
-    simulations = companies.options.get_stock_price_simulation(timesteps=10)
+    simulations = companies.options.get_stock_price_simulation(time_steps=10)
     apple_paths = simulations.loc["AAPL"]
     ends = apple_paths.iloc[:, -1].round(2).value_counts().sort_index()
     end_chart = line([f"${v:,.0f}" for v in ends.index], {"Paths ending here": ends}, kind="bar", fmt="amount",

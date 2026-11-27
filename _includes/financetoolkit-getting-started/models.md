@@ -30,7 +30,7 @@ The DuPont analysis explains Return on Equity by splitting it into parts. The ex
 To run the extended DuPont analysis for every company:
 
 ```python
-companies.models.get_extended_dupont_analysis()
+companies.models.get_dupont_analysis(method="extended")
 ```
 
 Which gives the five components and the resulting ROE, here for the last ten years with a tab per company:

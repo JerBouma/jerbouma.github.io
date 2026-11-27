@@ -12,7 +12,7 @@ METHODS = {
     "Risk parity": "get_risk_parity_weights",
     "HRP": "get_hierarchical_risk_parity_weights",
     "Inverse volatility": "get_inverse_volatility_weights",
-    "Minimum CVaR": "get_minimum_cvar_weights",
+    "Minimum CVaR": ("get_mean_risk_weights", {"risk_measure": "cvar"}),
 }
 # a strategic allocation as the starting point of Black-Litterman: market capitalizations mean little for funds
 STRATEGIC = {"VTI": 0.35, "VEA": 0.15, "VWO": 0.05, "TLT": 0.30, "GLD": 0.10, "VNQ": 0.05}
@@ -36,7 +36,10 @@ def build() -> dict:
     charts = {}
 
     # six ways to weight the same assets: their weights and where their risk comes from
-    portfolios = {name: getattr(assets.portfolio, method)() for name, method in METHODS.items()}
+    portfolios = {
+        name: getattr(assets.portfolio, method[0])(**method[1]) if isinstance(method, tuple) else getattr(assets.portfolio, method)()
+        for name, method in METHODS.items()
+    }
     LAST.update(portfolios)
     weights = pd.DataFrame({name: frame["Weight"].drop("Portfolio") for name, frame in portfolios.items()})
     risk = pd.DataFrame({name: frame["Risk Contribution"].drop("Portfolio") for name, frame in portfolios.items()})

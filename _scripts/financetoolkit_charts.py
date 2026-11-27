@@ -124,7 +124,7 @@ def main() -> None:
         "format": "percent",
     }
 
-    dupont = companies.models.get_extended_dupont_analysis()
+    dupont = companies.models.get_dupont_analysis(method="extended")
     TABLES["models"] = dupont.loc["NVDA"]
     parts = [("Interest Burden Ratio", "Interest burden", "percent"),
              ("Tax Burden Ratio", "Tax burden", "percent"),
@@ -196,8 +196,8 @@ def main() -> None:
         "title": "Coefficients with 95% Confidence Intervals",
         "x": [f"{NAMES[t]} · {name}" for t, name in rows.index],
         "coef": values(rows["Coefficient"]),
-        "low": values(rows["Coefficient"] - 1.96 * rows["Std. Error"]),
-        "high": values(rows["Coefficient"] + 1.96 * rows["Std. Error"]),
+        "low": values(rows["Coefficient"] - 1.96 * rows["Standard Error"]),
+        "high": values(rows["Coefficient"] + 1.96 * rows["Standard Error"]),
         "p": values(rows["P-Value"]),
     }
 

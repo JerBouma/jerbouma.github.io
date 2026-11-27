@@ -4,7 +4,7 @@ seo_title: "Connect Claude to Live Financial Data"
 date: 2026-09-11
 last_modified_at: 2026-11-22
 permalink: /articles/connect-claude-to-financial-data
-excerpt: "Claude cannot see today's prices or the latest financial statements on its own. With the free, hosted Finance Toolkit MCP server you connect Claude Desktop, claude.ai or Claude Code to live financial data and 700+ analysis methods in about a minute, no installation required."
+excerpt: "Claude cannot see today's prices or the latest financial statements on its own. With the free, hosted Finance Toolkit MCP server you connect Claude Desktop, claude.ai or Claude Code to live financial data and 1100+ analysis methods in about a minute, no installation required."
 description: "Connect Claude to live financial data in a minute with the free Finance Toolkit MCP server: stock analysis, ratios, technical indicators and macro data."
 layout: single
 classes: wide-sidebar article-document
@@ -14,7 +14,7 @@ tags: [MCP Server]
 share: true
 standfirst: "Asked for a return on invested capital from memory, a language model tends to give a plausible-sounding mistake. What does it take to make Claude calculate the number instead?"
 key_points:
-  - "One URL connects Claude Desktop, claude.ai or Claude Code to 700+ financial methods in a minute, with nothing to install."
+  - "One URL connects Claude Desktop, claude.ai or Claude Code to 1100+ financial methods in a minute, with nothing to install."
   - "Ten worked questions show what comes back, such as Apple's return on invested capital of 62.0% in 2025 against 25.8% for Microsoft."
   - "FMP's free plan allows 250 requests a day and five years of US data, so a broad screen can use it up quickly."
 image: /assets/images/projects/FinanceToolkitMCP.jpg
@@ -35,14 +35,14 @@ The fix is to give Claude a tool that fetches and computes the numbers for it. T
 
 <div class="ca-strip">
   <div><strong>1 minute</strong><span>to connect Claude Desktop, claude.ai or Claude Code</span></div>
-  <div><strong>700+</strong><span>financial methods behind 25 tools, plus 3 for search</span></div>
+  <div><strong>1100+</strong><span>financial methods behind 25 tools, plus 3 for search</span></div>
   <div><strong>10</strong><span>real questions answered below, with charts</span></div>
   <div><strong>Free</strong><span>hosted server, open-source code</span></div>
 </div>
 
 <div class="article-cta">
   <p class="article-cta__title">Free, hosted and open source</p>
-  <p>One URL gives Claude, ChatGPT, Cursor and other AI assistants access to 700+ financial methods, financial statements and macro data for 60+ countries.</p>
+  <p>One URL gives Claude, ChatGPT, Cursor and other AI assistants access to 1100+ financial methods, financial statements and macro data for 60+ countries.</p>
   <p class="article-cta__actions"><a href="/projects/financetoolkit/mcp" class="hp-btn hp-btn--primary">Explore the server <i class="fas fa-arrow-right" aria-hidden="true"></i></a><a href="/projects/financetoolkit/mcp#installation" class="hp-btn hp-btn--ghost">Install guide</a></p>
 </div>
 
@@ -262,6 +262,6 @@ The same server works with any MCP-compatible client, each with step-by-step ins
   <a href="/projects/financetoolkit/mcp#remote-gemini"><i class="fab fa-google" aria-hidden="true"></i>Gemini CLI<i class="fas fa-arrow-right ca-clients__go" aria-hidden="true"></i></a>
 </div>
 
-Clients that only support the stdio transport can use the local installation. If you would rather skip the assistant altogether, the [Finance Toolkit](/projects/financetoolkit) Python library exposes the same 700+ methods directly. Problems or ideas for a new tool are welcome as an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}.
+Clients that only support the stdio transport can use the local installation. If you would rather skip the assistant altogether, the [Finance Toolkit](/projects/financetoolkit) Python library exposes the same 1100+ methods directly. Problems or ideas for a new tool are welcome as an issue on [GitHub](https://github.com/JerBouma/FinanceToolkit/issues){:target="_blank"}.
 
 {% include ft-charts-script.html %}
