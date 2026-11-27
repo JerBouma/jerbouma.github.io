@@ -331,3 +331,189 @@ get_pain_ratio:
     tickers: HD,LOW,TGT
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_beta_fragility:
+  question: How fragile was the beta of JPMorgan Chase, Coca-Cola and Nvidia, the change in beta when the market moves, in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: JPM,KO,NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_bootstrap_statistics:
+  question: Across bootstrapped resamples of Apple's daily returns from 2021 to 2025, what range of cumulative and annualized returns, volatility, Sharpe ratio and maximum drawdown came out?
+  tool: performance
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_bull_bear_beta:
+  question: What were the alpha and beta of the Technology Select Sector SPDR (XLK) in rising and falling markets in each year from 2021 to 2025, and its timing ratio?
+  tool: performance
+  arguments:
+    tickers: XLK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_calendar_returns:
+  question: What did Apple return in each month and each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    benchmark_ticker: "None"
+get_capital_market_line:
+  question: What were the slopes of the capital market line and the security market line for Coca-Cola in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_capture_ratios:
+  question: How much of the S&P 500's up and down days did the iShares MSCI USA Min Vol Factor ETF (USMV) capture in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: USMV
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_d_ratio:
+  question: What was the d ratio, the size of losses against gains, of Coca-Cola, PepsiCo and Mondelez in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: KO,PEP,MDLZ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_forecast_cone:
+  question: Based on Apple's daily returns from 2021 to 2025, where could $1 invested in it end up over the next year, within 1, 1.5 and 2 standard deviations?
+  tool: performance
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_market_timing_model:
+  question: Did ARK Innovation (ARKK) time the market in each year from 2021 to 2025, according to the Treynor-Mazuy model?
+  tool: performance
+  arguments:
+    tickers: ARKK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_omega_excess_return:
+  question: What was the Omega excess return of ExxonMobil, Chevron and ConocoPhillips in each year from 2022 to 2025?
+  tool: performance
+  arguments:
+    tickers: XOM,CVX,COP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_outperformance_probability:
+  question: How likely were Apple, Microsoft and Coca-Cola to beat the S&P 500 over holding periods of 1 to 36 months, based on 2016 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_probabilistic_momentum:
+  question: How confident could you be that Apple, Microsoft and Coca-Cola outperformed the S&P 500 in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_probability_of_backtest_overfitting:
+  question: If I picked the best of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, Tesla and Coca-Cola on 2016 to 2025 data, how likely is it that the choice was overfitted?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,GOOGL,AMZN,META,NVDA,TSLA,KO
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_prospect_ratio:
+  question: What was the prospect ratio of JPMorgan Chase, Bank of America and Wells Fargo in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: JPM,BAC,WFC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_r_squared:
+  question: How much of the daily moves of QQQ and gold (GLD) did the S&P 500 explain in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: QQQ,GLD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_return_concentration:
+  question: How concentrated were the gains and losses of Apple, Microsoft and Coca-Cola in a few days from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_risk_decomposition:
+  question: How much of ExxonMobil's risk was systematic and how much specific to the company in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: XOM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_risk_measure_ratio:
+  question: What was the excess return per unit of conditional drawdown at risk of Apple, Microsoft and Coca-Cola in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    risk_measure: cdar
+get_risk_return_ratio:
+  question: What was the annualized return per unit of volatility of Apple, Microsoft and Coca-Cola in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    annualize: true
+get_serenity_index:
+  question: What was the serenity index of Apple, Microsoft and Coca-Cola in each year from 2022 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_sharpe_ratio_difference_test:
+  question: Was Microsoft's Sharpe ratio significantly different from the S&P 500's in any year from 2021 to 2025, using the Ledoit-Wolf test?
+  tool: performance
+  arguments:
+    tickers: MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    method: ledoit_wolf
+get_smoothing_index:
+  question: How smoothed were the returns of Apple, the Vanguard Real Estate ETF (VNQ), high-yield bonds (HYG) and listed private equity (PSP) from 2016 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,VNQ,HYG,PSP
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_stability_of_returns:
+  question: How steadily did Apple, Microsoft and Coca-Cola grow in each year from 2021 to 2025, measured by the stability of their returns?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_strategy_risk:
+  question: Treating a daily position in Apple, Microsoft or Coca-Cola from 2021 to 2025 as a strategy, what were its precision, bet sizes and probability of failure?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_trailing_returns:
+  question: What were the trailing returns of Apple, Microsoft, Coca-Cola and the S&P 500 at the end of 2025, from month to date to ten years and since 2015?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+get_variability_weighted_return:
+  question: What was the variability-weighted return of Apple, Microsoft and Coca-Cola in each year from 2021 to 2025?
+  tool: performance
+  arguments:
+    tickers: AAPL,MSFT,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"

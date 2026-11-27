@@ -1,0 +1,1 @@
+{"charts":{"get_estimation_uncertainty":{"title":"Expected Return Uncertainty","type":"coef","x":["AAPL","MSFT","JNJ","XOM"],"coef":[0.1932,0.2017,0.0987,0.2911],"low":[-0.0568,-0.0032,-0.0518,0.063],"high":[0.4194,0.3985,0.2328,0.5191],"p":[0.0,0.0,0.0,0.0],"format":"percent","subtitle":"The annualized expected return with its confidence interval from simulated histories"}}}

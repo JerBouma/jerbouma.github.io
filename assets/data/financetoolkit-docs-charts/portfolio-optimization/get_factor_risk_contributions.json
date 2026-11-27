@@ -1,0 +1,1 @@
+{"charts":{"get_factor_risk_contributions":{"title":"Factor Risk Contributions","type":"bar","x":["Mkt-RF","SMB","HML","RMW","CMA"],"series":[{"name":"Percentage Contribution","data":[0.8731,0.0232,0.0416,0.0509,0.0113]}],"format":"percent","subtitle":"Each factor's share of the portfolio's volatility"}}}

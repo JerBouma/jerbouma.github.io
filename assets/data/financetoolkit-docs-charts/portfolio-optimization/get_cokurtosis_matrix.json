@@ -1,0 +1,1 @@
+{"charts":{"get_cokurtosis_matrix":{"title":"Cokurtosis with Apple Twice","type":"heatmap","x":["AAPL","MSFT"],"y":["AAPL","MSFT"],"values":[[9.5182,6.0897],[6.0897,4.8517]],"format":"ratio","subtitle":"Fourth co-moments of the daily returns, standardized"}}}

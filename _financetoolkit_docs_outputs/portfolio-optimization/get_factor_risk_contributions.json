@@ -1,0 +1,1 @@
+{"index":"Factor","columns":["Exposure","Marginal Contribution","Risk Contribution","Percentage Contribution"],"rows":[["Mkt-RF",0.9376,0.1727,0.1619,0.8731],["SMB",-0.1694,-0.0254,0.0043,0.0232],["HML",-0.1765,-0.0437,0.0077,0.0416],["RMW",0.2806,0.0336,0.0094,0.0509],["CMA",0.1144,0.0184,0.0021,0.0113],["Other",null,null,0.0,0.0],["Total",null,null,0.1855,1.0]],"total":7}

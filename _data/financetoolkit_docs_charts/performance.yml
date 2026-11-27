@@ -375,3 +375,268 @@ get_cokurtosis:
   format: ratio
   title: Cokurtosis
   subtitle: How the asset's returns move with the benchmark's cubed returns, per year
+
+get_beta_fragility:
+  chart: bar
+  levels: [0]
+  format: decimal
+  title: Beta Fragility
+  subtitle: How far the response to the benchmark bends at the extremes, per calendar year
+
+get_bootstrap_statistics:
+  chart: tabs
+  title: Bootstrapped Performance Statistics
+  tabs:
+    - label: Annualized Return
+      chart: bar
+      transpose: true
+      rows: ["5%", "25%", "Median", "75%", "95%"]
+      columns: [Annualized Return]
+      format: percent
+      subtitle: Percentiles over simulated histories drawn from the daily returns
+    - label: Sharpe Ratio
+      chart: bar
+      transpose: true
+      rows: ["5%", "25%", "Median", "75%", "95%"]
+      columns: [Sharpe Ratio]
+      format: ratio
+      subtitle: Percentiles over simulated histories drawn from the daily returns
+    - label: Maximum Drawdown
+      chart: bar
+      transpose: true
+      rows: ["5%", "25%", "Median", "75%", "95%"]
+      columns: [Maximum Drawdown]
+      format: percent
+      subtitle: Percentiles over simulated histories drawn from the daily returns
+
+get_bull_bear_beta:
+  chart: tabs
+  title: Bull and Bear Market Beta
+  tabs:
+    - label: Beta
+      chart: bar
+      columns: [Bull Beta, Bear Beta]
+      levels: [1]
+      format: ratio
+      subtitle: Beta over the days the market rose and the days it fell, per year
+    - label: Alpha
+      chart: bar
+      columns: [Bull Alpha, Bear Alpha]
+      levels: [0]
+      format: percent
+      subtitle: Alpha over the days the market rose and the days it fell, per year
+    - label: Timing Ratio
+      chart: bar
+      columns: [Timing Ratio]
+      levels: [1]
+      format: ratio
+      subtitle: Bull Beta divided by Bear Beta; above 1 gains more in rising markets than it loses in falling ones
+
+get_calendar_returns:
+  chart: heatmap
+  drop: [Year]
+  format: percent
+  title: Monthly Returns
+  subtitle: A row per month, a column per year
+
+get_capital_market_line:
+  chart: tabs
+  title: Capital Market Line
+  tabs:
+    - label: Capital Market Line Slope
+      chart: bar
+      transpose: true
+      columns: [Capital Market Line Slope]
+      levels: [0]
+      format: ratio
+      subtitle: The benchmark's excess return per unit of volatility, per year
+    - label: Regression Epsilon
+      chart: bar
+      transpose: true
+      columns: [Regression Epsilon]
+      levels: [0]
+      format: percent
+      subtitle: Return not explained by the regression on the benchmark, per year
+
+get_capture_ratios:
+  chart: tabs
+  title: Capture Ratios
+  tabs:
+    - label: Upside and Downside
+      chart: bar
+      transpose: true
+      columns: [Upside Capture Ratio, Downside Capture Ratio]
+      levels: [1]
+      format: ratio
+      subtitle: Share of the benchmark's return captured in rising and in falling markets, per year
+    - label: Up/Down Capture Ratio
+      chart: bar
+      transpose: true
+      columns: [Up/Down Capture Ratio]
+      levels: [1]
+      format: ratio
+      subtitle: Upside capture divided by downside capture, per year
+
+get_d_ratio:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: d Ratio
+  subtitle: Losses relative to gains, each weighted by how often they occur; below 1 the gains weigh more
+
+get_forecast_cone:
+  chart: line
+  columns: [Upper 2, Upper 1, Mean, Lower 1, Lower 2]
+  format: ratio
+  xname: Trading days ahead
+  title: Forecast Cone
+  subtitle: Growth of 1, the mean path with 1 and 2 standard deviations above and below it
+
+get_market_timing_model:
+  chart: tabs
+  title: Market Timing Model
+  tabs:
+    - label: Gamma
+      chart: bar
+      columns: [Gamma]
+      levels: [0]
+      format: ratio
+      subtitle: The timing term; above 0 the exposure rose before the market did
+    - label: Alpha
+      chart: bar
+      columns: [Alpha]
+      levels: [0]
+      format: percent
+      subtitle: Return beyond what the market exposure and timing explain, per year
+    - label: R Squared
+      chart: bar
+      columns: [R Squared]
+      format: percent
+      subtitle: Share of the variance of the returns the model explains, per year
+
+get_omega_excess_return:
+  chart: bar
+  levels: [0]
+  format: percent
+  title: Omega Excess Return
+  subtitle: Return minus a charge for downside risk, priced at the benchmark's downside risk, per year
+
+get_outperformance_probability:
+  chart: bar
+  levels: [0.5]
+  format: percent
+  xname: Window (periods)
+  title: Probability of Outperformance
+  subtitle: Share of all windows of a given length in which the asset returned more than the benchmark
+
+get_probabilistic_momentum:
+  chart: bar
+  levels: [0.5]
+  format: percent
+  title: Probabilistic Momentum
+  subtitle: Confidence that the asset outperforms the benchmark, per year
+
+get_probability_of_backtest_overfitting:
+  chart: none
+  reason: A few statistics of one selection, which the table shows in full
+
+get_prospect_ratio:
+  chart: bar
+  levels: [0]
+  format: ratio
+  title: Prospect Ratio
+  subtitle: A Sortino-type ratio in which losses weigh 2.25 times as much as gains, per year
+
+get_r_squared:
+  chart: bar
+  format: percent
+  title: R-Squared
+  subtitle: Share of the variance of the returns the benchmark explains, per year
+
+get_return_concentration:
+  chart: bar
+  format: decimal
+  title: Return Concentration
+  subtitle: Herfindahl-Hirschman Index between 0 (every return contributes the same) and 1 (one return holds everything)
+
+get_risk_decomposition:
+  chart: bar
+  columns: [Systematic Risk, Specific Risk, Total Risk]
+  format: percent
+  title: Systematic and Specific Risk
+  subtitle: Annualized volatility from the market, specific to the asset and in total, per year
+
+get_risk_measure_ratio:
+  chart: bar
+  levels: [0]
+  format: decimal
+  title: Excess Return per Unit of Conditional Drawdown at Risk
+  subtitle: Mean daily excess return divided by the CDaR, per year
+
+get_risk_return_ratio:
+  chart: bar
+  levels: [0]
+  format: ratio
+  title: Risk-Return Ratio
+  subtitle: Annualized return per unit of annualized volatility, per year
+
+get_serenity_index:
+  chart: bar
+  levels: [0]
+  format: ratio
+  title: Serenity Index
+  subtitle: Excess return per unit of drawdown risk, penalized for deep drawdowns, per year
+
+get_sharpe_ratio_difference_test:
+  chart: coef
+  coef: Sharpe Difference
+  se: Standard Error
+  p: P-Value
+  format: ratio
+  title: Sharpe Ratio Difference with the Benchmark
+  subtitle: Daily Sharpe ratio minus the benchmark's, with its 95% confidence interval, per year
+
+get_smoothing_index:
+  chart: bar
+  transpose: true
+  columns: [Theta 0, Theta 1, Theta 2]
+  stack: true
+  format: ratio
+  title: Smoothing Weights
+  subtitle: Weight of the current period (Theta 0) and the two before it in the reported return
+
+get_stability_of_returns:
+  chart: bar
+  format: ratio
+  title: Stability of Returns
+  subtitle: R-squared of the cumulative log return on time; 1 is a constant rate of growth
+
+get_strategy_risk:
+  chart: tabs
+  title: Strategy Risk
+  tabs:
+    - label: Precision
+      chart: bar
+      rows: [Precision, Implied Precision]
+      levels: [0.5]
+      format: percent
+      subtitle: Share of winning days, and the share needed to reach the target Sharpe ratio
+    - label: Probability of Failure
+      chart: bar
+      rows: [Probability of Failure]
+      format: percent
+      subtitle: Probability that the true precision falls short of the one needed
+
+get_trailing_returns:
+  chart: bar
+  format: percent
+  levels: [0]
+  title: Trailing Returns
+  subtitle: Up to the last close; periods of more than a year are annualized
+
+get_variability_weighted_return:
+  chart: bar
+  levels: [0]
+  format: percent
+  title: Variability-Weighted Return
+  subtitle: Annualized return reduced by how far the value strays from a steady growth path, per year

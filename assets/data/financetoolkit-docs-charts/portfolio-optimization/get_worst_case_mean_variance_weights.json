@@ -1,0 +1,1 @@
+{"charts":{"get_worst_case_mean_variance_weights":{"title":"Worst-Case Mean-Variance Weights","type":"hbar","x":["MSFT","XOM","AAPL","JNJ"],"series":[{"name":"Weight","data":[0.5,0.5,0.0,0.0]}],"format":"percent"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_coskewness_matrix":{"title":"Coskewness with Apple","type":"heatmap","x":["AAPL","MSFT","JNJ"],"y":["AAPL","MSFT","JNJ"],"values":[[0.4539,0.3026,0.0257],[0.3026,0.198,-0.0169],[0.0257,-0.0169,-0.1682]],"format":"ratio","subtitle":"Third co-moments of the daily returns, standardized"}}}
