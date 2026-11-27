@@ -1,0 +1,1 @@
+{"charts":{"get_correlation_dimension":{"title":"Correlation Dimension","type":"hbar","x":["EURUSD","Benchmark","BTCUSD","GCUSD"],"series":[{"name":"Correlation Dimension","data":[4.0576,3.8736,3.8436,3.6576]}],"format":"ratio","subtitle":"Of the daily log returns in four embedding dimensions; lower is a more deterministic process"}}}

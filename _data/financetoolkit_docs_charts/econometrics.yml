@@ -410,3 +410,241 @@ get_ramsey_reset_test:
 get_chow_test:
   chart: none
   reason: One test statistic with its p-value and decision
+
+get_berkowitz_test:
+  chart: bar
+  transpose: true
+  columns: [P-Value]
+  levels: [0.05]
+  cards: false
+  format: ratio
+  title: Berkowitz Test P-Value
+  subtitle: Below the 0.05 line the density forecasts do not match the returns
+
+get_hong_li_test:
+  chart: bar
+  transpose: true
+  columns: [{Q(1) Statistic: Q(1)}, {Q(2) Statistic: Q(2)}, {Q(3) Statistic: Q(3)}, {Q(4) Statistic: Q(4)}]
+  format: ratio
+  title: Hong-Li Statistics
+  subtitle: Per lag; only large values reject the density forecasts (p-values in the table)
+
+get_directional_accuracy_test:
+  chart: bar
+  transpose: true
+  columns: [Directional Accuracy]
+  levels: [0.5]
+  cards: false
+  format: percent
+  title: Directional Accuracy
+  subtitle: Share of months the 12-month momentum signal called the direction right; 50% is a coin flip
+
+get_model_confidence_set:
+  chart: bar
+  columns: [MCS P-Value]
+  levels: [0.1]
+  cards: false
+  format: ratio
+  title: Model Confidence Set P-Value
+  subtitle: Per asset and volatility model; above the 0.1 line the model is in the 90% confidence set
+
+get_forecast_error:
+  chart: hbar
+  columns: [RMSE]
+  format: percent
+  title: Root Mean Squared Error
+  subtitle: Between the daily returns of each pair
+
+get_binary_choice_regression:
+  chart: coef
+  coef: Coefficient
+  se: Standard Error
+  p: P-Value
+  drop: [Intercept]
+  format: ratio
+  title: Logit Coefficient
+  subtitle: Estimate with its 95% confidence interval
+
+get_heteroskedasticity_test:
+  chart: none
+  reason: One test statistic with its p-value and decision
+
+get_unit_root_test:
+  chart: bar
+  transpose: true
+  columns: [ADF Statistic, Critical Value 5%]
+  format: ratio
+  title: ADF Statistic
+  subtitle: Below the 5% critical value, the unit root is rejected
+
+get_minimum_fractional_difference:
+  chart: bar
+  transpose: true
+  columns: [Minimum d]
+  format: ratio
+  title: Minimum Fractional Difference
+  subtitle: The smallest d at which the differenced price passes the ADF test at 5%
+
+get_fractional_difference:
+  chart: line
+  format: ratio
+  title: Fractionally Differenced Price
+  subtitle: Stationary while keeping most of the price's memory
+
+get_bubble_test:
+  chart: bar
+  transpose: true
+  columns: [GSADF Statistic, Critical Value 5%]
+  format: ratio
+  title: GSADF Statistic
+  subtitle: Against the 5% critical value; above it, the price went through an explosive episode
+
+get_bubble_episodes:
+  chart: bar
+  columns: [Duration]
+  format: amount
+  yname: Weeks
+  title: Duration of Bubble Episodes
+  subtitle: Weeks each explosive episode lasted
+
+get_chow_dickey_fuller_test:
+  chart: bar
+  transpose: true
+  columns: [SDFC Statistic, Critical Value 5%]
+  format: ratio
+  title: Chow-Type Dickey-Fuller Statistic
+  subtitle: Against the 5% critical value; above it, the price turned explosive at the break date
+
+get_change_points:
+  chart: bar
+  columns: [Standard Deviation]
+  format: percent
+  title: Volatility per Segment
+  subtitle: Standard deviation of the monthly returns between the change points
+
+get_gmm_moment_test:
+  chart: bar
+  transpose: true
+  columns: [{Mean P-Value: Mean}, {Variance P-Value: Variance}, {Skewness P-Value: Skewness}, {Kurtosis P-Value: Kurtosis}]
+  levels: [0.05]
+  cards: false
+  format: ratio
+  title: GMM Moment Test P-Values
+  subtitle: Per moment condition; below the 0.05 line the model misses that moment
+
+get_nyblom_test:
+  chart: bar
+  transpose: true
+  columns: [Joint Statistic, {Joint Critical Value (5%): Critical Value 5%}]
+  format: ratio
+  title: Nyblom Joint Statistic
+  subtitle: Against the 5% critical value; above it, the GARCH parameters are not stable
+
+get_sign_bias_test:
+  chart: bar
+  transpose: true
+  columns: [{Sign Bias t-Statistic: Sign Bias}, {Negative Size Bias t-Statistic: Negative Size Bias}, {Positive Size Bias t-Statistic: Positive Size Bias}]
+  levels: [-1.96, 1.96]
+  cards: false
+  format: ratio
+  title: Sign Bias t-Statistics
+  subtitle: Beyond the dashed lines the effect of good or bad news on volatility is significant at 5%
+
+get_pearson_goodness_of_fit_test:
+  chart: bar
+  transpose: true
+  derive:
+    Critical Value 5%: "30.1435"
+  columns: [Pearson Statistic, Critical Value 5%]
+  format: number
+  title: Pearson Goodness-of-Fit Statistic
+  subtitle: Against the 5% critical value of a chi-squared with 19 degrees of freedom; above it, the distribution does not fit
+
+get_optimal_trading_rule:
+  chart: bar
+  transpose: true
+  columns: [Profit-Taking, Stop-Loss]
+  format: ratio
+  title: Optimal Profit-Taking and Stop-Loss
+  subtitle: In standard deviations (Sigma) of the price, for a long position
+
+get_hjorth_parameters:
+  chart: bar
+  columns: [Mobility, Complexity]
+  format: ratio
+  title: Hjorth Mobility and Complexity
+  subtitle: Mobility is a mean frequency; complexity is how far the shape departs from a sine wave
+
+get_entropy:
+  chart: line
+  format: ratio
+  title: Permutation Entropy
+  subtitle: Over a rolling 252-day window; 1 is fully random
+
+get_lempel_ziv_complexity:
+  chart: line
+  format: ratio
+  title: Lempel-Ziv Complexity
+  subtitle: Over a rolling 252-day window; 1 is as complex as a random series
+
+get_correlation:
+  chart: line
+  levels: [0]
+  format: ratio
+  title: Rolling Correlation with the Benchmark
+  subtitle: 30-day correlation of the daily returns
+
+get_linear_regression:
+  chart: ta
+  ticker: AAPL
+  price: AAPL
+  price_name: Apple
+  format: price
+  overlays:
+    - {column: "Linear Regression", color: "#f97316"}
+    - {column: "Time Series Forecast", color: "#818cf8", dashed: true}
+  lower:
+    series:
+      - {column: Slope, bar: true, signed: true}
+    levels: [0]
+    format: ratio
+  zoom: 252
+  title: Linear Regression
+
+get_slope:
+  chart: line
+  levels: [0]
+  format: price
+  title: Slope
+  subtitle: Average change in the share price per day over five days
+
+get_mean_absolute_deviation:
+  chart: line
+  format: price
+  title: Mean Absolute Deviation
+  subtitle: Of the share price around its 14-day average
+
+get_standard_error:
+  chart: line
+  format: price
+  title: Standard Error
+  subtitle: Of the share price over 14 days
+
+get_percentile:
+  chart: line
+  format: price
+  title: Rolling Median
+  subtitle: Of the share price over 30 trading days
+
+get_percent_rank:
+  chart: line
+  format: percent
+  title: Percent Rank
+  subtitle: Share of the previous 100 prices below the latest
+
+get_z_score:
+  chart: line
+  levels: [0]
+  format: ratio
+  title: Z-Score
+  subtitle: Distance of the share price from its 30-day mean, in standard deviations

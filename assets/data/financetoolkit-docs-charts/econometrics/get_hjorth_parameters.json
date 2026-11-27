@@ -1,0 +1,1 @@
+{"charts":{"get_hjorth_parameters":{"title":"Hjorth Mobility and Complexity","type":"bar","x":["AAPL","MSFT","NVDA"],"series":[{"name":"Mobility","data":[1.4058,1.4267,1.4485]},{"name":"Complexity","data":[1.228,1.2057,1.2097]}],"format":"ratio","subtitle":"Mobility is a mean frequency; complexity is how far the shape departs from a sine wave"}}}

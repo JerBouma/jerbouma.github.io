@@ -1,0 +1,1 @@
+{"charts":{"get_nyblom_test":{"title":"Nyblom Joint Statistic","type":"bar","x":["^GSPC","GLD"],"series":[{"name":"Joint Statistic","data":[1.2498,1.2938]},{"name":"Critical Value 5%","data":[1.0002,1.0002]}],"format":"ratio","subtitle":"Against the 5% critical value; above it, the GARCH parameters are not stable"}}}

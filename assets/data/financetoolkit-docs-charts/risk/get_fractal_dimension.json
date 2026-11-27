@@ -1,0 +1,1 @@
+{"charts":{"get_fractal_dimension":{"title":"Fractal Dimension","type":"hbar","x":["EURUSD","Benchmark","GCUSD","BTCUSD"],"series":[{"name":"Fractal Dimension","data":[1.515,1.5085,1.4903,1.4827]}],"format":"ratio","subtitle":"Roughness of the price path; 1.5 is a random walk, higher is rougher"}}}

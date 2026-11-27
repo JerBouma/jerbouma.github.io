@@ -396,3 +396,222 @@ get_level_significance:
     period: monthly
     start_date: "2000-01-01"
     end_date: "2026-10-31"
+get_binary_choice_regression:
+  question: How strongly did the S&P 500's daily return predict whether Apple's shares closed up or down in 2025, according to a logit regression?
+  tool: econometrics
+  arguments:
+    tickers: AAPL
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    include_benchmark: true
+get_bubble_episodes:
+  question: When did the weekly share prices of Nvidia and Coca-Cola go through explosive, bubble-like episodes from 2016 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: NVDA,KO
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    period: weekly
+get_bubble_test:
+  question: Did the weekly share prices of Nvidia and Coca-Cola show a bubble from 2016 to 2025, according to the GSADF test of Phillips, Shi and Yu?
+  tool: econometrics
+  arguments:
+    tickers: NVDA,KO
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    period: weekly
+get_change_points:
+  question: When did the volatility of the monthly returns of the Invesco QQQ and iShares 20+ Year Treasury Bond (TLT) ETFs shift from 2016 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: QQQ,TLT
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    period: monthly
+    cost: variance
+get_chow_dickey_fuller_test:
+  question: Did the share prices of Nvidia and Coca-Cola switch from a random walk to explosive growth at some date from 2016 to 2025, according to the Chow-type Dickey-Fuller test?
+  tool: econometrics
+  arguments:
+    tickers: NVDA,KO
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_correlation:
+  question: What was the 30-day rolling correlation of Apple's and Microsoft's daily returns with the S&P 500 over the last five trading days of 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rolling: 30
+    limit: -5
+get_directional_accuracy_test:
+  question: Did a 12-month momentum signal predict the direction of the monthly returns of the Invesco QQQ, iShares 20+ Year Treasury Bond (TLT), SPDR Gold Shares (GLD) and United States Oil Fund (USO) ETFs from 2010 to 2025, according to the Pesaran-Timmermann test?
+  tool: econometrics
+  arguments:
+    tickers: QQQ,TLT,GLD,USO
+    start_date: "2010-01-01"
+    end_date: "2025-12-31"
+    period: monthly
+    window: 12
+get_entropy:
+  question: How random were the daily returns of Apple, Microsoft and Nvidia over the last five trading days of 2025, measured by their permutation entropy over a rolling 252-day window?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT,NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    method: permutation
+    rolling: 252
+    limit: -5
+get_forecast_error:
+  question: How closely did the daily returns of the iShares Core S&P 500 (IVV) and Vanguard S&P 500 (VOO) ETFs follow each other and the S&P 500 in 2025, measured by the root mean squared error?
+  tool: econometrics
+  arguments:
+    tickers: IVV,VOO
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    include_benchmark: true
+get_gmm_moment_test:
+  question: Did a GARCH model with Student-t errors capture the mean, variance, skewness and kurtosis of the daily returns of the S&P 500 and SPDR Gold Shares (GLD) from 2016 to 2025, according to the GMM moment test?
+  tool: econometrics
+  arguments:
+    tickers: ^GSPC,GLD
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    distribution: t
+get_heteroskedasticity_test:
+  question: Was the residual variance of a regression of Caterpillar's daily returns on Deere's constant in 2025, according to the Breusch-Pagan test?
+  tool: econometrics
+  arguments:
+    tickers: CAT,DE
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_hjorth_parameters:
+  question: What were the Hjorth activity, mobility and complexity of the daily returns of Apple, Microsoft and Nvidia from 2021 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT,NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_lempel_ziv_complexity:
+  question: How complex were the daily returns of Apple, Microsoft and Nvidia over a rolling 252-day window in the last five trading days of 2025, according to the Lempel-Ziv complexity?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT,NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rolling: 252
+    limit: -5
+get_linear_regression:
+  question: What were the 14-day linear regression value, slope, angle, intercept and time series forecast of Apple's share price over the last five trading days of 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -5
+get_mean_absolute_deviation:
+  question: How far did Apple's and Microsoft's share prices stray from their 14-day average over the last five trading days of 2025, measured by the mean absolute deviation?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rolling: 14
+    limit: -5
+get_minimum_fractional_difference:
+  question: What is the smallest fractional difference that makes the share prices of Apple and Microsoft stationary while keeping most of their memory, from 2016 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_model_confidence_set:
+  question: Which of the EWMA, rolling, GARCH and GJR-GARCH volatility models belong to the 90% model confidence set of the Invesco QQQ and iShares 20+ Year Treasury Bond (TLT) ETFs from 2019 to 2025?
+  tool: econometrics
+  arguments:
+    tickers: QQQ,TLT
+    start_date: "2019-01-01"
+    end_date: "2025-12-31"
+get_nyblom_test:
+  question: Were the GARCH parameters of the daily returns of the S&P 500 and SPDR Gold Shares (GLD) stable from 2016 to 2025, according to the Nyblom test?
+  tool: econometrics
+  arguments:
+    tickers: ^GSPC,GLD
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_optimal_trading_rule:
+  question: Which profit-taking and stop-loss levels gave the highest Sharpe ratio for a long position in Pfizer and Coca-Cola, with their prices from 2021 to 2025 modelled as mean-reverting?
+  tool: econometrics
+  arguments:
+    tickers: PFE,KO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_pearson_goodness_of_fit_test:
+  question: Did a GARCH model with Student-t errors fit the distribution of the daily returns of the S&P 500 and SPDR Gold Shares (GLD) from 2016 to 2025, according to Pearson's goodness-of-fit test?
+  tool: econometrics
+  arguments:
+    tickers: ^GSPC,GLD
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    distribution: t
+get_percent_rank:
+  question: Where did Apple's and Microsoft's share prices rank within their previous 100 trading days over the last five trading days of 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rolling: 100
+    limit: -5
+get_percentile:
+  question: What was the 30-day rolling median share price of Apple and Microsoft over the last five trading days of 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rolling: 30
+    limit: -5
+get_sign_bias_test:
+  question: Did good and bad news move the volatility of the S&P 500 and SPDR Gold Shares (GLD) differently than a GARCH model allows from 2016 to 2025, according to the Engle-Ng sign bias test?
+  tool: econometrics
+  arguments:
+    tickers: ^GSPC,GLD
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+get_slope:
+  question: What was the five-day slope of Apple's and Microsoft's share prices over the last five trading days of 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    window: 5
+    limit: -5
+get_standard_error:
+  question: What was the 14-day rolling standard error of Apple's and Microsoft's share prices over the last five trading days of 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rolling: 14
+    limit: -5
+get_unit_root_test:
+  question: Did the euro, the yen and the pound against the dollar have a unit root from 2021 to 2025, according to the augmented Dickey-Fuller test?
+  tool: econometrics
+  arguments:
+    tickers: EURUSD,USDJPY,GBPUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_z_score:
+  question: How many standard deviations were Apple's and Microsoft's share prices from their 30-day average over the last five trading days of 2025?
+  tool: econometrics
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    rolling: 30
+    limit: -5

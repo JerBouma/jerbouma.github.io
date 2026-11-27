@@ -1,0 +1,1 @@
+{"charts":{"get_binary_choice_regression":{"title":"Logit Coefficient","type":"coef","x":["Benchmark"],"coef":[164.813],"low":[115.008],"high":[214.617],"p":[0.0],"format":"ratio","subtitle":"Estimate with its 95% confidence interval"}}}
