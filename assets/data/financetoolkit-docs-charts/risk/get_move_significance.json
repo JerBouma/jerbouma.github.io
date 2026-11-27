@@ -1,0 +1,1 @@
+{"charts":{"get_move_significance":{"title":"Move Significance","type":"bar","x":["NVDA","KO","Benchmark"],"series":[{"name":"Volatility Multiple","data":[-5.0682,3.891,-1.76]},{"name":"VaR Multiple","data":[-3.4613,2.3363,-1.026]}],"format":"ratio","subtitle":"The day's return as a multiple of the volatility and of the Value at Risk"}}}

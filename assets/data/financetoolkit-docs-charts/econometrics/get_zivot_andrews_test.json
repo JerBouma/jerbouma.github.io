@@ -1,0 +1,1 @@
+{"charts":{"get_zivot_andrews_test":{"title":"Zivot-Andrews Statistic","type":"bar","x":["CLUSD"],"series":[{"name":"Zivot-Andrews Statistic","data":[-4.1369]},{"name":"Critical Value 5%","data":[-4.8107]}],"format":"ratio","subtitle":"Below the 5% critical value, the unit root is rejected in favour of a break"}}}

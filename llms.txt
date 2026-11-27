@@ -24,7 +24,7 @@ The Finance Toolkit calculates 1100+ financial metrics (ratios, valuation and ri
 
 ## Finance Toolkit Documentation
 
-Every function has its own page with the formula, the parameters, a Python example and a question to ask through the MCP server, under the module's address (for example {{ site.url }}/projects/financetoolkit/docs/performance/sharpe-ratio). The modules:
+Every function has its own page with the formula, the parameters, a Python example and a question to ask through the MCP server, under the module's address (for example {{ site.url }}/projects/financetoolkit/docs/performance/sharpe-ratio). Every method page, with a one-line description, is listed in [{{ site.url }}/llms-financetoolkit-docs.txt]({{ site.url }}/llms-financetoolkit-docs.txt). The modules:
 {% for m in modules.children %}{% assign p = site.pages | where: "url", m.url | first %}{% if p %}
 - [{{ m.title }}]({{ site.url }}{{ p.url }}): {{ p.description | strip_newlines }}{% endif %}{% endfor %}
 
