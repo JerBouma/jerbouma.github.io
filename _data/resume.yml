@@ -245,7 +245,7 @@ entries:
       - { icon: "fa-star", value: "5,300+", label: "GitHub stars" }
       - { icon: "fa-download", value: "640,000+", label: "downloads" }
       - { icon: "fa-code-fork", value: "600+", label: "forks" }
-    description: "An open-source toolkit with 700+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers, researchers and students."
+    description: "An open-source toolkit with 1100+ financial methods, each written to be as transparent as possible. It supports Equities, Options, Currencies, Cryptocurrencies, ETFs, Mutual Funds, Indices, Commodities, Key Economic Indicators and more. Combined with the Finance Database, it lets you do a full competitive analysis. It is used by thousands of analysts, developers, researchers and students."
     expertise: ["Portfolio Optimization", "Econometrics & Time Series", "Factor Models", "Agentic Frameworks"]
     skills: ["Python", "MCP", "Docker", "GitHub", "Git"]
     logo: "/assets/images/projects/FinanceToolkit.webp"

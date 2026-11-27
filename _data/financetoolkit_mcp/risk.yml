@@ -97,28 +97,6 @@ get_garch_parameters:
     tickers: LOW,SBUX,TSLA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-get_gjr_garch:
-  question: What was the GJR-GARCH conditional variance of Nvidia and the S&P 500 in 2025, fitted on their returns in 2025?
-  tool: risk
-  arguments:
-    tickers: NVDA
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    limit: -249
-get_gjr_garch_forecast:
-  question: What variance does a GJR-GARCH model of crude oil, fitted on its returns from 2021 to 2025, forecast for the first ten trading days of 2026?
-  tool: risk
-  arguments:
-    tickers: CLUSD
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
-get_gjr_garch_parameters:
-  question: How strongly did negative returns raise the volatility of the S&P 500 and the Euro Stoxx 50 from 2021 to 2025, according to the parameters of a GJR-GARCH model?
-  tool: risk
-  arguments:
-    tickers: ^GSPC,^STOXX50E
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_copula_parameters:
   question: What correlation, degrees of freedom and tail dependence does a Student-t copula fitted to the returns of gold and silver from 2021 to 2025 imply?
   tool: risk
@@ -138,7 +116,7 @@ get_copula_simulation:
     end_date: "2025-12-31"
     ticker_a: HD
     ticker_b: LOW
-    n_simulations: 30
+    simulations: 30
     limit: 5
 get_best_fitting_copula:
   question: Which copula best describes the dependence between the returns of Visa and Mastercard from 2021 to 2025, and what are each copula's tail dependence, log-likelihood and AIC?
@@ -335,14 +313,6 @@ get_drawdown_table:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     top: 3
-get_move_significance:
-  question: How unusual were the moves of Nvidia and Coca-Cola on 27 January 2025, compared with their history since 2015?
-  tool: risk
-  arguments:
-    tickers: "NVDA,KO"
-    start_date: "2015-01-01"
-    end_date: "2025-01-27"
-    limit: -1
 get_factor_analysis:
   question: How well did volatility, maximum drawdown and the other risk metrics predict the 1- and 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
   tool: risk
@@ -375,27 +345,6 @@ get_srisk:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     quarterly: true
-get_corwin_schultz_spread:
-  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily highs and lows with the Corwin-Schultz method?
-  tool: risk
-  arguments:
-    tickers: SNAP,ETSY,LYFT
-    start_date: "2025-01-01"
-    end_date: "2025-06-30"
-get_abdi_ranaldo_spread:
-  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily closes, highs and lows with the Abdi-Ranaldo method?
-  tool: risk
-  arguments:
-    tickers: SNAP,ETSY,LYFT
-    start_date: "2025-01-01"
-    end_date: "2025-06-30"
-get_edge_spread:
-  question: What was the bid-ask spread of Snap, Etsy and Lyft in each month of the first half of 2025, estimated from daily open, high, low and close prices with the EDGE method?
-  tool: risk
-  arguments:
-    tickers: SNAP,ETSY,LYFT
-    start_date: "2025-01-01"
-    end_date: "2025-06-30"
 get_share_turnover:
   question: What share of their outstanding shares did Snap, Etsy and Lyft trade in each month of the first half of 2025?
   tool: risk
@@ -410,3 +359,247 @@ get_idiosyncratic_volatility:
     tickers: AAPL,TSLA,KO
     start_date: "2025-01-01"
     end_date: "2025-06-30"
+get_average_drawdown:
+  question: How deep was the average drawdown of Tesla, General Motors, Ford and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: TSLA,GM,F
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_central_moment:
+  question: What was the fourth central moment of the daily returns of ExxonMobil, Chevron, ConocoPhillips and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: XOM,CVX,COP
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+    order: 4
+get_conditional_expected_drawdown:
+  question: What was the conditional expected drawdown, the average of the worst 5% of one-month maximum drawdowns, of the Euro Stoxx 50, the Nikkei 225 and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: ^STOXX50E,^N225,^GSPC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_drawdown_at_risk:
+  question: What was the 95% drawdown at risk of the Euro Stoxx 50, the Nikkei 225 and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: ^STOXX50E,^N225,^GSPC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_entropic_drawdown_at_risk:
+  question: What was the 95% entropic drawdown at risk of the Euro Stoxx 50, the Nikkei 225 and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: ^STOXX50E,^N225,^GSPC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_entropic_risk_measure:
+  question: What was the entropic risk measure, at a risk aversion of 0.01, of the SPDR Gold Shares (GLD), iShares Silver Trust (SLV), United States Oil Fund (USO) and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: GLD,SLV,USO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+    risk_aversion: 0.01
+get_expected_quadratic_shortfall:
+  question: What was the expected quadratic shortfall, the average squared loss on the worst 5% of days, of the SPDR Gold Shares (GLD), iShares Silver Trust (SLV), United States Oil Fund (USO) and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: GLD,SLV,USO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_gini_mean_difference:
+  question: How far apart did two daily returns of McDonald's, Starbucks, Chipotle and the S&P 500 lie on average in each year from 2021 to 2025, measured by the Gini mean difference?
+  tool: risk
+  arguments:
+    tickers: MCD,SBUX,CMG
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_l_moment:
+  question: What was the L-skewness of the daily returns of Pfizer, Merck, Johnson & Johnson and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: PFE,MRK,JNJ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+    order: 3
+    ratio: true
+get_l_moment_risk_measure:
+  question: What was the L-moment risk measure of the daily returns of Visa, Mastercard, PayPal and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: V,MA,PYPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_partial_moment:
+  question: How far, on average, did the daily returns of JPMorgan Chase, Goldman Sachs, Morgan Stanley and the S&P 500 fall below zero in each year from 2021 to 2025, measured by the first lower partial moment?
+  tool: risk
+  arguments:
+    tickers: JPM,GS,MS
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_risk_range:
+  question: How far apart were the 5% conditional Value at Risk of the gains and of the losses of Amazon, Walmart, Costco and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: AMZN,WMT,COST
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+    measure: cvar
+get_skewness_kurtosis_ratio:
+  question: What was the skewness-kurtosis ratio of the daily returns of Meta, Alphabet, Microsoft and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: META,GOOGL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_tail_gini:
+  question: What was the tail Gini of the worst 5% of daily returns of Tesla, Ford, General Motors and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: TSLA,F,GM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_upside_deviation:
+  question: How widely did the daily returns of NextEra Energy, Duke Energy, Southern Company and the S&P 500 rise above zero in each year from 2021 to 2025, measured by the upside deviation?
+  tool: risk
+  arguments:
+    tickers: NEE,DUK,SO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_volatility_skewness:
+  question: Did the daily returns of the Invesco QQQ, iShares Russell 2000 (IWM) and SPDR S&P 500 (SPY) ETFs spread out more on the gain side than on the loss side in each year from 2021 to 2025, measured by the volatility skewness?
+  tool: risk
+  arguments:
+    tickers: QQQ,IWM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_worst_realization:
+  question: What was the worst daily return of Nvidia, AMD, Intel and the S&P 500 in each year from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: NVDA,AMD,INTC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    period: yearly
+    within_period: true
+get_bekker_parkinson_volatility:
+  question: What was the Bekker-Parkinson volatility of Snap, Etsy, Lyft and the S&P 500 in each month of the first half of 2025?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+    period: monthly
+get_bid_ask_spread:
+  question: What bid-ask spread do the daily prices of Snap, Etsy, Lyft and the S&P 500 imply for each month of the first half of 2025?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+    period: monthly
+get_price_impact:
+  question: How much did trading move the prices of Snap, Etsy, Lyft and the S&P 500 in each month of the first half of 2025, measured by Kyle's lambda?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2025-01-01"
+    end_date: "2025-06-30"
+    period: monthly
+get_vpin:
+  question: How likely was informed trading in Snap, Etsy, Lyft and the S&P 500 over the last five trading days of June 2025, measured by the VPIN on a year of daily bars?
+  tool: risk
+  arguments:
+    tickers: SNAP,ETSY,LYFT
+    start_date: "2024-07-01"
+    end_date: "2025-06-30"
+    limit: -5
+get_correlation_dimension:
+  question: What was the correlation dimension of the daily returns of the euro against the dollar, gold, Bitcoin and the S&P 500 from 2021 to 2025, with an embedding dimension of 4?
+  tool: risk
+  arguments:
+    tickers: EURUSD,GCUSD,BTCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    embedding: 4
+get_fractal_dimension:
+  question: How rough were the price paths of the euro against the dollar, gold, Bitcoin and the S&P 500 from 2021 to 2025, measured by their Higuchi fractal dimension?
+  tool: risk
+  arguments:
+    tickers: EURUSD,GCUSD,BTCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_lyapunov_exponent:
+  question: How quickly did nearby paths of the daily returns of the euro against the dollar, gold, Bitcoin and the S&P 500 drift apart from 2021 to 2025, measured by the Lyapunov exponent?
+  tool: risk
+  arguments:
+    tickers: EURUSD,GCUSD,BTCUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_higher_moment_coherent_risk:
+  question: What was the 95% higher moment coherent risk (the coherent second moment) of the daily returns of the SPDR Gold Shares (GLD), iShares Silver Trust (SLV), United States Oil Fund (USO) and the S&P 500 from 2021 to 2025?
+  tool: risk
+  arguments:
+    tickers: GLD,SLV,USO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_drawdown_statistics:
+  question: How many drawdowns did Meta, Netflix and the S&P 500 have from 2021 to 2025, how deep were they on average and how long did they take to recover?
+  tool: risk
+  arguments:
+    tickers: META,NFLX
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_garch_simulation:
+  question: What range of cumulative returns over the next ten trading days does a GARCH model with Student-t errors, fitted to Apple's daily returns from 2016 to 2025, simulate?
+  tool: risk
+  arguments:
+    tickers: AAPL
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    output: cumulative_returns
+    distribution: t
+    show_columns: AAPL
+get_news_impact_curve:
+  question: How much does a positive or negative shock to the daily returns of Apple, Microsoft and the S&P 500 move the next day's variance, according to the news impact curve of a GJR-GARCH model fitted from 2016 to 2025?
+  tool: risk
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    method: gjr

@@ -95,7 +95,7 @@ Underneath the binomial model is the tree of stock prices itself. Each step mult
 The function returns every path through the tree, one row per sequence of up and down moves, so ten steps give 1,024 paths (2 to the power of 10) per company. To simulate the stock prices in ten steps, and count how many of Apple's paths end at each price:
 
 ```python
-stock_price_simulations = companies.options.get_stock_price_simulation(timesteps=10)
+stock_price_simulations = companies.options.get_stock_price_simulation(time_steps=10)
 
 stock_price_simulations.loc["AAPL"].iloc[:, -1].round(2).value_counts().sort_index()
 ```

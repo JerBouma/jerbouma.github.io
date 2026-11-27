@@ -291,13 +291,6 @@ get_binary_option:
   title: Binary Call Price
   subtitle: By strike, a line per expiration
 
-get_bjerksund_stensland:
-  chart: line
-  format: price
-  xname: Strike price
-  title: Bjerksund-Stensland Call Price
-  subtitle: By strike, a line per expiration
-
 get_monte_carlo_option_price:
   chart: line
   format: price
@@ -318,7 +311,6 @@ get_asian_option:
   xname: Strike price
   title: Asian Call Price
   subtitle: By strike, a line per expiration
-
 
 get_put_call_ratio:
   chart: bar
@@ -462,3 +454,110 @@ get_risk_neutral_density:
   xname: Strike price
   title: Risk-Neutral Density
   subtitle: Probability density of the price at expiration implied by option prices
+
+get_american_option:
+  chart: line
+  format: price
+  xname: Strike price
+  title: American Put Price
+  subtitle: By strike, a line per expiration
+
+get_black_76_model:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Black-76 Call Price
+  subtitle: By strike, a line per expiration
+
+get_cev_model:
+  chart: line
+  format: price
+  xname: Strike price
+  title: CEV Put Price
+  subtitle: By strike, a line per expiration; elasticity of 0.5
+
+get_chooser_option:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Chooser Option Price
+  subtitle: By strike, a line per expiration
+
+get_delta_hedging_backtest:
+  chart: tabs
+  title: Delta Hedging Backtest
+  tabs:
+  - label: Profit and Loss
+    chart: bar
+    columns: [Option Value, Payoff, Transaction Costs, Profit and Loss]
+    format: price
+    subtitle: Per option sold and delta hedged to expiration
+  - label: Volatility
+    chart: bar
+    columns: [Volatility, Realized Volatility]
+    format: percent
+    subtitle: The volatility the option was sold at against the one the stock realized
+
+get_delta_hedging_simulation:
+  chart: bar
+  columns: [Mean Profit and Loss, Standard Deviation, Approximate Standard Deviation]
+  format: price
+  title: Delta Hedging Error
+  subtitle: Across simulated paths, per option sold and hedged every five trading days
+
+get_exchange_option:
+  chart: bar
+  transpose: true
+  format: price
+  title: Exchange Option Price
+  subtitle: The right to receive the ticker for the benchmark, by expiration
+
+get_forward_start_option:
+  chart: bar
+  transpose: true
+  format: price
+  title: Forward-Start Call Price
+  subtitle: By expiration
+
+get_heston_nandi_model:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Heston-Nandi Put Price
+  subtitle: By strike, a line per expiration
+
+get_heston_parameters:
+  chart: none
+  reason: A set of calibrated model parameters per ticker, read from the table
+
+get_local_volatility_surface:
+  chart: line
+  format: percent
+  xname: Strike price
+  title: Local Volatility Surface
+  subtitle: Local volatility by strike, a line per expiration
+
+get_lookback_option:
+  chart: line
+  format: price
+  xname: Strike price
+  title: Lookback Call Price
+  subtitle: By strike, a line per expiration
+
+get_spread_option:
+  chart: line
+  format: price
+  xname: Spread strike
+  title: Spread Call Price
+  subtitle: By strike on the spread over the benchmark, a line per expiration
+
+get_touch_option:
+  chart: line
+  transpose: true
+  format: decimal
+  title: Double No-Touch Price
+  subtitle: Pays 1 if the price stays within 10% of today's, by expiration
+
+get_variance_swap:
+  chart: none
+  reason: Fair variance and volatility per ticker and expiration, read from the table

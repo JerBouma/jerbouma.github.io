@@ -354,13 +354,6 @@ get_return_on_capital_employed:
   format: percent
   title: Return on Capital Employed
 
-get_net_income_per_ebt:
-  chart: line
-  transpose: true
-  format: percent
-  title: Net Income per EBT
-  subtitle: The share of pre-tax income kept after tax
-
 get_free_cash_flow_operating_cash_flow_ratio:
   chart: line
   transpose: true
@@ -382,19 +375,6 @@ get_tax_burden_ratio:
   format: percent
   title: Tax Burden
   subtitle: Net income as a share of pre-tax income
-
-get_EBT_to_EBIT:
-  chart: line
-  transpose: true
-  format: percent
-  title: EBT to EBIT
-  subtitle: Pre-tax income as a share of EBIT
-
-get_EBIT_to_revenue:
-  chart: line
-  transpose: true
-  format: percent
-  title: EBIT to Revenue
 
 get_cash_tax_rate:
   chart: line
@@ -810,15 +790,6 @@ get_dividend_payout_ratio:
   title: Dividend Payout Ratio
   subtitle: Dividends as a share of net income
 
-get_reinvestment_rate:
-  chart: bar
-  transpose: true
-  format: percent
-  title: Reinvestment Rate
-  subtitle: The share of net income kept after dividends
-  levels:
-  - 0
-
 get_tangible_asset_value:
   chart: bar
   transpose: true
@@ -938,7 +909,7 @@ get_factor_analysis:
     SE: f['Mean IC'] / f['t-Statistic']
   coef: Mean IC
   se: SE
-  p: p-Value
+  p: P-Value
   format: ratio
   title: Information Coefficient
   subtitle: Mean rank correlation of each ratio with the next 12 months' return, with its 95% interval
@@ -1155,3 +1126,105 @@ collect_all_ratios:
     transpose: true
     columns: *id005
     format: multiple
+
+get_capex_to_operating_cash_flow_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Capex to Operating Cash Flow
+  subtitle: Capital expenditure per unit of operating cash flow; above 1 it spends more than it generates
+  levels: [1]
+
+get_cash_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Cash per Share
+
+get_continuing_operations_profit_margin:
+  chart: line
+  transpose: true
+  format: percent
+  title: Continuing Operations Profit Margin
+  subtitle: Net income from continuing operations as a share of revenue
+
+get_debt_to_market_cap_ratio:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Debt to Market Cap
+  subtitle: Total debt per unit of market capitalisation
+
+get_free_cash_flow_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Free Cash Flow per Share
+
+get_intangibles_to_total_assets_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Intangibles to Total Assets
+  subtitle: Goodwill and intangible assets as a share of total assets
+
+get_long_term_debt_to_capitalization_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Long-Term Debt to Capitalization
+  subtitle: Long-term debt as a share of long-term debt plus equity
+
+get_net_income_per_employee:
+  chart: bar
+  transpose: true
+  format: compact
+  title: Net Income per Employee
+
+get_net_net_working_capital_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Net-Net Working Capital per Share
+  subtitle: Cash, 75% of receivables and 50% of inventory, minus total liabilities, per share
+  levels: [0]
+
+get_operating_cash_flow_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Operating Cash Flow per Share
+
+get_operating_return_on_assets:
+  chart: line
+  transpose: true
+  format: percent
+  title: Operating Return on Assets
+  subtitle: Operating income as a share of average total assets
+
+get_retention_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Retention Ratio
+  subtitle: Share of net income kept in the business rather than paid as dividends
+  levels: [0]
+
+get_revenue_per_employee:
+  chart: bar
+  transpose: true
+  format: compact
+  title: Revenue per Employee
+
+get_solvency_ratio:
+  chart: line
+  transpose: true
+  format: percent
+  title: Solvency Ratio
+  subtitle: Net income plus depreciation and amortisation as a share of total liabilities
+
+get_tangible_book_value_per_share:
+  chart: bar
+  transpose: true
+  format: price
+  title: Tangible Book Value per Share

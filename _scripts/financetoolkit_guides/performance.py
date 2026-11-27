@@ -31,7 +31,7 @@ def build() -> dict:
     companies = Toolkit(TICKERS, api_key=API_KEY, start_date="2005-01-01")
     charts = {}
 
-    alpha = companies.performance.get_jensens_alpha(period="quarterly")
+    alpha = companies.performance.get_alpha(method="jensen", period="quarterly")
     capm = companies.performance.get_capital_asset_pricing_model(period="yearly")
     yearly_returns = companies.get_historical_data(period="yearly")["Return"]
     LAST.update(alpha=alpha, capm=capm, yearly_returns=yearly_returns)

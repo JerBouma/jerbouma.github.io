@@ -1,0 +1,1 @@
+{"charts":{"get_tangible_book_value_per_share":{"title":"Tangible Book Value per Share","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"BAC","data":[20.6039,21.5216,24.0366,25.929,27.5915]},{"name":"JPM","data":[66.9391,68.7101,80.2192,90.3605,99.9227]},{"name":"WFC","data":[32.7057,32.6104,35.6424,36.788,41.4046]}],"format":"price"}}}

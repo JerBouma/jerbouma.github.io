@@ -1,0 +1,1 @@
+{"charts":{"get_swap_rate":{"title":"Swap Rate Curve","type":"line","x":["1","2","5","10","30"],"series":[{"name":"Swap Rate","data":[0.0314,0.0327,0.0329,0.0334,0.0332]}],"format":"percent","xname":"Years to maturity"}}}

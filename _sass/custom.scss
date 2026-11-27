@@ -7278,6 +7278,62 @@ body.article-document {
   }
 }
 
+// Finance Toolkit module pages: every method with a page of its own, by topic
+.page__content .docs-overview {
+  columns: 2;
+  column-gap: 40px;
+  margin: 0 0 2em;
+
+  @media (max-width: 900px) { columns: 1; }
+
+  .docs-overview__group {
+    break-inside: avoid;
+    padding-top: 0.2em;
+
+    h3 {
+      margin: 0.9em 0 0.5em !important;
+      font-size: 1.05rem !important;
+    }
+    ul { margin: 0 !important; padding: 0 !important; list-style: none; }
+    li {
+      margin: 0 0 10px !important;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    a { font-weight: 600; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+  }
+}
+
+// A method's References: papers and the libraries it is referenced against,
+// each with its kind in a narrow column on the left
+.page__content ul.docs-refs {
+  list-style: none;
+  padding: 0;
+  margin-left: 0 !important;
+
+  li {
+    position: relative;
+    padding: 12px 0 12px 92px;
+    margin: 0 !important;
+    border-bottom: 1px solid rgba(127, 127, 127, 0.2);
+  }
+}
+
+.docs-refs__kind {
+  position: absolute;
+  left: 0;
+  top: 15px;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.65;
+}
 // Tabs on the Finance Toolkit method pages: Chart and Table for the example's
 // result, Python and the MCP question for how to get it (assets/js/docs-tabs.js)
 .page__content .docs-tabs {

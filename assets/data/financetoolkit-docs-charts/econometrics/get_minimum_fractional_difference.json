@@ -1,0 +1,1 @@
+{"charts":{"get_minimum_fractional_difference":{"title":"Minimum Fractional Difference","type":"bar","x":["AAPL","MSFT"],"series":[{"name":"Minimum d","data":[0.53,0.56]}],"format":"ratio","subtitle":"The smallest d at which the differenced price passes the ADF test at 5%"}}}

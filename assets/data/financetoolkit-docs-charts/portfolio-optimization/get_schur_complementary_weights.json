@@ -1,0 +1,1 @@
+{"charts":{"get_schur_complementary_weights":{"title":"Schur Complementary Allocation Weights","type":"hbar","x":["JNJ","XOM","MSFT","AAPL"],"series":[{"name":"Weight","data":[0.5232,0.2175,0.1448,0.1146]}],"format":"percent"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_forward_rate_agreement":{"title":"Forward Rate Agreement Rates","type":"bar","x":["1x4","3x6","6x9","6x12","9x12","12x18","12x24"],"series":[{"name":"FRA Rate","data":[0.0429,0.0433,0.0449,0.0458,0.0461,0.0463,0.0475]}],"format":"percent"}}}

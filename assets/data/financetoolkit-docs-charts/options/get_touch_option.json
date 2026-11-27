@@ -1,0 +1,1 @@
+{"charts":{"get_touch_option":{"title":"Double No-Touch Price","type":"line","x":["2026-01-07","2026-01-30","2026-03-01","2026-03-31"],"series":[{"name":"TSLA","data":[0.4951,0.0223,0.0004,0.0]},{"name":"KO","data":[0.9991,0.903,0.6773,0.4963]}],"format":"decimal","subtitle":"Pays 1 if the price stays within 10% of today's, by expiration"}}}

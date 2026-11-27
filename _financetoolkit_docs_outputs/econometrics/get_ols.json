@@ -1,1 +1,1 @@
-{"index":"","columns":["Coefficient","Std. Error","t-Statistic","P-Value"],"rows":[["Intercept",0.0005,0.0004,1.5073,0.132],["USO",0.4877,0.0172,28.4182,0.0],["Benchmark",0.3659,0.0333,10.9953,0.0]],"total":3}
+{"index":"","columns":["Coefficient","Standard Error","t-Statistic","P-Value"],"rows":[["Intercept",0.0005,0.0004,1.5074,0.132],["USO",0.4877,0.0172,28.4182,0.0],["Benchmark",0.3659,0.0333,10.9953,0.0]],"total":3}

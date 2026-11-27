@@ -1,0 +1,1 @@
+{"charts":{"get_bubble_episodes":{"title":"Duration of Bubble Episodes","type":"bar","x":["NVDA \u00b7 1","NVDA \u00b7 2","NVDA \u00b7 3","NVDA \u00b7 4"],"series":[{"name":"Duration","data":[6.0,10.0,11.0,52.0]}],"format":"amount","subtitle":"Weeks each explosive episode lasted","yname":"Weeks"}}}

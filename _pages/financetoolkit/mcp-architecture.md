@@ -2,7 +2,7 @@
 permalink: /projects/financetoolkit/mcp/architecture
 title: Finance Toolkit MCP Architecture
 seo_title: Finance Toolkit MCP Server Architecture
-excerpt: "How the Finance Toolkit MCP server is built: the router pattern that packs 700+ methods into 25 categorical tools, the startup sequence, dispatch categories, OAuth 2.1 with PKCE and API key handling."
+excerpt: "How the Finance Toolkit MCP server is built: the router pattern that packs 1100+ methods into 25 categorical tools, the startup sequence, dispatch categories, OAuth 2.1 with PKCE and API key handling."
 description: "How the open-source Finance Toolkit MCP server works: the router pattern behind its 25 categorical tools, startup sequence, OAuth 2.1 and API key handling."
 classes: wide-sidebar
 author_profile: false
@@ -17,7 +17,7 @@ image: /assets/images/projects/FinanceToolkitMCP.jpg
 
 <div class="page-header-action notebook-viewer-actions"><a href="https://github.com/JerBouma/FinanceToolkit/tree/main/financetoolkit/mcp_server" target="_blank" rel="noopener"><i class="fab fa-github"></i> View on GitHub</a></div>
 
-The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 700+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 25 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
+The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structured around a **router pattern**: rather than exposing every one of the 1100+ Finance Toolkit methods as a separate MCP tool (which would overwhelm an LLM's tool list), the server groups them into 25 categorical master tools. Each master tool accepts an `indicator` parameter that selects the exact metric at call time.
 
 **For developers.** If you just want to use the Finance Toolkit through your assistant, the [Finance Toolkit MCP Server](/projects/financetoolkit/mcp) page covers installation, example prompts and the available tools. Everything below is implementation detail for those who want to extend or contribute to the server.
 {: .notice--info}
@@ -33,11 +33,12 @@ The MCP server lives entirely inside `financetoolkit/mcp_server/` and is structu
 | `inspection/inspection_controller.py` | Static introspection of controller classes: method discovery and signature building |
 | `registry/provider_model.py` | Routes tool calls to the correct Finance Toolkit module; manages Toolkit instance caching |
 | `registry/tools_model.py` | Registers the three built-in search tools (categories, metrics per category, metric search) |
-| `registry/formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to compact JSON, applies `limit` and `show_columns`, and cuts oversized answers to their most recent rows |
+| `registry/formatting_model.py` | Converts any Finance Toolkit result (DataFrame, Series, dict, scalar) to a compact table of `columns` and `rows`, applies `limit` and `show_columns`, and cuts oversized answers to their most recent rows |
 | `registry/coercion_model.py` | Best-effort type coercion for string values arriving from LLMs |
+| `registry/diagnostics_model.py` | Collects the warnings and errors logged while a tool call runs, so an answer without data can say why, such as a missing API key or an unreachable source |
 | `registry/series_model.py` | Resolves the indicator references the econometrics tool takes as input series |
 | `setup/setup_model.py` | Interactive and CLI setup wizard: writes client configs |
-| `analytics/` | Optional usage counter and its `/stats` page for a hosted server, off unless `FT_MCP_ANALYTICS=1` |
+| `analytics/` | Optional usage counter and its `/stats` page for a hosted server, with the totals per outcome (data, cut to size, empty, invalid or error) per tool and indicator, without arguments or other user input; off unless `FT_MCP_ANALYTICS=1` |
 
 The data itself is cached by the Finance Toolkit's own SQLite cache (`financetoolkit/cache/`), the same one the Python package uses.
 
@@ -51,7 +52,7 @@ When the server process starts (`uvx … financetoolkit-mcp`), `mcp_controller._
 3. **Instantiate subsystems**: a `ToolkitProvider` (with its `SQLiteCache`), a `ControllerInspector`, a `ToolRegistry`, and a `UtilityToolRegistry` are all constructed and wired together.
 4. **Register tools**: `ToolRegistry.register_all_tools()` registers the router groups, then `UtilityToolRegistry.register_all_tools()` registers the utility tools.
 5. **Register OAuth routes**: `register_auth_routes(mcp)` attaches the OAuth 2.1 endpoints and the `/health` route to the FastMCP instance.
-6. **Start transport**: the `MCP_TRANSPORT` environment variable selects the runtime mode. `stdio` (the default) is used for local clients; `sse` and `streamable-http` are used for hosted deployments. For HTTP transports, `MCPAuthMiddleware` and `CORSMiddleware` are layered onto the Starlette app before Uvicorn starts. The server listens on `MCP_HOST`, which defaults to `127.0.0.1` (this computer only), and behind a reverse proxy `FORWARDED_ALLOW_IPS` names the proxies whose forwarded headers it trusts. A hosted server also answers a call with a timeout after 180 seconds and lets each user (an API key) run at most three calls at a time.
+6. **Start transport**: the `MCP_TRANSPORT` environment variable selects the runtime mode. `stdio` (the default) is used for local clients; `sse` and `streamable-http` are used for hosted deployments. For HTTP transports, `MCPAuthMiddleware` and `CORSMiddleware` are layered onto the Starlette app before Uvicorn starts. The server listens on `MCP_HOST`, which defaults to `127.0.0.1` (this computer only), and behind a reverse proxy `FORWARDED_ALLOW_IPS` names the proxies whose forwarded headers it trusts. A hosted server also answers a call with a timeout after 180 seconds and lets each user (an API key) run at most three calls at a time. The HTTP transports keep no session: every request stands on its own, and an address pasted with a trailing space or dot still reaches `/mcp`.
 
 ## The Router Pattern
 {: .heading-as-h3}
@@ -64,11 +65,11 @@ For each group, `ControllerInspector` either:
 
 This produces an ordered list of indicator names. `_build_router_wrapper()` then constructs a single `wrapper(**kwargs)` closure that:
 
-1. Reads the `indicator` argument and matches it to the method list (with fuzzy-match suggestions on typos).
+1. Reads the `indicator` argument, one name or a list of up to five, and matches it to the method list. An indicator of another tool is answered by that tool, a misspelling is read as the known name, and an unknown name gets suggestions from every tool.
 2. Coerces all typed parameters from strings via `coercion_model.coerce_value()`.
 3. Validates required inputs (`tickers` for equity tools, date formats).
 4. Delegates to `ToolkitProvider.call_method()`.
-5. Passes the result through `formatting_model.format_result()` and returns compact JSON, with `_notes` on anything left out, ignored, assumed or converted and `_sources` naming the publishers the data comes from.
+5. Passes the result through `formatting_model.format_result()` and returns a compact table of `columns` and `rows`, with `_notes` on anything left out, ignored, assumed or converted and `_sources` naming the publishers the data comes from.
 
 The wrapper's `__signature__` is replaced with a proper `inspect.Signature` so that FastMCP can introspect it and generate accurate JSON Schema for the LLM. Each parameter's description comes from the docstrings of the methods behind the tool, so the assistant reads the same explanation as the documentation. With `FT_MCP_COMPACT_TOOLS=1` a tool's description is cut to its first sentence and its parameters lose their descriptions, so a client that loads every tool on each run reads a few hundred characters per tool instead of tens of thousands; `search_metrics` with an indicator's name still gives what it calculates and its parameters.
 
@@ -133,7 +134,7 @@ The access and refresh tokens are encrypted with Fernet (AES-128-CBC with an HMA
 | 1 | `x-fmp-api-key` / `x-financial-modeling-prep-api-key` header | Direct header injection (advanced clients) |
 | 2 | `Authorization: Bearer <token>` header | Standard OAuth access token (holds the FMP key, encrypted) |
 | 3 | `fmp_api_key` / `api_key` / `fmp_key` query parameter | Query-string access (fallback) |
-| 4 | `FINANCIAL_MODELING_PREP_API_KEY` env var | Local stdio transport or server-wide default |
+| 4 | `FINANCIAL_MODELING_PREP_API_KEY` env var | Local stdio transport, or the server's own key for HTTP callers when `FT_MCP_ALLOW_ANONYMOUS=1` is set as well |
 
 When an access token is found in any of these positions, it is decrypted and its expiry checked before the key is read. An expired or invalid token is answered with a 401 so the client signs in again, and is never passed on as a key. Any other string is accepted as a bare API key. The env-var path is checked last so that a per-request key from an OAuth flow always takes precedence.
 
@@ -156,7 +157,7 @@ The optional FRED key follows the same pattern through `resolve_fred_api_key()`:
 
 - `search_metric_categories`: lists all registered categories and the number of tools in each.
 - `search_by_category`: lists every indicator within a given category.
-- `search_metrics`: ranks individual indicators, not tools, and returns the tool together with the indicator name. It understands analyst wording ("how expensive is the stock", "bankruptcy risk", "option greeks"), abbreviations such as P/E and VaR, and typos.
+- `search_metrics`: ranks individual indicators, not tools, and returns each hit as a ready call line with its tool. The exact name of an indicator returns its full description and parameters instead. It understands analyst wording ("how expensive is the stock", "bankruptcy risk", "option greeks"), abbreviations such as P/E and VaR, and typos.
 
 Looking up a ticker by name or ISIN is not part of this server: the [Finance Database MCP server](/projects/financedatabase/mcp) does that. When a client connects, the server sends instructions that point the assistant to `search_metrics` first.
 

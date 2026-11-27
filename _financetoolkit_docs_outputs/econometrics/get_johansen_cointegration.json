@@ -1,1 +1,1 @@
-{"index":"","columns":["Eigenvalue","Trace Statistic","Trace Critical Value 95%","Reject (Trace, 5%)"],"rows":[["r <= 0",0.0107,13.8983,15.4943,0.0],["r <= 1",0.0003,0.3614,3.8415,0.0]],"total":2}
+{"index":"","columns":["Eigenvalue","Trace Statistic","Trace Critical Value 5%","Reject (Trace, 5%)"],"rows":[["r <= 0",0.0107,13.8983,15.4943,0.0],["r <= 1",0.0003,0.3614,3.8415,0.0]],"total":2}

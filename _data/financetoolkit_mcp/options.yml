@@ -45,7 +45,7 @@ get_binomial_model:
     strike_price_range: 0
     strike_step_size: 1
     time_to_expiration: 1
-    timesteps: 5
+    time_steps: 5
 get_stock_price_simulation:
   question: Which share prices can AMD reach in a one-year binomial tree with five steps from the close of 31 December 2025, for each unique combination of up and down moves?
   tool: options
@@ -54,7 +54,7 @@ get_stock_price_simulation:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     time_to_expiration: 1
-    timesteps: 5
+    time_steps: 5
     show_unique_combinations: true
 get_put_call_parity:
   question: Did Black-Scholes call and put prices on Johnson & Johnson satisfy put-call parity at the end of 2025 for the expiries of 7, 14 and 28 January 2026, for strikes within 10% of the share price in $5 steps?
@@ -88,16 +88,6 @@ get_binary_option:
     cash_payout: 1.0
     strike_price_range: 0.1
     strike_step_size: 5
-    expiration_time_range: 91
-get_bjerksund_stensland:
-  question: What were American calls on Verizon worth under the Bjerksund-Stensland model at the end of 2025 for the expiries of 30 January, 1 March and 31 March 2026, for strikes within 15% of the share price in $1 steps?
-  tool: options
-  arguments:
-    tickers: VZ
-    start_date: "2025-01-01"
-    end_date: "2025-12-31"
-    strike_price_range: 0.15
-    strike_step_size: 1
     expiration_time_range: 91
 get_monte_carlo_option_price:
   question: What were calls on Costco worth at the end of 2025 in a Monte Carlo simulation of 10,000 price paths, for the expiries of 7, 14 and 30 January 2026 and strikes within 10% of the share price in $10 steps?
@@ -384,3 +374,123 @@ get_skew_index:
   arguments:
     tickers: ^SPX,AAPL
     show_columns: Near-Term Expiration,Next-Term Expiration,Skewness,SKEW Index
+get_american_option:
+  question: What was an American put on Verizon worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 15% of the share price in $1 steps?
+  tool: options
+  arguments:
+    tickers: VZ
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    put_option: true
+    strike_price_range: 0.15
+    strike_step_size: 1
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_black_76_model:
+  question: What were call options on gold worth under the Black (1976) model at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 10% of the price in $100 steps?
+  tool: options
+  arguments:
+    tickers: GCUSD
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.1
+    strike_step_size: 100
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_cev_model:
+  question: What was a put on Apple worth in the constant elasticity of variance model with an elasticity of 0.5 at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 15% of the share price in $10 steps?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    put_option: true
+    beta: 0.5
+    strike_price_range: 0.15
+    strike_step_size: 10
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_chooser_option:
+  question: What was a chooser option on Nvidia, which lets you pick a call or a put later, worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 10% of the share price in $5 steps?
+  tool: options
+  arguments:
+    tickers: NVDA
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.1
+    strike_step_size: 5
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_delta_hedging_simulation:
+  question: How much can a seller of an option on Apple and Microsoft gain or lose when delta hedging it every five trading days from the end of 2025, with a cost of 0.05% per trade?
+  tool: options
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    rebalancing_days: 5
+    transaction_cost: 0.0005
+    show_columns: Option Value,Mean Profit and Loss,Standard Deviation,Approximate Standard Deviation
+get_exchange_option:
+  question: What was the option to swap the S&P 500 (SPY) for Apple or for Microsoft at expiry worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026?
+  tool: options
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_forward_start_option:
+  question: What were forward-start options on Nvidia, Apple and Microsoft worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026?
+  tool: options
+  arguments:
+    tickers: NVDA,AAPL,MSFT
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_heston_nandi_model:
+  question: What was a put on Apple worth in the Heston-Nandi GARCH model fitted on ten years of returns, at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 15% of the share price in $10 steps?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2016-01-01"
+    end_date: "2025-12-31"
+    put_option: true
+    strike_price_range: 0.15
+    strike_step_size: 10
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_lookback_option:
+  question: What was a fixed-strike lookback call on Nvidia worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and strikes within 10% of the share price in $5 steps?
+  tool: options
+  arguments:
+    tickers: NVDA
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.1
+    strike_step_size: 5
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_spread_option:
+  question: What was a call on how much Apple outperforms the S&P 500 (SPY) worth at the end of 2025, for the expiries of 30 January, 1 March and 31 March 2026 and spread strikes within 10% of the share price?
+  tool: options
+  arguments:
+    tickers: AAPL
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    strike_price_range: 0.1
+    expiration_time_range: 91
+    show_columns: 2026-01-30,2026-03-01,2026-03-31
+get_touch_option:
+  question: What was a double no-touch option on Tesla and Coca-Cola, paying $1 if the share price stays within 10% of its level at the end of 2025, worth for the expiries of 7 January, 30 January, 1 March and 31 March 2026?
+  tool: options
+  arguments:
+    tickers: TSLA,KO
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    option_type: double-no-touch
+    barrier_percentage: 0.9
+    upper_barrier_percentage: 1.1
+    expiration_time_range: 91
+    show_columns: 2026-01-07,2026-01-30,2026-03-01,2026-03-31

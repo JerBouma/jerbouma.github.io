@@ -37,7 +37,7 @@ It pairs well with the [Finance Toolkit MCP server](/projects/financetoolkit/mcp
 <div class="ca-strip">
   <div><strong>2 connectors</strong><span>one to find, one to analyze, in the same conversation</span></div>
   <div><strong>300,000+</strong><span>stocks, ETFs, indices, currencies and cryptos to search</span></div>
-  <div><strong>700+</strong><span>financial methods to run on what you find</span></div>
+  <div><strong>1100+</strong><span>financial methods to run on what you find</span></div>
   <div><strong>Free</strong><span>hosted servers, open-source code</span></div>
 </div>
 

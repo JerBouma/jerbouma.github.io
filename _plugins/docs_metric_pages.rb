@@ -70,18 +70,73 @@ module DocsMetricPages
   # links and anchors forward there.
   REMOVED = {
     "technicals"  => {
-      "get_exponential_moving_average"        => ["exponential-moving-average-ema", "get_moving_average"],
-      "get_double_exponential_moving_average" => ["double-exponential-moving-average-dema", "get_moving_average"],
-      "get_triangular_moving_average"         => ["triangular-moving-average-tma", "get_moving_average"],
-      "get_weighted_moving_average"           => ["weighted-moving-average-wma", "get_moving_average"],
-      "get_hull_moving_average"               => ["hull-moving-average-hma", "get_moving_average"],
-      "simple-moving-average-sma"             => ["simple-moving-average-sma", "get_moving_average"],
+      "get_exponential_moving_average"         => ["exponential-moving-average-ema", "get_moving_average"],
+      "get_double_exponential_moving_average"  => ["double-exponential-moving-average-dema", "get_moving_average"],
+      "get_triangular_moving_average"          => ["triangular-moving-average-tma", "get_moving_average"],
+      "get_weighted_moving_average"            => ["weighted-moving-average-wma", "get_moving_average"],
+      "get_hull_moving_average"                => ["hull-moving-average-hma", "get_moving_average"],
+      "simple-moving-average-sma"              => ["simple-moving-average-sma", "get_moving_average"],
+      "get_negative_volume_index"              => ["negative-volume-index-nvi", "get_volume_index"],
+      "get_positive_volume_index"              => ["positive-volume-index-pvi", "get_volume_index"],
+      "get_percentage_price_oscillator"        => ["percentage-price-oscillator", "get_moving_average_convergence_divergence"],
+      "get_stochastic_relative_strength_index" => ["stochastic-rsi", "get_stochastic_oscillator"],
+      "get_kaufman_adaptive_moving_average"    => ["kaufman-adaptive-moving-average-kama", "get_moving_average"],
     },
-    "models"      => { "get_gorden_growth_model" => ["gordon-growth-model-ggm", "get_gordon_growth_model"] },
+    "models" => {
+      "get_gorden_growth_model"      => ["gordon-growth-model-ggm", "get_gordon_growth_model"],
+      "get_extended_dupont_analysis" => ["extended-dupont-analysis", "get_dupont_analysis"],
+    },
     "economics"   => { "get_real_gross_domestic_product_usd" => ["real-gdp-usd", "get_gross_domestic_product"] },
     "fixedincome" => {
       "get_option_adjusted_spread" => ["option-adjusted-spread", nil],
       "get_derivative_price"       => ["black-model", nil],
+    },
+    "options" => { "get_bjerksund_stensland" => ["bjerksund-stensland-model", "get_american_option"] },
+    "econometrics" => {
+      "get_rolling_correlation" => ["rolling-correlation", "get_correlation"],
+      "get_rolling_median" => ["rolling-median", "get_percentile"],
+      "get_rolling_percentile" => ["rolling-percentile", "get_percentile"],
+      "get_rolling_z_score" => ["rolling-z-score", "get_z_score"],
+      "get_rolling_mean_absolute_deviation" => ["rolling-mean-absolute-deviation", "get_mean_absolute_deviation"],
+      "get_rolling_standard_error" => ["rolling-standard-error", "get_standard_error"],
+      "get_rolling_entropy" => ["rolling-entropy", "get_entropy"],
+      "get_rmse"                    => ["root-mean-squared-error-rmse", "get_forecast_error"],
+      "get_mae"                     => ["mean-absolute-error-mae", "get_forecast_error"],
+      "get_logistic_regression"     => ["logistic-regression", "get_binary_choice_regression"],
+      "get_probit_regression"       => ["probit-regression", "get_binary_choice_regression"],
+      "get_augmented_dickey_fuller" => ["augmented-dickey-fuller-adf", "get_unit_root_test"],
+      "get_phillips_perron_test"    => ["phillips-perron-test", "get_unit_root_test"],
+      "get_zivot_andrews_test"      => ["zivot-andrews-test", "get_unit_root_test"],
+      "get_breusch_pagan_test"      => ["breusch-pagan-test", "get_heteroskedasticity_test"],
+      "get_white_test"              => ["white-test", "get_heteroskedasticity_test"],
+    },
+    "performance" => {
+      "get_treynor_mazuy_model" => ["treynor-mazuy-model", "get_market_timing_model"],
+      "get_henriksson_merton_model" => ["henriksson-merton-model", "get_market_timing_model"],
+      "get_jensens_alpha" => ["jensen-s-alpha", "get_alpha"],
+    },
+    "portfolio-optimization" => {
+      "get_minimum_cvar_weights"       => ["minimum-cvar", "get_mean_risk_weights"],
+      "get_minimum_drawdown_weights"   => ["minimum-drawdown", "get_mean_risk_weights"],
+      "get_maximum_cvar_ratio_weights" => ["maximum-cvar-ratio", "get_mean_risk_weights"],
+    },
+    "ratios" => {
+      "get_net_income_per_ebt" => ["net-income-per-ebt", "get_tax_burden_ratio"],
+      "get_ebt_to_ebit" => ["ebt-to-ebit", "get_interest_burden_ratio"],
+      "get_ebit_to_revenue" => ["ebit-to-revenue", "get_operating_margin"],
+      "get_reinvestment_rate" => ["reinvestment-rate", "get_retention_ratio"],
+    },
+    "risk" => {
+      "get_move_significance" => ["move-significance", "/projects/financetoolkit/docs/econometrics/move-significance"],
+      "get_corwin_schultz_spread" => ["corwin-schultz-spread", "get_bid_ask_spread"],
+      "get_abdi_ranaldo_spread"   => ["abdi-ranaldo-spread", "get_bid_ask_spread"],
+      "get_edge_spread"           => ["edge-spread", "get_bid_ask_spread"],
+      "get_gjr_garch"             => ["gjr-garch-volatility-model", "get_garch"],
+      "get_gjr_garch_forecast"    => ["gjr-garch-volatility-forecast", "get_garch_forecast"],
+      "get_gjr_garch_parameters"  => ["gjr-garch-parameters", "get_garch_parameters"],
+      "get_egarch"                => ["egarch-volatility-model", "get_garch"],
+      "get_egarch_forecast"       => ["egarch-volatility-forecast", "get_garch_forecast"],
+      "get_egarch_parameters"     => ["egarch-parameters", "get_garch_parameters"],
     },
   }.freeze
 
@@ -133,6 +188,37 @@ module DocsMetricPages
     [functions, groups, collectors]
   end
 
+  # the first sentence of a function's description, for the module overview
+  def summary_for(desc)
+    para = desc.split(/\n\s*\n/).map { |p| plain(p) }.find { |p| !p.empty? && !p.start_with?("- ", "|") }.to_s
+    first = para[/\A.+?[.!?](?=\s+[A-Z(]|\z)/m] || para
+    # a sentence that lists every variant is cut at a word, before the list
+    first.length > 200 ? first[0, 200].sub(/[\s,:;(]+\S*\z/, "") + "…" : first
+  end
+
+  # The module page lists every function with a page of its own, grouped as in
+  # the sidebar (the package's topic folders), each with its first sentence.
+  def overview(cls, groups, functions, urls, summaries)
+    listed = groups.reject { |g, _| g == "Modules" }
+                   .map { |g, anchors| [g, anchors.select { |a| urls[a] }] }
+                   .reject { |_, anchors| anchors.empty? }
+    return "" if listed.empty?
+    count = listed.sum { |_, anchors| anchors.size }
+    out = +"## All Methods\n\nThe #{cls[:name]} module has #{count} methods, each with a page of its own:\n\n"
+    out << "<div class=\"docs-overview\">\n"
+    listed.each do |group, anchors|
+      out << "<section class=\"docs-overview__group\">\n<h3>#{CGI.escapeHTML(group)}</h3>\n<ul>\n"
+      anchors.each do |a|
+        summary = summaries[a].to_s
+        out << "<li><a href=\"#{urls[a]}\">#{CGI.escapeHTML(functions[a][:title])}</a>"
+        out << "<span>#{CGI.escapeHTML(summary)}</span>" unless summary.empty?
+        out << "</li>\n"
+      end
+      out << "</ul>\n</section>\n"
+    end
+    out << "</div>\n\n"
+  end
+
   # split a function section into its parts
   def parse(body)
     body = body.sub(/\n---\s*\z/, "").strip
@@ -142,7 +228,27 @@ module DocsMetricPages
     desc      = body[0...desc_end].strip
     args      = args_at ? body[args_at...(code_at || body.length)].sub(/\*\*As an example:\*\*\s*\z/, "").strip : ""
     example   = code_at ? body[code_at..].strip : ""
-    { :description => desc, :arguments => args, :example => example }
+    refs      = desc[REFERENCES].to_s
+    desc      = desc.sub(REFERENCES, "").strip
+    { :description => desc, :arguments => args, :example => example, :references => refs }
+  end
+
+  # docs.py ends a description with "**References:**" and one line per source:
+  # "- paper | <citation>" or "- library | Referenced against X's [Y](url)".
+  REFERENCES = /\n*\*\*References:\*\*\n\n(?:- (?:paper|library) \| .*(?:\n|\z))+/
+
+  # The papers and libraries as one labelled list, for the method pages (with
+  # a heading) and for the functions left on the module pages (without).
+  def references_list(refs)
+    items = refs.scan(/^- (paper|library) \| (.*)$/).map do |kind, text|
+      %(- <span class="docs-refs__kind">#{kind.capitalize}</span> #{text})
+    end
+    items.join("\n") + "\n{: .docs-refs}\n\n"
+  end
+
+  def references_section(refs)
+    return "" if refs.to_s.empty?
+    "## References\n{: #references}\n\n" + references_list(refs)
   end
 
   # A display formula ($$ on its own lines) is left out of plain text; an inline
@@ -375,7 +481,7 @@ module DocsMetricPages
     cards = [
       module_card,
       ["fas fa-comment-dots", "Ask It in Plain English", asked ? "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask the question above yourself." : "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask for any metric in plain English.", "/projects/financetoolkit/mcp"],
-      ["fab fa-python", "Build with Python", "Install the Finance Toolkit library and use this method and 700+ others in your own code.", "/projects/financetoolkit"],
+      ["fab fa-python", "Build with Python", "Install the Finance Toolkit library and use this method and 1100+ others in your own code.", "/projects/financetoolkit"],
     ]
     links = cards.map do |icon, title, text, url|
       %(<a class="docs-next__card" href="#{url}"><i class="#{icon}" aria-hidden="true"></i><span class="docs-next__title">#{title}</span><span class="docs-next__text">#{text}</span></a>)
@@ -531,6 +637,7 @@ module DocsMetricPages
       out << "`#{fn_name}` accepts the following parameters.\n{: .docs-boilerplate}\n\n"
       out << parameters_table(site, fn_name, parameters) << "\n"
     end
+    out << references_section(parts[:references])
     unless related.empty?
       # same pill buttons as the module switcher on the docs pages
       pills = related.map do |r|
@@ -814,12 +921,13 @@ module DocsMetricPages
             (base ? "; the [#{base[:title]}](#{base[:url]}) page has the function's full description." : ".")
     example = variant["example"] ? variant["example"].strip : variant_example(parts[:example], fn_name, variant["argument"], variant["drop"])
     example += "\n\nWhich returns:\n\n#{variant['output'].strip}" if variant["output"]
-    { :description => text, :arguments => parts[:arguments], :example => example }
+    { :description => text, :arguments => parts[:arguments], :example => example, :references => parts[:references] }
   end
 
   def generate(site)
     seen_descriptions = []
     built = []
+    moved = []
     pages = site.pages.each_with_object({}) { |page, map| map[page.url] = page if page.url.start_with?(DOCS_ROOT) }
     toolkit_page = pages[DOCS_ROOT]
     toolkit_sections = toolkit_page ? toolkit_page.content.scan(SECTION).to_h { |fn, body| [fn.downcase, body] } : {}
@@ -837,6 +945,7 @@ module DocsMetricPages
       sections = class_page.content.scan(SECTION).to_h { |fn, body| [fn.downcase, [fn, body]] }
 
       urls = {}
+      summaries = {}
       used = CLASSES.keys.to_h { |k| [k, true] } # toolkit pages share /docs/ with the classes
       functions.each do |anchor, info|
         next unless sections.key?(anchor.split("--").first)
@@ -867,6 +976,7 @@ module DocsMetricPages
         related = related_for(anchor, pool, urls).map { |a| { :title => functions[a][:title], :url => urls[a], :group => group } }
 
         description = unique_description(info[:title], description_for(parts[:description]), seen_descriptions)
+        summaries[anchor] = summary_for(parts[:description])
         page = Page.new(site, site.source, url.delete_prefix("/").sub(%r{/[^/]+\z}, ""), "#{url.split('/').last}.md")
         # a variant's page has no MCP question of its own (the function's asks for the default)
         page.content = content_for(site, info[:title], key, fn_name, parts, related, variant ? anchor + "--variant" : fn_name)
@@ -905,6 +1015,7 @@ module DocsMetricPages
         name = Regexp.last_match(1).downcase
         urls[name] || collector?(key, name) || (key == "toolkit" && CLASSES.key?(name)) ? "" : Regexp.last_match(0)
       end
+      remaining = remaining.gsub(REFERENCES) { |block| "\n\n**References:**\n\n" + references_list(block) }
       # pages that include their own walkthrough (_includes/financetoolkit-getting-started)
       # already have a Getting Started section, so they don't get a generated one
       started = if intro.include?("financetoolkit-getting-started/") then ""
@@ -922,11 +1033,14 @@ module DocsMetricPages
         forward["using-external-datasets"] = "#{DOCS_ROOT}/external-datasets"
       end
       Array(REMOVED[key]).each do |anchor, (old_slug, replacement)|
-        target = urls[replacement] || cls[:url]
+        # a replacement in another module is its page's URL, built later
+        moved_away = replacement.to_s.start_with?("/")
+        target = moved_away ? replacement : (urls[replacement] || cls[:url])
         forward[anchor] = target unless anchor.include?("-")
         URL_MAP["#{cls[:url]}##{anchor}"] = target
         old = "#{cls[:url]}/#{old_slug}"
         next if old == target
+        next moved << [old, target] if moved_away
         page = built.find { |pg, _, _| pg.url == target }&.first || class_page
         page.data["redirect_from"] = Array(page.data["redirect_from"]) | [old, "#{old}/"]
       end
@@ -940,7 +1054,7 @@ module DocsMetricPages
                 ([paragraphs.first, hint.strip] + paragraphs.drop(1)).join("\n\n")
               end
       class_page.data["sidebar"] = sidebar_data(cls[:nav], "Every function has its own page #{examples_phrase(key)}. Pick one below.")
-      class_page.content = intro.rstrip + "\n\n" + started + "\n" + remaining + <<~HTML
+      class_page.content = intro.rstrip + "\n\n" + started + "\n" + overview(cls, groups, functions, urls, summaries) + remaining + <<~HTML
 
         <script>
           (function () {
@@ -962,6 +1076,10 @@ module DocsMetricPages
       end
     end
 
+    moved.each do |old, target|
+      page = built.find { |pg, _, _| pg.url == target }&.first or raise "No page at #{target} for #{old}"
+      page.data["redirect_from"] = Array(page.data["redirect_from"]) | [old, "#{old}/"]
+    end
     distinct_titles(built)
     rewrite_navigation(site)
   end

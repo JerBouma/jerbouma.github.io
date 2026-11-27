@@ -1496,6 +1496,77 @@ def _dedent_block(text: str) -> str:
     return "\n".join(dedented).strip("\n")
 
 
+_RE_REF_LEAD = re.compile(r"^(For more information[^:]*:|References:|Referenced against:|Shares similar logic:)$")
+_REF_RELATIONS = {"Referenced against:": "Referenced against", "Shares similar logic:": "Shares similar logic as"}
+
+
+def _extract_references(text: str) -> tuple[str, list[tuple[str, str]]]:
+    """Take the papers ("For more information, see the following sources:")
+    and the libraries ("Referenced against:", "Shares similar logic:") out of a
+    description. They are shown together in the method page's References
+    section. Returns the remaining text and (relation, item) pairs, where the
+    relation is "" for a paper."""
+    lines = _dedent_block(text).split("\n")
+    kept, refs = [], []
+    i = 0
+    while i < len(lines):
+        lead = lines[i].strip()
+        if not _RE_REF_LEAD.match(lead):
+            kept.append(lines[i])
+            i += 1
+            continue
+        relation = _REF_RELATIONS.get(lead, "")
+        items = []
+        j = i + 1
+        while j < len(lines):
+            line = lines[j]
+            if not line.strip():
+                k = j
+                while k < len(lines) and not lines[k].strip():
+                    k += 1
+                if k < len(lines) and lines[k].lstrip().startswith("- "):
+                    j = k
+                    continue
+                break
+            if line.lstrip().startswith("- "):
+                items.append(line.strip()[2:])
+            elif items and not _RE_REF_LEAD.match(line.strip()) and not line.strip().startswith(_BOLD_HEADERS):
+                items[-1] += " " + line.strip()  # a wrapped line continues the bullet
+            else:
+                break
+            j += 1
+        if not items:  # a lead-in without bullets of its own: its sources are in the sections below
+            i += 1
+            continue
+        refs.extend((relation, _RE_MULTI_SPACE.sub(" ", item)) for item in items)
+        i = j
+    return "\n".join(kept), refs
+
+
+def _possessive(name: str) -> str:
+    return f"{name}'" if name.endswith("s") else f"{name}'s"
+
+
+def _references_block(refs: list[tuple[str, str]]) -> str:
+    """The References list: papers as cited, libraries as "Referenced against
+    X's Y" or "Shares similar logic as X's Y", linked to the library's page."""
+    out = []
+    for relation, item in refs:
+        item = item.replace("—", "-")
+        match = re.match(r"^(.+?), (.+): (https?://\S+)$", item)
+        if relation and match:
+            library, functions, url = match.groups()
+            url, _ = _trim_url(url)
+            name, _, qualifier = functions.partition(" (")
+            qualifier = f" ({qualifier}" if qualifier else ""
+            out.append(f'- library | {relation} {_possessive(library)} [{_escape_pipes(name)}]({url}){{:target="_blank"}}{_escape_pipes(qualifier)}')
+        elif relation:
+            out.append(f"- paper | {relation} {_linkify(_escape_pipes(item))}")
+        else:
+            out.append(f"- paper | {_linkify(_escape_pipes(item))}")
+    return "**References:**\n\n" + "\n".join(out)
+
+
 def _clean_description(text: str) -> str:
     """Turn a raw docstring description into clean Markdown.
 
@@ -1671,13 +1742,18 @@ def create_markdown_file(file_url: str, header: str, location: str) -> None:
         # Description
         desc_m = _RE_DESCRIPTION.match(docstring)
         _INLINE_CONTEXT.update(page=os.path.basename(location), function=function_name)
-        description = _clean_description(desc_m.group(1)) if desc_m else ""
+        raw_description, references = _extract_references(desc_m.group(1)) if desc_m else ("", [])
+        description = _clean_description(raw_description) if desc_m else ""
         description = _inline_math(description)
         description = _linkify(description)
 
         # Arguments (also covers Returns / Raises / Notes, which follow Args:)
         args_m = _RE_ARGUMENTS.search(docstring)
-        arguments = _linkify(args_m.group(1)) if args_m else ""
+        raw_arguments, more_references = _extract_references(args_m.group(1)) if args_m else ("", [])
+        references += more_references  # a few methods list their papers under Notes
+        if references:
+            description = f"{description}\n\n{_references_block(references)}"
+        arguments = _linkify(raw_arguments) if args_m else ""
         arguments = _escape_pipes(arguments)  # so "int | str" isn't parsed as a table
         arguments = _dedent_block(arguments)
         arguments = _RE_ARG_LABEL.sub(_underline_arg, arguments)
@@ -1757,8 +1833,8 @@ PAGES = [
         "location": "_pages/financetoolkit/documentation/docs.md",
         "header": f"""---
 title: Documentation
-excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 700+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
-description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 700+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
+excerpt: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 1100+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
+description: This the documentation of the FinanceToolkit. This is an open-source toolkit in which 1100+ financial methods are written down in the most simplistic way allowing for complete transparency of the calculation method.
 author_profile: false
 permalink: /projects/financetoolkit/docs
 classes: wide-sidebar
@@ -1769,7 +1845,7 @@ sidebar:
     nav: "financetoolkit-docs"
 ---
 
-These pages document the Finance Toolkit, an open-source toolkit in which all relevant financial methods (700+) are written down in the most simplistic way allowing for complete transparency of the calculation method. Each class has an introduction page like this one, and the sidebar leads to a page for every function that shows how to use it through the [Finance Toolkit MCP](/projects/financetoolkit/mcp) in an AI assistant and in Python. The Python examples are also embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the [Getting Started](#getting-started) section below and the one that opens every module page.
+These pages document the Finance Toolkit, an open-source toolkit in which all relevant financial methods (1100+) are written down in the most simplistic way allowing for complete transparency of the calculation method. Each class has an introduction page like this one, and the sidebar leads to a page for every function that shows how to use it through the [Finance Toolkit MCP](/projects/financetoolkit/mcp) in an AI assistant and in Python. The Python examples are also embedded in the code. For simplicity sake, only the controller modules are included here given that the models themselves should be relatively straightforward. Make sure to also have a look at the [Getting Started](#getting-started) section below and the one that opens every module page.
 
 The Toolkit Module is a collection of functions that collect and parse data, including historical data, fundamental data (balance, income and cash flow statements) and metrics from Financial Modeling Prep such as enterprise values, company profiles and more. From this module you can access all related sub-modules.
 

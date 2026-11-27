@@ -1,1 +1,1 @@
-{"charts":{"from_preset":{"title":"Return per Holding","type":"hbar","x":["GLD","VTI","BIL","TLT"],"series":[{"name":"Return","data":[1.7432,1.6685,0.1544,-0.0601]}],"format":"percent","subtitle":"Since the first purchase, including dividends"}}}
+{"charts":{"from_preset":{"title":"Return per Holding","type":"hbar","x":["GLD","VTI","BIL","TLT"],"series":[{"name":"Return","data":[1.7528,1.6654,0.1547,-0.0531]}],"format":"percent","subtitle":"Since the first purchase, including dividends"}}}

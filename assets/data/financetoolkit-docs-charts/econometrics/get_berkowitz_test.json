@@ -1,0 +1,1 @@
+{"charts":{"get_berkowitz_test":{"title":"Berkowitz Test P-Value","type":"bar","x":["QQQ","TLT","GLD"],"series":[{"name":"P-Value","data":[0.2156,0.2277,0.2907]},{"name":"0.05","data":[0.05,0.05,0.05],"reference":true}],"format":"ratio","subtitle":"Below the 0.05 line the density forecasts do not match the returns","cards":false}}}

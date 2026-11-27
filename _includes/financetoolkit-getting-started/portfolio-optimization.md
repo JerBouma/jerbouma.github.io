@@ -40,7 +40,7 @@ maximum_sharpe = assets.portfolio.get_maximum_sharpe_weights()
 risk_parity = assets.portfolio.get_risk_parity_weights()
 hierarchical_risk_parity = assets.portfolio.get_hierarchical_risk_parity_weights()
 inverse_volatility = assets.portfolio.get_inverse_volatility_weights()
-minimum_cvar = assets.portfolio.get_minimum_cvar_weights()
+minimum_cvar = assets.portfolio.get_mean_risk_weights(risk_measure="cvar")
 ```
 
 Each returns the weight per asset with its annualized expected return, volatility, Sharpe Ratio and risk contribution, and the same for the portfolio. For example, the maximum Sharpe portfolio:
@@ -257,6 +257,6 @@ The portfolio returned 26.8% against 18.0% for the S&P 500. Most of the 8.8 perc
 
 {% include ft-chart.html id="portfolio-optimization-brinson" src="/assets/data/financetoolkit-guides/portfolio-optimization.json" label="Allocation, selection and interaction effect per sector of a stock portfolio against the S&P 500" %}
 
-The module covers more than shown here, among them [mean-variance weights](/projects/financetoolkit/docs/portfolio-optimization/mean-variance) for a target return or a risk aversion, [risk parity](/projects/financetoolkit/docs/portfolio-optimization/risk-parity) with a risk budget of your own, the linkage method of [Hierarchical Risk Parity](/projects/financetoolkit/docs/portfolio-optimization/hierarchical-risk-parity) and the confidence level of [minimum CVaR](/projects/financetoolkit/docs/portfolio-optimization/minimum-cvar). To follow a portfolio over time, with its transactions and rebalancing, see the [Portfolio](/projects/financetoolkit/docs/portfolio) module.
+The module covers more than shown here, among them [mean-variance weights](/projects/financetoolkit/docs/portfolio-optimization/mean-variance) for a target return or a risk aversion, [risk parity](/projects/financetoolkit/docs/portfolio-optimization/risk-parity) with a risk budget of your own, the linkage method of [Hierarchical Risk Parity](/projects/financetoolkit/docs/portfolio-optimization/hierarchical-risk-parity) and [mean-risk weights](/projects/financetoolkit/docs/portfolio-optimization/mean-risk-weights) that minimize the CVaR, a drawdown measure or another risk measure instead of the variance. To follow a portfolio over time, with its transactions and rebalancing, see the [Portfolio](/projects/financetoolkit/docs/portfolio) module.
 
 {% include ft-charts-script.html %}

@@ -1,0 +1,1 @@
+{"charts":{"get_optimal_trading_rule":{"title":"Optimal Profit-Taking and Stop-Loss","type":"bar","x":["PFE","KO"],"series":[{"name":"Profit-Taking","data":[6.0,0.5]},{"name":"Stop-Loss","data":[10.0,0.5]}],"format":"ratio","subtitle":"In standard deviations (Sigma) of the price, for a long position"}}}

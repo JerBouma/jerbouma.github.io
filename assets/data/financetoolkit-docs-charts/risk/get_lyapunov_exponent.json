@@ -1,0 +1,1 @@
+{"charts":{"get_lyapunov_exponent":{"title":"Lyapunov Exponent","type":"hbar","x":["Benchmark","GCUSD","BTCUSD","EURUSD"],"series":[{"name":"Lyapunov Exponent","data":[0.0409,0.0398,0.0395,0.0388]}],"format":"ratio","subtitle":"Rate at which nearby paths of the daily returns drift apart; above 0 is chaotic"}}}

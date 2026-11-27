@@ -1,0 +1,1 @@
+{"charts":{"get_higher_moment_coherent_risk":{"title":"Higher Moment Coherent Risk","type":"hbar","x":["USO","SLV","Benchmark","GLD"],"series":[{"name":"Higher Moment Coherent Risk","data":[-0.107,-0.0798,-0.052,-0.0511]}],"format":"percent","subtitle":"The 95% coherent second moment of the daily returns"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_free_cash_flow_per_share":{"title":"Free Cash Flow per Share","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMD","data":[2.62,1.9828,0.6898,1.4692,4.1167]},{"name":"AVGO","data":[3.1051,3.8563,4.1295,4.0632,5.5458]},{"name":"NVDA","data":[0.3208,0.1519,1.0834,2.4534,null]}],"format":"price"}}}

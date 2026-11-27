@@ -1,0 +1,1 @@
+{"charts":{"get_change_points":{"title":"Volatility per Segment","type":"bar","x":["QQQ \u00b7 1","QQQ \u00b7 2","TLT \u00b7 1"],"series":[{"name":"Standard Deviation","data":[0.0319,0.0587,0.0393]}],"format":"percent","subtitle":"Standard deviation of the monthly returns between the change points"}}}

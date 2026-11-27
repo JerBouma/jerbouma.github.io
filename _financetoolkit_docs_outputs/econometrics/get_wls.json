@@ -1,1 +1,1 @@
-{"index":"","columns":["Coefficient","Std. Error","t-Statistic","P-Value"],"rows":[["Intercept",0.0012,0.0019,0.6252,0.5324],["MSFT",0.636,0.0597,10.6573,0.0]],"total":2}
+{"index":"","columns":["Coefficient","Standard Error","t-Statistic","P-Value"],"rows":[["Intercept",0.0012,0.0019,0.6252,0.5324],["MSFT",0.636,0.0597,10.6572,0.0]],"total":2}

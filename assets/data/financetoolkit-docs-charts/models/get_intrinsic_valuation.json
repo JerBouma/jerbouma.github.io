@@ -1,1 +1,1 @@
-{"charts":{"get_intrinsic_valuation":{"title":"Intrinsic Value","type":"bar","x":["ADBE","CRM","INTU"],"series":[{"name":"Intrinsic Value","data":[213.312,67.9144,172.147]}],"format":"price","subtitle":"Per share, discounted cash flows over five periods"}}}
+{"charts":{"get_intrinsic_valuation":{"title":"Intrinsic Value","type":"bar","x":["ADBE","CRM","INTU"],"series":[{"name":"Intrinsic Value","data":[213.312,67.9145,172.147]}],"format":"price","subtitle":"Per share, discounted cash flows over five periods"}}}

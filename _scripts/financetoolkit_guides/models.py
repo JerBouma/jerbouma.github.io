@@ -58,7 +58,7 @@ def build() -> dict:
     charts = {}
 
     # Extended DuPont: five components multiplying into ROE, one tab per company
-    dupont = companies.models.get_extended_dupont_analysis()
+    dupont = companies.models.get_dupont_analysis(method="extended")
     parts = [("Interest Burden Ratio", "Interest burden", "percent"),
              ("Tax Burden Ratio", "Tax burden", "percent"),
              ("Operating Profit Margin", "Operating margin", "percent"),

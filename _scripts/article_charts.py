@@ -445,7 +445,7 @@ def binomial_charts() -> dict:
     steps = list(range(1, 201))
 
     def price(n, **kwargs):
-        return float(binomial_trees_model.get_option_payoffs(timesteps=n, **inputs, **kwargs).iloc[0, 0])
+        return float(binomial_trees_model.get_option_payoffs(time_steps=n, **inputs, **kwargs).iloc[0, 0])
 
     call = [price(n) for n in steps]
     put = [price(n, put_option=True) for n in steps]

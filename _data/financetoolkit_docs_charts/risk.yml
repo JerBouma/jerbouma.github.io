@@ -40,7 +40,7 @@ get_factor_analysis:
         Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
       coef: Mean IC
       se: Standard Error
-      p: p-Value
+      p: P-Value
       subtitle: Mean rank correlation of each metric with the next month's return, with its 95% interval
     - label: 12 Months
       chart: coef
@@ -55,7 +55,7 @@ get_factor_analysis:
         Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
       coef: Mean IC
       se: Standard Error
-      p: p-Value
+      p: P-Value
       subtitle: Mean rank correlation of each metric with the next twelve months' return, with its 95% interval
 
 get_tail_dependence_coefficient:
@@ -154,13 +154,6 @@ get_coefficient_of_variation:
   title: Coefficient of Variation
   subtitle: Standard deviation of the daily returns divided by their mean, per year
 
-get_move_significance:
-  chart: bar
-  columns: [Volatility Multiple, VaR Multiple]
-  format: ratio
-  title: Move Significance
-  subtitle: The day's return as a multiple of the volatility and of the Value at Risk
-
 get_autocorrelation:
   chart: bar
   levels: [-0.0553, 0.0553]
@@ -244,24 +237,6 @@ get_roll_spread:
   format: percent
   title: Relative Roll Spread
   subtitle: Bid-ask spread implied by the serial covariance of price changes, as a share of the price
-
-get_corwin_schultz_spread:
-  chart: bar
-  format: percent
-  title: Corwin-Schultz Spread
-  subtitle: Bid-ask spread estimated from daily highs and lows, per month
-
-get_abdi_ranaldo_spread:
-  chart: bar
-  format: percent
-  title: Abdi-Ranaldo Spread
-  subtitle: Bid-ask spread estimated from close, high and low prices, per month
-
-get_edge_spread:
-  chart: bar
-  format: percent
-  title: EDGE Spread
-  subtitle: Bid-ask spread estimated from open, high, low and close prices, per month
 
 get_share_turnover:
   chart: bar
@@ -361,65 +336,6 @@ get_garch_parameters:
   title: GARCH Persistence
   subtitle: Alpha plus Beta; the closer to 1, the longer a volatility shock lasts
 
-get_gjr_garch:
-  chart: line
-  chart_expr: 'toolkit.risk.get_gjr_garch(rounding=8)'
-  derive:
-    NVDA: "np.sqrt(f['NVDA'])"
-  columns: [NVDA]
-  last: 504
-  format: percent
-  title: GJR-GARCH Volatility
-  subtitle: Daily conditional volatility, the square root of the GJR-GARCH(1, 1, 1) variance
-
-get_gjr_garch_forecast:
-  chart: line
-  chart_expr: 'toolkit.risk.get_gjr_garch_forecast(rounding=8)'
-  derive:
-    CLUSD: "np.sqrt(f['CLUSD'])"
-    Benchmark: "np.sqrt(f['Benchmark'])"
-  format: percent
-  title: GJR-GARCH Volatility Forecast
-  subtitle: Daily volatility forecast for the next ten days, the square root of the forecast variance
-
-get_gjr_garch_parameters:
-  chart: bar
-  transpose: true
-  columns: [Alpha, Gamma, Beta]
-  format: ratio
-  title: GJR-GARCH Parameters
-  subtitle: Reaction to shocks (Alpha), the extra reaction to negative shocks (Gamma) and persistence (Beta)
-
-get_egarch:
-  chart: line
-  chart_expr: 'toolkit.risk.get_egarch(period="quarterly", rounding=8)'
-  derive:
-    AMZN: "np.sqrt(f['AMZN'])"
-    TSLA: "np.sqrt(f['TSLA'])"
-    Benchmark: "np.sqrt(f['Benchmark'])"
-  format: percent
-  title: EGARCH Volatility
-  subtitle: Quarterly conditional volatility, the square root of the EGARCH(1, 1) variance
-
-get_egarch_forecast:
-  chart: line
-  chart_expr: 'toolkit.risk.get_egarch_forecast(period="quarterly", rounding=8)'
-  derive:
-    AMZN: "np.sqrt(f['AMZN'])"
-    TSLA: "np.sqrt(f['TSLA'])"
-    Benchmark: "np.sqrt(f['Benchmark'])"
-  format: percent
-  title: EGARCH Volatility Forecast
-  subtitle: Quarterly volatility forecast, the square root of the forecast variance
-
-get_egarch_parameters:
-  chart: bar
-  transpose: true
-  columns: [Alpha, Gamma, Beta]
-  format: ratio
-  title: EGARCH Parameters
-  subtitle: Reaction to shocks (Alpha), the asymmetry between negative and positive shocks (Gamma) and persistence (Beta)
-
 get_volatility:
   chart: bar
   format: percent
@@ -459,3 +375,199 @@ get_ewma_volatility:
   format: percent
   title: EWMA Volatility
   subtitle: Daily volatility, RiskMetrics exponentially weighted
+
+get_average_drawdown:
+  chart: bar
+  format: percent
+  title: Average Drawdown
+  subtitle: Average depth of the drawdowns within each year
+
+get_drawdown_at_risk:
+  chart: bar
+  format: percent
+  title: Drawdown at Risk
+  subtitle: The drawdown exceeded on 5% of days, per year
+
+get_entropic_drawdown_at_risk:
+  chart: bar
+  format: percent
+  title: Entropic Drawdown at Risk
+  subtitle: The tightest entropic bound on the worst 5% of drawdowns, per year
+
+get_conditional_expected_drawdown:
+  chart: bar
+  format: percent
+  title: Conditional Expected Drawdown
+  subtitle: Average of the worst 5% of one-month maximum drawdowns, per year
+
+get_drawdown_statistics:
+  chart: tabs
+  title: Drawdown Statistics
+  tabs:
+    - label: Depth
+      chart: bar
+      rows: [Average Drawdown, Active Drawdown]
+      format: percent
+      subtitle: The average drawdown and the drawdown at the end of the period
+    - label: Duration
+      chart: bar
+      rows: [Average To Trough, Average To Recovery]
+      format: number
+      yname: Days
+      subtitle: Average trading days from the peak to the bottom and from the bottom back to the peak
+
+get_entropic_risk_measure:
+  chart: bar
+  format: percent
+  title: Entropic Risk Measure
+  subtitle: The entropic bound on the tail loss at a risk aversion of 0.01, per year
+
+get_expected_quadratic_shortfall:
+  chart: bar
+  format: decimal
+  title: Expected Quadratic Shortfall
+  subtitle: Average squared daily loss on the worst 5% of days, per year
+
+get_higher_moment_coherent_risk:
+  chart: hbar
+  columns: [{0: Higher Moment Coherent Risk}]
+  sort: asc
+  format: percent
+  title: Higher Moment Coherent Risk
+  subtitle: The 95% coherent second moment of the daily returns
+
+get_tail_gini:
+  chart: bar
+  format: percent
+  title: Tail Gini
+  subtitle: Loss in the worst 5% of daily returns, weighing the worst most, per year
+
+get_risk_range:
+  chart: bar
+  format: percent
+  title: CVaR Range
+  subtitle: Average of the best 5% minus the average of the worst 5% of daily returns, per year
+
+get_worst_realization:
+  chart: bar
+  format: percent
+  title: Worst Daily Return
+  subtitle: The lowest daily return within each year
+
+get_gini_mean_difference:
+  chart: bar
+  format: percent
+  title: Gini Mean Difference
+  subtitle: Average distance between two daily returns, per year
+
+get_central_moment:
+  chart: bar
+  format: decimal
+  title: Fourth Central Moment
+  subtitle: Average fourth power of the daily returns' deviation from their mean, per year
+
+get_l_moment:
+  chart: bar
+  levels: [0]
+  format: ratio
+  title: L-Skewness
+  subtitle: Asymmetry of the daily returns per year, robust to a few extreme days; 0 is symmetric
+
+get_l_moment_risk_measure:
+  chart: bar
+  format: percent
+  title: L-Moment Risk Measure
+  subtitle: The spread, skew and tails of the daily returns in one figure, per year
+
+get_partial_moment:
+  chart: bar
+  format: percent
+  title: Lower Partial Moment
+  subtitle: Average shortfall of the daily returns below zero, per year
+
+get_upside_deviation:
+  chart: bar
+  format: percent
+  title: Upside Deviation
+  subtitle: Standard deviation of the daily returns above zero, per year
+
+get_volatility_skewness:
+  chart: bar
+  levels: [1]
+  format: ratio
+  title: Volatility Skewness
+  subtitle: Upside over downside variance of the daily returns, per year; above 1 the gains spread out more
+
+get_skewness_kurtosis_ratio:
+  chart: bar
+  levels: [0]
+  format: ratio
+  title: Skewness-Kurtosis Ratio
+  subtitle: Skewness of the daily returns over their kurtosis, per year; higher is better
+
+get_bekker_parkinson_volatility:
+  chart: bar
+  format: percent
+  title: Bekker-Parkinson Volatility
+  subtitle: Volatility in the daily high-low range net of the bid-ask spread, per month
+
+get_bid_ask_spread:
+  chart: bar
+  format: percent
+  title: Bid-Ask Spread
+  subtitle: Round-trip cost estimated from daily prices, per month
+
+get_price_impact:
+  chart: bar
+  format: ratio
+  title: Kyle's Lambda
+  subtitle: How far the price moves per unit traded, per month
+
+get_vpin:
+  chart: line
+  format: percent
+  title: VPIN
+  subtitle: Probability of informed trading, from the order flow imbalance of daily bars
+
+get_correlation_dimension:
+  chart: hbar
+  columns: [{0: Correlation Dimension}]
+  sort: desc
+  format: ratio
+  title: Correlation Dimension
+  subtitle: Of the daily log returns in four embedding dimensions; lower is a more deterministic process
+
+get_fractal_dimension:
+  chart: hbar
+  columns: [{0: Fractal Dimension}]
+  sort: desc
+  format: ratio
+  title: Fractal Dimension
+  subtitle: Roughness of the price path; 1.5 is a random walk, higher is rougher
+
+get_lyapunov_exponent:
+  chart: hbar
+  columns: [{0: Lyapunov Exponent}]
+  sort: desc
+  format: ratio
+  title: Lyapunov Exponent
+  subtitle: Rate at which nearby paths of the daily returns drift apart; above 0 is chaotic
+
+get_garch_simulation:
+  chart: line
+  columns: [95%, 75%, 50%, 25%, 5%]
+  format: percent
+  title: Simulated Cumulative Return
+  subtitle: Percentiles of 10,000 GARCH paths with Student-t errors over the next ten trading days
+
+get_news_impact_curve:
+  chart: line
+  chart_expr: 'toolkit.risk.get_news_impact_curve(method="gjr", rounding=10)'
+  derive:
+    AAPL: "np.sqrt(f['AAPL'])"
+    MSFT: "np.sqrt(f['MSFT'])"
+    Benchmark: "np.sqrt(f['Benchmark'])"
+  format: percent
+  xname: Shock (standard deviations)
+  title: News Impact Curve
+  subtitle: Next day's volatility after a shock of each size, the square root of the GJR-GARCH variance

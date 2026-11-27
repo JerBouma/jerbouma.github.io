@@ -359,3 +359,105 @@ get_carry_and_roll_down:
     start_date: "2026-10-19"
     end_date: "2026-10-23"
     show_columns: Total
+get_bucketed_delta:
+  question: How sensitive were the benchmark 2- to 30-year US Treasuries to a basis point shift of each point on the par curve, from 2 to 30 years, on 5 November 2026?
+  tool: fixed_income
+  arguments:
+    date: "2026-11-05"
+    show_columns: "Maturity,2Y,3Y,5Y,7Y,10Y,20Y,30Y"
+get_credit_default_swap_spread:
+  question: What credit default swap spreads for 1 to 10 years did corporate bond spreads imply on 5 November 2026?
+  tool: fixed_income
+  arguments:
+    end_date: "2026-11-05"
+get_fitted_bond_curve:
+  question: What zero rates, discount factors and forward rates does a curve fitted to the US Treasury bond prices of 5 November 2026 give from half a year to 30 years?
+  tool: fixed_income
+  arguments:
+    date: "2026-11-05"
+get_forward_inflation_index:
+  question: What US CPI levels, month by month for the coming year, did inflation swaps price in on 20 November 2026?
+  tool: fixed_income
+  arguments:
+    start_date: "2026-10-01"
+    end_date: "2026-11-20"
+    years: 1
+get_forward_rate_agreement:
+  question: What were the rates of the 1x4 to 12x24 forward rate agreements on the US curve on 20 November 2026?
+  tool: fixed_income
+  arguments:
+    start_date: "2026-11-01"
+    end_date: "2026-11-20"
+get_fx_forward_rates:
+  question: What were the forward exchange rates of the dollar against the euro, pound, yen, Swiss franc, Canadian and Australian dollar from 1 month to 10 years on 20 November 2026?
+  tool: fixed_income
+  arguments:
+    countries: Euro Area,United Kingdom,Japan,Switzerland,Canada,Australia
+    start_date: "2026-11-01"
+    end_date: "2026-11-20"
+get_inflation_swap_rate:
+  question: What were the zero-coupon and year-on-year US inflation swap rates for 5 to 30 years on 20 November 2026?
+  tool: fixed_income
+  arguments:
+    start_date: "2026-10-01"
+    end_date: "2026-11-20"
+    show_columns: "Zero-Coupon Inflation Swap Rate,Year-on-Year Inflation Swap Rate,Date"
+get_instantaneous_forward_curve:
+  question: What instantaneous forward rates and zero rates did the US Treasury curve imply at half a year and 1, 2, 5, 10, 20 and 30 years on 5 November 2026?
+  tool: fixed_income
+  arguments:
+    maturities: [0.5, 1, 2, 5, 10, 20, 30]
+    date: "2026-11-05"
+get_rate_shift_ladder:
+  question: How much would the benchmark 2- to 30-year US Treasuries gain or lose if yields moved by 50 or 200 basis points from 5 November 2026?
+  tool: fixed_income
+  arguments:
+    date: "2026-11-05"
+    show_columns: "Maturity,-200bp,-50bp,+50bp,+200bp,Delta,Gamma"
+get_smith_wilson_curve:
+  question: What does the Smith-Wilson extrapolation of the US Treasury curve of 5 November 2026 give from 1 to 150 years?
+  tool: fixed_income
+  arguments:
+    date: "2026-11-05"
+get_survival_curve:
+  question: What chances of surviving 1 to 30 years without default did corporate bond spreads imply for each rating from AAA to CCC on 5 November 2026?
+  tool: fixed_income
+  arguments:
+    end_date: "2026-11-05"
+    maturity: false
+get_swap_rate:
+  question: What were the euro area swap rates for 1, 2, 5, 10 and 30 years on 20 November 2026?
+  tool: fixed_income
+  arguments:
+    start_date: "2026-10-01"
+    end_date: "2026-11-20"
+    maturities: [1, 2, 5, 10, 30]
+    country: Euro Area
+get_swaption_price:
+  question: What were payer swaptions on the US curve worth on 23 October 2026, for expiries of 1 to 10 years and swaps of 1 to 30 years, with the 6-month rate as the short rate?
+  tool: fixed_income
+  arguments:
+    start_date: "2000-01-01"
+    end_date: "2026-10-23"
+    short_rate: 6M
+get_treasury_floating_rate_notes:
+  question: What prices, discount margins and yields did the US Treasury floating rate notes trade at on 19 November 2026?
+  tool: fixed_income
+  arguments:
+    date: "2026-11-19"
+    show_columns: "Maturity,Price,Spread,Index Rate,Discount Margin,Yield,Spread Duration"
+get_treasury_futures_basis:
+  question: What were the gross basis, net basis and implied repo rate of the bonds deliverable into the December 2026 10-year Treasury note future on 19 November 2026?
+  tool: fixed_income
+  arguments:
+    contract: ZN
+    contract_month: "2026-12"
+    date: "2026-11-19"
+    show_columns: "Maturity,Price,Conversion Factor,Gross Basis,Net Basis,Implied Repo Rate"
+get_treasury_inflation_protected_securities:
+  question: What real yields and breakeven inflation rates did the five longest US TIPS trade at on 19 November 2026?
+  tool: fixed_income
+  arguments:
+    date: "2026-11-19"
+    show_columns: "Maturity,Index Ratio,Real Yield,Nominal Yield,Breakeven Inflation Rate"
+    limit: -5

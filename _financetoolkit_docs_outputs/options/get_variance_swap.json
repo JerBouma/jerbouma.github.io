@@ -1,0 +1,1 @@
+{"index":"","columns":["Forward Price","Fair Variance","Fair Volatility","Cboe Variance","Variance Swap Value"],"rows":[["('AAPL', '2026-11-30')",355.82,null,null,null,null],["('AAPL', '2026-12-02')",356.021,null,null,null,null],["('^SPX', '2026-11-30')",7325.85,0.0432,0.2078,0.0432,-0.0468],["('^SPX', '2026-12-01')",7326.7,0.0515,0.227,0.0515,-0.0385]],"total":4}

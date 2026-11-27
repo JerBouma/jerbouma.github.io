@@ -5,13 +5,6 @@ get_dupont_analysis:
     tickers: GOOGL
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-get_extended_dupont_analysis:
-  question: What drove Microsoft's return on equity from 2021 to 2025, according to an extended DuPont analysis?
-  tool: models
-  arguments:
-    tickers: MSFT
-    start_date: "2021-01-01"
-    end_date: "2025-12-31"
 get_enterprise_value_breakdown:
   question: How did Ford's enterprise value break down into market capitalization, debt and cash from 2021 to 2025?
   tool: models
@@ -106,7 +99,7 @@ get_altman_z_score:
     tickers: "MCD,NFLX,UBER"
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    model: non-manufacturing
+    method: non-manufacturing
     show_columns: Altman Z-Score
 get_piotroski_score:
   question: What was the Piotroski F-Score of Ford, General Motors and Tesla from 2022 to 2025?
@@ -370,3 +363,89 @@ get_graham_intrinsic_value:
     tickers: KO,PEP,JNJ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_accrual_quality:
+  question: How closely did the accruals of Apple and Microsoft map into cash flows from 2020 to 2025, each year estimated on the eight years before it?
+  tool: models
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2010-01-01"
+    end_date: "2025-12-31"
+    show_columns: Accrual Quality
+    limit: -6
+get_capitalized_research_and_development:
+  question: What would Merck's operating income, invested capital and return on invested capital have been from 2022 to 2025 with its research spending capitalized and amortized over ten years?
+  tool: models
+  arguments:
+    tickers: MRK
+    start_date: "2015-01-01"
+    end_date: "2025-12-31"
+    amortization_years: 10
+    limit: -4
+get_cash_flow_return_on_investment:
+  question: What was Home Depot's cash flow return on investment from 2021 to 2025, and how was it built up?
+  tool: models
+  arguments:
+    tickers: HD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_earnings_attributes:
+  question: How persistent, predictable and smooth were the earnings of Apple and Microsoft from 2018 to 2025?
+  tool: models
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2010-01-01"
+    end_date: "2025-12-31"
+get_fundamental_growth_rate:
+  question: What growth rate could Microsoft sustain from its reinvestment rate and return on invested capital from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_graham_criteria:
+  question: Which of Benjamin Graham's seven criteria for the defensive investor did Coca-Cola meet from 2023 to 2025?
+  tool: models
+  arguments:
+    tickers: KO
+    start_date: "2000-01-01"
+    end_date: "2025-12-31"
+    limit: -3
+get_owner_earnings:
+  question: What were Buffett's owner earnings of Coca-Cola, PepsiCo and Mondelez from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: KO,PEP,MDLZ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Owner Earnings
+get_return_on_incremental_invested_capital:
+  question: What return did Costco, Walmart and Target make on the capital they added from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: COST,WMT,TGT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Return on Incremental Invested Capital
+get_rule_of_40:
+  question: Did Salesforce, ServiceNow and Adobe pass the Rule of 40 from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: CRM,NOW,ADBE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Rule of 40 Score
+get_shumway_score:
+  question: How likely was Ford to go bankrupt from 2021 to 2025 according to Shumway's hazard model?
+  tool: models
+  arguments:
+    tickers: F
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_unlevered_beta:
+  question: What was the unlevered (asset) beta of Ford, General Motors and Tesla from 2021 to 2025?
+  tool: models
+  arguments:
+    tickers: F,GM,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Unlevered Beta

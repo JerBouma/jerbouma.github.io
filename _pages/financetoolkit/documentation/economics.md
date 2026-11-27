@@ -29,6 +29,8 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/economics.md %}
 
 ## get_consumer_confidence_index
+Get the Consumer Confidence Index of a variety of countries: how optimistic households are about the economy and their own finances, and so how willing they are to spend.
+
 This consumer confidence indicator provides an indication of future developments of households consumption and saving, based upon answers regarding their expected financial situation, their sentiment about the general economic situation, unemployment and capability of savings.
 
 An indicator above 100 signals a boost in the consumers’ confidence towards the future economic situation, as a consequence of which they are less prone to save, and more inclined to spend money on major purchases in the next 12 months. Values below 100 indicate a pessimistic attitude towards future developments in the economy, possibly resulting in a tendency to save more and consume less.
@@ -83,6 +85,8 @@ Which returns:
 ---
 
 ## get_business_confidence_index
+Get the Business Confidence Index of a variety of countries: how optimistic manufacturers are about production, orders and stocks, an early sign of turning points in output.
+
 This business confidence indicator provides information on future developments, based upon opinion surveys on developments in production, orders and stocks of finished goods in the industry sector. It can be used to monitor output growth and to anticipate turning points in economic activity.
 
 Numbers above 100 suggest an increased confidence in near future business performance, and numbers below 100 indicate pessimism towards future performance.
@@ -137,6 +141,8 @@ Which returns:
 ---
 
 ## get_composite_leading_indicator
+Get the Composite Leading Indicator (CLI) of a variety of countries: early signals of turning points in the business cycle, with values above 100 pointing to growth above the long-term trend.
+
 The composite leading indicator (CLI) is designed to provide early signals of turning points in business cycles showing fluctuation of the economic activity around its long term potential level. CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
 The series returned is the OECD-harmonised, amplitude-adjusted index at monthly frequency, oscillating around a long-run average of 100: readings above 100 point to above-trend activity ahead and readings below 100 to below-trend activity. Coverage is narrower than the confidence indices -- around 22 countries and aggregates.
@@ -193,6 +199,8 @@ Which returns:
 ---
 
 ## get_share_prices
+Get the share price index of a variety of countries: how the prices of the shares traded on each country's stock exchanges move over time.
+
 Share price indices are calculated from the prices of common shares of companies traded on national or foreign stock exchanges. They are usually determined by the stock exchange, using the closing daily values for the monthly data, and normally expressed as simple arithmetic averages of the daily data.
 
 A share price index measures how the value of the stocks in the index is changing, a share return index tells the investor what their “return” is, meaning how much money they would make as a result of investing in that basket of shares.
@@ -208,9 +216,9 @@ This is an index based on 2015 = 100.
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is quarterly when
+the Economics class was initialized with quarterly=True and monthly otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -260,11 +268,11 @@ Which returns:
 ---
 
 ## get_retail_sales
-Get Advance Retail Sales (Retail and Food Services) for the United States from the Census Bureau.
+Get the advance retail sales (retail and food services) of the United States from the Census Bureau: what consumers spend in shops and restaurants each month.
 
 Retail Sales measures nominal spending at retail and food-service establishments. Since Personal Consumption Expenditures make up roughly two-thirds to three-quarters of US GDP, this monthly, high-frequency series is a core input to real-time (nowcast) GDP estimates such as the Federal Reserve Bank of Atlanta's GDPNow.
 
-The series is monthly, in millions of US dollars, seasonally adjusted, and covers retail trade and food services. It is nominal, so growth=True mixes volume and price changes together. With inflation_adjusted=True the sales are deflated by the US Consumer Price Index for All Urban Consumers, all items, of the same month (see get_consumer_price_index), in the money of its latest month, so growth=True returns the real change: the change in volume. The growth is taken of the deflated level, so the real growth equals (1 + nominal growth) / (1 + CPI growth) - 1 over the same months. The index is not seasonally adjusted, so the real change is best read over 12 months (lag=12), and a month without a published index, such as October 2025 or a month whose index is not released yet, has no real value.
+The series is monthly, in millions of US dollars, seasonally adjusted, and covers retail trade and food services. It is nominal, so its growth mixes volume and price changes together. Adjusted for inflation, the sales are deflated by the US Consumer Price Index for All Urban Consumers, all items, of the same month (see get_consumer_price_index), in the money of its latest month, so their growth is the real change: the change in volume. The growth is taken of the deflated level, so the real growth equals (1 + nominal growth) / (1 + CPI growth) - 1 over the same months. The index is not seasonally adjusted, so the real change is best read over 12 months (a lag of 12), and a month without a published index, such as October 2025 or a month whose index is not released yet, has no real value.
 
 The formula is as follows:
 
@@ -272,7 +280,7 @@ $$
 \text{Real Retail Sales} \;(t) = \frac{\text{Retail Sales} \;(t) \cdot \text{CPI} \;(\text{latest month})}{\text{CPI} \;(t)}
 $$
 
-Without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/RSAFS](https://fred.stlouisfed.org/series/RSAFS){:target="_blank"}
 
@@ -303,7 +311,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.DataFrame: A single-column ("United States") DataFrame of total retail
 and food services sales, in millions of dollars (of the latest month of the
-consumer price index with inflation_adjusted=True).
+consumer price index when adjusted for inflation).
 
 **As an example:**
 
@@ -331,11 +339,11 @@ Which returns:
 ---
 
 ## get_industrial_production_index
-Get the Industrial Production Index for the United States from the Federal Reserve's G.17 statistical release (via FRED).
+Get the Industrial Production Index of the United States from the Federal Reserve's G.17 release: the real output of manufacturing, mining and utilities.
 
 The Industrial Production Index measures real output in manufacturing, mining, and electric and gas utilities. Unlike survey-based sentiment indices, it is a hard, quantity-based measure of physical production and is one of the four coincident indicators the NBER's Business Cycle Dating Committee uses to date US recessions (alongside real personal income, real manufacturing/trade sales and, see `get_nonfarm_payrolls`, nonfarm payroll employment).
 
-Without a FRED API key the data comes from the Federal Reserve's G.17 release directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Federal Reserve's G.17 release directly, which gives the same figures. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/INDPRO](https://fred.stlouisfed.org/series/INDPRO){:target="_blank"}
 
@@ -387,6 +395,8 @@ Which returns:
 ---
 
 ## get_capacity_utilization
+Get the capacity utilization of industry: how much of its productive capacity is in use, a sign of slack or of inflationary pressure.
+
 Capacity utilization is the share of the productive capacity of industry that is in use. Output close to capacity means firms have little slack: they raise prices sooner and invest to expand, so a high utilization rate points to inflationary pressure and future investment, while a low one points to slack and, with the output gap (see get_output_gap), to an economy producing below its potential. It moves with the business cycle alongside industrial production.
 
 The two publishers measure it differently, so compare each country with its own history rather than levels between the United States and Europe:
@@ -411,11 +421,11 @@ See definitions: [https://www.federalreserve.gov/releases/g17/About.htm](https:/
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the quarterly data.
-Defaults to None, which is monthly when only the United States, the one country
-published monthly, is requested and quarterly otherwise (and quarterly when the
-Economics class was initialized with quarterly=True). With period='monthly'
-the other countries are left out with a warning.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data). Defaults to None, which is monthly when only the United States, the one
+country published monthly, is requested and quarterly otherwise (and quarterly when the Economics
+class was initialized with quarterly=True). With period='monthly' the other countries are left out
+with a warning.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -465,11 +475,11 @@ Which returns:
 ---
 
 ## get_housing_starts
-Get Housing Starts (Total New Privately-Owned Housing Units Started) for the United States from the Census Bureau.
+Get the housing starts (new privately-owned housing units started) of the United States from the Census Bureau, a leading indicator of construction and the housing market.
 
 Housing Starts counts the number of new residential construction projects that have begun in a given month. Residential investment is one of the most interest-rate-sensitive components of GDP, and construction activity leads the broader business cycle (it typically turns down before a recession and turns up before a recovery), making Housing Starts one of the ten components of the Conference Board's Leading Economic Index.
 
-Without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Census Bureau directly, which gives the same figures. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/HOUST](https://fred.stlouisfed.org/series/HOUST){:target="_blank"}
 
@@ -524,11 +534,11 @@ Which returns:
 ---
 
 ## get_real_personal_income
-Get Real Personal Income Excluding Current Transfer Receipts for the United States from the Bureau of Economic Analysis.
+Get the real personal income excluding current transfer receipts of the United States from the Bureau of Economic Analysis: the income households earn, adjusted for inflation.
 
 This is the exact series (not a proxy) the NBER's Business Cycle Dating Committee uses as one of its four primary coincident indicators for dating US recessions - alongside Nonfarm Payrolls (see `get_nonfarm_payrolls`), the Industrial Production Index (see `get_industrial_production_index`) and Real Personal Consumption Expenditures. It measures aggregate household income from wages, investments and proprietors' income, deliberately excluding government transfer payments (e.g. unemployment insurance, Social Security) so that the series reflects income generated by ongoing economic activity rather than the fiscal cushioning that automatically increases during a downturn.
 
-Without a FRED API key the data comes from the Bureau of Economic Analysis directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Bureau of Economic Analysis directly, which gives the same figures. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/W875RX1](https://fred.stlouisfed.org/series/W875RX1){:target="_blank"}
 
@@ -584,11 +594,11 @@ Which returns:
 ---
 
 ## get_recession_indicator
-Get the NBER-based US Recession Indicator from FRED.
+Get the NBER-based US recession indicator: 1 in the months the National Bureau of Economic Research dates as a recession and 0 otherwise.
 
 This is the official US business-cycle chronology maintained by the National Bureau of Economic Research (NBER) Business Cycle Dating Committee, encoded as 1 during NBER-dated recession months (peak through trough) and 0 otherwise. The Committee determines recession dates retrospectively from a broad set of coincident indicators - including Nonfarm Payrolls (see `get_nonfarm_payrolls`) and the Industrial Production Index (see `get_industrial_production_index`) - rather than the popular "two consecutive quarters of negative GDP growth" rule of thumb, which the NBER does not use. This series is the standard ground-truth label used in academic and applied business-cycle research to backtest whether other indicators lead, lag or coincide with recessions.
 
-Without a FRED API key the data comes from the NBER's business cycle dates directly, built the way FRED builds USREC, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the NBER's business cycle dates directly, built the way FRED builds USREC, which gives the same figures. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/USREC](https://fred.stlouisfed.org/series/USREC){:target="_blank"}
 
@@ -640,7 +650,9 @@ Which returns:
 ---
 
 ## get_supply_chain_pressure_index
-Get the Global Supply Chain Pressure Index (GSCPI) of the Federal Reserve Bank of New York, monthly from 1998: one measure of the pressure on global supply chains, combining 27 series. Shipping costs come from the Baltic Dry Index, the Harpex index of container ship charter rates and the US Bureau of Labor Statistics air freight price indices; the rest are the delivery times, backlogs and purchased stocks of the manufacturing purchasing managers' surveys of the euro area, China, Japan, South Korea, Taiwan, the United Kingdom and the United States. The index peaked in December 2021 at more than four standard deviations, when the reopening after COVID-19 met congested ports, and is a common leading indicator of goods inflation.
+Get the Global Supply Chain Pressure Index (GSCPI) of the Federal Reserve Bank of New York: how strained global supply chains are, in standard deviations from their average, monthly from 1998.
+
+The index combines 27 series. Shipping costs come from the Baltic Dry Index, the Harpex index of container ship charter rates and the US Bureau of Labor Statistics air freight price indices; the rest are the delivery times, backlogs and purchased stocks of the manufacturing purchasing managers' surveys of the euro area, China, Japan, South Korea, Taiwan, the United Kingdom and the United States. The index peaked in December 2021 at more than four standard deviations, when the reopening after COVID-19 met congested ports, and is a common leading indicator of goods inflation.
 
 Benigno, G., di Giovanni, J., Groen, J. J. J., & Noble, A. I. (2022). The GSCPI: A New Barometer of Global Supply Chain Pressures. Federal Reserve Bank of New York Staff Reports, 1017. [https://www.newyorkfed.org/research/staff_reports/sr1017](https://www.newyorkfed.org/research/staff_reports/sr1017){:target="_blank"}
 
@@ -695,7 +707,9 @@ Which returns:
 ---
 
 ## get_chokepoint_transits
-Retrieves IMF PortWatch's daily ship transits through the world's maritime chokepoints from 2019, such as the Strait of Hormuz, the Suez Canal, the Bab el-Mandeb Strait, the Panama Canal, the Malacca Strait and the Bosporus, 28 in all. For each chokepoint and day it gives the number of ships that passed it (transits) or the estimated cargo they carried (trade volume, in metric tons), by ship category: Container, Dry Bulk, General Cargo, Ro-Ro and Tanker, with Cargo (all but tankers) and Total.
+Get IMF PortWatch's daily ship transits through the world's maritime chokepoints from 2019: how much shipping passes the Strait of Hormuz, the Suez Canal and 26 other straits and canals.
+
+The 28 chokepoints also include the Bab el-Mandeb Strait, the Panama Canal, the Malacca Strait and the Bosporus. For each chokepoint and day it gives the number of ships that passed it (transits) or the estimated cargo they carried (trade volume, in metric tons), by ship category: Container, Dry Bulk, General Cargo, Ro-Ro and Tanker, with Cargo (all but tankers) and Total.
 
 The transits show disruptions to trade as they happen, weeks before trade statistics are published: tankers through the Strait of Hormuz fell from 36 on 28 February 2026 to 5 on 1 March, and when ships avoided the Red Sea, the monthly transits of the Bab el-Mandeb Strait fell from 2,438 in October 2023 to 1,013 in February 2024 while those around the Cape of Good Hope rose from 1,561 to 2,487.
 
@@ -711,11 +725,11 @@ With period, the days are summed by week (Monday to Sunday), month, quarter or y
 of Hormuz" or ["Suez Canal", "Cape of Good Hope"], in any casing; a part of
 a name that identifies one chokepoint, such as "Hormuz" or "Suez", works
 too. Defaults to None, which returns all of them.
-- <u>measure (str, optional):</u> "transits" for the number of ships or "trade_volume"
-for the estimated cargo they carried in metric tons. Defaults to
-"transits".
-- <u>period (str, optional):</u> "daily", "weekly", "monthly", "quarterly" or "yearly".
-Defaults to "daily".
+- <u>measure (str, optional):</u> What is counted. Options are: "transits" (the number of ships),
+"trade_volume" (the estimated cargo they carried in metric tons). Defaults to "transits".
+- <u>period (str, optional):</u> The frequency of the data, the sum over each period. Options are: "daily"
+(daily data), "weekly" (weekly data), "monthly" (monthly data), "quarterly" (quarterly data),
+"yearly" (yearly data). Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Economics class.
 - <u>growth (bool, optional):</u> Whether to calculate the growth. Defaults to False.
@@ -767,15 +781,17 @@ Which returns:
 ---
 
 ## get_economic_calendar
-Returns the scheduled releases of economic data for every country, such as inflation, employment, GDP and central bank decisions. Each release comes with its previous value, the consensus estimate and, once published, the actual value and the change. The estimate versus the actual value is what moves markets: a release far from the consensus tends to cause the largest reaction.
+Get the scheduled releases of economic data for every country, such as inflation, employment, GDP and central bank decisions, with the consensus estimate and the actual value.
 
-The calendar covers well over a hundred countries, so it is best narrowed down: select a date range and filter by country, currency, impact and/or event. Filtering on events="PMI" gives the latest purchasing managers' indices with their consensus, figures that are otherwise only available as licensed data. The "Impact" column rates how much a release usually moves the market (Low, Medium or High). The "Unit" column gives the unit of each release. Releases quoted in percent (for example an inflation or unemployment rate) are converted to decimals, as is the "Change %" column, so an unemployment rate of 4.1% is returned as 0.041. Releases in other units, such as thousands of jobs or index points, keep their values, as do survey levels such as PMIs and confidence indices, which the calendar sometimes labels "%" as well. The "Currency" column is the currency of the market a release concerns, not the unit of its value: China's balance of trade is in US dollars while its row shows CNY (the yuan figure is the separate "Balance of Trade Yuan"). The "Previous" value is the source's own and can differ from the Actual of the release before it, e.g. after a revision.
+Each release comes with its previous value, the consensus estimate and, once published, the actual value and the change. The estimate versus the actual value is what moves markets: a release far from the consensus tends to cause the largest reaction.
 
-The calendar comes from FinancialModelingPrep and starts in 2013 for most countries; the first release of a series is the first period of its as_series answer.
+The calendar covers well over a hundred countries, so it is best narrowed down: select a date range and filter by country, currency, impact and/or event. Filtering on the PMI events gives the latest purchasing managers' indices with their consensus, figures that are otherwise only available as licensed data. The "Impact" column rates how much a release usually moves the market (Low, Medium or High). The "Unit" column gives the unit of each release. Releases quoted in percent (for example an inflation or unemployment rate) are converted to decimals, as is the "Change %" column, so an unemployment rate of 4.1% is returned as 0.041. Releases in other units, such as thousands of jobs or index points, keep their values, as do survey levels such as PMIs and confidence indices, which the calendar sometimes labels "%" as well. The "Currency" column is the currency of the market a release concerns, not the unit of its value: China's balance of trade is in US dollars while its row shows CNY (the yuan figure is the separate "Balance of Trade Yuan"). The "Previous" value is the source's own and can differ from the Actual of the release before it, e.g. after a revision.
 
-With as_series=True the releases become time series: the Actual value of every event by the period it covers, with a column per country and event and the consensus Estimate next to it ("<event> Estimate"). The calendar only names the period in the event, e.g. "Producer Price Index YoY (Oct)", so the period is read from it: a month, a quarter "(Q3)", the day a weekly figure ends "(Oct/10)", a year "(2026)" or, for an event without one (an interest rate decision), the day of the release. The year is that of the release, or the year before when the period starts after the release month (a December figure released in January). Several releases of the same period, such as a flash estimate and the final figure, keep the latest one published. A figure published for two consecutive periods on the same day, such as China's January and February trade figures, is one release of both and is kept once, under the later period (February), leaving January empty; a release without a period, of an event that otherwise has one, is left out. The index is monthly for monthly events, quarterly for quarterly ones and daily, at the last day of each period, when events of different frequencies are combined. The series can be analysed further with `Econometrics(data=...)`, e.g. how unusual the latest value is (get_level_significance) or how long it has been above or below zero (get_streaks).
+The calendar comes from FinancialModelingPrep and starts in 2013 for most countries; the first release of a series is the first period of its time series.
 
-Without a start_date and end_date the dates this Economics instance was created with are used, and without those the last 90 days. The endpoint returns at most 90 days per request, so a longer range is retrieved in 90-day windows. This requires a FinancialModelingPrep API key, passed via api_key when initializing.
+Returned as time series, the releases give the Actual value of every event by the period it covers, with a column per country and event and the consensus Estimate next to it ("<event> Estimate"). The calendar only names the period in the event, e.g. "Producer Price Index YoY (Oct)", so the period is read from it: a month, a quarter "(Q3)", the day a weekly figure ends "(Oct/10)", a year "(2026)" or, for an event without one (an interest rate decision), the day of the release. The year is that of the release, or the year before when the period starts after the release month (a December figure released in January). Several releases of the same period, such as a flash estimate and the final figure, keep the latest one published. A figure published for two consecutive periods on the same day, such as China's January and February trade figures, is one release of both and is kept once, under the later period (February), leaving January empty; a release without a period, of an event that otherwise has one, is left out. The index is monthly for monthly events, quarterly for quarterly ones and daily, at the last day of each period, when events of different frequencies are combined. The series can be analysed further with the Econometrics class, e.g. how unusual the latest value is (get_level_significance) or how long it has been above or below zero (get_streaks).
+
+Without a start date and end date the dates this Economics instance was created with are used, and without those the last 90 days. The endpoint returns at most 90 days per request, so a longer range is retrieved in 90-day windows. This requires a FinancialModelingPrep API key, passed when initializing.
 
 **Also known as:** economic calendar, macro calendar, economic releases.
 
@@ -790,8 +806,9 @@ this instance's end_date when it was given, otherwise today.
 Defaults to None, which keeps every country.
 - <u>currencies (str &#124; list[str], optional):</u> The currencies to keep, e.g. "USD" or
 ["USD", "EUR"]. Defaults to None, which keeps every currency.
-- <u>impact (str &#124; list[str], optional):</u> The market impact to keep: "Low", "Medium"
-and/or "High", or "All" for every release. Defaults to None, which keeps every release.
+- <u>impact (str &#124; list[str], optional):</u> The market impact to keep, one or a list of them. Options
+are: "Low" (low impact), "Medium" (medium impact), "High" (high impact), "All" (every
+release). Defaults to None, which keeps every release.
 - <u>events (str &#124; list[str], optional):</u> Parts of event names to keep, matched without
 regard to case, e.g. "PMI" for every purchasing managers' index or ["CPI",
 "Unemployment"]. Defaults to None, which keeps every event.
@@ -805,7 +822,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: The economic data releases, indexed by date, or with as_series=True
+pd.DataFrame: The economic data releases, indexed by date, or as time series
 the values of every event by the period they cover.
 
 **As an example:**
@@ -838,26 +855,28 @@ Which returns:
 ---
 
 ## get_commodity_forward_curve
-Get the forward/futures curve for a commodity from Yahoo Finance -- the historical daily closing (settlement) price of each of the nearest `contracts` dated futures contracts from the current month on (e.g. Crude Oil's December 2026, January 2027, ... contracts), rather than a single flat continuous/spot price.
+Get the futures curve of a commodity from Yahoo Finance: the daily closing (settlement) price of each of its nearest dated contracts, the price the market sets for delivery in each month.
+
+The contracts run from the current month on, such as Crude Oil's December 2026 and January 2027 contracts, rather than a single continuous or spot price.
 
 This is what a Schwartz-Smith (2000) two-factor commodity price model needs to back out the convenience-yield term structure under the risk-neutral (Q) measure -- the curve's shape (contango or backwardation) at each point in time is exactly what a single spot price series cannot reveal.
 
-Not every commodity has a listed contract for every calendar month (grains in particular only trade specific delivery months), and the contracts of the first months may already have expired (for crude oil the current month's contract and, late in the month, the next month's). Those months are skipped and later months are tried instead, until `contracts` contracts are found.
+Not every commodity has a listed contract for every calendar month (grains in particular only trade specific delivery months), and the contracts of the first months may already have expired (for crude oil the current month's contract and, late in the month, the next month's). Those months are skipped and later months are tried instead, until the requested number of contracts is found.
 
-By default the columns are the contracts listed today, so a past date shows how those contracts traded then, not the curve as it stood that day. With generic=True the columns are the positions on each day's curve instead: the front (the nearest contract that has not expired on that day), +1, +2 and so on, rolling to the next contract the day after the front's last trading day (the generic or nearby series, CL1, CL2, ... in Bloomberg notation). A position is a rank on the curve, not a constant maturity: the front's time to expiry shortens each day and jumps at the roll, as no price is interpolated. The last trading days follow the CME Group contract specifications on the US exchange calendar.
+By default the columns are the contracts listed today, so a past date shows how those contracts traded then, not the curve as it stood that day. With the generic curve the columns are the positions on each day's curve instead: the front (the nearest contract that has not expired on that day), +1, +2 and so on, rolling to the next contract the day after the front's last trading day (the generic or nearby series, CL1, CL2, ... in Bloomberg notation). A position is a rank on the curve, not a constant maturity: the front's time to expiry shortens each day and jumps at the roll, as no price is interpolated. The last trading days follow the CME Group contract specifications on the US exchange calendar.
 
-Yahoo Finance only publishes the contracts that still trade: a contract's history disappears once it expires, and no free source publishes it (FinancialModelingPrep has the continuous front contract only). On a past date the positions of the contracts that have expired since are therefore NaN rather than filled with another contract: for crude oil on 2026-09-15 the front (October 2026) and +1 (November 2026) are NaN and +2 is the December 2026 contract. The further back the date, the more positions are NaN, until none is left about `contracts` months back.
+Yahoo Finance only publishes the contracts that still trade: a contract's history disappears once it expires, and no free source publishes it (FinancialModelingPrep has the continuous front contract only). On a past date the positions of the contracts that have expired since are therefore NaN rather than filled with another contract: for crude oil on 2026-09-15 the front (October 2026) and +1 (November 2026) are NaN and +2 is the December 2026 contract. The further back the date, the more positions are NaN, until none is left about as many months back as there are contracts.
 
-With growth=True the change is that of each column over `lag` trading days: of a contract, or with generic of a position, which compares two contracts across a roll.
+With growth the change is that of each column over the lag in trading days: of a contract, or with the generic curve of a position, which compares two contracts across a roll.
 
 **Also known as:** futures term structure, forward curve, generic futures, nearby futures.
 
 **Args:**
 
-- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
-them, to retrieve the curve for: "Crude Oil", "Natural Gas", "Gold",
-"Silver", "Copper", "Corn", "Wheat" or "Soybeans". Defaults to None, which
-retrieves every one of them.
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of them, to retrieve the curve for.
+Options are: "Crude Oil" (WTI crude oil), "Natural Gas" (Henry Hub natural gas), "Gold" (gold),
+"Silver" (silver), "Copper" (copper), "Corn" (corn), "Wheat" (wheat), "Soybeans" (soybeans). Defaults
+to None, which retrieves every one of them.
 - <u>contracts (int, optional):</u> The number of contracts to return, the nearest
 listed ones from the current month on, or with generic the
 number of positions (the front included). Defaults to 12.
@@ -877,7 +896,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Raises:**
 
-ValueError: If `commodity` is not one of the supported names.
+InvalidArgumentError: If the commodity is not one of the supported names.
 
 **Returns:**
 
@@ -917,7 +936,9 @@ Which returns:
 ---
 
 ## get_commodity_term_structure
-Get the term structure of a commodity futures curve per day: the front contract, the 12-month calendar spread between the front and the last contract of the 12-month strip that starts with it (in price and in percent), the annualised roll yield and whether the curve is in backwardation, contango or flat.
+Get the term structure of a commodity futures curve per day: whether the curve is in backwardation, contango or flat, with the 12-month calendar spread and the annualised roll yield.
+
+Next to the front contract, the calendar spread compares it with the last contract of the 12-month strip that starts with it, in price and in percent.
 
 The far contract is the furthest one delivering less than 12 months after the front: for a December 2026 front of a monthly listed commodity (crude oil, natural gas, the metals) the November 2027 contract, 11 months later, and for corn's December 2026 front the September 2027 contract, 9 months later.
 
@@ -927,15 +948,16 @@ Spread = Front - Far Slope = Far / Front - 1 Roll Yield = ln(Front / Far) x 12 /
 
 The spread follows the exchange quote of a calendar spread, nearby minus deferred, so it is positive in backwardation, and its widest backwardation is its maximum. The slope is the percentage the far contract lies above the front (negative in backwardation). The roll yield is the annualised log basis of Fama and French (1987) and Szymanowska, De Roon, Nijman and Van den Goorbergh (2014): the continuously compounded yearly return a long position earns from the shape of the curve alone, positive in backwardation and negative in contango, with Months the months between both delivery months.
 
-By default the front of each day is the nearest contract that had not expired on that day (see get_commodity_forward_curve with generic=True), so the spread is a time series of the curve as it stood each day. Yahoo Finance drops a contract once it expires, so on the days whose front has expired since, Front, the Spread, Slope and Roll Yield are NaN while Front Contract names the contract. generic=False instead takes today's front and far contract on every day (e.g. December 2026 against November 2027 for crude oil): a fixed calendar spread with its full history.
+By default the front of each day is the nearest contract that had not expired on that day (see the generic curve of get_commodity_forward_curve), so the spread is a time series of the curve as it stood each day. Yahoo Finance drops a contract once it expires, so on the days whose front has expired since, Front, the Spread, Slope and Roll Yield are NaN while Front Contract names the contract. Without the generic curve, today's front and far contract are taken on every day (e.g. December 2026 against November 2027 for crude oil): a fixed calendar spread with its full history.
 
 **Also known as:** calendar spread, roll yield, carry, basis, backwardation, contango.
 
 **Args:**
 
-- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of
-them: "Crude Oil", "Natural Gas", "Gold", "Silver", "Copper", "Corn",
-"Wheat" or "Soybeans". Defaults to None, which retrieves every one of them.
+- <u>commodity (str &#124; list[str] &#124; None, optional):</u> The commodity, or a list of them. Options are: "Crude Oil"
+(WTI crude oil), "Natural Gas" (Henry Hub natural gas), "Gold" (gold), "Silver" (silver), "Copper"
+(copper), "Corn" (corn), "Wheat" (wheat), "Soybeans" (soybeans). Defaults to None, which retrieves
+every one of them.
 - <u>generic (bool, optional):</u> Whether the front and far contract are
 those of each day's curve, instead of today's. Defaults to True.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -947,7 +969,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Raises:**
 
-ValueError: If `commodity` is not one of the supported names.
+InvalidArgumentError: If the commodity is not one of the supported names.
 
 **Returns:**
 
@@ -985,6 +1007,8 @@ Which returns:
 ---
 
 ## get_renewable_energy
+Get the renewable energy share of a variety of countries: how much of their primary energy supply comes from renewable sources.
+
 Renewable energy is defined as the contribution of renewables to total primary energy supply (TPES). Renewables include the primary energy equivalent of hydro (excluding pumped storage), geothermal, solar, wind, tide and wave sources.
 
 Energy derived from solid biofuels, biogasoline, biodiesels, other liquid biofuels, biogases and the renewable fraction of municipal waste are also included. Biofuels are defined as fuels derived directly or indirectly from biomass (material obtained from living or recently living organisms).
@@ -1047,6 +1071,8 @@ Which returns:
 ---
 
 ## get_carbon_footprint
+Get the carbon footprint of a variety of countries: the greenhouse gases emitted to support human activities, in tonnes of CO2 equivalent per person.
+
 The carbon footprint is a measure of the total amount of greenhouse gases produced to directly and indirectly support human activities, usually expressed in equivalent tons of carbon dioxide (CO2).
 
 The carbon footprint is a subset of the ecological footprint and of the more comprehensive Life Cycle Assessment (LCA). An individual, nation, or organization's carbon footprint can be measured by undertaking a GHG emissions assessment or other calculative activities denoted as carbon accounting.
@@ -1107,7 +1133,9 @@ Which returns:
 ---
 
 ## get_carbon_price
-Get the price of emitting one tonne of CO2 under the EU Emissions Trading System (EU ETS): the clearing price of the primary auctions of EU emission allowances (EUAs) the European Energy Exchange holds for the European Union, Germany and Poland almost every trading day, daily from 2020. The carbon price is the main transition risk variable of climate scenarios; see get_climate_scenario for its projected paths.
+Get the price of emitting one tonne of CO2 under the EU Emissions Trading System (EU ETS): the clearing price of the primary auctions of EU emission allowances (EUAs).
+
+The European Energy Exchange holds these auctions for the European Union, Germany and Poland almost every trading day; the prices run daily from 2020. The carbon price is the main transition risk variable of climate scenarios; see get_climate_scenario for its projected paths.
 
 The price is the average of the day's auctions of general allowances, in euro per tonne of CO2. Weekly and monthly periods take the price of the last auction of each period.
 
@@ -1117,8 +1145,8 @@ The price is the average of the day's auctions of general allowances, in euro pe
 
 **Args:**
 
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily" (daily data), "weekly"
+(weekly data), "monthly" (monthly data). Defaults to "daily".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
@@ -1164,13 +1192,15 @@ Which returns:
 ---
 
 ## get_climate_scenario
+Get the path of an economic or financial variable in an NGFS climate scenario: how GDP, inflation, interest rates or the carbon price develop under a climate transition.
+
 Get the path of an economic or financial variable in a climate scenario of the Network for Greening the Financial System (NGFS), the scenarios central banks and supervisors use for climate stress tests, yearly from 2022 to 2050 for around fifty countries and regions.
 
-The NGFS scenarios combine an integrated assessment model, which projects the energy system, emissions and the carbon price (model="REMIND-MAgPIE", "GCAM" or "MESSAGEix-GLOBIOM"), with NiGEM, the macroeconometric model of the National Institute of Economic and Social Research, which translates each scenario into GDP, inflation, interest rates, equity prices, exchange rates and energy prices. NiGEM separates the transition risk (the policies and technologies of the move to a low-carbon economy), the physical risk (the damage of climate change) and both together (risk="combined").
+The NGFS scenarios combine an integrated assessment model, which projects the energy system, emissions and the carbon price (REMIND-MAgPIE, GCAM or MESSAGEix-GLOBIOM), with NiGEM, the macroeconometric model of the National Institute of Economic and Social Research, which translates each scenario into GDP, inflation, interest rates, equity prices, exchange rates and energy prices. NiGEM separates the transition risk (the policies and technologies of the move to a low-carbon economy), the physical risk (the damage of climate change) and both together (the combined risk).
 
 The variables: "gdp" (2017 PPP US$ billion), "inflation", "long_term_interest_rate", "long_term_real_interest_rate", "policy_rate", "unemployment_rate", "equity_prices" (index, 2017 = 100), "effective_exchange_rate" (index), "domestic_demand", "exports", "imports" (2017 PPP US$ billion), "oil_price" (US$ per barrel), "gas_price" and "coal_price" (US$ per barrel of oil equivalent), and "carbon_price", which comes from the integrated assessment model itself: US$ of 2010 per tonne of CO2 for the world and the model's regions, every five years to 2100.
 
-By default the level is returned: the NiGEM baseline (a world without further climate change and policy, scenario="Baseline") with the scenario's deviation applied. With deviation=True the deviation from the baseline itself is returned: relative for levels (-0.034 for 3.4% lower GDP) and in decimal points for rates (0.0094 for 0.94 percentage points higher). Rates are decimal fractions (0.041 for 4.1%).
+By default the level is returned: the NiGEM baseline (a world without further climate change and policy, the Baseline scenario) with the scenario's deviation applied. As a deviation, the deviation from the baseline itself is returned: relative for levels (-0.034 for 3.4% lower GDP) and in decimal points for rates (0.0094 for 0.94 percentage points higher). Rates are decimal fractions (0.041 for 4.1%).
 
 The data is the Phase 5 vintage (November 2024), hosted by IIASA. The NGFS licence allows commercial use with attribution but not the redistribution of substantial parts, so it is retrieved when needed rather than stored with the Finance Toolkit.
 
@@ -1180,20 +1210,28 @@ The data is the Phase 5 vintage (November 2024), hosted by IIASA. The NGFS licen
 
 **Args:**
 
-- <u>variable (str, optional):</u> The variable: "gdp", "inflation",
-"long_term_interest_rate", "long_term_real_interest_rate", "policy_rate",
-"unemployment_rate", "equity_prices", "effective_exchange_rate",
-"domestic_demand", "exports", "imports", "oil_price", "gas_price",
-"coal_price" or "carbon_price" (units above). Defaults to
-"long_term_interest_rate".
-- <u>scenario (str, optional):</u> "Net Zero 2050", "Below 2°C", "Low demand", "Delayed
-transition", "Nationally Determined Contributions (NDCs)", "Current
-Policies", "Fragmented World" or "Baseline". Defaults to "Net Zero 2050".
-- <u>model (str, optional):</u> The integrated assessment model behind the scenario:
-"REMIND-MAgPIE", "GCAM" or "MESSAGEix-GLOBIOM". Defaults to "REMIND-MAgPIE".
+- <u>variable (str, optional):</u> The variable, in the units above. Options are: "gdp" (Gross Domestic
+Product), "inflation" (inflation rate), "long_term_interest_rate" (long-term interest rate),
+"long_term_real_interest_rate" (long-term real interest rate), "policy_rate" (central bank
+policy rate), "unemployment_rate" (unemployment rate), "equity_prices" (equity prices),
+"effective_exchange_rate" (effective exchange rate), "domestic_demand" (domestic demand),
+"exports" (exports of goods and services), "imports" (imports of goods and services),
+"oil_price" (oil price), "gas_price" (gas price), "coal_price" (coal price), "carbon_price"
+(carbon price of the integrated assessment model). Defaults to "long_term_interest_rate".
+- <u>scenario (str, optional):</u> The NGFS scenario. Options are: "Net Zero 2050" (Net Zero 2050),
+"Below 2°C" (Below 2°C), "Low demand" (Low Demand), "Delayed transition" (Delayed
+Transition), "Nationally Determined Contributions (NDCs)" (Nationally Determined
+Contributions), "Current Policies" (Current Policies), "Fragmented World" (Fragmented World),
+"Baseline" (the NiGEM baseline without further climate change and policy). Defaults to
+"Net Zero 2050".
+- <u>model (str, optional):</u> The integrated assessment model behind the scenario. Options are:
+"REMIND-MAgPIE" (REMIND-MAgPIE), "GCAM" (GCAM), "MESSAGEix-GLOBIOM" (MESSAGEix-GLOBIOM).
+Defaults to "REMIND-MAgPIE".
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries or regions to
 include. Defaults to None, which includes all of them.
-- <u>risk (str, optional):</u> "combined", "transition" or "physical". Current Policies has
+- <u>risk (str, optional):</u> The climate risk. Options are: "combined" (transition and physical risk),
+"transition" (the transition to a low-carbon economy), "physical" (the damage of climate
+change). Current Policies has
 physical risk only, which is also its combined risk. Defaults to "combined".
 - <u>deviation (bool, optional):</u> Whether to return the deviation from the baseline
 instead of the level. Defaults to False.
@@ -1239,7 +1277,7 @@ Which returns:
 ---
 
 ## get_government_debt
-Get the Government Debt for a variety of countries over time from the Global Macro Database (GMDB). Government Debt is the total amount of money that a government owes to creditors.
+Get the government debt of a variety of countries from the Global Macro Database (GMDB): the total amount a government owes to its creditors.
 
 The stock is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -1250,7 +1288,10 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1302,7 +1343,7 @@ Which returns:
 ---
 
 ## get_government_debt_to_gdp_ratio
-Get the Government Debt to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Debt to GDP Ratio is the ratio of the total amount of money that a government owes to creditors to the Gross Domestic Product (GDP).
+Get the government debt to GDP ratio of a variety of countries from the Global Macro Database (GMDB): what a government owes against the size of its economy.
 
 Debt to GDP is the standard measure of a government's indebtedness, used by rating agencies, the IMF and the European Union, whose fiscal rules refer to 60% of GDP. Whether a ratio is sustainable depends less on its level than on the gap between the interest rate on the debt and the growth rate of nominal GDP, and on the primary balance. Compare countries on the same level of government (the level parameter), since central government debt can differ substantially from general government debt.
 
@@ -1315,7 +1356,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Debt to GDP Ratio} = \frac{\text{Gross Government Debt}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Debt to GDP Ratio} = \frac{\text{Gross Government Debt}}{\text{Nominal GDP}},\;\; \text{using the level of government selected (the consolidated government by default)}
 $$
 
 **Also known as:** debt-to-GDP ratio, fiscal sustainability.
@@ -1323,7 +1364,10 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1375,7 +1419,7 @@ Which returns:
 ---
 
 ## get_government_revenue
-Get the Government Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Revenue is the total amount of money that a government collects from taxes and other sources.
+Get the government revenue of a variety of countries from the Global Macro Database (GMDB): what a government collects from taxes and other sources.
 
 The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -1386,7 +1430,10 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1434,7 +1481,7 @@ Which returns:
 ---
 
 ## get_government_revenue_to_gdp_ratio
-Get the Government Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes and other sources to the Gross Domestic Product (GDP).
+Get the government revenue to GDP ratio of a variety of countries from the Global Macro Database (GMDB): what a government collects against the size of its economy.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1445,7 +1492,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Revenue to GDP Ratio} = \frac{\text{Government Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Revenue to GDP Ratio} = \frac{\text{Government Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected (the consolidated government by default)}
 $$
 
 **Also known as:** revenue to GDP ratio.
@@ -1453,7 +1500,10 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1505,7 +1555,7 @@ Which returns:
 ---
 
 ## get_government_tax_revenue
-Get the Government Tax Revenue for a variety of countries over time from the Global Macro Database (GMDB). Government Tax Revenue is the total amount of money that a government collects from taxes.
+Get the government tax revenue of a variety of countries from the Global Macro Database (GMDB): what a government collects from taxes.
 
 The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -1516,7 +1566,10 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1568,7 +1621,7 @@ Which returns:
 ---
 
 ## get_government_tax_revenue_to_gdp_ratio
-Get the Government Tax Revenue to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Tax Revenue to GDP Ratio is the ratio of the total amount of money that a government collects from taxes to the Gross Domestic Product (GDP).
+Get the government tax revenue to GDP ratio of a variety of countries from the Global Macro Database (GMDB): the tax burden against the size of the economy.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1579,7 +1632,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Tax Revenue to GDP Ratio} = \frac{\text{Government Tax Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Tax Revenue to GDP Ratio} = \frac{\text{Government Tax Revenue}}{\text{Nominal GDP}},\;\; \text{using the level of government selected (the consolidated government by default)}
 $$
 
 **Also known as:** tax burden, tax to GDP ratio.
@@ -1587,7 +1640,10 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1640,7 +1696,7 @@ Which returns:
 ---
 
 ## get_government_expenditure
-Get the Government Expenditure for a variety of countries over time from the Global Macro Database (GMDB). Government Expenditure is the total spending of the government: goods and services and the wages of its employees, but also social benefits and other transfers, subsidies and interest on its debt.
+Get the government expenditure of a variety of countries from the Global Macro Database (GMDB): what a government spends on goods, services, wages, transfers and interest.
 
 The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -1651,7 +1707,10 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1703,7 +1762,7 @@ Which returns:
 ---
 
 ## get_government_expenditure_to_gdp_ratio
-Get the Government Expenditure to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Expenditure to GDP Ratio is the total spending of the government (goods and services and the wages of its employees, but also social benefits and other transfers, subsidies and interest on its debt) as a share of the Gross Domestic Product (GDP).
+Get the government expenditure to GDP ratio of a variety of countries from the Global Macro Database (GMDB): how large the government's spending is against the economy.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1714,7 +1773,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Expenditure to GDP Ratio} = \frac{\text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Expenditure to GDP Ratio} = \frac{\text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected (the consolidated government by default)}
 $$
 
 **Also known as:** government spending to GDP.
@@ -1722,7 +1781,10 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1775,7 +1837,9 @@ Which returns:
 ---
 
 ## get_government_deficit
-Get the Government Deficit for a variety of countries over time from the Global Macro Database (GMDB). Government Deficit is the total amount of money that a government spends more than it collects from taxes and other sources. A government deficit is usually financed by borrowing money.
+Get the government deficit of a variety of countries from the Global Macro Database (GMDB): how much more a government spends than it collects from taxes and other sources.
+
+A government deficit is usually financed by borrowing money.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -1786,7 +1850,10 @@ The series is signed as a fiscal balance rather than as a deficit, in millions o
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1838,7 +1905,9 @@ Which returns:
 ---
 
 ## get_government_deficit_to_gdp_ratio
-Get the Government Deficit to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Government Deficit to GDP Ratio is the ratio of the total amount of money that a government spends more than it collects from taxes and other sources to the Gross Domestic Product (GDP). A government deficit is usually financed by borrowing money.
+Get the government deficit to GDP ratio of a variety of countries from the Global Macro Database (GMDB): the shortfall of revenue against spending as a share of the economy.
+
+A government deficit is usually financed by borrowing money.
 
 The budget balance as a share of GDP is the headline fiscal indicator, with the European Union's 3% of GDP as the best-known reference for deficits. It includes interest payments and moves with the business cycle, so analysts also look at the primary balance (excluding interest) and the cyclically adjusted balance to judge the fiscal stance. A deficit that stays above the nominal growth rate times the debt ratio keeps pushing debt to GDP up.
 
@@ -1851,7 +1920,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Government Deficit to GDP Ratio} = \frac{\text{Government Revenue} - \text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected with level ("consolidated" by default)}
+\text{Government Deficit to GDP Ratio} = \frac{\text{Government Revenue} - \text{Government Expenditure}}{\text{Nominal GDP}},\;\; \text{using the level of government selected (the consolidated government by default)}
 $$
 
 **Also known as:** deficit-to-GDP, fiscal balance.
@@ -1859,7 +1928,10 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>level (str, optional):</u> The government the figures cover: "consolidated" (the Global Macro Database's combination of general and central government figures, with the longest history), "general" (general government: central, state and local government and social security) or "central" (central government only). Defaults to "consolidated".
+- <u>level (str, optional):</u> The government the figures cover. Options are: "consolidated" (the Global
+Macro Database's combination of general and central government figures, with the longest
+history), "general" (general government: central, state and local government and social
+security), "central" (central government only). Defaults to "consolidated".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1913,11 +1985,13 @@ Which returns:
 ---
 
 ## get_government_interest_expenditure
-Get the Government Interest Expenditure for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government (the central, state and local governments and the social security funds together) owes on its debt: GFS item 24, interest payable, which is D.41 in the national accounts.
+Get the government interest expenditure of a variety of countries from the IMF's Government Finance Statistics: the interest a government pays on its debt.
+
+It is the interest the general government (the central, state and local governments and the social security funds together) owes on its debt: GFS item 24, interest payable, which is D.41 in the national accounts.
 
 The interest is recorded when it accrues rather than when it is paid, and before the interest the government receives is netted against it. It is therefore higher than the net interest of a national budget: for the United States, the general government interest also covers the states and local governments, and the federal net interest the Congressional Budget Office reports subtracts the interest the federal government receives.
 
-The figures are quarterly (period="quarterly", the default) or yearly and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Quarterly figures are not seasonally adjusted; trailing=4 gives the interest over the last four quarters. The IMF's quarterly government finance statistics cover around 40 economies, among which the United States, the euro area and its members, the United Kingdom, Canada, Australia, Brazil, Turkey and Indonesia; countries outside them are left out with a warning. For those, get_government_expenditure_by_function with functions="Public Debt Transactions" has the yearly public debt transactions (COFOG 01.7, mostly interest) of around 180 countries.
+The figures are quarterly (the default) or yearly and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are. Quarterly figures are not seasonally adjusted; a trailing window of four gives the interest over the last four quarters. The IMF's quarterly government finance statistics cover around 40 economies, among which the United States, the euro area and its members, the United Kingdom, Canada, Australia, Brazil, Turkey and Indonesia; countries outside them are left out with a warning. For those, get_government_expenditure_by_function with the Public Debt Transactions function has the yearly public debt transactions (COFOG 01.7, mostly interest) of around 180 countries.
 
 Data comes from the IMF's Quarterly Government Finance Statistics, further information can be found within [https://data.imf.org/en/datasets/IMF.STA:QGFS](https://data.imf.org/en/datasets/IMF.STA:QGFS){:target="_blank"}
 
@@ -1926,8 +2000,9 @@ Data comes from the IMF's Quarterly Government Finance Statistics, further infor
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" or "yearly". Defaults to None, which is
-quarterly, the highest frequency published.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "quarterly" (quarterly
+data), "yearly" (yearly data). Defaults to None, which is quarterly, the highest frequency
+published.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -1976,7 +2051,9 @@ Which returns:
 ---
 
 ## get_government_interest_expenditure_to_gdp_ratio
-Get the Government Interest Expenditure to GDP Ratio for a variety of countries over time from the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable, D.41 in the national accounts) as a share of the Gross Domestic Product (GDP).
+Get the government interest expenditure to GDP ratio of a variety of countries from the IMF: the interest a government pays on its debt against the size of its economy.
+
+It is the interest the general government owes on its debt (GFS item 24, interest payable, D.41 in the national accounts) as a share of the Gross Domestic Product (GDP).
 
 The interest burden as a share of GDP shows how much of the economy's output goes to servicing government debt. It rises with the debt ratio and with the interest rate the debt is refinanced at, and is the item that turns a primary balance into the overall balance. Comparing it with the spending on a function, such as defence with get_government_expenditure_by_function_to_gdp_ratio, uses the same general government and the same GDP.
 
@@ -1987,7 +2064,7 @@ The ratio is expressed as a decimal fraction (0.0402 for 4.02% of GDP).
 The formula is as follows:
 
 $$
-\text{Government Interest Expenditure to GDP Ratio} = \frac{\text{Interest Payable}}{\text{Nominal GDP}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without seasonal swings) or over the year for period="yearly"}
+\text{Government Interest Expenditure to GDP Ratio} = \frac{\text{Interest Payable}}{\text{Nominal GDP}},\;\; \text{both summed over the last four quarters for quarterly data (an annual ratio without seasonal swings) or over the year for yearly data}
 $$
 
 **Also known as:** interest burden, interest to GDP, debt service to GDP.
@@ -1995,9 +2072,9 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
-each quarter) or "yearly". Defaults to None, which is quarterly, the highest
-frequency published.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "quarterly" (the ratio over
+the four quarters up to each quarter), "yearly" (the ratio over the calendar year). Defaults to
+None, which is quarterly, the highest frequency published.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -2046,7 +2123,9 @@ Which returns:
 ---
 
 ## get_government_interest_expenditure_to_revenue_ratio
-Get the Government Interest Expenditure to Revenue Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the interest the general government owes on its debt (GFS item 24, interest payable) as a share of its revenue (GFS item 1: taxes, social contributions, grants and other revenue).
+Get the government interest expenditure to revenue ratio of a variety of countries from the IMF: the share of its revenue a government spends on interest.
+
+It is the interest the general government owes on its debt (GFS item 24, interest payable) as a share of its revenue (GFS item 1: taxes, social contributions, grants and other revenue).
 
 The share of revenue that goes to interest is the measure rating agencies use for debt affordability: it says how much of what the government collects is committed to its creditors before anything else is paid for. Both come from the same statistics of the same general government, on an accrual basis, with the interest before interest received is netted. Around 40 economies are covered; countries outside them are left out with a warning.
 
@@ -2055,7 +2134,7 @@ The ratio is expressed as a decimal fraction (0.1351 for 13.51% of revenue).
 The formula is as follows:
 
 $$
-\text{Government Interest Expenditure to Revenue Ratio} = \frac{\text{Interest Payable}}{\text{Government Revenue}},\;\; \text{both summed over the last four quarters for period="quarterly" (an annual ratio without the seasonal swings of tax receipts) or over the year for period="yearly"}
+\text{Government Interest Expenditure to Revenue Ratio} = \frac{\text{Interest Payable}}{\text{Government Revenue}},\;\; \text{both summed over the last four quarters for quarterly data (an annual ratio without the seasonal swings of tax receipts) or over the year for yearly data}
 $$
 
 **Also known as:** interest to revenue, interest burden on revenue, debt affordability.
@@ -2063,9 +2142,9 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" (the ratio over the four quarters up to
-each quarter) or "yearly". Defaults to None, which is quarterly, the highest
-frequency published.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "quarterly" (the ratio over
+the four quarters up to each quarter), "yearly" (the ratio over the calendar year). Defaults to
+None, which is quarterly, the highest frequency published.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -2111,7 +2190,9 @@ Which returns:
 ---
 
 ## get_government_expenditure_by_function
-Get the Government Expenditure by Function for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). The spending of the general government (the central, state and local governments and the social security funds together) is split by purpose according to the United Nations' Classification of the Functions of Government (COFOG), the classification Eurostat, the OECD and the IMF all publish.
+Get the government expenditure by function of a variety of countries from the IMF: what a government spends on health, education, defence, social protection and its other functions.
+
+The spending of the general government (the central, state and local governments and the social security funds together) is split by purpose according to the United Nations' Classification of the Functions of Government (COFOG), the classification Eurostat, the OECD and the IMF all publish.
 
 The ten COFOG divisions are General Public Services, Defence, Public Order and Safety, Economic Affairs, Environmental Protection, Housing and Community Amenities, Health, Recreation, Culture and Religion, Education and Social Protection, which add up to the Total. General Public Services include the Public Debt Transactions (group 01.7), which are mostly the interest on government debt, also available as a function of its own where a country reports it. Defence is military and civil defence, foreign military aid and defence research; military pensions are Social Protection.
 
@@ -2176,7 +2257,9 @@ Which returns:
 ---
 
 ## get_government_expenditure_by_function_to_gdp_ratio
-Get the Government Expenditure by Function to GDP Ratio for a variety of countries over time from the Government Finance Statistics of the International Monetary Fund (IMF). It is the spending of the general government on each function of the United Nations' Classification of the Functions of Government (COFOG) as a share of the Gross Domestic Product (GDP).
+Get the government expenditure by function to GDP ratio of a variety of countries from the IMF: the size of each function of government against the economy.
+
+It is the spending of the general government on each function of the United Nations' Classification of the Functions of Government (COFOG) as a share of the Gross Domestic Product (GDP).
 
 Shares of GDP make the functions comparable across countries and over time, such as NATO's 2% of GDP guideline for defence. The ten divisions, the Public Debt Transactions (group 01.7, mostly interest) and the Total are described in get_government_expenditure_by_function. Defence covers military and civil defence, foreign military aid and defence research, not military pensions, so it differs from NATO's definition and from a national defence budget.
 
@@ -2248,6 +2331,8 @@ Which returns:
 ---
 
 ## get_trust_in_government
+Get the trust in government of a variety of countries: the share of people who have confidence in their national government.
+
 Trust in government refers to the share of people who report having confidence in the national government. The data shown reflect the share of respondents answering “yes” (the other response categories being “no”, and “don’t know”) to the survey question: “In this country, do you have confidence in… national government?”
 
 Due to small sample sizes, country averages for horizontal inequalities (by age, gender and education) are pooled between 2010-18 to improve the accuracy of the estimates.
@@ -2319,13 +2404,15 @@ Which returns:
 ---
 
 ## get_long_run_asset_returns
-Get the yearly total returns of equity, housing, government bonds and bills for 18 advanced economies from 1870 to 2020, from the Jordà-Schularick-Taylor Macrohistory Database (Jordà, Knoll, Kuvshinov, Schularick and Taylor, 2019, "The Rate of Return on Everything, 1870-2015", Quarterly Journal of Economics). A century and a half of returns across wars, depressions and inflations is what calibrates the long-run trend, the equity and housing risk premia and the cycles of scenario generators for 50 to 100-year horizons.
+Get the yearly total returns of equity, housing, government bonds and bills of 18 advanced economies from 1870, from the Jordà-Schularick-Taylor Macrohistory Database.
 
-The asset classes: "equity" (dividends reinvested), "housing" (rental income included), "bonds" (long-term government bonds, coupons included), "bills" (short-term government bills), "risky" (a wealth-weighted mix of equity and housing), "safe" (a mix of bonds and bills) and "wealth" (all of them weighted by their share of national wealth). The countries: Australia, Belgium, Canada, Denmark, Finland, France, Germany, Ireland, Italy, Japan, the Netherlands, Norway, Portugal, Spain, Sweden, Switzerland, the United Kingdom and the United States, with gaps in the war years.
+The database is that of Jordà, Knoll, Kuvshinov, Schularick and Taylor (2019, "The Rate of Return on Everything, 1870-2015", Quarterly Journal of Economics) and runs to 2020. A century and a half of returns across wars, depressions and inflations is what calibrates the long-run trend, the equity and housing risk premia and the cycles of scenario generators for 50 to 100-year horizons.
 
-Returns are decimal fractions (0.08 for 8%), in local currency, and with real=True deflated by consumer price inflation.
+The asset classes are equity (dividends reinvested), housing (rental income included), long-term government bonds (coupons included), short-term government bills, risky assets (a wealth-weighted mix of equity and housing), safe assets (a mix of bonds and bills) and wealth (all of them weighted by their share of national wealth). The countries: Australia, Belgium, Canada, Denmark, Finland, France, Germany, Ireland, Italy, Japan, the Netherlands, Norway, Portugal, Spain, Sweden, Switzerland, the United Kingdom and the United States, with gaps in the war years.
 
-The database is licensed under CC BY-NC-SA 4.0: it may be used for non-commercial purposes with attribution, and its authors expressly exclude commercial data providers. Pass accept_licence=True to confirm the use is non-commercial; the data is retrieved from macrohistory.net when needed and is not distributed with the Finance Toolkit.
+Returns are decimal fractions (0.08 for 8%), in local currency, and in real terms deflated by consumer price inflation.
+
+The database is licensed under CC BY-NC-SA 4.0: it may be used for non-commercial purposes with attribution, and its authors expressly exclude commercial data providers. Accept the licence to confirm the use is non-commercial; the data is retrieved from macrohistory.net when needed and is not distributed with the Finance Toolkit.
 
 **See definition:** [https://www.macrohistory.net/database/](https://www.macrohistory.net/database/){:target="_blank"}
 
@@ -2333,8 +2420,11 @@ The database is licensed under CC BY-NC-SA 4.0: it may be used for non-commercia
 
 **Args:**
 
-- <u>asset_class (str, optional):</u> "equity", "housing", "bonds", "bills", "risky",
-"safe" or "wealth". Defaults to "equity".
+- <u>asset_class (str, optional):</u> The asset class. Options are: "equity" (dividends reinvested),
+"housing" (rental income included), "bonds" (long-term government bonds, coupons included),
+"bills" (short-term government bills), "risky" (a wealth-weighted mix of equity and housing),
+"safe" (a mix of bonds and bills), "wealth" (all of them weighted by their share of national
+wealth). Defaults to "equity".
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include. Defaults
 to None, which includes all of them.
 - <u>real (bool, optional):</u> Whether to deflate the returns by consumer price
@@ -2393,13 +2483,15 @@ Which returns:
 ---
 
 ## get_millennium_of_macroeconomic_data
-Get the headline annual series of "A millennium of macroeconomic data for the UK", the Bank of England's research dataset of British economic history (Thomas and Dimsdale, version 3.1): around eighty series of output, population, employment, prices, wages, interest rates, asset prices, exchange rates, money, credit and public finances, from as early as 1086 (GDP and population), 1209 (consumer prices), 1694 (Bank Rate) and 1700 (share prices) to 2016. It is the longest consistent record of interest rates, inflation and asset prices of any economy, for calibrating the very long-run behaviour of scenario generators.
+Get the headline annual series of the Bank of England's "A millennium of macroeconomic data for the UK": British output, prices, rates and asset prices over centuries.
+
+The dataset (Thomas and Dimsdale, version 3.1) holds around eighty series of output, population, employment, prices, wages, interest rates, asset prices, exchange rates, money, credit and public finances, from as early as 1086 (GDP and population), 1209 (consumer prices), 1694 (Bank Rate) and 1700 (share prices) to 2016. It is the longest consistent record of interest rates, inflation and asset prices of any economy, for calibrating the very long-run behaviour of scenario generators.
 
 The series keep the names of the dataset, such as "Bank Rate", "Consols / long-term government bond yields", "Corporate bond yields", "Share prices", "Consumer price index", "Consumer price inflation", "House price index" and "$/£ exchange rate"; a second column of a series, such as its growth rate or its share of GDP, carries that unit in brackets. Rates, growth rates and shares of GDP are decimal fractions (0.05 for 5%); levels, indices and exchange rates are returned as published.
 
 The dataset is not updated anymore. The workbook is large (around 28 MB), so it is cached for a year.
 
-With deflate_with, every series is in real terms: in the money of the latest year of that country's yearly consumer price index up to the end date (see get_consumer_price_index), such as the dollar oil price ("$ Oil prices") in 2025 dollars with deflate_with="United States", which compares the oil price of 1864 with that of 2008. A year before the first year of the consumer price index has no real value. Only deflate series in money, such as prices, in the currency of that country: rates, indices and growth rates are not amounts of money.
+Deflated with a country's prices, every series is in real terms: in the money of the latest year of that country's yearly consumer price index up to the end date (see get_consumer_price_index), such as the dollar oil price ("$ Oil prices") in 2025 dollars deflated with the United States, which compares the oil price of 1864 with that of 2008. A year before the first year of the consumer price index has no real value. Only deflate series in money, such as prices, in the currency of that country: rates, indices and growth rates are not amounts of money.
 
 - Real Value (t) = Value (t) * CPI (latest year) / CPI (t)
 
@@ -2461,13 +2553,15 @@ Which returns:
 ---
 
 ## get_scenario_set
-Get a regulator's published scenario set: the thousands of simulated paths of interest rates, equity returns and inflation that pension funds or insurers must use, generated by a documented and reviewed economic scenario generator. It is a reference to calibrate and validate an own scenario generator against, both for the real-world distribution and for the market-consistent one.
+Get a regulator's published scenario set: the thousands of simulated paths of interest rates, equity returns and inflation that pension funds or insurers must use.
 
-Available is the scenario set of De Nederlandsche Bank (authority="dnb"), which Dutch pension funds use for their feasibility test and the transition to the new pension contract: 20,000 scenarios over a horizon of 100 years, generated every quarter with the model the Commissie Parameters 2022 specified, under the real-world measure (measure="real_world", the P-set) and the market-consistent measure (measure="market_consistent", the Q-set, arbitrage-free and calibrated to market prices including swaptions).
+The paths come from a documented and reviewed economic scenario generator. It is a reference to calibrate and validate an own scenario generator against, both for the real-world distribution and for the market-consistent one.
+
+Available is the scenario set of De Nederlandsche Bank (DNB), which Dutch pension funds use for their feasibility test and the transition to the new pension contract: 20,000 scenarios over a horizon of 100 years, generated every quarter with the model the Commissie Parameters 2022 specified, under the real-world measure (the P-set) and the market-consistent measure (the Q-set, arbitrage-free and calibrated to market prices including swaptions).
 
 The variables, as decimals per year of the horizon (year 0 is the end of the quarter the set is for): the annually compounded nominal zero rates "Nominal rate 1Y", "5Y", "10Y", "20Y" and "30Y" and the euro area "Real rate EU 10Y", derived from the model's term structure, and the annual "Equity return", "Inflation EU" and "Inflation NL" (from year 1).
 
-By default the distribution per year is returned: the quantiles of the 20,000 scenarios and their mean. With scenarios=True every scenario is returned instead (20,000 columns per variable). The set is a large workbook (around 180 MB) that takes a minute or two to download and read the first time; it is cached for 30 days.
+By default the distribution per year is returned: the quantiles of the 20,000 scenarios and their mean. On request every scenario is returned instead (20,000 columns per variable). The set is a large workbook (around 180 MB) that takes a minute or two to download and read the first time; it is cached for 30 days.
 
 **See definition:** [https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/](https://www.dnb.nl/voor-de-sector/open-boek-toezicht/sectoren/pensioenfondsen/){:target="_blank"}
 
@@ -2475,10 +2569,11 @@ By default the distribution per year is returned: the quantiles of the 20,000 sc
 
 **Args:**
 
-- <u>authority (str, optional):</u> The regulator: "dnb". Defaults to "dnb".
-- <u>measure (str, optional):</u> "real_world" or "market_consistent". Defaults to
-"real_world".
-- <u>variables (list[str] &#124; str &#124; None, optional):</u> The variables to include, from
+- <u>authority (str, optional):</u> The regulator. Options are: "dnb" (De Nederlandsche Bank). Defaults
+to "dnb".
+- <u>measure (str, optional):</u> The probability measure. Options are: "real_world" (the P-set),
+"market_consistent" (the Q-set). Defaults to "real_world".
+- <u>variables (list[str] &#124; str &#124; None, optional):</u> The variables to include. Options are:
 "Nominal rate 1Y", "Nominal rate 5Y", "Nominal rate 10Y", "Nominal rate 20Y",
 "Nominal rate 30Y", "Real rate EU 10Y", "Equity return", "Inflation EU" and
 "Inflation NL". Defaults to None, which includes all of them.
@@ -2497,7 +2592,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Indexed by the year of the horizon, with a column per variable and
-quantile (or "Mean"), or per variable and scenario with scenarios=True.
+quantile (or "Mean"), or per variable and scenario with every scenario.
 
 **As an example:**
 
@@ -2527,7 +2622,9 @@ Which returns:
 ---
 
 ## get_asset_class_proxies
-Get the total returns of listed funds that track asset classes without a public return index: private equity, infrastructure, hedge funds, private credit, real estate and investment grade and high yield credit. Their returns approximate those of the asset classes for calibrating a scenario generator, with two caveats: listed prices are marked to market daily, so they are more volatile and more correlated with equities than the appraisal-based returns of private funds, and they include the funds' fees.
+Get the total returns of listed funds that track asset classes without a public return index, such as private equity, infrastructure, hedge funds and private credit.
+
+The asset classes are private equity, infrastructure, hedge funds, private credit, real estate and investment grade and high yield credit. Their returns approximate those of the asset classes for calibrating a scenario generator, with two caveats: listed prices are marked to market daily, so they are more volatile and more correlated with equities than the appraisal-based returns of private funds, and they include the funds' fees.
 
 The asset classes and the funds that track them, with the start of their history:
 
@@ -2540,18 +2637,18 @@ The asset classes and the funds that track them, with the start of their history
 - "Investment Grade Credit": the iShares iBoxx $ Investment Grade Corporate Bond ETF (LQD), from 2002.
 - "High Yield Credit": the iShares iBoxx $ High Yield Corporate Bond ETF (HYG), from 2007.
 
-Returns are the change of the dividend-adjusted price over each period, as decimals, in US dollars; with returns=False the dividend-adjusted price itself is returned. The prices come from FinancialModelingPrep when an API key is set (the api_key of the Economics class) and from Yahoo Finance otherwise.
+Returns are the change of the dividend-adjusted price over each period, as decimals, in US dollars; without returns the dividend-adjusted price itself is returned. The prices come from FinancialModelingPrep when an API key is set on the Economics class and from Yahoo Finance otherwise.
 
 **Also known as:** private market proxies, listed private equity, alternative asset returns, hedge fund replication.
 
 **Args:**
 
-- <u>asset_classes (list[str] &#124; str &#124; None, optional):</u> The asset classes to include,
-from "Private Equity", "Infrastructure", "Hedge Funds", "Merger Arbitrage",
+- <u>asset_classes (list[str] &#124; str &#124; None, optional):</u> The asset classes to include. Options are:
+"Private Equity", "Infrastructure", "Hedge Funds", "Merger Arbitrage",
 "Private Credit", "Real Estate", "Investment Grade Credit" and "High Yield
 Credit". Defaults to None, which includes all of them.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily" (daily data), "weekly" (weekly
+data), "monthly" (monthly data). Defaults to "daily".
 - <u>returns (bool, optional):</u> Whether to return the total return per period instead
 of the dividend-adjusted price. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
@@ -2597,7 +2694,9 @@ Which returns:
 ---
 
 ## get_shiller_stock_market_data
-Retrieves Robert Shiller's monthly US stock market data from 1871, the data behind "Irrational Exuberance" and the CAPE ratio: the S&P Composite price, dividends and earnings, the consumer price index, the long-term interest rate, the same in real (inflation-adjusted) terms, the trailing price-earnings ratio (P/E), the price over the earnings of the last twelve months, and the cyclically adjusted price-earnings ratio (CAPE), the price over the average of ten years of real earnings. With more than 150 years of history it is the standard source for long-run equity returns, valuations and their relation to subsequent returns.
+Get Robert Shiller's monthly US stock market data from 1871: the S&P Composite price, dividends, earnings, interest rates and the CAPE ratio, nominal and real.
+
+It is the data behind "Irrational Exuberance" and the CAPE ratio, with the trailing price-earnings ratio (P/E) over the earnings of the last twelve months and the cyclically adjusted price-earnings ratio (CAPE) over the average of ten years of real earnings. With more than 150 years of history it is the standard source for long-run equity returns, valuations and their relation to subsequent returns.
 
 Prices are monthly averages of daily closes; dividends and earnings are trailing twelve-month totals, with the latest months not yet published. The long interest rate is a decimal fraction (0.0475 for 4.75%).
 
@@ -2654,7 +2753,7 @@ Which returns:
 ---
 
 ## get_household_savings_rate
-Get the Gross Household Savings Rate for a variety of countries over time from the OECD's Household Dashboard. The household savings rate is the share of household gross disposable income (adjusted for the net change in pension entitlements) that is saved rather than spent on final consumption.
+Get the gross household savings rate of a variety of countries from the OECD's Household Dashboard: the share of household disposable income that is saved rather than spent.
 
 It is a key input to consumption-smoothing and life-cycle/permanent-income theories of household behaviour, and a closely watched signal of both near-term consumption momentum (a falling savings rate can temporarily prop up spending even as income growth slows) and a household sector's buffer against future income shocks. It complements Total Consumption (see `get_total_consumption`) - the two together show how much of household income is spent versus set aside.
 
@@ -2716,7 +2815,9 @@ Which returns:
 ---
 
 ## get_household_debt_to_income_ratio
-Get the Household Debt to Disposable Income Ratio for a variety of countries over time from the OECD's Household Dashboard. This expresses total household gross debt (loans and debt securities) as a share of household gross disposable income, returned as a decimal ratio (1.0014 means debt equals 100.14% of income).
+Get the household debt to disposable income ratio of a variety of countries from the OECD's Household Dashboard: how indebted households are against what they earn.
+
+This expresses total household gross debt (loans and debt securities) as a share of household gross disposable income, returned as a decimal ratio (1.0014 means debt equals 100.14% of income).
 
 It is a standard household-leverage indicator used in financial-stability analysis: a high or rapidly rising ratio signals households are more exposed to income shocks or interest rate increases (debt-servicing costs rise directly with rates on variable-rate or refinanced debt), and has historically preceded credit-cycle downturns (e.g. in the lead-up to the 2008 financial crisis). It is the household- sector analogue to government debt (see `get_government_debt_to_gdp_ratio`) - the two together give a fuller picture of an economy's overall leverage.
 
@@ -2776,6 +2877,8 @@ Which returns:
 ---
 
 ## get_unemployment_rate
+Get the unemployment rate of a variety of countries: the share of the labour force that is without work but available for and looking for work.
+
 The unemployed are people of working age who are without work, are available for work, and have taken specific steps to find work. The uniform application of this definition results in estimates of unemployment rates that are more internationally comparable than estimates based on national definitions of unemployment.
 
 This indicator is measured in numbers of unemployed people as a percentage of the labour force and it is seasonally adjusted. The labour force is defined as the total number of unemployed people plus those in employment. Data are based on labour force surveys (LFS).
@@ -2786,11 +2889,11 @@ The unemployment rate is a lagging indicator: it tends to rise only once a slowd
 
 **See definition:** [https://data.oecd.org/unemp/unemployment-rate.htm](https://data.oecd.org/unemp/unemployment-rate.htm){:target="_blank"}
 
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+It is also possible to get the data from the Global Macro Database (GMDB) by choosing it as the source.
 
-Both sources return the rate as a decimal fraction of the labour force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so a monthly or quarterly request uses the OECD unless gmdb_source=True is passed, in which case the period argument has no effect.
+Both sources return the rate as a decimal fraction of the labour force (0.036 for 3.6%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so a monthly or quarterly request uses the OECD unless the GMDB is chosen as the source, in which case the period has no effect.
 
-With period="monthly" (unless gmdb_source=True is passed explicitly) the euro area and the countries Eurostat covers come from Eurostat and the United Kingdom from the Office for National Statistics, which publish weeks before the OECD republishes their figures, and Brazil from the IBGE (as the UK, the average of the three months ending in each month); every other country comes from the OECD. The United States is extended with the months the Bureau of Labor Statistics has published since, when both agree on the months they share. The UK figure is the average of the three months ending in each month, as the Labour Force Survey reports it.
+With monthly data (unless the GMDB is chosen as the source) the euro area and the countries Eurostat covers come from Eurostat and the United Kingdom from the Office for National Statistics, which publish weeks before the OECD republishes their figures, and Brazil from the IBGE (as the UK, the average of the three months ending in each month); every other country comes from the OECD. The United States is extended with the months the Bureau of Labor Statistics has published since, when both agree on the months they share. The UK figure is the average of the three months ending in each month, as the Labour Force Survey reports it.
 
 Both sources return a decimal fraction (0.036 for 3.6%).
 
@@ -2799,12 +2902,13 @@ Both sources return a decimal fraction (0.036 for 3.6%).
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise. Countries the OECD publishes quarterly only,
-such as New Zealand, are not in the monthly data; a warning names them when they
-are requested.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is quarterly when the
+Economics class was initialized with quarterly=True and monthly otherwise. Countries the OECD
+publishes quarterly only, such as New Zealand, are not in the monthly data; a warning names them when
+they are requested.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+Defaults to None, which uses the GMDB for yearly data when gmdb_source is True on the Economics class (its default) and the OECD otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -2858,6 +2962,8 @@ Which returns:
 ---
 
 ## get_job_vacancy_rate
+Get the job vacancy rate of a variety of countries: the share of all posts employers are trying to fill, the unmet demand for labour.
+
 The job vacancy rate is the share of all posts, occupied or not, that employers are actively trying to fill from outside the company. It measures unmet labour demand, the counterpart of the unemployment rate: plotted against each other, the two trace the Beveridge curve, where a movement along the curve reflects the business cycle and a shift of the curve a change in how well job seekers and vacancies are matched. A high vacancy rate next to low unemployment points to a tight labour market and, in time, wage pressure.
 
 Each country comes from its official publisher, seasonally adjusted:
@@ -2882,11 +2988,11 @@ See definitions: [https://ec.europa.eu/eurostat/cache/metadata/en/jvs_esms.htm](
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the quarterly data.
-Defaults to None, which is monthly when only the United States, the one country
-published monthly, is requested and quarterly otherwise (and quarterly when the
-Economics class was initialized with quarterly=True). With period='monthly'
-the other countries are left out with a warning.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data). Defaults to None, which is monthly when only the United States, the one
+country published monthly, is requested and quarterly otherwise (and quarterly when the Economics
+class was initialized with quarterly=True). With period='monthly' the other countries are left out
+with a warning.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -2936,12 +3042,12 @@ Which returns:
 ---
 
 ## get_misery_index
-Get the Misery Index for a variety of countries over time. The Misery Index is a simple gauge of the overall economic discomfort felt by the average person, combining the two economic ills that are most directly and visibly felt by households: unemployment and rising prices.
+Get the Misery Index of a variety of countries: the unemployment rate plus the inflation rate, a gauge of the economic discomfort households feel.
 
 The formula is as follows:
 
 $$
-\text{Misery Index} \;(\text{year}) = \text{Unemployment Rate} \;(\text{year}) + \text{Inflation Rate} \;(\text{year}),\;\; \text{with the annual unemployment rate from the Global Macro Database (or the OECD with gmdb\_source=False) and the Global Macro Database's annual CPI inflation}
+\text{Misery Index} \;(\text{year}) = \text{Unemployment Rate} \;(\text{year}) + \text{Inflation Rate} \;(\text{year}),\;\; \text{with the annual unemployment rate from the Global Macro Database (or the OECD as the source) and the Global Macro Database's annual CPI inflation}
 $$
 
 The Unemployment Rate and Inflation Rate are both retrieved as annual decimal fractions (0.05 for 5%) whichever source is used, so they line up directly for the addition and the result is itself a decimal fraction (0.0774 for a Misery Index of 7.74).
@@ -3002,6 +3108,8 @@ Which returns:
 ---
 
 ## get_labour_productivity
+Get the labour productivity of a variety of countries: the GDP produced per hour worked.
+
 GDP per hour worked is a measure of labour productivity. It measures how efficiently labour input is combined with other factors of production and used in the production process. Labour input is defined as total hours worked of all persons engaged in production. Labour productivity only partially reflects the productivity of labour in terms of the personal capacities of workers or the intensity of their effort.
 
 The ratio between the output measure and the labour input depends to a large degree on the presence and/or use of other inputs (e.g. capital, intermediate inputs, technical, organisational and efficiency change, economies of scale).
@@ -3069,9 +3177,11 @@ Which returns:
 ---
 
 ## get_unit_labour_costs
+Get the unit labour costs of a variety of countries: what an economy pays its employees per unit of output, a measure of cost pressure and competitiveness.
+
 Unit labour costs are the average cost of labour per unit of output: what an economy pays its employees for producing one unit of real GDP. They link wages to productivity (see get_labour_productivity): pay rising faster than output per worker raises unit labour costs, which firms either pass on in prices or absorb in their margins. That makes them a measure of domestic cost pressure and, compared between countries, of cost competitiveness; the European Union's macroeconomic imbalance procedure, for example, watches their growth over three years.
 
-The OECD compiles them for the total economy, employment based, from the national accounts: the compensation of employees per employee divided by real GDP per person employed (OECD Compendium of Productivity Indicators). They are published quarterly, seasonally adjusted, as an index with 2015 = 100 in national currency, so compare their growth rather than their level between countries; growth=True with lag=4 gives the change on the same quarter a year earlier as a decimal.
+The OECD compiles them for the total economy, employment based, from the national accounts: the compensation of employees per employee divided by real GDP per person employed (OECD Compendium of Productivity Indicators). They are published quarterly, seasonally adjusted, as an index with 2015 = 100 in national currency, so compare their growth rather than their level between countries; the growth over a lag of 4 gives the change on the same quarter a year earlier as a decimal.
 
 The index is the OECD's own figure (the source's calculation).
 
@@ -3136,6 +3246,8 @@ Which returns:
 ---
 
 ## get_income_inequality
+Get the income inequality of a variety of countries: how unevenly household disposable income is spread across the population.
+
 Income is defined as household disposable income in a particular year. It consists of earnings, self-employment and capital income and public cash transfers; income taxes and social security contributions paid by households are deducted. The income of the household is attributed to each of its members, with an adjustment to reflect differences in needs for households of different sizes.
 
 The Gini coefficient is based on the comparison of cumulative proportions of the population against cumulative proportions of income they receive, and it ranges between 0 in the case of perfect equality and 1 in the case of perfect inequality.
@@ -3194,6 +3306,8 @@ Which returns:
 ---
 
 ## get_population_statistics
+Get the population statistics of a variety of countries: the number of people who usually live in a country and how it grows.
+
 Population is defined as all nationals present in, or temporarily absent from a country, and aliens permanently settled in a country. This indicator shows the number of people that usually live in an area. Growth rates are the annual changes in population resulting from births, deaths and net migration during the year.
 
 Total population includes the following:
@@ -3211,7 +3325,7 @@ However, it excludes the following:
 
 Population projections are a common demographic tool. They provide a basis for other statistical projections, helping governments in their decision making.
 
-By default the data comes from the Global Macro Database (GMDB), which returns a single total population series per country, in millions of people. Set gmdb_source=False for the OECD series, which breaks the total down by gender, giving a Population, Men and Women series for each country, and reports a plain count of persons rather than millions. Both are annual, and the OECD source uses the historical (observed) series rather than its projections.
+By default the data comes from the Global Macro Database (GMDB), which returns a single total population series per country, in millions of people. Choose the OECD as the source for its series, which breaks the total down by gender, giving a Population, Men and Women series for each country, and reports a plain count of persons rather than millions. Both are annual, and the OECD source uses the historical (observed) series rather than its projections.
 
 **See definition:** [https://data.oecd.org/pop/population.htm](https://data.oecd.org/pop/population.htm){:target="_blank"}
 
@@ -3272,6 +3386,8 @@ Which returns:
 ---
 
 ## get_poverty_rate
+Get the poverty rate of a variety of countries: the share of people whose income falls below the poverty line.
+
 The poverty rate is the ratio of the number of people (in a given age group) whose income falls below the poverty line; taken as half the median household income of the total population.
 
 However, two countries with the same poverty rates may differ in terms of the relative income-level of the poor.
@@ -3328,13 +3444,13 @@ Which returns:
 ---
 
 ## get_nonfarm_payrolls
-Get Total Nonfarm Payroll Employment for the United States from the Bureau of Labor Statistics.
+Get the total nonfarm payroll employment of the United States from the Bureau of Labor Statistics: the number of jobs outside farming, the headline jobs figure.
 
 Nonfarm Payrolls is the headline monthly employment report and one of the most closely watched real-activity indicators in macroeconomics: it counts the number of paid US workers excluding farm employees, general government employees, private household employees and nonprofit organization employees. Sharp month-over-month changes are a core input to business-cycle dating (used directly by the NBER's Business Cycle Dating Committee) and, through Okun's Law, are closely tied to changes in the Unemployment Rate (see `get_unemployment_rate`).
 
-The series is the monthly level of employment in thousands of persons, seasonally adjusted, so 156857 means 156.857 million jobs -- not the monthly change that the headline "jobs added" number refers to. Use growth=True for that change.
+The series is the monthly level of employment in thousands of persons, seasonally adjusted, so 156857 means 156.857 million jobs -- not the monthly change that the headline "jobs added" number refers to. Use the growth for that change.
 
-Without a FRED API key the data comes from the Bureau of Labor Statistics' API, which gives the same figures but only for about the last three years. The full history, from 1939, comes from FRED when a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class).
+Without a FRED API key the data comes from the Bureau of Labor Statistics' API, which gives the same figures but only for about the last three years. The full history, from 1939, comes from FRED when a FRED API key is set on the Economics class.
 
 **See definition:** [https://fred.stlouisfed.org/series/PAYEMS](https://fred.stlouisfed.org/series/PAYEMS){:target="_blank"}
 
@@ -3390,11 +3506,11 @@ Which returns:
 ---
 
 ## get_initial_jobless_claims
-Get weekly Initial Claims for Unemployment Insurance for the United States from the Department of Labor.
+Get the weekly initial claims for unemployment insurance of the United States from the Department of Labor: how many people newly file for unemployment benefits.
 
 Initial Jobless Claims counts the number of individuals filing for unemployment insurance for the first time in a given week. Because it is reported weekly (versus Nonfarm Payrolls' monthly cadence, see `get_nonfarm_payrolls`) and captures layoffs essentially in real time, it is one of the most timely leading indicators of labor-market deterioration and a core component of the Conference Board's Leading Economic Index. The continued claims of the same report are in `get_continuing_jobless_claims`.
 
-Each week is dated by the Saturday it ends, the week the claims were filed. With period="monthly", "quarterly" or "yearly" the weeks are combined into that period: by default their average, as FRED converts its weekly series, or the highest, lowest or last week of the period with aggregation="max", "min" or "last".
+Each week is dated by the Saturday it ends, the week the claims were filed. With a monthly, quarterly or yearly period the weeks are combined into that period: by default their average, as FRED converts its weekly series, or the highest, lowest or last week of the period.
 
 The formula is as follows:
 
@@ -3406,9 +3522,9 @@ $$
 \text{Monthly Claims} \;(\max) = \text{the highest weekly claims of the weeks ending in the month}
 $$
 
-A week belongs to the month, quarter or year its Saturday falls in, as FRED aggregates the weekly series, so a month has four or five weeks. A period is only returned once all of its weeks are published, so the month that is still running is left out rather than shown as the average of its first weeks. The rolling, trailing, growth and lag options work on the combined series, e.g. growth=True with lag=12 on monthly data gives the change on the same month a year earlier.
+A week belongs to the month, quarter or year its Saturday falls in, as FRED aggregates the weekly series, so a month has four or five weeks. A period is only returned once all of its weeks are published, so the month that is still running is left out rather than shown as the average of its first weeks. The rolling, trailing, growth and lag options work on the combined series, e.g. the growth over a lag of 12 on monthly data gives the change on the same month a year earlier.
 
-Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/ICSA](https://fred.stlouisfed.org/series/ICSA){:target="_blank"}
 
@@ -3416,12 +3532,12 @@ Without a FRED API key the data comes from the Department of Labor's weekly clai
 
 **Args:**
 
-- <u>period (str &#124; None, optional):</u> Whether to return the weekly, monthly, quarterly or
-yearly data. Defaults to None, which is weekly, or quarterly when the Economics
-class was initialized with quarterly=True.
-- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or
-year: "mean" (the average of its weeks), "max" (the highest week), "min" (the
-lowest week) or "last" (the last week). Not used with weekly data. Defaults to
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "weekly" (weekly data), "monthly"
+(monthly data), "quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is
+weekly, or quarterly when the Economics class was initialized with quarterly=True.
+- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or year. Options
+are: "mean" (the average of its weeks), "max" (the highest week), "min" (the lowest week),
+"last" (the last week). Not used with weekly data. Defaults to
 "mean".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
@@ -3471,11 +3587,11 @@ Which returns:
 ---
 
 ## get_continuing_jobless_claims
-Get weekly Continued Claims (Insured Unemployment) for the United States from the Department of Labor.
+Get the weekly continued claims (insured unemployment) of the United States from the Department of Labor: how many people keep receiving unemployment benefits.
 
 Continued claims count the people who already receive unemployment insurance and claim it for another week: the stock of insured unemployed, where initial claims (see `get_initial_jobless_claims`) are the inflow. Rising continued claims with steady initial claims mean that people who lose their job take longer to find a new one, which is why both are read together.
 
-Each week is dated by the Saturday ending the week of unemployment the claims count, as FRED dates CCSA and the Department of Labor's weekly claims report does. That week lies a week before the week the claims are filed, so the weekly news release reports the continued claims a week behind the initial claims: a release with the initial claims of the week ending November 14 gives the continued claims of the week ending November 7. With period="monthly", "quarterly" or "yearly" the weeks are combined into that period as in `get_initial_jobless_claims`: by default their average, or the highest, lowest or last week with aggregation="max", "min" or "last".
+Each week is dated by the Saturday ending the week of unemployment the claims count, as FRED dates CCSA and the Department of Labor's weekly claims report does. That week lies a week before the week the claims are filed, so the weekly news release reports the continued claims a week behind the initial claims: a release with the initial claims of the week ending November 14 gives the continued claims of the week ending November 7. With a monthly, quarterly or yearly period the weeks are combined into that period as in `get_initial_jobless_claims`: by default their average, or the highest, lowest or last week.
 
 The formula is as follows:
 
@@ -3489,7 +3605,7 @@ $$
 
 A week belongs to the month, quarter or year its Saturday falls in, and a period is only returned once all of its weeks are published. The rolling, trailing, growth and lag options work on the combined series.
 
-Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/CCSA](https://fred.stlouisfed.org/series/CCSA){:target="_blank"}
 
@@ -3497,12 +3613,12 @@ Without a FRED API key the data comes from the Department of Labor's weekly clai
 
 **Args:**
 
-- <u>period (str &#124; None, optional):</u> Whether to return the weekly, monthly, quarterly or
-yearly data. Defaults to None, which is weekly, or quarterly when the Economics
-class was initialized with quarterly=True.
-- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or
-year: "mean" (the average of its weeks), "max" (the highest week), "min" (the
-lowest week) or "last" (the last week). Not used with weekly data. Defaults to
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "weekly" (weekly data), "monthly"
+(monthly data), "quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is
+weekly, or quarterly when the Economics class was initialized with quarterly=True.
+- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or year. Options
+are: "mean" (the average of its weeks), "max" (the highest week), "min" (the lowest week),
+"last" (the last week). Not used with weekly data. Defaults to
 "mean".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
@@ -3552,11 +3668,11 @@ Which returns:
 ---
 
 ## get_insured_unemployment_rate
-Get the weekly Insured Unemployment Rate for the United States from the Department of Labor.
+Get the weekly insured unemployment rate of the United States from the Department of Labor: the continued claims as a share of the employment covered by unemployment insurance.
 
 The insured unemployment rate is the continued claims (see `get_continuing_jobless_claims`) as a share of the employment covered by unemployment insurance. It is narrower than the unemployment rate (see `get_unemployment_rate`), as it only counts the unemployed who receive state unemployment insurance, but it is published weekly. It is the trigger of the Extended Benefits program, which starts paying in a state once the state's insured unemployment rate is high enough.
 
-Each week is dated like the continued claims, by the Saturday ending the week of unemployment, as FRED dates IURSA. With period="monthly", "quarterly" or "yearly" the weeks are combined into that period as in `get_initial_jobless_claims`: by default their average, or the highest, lowest or last week with aggregation="max", "min" or "last".
+Each week is dated like the continued claims, by the Saturday ending the week of unemployment, as FRED dates IURSA. With a monthly, quarterly or yearly period the weeks are combined into that period as in `get_initial_jobless_claims`: by default their average, or the highest, lowest or last week.
 
 The formula is as follows:
 
@@ -3566,7 +3682,7 @@ $$
 
 The Department of Labor publishes the rate in percent with one decimal, from 1971; it is returned as a decimal (0.012 for 1.2%), so it moves in steps of 0.001. Covered employment is updated once a quarter.
 
-Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from the Department of Labor's weekly claims report directly, which gives the same figures, although FRED adds the latest weeks before the report includes them. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/IURSA](https://fred.stlouisfed.org/series/IURSA){:target="_blank"}
 
@@ -3574,12 +3690,12 @@ Without a FRED API key the data comes from the Department of Labor's weekly clai
 
 **Args:**
 
-- <u>period (str &#124; None, optional):</u> Whether to return the weekly, monthly, quarterly or
-yearly data. Defaults to None, which is weekly, or quarterly when the Economics
-class was initialized with quarterly=True.
-- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or
-year: "mean" (the average of its weeks), "max" (the highest week), "min" (the
-lowest week) or "last" (the last week). Not used with weekly data. Defaults to
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "weekly" (weekly data), "monthly"
+(monthly data), "quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is
+weekly, or quarterly when the Economics class was initialized with quarterly=True.
+- <u>aggregation (str, optional):</u> How the weeks are combined into a month, quarter or year. Options
+are: "mean" (the average of its weeks), "max" (the highest week), "min" (the lowest week),
+"last" (the last week). Not used with weekly data. Defaults to
 "mean".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
@@ -3629,9 +3745,11 @@ Which returns:
 ---
 
 ## get_life_table
-Retrieves the life tables Eurostat compiles yearly for the countries of the European Economic Area, by single year of age from 0 to 95 (the last age group being 95 and over), from 1960 for most countries. A life table describes the mortality of a population: the basis of every pension, life insurance and annuity calculation, and of mortality and longevity assumptions in scenario models.
+Get the life tables Eurostat compiles yearly for the countries of the European Economic Area: the mortality of a population by single year of age from 0 to 95.
 
-The measures are the probability of dying within the year (death_probability, qx), the probability of surviving it (survival_probability, px), the age-specific death rate (death_rate, mx), the number of survivors out of 100,000 births (survivors, lx), the number dying (deaths, dx), the person-years lived within the year (person_years, Lx) and above the age (total_person_years, Tx), and the life expectancy at the age (life_expectancy, ex). Probabilities and rates are fractions; the others are counts or years.
+The last age group is 95 and over, and the tables start in 1960 for most countries. A life table describes the mortality of a population: the basis of every pension, life insurance and annuity calculation, and of mortality and longevity assumptions in scenario models.
+
+The measures are the probability of dying within the year (qx), the probability of surviving it (px), the age-specific death rate (mx), the number of survivors out of 100,000 births (lx), the number dying (dx), the person-years lived within the year (Lx) and above the age (Tx), and the life expectancy at the age (ex). Probabilities and rates are fractions; the others are counts or years.
 
 For countries outside Europe the UN World Population Prospects publish life tables for every country (bulk files at population.un.org/wpp), and the Human Mortality Database long national histories (with free registration).
 
@@ -3641,9 +3759,12 @@ For countries outside Europe the UN World Population Prospects publish life tabl
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include, e.g.
 'Germany' or ['Germany', 'France']. Defaults to None, which retrieves every country.
-- <u>measure (str, optional):</u> The life table measure, see above. Defaults to
+- <u>measure (str, optional):</u> The life table measure. Options are: "death_probability" (qx),
+"survival_probability" (px), "death_rate" (mx), "survivors" (lx), "deaths" (dx),
+"person_years" (Lx), "total_person_years" (Tx), "life_expectancy" (ex). Defaults to
 "death_probability".
-- <u>sex (str, optional):</u> "total", "male" or "female". Defaults to "total".
+- <u>sex (str, optional):</u> The sex of the population. Options are: "total" (everyone), "male"
+(men), "female" (women). Defaults to "total".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Economics class.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -3685,11 +3806,13 @@ Which returns:
 ---
 
 ## get_gross_domestic_product
-Get the Gross Domestic Product for a variety of countries over time. The Gross Domestic Product is the total value of goods produced and services provided in a country during one year. By default the data comes from the Global Macro Database (GMDB); set gmdb_source=False to retrieve it from the OECD instead.
+Get the Gross Domestic Product (GDP) of a variety of countries: the total value of the goods and services an economy produces in a year.
+
+By default the data comes from the Global Macro Database (GMDB); the OECD can be chosen as the source instead.
 
 Note that the OECD source reports GDP on a per capita basis, i.e. the total Gross Domestic Product divided by the population of the country, whereas the Global Macro Database (GMDB) source reports the total (not per capita) figure. The two are also expressed in different units: the OECD source is in current-price US dollars per person converted with Purchasing Power Parities (PPPs), which makes the level comparable across countries, while the GMDB source is in millions of national currency. Both are annual.
 
-The data is returned as levels. To obtain period-on-period changes (e.g. year on year or quarter on quarter growth), set `growth=True` and use `lag` to control how many periods back the comparison is made.
+The data is returned as levels. To obtain period-on-period changes (e.g. year on year or quarter on quarter growth), request the growth and use the lag to control how many periods back the comparison is made.
 
 **See definition:** [https://data.oecd.org/gdp/gross-domestic-product-gdp.htm](https://data.oecd.org/gdp/gross-domestic-product-gdp.htm){:target="_blank"}
 
@@ -3754,9 +3877,11 @@ Which returns:
 ---
 
 ## get_gross_domestic_product_growth
+Get the quarterly growth of real Gross Domestic Product (GDP) of a variety of countries: how fast each economy grows.
+
 The quarterly growth of real Gross Domestic Product (GDP) is the headline measure of how fast an economy grows: the change in the volume of everything produced, adjusted for inflation, seasonal patterns and the number of working days. Two consecutive quarters of negative growth is the common rule of thumb for a technical recession.
 
-By default the growth is measured on the previous quarter (quarter on quarter), as Eurostat and the Office for National Statistics report it. Set year_over_year=True for the change on the same quarter a year earlier. The growth is not annualized, so a US figure is about a quarter of the annualized rate the Bureau of Economic Analysis headlines.
+By default the growth is measured on the previous quarter (quarter on quarter), as Eurostat and the Office for National Statistics report it, or on request against the same quarter a year earlier. The growth is not annualized, so a US figure is about a quarter of the annualized rate the Bureau of Economic Analysis headlines.
 
 Every country comes from the most current source: Eurostat for the euro area and the countries it covers (including the preliminary flash estimate for the euro area, about thirty days after the quarter ends), the Office for National Statistics for the United Kingdom and the OECD Quarterly National Accounts for every other country, including the United States and Japan.
 
@@ -3827,7 +3952,7 @@ Which returns:
 ---
 
 ## get_gross_domestic_product_deflator
-Get the Gross Domestic Product Deflator for a variety of countries over time from the Global Macro Database (GMDB). The GDP deflator is a measure of the price of all domestically produced final goods and services in an economy relative to the price level in a base year.
+Get the GDP deflator of a variety of countries from the Global Macro Database (GMDB): the price level of everything an economy produces, against a base year.
 
 The deflator is an annual index with 2015 = 100 for every country.
 
@@ -3891,14 +4016,14 @@ Which returns:
 ---
 
 ## get_real_gross_domestic_product_per_capita
-Get the Real Gross Domestic Product per Capita for a variety of countries over time from the Global Macro Database (GMDB). This is the inflation-adjusted Gross Domestic Product (GDP) divided by the total population of a country, which gives an indication of the average economic output (and by extension, living standard) per person.
+Get the real GDP per capita of a variety of countries from the Global Macro Database (GMDB): the inflation-adjusted output per person, a measure of living standards.
 
 This uses the Global Macro Database's own precomputed per-capita series (the source's figure) rather than dividing GDP by population manually, which avoids subtle mismatches that can arise from differences in population coverage or timing between the two underlying series.
 
 The formula is as follows:
 
 $$
-\text{Real GDP per Capita} = \frac{\text{Real Gross Domestic Product}}{\text{Population}},\;\; \text{in national currency at constant prices, or in US dollars as converted by the Global Macro Database when usd=True}
+\text{Real GDP per Capita} = \frac{\text{Real Gross Domestic Product}}{\text{Population}},\;\; \text{in national currency at constant prices, or in US dollars as converted by the Global Macro Database}
 $$
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
@@ -3960,7 +4085,9 @@ Which returns:
 ---
 
 ## get_output_gap
-Get the Output Gap for a variety of countries over time from the OECD Economic Outlook. The output gap is the difference between actual Gross Domestic Product (GDP) and estimated potential GDP, expressed as a percentage of potential GDP. Potential GDP is the level of output an economy can sustain over the long term without generating excess inflationary or disinflationary pressure, based on the full, non-inflationary use of its productive resources (labour, capital and technology).
+Get the output gap of a variety of countries from the OECD Economic Outlook: how far actual GDP lies above or below its potential, as a percentage of potential GDP.
+
+Potential GDP is the level of output an economy can sustain over the long term without generating excess inflationary or disinflationary pressure, based on the full, non-inflationary use of its productive resources (labour, capital and technology).
 
 A positive output gap indicates the economy is running above its long-run potential (an economic "boom", typically associated with rising inflationary pressure), while a negative output gap indicates the economy is running below potential (an economic "slack", typically associated with rising unemployment and disinflationary pressure). The output gap therefore complements indicators such as the Inflation Rate and Unemployment Rate as a measure of where an economy sits within the business cycle.
 
@@ -3974,7 +4101,7 @@ $$
 
 This data is only available on a yearly basis, since the OECD Economic Outlook is published as a set of annual projections and estimates.
 
-The result is a decimal fraction of potential GDP (-0.0422), where the OECD publishes a percentage (-4.2231), like every other rate and ratio in this class. Multiply by 100 to recover the published figure. A small gap loses resolution at the default rounding of 4 decimals, so pass a larger `rounding` when the sub-basis-point detail matters.
+The result is a decimal fraction of potential GDP (-0.0422), where the OECD publishes a percentage (-4.2231), like every other rate and ratio in this class. Multiply by 100 to recover the published figure. A small gap loses resolution at the default rounding of 4 decimals, so round to more decimals when the sub-basis-point detail matters.
 
 Potential output cannot be observed, so the gap is an estimate, and the estimate for a given year is often revised substantially as later data comes in: the gap estimated at the time can differ by a percentage point or more from the one published years later. Treat recent values as provisional and compare the gap with other measures of slack, such as unemployment or capacity utilisation.
 
@@ -4027,9 +4154,11 @@ Which returns:
 ---
 
 ## get_total_consumption
-Get the Total Consumption for a variety of countries over time from the Global Macro Database (GMDB). Total Consumption is final consumption expenditure: the goods and services bought by households and the non-profit institutions serving them (household consumption) and by the government (government consumption). Select either part with the component parameter.
+Get the total consumption of a variety of countries from the Global Macro Database (GMDB): what households, the non-profit institutions serving them and the government spend on goods and services.
 
-The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are; with usd=True the levels are in millions of US dollars. With inflation_adjusted=True the level is in 2015 prices: the nominal level divided by the GDP deflator.
+Select either part with the component parameter.
+
+The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are; in US dollars the levels are in millions of US dollars. Adjusted for inflation the level is in 2015 prices: the nominal level divided by the GDP deflator.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -4039,7 +4168,9 @@ Data comes from the Global Macro Database (GMDB), further information about the 
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
 - <u>inflation_adjusted (bool, optional):</u> Whether to return the inflation adjusted data. Defaults to False.
-- <u>component (str, optional):</u> The part of final consumption expenditure: "total", "household" (households and the non-profit institutions serving them) or "government". Defaults to "total".
+- <u>component (str, optional):</u> The part of final consumption expenditure. Options are: "total" (all
+final consumption expenditure), "household" (households and the non-profit institutions serving
+them), "government" (the government). Defaults to "total".
 - <u>usd (bool, optional):</u> Whether to return the values in millions of US dollars, converted by the Global Macro Database, instead of millions of national currency. Cannot be combined with inflation_adjusted. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
@@ -4091,7 +4222,9 @@ Which returns:
 ---
 
 ## get_total_consumption_to_gdp_ratio
-Get the Total Consumption to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Total Consumption to GDP Ratio is final consumption expenditure (households, the non-profit institutions serving them and the government) as a share of the Gross Domestic Product (GDP). Select the household or government part with the component parameter.
+Get the total consumption to GDP ratio of a variety of countries from the Global Macro Database (GMDB): the share of the economy that is consumed.
+
+Select the household or government part with the component parameter.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -4102,7 +4235,7 @@ The ratio is the Global Macro Database's own figure, published in percent and di
 The formula is as follows:
 
 $$
-\text{Consumption to GDP Ratio} = \frac{\text{Final Consumption Expenditure}}{\text{Nominal GDP}},\;\; \text{with the total (households, the non-profit institutions serving them and the government), household or government part selected with component ("total" by default)}
+\text{Consumption to GDP Ratio} = \frac{\text{Final Consumption Expenditure}}{\text{Nominal GDP}},\;\; \text{with the total (households, the non-profit institutions serving them and the government), household or government part selected (the total by default)}
 $$
 
 **Also known as:** consumption share of GDP.
@@ -4110,7 +4243,9 @@ $$
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>component (str, optional):</u> The part of final consumption expenditure: "total", "household" (households and the non-profit institutions serving them) or "government". Defaults to "total".
+- <u>component (str, optional):</u> The part of final consumption expenditure. Options are: "total" (all
+final consumption expenditure), "household" (households and the non-profit institutions serving
+them), "government" (the government). Defaults to "total".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -4161,7 +4296,7 @@ Which returns:
 ---
 
 ## get_investment
-Get the Investment for a variety of countries over time from the Global Macro Database (GMDB). Investment is gross capital formation: what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, plus the change in inventories.
+Get the investment of a variety of countries from the Global Macro Database (GMDB): gross capital formation, what is spent on fixed assets plus the change in inventories.
 
 The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -4227,7 +4362,7 @@ Which returns:
 ---
 
 ## get_investment_to_gdp_ratio
-Get the Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Investment to GDP Ratio is gross capital formation (what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, plus the change in inventories) as a share of the Gross Domestic Product (GDP).
+Get the investment to GDP ratio of a variety of countries from the Global Macro Database (GMDB): the share of the economy that is invested in fixed assets and inventories.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -4295,7 +4430,7 @@ Which returns:
 ---
 
 ## get_fixed_investment
-Get the Fixed Investment for a variety of countries over time from the Global Macro Database (GMDB). Fixed Investment is gross fixed capital formation: what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, without the change in inventories.
+Get the fixed investment of a variety of countries from the Global Macro Database (GMDB): gross fixed capital formation, what is spent on machinery, equipment, buildings and dwellings.
 
 The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -4355,7 +4490,7 @@ Which returns:
 ---
 
 ## get_fixed_investment_to_gdp_ratio
-Get the Fixed Investment to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Fixed Investment to GDP Ratio is gross fixed capital formation (what businesses, households and the government spend on fixed assets such as machinery, equipment, buildings and dwellings, without the change in inventories) as a share of the Gross Domestic Product (GDP).
+Get the fixed investment to GDP ratio of a variety of countries from the Global Macro Database (GMDB): the share of the economy that is invested in fixed assets.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -4426,7 +4561,7 @@ Which returns:
 ---
 
 ## get_exports
-Get the Exports for a variety of countries over time from the Global Macro Database (GMDB). Exports are the total amount of goods and services produced in a country that are sold to other countries.
+Get the exports of a variety of countries from the Global Macro Database (GMDB): the goods and services a country sells to other countries.
 
 The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -4489,7 +4624,7 @@ Which returns:
 ---
 
 ## get_exports_to_gdp_ratio
-Get the Exports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Exports to GDP Ratio is the ratio of the total amount of goods and services produced in a country that are sold to other countries to the Gross Domestic Product (GDP).
+Get the exports to GDP ratio of a variety of countries from the Global Macro Database (GMDB): how much of an economy's output is sold abroad.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -4559,7 +4694,7 @@ Which returns:
 ---
 
 ## get_imports
-Get the Imports for a variety of countries over time from the Global Macro Database (GMDB). Imports are the total amount of goods and services produced in other countries that are bought by a country.
+Get the imports of a variety of countries from the Global Macro Database (GMDB): the goods and services a country buys from other countries.
 
 The level is annual and expressed in millions of national currency, so levels are not comparable across countries with different currencies, but growth rates are.
 
@@ -4627,7 +4762,7 @@ Which returns:
 ---
 
 ## get_imports_to_gdp_ratio
-Get the Imports to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Imports to GDP Ratio is the ratio of the total amount of goods and services produced in other countries that are bought by a country to the Gross Domestic Product (GDP).
+Get the imports to GDP ratio of a variety of countries from the Global Macro Database (GMDB): how much a country buys from abroad against the size of its economy.
 
 Data comes from the Global Macro Database (GMDB), further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -4702,12 +4837,14 @@ Which returns:
 ---
 
 ## get_trade_balance
-Get the Trade Balance for a variety of countries over time from the Global Macro Database (GMDB). The Trade Balance is the difference between the total value of goods and services a country exports and the total value of goods and services it imports. A positive trade balance (a "trade surplus") means a country exports more than it imports, while a negative trade balance (a "trade deficit") means a country imports more than it exports.
+Get the trade balance of a variety of countries from the Global Macro Database (GMDB): the exports of goods and services minus the imports, a surplus when positive and a deficit when negative.
+
+A positive trade balance (a "trade surplus") means a country exports more than it imports, while a negative trade balance (a "trade deficit") means a country imports more than it exports.
 
 The formula is as follows:
 
 $$
-\text{Trade Balance} = \text{Exports of Goods and Services} - \text{Imports of Goods and Services},\;\; \text{both the Global Macro Database's figures in millions of national currency (or of US dollars when usd=True)}
+\text{Trade Balance} = \text{Exports of Goods and Services} - \text{Imports of Goods and Services},\;\; \text{both the Global Macro Database's figures in millions of national currency (or of US dollars)}
 $$
 
 The balance is annual and expressed in millions of national currency, with a negative value marking a trade deficit and a positive value a surplus.
@@ -4764,7 +4901,7 @@ Which returns:
 ---
 
 ## get_current_account_balance
-Get the Current Account Balance for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance is the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid).
+Get the current account balance of a variety of countries from the Global Macro Database (GMDB): the trade balance plus net income and transfers from abroad.
 
 The balance is annual and expressed in millions of national currency, with a negative value marking a current account deficit and a positive value a surplus.
 
@@ -4827,7 +4964,7 @@ Which returns:
 ---
 
 ## get_current_account_balance_to_gdp_ratio
-Get the Current Account Balance to GDP Ratio for a variety of countries over time from the Global Macro Database (GMDB). The Current Account Balance to GDP Ratio is the ratio of the sum of the balance of trade (exports minus imports of goods and services), net factor income (such as interest and dividends) and net transfer payments (such as foreign aid) to the Gross Domestic Product (GDP).
+Get the current account balance to GDP ratio of a variety of countries from the Global Macro Database (GMDB): the trade balance plus net income and transfers from abroad, as a share of the economy.
 
 The ratio shows whether a country saves more than it invests (a surplus) or relies on foreign financing (a deficit). Persistent deficits are not a problem in themselves, but they leave a country exposed when capital inflows stop, which is why emerging markets with large deficits are watched closely for currency stress. The European Union's macroeconomic imbalance procedure uses a three-year average between -4% and +6% of GDP as its threshold.
 
@@ -4900,31 +5037,33 @@ Which returns:
 ---
 
 ## get_net_international_investment_position
-Get the Net International Investment Position (NIIP) for a variety of countries over time from the International Monetary Fund (IMF). The Net International Investment Position is the value of the external financial assets of a country's residents (direct investment, portfolio investment, financial derivatives, other investment and reserve assets) less the value of their external liabilities, at the end of each period.
+Get the Net International Investment Position (NIIP) of a variety of countries from the IMF: what a country owns abroad minus what it owes to the rest of the world.
+
+The Net International Investment Position is the value of the external financial assets of a country's residents (direct investment, portfolio investment, financial derivatives, other investment and reserve assets) less the value of their external liabilities, at the end of each period.
 
 Where the current account is the flow, the international investment position is the stock it builds up: a country that runs current account deficits for years finances them by borrowing from or selling assets to the rest of the world, and ends up with a negative position, a net debtor. The position also moves without any transaction, with exchange rates and the prices of the assets and liabilities held.
 
 The position follows the IMF's Balance of Payments and International Investment Position Manual, sixth edition (BPM6), and is published by the IMF in millions of US dollars, converted at the exchange rate at the end of the period, for about 130 economies quarterly and 175 yearly, and the euro area. A negative value marks a net debtor, a positive value a net creditor.
 
-For more information, see the following sources:
-
-- International Monetary Fund (2009). Balance of Payments and International Investment Position Manual, Sixth Edition (BPM6), chapter 7: [https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf](https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf){:target="_blank"}
-- IMF International Investment Position dataset: [https://data.imf.org](https://data.imf.org){:target="_blank"}
-
 The formula is as follows:
 
 $$
-\text{Net International Investment Position} = \text{External Financial Assets} - \text{External Liabilities},\;\; \text{at the end of the quarter (period="quarterly") or the year (period="yearly")}
+\text{Net International Investment Position} = \text{External Financial Assets} - \text{External Liabilities},\;\; \text{at the end of the quarter (quarterly data) or the year (yearly data)}
 $$
 
 **Also known as:** NIIP, net foreign assets, net external position, net external assets.
 
+**References:**
+
+- paper | International Monetary Fund (2009). Balance of Payments and International Investment Position Manual, Sixth Edition (BPM6), chapter 7: [https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf](https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf){:target="_blank"}
+- paper | IMF International Investment Position dataset: [https://data.imf.org](https://data.imf.org){:target="_blank"}
+
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" (the position at the end of each quarter)
-or "yearly" (at the end of each year). Defaults to None, which is quarterly, the
-highest frequency published.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "quarterly" (the position at the
+end of each quarter), "yearly" (the position at the end of each year). Defaults to None, which is
+quarterly, the highest frequency published.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -4973,17 +5112,13 @@ Which returns:
 ---
 
 ## get_net_international_investment_position_to_gdp_ratio
-Get the Net International Investment Position (NIIP) to GDP Ratio for a variety of countries over time from the International Monetary Fund (IMF). The ratio is the value of the external financial assets of a country's residents less the value of their external liabilities, at the end of each period, relative to the country's nominal Gross Domestic Product (GDP).
+Get the Net International Investment Position (NIIP) to GDP ratio of a variety of countries from the IMF: a country's net foreign assets against the size of its economy.
+
+The ratio is the value of the external financial assets of a country's residents less the value of their external liabilities, at the end of each period, relative to the country's nominal Gross Domestic Product (GDP).
 
 The ratio shows how much a country owes to (negative) or is owed by (positive) the rest of the world compared to the size of its economy. A large negative position leaves a country dependent on foreign financing and exposed to a sudden stop of capital inflows, which is why the European Union's macroeconomic imbalance procedure (MIP) uses a position below -35% of GDP as its indicative threshold. Large creditors, such as Japan, Germany and the Netherlands, earn net investment income on their position.
 
 The IMF publishes the position in US dollars only, converted at the exchange rate at the end of the period. It is converted back to national currency at that same IMF end-of-period exchange rate (the euro area's for the euro members) and divided by the IMF's nominal GDP in national currency, so the ratio does not move with the gap between the end-of-period and the average exchange rate. This is the convention of Eurostat's MIP scoreboard (tipsii10), whose figures differ from it only by the vintage of the GDP and the position each publisher holds. The IMF's national accounts of some countries, such as the euro members, end a few quarters before their position, which leaves the latest periods of those countries empty.
-
-For more information, see the following sources:
-
-- International Monetary Fund (2009). Balance of Payments and International Investment Position Manual, Sixth Edition (BPM6), chapter 7: [https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf](https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf){:target="_blank"}
-- European Commission (2016). The Macroeconomic Imbalance Procedure: Rationale, Process, Application: A Compendium. Institutional Paper 039 (scoreboard threshold of -35% of GDP).
-- Eurostat MIP scoreboard: [https://ec.europa.eu/eurostat/databrowser/view/tipsii10/default/table](https://ec.europa.eu/eurostat/databrowser/view/tipsii10/default/table){:target="_blank"}
 
 The ratio is expressed as a decimal fraction (-0.35 for -35% of GDP).
 
@@ -4993,16 +5128,22 @@ $$
 \text{Net International Investment Position to GDP Ratio} = \frac{(\text{External Financial Assets} - \text{External Liabilities}) \;\text{in US Dollars} \cdot \text{National Currency per US Dollar at the End of the Period}}{\text{Nominal GDP in National Currency}}
 $$
 
-- The position is the stock at the end of the quarter or year; the GDP is summed over the four quarters up to and including that quarter (not seasonally adjusted) for period="quarterly" or over the calendar year for period="yearly"
+- The position is the stock at the end of the quarter or year; the GDP is summed over the four quarters up to and including that quarter (not seasonally adjusted) for quarterly data or over the calendar year for yearly data
 
 **Also known as:** NIIP to GDP, net foreign assets to GDP, net external position.
+
+**References:**
+
+- paper | International Monetary Fund (2009). Balance of Payments and International Investment Position Manual, Sixth Edition (BPM6), chapter 7: [https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf](https://www.imf.org/external/pubs/ft/bop/2007/pdf/bpm6.pdf){:target="_blank"}
+- paper | European Commission (2016). The Macroeconomic Imbalance Procedure: Rationale, Process, Application: A Compendium. Institutional Paper 039 (scoreboard threshold of -35% of GDP).
+- paper | Eurostat MIP scoreboard: [https://ec.europa.eu/eurostat/databrowser/view/tipsii10/default/table](https://ec.europa.eu/eurostat/databrowser/view/tipsii10/default/table){:target="_blank"}
 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> "quarterly" (the position at the end of each quarter)
-or "yearly" (at the end of each year). Defaults to None, which is quarterly, the
-highest frequency published.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "quarterly" (the position at the
+end of each quarter), "yearly" (the position at the end of each year). Defaults to None, which is
+quarterly, the highest frequency published.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -5051,7 +5192,9 @@ Which returns:
 ---
 
 ## get_foreign_exchange_reserves
-Get the total reserves, including gold, of a variety of countries over time from the World Bank's World Development Indicators (FI.RES.TOTL.CD), which takes them from the IMF's International Financial Statistics. Reserve assets are the external assets that a central bank or other monetary authority controls and can use at once to finance a balance of payments need, to intervene in the currency market or to keep confidence in the currency: foreign currency deposits and securities, monetary gold, special drawing rights (SDRs) and the reserve position in the IMF (IMF Balance of Payments and International Investment Position Manual, sixth edition; IMF (2013), International Reserves and Foreign Currency Liquidity: Guidelines for a Data Template).
+Get the total reserves, including gold, of a variety of countries from the World Bank (FI.RES.TOTL.CD, from the IMF's International Financial Statistics): the external assets a central bank can use at once.
+
+Reserve assets are the external assets that a central bank or other monetary authority controls and can use at once to finance a balance of payments need, to intervene in the currency market or to keep confidence in the currency: foreign currency deposits and securities, monetary gold, special drawing rights (SDRs) and the reserve position in the IMF (IMF Balance of Payments and International Investment Position Manual, sixth edition; IMF (2013), International Reserves and Foreign Currency Liquidity: Guidelines for a Data Template).
 
 Reserves are a country's buffer against a sudden stop of capital inflows: they let a central bank pay for imports and service foreign debt, and defend its currency, when foreign financing dries up. Their adequacy is judged against what they may have to cover, such as months of imports (see get_reserves_import_cover) or short-term external debt (the Greenspan-Guidotti rule asks for reserves at least equal to the external debt falling due within a year).
 
@@ -5111,7 +5254,9 @@ Which returns:
 ---
 
 ## get_reserves_import_cover
-Get the total reserves, including gold, in months of imports for a variety of countries over time from the World Bank's World Development Indicators (FI.RES.TOTL.MO), which takes them from the IMF's International Financial Statistics: the number of months of imports of goods and services the reserves could pay for. Reserve assets are the external assets that a central bank or other monetary authority controls and can use at once to finance a balance of payments need, to intervene in the currency market or to keep confidence in the currency: foreign currency deposits and securities, monetary gold, special drawing rights (SDRs) and the reserve position in the IMF (IMF Balance of Payments and International Investment Position Manual, sixth edition; IMF (2013), International Reserves and Foreign Currency Liquidity: Guidelines for a Data Template).
+Get the total reserves in months of imports of a variety of countries from the World Bank (FI.RES.TOTL.MO, from the IMF's International Financial Statistics): how many months of imports the reserves could pay for.
+
+Reserve assets are the external assets that a central bank or other monetary authority controls and can use at once to finance a balance of payments need, to intervene in the currency market or to keep confidence in the currency: foreign currency deposits and securities, monetary gold, special drawing rights (SDRs) and the reserve position in the IMF (IMF Balance of Payments and International Investment Position Manual, sixth edition; IMF (2013), International Reserves and Foreign Currency Liquidity: Guidelines for a Data Template).
 
 Import cover is the classic measure of reserve adequacy for countries whose main external risk runs through the current account rather than the capital account: three months of imports is the traditional rule of thumb for the minimum, and the IMF's reserve adequacy assessments use it next to measures of short-term external debt and broad money for countries with open capital accounts.
 
@@ -5179,19 +5324,19 @@ Which returns:
 ---
 
 ## get_consumer_price_index
-Consumer Price Index (CPI) is a measure that examines the average change in prices paid by consumers for goods and services over time. It is a measure of inflation.
+Get the Consumer Price Index (CPI) of a variety of countries: the average change in the prices consumers pay for goods and services, the measure of inflation.
 
-By default the data is monthly, from the most current national source per country (see below). With period="yearly" the data comes from the Global Macro Database (GMDB), annual with 2015 = 100. Set `oecd_source=True` to retrieve monthly or quarterly data from the OECD instead (base year varies per country).
+By default the data is monthly, from the most current national source per country (see below). Yearly data comes from the Global Macro Database (GMDB), annual with 2015 = 100. The OECD can be chosen as the source for monthly or quarterly data instead (base year varies per country).
 
 The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
 
-With period="monthly" and without oecd_source, every country comes from its most current source: Eurostat for the euro area and the European Economic Area (the HICP, 2015 = 100), the Office for National Statistics for the United Kingdom (CPI, 2015 = 100), the Statistics Bureau of Japan for Japan (CPI from 2015, on its latest base) and the Bank for International Settlements for every other country (2010 = 100). The base year differs between countries, so compare the changes rather than the levels. Countries that publish their consumer prices quarterly, such as Australia and New Zealand, have a value in the last month of each quarter only.
+With monthly data and without the OECD as the source, every country comes from its most current source: Eurostat for the euro area and the European Economic Area (the HICP, 2015 = 100), the Office for National Statistics for the United Kingdom (CPI, 2015 = 100), the Statistics Bureau of Japan for Japan (CPI from 2015, on its latest base) and the Bank for International Settlements for every other country (2010 = 100). The base year differs between countries, so compare the changes rather than the levels. Countries that publish their consumer prices quarterly, such as Australia and New Zealand, have a value in the last month of each quarter only.
 
 The measure parameter selects the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
 
 The US index of the BIS is the BLS's CPI-U rebased to 2010 = 100, which the BIS publishes a few days after the BLS. The months the BLS has published since are added to it, so a release appears the same day.
 
-With cumulative=True, every country's index is divided by its value in the first period of the date range: the growth of 1 in prices since the start_date (1.3460 for prices 34.60% higher), which compares countries regardless of their base year. A country without data in the first period starts from its own first period. The purchasing power of money is its inverse (see get_purchasing_power).
+Cumulatively, every country's index is divided by its value in the first period of the date range: the growth of 1 in prices since the start date (1.3460 for prices 34.60% higher), which compares countries regardless of their base year. A country without data in the first period starts from its own first period. The purchasing power of money is its inverse (see get_purchasing_power).
 
 Further information about the Global Macro Database (GMDB) variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
@@ -5200,15 +5345,16 @@ Further information about the Global Macro Database (GMDB) variable can be found
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Without `oecd_source=True`, "monthly" uses the monthly sources described above and the
-annual data comes from the GMDB. Defaults to None, which is the monthly data (quarterly
-with `oecd_source=True` when the Economics class was initialized with quarterly=True).
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Without `oecd_source=True`, "monthly" uses the
+monthly sources described above and the annual data comes from the GMDB. Defaults to None, which is
+the monthly data (quarterly with `oecd_source=True` when the Economics class was initialized with
+quarterly=True).
 - <u>oecd_source (bool, optional):</u> Whether to get the data from the OECD instead of the
 Global Macro Database (GMDB). Defaults to False.
-- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
-energy, or a component: "energy", "food", "goods", "services" or "shelter"
-(United States only). Other measures than "all" are monthly, without
+- <u>measure (str, optional):</u> The basket of the index. Options are: "all" (all items), "core" (all
+items less food and energy), "energy" (energy), "food" (food), "goods" (goods), "services"
+(services), "shelter" (shelter, United States only). Other measures than "all" are monthly, without
 oecd_source. Defaults to "all".
 - <u>cumulative (bool, optional):</u> Whether to return the growth of 1 in prices since the
 first period of the date range instead of the index. Defaults to False.
@@ -5265,13 +5411,13 @@ Which returns:
 ---
 
 ## get_inflation_rate
-Inflation Rate is the percentage change in the Consumer Price Index (CPI) from one period to another. It is a measure of the rate of price increases in the economy.
+Get the inflation rate of a variety of countries: the percentage change in the Consumer Price Index (CPI), how fast prices rise.
 
-With period="yearly" the data comes from the Global Macro Database (GMDB). Its years that are IMF World Economic Outlook projections are only included with gmdb_forecasts=True; by default a series ends with its last observation. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+Yearly data comes from the Global Macro Database (GMDB). Its years that are IMF World Economic Outlook projections are only included on request; by default a series ends with its last observation. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
 The yearly index is chained across currency reforms and redenominations, in today's currency. A warning names the years in the date range where it repeats the value of the year before (carried forward by the source, such as Germany's 1913 and 1914, so their inflation is 0 by construction) and the hyperinflations (prices rising more than tenfold in a year), after which the yearly average still rises sharply even when a currency reform ended them within the year.
 
-With period="monthly", the default, the annual rate of change is returned for every month, the figure statistical offices publish, taken per country from the most current source: Eurostat for the euro area and the European Economic Area (the HICP, including the flash estimate at the end of the month itself), the Office for National Statistics for the United Kingdom (CPI), the Statistics Bureau of Japan for Japan (CPI, from 2016), the Bank for International Settlements for around sixty other countries, including the United States, China, India and Brazil, and the IMF for around a hundred more, all republishing the national consumer price indices.
+With monthly data, the default, the annual rate of change is returned for every month, the figure statistical offices publish, taken per country from the most current source: Eurostat for the euro area and the European Economic Area (the HICP, including the flash estimate at the end of the month itself), the Office for National Statistics for the United Kingdom (CPI), the Statistics Bureau of Japan for Japan (CPI, from 2016), the Bank for International Settlements for around sixty other countries, including the United States, China, India and Brazil, and the IMF for around a hundred more, all republishing the national consumer price indices.
 
 The measure parameter selects the inflation of the core index (all items less energy and food; Eurostat also leaves out alcohol and tobacco) or a component: energy, food (Eurostat includes alcohol and tobacco, the BLS does not), goods, services and, for the United States, shelter. These are monthly, from Eurostat (the euro area and the European Economic Area) and the Bureau of Labor Statistics for the United States (CPI-U, not seasonally adjusted, 1982-84 = 100; the full history through FRED when a FRED API key is set, the last three years otherwise). Other countries have all items only.
 
@@ -5300,11 +5446,11 @@ Headline inflation is what most central banks target, usually at 2% a year, but 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
-Defaults to None, which is the monthly data.
-- <u>measure (str, optional):</u> "all" for all items, "core" for all items less food and
-energy, or a component: "energy", "food", "goods", "services" or "shelter"
-(United States only). Other measures than "all" are monthly. Defaults to "all".
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data), "yearly"
+(yearly data). Defaults to None, which is the monthly data.
+- <u>measure (str, optional):</u> The basket of the index. Options are: "all" (all items), "core" (all items less
+food and energy), "energy" (energy), "food" (food), "goods" (goods), "services" (services), "shelter"
+(shelter, United States only). Other measures than "all" are monthly. Defaults to "all".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -5352,9 +5498,11 @@ Which returns:
 ---
 
 ## get_purchasing_power
-Purchasing Power is what 100 units of a currency at the start of the date range buy in every later period, in the prices of the start: it falls as consumer prices rise, so 74.29 means that money has lost a quarter of its value. It is the inverse of the growth in the Consumer Price Index since the first period of the range (see get_consumer_price_index with cumulative=True), on the same monthly sources by default (period="yearly" for the Global Macro Database's annual averages).
+Get the purchasing power of the currencies of a variety of countries: what 100 units of money at the start of the date range buy in every later period.
 
-With overnight_rate=True, the 100 is not held as banknotes but deposited at the overnight rate of its currency, compounded day by day (see get_overnight_rate with cumulative=True): €STR for the Euro Area and its members, SONIA for the United Kingdom, TONA for Japan and SOFR for the United States. The result is the real value of cash, which stays above 100 only when the interest outpaced inflation. Countries without an overnight rate are left out with a note. A euro member earns €STR over the whole range, also before it adopted the euro.
+Purchasing Power is what 100 units of a currency at the start of the date range buy in every later period, in the prices of the start: it falls as consumer prices rise, so 74.29 means that money has lost a quarter of its value. It is the inverse of the growth in the Consumer Price Index since the first period of the range (see the cumulative get_consumer_price_index), on the same monthly sources by default (yearly data for the Global Macro Database's annual averages).
+
+Deposited at the overnight rate, the 100 is not held as banknotes but deposited at the overnight rate of its currency, compounded day by day (see the cumulative get_overnight_rate): €STR for the Euro Area and its members, SONIA for the United Kingdom, TONA for Japan and SOFR for the United States. The result is the real value of cash, which stays above 100 only when the interest outpaced inflation. Countries without an overnight rate are left out with a note. A euro member earns €STR over the whole range, also before it adopted the euro.
 
 The formula is as follows:
 
@@ -5376,9 +5524,9 @@ CPI (start) is each country's index in the first period of the date range (its o
 Defaults to None, which is every country with a consumer price index, or the
 Euro Area, Japan, the United Kingdom and the United States with
 overnight_rate=True.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the annual data.
-Defaults to None, which is the monthly data. The overnight rate is only
-combined with the monthly data.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data), "yearly"
+(yearly data). Defaults to None, which is the monthly data. The overnight rate is only combined with
+the monthly data.
 - <u>overnight_rate (bool, optional):</u> Whether the 100 earns the overnight rate of its
 currency instead of being held as banknotes. Defaults to False.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -5421,7 +5569,9 @@ Which returns:
 ---
 
 ## get_producer_price_index
-Get the Producer Price Index (PPI) for a variety of countries over time. The PPI measures the average change over time in the prices domestic producers receive for their output. Because producers tend to pass rising input costs on to their customers with a lag, the PPI is generally seen as a leading, upstream indicator of cost pressure that later shows up in the Consumer Price Index (CPI).
+Get the Producer Price Index (PPI) of a variety of countries: the average change in the prices domestic producers receive for their output.
+
+Because producers tend to pass rising input costs on to their customers with a lag, the PPI is generally seen as a leading, upstream indicator of cost pressure that later shows up in the Consumer Price Index (CPI).
 
 Each country's headline index comes monthly from its official publisher:
 
@@ -5439,7 +5589,7 @@ $$
 
 China is not included: the National Bureau of Statistics of China publishes its producer prices as changes rather than as an index, and its database refuses automated requests. Its monthly year-on-year figure is in get_economic_calendar.
 
-All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+All indices are not seasonally adjusted, so changes are best taken year over year (the growth over a lag of 12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
 
 **See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm){:target="_blank"}
 
@@ -5448,9 +5598,9 @@ All indices are not seasonally adjusted, so changes are best taken year over yea
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is quarterly when the
+Economics class was initialized with quarterly=True and monthly otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -5504,7 +5654,9 @@ Which returns:
 ---
 
 ## get_export_price_index
-Get the Export Price Index for a variety of countries over time. The index measures the average change over time in the prices a country's producers receive for the goods they sell abroad, in its own currency. Together with the Import Price Index it gives the terms of trade, and it shows how much of a currency move or a foreign price shock exporters pass on.
+Get the Export Price Index of a variety of countries: the average change in the prices a country's producers receive for the goods they sell abroad.
+
+Together with the Import Price Index it gives the terms of trade, and it shows how much of a currency move or a foreign price shock exporters pass on.
 
 Each country's index comes monthly from its official publisher:
 
@@ -5520,7 +5672,7 @@ $$
 \text{The Bank of Japan for Japan:}\;\; \text{the export price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
 $$
 
-All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+All indices are not seasonally adjusted, so changes are best taken year over year (the growth over a lag of 12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
 
 **See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm){:target="_blank"}
 
@@ -5529,9 +5681,9 @@ All indices are not seasonally adjusted, so changes are best taken year over yea
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is quarterly when the
+Economics class was initialized with quarterly=True and monthly otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -5585,7 +5737,9 @@ Which returns:
 ---
 
 ## get_import_price_index
-Get the Import Price Index for a variety of countries over time. The index measures the average change over time in the prices of the goods a country buys from abroad, in its own currency. It shows how foreign price shocks and currency moves reach the domestic economy, ahead of the Producer and Consumer Price Indices.
+Get the Import Price Index of a variety of countries: the average change in the prices of the goods a country buys from abroad.
+
+It shows how foreign price shocks and currency moves reach the domestic economy, ahead of the Producer and Consumer Price Indices.
 
 Each country's index comes monthly from its official publisher:
 
@@ -5601,7 +5755,7 @@ $$
 \text{The Bank of Japan for Japan:}\;\; \text{the import price index in yen},\;\; 2020 = 100,\;\; \text{from 1960}
 $$
 
-All indices are not seasonally adjusted, so changes are best taken year over year (growth=True with lag=12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
+All indices are not seasonally adjusted, so changes are best taken year over year (the growth over a lag of 12 on monthly data), which returns them as decimals (0.057 for 5.7%). The base year differs per country, so compare growth rather than levels. Quarterly and yearly values are the average of the months, for complete periods only.
 
 **See definition:** [https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm](https://ec.europa.eu/eurostat/cache/metadata/en/sts_esms.htm){:target="_blank"}
 
@@ -5610,9 +5764,9 @@ All indices are not seasonally adjusted, so changes are best taken year over yea
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is quarterly when the
+Economics class was initialized with quarterly=True and monthly otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -5666,9 +5820,11 @@ Which returns:
 ---
 
 ## get_house_prices
+Get the house price index of a variety of countries: how the prices of residential property move over time.
+
 In most cases, the nominal house price index covers the sales of newly-built and existing dwellings, following the recommendations from the RPPI (Residential Property Prices Indices) manual.
 
-By default the data is quarterly, from the OECD, the only source with quarterly data. With quarterly=False the data is annual and comes from the Global Macro Database (GMDB), with 2015 = 100, unless gmdb_source=False is given (or the Economics class was initialized with gmdb_source=False), which takes the annual data from the OECD.
+By default the data is quarterly, from the OECD, the only source with quarterly data. Without quarterly data the data is annual and comes from the Global Macro Database (GMDB), with 2015 = 100, unless the OECD is chosen as the source (also when the Economics class was initialized that way), which takes the annual data from the OECD.
 
 In the OECD data, the real house price index is given by the ratio of the nominal house price index to the consumers' expenditure deflator in each country from the OECD national accounts database. Both indices are seasonally adjusted. China's index comes from the BIS instead: the National Bureau of Statistics' prices of newly built homes in 70 cities (nominal, or deflated by consumer prices), rebased to 2015 = 100. The OECD's own index for China kept rising while these prices fell.
 
@@ -5742,7 +5898,9 @@ Which returns:
 ---
 
 ## get_rent_prices
-The housing rent price index measures the prices paid for renting residential properties over time. Together with the house price index it is a key input into affordability and house ownership profitability measures such as the price to rent ratio.
+Get the housing rent price index of a variety of countries: how the prices paid for renting residential property move over time.
+
+Together with the house price index it is a key input into affordability and house ownership profitability measures such as the price to rent ratio.
 
 This is an index based on 2015 = 100.
 
@@ -5803,11 +5961,11 @@ Which returns:
 ---
 
 ## get_commercial_real_estate_prices
-Get the quarterly growth of commercial real estate prices: the change in the price of commercial property (offices, retail, industrial and apartment buildings) on the same quarter a year earlier, for around twenty economies.
+Get the year-on-year growth of commercial real estate prices of around twenty economies: how the prices of offices, retail, industrial and apartment buildings change.
 
 This tracks commercial (office, retail, industrial, apartment) property prices, as distinct from residential house prices (see `get_house_prices`, which tracks a completely different asset class/market). It is a transaction-based index rather than the appraisal-smoothed methodology used by institutional benchmarks like the NCREIF Property Index -- which is not freely available anywhere -- so expect more volatility and less autocorrelation than an appraisal-based series would show.
 
-The prices come from the commercial property price indices the Bank for International Settlements collects from national sources, for the euro area, the United States (from 1945), Japan, Denmark, the Netherlands, Germany, France, Spain and around ten more, taking per country a nominal index of commercial property, preferably all commercial property in the whole country. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), the United States instead comes from FRED's series sourced from the IMF's Financial Soundness Indicators.
+The prices come from the commercial property price indices the Bank for International Settlements collects from national sources, for the euro area, the United States (from 1945), Japan, Denmark, the Netherlands, Germany, France, Spain and around ten more, taking per country a nominal index of commercial property, preferably all commercial property in the whole country. When a FRED API key is set on the Economics class, the United States instead comes from FRED's series sourced from the IMF's Financial Soundness Indicators.
 
 See definitions: [https://data.bis.org/topics/CPP](https://data.bis.org/topics/CPP){:target="_blank"} and [https://fred.stlouisfed.org/series/COMREPUSQ159N](https://fred.stlouisfed.org/series/COMREPUSQ159N){:target="_blank"}
 
@@ -5859,13 +6017,15 @@ Which returns:
 ---
 
 ## get_commodity_prices
-Retrieves the World Bank's monthly commodity prices from 1960 (The Pink Sheet): the average price of each month in US dollars of around seventy commodities, among which crude oil (Brent, WTI, Dubai), natural gas, coal, gold, silver, platinum, copper, aluminum, iron ore, nickel, zinc, grains, softs and fertilizers. Futures prices from exchanges reach back to 2000 at most, which leaves out the commodity booms and busts of the 1970s and 1980s, such as gold's peak of January 1980 and the oil shocks.
+Get the World Bank's monthly commodity prices from 1960 (The Pink Sheet): the average price of each month in US dollars of around seventy commodities.
 
-With deflate_with, the prices are in real terms: in the money of the latest month of that country's consumer price index up to the end date (see get_consumer_price_index), so that the gold price of 1980 can be compared with today's. A month after the latest month of the consumer price index, which is published a few weeks late, keeps its nominal price, and a month the consumer price index skipped has no real price.
+Among them are crude oil (Brent, WTI, Dubai), natural gas, coal, gold, silver, platinum, copper, aluminum, iron ore, nickel, zinc, grains, softs and fertilizers. Futures prices from exchanges reach back to 2000 at most, which leaves out the commodity booms and busts of the 1970s and 1980s, such as gold's peak of January 1980 and the oil shocks.
+
+Deflated with a country's prices, the prices are in real terms: in the money of the latest month of that country's consumer price index up to the end date (see get_consumer_price_index), so that the gold price of 1980 can be compared with today's. A month after the latest month of the consumer price index, which is published a few weeks late, keeps its nominal price, and a month the consumer price index skipped has no real price.
 
 With currency, the prices are in another currency than the US dollar, such as the euro, the pound sterling, the yen, the Swiss franc or the renminbi: each month's average price is converted at the average exchange rate of the same month, from the Bank for International Settlements (BIS), which publishes the monthly averages of around 130 currencies against the US dollar from the central banks (the euro as the euro area series, from June 1974). An average price is converted at an average rate so that both cover the same days. A month without a rate, such as the latest month before the BIS publishes its average a few days after the month ends, has no price in the currency (NaN), and a warning names those months. The Natural gas index is an index rather than a price in US dollars and is not converted.
 
-With both, the prices are converted first and deflated after, so deflate_with is the country whose money the currency is, e.g. currency="EUR" with deflate_with="Euro Area" for prices in euros of the latest month of the euro area consumer price index.
+With both, the prices are converted first and deflated after, so the deflating country is the country whose money the currency is, e.g. euros deflated with the Euro Area for prices in euros of the latest month of the euro area consumer price index.
 
 The formula is as follows:
 
@@ -5958,25 +6118,27 @@ Which returns:
 ---
 
 ## get_exchange_rates
-Exchange rates are defined as the price of one country's currency in relation to another country's currency. This indicator is measured in terms of national currency per US dollar.
+Get the exchange rates of a variety of countries: the price of one US dollar in each national currency.
 
 **See definition:** [https://data.oecd.org/conversion/exchange-rates.htm](https://data.oecd.org/conversion/exchange-rates.htm){:target="_blank"}
 
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+It is also possible to get the data from the Global Macro Database (GMDB) by choosing it as the source.
 
-Both sources are quoted the same way (national currency per US dollar), but the OECD source omits the United States itself, since the rate is trivially 1, whereas the GMDB source carries it as 1.0. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+Both sources are quoted the same way (national currency per US dollar), but the OECD source omits the United States itself, since the rate is trivially 1, whereas the GMDB source carries it as 1.0. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period has no effect when it is the source.
 
-Both are averages over each period. For daily and weekly rates (period="daily" or "weekly"), or the rate at the end of each month, quarter or year (end_of_period=True), the rates come from the Bank for International Settlements instead, without an API key: daily for around 80 currencies with history back to 1945 for some, and at the end of each month for around 130, back to the 1950s for most. Weekly and quarterly or yearly end-of-period rates take the last observation of each period.
+Both are averages over each period. For daily and weekly rates, or the rate at the end of each month, quarter or year (end of period), the rates come from the Bank for International Settlements instead, without an API key: daily for around 80 currencies with history back to 1945 for some, and at the end of each month for around 130, back to the 1950s for most. Weekly and quarterly or yearly end-of-period rates take the last observation of each period.
 
 **Also known as:** currency exchange, FX rates, foreign exchange rates.
 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
-or the annual data. Defaults to None, which is quarterly when the Economics class
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "daily" (daily data),
+"weekly" (weekly data), "monthly" (monthly data), "quarterly" (quarterly data), "yearly"
+(yearly data). Defaults to None, which is quarterly when the Economics class
 was initialized with quarterly=True and otherwise the highest frequency available: daily.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+Defaults to None, which uses the GMDB for yearly data when gmdb_source is True on the Economics class (its default) and the OECD otherwise.
 - <u>end_of_period (bool, optional):</u> Whether to return the rate at the end of each month,
 quarter or year instead of its average. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
@@ -6030,7 +6192,7 @@ Which returns:
 ---
 
 ## get_real_effective_exchange_rate
-Get the Real Effective Exchange Rate (REER) for a variety of countries over time from the Global Macro Database (GMDB). The REER is a trade-weighted average of a country's currency relative to a basket of other major currencies, adjusted for relative price levels (inflation) between the country and its trading partners.
+Get the Real Effective Exchange Rate (REER) of a variety of countries from the Global Macro Database (GMDB): the value of a currency against those of its trading partners, adjusted for inflation.
 
 Unlike a simple bilateral exchange rate, the REER captures a currency's overall competitiveness: a rising REER indicates that a country's exports are becoming more expensive (and imports cheaper) relative to its trading partners after accounting for inflation differentials, while a falling REER indicates the opposite. The index is annual with 2015 = 100 for every country.
 
@@ -6089,6 +6251,8 @@ Which returns:
 ---
 
 ## get_money_supply
+Get the money supply of a variety of countries: the amount of money in circulation, from cash to the broader aggregates.
+
 Money Supply is the total amount of money that is in circulation in a country. It includes currency, demand deposits, and other liquid assets that can be easily converted into cash. Money supply is an important economic indicator that the Federal Reserve uses to implement its monetary policy.
 
 Money supply can be divided into five categories: M0, M1, M2, M3 and M4.
@@ -6108,9 +6272,10 @@ The aggregates are annual and expressed in millions of national currency, so lev
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>measure (str &#124; None, optional):</u> Which single aggregate to return, one of 'M0', 'M1',
-'M2', 'M3' or 'M4'. Defaults to None, which returns all five with the aggregate
-as the first level of the column index.
+- <u>measure (str &#124; None, optional):</u> Which single aggregate to return. Options are: "M0" (currency and central
+bank reserves), "M1" (narrow money), "M2" (M1 plus savings, money market and small time deposits),
+"M3" (broad money), "M4" (M3 plus all other financial assets). Defaults to None, which returns all
+five with the aggregate as the first level of the column index.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -6165,13 +6330,15 @@ Which returns:
 ---
 
 ## get_central_bank_policy_rate
+Get the central bank policy rate of a variety of countries: the rate a central bank sets to steer inflation and the economy.
+
 The Central Bank Policy Rate is the interest rate that a central bank sets on its loans and advances to a commercial bank. This interest rate is used by the monetary authorities to control inflation and stabilize the country's currency.
 
 By default the rates are daily, from the Bank for International Settlements (BIS), which publishes the policy rates of around fifty central banks, including the Federal Reserve, the European Central Bank (as "Euro Area"), the Bank of England and the Bank of Japan, some back to the 1940s. For the United States the BIS reports the midpoint of the Federal Reserve's target range for the federal funds rate (0.03875 for a range of 3.75% to 4.00%). Days are business days: the weekends some central banks list in the BIS data are left out for all. Weekly, monthly and quarterly data take the rate on the last business day of each period, so the current week, month or quarter shows the rate so far.
 
 The BIS updates its series about once a week. The days since are added from the Bank of England (Bank Rate) and the European Central Bank, which publish their rates the same day, when both publishers agree on the month before; other countries end at the latest BIS update. For the euro area the BIS reports the main refinancing rate up to 17 September 2024 and the deposit facility rate from 18 September 2024, when the ECB began steering money markets with it; get_european_central_bank_rates has either rate throughout.
 
-With period="yearly" the rates come from the Global Macro Database (GMDB) instead, taken at the end of the year rather than averaged over it. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
+With yearly data the rates come from the Global Macro Database (GMDB) instead, taken at the end of the year rather than averaged over it. Further information about the variable can be found within [https://www.globalmacrodata.com/documentation.html](https://www.globalmacrodata.com/documentation.html){:target="_blank"}
 
 The result is a decimal fraction per annum (0.05375 for 5.375%), like every other rate in the Finance Toolkit.
 
@@ -6180,8 +6347,9 @@ The result is a decimal fraction per annum (0.05375 for 5.375%), like every othe
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
-or the yearly data. Defaults to None, which is quarterly when the Economics class
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "daily" (daily data),
+"weekly" (weekly data), "monthly" (monthly data), "quarterly" (quarterly data), "yearly"
+(yearly data). Defaults to None, which is quarterly when the Economics class
 was initialized with quarterly=True and otherwise the highest frequency available: daily.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
@@ -6228,25 +6396,28 @@ Which returns:
 ---
 
 ## get_short_term_interest_rate
+Get the short-term interest rate of a variety of countries: the 3-month rate at which banks lend to each other or governments borrow.
+
 Short-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage.
 
 Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate". The OECD source specifically returns the 3-month interbank offered rate.
 
 **See definition:** [https://data.oecd.org/interest/short-term-interest-rates.htm](https://data.oecd.org/interest/short-term-interest-rates.htm){:target="_blank"}
 
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+It is also possible to get the data from the Global Macro Database (GMDB) by choosing it as the source.
 
-Both sources return the rate as a decimal fraction per annum (0.0513 for 5.13%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+Both sources return the rate as a decimal fraction per annum (0.0513 for 5.13%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period has no effect when it is the source.
 
 **Also known as:** 3-month rate, money market rate, short-term yield.
 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is quarterly when the
+Economics class was initialized with quarterly=True and monthly otherwise.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
+Defaults to None, which uses the GMDB for yearly data when gmdb_source is True on the Economics class (its default) and the OECD otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -6302,17 +6473,19 @@ Which returns:
 ---
 
 ## get_long_term_interest_rate
+Get the long-term interest rate of a variety of countries: the yield on 10-year government bonds.
+
 Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued.
 
 In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth
 
 **See definition:** [https://data.oecd.org/interest/long-term-interest-rates.htm](https://data.oecd.org/interest/long-term-interest-rates.htm){:target="_blank"}
 
-It is also possible to get the data from the Global Macro Database (GMDB) by setting the gmdb_source to True.
+It is also possible to get the data from the Global Macro Database (GMDB) by choosing it as the source.
 
-Both sources return the rate as a decimal fraction per annum (0.0357 for 3.57%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period argument has no effect when gmdb_source is True.
+Both sources return the rate as a decimal fraction per annum (0.0357 for 3.57%), so the two are directly interchangeable. Only the OECD source supports monthly and quarterly frequency; the GMDB is annual only, so the period has no effect when it is the source.
 
-With period="daily" or "weekly" the 10-year yields come from the issuers themselves: the U.S. Department of the Treasury (par yield, from 1990), the Bank of England (nominal par yield of gilts, from 1993), the Japanese Ministry of Finance (JGBs, from 1974) and the European Central Bank (the euro area yield curve of all central government bonds, from 2004). The euro area rate is the 10-year zero-coupon rate of the ECB's Svensson curve, converted from continuous to annual compounding, while the other three are par yields of bonds paying coupons twice a year, quoted with semi-annual (bond-equivalent) compounding. Weekly takes the yield on the last trading day of each week. Other countries have no daily source and are not included.
+With daily or weekly data the 10-year yields come from the issuers themselves: the U.S. Department of the Treasury (par yield, from 1990), the Bank of England (nominal par yield of gilts, from 1993), the Japanese Ministry of Finance (JGBs, from 1974) and the European Central Bank (the euro area yield curve of all central government bonds, from 2004). The euro area rate is the 10-year zero-coupon rate of the ECB's Svensson curve, converted from continuous to annual compounding, while the other three are par yields of bonds paying coupons twice a year, quoted with semi-annual (bond-equivalent) compounding. Weekly takes the yield on the last trading day of each week. Other countries have no daily source and are not included.
 
 A few countries report a national long-term rate to the OECD that is not a 10-year government bond yield, such as Brazil, whose series is the TJLP (Taxa de Juros de Longo Prazo), the long-term lending rate of the national development bank BNDES.
 
@@ -6321,13 +6494,15 @@ A few countries report a national long-term rate to the OECD that is not a 10-ye
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the daily, weekly, monthly, quarterly
-or the annual data. Defaults to None, which is quarterly when the Economics class
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "daily" (daily data),
+"weekly" (weekly data), "monthly" (monthly data), "quarterly" (quarterly data), "yearly"
+(yearly data). Defaults to None, which is quarterly when the Economics class
 was initialized with quarterly=True and otherwise the highest frequency available: daily
 when only the United States, the United Kingdom, Japan and the Euro Area are requested,
 and the monthly OECD data when other countries are requested or countries is None.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB).
 Not used for daily and weekly data.
+Defaults to None, which uses the GMDB for yearly data when gmdb_source is True on the Economics class (its default) and the OECD otherwise.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over trailing periods (e.g. a trailing-4-quarter sum). Defaults to None.
 - <u>growth (bool, optional):</u> Whether to return the growth data or the actual data. Defaults to False.
@@ -6380,6 +6555,8 @@ Which returns:
 ---
 
 ## get_overnight_rate
+Get the overnight rate of a variety of countries: the rate at which banks borrow from each other for a single day, the most direct read of monetary conditions.
+
 The overnight rate is the interest rate at which banks borrow from each other for a single day. It is the rate central banks steer with their policy rate, and the benchmark that replaced LIBOR for loans, derivatives and floating rate notes in each of these currencies, which makes it the most direct daily read of monetary conditions.
 
 Each currency has its own benchmark, published by its central bank:
@@ -6391,7 +6568,7 @@ Each currency has its own benchmark, published by its central bank:
 
 The rates are returned as decimal fractions per annum (0.0244 for 2.44%). Weekly and monthly periods take the rate on the last day of each period (weeks end on Friday).
 
-With cumulative=True, the rates are compounded day by day into the growth of 1 deposited on the first day of the date range, the method of the compounded €STR index of the European Central Bank and the SOFR Index of the New York Fed:
+Cumulatively, the rates are compounded day by day into the growth of 1 deposited on the first day of the date range, the method of the compounded €STR index of the European Central Bank and the SOFR Index of the New York Fed:
 
 $$
 \text{Growth} \;(t) = \text{Growth} \;(t-1) \cdot \left(1 + \frac{\text{Overnight Rate} \;(t-1) \cdot \text{Days} \;(t-1)}{\text{Day Count}}\right)
@@ -6404,7 +6581,8 @@ Days (t-1) is the number of calendar days the previous rate applies to (three ov
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data. Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily" (daily data), "weekly" (weekly
+data), "monthly" (monthly data). Defaults to "daily".
 - <u>cumulative (bool, optional):</u> Whether to return the growth of 1 deposited at the
 overnight rate on the first day of the date range instead of the rate.
 Defaults to False.
@@ -6450,19 +6628,19 @@ Which returns:
 ---
 
 ## get_real_interest_rate
-Get the Real Interest Rate for a variety of countries over time. The Real Interest Rate is the nominal interest rate adjusted for inflation, and reflects the true cost of borrowing (or the true return earned on savings) once the erosion of purchasing power by inflation is taken into account.
+Get the real interest rate of a variety of countries: the nominal interest rate minus inflation, the true cost of borrowing or return on savings.
 
 The formula is as follows (the Fisher equation, approximation):
 
 $$
-\text{Real Interest Rate} = \text{Nominal Interest Rate} - \text{Inflation Rate},\;\; \text{with the nominal rate the Long Term Interest Rate by default (rate\_type="long\_term") and the inflation rate the year-over-year change in consumer prices}
+\text{Real Interest Rate} = \text{Nominal Interest Rate} - \text{Inflation Rate},\;\; \text{with the nominal rate the Long Term Interest Rate by default and the inflation rate the year-over-year change in consumer prices}
 $$
 
-The nominal interest rate is the Long Term Interest Rate (the 10-year government bond yield), the Short Term Interest Rate (the 3-month money market rate) or the Central Bank Policy Rate, selected via the rate_type parameter.
+The nominal interest rate is the Long Term Interest Rate (the 10-year government bond yield), the Short Term Interest Rate (the 3-month money market rate) or the Central Bank Policy Rate, selected as the rate type.
 
 Monthly (the default) subtracts the monthly year-over-year inflation rate of get_inflation_rate (national statistical offices, Eurostat for the euro area and the BIS) from the OECD's monthly long or short-term rate, the monthly average of the daily rates, or from the policy rate at the end of the month (see get_central_bank_policy_rate). For the euro area these are the OECD's euro area 10-year yield and 3-month EURIBOR, or the ECB's deposit facility rate, minus euro area inflation (Eurostat's HICP). A month the inflation rate is not published yet is empty.
 
-Yearly subtracts the annual inflation rate of the Global Macro Database (GMDB) from its annual long or short-term rate (or the OECD's with gmdb_source=False) or its end-of-year policy rate.
+Yearly subtracts the annual inflation rate of the Global Macro Database (GMDB) from its annual long or short-term rate (or the OECD's as the source) or its end-of-year policy rate.
 
 Both legs are decimal fractions (0.05 for 5%), so the result is itself a decimal fraction (-0.0016 for a real rate of -0.16%).
 
@@ -6475,11 +6653,11 @@ This is the ex post real rate: the nominal rate minus the inflation that was rea
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>rate_type (str, optional):</u> Which nominal interest rate to use. Can be 'long_term'
-(10-year government bond yield), 'short_term' (3-month money market rate) or
-'policy' (central bank policy rate). Defaults to 'long_term'.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or the yearly data.
-Defaults to None, which is the monthly data.
+- <u>rate_type (str, optional):</u> Which nominal interest rate to use. Options are: "long_term" (10-year
+government bond yield), "short_term" (3-month money market rate), "policy" (central bank policy
+rate). Defaults to "long_term".
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data), "yearly"
+(yearly data). Defaults to None, which is the monthly data.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the yearly long or short-term
 rate from the Global Macro Database (GMDB) instead of the OECD. Defaults to
 None, which falls back to the gmdb_source set on the Economics class (True by
@@ -6535,7 +6713,7 @@ Which returns:
 ---
 
 ## get_yield_curve_slope
-Get the Yield Curve Slope for a variety of countries over time. The Yield Curve Slope is the difference between the Long Term Interest Rate (the 10-year government bond yield) and the Short Term Interest Rate (the 3-month money market rate), and summarizes the overall shape of the yield curve in a single number.
+Get the yield curve slope of a variety of countries: the 10-year government bond yield minus the 3-month money market rate, the shape of the yield curve in one number.
 
 The formula is as follows:
 
@@ -6547,14 +6725,14 @@ A positive (upward-sloping) yield curve is the historical norm and reflects inve
 
 Both legs are decimal fractions (0.05 for 5%) whichever source is used, so the result is itself a decimal fraction (-0.0122 for an inversion of 1.22 percentage points), matching the convention used by get_misery_index and get_real_interest_rate.
 
-**Also known as:** term spread, 10Y-3M spread, curve inversion.
+**Also known as:** term spread, 10Y-3M spread, curve inversion, inverted yield curve.
 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> A list of countries or a single country to include in the results. Defaults to None.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly, quarterly or the annual data.
-Defaults to None, which is quarterly when the Economics class was initialized with
-quarterly=True and monthly otherwise.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data), "yearly" (yearly data). Defaults to None, which is quarterly when the
+Economics class was initialized with quarterly=True and monthly otherwise.
 - <u>gmdb_source (bool &#124; None, optional):</u> Whether to get the data from the Global Macro Database (GMDB),
 which is annual. Defaults to None, which uses the GMDB only for yearly data and only when the
 gmdb_source set on the Economics class is True (its default); monthly and quarterly data, or
@@ -6606,13 +6784,13 @@ Which returns:
 ---
 
 ## get_mortgage_rate_30_year
-Get the weekly average 30-Year Fixed Rate Mortgage from FRED (Freddie Mac's Primary Mortgage Market Survey).
+Get the weekly average 30-year fixed mortgage rate in the United States (Freddie Mac's Primary Mortgage Market Survey): what new home buyers pay to borrow.
 
 The 30-year fixed mortgage rate is the primary interest rate US households actually borrow at for home purchases, and is one of the clearest single transmission points from Federal Reserve policy to the real economy: it moves with (but is not identical to) the 10-year Treasury yield plus a credit/prepayment spread, and directly drives housing affordability and demand. It is the natural interest-rate complement to Housing Starts (see `get_housing_starts`) - rate moves here lead construction activity, since higher borrowing costs price marginal buyers out of the market before builders scale back new projects.
 
 The rate is weekly (week ending Thursday), returned as a decimal fraction per annum (0.0648 for 6.48%) and not seasonally adjusted. FRED publishes it in percentage points; it is rescaled here so that every rate the Finance Toolkit returns is a decimal fraction.
 
-Without a FRED API key the data comes from Freddie Mac's Primary Mortgage Market Survey directly, which gives the same figures. When a FRED API key is set (see the `fred_api_key` parameter of the `Economics` class), it comes from FRED.
+Without a FRED API key the data comes from Freddie Mac's Primary Mortgage Market Survey directly, which gives the same figures. When a FRED API key is set on the Economics class, it comes from FRED.
 
 **See definition:** [https://fred.stlouisfed.org/series/MORTGAGE30US](https://fred.stlouisfed.org/series/MORTGAGE30US){:target="_blank"}
 
@@ -6664,9 +6842,11 @@ Which returns:
 ---
 
 ## get_outstanding_mortgage_rates
-Get the distribution of the interest rates US homeowners pay on the mortgages they already have, from the National Mortgage Database (NMDB) of the Federal Housing Finance Agency (FHFA): the share of the mortgages outstanding at the end of each quarter with a contract interest rate below 3%, between 3% and 4%, 4% and 5%, 5% and 6%, and at or above 6%, next to their average rate.
+Get the distribution of the interest rates US homeowners pay on the mortgages they already have, from the National Mortgage Database of the FHFA.
 
-This is the measure of the mortgage rate "lock-in": a homeowner with a rate well below the rate on a new mortgage (see `get_mortgage_rate_30_year`) gives that rate up when moving, so the further the outstanding rates lie below the market rate, the fewer existing homes come up for sale. The share of mortgages below 3%, 4%, 5% and 6% (cumulative=True) is how the lock-in is usually reported, to be compared with the rate on a new mortgage.
+It gives the share of the mortgages outstanding at the end of each quarter with a contract interest rate below 3%, between 3% and 4%, 4% and 5%, 5% and 6%, and at or above 6%, next to their average rate.
+
+This is the measure of the mortgage rate "lock-in": a homeowner with a rate well below the rate on a new mortgage (see `get_mortgage_rate_30_year`) gives that rate up when moving, so the further the outstanding rates lie below the market rate, the fewer existing homes come up for sale. The share of mortgages below 3%, 4%, 5% and 6% (cumulative) is how the lock-in is usually reported, to be compared with the rate on a new mortgage. The Market Rate Gap makes that comparison: the 30-year fixed rate on a new mortgage (the quarterly average of Freddie Mac's weekly Primary Mortgage Market Survey, the rate of `get_mortgage_rate_30_year`) minus the average rate of the outstanding mortgages. Batzer, Coste, Doerner and Seiler (2024) measure the lock-in of a mortgage as the points by which the market rate exceeds its origination rate (each point lowers the probability of a sale by 18.1%); Fonseca and Liu (2024) use the same difference with the opposite sign, the mortgage rate delta. A positive gap means the average homeowner would pay more on a new mortgage.
 
 The NMDB is a 1-in-20 sample of the closed-end first-lien residential mortgages reported to one of the three national credit bureaus, quarterly from 2013 Q1 and published about three months after the quarter ends. The rate is the contract interest rate at origination, a nominal annual rate (compounded monthly for the usual monthly payments), so an adjustable rate mortgage counts at its initial rate. Each market is a subset of all mortgages, as the FHFA defines them:
 
@@ -6684,23 +6864,36 @@ See the data: [https://www.fhfa.gov/data/national-mortgage-database-aggregate-st
 The formula is as follows:
 
 $$
-\text{Share Below}\; \text{X\%} = \text{Share Below}\; 3\% + \ldots + \text{Share} \;(X - 1) \% \;\text{to}\; \text{X\%},\;\; \text{the sum of the published buckets below } X \text{\% (cumulative=True)}
+\text{Share Below}\; \text{X\%} = \text{Share Below}\; 3\% + \ldots + \text{Share} \;(X - 1) \% \;\text{to}\; \text{X\%},\;\; \text{the sum of the published buckets below } X \text{\% (cumulative)}
 $$
+
+$$
+\text{Market Rate} = \operatorname{AVERAGE}(\text{weekly}\; \text{30-year} \;\text{fixed mortgage rates surveyed in the quarter})
+$$
+
+$$
+\text{Market Rate Gap} = \text{Market Rate} - \text{Average Rate}
+$$
+
+**References:**
+
+- paper | Batzer, R.M., Coste, J.R., Doerner, W.M., & Seiler, M.J. (2024). "The Lock-In Effect of Rising Mortgage Rates." FHFA Working Paper 24-03.
+- paper | Fonseca, J., & Liu, L. (2024). "Mortgage Lock-In, Mobility, and Labor Reallocation." The Journal of Finance, 79(6), 3729-3772.
 
 **Args:**
 
-- <u>market (str, optional):</u> The market of the mortgages: "all", "enterprise"
-(Fannie Mae and Freddie Mac), "government" or "other conventional".
+- <u>market (str, optional):</u> The market of the mortgages. Options are: "all" (every mortgage),
+"enterprise" (Fannie Mae and Freddie Mac), "government" (government-backed mortgages),
+"other conventional" (other conventional mortgages).
 Defaults to "all".
-- <u>region (str, optional):</u> The area: "United States", a census region ("Northeast",
-"Midwest", "South", "West"), a census division ("New England", "Middle
-Atlantic", "East North Central", "West North Central", "South Atlantic",
-"East South Central", "West South Central", "Mountain", "Pacific"), or
-"United States Rural" and "United States Non-Rural". Defaults to "United
-States".
-- <u>weighting (str, optional):</u> Whether the shares and the average rate are weighted
-by the number of mortgages ("loans") or by their unpaid principal balance
-("balance"). Defaults to "loans".
+- <u>region (str, optional):</u> The area. Options are: "United States" (the country), "Northeast",
+"Midwest", "South", "West" (the census regions), "New England", "Middle Atlantic", "East North
+Central", "West North Central", "South Atlantic", "East South Central", "West South Central",
+"Mountain", "Pacific" (the census divisions), "United States Rural" (rural areas), "United
+States Non-Rural" (non-rural areas). Defaults to "United States".
+- <u>weighting (str, optional):</u> How the shares and the average rate are weighted. Options are: "loans"
+(by the number of mortgages), "balance" (by their unpaid principal balance). Defaults to
+"loans".
 - <u>cumulative (bool, optional):</u> Whether to return the share of mortgages below 3%,
 4%, 5% and 6% instead of the share per bucket. Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
@@ -6721,14 +6914,26 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.DataFrame: The quarterly shares of the outstanding mortgages per rate bucket
 ("Below 3%", "3% to 4%", "4% to 5%", "5% to 6%" and "6% and Above", or "Below 3%"
-to "Below 6%" with cumulative=True) and their "Average Rate", all as decimals
-(0.192 for 19.2%).
+to "Below 6%" cumulatively), their "Average Rate", the "Market Rate" of a
+new 30-year fixed mortgage and the "Market Rate Gap" between the two, all as
+decimals (0.192 for 19.2%).
 
 **Notes:**
 
-The FHFA publishes the shares in percent with one decimal and the average rate
+- The FHFA publishes the shares in percent with one decimal and the average rate
 with one decimal (4.4%), so the buckets add up to 100% within rounding (100.1%
 for example) and a cumulative share is the sum of the rounded buckets below it.
+The average rate moves in steps of 0.1 point, so it can stay the same for several
+quarters, and the NMDB has no finer measure of it; the shares, such as the share
+below 4%, show the slower drift within such a step. The Market Rate Gap carries the
+same rounding of up to 0.05 point.
+- The Market Rate is the average of the weekly surveys dated (on a Thursday) in the
+quarter, 12 to 14 of them, and the Average Rate is that of the mortgages
+outstanding at the end of the quarter, so both belong to the same quarter. The
+Market Rate is that of a conventional conforming 30-year fixed mortgage for
+every market, region and weighting.
+- The NMDB is published about three months after a quarter ends, so the table, the
+Market Rate included, ends at the latest quarter of the NMDB.
 
 **As an example:**
 
@@ -6737,24 +6942,28 @@ from financetoolkit import Economics
 
 economics = Economics(start_date='2025-01-01', end_date="2026-06-30")
 
-economics.get_outstanding_mortgage_rates(cumulative=True)
+economics.get_outstanding_mortgage_rates(cumulative=True)[
+    ["Below 3%", "Below 4%", "Average Rate", "Market Rate", "Market Rate Gap"]
+]
 ```
 
 Which returns:
 
-| Date   |   Below 3% |   Below 4% |   Below 5% |   Below 6% |   Average Rate |
-|:-------|-----------:|-----------:|-----------:|-----------:|---------------:|
-| 2025Q1 |      0.205 |      0.531 |      0.707 |      0.81  |          0.043 |
-| 2025Q2 |      0.202 |      0.521 |      0.695 |      0.799 |          0.043 |
-| 2025Q3 |      0.198 |      0.51  |      0.681 |      0.786 |          0.044 |
-| 2025Q4 |      0.195 |      0.501 |      0.67  |      0.781 |          0.044 |
-| 2026Q1 |      0.193 |      0.494 |      0.66  |      0.778 |          0.044 |
-| 2026Q2 |      0.192 |      0.491 |      0.656 |      0.776 |          0.044 |
+| Date   |   Below 3% |   Below 4% |   Average Rate |   Market Rate |   Market Rate Gap |
+|:-------|-----------:|-----------:|---------------:|--------------:|------------------:|
+| 2025Q1 |      0.205 |      0.531 |          0.043 |        0.0683 |            0.0253 |
+| 2025Q2 |      0.202 |      0.521 |          0.043 |        0.0679 |            0.0249 |
+| 2025Q3 |      0.198 |      0.51  |          0.044 |        0.0657 |            0.0217 |
+| 2025Q4 |      0.195 |      0.501 |          0.044 |        0.0623 |            0.0183 |
+| 2026Q1 |      0.193 |      0.494 |          0.044 |        0.0611 |            0.0171 |
+| 2026Q2 |      0.192 |      0.491 |          0.044 |        0.0641 |            0.0201 |
 
 ---
 
 ## get_real_yield_curve
-Get the real yield curve of a variety of countries: the yields of inflation-linked government bonds, which pay a return on top of inflation, by maturity. Together with the nominal curve (see `fixedincome.get_government_bond_yield_curve`) it gives the inflation the bond market expects, see `get_breakeven_inflation_expectations`.
+Get the real yield curve of a variety of countries: the yields of inflation-linked government bonds, which pay a return on top of inflation, by maturity.
+
+Together with the nominal curve (see `fixedincome.get_government_bond_yield_curve`) it gives the inflation the bond market expects, see `get_breakeven_inflation_expectations`.
 
 Every curve comes from the official source:
 
@@ -6773,8 +6982,8 @@ Yields are returned as a decimal fraction per annum (0.0174 for 1.74%), with one
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
 "United States", "United Kingdom" and "Germany". Defaults to None, which
 retrieves every country.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily" (daily data), "weekly" (weekly
+data), "monthly" (monthly data). Defaults to "daily".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
@@ -6822,7 +7031,9 @@ Which returns:
 ---
 
 ## get_breakeven_inflation_expectations
-Get the market-implied (Q-measure) breakeven inflation of a variety of countries by maturity: the nominal government bond yield minus the real yield of an inflation-linked bond of the same maturity, which is the inflation rate at which both earn the same. It is the bond market's expectation of inflation, including an inflation risk premium. See `get_inflation_expectations` for the expectations of professional forecasters instead.
+Get the market-implied (Q-measure) breakeven inflation of a variety of countries by maturity: the inflation at which nominal and inflation-linked government bonds earn the same.
+
+It is the bond market's expectation of inflation, including an inflation risk premium. See `get_inflation_expectations` for the expectations of professional forecasters instead.
 
 Every curve comes from the official source:
 
@@ -6843,8 +7054,8 @@ Investors compare breakeven inflation with their own inflation view to choose be
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
 "United States", "United Kingdom" and "Germany". Defaults to None, which
 retrieves every country.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily" (daily data), "weekly" (weekly
+data), "monthly" (monthly data). Defaults to "daily".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
@@ -6892,6 +7103,8 @@ Which returns:
 ---
 
 ## get_yield_decomposition
+Decompose the nominal government bond yield into the real yield and the breakeven inflation: how much of the yield pays for expected inflation.
+
 Split the nominal government bond yield of a maturity into the real yield of the inflation-linked bond of that maturity and the breakeven inflation, the part the market demands for inflation, with the change of each part since the previous period:
 
 $$
@@ -6912,8 +7125,9 @@ The changes are the difference with the previous period the country has a curve 
 States, the United Kingdom and Germany. Defaults to None, which is all three.
 - <u>maturities (list[str] &#124; str, optional):</u> The maturities, such as "5Y" or
 ["5Y", "10Y"], each one both curves of a country have. Defaults to "10Y".
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data, the
-curve on the last trading day of each week or month. Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data: the curve on the last trading day of
+each week or month. Options are: "daily" (daily data), "weekly" (weekly data), "monthly" (monthly
+data). Defaults to "daily".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the class (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -6954,12 +7168,14 @@ Which returns:
 ---
 
 ## get_inflation_expectations
-Get the inflation professional forecasters expect over the longer term, from surveys. Where `get_breakeven_inflation_expectations` is the bond market's expectation, priced daily and including risk premia, this is the forecasters' own expectation, with no inflation risk or liquidity premium in it and a longer history.
+Get the inflation professional forecasters expect over the longer term, from surveys.
+
+Where `get_breakeven_inflation_expectations` is the bond market's expectation, priced daily and including risk premia, this is the forecasters' own expectation, with no inflation risk or liquidity premium in it and a longer history.
 
 Every series comes from the official source:
 
 - Germany: the inflation Consensus Economics' forecasters expect over 5 and 10 years, monthly from 1989. The Bundesbank publishes the expected real interest rate, the yield on debt securities outstanding issued by German residents with a residual maturity of 5 to 6 (or 9 to 10) years minus the expected inflation, so adding that yield back gives the expected inflation.
-- Euro Area: the average longer-term (five years ahead) HICP inflation forecast of the ECB's quarterly Survey of Professional Forecasters, from 1999. With period="monthly" each survey round is shown from the first month of its quarter until the next round.
+- Euro Area: the average longer-term (five years ahead) HICP inflation forecast of the ECB's quarterly Survey of Professional Forecasters, from 1999. With monthly data each survey round is shown from the first month of its quarter until the next round.
 
 Rates are returned as a decimal fraction (0.0223 for 2.23%), with one column per country and horizon.
 
@@ -6971,10 +7187,10 @@ Rates are returned as a decimal fraction (0.0223 for 2.23%), with one column per
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to retrieve, from
 "Germany" and "Euro Area". Defaults to None, which retrieves every country.
-- <u>period (str &#124; None, optional):</u> Whether to return the monthly or quarterly data.
-Quarterly data takes the last month of each quarter. Defaults to None, which is
-quarterly when the Economics class was initialized with quarterly=True and
-otherwise the highest frequency available: monthly.
+- <u>period (str &#124; None, optional):</u> The frequency of the data. Options are: "monthly" (monthly data),
+"quarterly" (quarterly data). Quarterly data takes the last month of each quarter. Defaults to None,
+which is quarterly when the Economics class was initialized with quarterly=True and otherwise the
+highest frequency available: monthly.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
@@ -7020,7 +7236,9 @@ Which returns:
 ---
 
 ## get_sovereign_debt_crisis
-Get the Sovereign Debt Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a sovereign debt crisis (e.g. a default or restructuring of government debt), and 0 marks a year in which it was not.
+Get the sovereign debt crisis dummy of a variety of countries from the Global Macro Database (GMDB): whether a country was in a sovereign debt crisis in each year.
+
+Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a sovereign debt crisis (e.g. a default or restructuring of government debt), and 0 marks a year in which it was not.
 
 The crisis dating stops short of the present and ends in a different year per country (2017 for Argentina, for example), so the years after it are NaN rather than 0.
 
@@ -7073,7 +7291,9 @@ Which returns:
 ---
 
 ## get_currency_crisis
-Get the Currency Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a currency crisis (e.g. a sharp, disorderly depreciation or collapse of the exchange rate), and 0 marks a year in which it was not.
+Get the currency crisis dummy of a variety of countries from the Global Macro Database (GMDB): whether a country was in a currency crisis in each year.
+
+Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a currency crisis (e.g. a sharp, disorderly depreciation or collapse of the exchange rate), and 0 marks a year in which it was not.
 
 The crisis dating stops short of the present and ends in a different year per country, so the years after it are NaN rather than 0.
 
@@ -7124,7 +7344,9 @@ Which returns:
 ---
 
 ## get_banking_crisis
-Get the Banking Crisis dummy for a variety of countries over time from the Global Macro Database (GMDB). Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a systemic banking crisis (e.g. bank runs, large-scale bank failures or government intervention to prevent them), and 0 marks a year in which it was not.
+Get the banking crisis dummy of a variety of countries from the Global Macro Database (GMDB): whether a country was in a systemic banking crisis in each year.
+
+Unlike the other indicators in this module, this is a binary (0 = no crisis, 1 = crisis) Reinhart & Rogoff style crisis-dating series rather than a continuous economic series: a value of 1 marks a year in which a country was undergoing a systemic banking crisis (e.g. bank runs, large-scale bank failures or government intervention to prevent them), and 0 marks a year in which it was not.
 
 The crisis dating stops short of the present and ends in a different year per country, so the years after it are NaN rather than 0.
 
@@ -7191,7 +7413,9 @@ Which returns:
 ---
 
 ## get_credit_to_gdp_gap
-Get the credit-to-GDP gap: how far the ratio of credit to the private non-financial sector to GDP lies above or below its long-term trend, in percentage points of GDP. The trend is a one-sided Hodrick-Prescott filter with a smoothing parameter of 400,000, which only uses the quarters up to each point, so the gap is what was known at the time.
+Get the credit-to-GDP gap: how far the ratio of credit to the private non-financial sector to GDP lies above or below its long-term trend, in percentage points of GDP.
+
+The trend is a one-sided Hodrick-Prescott filter with a smoothing parameter of 400,000, which only uses the quarters up to each point, so the gap is what was known at the time.
 
 A gap that stays above two percentage points of GDP has preceded most banking crises of the past decades, often by several years, which is why Basel III uses it as the guide for the countercyclical capital buffer: banks hold extra capital when the gap is wide (Drehmann and Tsatsaronis, 2014). A negative gap means credit grew slower than its trend, as it did in most advanced economies after the 2008 crisis.
 
@@ -7247,7 +7471,9 @@ Which returns:
 ---
 
 ## get_debt_service_ratio
-Get the debt service ratio: the share of income that goes to interest payments and repayments of debt. It captures both how much is borrowed and at what rate, so it rises when rates go up even if the debt itself does not, and it is a leading indicator of financial stress: a high debt service ratio held back spending and preceded the downturns after several credit booms (Drehmann and Juselius, 2012).
+Get the debt service ratio: the share of income that goes to interest payments and repayments of debt.
+
+It captures both how much is borrowed and at what rate, so it rises when rates go up even if the debt itself does not, and it is a leading indicator of financial stress: a high debt service ratio held back spending and preceded the downturns after several credit booms (Drehmann and Juselius, 2012).
 
 The ratio is computed by the Bank for International Settlements for the private non-financial sector of around 30 economies, and for households and non-financial corporations separately for about half of them, quarterly from 1999. It is the debt service (interest plus amortisation, assuming the average remaining maturity of the debt) divided by income: disposable income plus interest paid for households, and gross operating surplus plus interest paid for corporations. No API key is needed.
 
@@ -7258,9 +7484,9 @@ The ratio is computed by the Bank for International Settlements for the private 
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>borrowers (str, optional):</u> The borrowing sector: "private" (households and
-non-financial corporations together), "households" or "corporations"
-(non-financial corporations). Defaults to "private", the sector with the
+- <u>borrowers (str, optional):</u> The borrowing sector. Options are: "private" (households and
+non-financial corporations together), "households" (households), "corporations" (non-financial
+corporations). Defaults to "private", the sector with the
 widest coverage.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
@@ -7305,7 +7531,9 @@ Which returns:
 ---
 
 ## get_credit_to_gdp_ratio
-Get the total credit to a non-financial sector as a share of GDP: all loans and debt securities owed by households, non-financial corporations or the government, whoever the lender is (banks, other financial institutions, foreign lenders or bond holders). It measures how leveraged an economy is and where the debt sits, such as the high corporate debt in China or the high household debt in Australia and Canada.
+Get the total credit to a non-financial sector as a share of GDP: all loans and debt securities owed by households, non-financial corporations or the government.
+
+The lender can be anyone: banks, other financial institutions, foreign lenders or bond holders. It measures how leveraged an economy is and where the debt sits, such as the high corporate debt in China or the high household debt in Australia and Canada.
 
 Unlike bank lending alone, it also counts market and cross-border funding, so it is comparable across countries where companies borrow from banks (the euro area, Japan) and where they issue bonds (the United States). The data is compiled by the Bank for International Settlements for around 45 economies, quarterly and back to the 1940s for some, from national financial accounts.
 
@@ -7316,10 +7544,10 @@ Unlike bank lending alone, it also counts market and cross-border funding, so it
 **Args:**
 
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries to include in the data. Defaults to None.
-- <u>borrowers (str, optional):</u> The borrowing sector: "private" (households and
-non-financial corporations), "households", "corporations" (non-financial
-corporations), "government" (at nominal value) or "non_financial" (all
-three together). Defaults to "private", the measure behind the
+- <u>borrowers (str, optional):</u> The borrowing sector. Options are: "private" (households and
+non-financial corporations), "households" (households), "corporations" (non-financial
+corporations), "government" (the government, at nominal value), "non_financial" (all three
+together). Defaults to "private", the measure behind the
 credit-to-GDP gap.
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
@@ -7364,7 +7592,9 @@ Which returns:
 ---
 
 ## get_implied_volatility
-Get the implied volatility the option markets price, by market and time to expiry: the volatility indices of Cboe, STOXX and ICE. Implied volatility is the market's expectation of how much prices will move, and its term structure (how it rises or falls with the time to expiry) is the market-consistent target for calibrating the volatility of equity, rate and commodity models.
+Get the implied volatility the option markets price, by market and time to expiry: the volatility indices of Cboe, STOXX and ICE.
+
+Implied volatility is the market's expectation of how much prices will move, and its term structure (how it rises or falls with the time to expiry) is the market-consistent target for calibrating the volatility of equity, rate and commodity models.
 
 The markets and their maturities:
 
@@ -7375,7 +7605,7 @@ The markets and their maturities:
 - "US Treasury Bonds": options on the 20+ year Treasury bond ETF (Cboe VXTLT), the price volatility of long Treasuries, 1 month, from 2004.
 - "Crude Oil" and "Gold": options on the oil and gold ETFs (Cboe OVX and GVZ), 1 month, from 2009.
 - "US Treasury Rates": the ICE BofA MOVE index, the normal (basis point) volatility of Treasury yields implied by 1-month options on 2, 5, 10 and 30-year Treasuries, from
-2002. Requires a FinancialModelingPrep API key (the api_key of the Economics class).
+2002. Requires a FinancialModelingPrep API key on the Economics class.
    - "Japan Government Bonds": the S&P/JPX JGB VIX, from options on JGB futures, 1 month, from 2015. Requires a FinancialModelingPrep API key.
 
 The volatility is returned as a decimal fraction per annum (0.155 for a VIX of 15.5), and the MOVE as a decimal yield change per annum (0.0105 for a MOVE of 105 basis points), with one column per market and maturity. Weekly and monthly periods take the value on the last trading day of each period. The Cboe SKEW index is not included since it is not a volatility.
@@ -7386,14 +7616,14 @@ The volatility is returned as a decimal fraction per annum (0.155 for a VIX of 1
 
 **Args:**
 
-- <u>markets (list[str] &#124; str &#124; None, optional):</u> The markets to retrieve, from
+- <u>markets (list[str] &#124; str &#124; None, optional):</u> The markets to retrieve. Options are:
 "US Equity", "Euro Area Equity", "Emerging Markets Equity", "US Equity
 Volatility", "US Treasury Bonds", "Crude Oil", "Gold", "US Treasury Rates" and
 "Japan Government Bonds". Defaults to None, which retrieves every market, with
 "US Treasury Rates" (the MOVE) and "Japan Government Bonds" (the JGB VIX) only
 when an API key is set.
-- <u>period (str, optional):</u> Whether to return the daily, weekly or monthly data.
-Defaults to "daily".
+- <u>period (str, optional):</u> The frequency of the data. Options are: "daily" (daily data), "weekly" (weekly
+data), "monthly" (monthly data). Defaults to "daily".
 - <u>rolling (int, optional):</u> The rolling window size to use for smoothing the data (simple
 moving average). Defaults to None.
 - <u>trailing (int, optional):</u> The trailing window size to use for summing the data over
@@ -7443,12 +7673,14 @@ Which returns:
 ---
 
 ## get_stress_test_scenario
-Get the scenarios regulators publish for their stress tests: documented paths of the economy and financial markets under a baseline and an adverse scenario, which serve as calibration and validation targets for scenario generators and as the stresses banks and insurers are tested against.
+Get the scenarios regulators publish for their stress tests: documented paths of the economy and financial markets under a baseline and an adverse scenario.
+
+They serve as calibration and validation targets for scenario generators and as the stresses banks and insurers are tested against.
 
 Two authorities are available:
 
-- "federal_reserve": the Federal Reserve's supervisory stress test, quarterly over 13 quarters. For the United States: real and nominal GDP and disposable income growth, unemployment, CPI inflation, the 3-month, 5-year and 10-year Treasury rates, the BBB corporate yield, the mortgage and prime rate, the Dow Jones Total Stock Market Index, house and commercial real estate price indices and the VIX; for the euro area, developing Asia, Japan and the United Kingdom: GDP growth, inflation and the dollar exchange rate. scenario="historic" returns the history of the same variables from 1976. year selects the year of the test (published in February), from 2025; by default the latest.
-- "esrb": the macro-financial scenario the European Systemic Risk Board designs for the EU-wide bank stress test of the EBA, yearly over three years: GDP growth, inflation, unemployment, residential and commercial real estate prices and long-term rates for every EU member and the main other economies, stock prices by region, commodity prices, iTraxx credit spreads and euro exchange rates. scenario="historic" returns the starting point. Always the latest exercise.
+- "federal_reserve": the Federal Reserve's supervisory stress test, quarterly over 13 quarters. For the United States: real and nominal GDP and disposable income growth, unemployment, CPI inflation, the 3-month, 5-year and 10-year Treasury rates, the BBB corporate yield, the mortgage and prime rate, the Dow Jones Total Stock Market Index, house and commercial real estate price indices and the VIX; for the euro area, developing Asia, Japan and the United Kingdom: GDP growth, inflation and the dollar exchange rate. The historic scenario returns the history of the same variables from 1976. The year selects the year of the test (published in February), from 2025; by default the latest.
+- "esrb": the macro-financial scenario the European Systemic Risk Board designs for the EU-wide bank stress test of the EBA, yearly over three years: GDP growth, inflation, unemployment, residential and commercial real estate prices and long-term rates for every EU member and the main other economies, stock prices by region, commodity prices, iTraxx credit spreads and euro exchange rates. The historic scenario returns the starting point. Always the latest exercise.
 
 The Federal Reserve's growth and inflation variables (GDP, disposable income and CPI, and the international GDP growth and inflation) are annualized quarter-on-quarter rates, as the Federal Reserve publishes them, so a "Real GDP growth" of -0.054 is a quarterly contraction of about 1.4%.
 
@@ -7460,10 +7692,13 @@ Growth rates, inflation, interest rates, spreads and the VIX are decimal fractio
 
 **Args:**
 
-- <u>scenario (str, optional):</u> "baseline", "adverse" (the Federal Reserve's severely
-adverse scenario) or "historic". Defaults to "adverse".
-- <u>authority (str, optional):</u> "federal_reserve" or "esrb". Defaults to
-"federal_reserve".
+- <u>scenario (str, optional):</u> The stress test scenario. Options are: "baseline" (the baseline
+scenario), "adverse" (the adverse scenario, for the Federal Reserve its severely adverse
+scenario), "historic" (the history or starting point of the variables). Defaults to
+"adverse".
+- <u>authority (str, optional):</u> The authority that sets the scenarios. Options are:
+"federal_reserve" (the Federal Reserve), "esrb" (the European Systemic Risk Board). Defaults
+to "federal_reserve".
 - <u>countries (list[str] &#124; str &#124; None, optional):</u> The countries (or regions) to
 include. Defaults to None, which includes all of them.
 - <u>year (int &#124; None, optional):</u> The year of the Federal Reserve's stress test, from
@@ -7507,11 +7742,13 @@ Which returns:
 ---
 
 ## get_market_risk_premium
-Returns the market risk premium per country: the extra return investors demand for holding equities over a risk-free investment. It consists of the country risk premium, which compensates for the additional risk of the country itself, and the total equity risk premium, which adds the premium of a mature market. The market risk premium is a key input of the Capital Asset Pricing Model (CAPM) and with that of the cost of equity and the WACC.
+Get the market risk premium per country: the extra return investors demand for holding equities over a risk-free investment.
+
+It consists of the country risk premium, which compensates for the additional risk of the country itself, and the total equity risk premium, which adds the premium of a mature market. The market risk premium is a key input of the Capital Asset Pricing Model (CAPM) and with that of the cost of equity and the WACC.
 
 In the CAPM the cost of equity is the risk-free rate plus beta times the total equity risk premium. Use the premium of the country where the company earns its revenue rather than where it is listed (weighted by revenue for a company active in several countries), and keep the risk-free rate consistent with the one the premium was estimated against.
 
-The same data is available as Toolkit.get_market_risk_premium; both share one cached copy. This requires a FinancialModelingPrep API key, passed via api_key when initializing.
+The same data is available as Toolkit.get_market_risk_premium; both share one cached copy. This requires a FinancialModelingPrep API key, passed when initializing.
 
 **Also known as:** equity risk premium, country risk premium, MRP.
 

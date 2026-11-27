@@ -45,7 +45,7 @@ def build() -> dict:
     )
     charts = {}
 
-    dupont = companies.models.get_extended_dupont_analysis()
+    dupont = companies.models.get_dupont_analysis(method="extended")
     LAST["dupont"] = dupont
     parts = [("Interest Burden Ratio", "Interest burden", "percent"),
              ("Tax Burden Ratio", "Tax burden", "percent"),

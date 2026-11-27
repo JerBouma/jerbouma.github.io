@@ -1,0 +1,1 @@
+{"charts":{"get_treasury_forward_prices":{"title":"Treasury Carry to the Forward Date","type":"bar","x":["2036-02-15","2036-05-15","2036-08-15","2036-11-15"],"series":[{"name":"Carry","data":[0.0967,0.1691,0.1862,0.282]}],"format":"decimal","subtitle":"Price minus forward price, per note by maturity"}}}

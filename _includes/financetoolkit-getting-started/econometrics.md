@@ -35,7 +35,7 @@ companies.econometrics.get_ols(period="weekly")
 
 Which returns the coefficient, standard error, t-statistic and p-value of each regressor:
 
-|           |   Coefficient |   Std. Error |   t-Statistic |   P-Value |
+|           |   Coefficient |   Standard Error |   t-Statistic |   P-Value |
 |:----------|--------------:|-------------:|--------------:|----------:|
 | Intercept |        0.0028 |       0.0017 |        1.6788 |    0.0948 |
 | TSM       |       -0.0043 |       0.0523 |       -0.0815 |    0.9351 |
@@ -122,7 +122,7 @@ Only `AMZN` falls below the line, with a p-value of 0.006, so Amazon's past week
 ```python
 prices = companies.get_historical_data(period="weekly")["Adj Close"][["AAPL", "TSM"]]
 
-adf = companies.econometrics.get_augmented_dickey_fuller(period="quarterly")
+adf = companies.econometrics.get_unit_root_test(method="augmented_dickey_fuller", period="quarterly")
 
 print(adf[["AAPL", "TSM"]])
 
@@ -203,6 +203,6 @@ print(diagnostics_model.get_jarque_bera_test(asset_return))
 
 Which recovers the true slope of 2.5 closely, with an estimate of 2.43 (standard error 0.05, p-value close to zero) and an intercept that is not significant (p-value 0.94). The Jarque-Bera test gives a statistic of 0.09 and a p-value of 0.95, so the normally distributed simulated returns pass as normal.
 
-The module holds 48 methods, including [KPSS](/projects/financetoolkit/docs/econometrics#get_kpss_test), [Phillips-Perron](/projects/financetoolkit/docs/econometrics#get_phillips_perron_test) and [Zivot-Andrews](/projects/financetoolkit/docs/econometrics#get_zivot_andrews_test) unit root tests, [Johansen cointegration](/projects/financetoolkit/docs/econometrics#get_johansen_cointegration), [random effects](/projects/financetoolkit/docs/econometrics#get_random_effects) and the [Hausman test](/projects/financetoolkit/docs/econometrics#get_hausman_test), causal inference with [Difference-in-Differences](/projects/financetoolkit/docs/econometrics#get_difference_in_differences) and [Synthetic Control](/projects/financetoolkit/docs/econometrics#get_synthetic_control), forecasting with [ARIMA](/projects/financetoolkit/docs/econometrics#get_arima_forecast) and [VAR](/projects/financetoolkit/docs/econometrics#get_var_forecast), and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study).
+The module holds 78 methods, including the [KPSS](/projects/financetoolkit/docs/econometrics#get_kpss_test), [Phillips-Perron and Zivot-Andrews](/projects/financetoolkit/docs/econometrics#get_unit_root_test) unit root tests, [Johansen cointegration](/projects/financetoolkit/docs/econometrics#get_johansen_cointegration), [random effects](/projects/financetoolkit/docs/econometrics#get_random_effects) and the [Hausman test](/projects/financetoolkit/docs/econometrics#get_hausman_test), causal inference with [Difference-in-Differences](/projects/financetoolkit/docs/econometrics#get_difference_in_differences) and [Synthetic Control](/projects/financetoolkit/docs/econometrics#get_synthetic_control), forecasting with [ARIMA](/projects/financetoolkit/docs/econometrics#get_arima_forecast) and [VAR](/projects/financetoolkit/docs/econometrics#get_var_forecast), and [event studies](/projects/financetoolkit/docs/econometrics#get_event_study).
 
 {% include ft-charts-script.html %}

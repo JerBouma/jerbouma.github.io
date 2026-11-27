@@ -1,0 +1,1 @@
+{"charts":{"get_treasury_floating_rate_notes":{"title":"Floating Rate Note Discount Margin","type":"bar","x":["2027-01-31","2027-04-30","2027-07-31","2027-10-31","2028-01-31","2028-04-30","2028-07-31","2028-10-31"],"series":[{"name":"Discount Margin","data":[-0.0005,-0.0007,-0.0004,-0.0004,-0.0001,-0.0001,0.0,0.0003]}],"format":"percent","subtitle":"Per note, by maturity"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_chow_dickey_fuller_test":{"title":"Chow-Type Dickey-Fuller Statistic","type":"bar","x":["NVDA","KO"],"series":[{"name":"SDFC Statistic","data":[2.7139,1.0339]},{"name":"Critical Value 5%","data":[1.8067,1.8067]}],"format":"ratio","subtitle":"Against the 5% critical value; above it, the price turned explosive at the break date"}}}

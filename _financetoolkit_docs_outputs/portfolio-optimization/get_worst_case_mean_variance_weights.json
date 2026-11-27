@@ -1,0 +1,1 @@
+{"index":"","columns":["Weight","Expected Return","Worst-Case Return","Worst-Case Sharpe Ratio"],"rows":[["AAPL",0.0,0.1932,-0.0122,-0.1649],["MSFT",0.5,0.2017,0.0121,-0.084],["JNJ",0.0,0.0987,-0.0247,-0.349],["XOM",0.5,0.2911,0.0919,0.2153],["Portfolio",1.0,0.2464,0.052,0.0942]],"total":5}

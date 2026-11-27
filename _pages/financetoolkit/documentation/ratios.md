@@ -2,8 +2,8 @@
 title: Ratios
 seo_title: "Financial Ratios in Python | Finance Toolkit"
 seo_title_suffix: false
-excerpt: The Ratios Module contains 80+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
-description: "Calculate 80+ financial ratios in Python from financial statements: efficiency, liquidity, profitability, solvency and valuation, with formulas and examples."
+excerpt: The Ratios Module contains 130+ ratios that can be used to analyze companies. These ratios are divided into 5 categories which are efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
+description: "Calculate 130+ financial ratios in Python from financial statements: efficiency, liquidity, profitability, solvency and valuation, with formulas and examples."
 author_profile: false
 permalink: /projects/financetoolkit/docs/ratios
 classes: wide-sidebar
@@ -17,7 +17,7 @@ sidebar:
     nav: "financetoolkit-docs-ratios"
 ---
 
-The Ratios Module contains 80+ ratios divided into 5 categories: efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
+The Ratios Module contains 130+ ratios divided into 5 categories: efficiency, liquidity, profitability, solvency and valuation. Each ratio is calculated using the data from the Toolkit module.
 
 Use it in Claude, ChatGPT or another AI assistant through the [Finance Toolkit MCP](/projects/financetoolkit/mcp), or install the Python package:
 
@@ -30,7 +30,7 @@ pip install financetoolkit -U
 {% include financetoolkit-getting-started/ratios.md %}
 
 ## collect_all_ratios
-Calculates and collects all ratios based on the provided data.
+Collect all the efficiency, liquidity, profitability, solvency and valuation ratios of every ticker in one table.
 
 **Args:**
 
@@ -68,8 +68,8 @@ pd.Series or pd.DataFrame: Ratios calculated based on the specified parameters.
 **Notes:**
 
 - The method calculates various ratios for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -104,7 +104,7 @@ Which returns:
 ---
 
 ## collect_custom_ratios
-Calculates all Custom Ratios based on the data provided.
+Calculate custom ratios: ratios of your own, defined as formulas on the financial statement items.
 
 Note that any of the following characters are considered as operators: +, -, *, /, **, %, //, <, >, ==, !=, >=, <=, (, ) using any of the above characters as part of the column naming will result into an error.
 
@@ -134,8 +134,8 @@ pd.DataFrame: Custom ratios calculated based on the specified parameters.
 **Notes:**
 
 - The method calculates various custom ratios for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -181,7 +181,7 @@ Which returns:
 ---
 
 ## collect_efficiency_ratios
-Calculates and collects all Efficiency Ratios based on the provided data.
+Collect all the efficiency ratios of every ticker in one table: how well each company turns its assets, inventory and receivables into revenue and cash.
 
 **Args:**
 
@@ -215,8 +215,8 @@ pd.Series or pd.DataFrame: Efficiency ratios calculated based on the specified p
 **Notes:**
 
 - The method calculates various efficiency ratios for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -309,8 +309,8 @@ pd.Series: Asset turnover ratio values.
 
 - The method retrieves historical data and calculates the asset turnover ratio
 for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -348,7 +348,7 @@ $$
 \text{Inventory Turnover Ratio} = \frac{\text{Cost of Goods Sold}}{\text{Average Inventory}}
 $$
 
-Inventory turnover is only comparable within an industry: a grocer turns its stock many times a year, a maker of aircraft or luxury goods a few times at most. Analysts watch the trend and the gap with peers, since a falling ratio often comes before markdowns or write-downs. Because the ratio divides cost of goods sold by inventory, the inventory valuation method (LIFO or FIFO) and year-end stock building for a peak season both move it; quarterly data with trailing=4 smooths the seasonal effect.
+Inventory turnover is only comparable within an industry: a grocer turns its stock many times a year, a maker of aircraft or luxury goods a few times at most. Analysts watch the trend and the gap with peers, since a falling ratio often comes before markdowns or write-downs. Because the ratio divides cost of goods sold by inventory, the inventory valuation method (LIFO or FIFO) and year-end stock building for a peak season both move it; quarterly data with a trailing window of four quarters smooths the seasonal effect.
 
 **Also known as:** stock turnover ratio.
 
@@ -384,8 +384,8 @@ pd.Series: Inventory turnover ratio values.
 
 - The method retrieves historical data and calculates the inventory turnover ratio
 for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -460,8 +460,8 @@ pd.DataFrame: Days sales in inventory ratio values.
 
 - The method retrieves historical data and calculates the DSI ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -538,8 +538,8 @@ pd.DataFrame: Days of sales outstanding ratio values.
 
 - The method retrieves historical data and calculates the DSO ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -614,8 +614,8 @@ pd.DataFrame: Operating cycle ratio values.
 
 - The method retrieves historical data and calculates the operating cycle ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -687,8 +687,8 @@ pd.DataFrame: Accounts payable turnover ratio values.
 
 - The method retrieves historical data and calculates the accounts payable turnover ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -763,8 +763,8 @@ pd.DataFrame: Days payables outstanding (DPO) ratio values.
 
 - The method retrieves historical data and calculates the DPO ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -792,7 +792,9 @@ Which returns:
 ---
 
 ## get_cash_conversion_cycle
-Calculate the Cash Conversion Cycle, which measures the amount of time it takes for a company to convert its investments in inventory and accounts receivable into cash, while considering the time it takes to pay its accounts payable. This ratio is also known as Cash-to-Cash Cycle (C2C) or Net Operating Cycle.
+Calculate the cash conversion cycle: the number of days a company's cash is tied up in inventory and receivables, less the days it takes to pay its suppliers.
+
+This ratio is also known as Cash-to-Cash Cycle (C2C) or Net Operating Cycle.
 
 The Cash Conversion Cycle (CCC) is an important measure of a company's liquidity management and efficiency in managing its working capital. It takes into account the time it takes to sell inventory, collect payments from customers, and pay suppliers. A shorter CCC indicates that a company is able to quickly convert its investments into cash, which can be a positive sign of efficient operations.
 
@@ -840,7 +842,7 @@ pd.DataFrame: Cash Conversion Cycle (CCC) values.
 **Notes:**
 
 - The method retrieves historical data and calculates the CCC for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the CCC values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the CCC values over the given lag.
 
 **As an example:**
 
@@ -868,7 +870,9 @@ Which returns:
 ---
 
 ## get_cash_conversion_efficiency
-Calculate the cash conversion efficiency, an efficiency ratio that measures how efficiently a company converts its sales into cash. It is also known as the cash conversion ratio.
+Calculate the cash conversion efficiency, an efficiency ratio that measures how efficiently a company converts its sales into cash.
+
+It is also known as the cash conversion ratio.
 
 The cash conversion efficiency ratio is calculated by dividing the operating cash flow by the revenue. It indicates how much of a company's sales are converted into cash. A higher cash conversion efficiency ratio is generally favorable, as it suggests that the company is able to convert its sales into cash more efficiently.
 
@@ -911,8 +915,8 @@ pd.DataFrame: Cash conversion efficiency ratio values.
 - The method retrieves historical data and calculates the cash conversion
 efficiency for each asset in the Toolkit instance. It is the same calculation as
 `get_operating_cash_flow_sales_ratio`.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -984,7 +988,7 @@ pd.DataFrame: Receivables turnover ratio values.
 
 - The method retrieves historical data and calculates the receivables turnover ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -1054,8 +1058,8 @@ pd.DataFrame: SG&A to revenue ratio values.
 
 - The method retrieves historical data and calculates the SG&A to revenue ratio for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -1127,8 +1131,8 @@ pd.DataFrame: Fixed Asset Turnover ratio values.
 
 - The method retrieves historical data and calculates the Fixed Asset Turnover ratio
 for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -1200,8 +1204,8 @@ pd.DataFrame: Working capital turnover ratio values.
 
 - The method retrieves historical data and calculates the working capital
 turnover ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio
-values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio
+values over the given lag.
 
 **As an example:**
 
@@ -1273,8 +1277,8 @@ pd.DataFrame: Operating ratio values.
 
 - The method retrieves historical data and calculates the operating ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -1346,8 +1350,8 @@ pd.DataFrame: R&D intensity ratio values.
 
 - The method retrieves historical data and calculates the R&D intensity ratio for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -1417,8 +1421,8 @@ pd.DataFrame: S&M to revenue ratio values.
 
 - The method retrieves historical data and calculates the S&M to revenue ratio for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 - Not every company reports Selling and Marketing Expenses separately from
 General and Administrative Expenses. For those companies the ratio shows 0,
 which means the split is not reported, not that nothing was spent; use
@@ -1492,8 +1496,8 @@ pd.DataFrame: G&A to revenue ratio values.
 
 - The method retrieves historical data and calculates the G&A to revenue ratio for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 - Not every company reports General and Administrative Expenses separately
 from Selling and Marketing Expenses. For those companies the ratio shows 0,
 or, when the whole SG&A line is reported as general and administrative, the
@@ -1568,8 +1572,8 @@ pd.DataFrame: SBC to revenue ratio values.
 
 - The method retrieves historical data and calculates the SBC to revenue ratio for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -1607,7 +1611,7 @@ $$
 \text{Deferred Revenue Ratio} = \frac{\text{Deferred Revenue}}{\text{Revenue}}
 $$
 
-Without trailing, the deferred revenue balance at the end of the period is used, so the ratio shows the backlog of prepaid revenue at that date. With trailing, the balance is averaged over the `trailing` period ends to match the summed revenue.
+Without trailing, the deferred revenue balance at the end of the period is used, so the ratio shows the backlog of prepaid revenue at that date. With trailing, the balance is averaged over the period ends of the trailing window to match the summed revenue.
 
 **Also known as:** deferred revenue intensity, unearned revenue ratio.
 
@@ -1641,8 +1645,8 @@ pd.DataFrame: Deferred revenue ratio values.
 
 - The method retrieves historical data and calculates the deferred revenue ratio for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 - Not every company reports Deferred Revenue on its Balance Sheet, in which case this
 ratio will be unavailable.
 
@@ -1715,8 +1719,8 @@ pd.DataFrame: Capex intensity values.
 
 - Damodaran, A., "Investment Valuation," 3rd edition, Wiley, 2012 (reinvestment and
 net capital expenditure).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -1790,8 +1794,8 @@ expenditure and reinvestment).
 - Depreciation and amortization include the amortization of acquired intangibles,
 which is no wear of the assets that capital expenditure replaces, so the ratio is low
 for companies with large acquired intangibles.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -1815,6 +1819,316 @@ Which returns:
 | INTC | 1.724  | 1.9217 | 2.6817 | 2.1042 | 1.2512 |
 | MSFT | 1.7647 | 1.6519 | 2.0278 | 1.9956 | 1.8901 |
 | TSM  | 2.011  | 2.492  | 1.7952 | 1.4424 | 1.8639 |
+
+---
+
+## get_capex_to_operating_cash_flow_ratio
+Calculate the capital expenditure to operating cash flow ratio, the share of the cash from operations that a company reinvests in property, plant and equipment.
+
+What is not reinvested is the free cash flow, so one minus this ratio is the free cash flow to operating cash flow ratio. A ratio near or above 1 means the company spends all its operating cash on investments, as capital intensive and fast growing companies do.
+
+The formula is as follows:
+
+$$
+\text{Capex to Operating Cash Flow} = \frac{\left|\text{Capital Expenditure}\right|}{\text{Cash Flow from Operations}}
+$$
+
+Capital expenditure is reported as a negative cash outflow, so its magnitude is used. A cash flow from operations of zero or less gives NaN. It is the inverse of the capital expenditure coverage ratio (get_capex_coverage_ratio).
+
+**Also known as:** capex to OCF, capex to cash flow from operations, reinvestment of operating cash flow.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Capex to operating cash flow values.
+
+**Notes:**
+
+- FinancialModelingPrep key metrics, `capexToOperatingCashFlow`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- The capital expenditure enters as its magnitude, so the ratio is positive whichever
+sign a source reports the capital expenditure with.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["TSM", "INTC", "MSFT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_capex_to_operating_cash_flow_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| INTC | 0.636  | 1.6098 | 2.2448 | 2.889  | 1.5104 |
+| MSFT | 0.2687 | 0.2683 | 0.3209 | 0.3752 | 0.4741 |
+| TSM  | 0.7638 | 0.6765 | 0.7693 | 0.5235 | 0.5638 |
+
+---
+
+## get_intangibles_to_total_assets_ratio
+Calculate the intangibles to total assets ratio, the share of the assets that is goodwill or another intangible asset such as patents, brands and customer relationships.
+
+A high share means the balance sheet holds mostly what was paid for acquisitions above the book value of what was bought, which can be written off, so the tangible measures (tangible book value, return on tangible assets, asset coverage) differ much from the reported ones. Internally developed intangibles are mostly expensed and are not in it.
+
+The formula is as follows:
+
+$$
+\text{Intangibles to Total Assets} = \frac{\text{Goodwill and Intangible Assets}}{\text{Total Assets}}
+$$
+
+The goodwill and intangibles are the combined row where it is reported and otherwise the sum of the separate rows. With trailing, both balances are averaged over the trailing period ends.
+
+**Also known as:** goodwill and intangibles to assets, intangible intensity.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Intangibles to total assets values.
+
+**Notes:**
+
+- FinancialModelingPrep key metrics, `intangiblesToTotalAssets`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["ABBV", "PFE", "MRK"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_intangibles_to_total_assets_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| ABBV | 0.7393 | 0.7175 | 0.6525 | 0.703  | 0.659  |
+| MRK  | 0.4182 | 0.3799 | 0.3675 | 0.3248 | 0.3526 |
+| PFE  | 0.4097 | 0.4804 | 0.5858 | 0.5808 | 0.6005 |
+
+---
+
+## get_revenue_per_employee
+Calculate the revenue per employee, the revenue a company generates per employee, a measure of the productivity of its workforce.
+
+It is best compared within an industry: software and platform companies generate far more revenue per employee than retailers or restaurants. A rising revenue per employee means the company grows its sales faster than its headcount.
+
+The formula is as follows:
+
+$$
+\text{Revenue per Employee} = \frac{\text{Revenue}}{\text{Employee Count}}
+$$
+
+The revenue is compared with a year's headcount, so quarterly data defaults to the trailing twelve months. The employee counts are retrieved with get_employee_count.
+
+**Also known as:** sales per employee, revenue per head.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Revenue per employee values.
+
+**Notes:**
+
+- The employee counts are those of FinancialModelingPrep's historical employee count,
+the headcount each annual filing (10-K) states, which can be a year-end or an average
+count. Each yearly period uses the count of its own annual filing, so no headcount is
+used before it was published together with the figures it divides. A quarter uses the
+count of the latest fiscal year that ended in an earlier calendar year (or in its own
+when it ends in December), so a quarter never uses a count of a fiscal year it can be
+part of. Periods without a count are NaN.
+- FinancialModelingPrep historical employee count and OpenBB's equity profile
+(employees), the inputs of the reference definition.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["WMT", "AMZN", "COST"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_revenue_per_employee()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| AMZN | 292178 | 333539 | 376908 | 409999 | 454901 |
+| COST | 680309 | 746559 | 766741 | 764123 | 807141 |
+| WMT  | 249023 | 291090 | 308631 | 324279 |    nan |
+
+---
+
+## get_net_income_per_employee
+Calculate the net income per employee, the profit a company makes per employee, a measure of the productivity of its workforce.
+
+It combines the revenue per employee with the net profit margin (net income per employee = revenue per employee x net profit margin), so it shows whether a productive workforce also turns its sales into profit. It is best compared within an industry.
+
+The formula is as follows:
+
+$$
+\text{Net Income per Employee} = \frac{\text{Net Income}}{\text{Employee Count}}
+$$
+
+The net income is compared with a year's headcount, so quarterly data defaults to the trailing twelve months. The employee counts are retrieved with get_employee_count.
+
+**Also known as:** profit per employee, earnings per employee.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Net income per employee values.
+
+**Notes:**
+
+- The employee counts are those of FinancialModelingPrep's historical employee count,
+the headcount each annual filing (10-K) states, which can be a year-end or an average
+count. Each yearly period uses the count of its own annual filing, so no headcount is
+used before it was published together with the figures it divides. A quarter uses the
+count of the latest fiscal year that ended in an earlier calendar year (or in its own
+when it ends in December), so a quarter never uses a count of a fiscal year it can be
+part of. Periods without a count are NaN.
+- FinancialModelingPrep historical employee count and OpenBB's equity profile
+(employees), the inputs of the reference definition.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "NVDA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_net_income_per_employee()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |             2023 |             2024 |   2025 |
+|:-----|-------:|-------:|-----------------:|-----------------:|-------:|
+| AAPL | 614805 | 608555 | 602453           | 571561           | 674759 |
+| MSFT | 338514 | 329131 | 327425           | 386561           | 446632 |
+| NVDA | 433943 | 166743 |      1.00541e+06 |      2.02444e+06 |    nan |
 
 ---
 
@@ -1865,8 +2179,8 @@ expenditure and reinvestment).
 - Depreciation and amortization include the amortization of acquired intangibles,
 which is no wear of the assets that capital expenditure replaces, so the net capital
 expenditure is low for companies with large acquired intangibles.
-- If `growth` is set to True, the method calculates the growth of the values using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the values over the
+given lag.
 
 **As an example:**
 
@@ -1943,9 +2257,9 @@ Stock Returns," Journal of Finance 63(4), 2008, pp. 1609-1651. Fama, E. F. and K
 French, "A Five-Factor Asset Pricing Model," Journal of Financial Economics 116(1),
 2015, pp. 1-22.
 - The first period has no total assets a year earlier and is NaN, so set an earlier
-start_date to obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+start date to obtain it.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2023,9 +2337,9 @@ Bloated Balance Sheets?," Journal of Accounting and Economics 38, 2004, pp. 297-
 Hou, K., C. Xue and L. Zhang, "Replicating Anomalies," Review of Financial Studies
 33(5), 2020, pp. 2019-2133.
 - The first period has no total assets of the period before and is NaN, so set an
-earlier start_date to obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+earlier start date to obtain it.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2054,7 +2368,7 @@ Which returns:
 ---
 
 ## collect_liquidity_ratios
-Calculates and collects all Liquidity Ratios based on the provided data.
+Collect all the liquidity ratios of every ticker in one table: whether each company can meet its short-term obligations.
 
 **Args:**
 
@@ -2085,8 +2399,8 @@ pd.DataFrame: Liquidity ratios calculated based on the specified parameters.
 **Notes:**
 
 - The method calculates various liquidity ratios for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2165,8 +2479,8 @@ pd.DataFrame: Current ratio values.
 
 - The method retrieves historical data and calculates the current ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2238,8 +2552,8 @@ pd.DataFrame: Quick ratio values.
 
 - The method retrieves historical data and calculates the quick ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2309,8 +2623,8 @@ pd.DataFrame: Cash ratio values.
 
 - The method retrieves historical data and calculates the cash ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2380,8 +2694,8 @@ pd.DataFrame: Working capital values.
 
 - The method retrieves historical data and calculates the working capital for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the working capital
-values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the working capital
+values over the given lag.
 
 **As an example:**
 
@@ -2452,8 +2766,8 @@ pd.DataFrame: Operating cash flow ratio values.
 
 - The method retrieves historical data and calculates the operating cash flow ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2523,8 +2837,8 @@ pd.DataFrame: Operating cash flow to sales ratio values.
 
 - The method retrieves historical data and calculates the operating cash flow to sales ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2618,7 +2932,7 @@ Which returns:
 ---
 
 ## get_defensive_interval_ratio
-Calculate the defensive interval ratio (DIR), a liquidity ratio that measures how many days a company could continue to cover its operating expenses using only its existing defensive (most liquid) assets, without relying on additional revenue.
+Calculate the defensive interval ratio (DIR): how many days a company could cover its operating expenses with its most liquid assets alone, without new revenue.
 
 Unlike the current, quick, and cash ratios, which express liquidity relative to current liabilities, the defensive interval ratio expresses liquidity relative to the company's actual daily cash burn rate, making it a more direct measure of how long a company could survive a sudden stop in incoming cash flow.
 
@@ -2628,7 +2942,7 @@ $$
 \text{Defensive Interval Ratio} = \frac{\text{Cash and Cash Equivalents} + \text{Short Term Investments} + \text{Accounts Receivable}}{\text{Daily Operating Expenses}}
 $$
 
-Where Daily Operating Expenses = (Cost of Goods Sold + Operating Expenses - Depreciation and Amortization) / Days, the daily cash expenditures (AccountingTools, Wall Street Prep). The cost of goods sold is included because the depreciation and amortization from the cash flow statement also covers the part charged to it, and because paying suppliers and production staff is the largest cash cost for most companies. Days is the length of the window the expenses cover: 365 for annual data, 365 / 4 for quarterly data, times `trailing` when the expenses are summed over several periods, so the ratio is in calendar days for any frequency.
+Where Daily Operating Expenses = (Cost of Goods Sold + Operating Expenses - Depreciation and Amortization) / Days, the daily cash expenditures (AccountingTools, Wall Street Prep). The cost of goods sold is included because the depreciation and amortization from the cash flow statement also covers the part charged to it, and because paying suppliers and production staff is the largest cash cost for most companies. Days is the length of the window the expenses cover: 365 for annual data, 365 / 4 for quarterly data, times the trailing periods when the expenses are summed over several periods, so the ratio is in calendar days for any frequency.
 
 **Also known as:** defensive interval period, basic defense interval.
 
@@ -2665,8 +2979,8 @@ pd.DataFrame: Defensive interval ratio values, expressed in days.
 
 - The method retrieves historical data and calculates the defensive interval
 ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio
-values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio
+values over the given lag.
 
 **As an example:**
 
@@ -2694,7 +3008,7 @@ Which returns:
 ---
 
 ## collect_profitability_ratios
-Calculates and collects all Profitability Ratios based on the provided data.
+Collect all the profitability ratios of every ticker in one table: how much profit each company earns on its revenue, assets and capital.
 
 **Args:**
 
@@ -2725,8 +3039,8 @@ pd.DataFrame: Profitability ratios calculated based on the specified parameters.
 **Notes:**
 
 - The method calculates various profitability ratios for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2767,10 +3081,7 @@ Which returns:
 | Return on Capital Employed                  |  0.4831 |  0.6009 |  0.5514 |   0.6534 |   0.6872 |
 | Return on Tangible Assets                   |  0.2806 |  0.2836 |  0.275  |   0.2613 |   0.3093 |
 | Income Quality Ratio                        |  1.0988 |  1.2239 |  1.1397 |   1.2616 |   0.9953 |
-| Net Income per EBT                          |  0.867  |  0.838  |  0.8528 |   0.7591 |   0.8439 |
 | Free Cash Flow to Operating Cash Flow Ratio |  0.8935 |  0.9123 |  0.9009 |   0.9201 |   0.8859 |
-| EBT to EBIT Ratio                           |  0.9764 |  0.976  |  0.9666 |   1      |   1      |
-| EBIT to Revenue                             |  0.3058 |  0.3095 |  0.307  |   0.3158 |   0.3189 |
 | Cash Tax Rate                               |  0.2324 |  0.1643 |  0.1642 |   0.2114 |   0.3267 |
 | Tax Rate Divergence                         |  0.0994 |  0.0023 |  0.017  |  -0.0295 |   0.1706 |
 | Gross Profitability                         |  0.4354 |  0.4841 |  0.4797 |   0.495  |   0.5434 |
@@ -2828,8 +3139,8 @@ pd.DataFrame: Gross margin ratio values.
 
 - The method retrieves historical data and calculates the gross margin ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2869,7 +3180,7 @@ $$
 
 Operating margin is the usual yardstick for the profitability of the core business, before financing and taxes. Companies with high fixed costs show operating leverage: their margin rises quickly when revenue grows and falls quickly when it shrinks. Restructuring charges and impairments are included, so a single weak year should be checked for one-off items before comparing with peers.
 
-**Also known as:** operating income margin, operating profit margin.
+**Also known as:** operating income margin, operating profit margin, EBIT margin, EBIT to revenue.
 
 **Args:**
 
@@ -2901,8 +3212,8 @@ pd.DataFrame: Operating margin ratio values.
 
 - The method retrieves historical data and calculates the operating margin ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2972,8 +3283,8 @@ pd.DataFrame: Net profit margin ratio values.
 
 - The method retrieves historical data and calculates the net profit margin ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -2997,6 +3308,78 @@ Which returns:
 | AZN | 0.003  | 0.0741 | 0.13   | 0.1301 | 0.1746 |
 | LLY | 0.1971 | 0.2188 | 0.1536 | 0.2351 | 0.3167 |
 | NVO | 0.3392 | 0.3138 | 0.3603 | 0.3478 | 0.3314 |
+
+---
+
+## get_continuing_operations_profit_margin
+Calculate the continuing operations profit margin, the net income from continuing operations as a share of revenue.
+
+The net profit margin includes the result of discontinued operations, such as a business that was sold or is held for sale, including the gain or loss on its sale. Those results do not recur, so the continuing operations profit margin is the margin of the business the company keeps. Both are equal for a company without discontinued operations.
+
+The formula is as follows:
+
+$$
+\text{Continuing Operations Profit Margin} = \frac{\text{Net Income from Continuing Operations}}{\text{Revenue}}
+$$
+
+**Also known as:** continuous operations profit margin, net margin from continuing operations.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Continuing operations profit margin values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `continuousOperationsProfitMargin`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["GE", "JNJ", "DHR"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_continuing_operations_profit_margin()
+```
+
+Which returns:
+
+|     |    2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|--------:|-------:|-------:|-------:|-------:|
+| DHR |  0.2155 | 0.2375 | 0.1767 | 0.1633 | 0.1465 |
+| GE  | -0.0875 | 0.0464 | 0.2673 | 0.172  | 0.1874 |
+| JNJ |  0.2261 | 0.2047 | 0.1565 | 0.1584 | 0.2846 |
 
 ---
 
@@ -3043,8 +3426,8 @@ pd.DataFrame: EBITDA margin values.
 
 - The method retrieves historical data and calculates the EBITDA margin for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio
-values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio
+values over the given lag.
 
 **As an example:**
 
@@ -3071,7 +3454,7 @@ Which returns:
 ---
 
 ## get_interest_burden_ratio
-Compute the Interest Burden Ratio, the component of the extended (five-step) DuPont decomposition that isolates the drag interest expense places on a company's operating profit.
+Calculate the interest burden ratio: the share of operating profit that is left after interest, the component of the five-step DuPont decomposition that isolates the drag of interest expense.
 
 The Interest Burden Ratio is calculated by dividing earnings before tax (EBT) by earnings before interest and taxes (EBIT, proxied here by Operating Income). It expresses the share of operating profit that survives interest expense, so it sits between 0 and 1 for a company with debt: a value close to 1 means interest barely dents operating profit, while a low value signals a heavy interest load. Values slightly above 1 occur when non-operating income (e.g. interest income) exceeds interest expense.
 
@@ -3083,7 +3466,7 @@ $$
 \text{Interest Burden Ratio} = \frac{\text{Income Before Tax}}{\text{Operating Income}}
 $$
 
-**Also known as:** interest burden, DuPont interest burden.
+**Also known as:** interest burden, DuPont interest burden, EBT to EBIT ratio, EBT/EBIT, pre-tax income to EBIT.
 
 **Args:**
 
@@ -3115,8 +3498,8 @@ pd.DataFrame: Interest Burden Ratio values.
 
 - The method retrieves historical data and calculates the Interest Burden Ratio for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -3144,7 +3527,7 @@ Which returns:
 ---
 
 ## get_income_before_tax_profit_margin
-Calculate the Pretax Profit Margin, which is the ratio of a company's pre-tax profit to its revenue, indicating how much profit a company makes before paying taxes on its earnings.
+Calculate the pretax profit margin: the share of revenue a company keeps as profit before paying taxes.
 
 The Pretax Profit Margin is calculated by dividing the pre-tax profit by the revenue. It provides insight into how efficiently a company is able to generate profits from its revenue.
 
@@ -3186,8 +3569,8 @@ pd.DataFrame: Pretax Profit Margin values.
 
 - The method retrieves historical data and calculates the Pretax Profit Margin for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -3259,8 +3642,8 @@ pd.DataFrame: Effective tax rate values.
 
 - The method retrieves historical data and calculates the effective tax rate for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -3334,8 +3717,8 @@ pd.DataFrame: Return on assets (ROA) values.
 
 - The method retrieves historical data and calculates the ROA for each asset in the
 Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -3360,6 +3743,84 @@ Which returns:
 | C   | 0.0091 | 0.0058 | 0.0033 | 0.0048 | 0.0052 |
 | USB | 0.0135 | 0.0088 | 0.0075 | 0.0088 | 0.0105 |
 | WFC | 0.0107 | 0.0066 | 0.0094 | 0.0096 | 0.0101 |
+
+---
+
+## get_operating_return_on_assets
+Calculate the operating return on assets, the operating income against the average total assets.
+
+Operating income is before interest and taxes, so unlike the return on assets the operating return on assets does not depend on how the company is financed or where it pays its taxes: two companies with the same operations but different leverage have the same operating return on assets. It is the asset-based counterpart of the return on capital employed.
+
+The formula is as follows:
+
+$$
+\text{Operating Return on Assets} = \frac{\text{Operating Income}}{\text{Average Total Assets}}
+$$
+
+The total assets are averaged over the opening and closing balance of the period, as for the return on assets.
+
+**Also known as:** OROA, operating ROA, EBIT to average total assets.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the trailing + 1
+period ends that open and close those periods, so trailing=1 equals the default
+average of the opening and closing balance. E.g. 4 with quarterly data gives the
+trailing twelve months (TTM) and 3 with annual data a three-year cumulative figure.
+The window counts calendar periods, so a period without a report makes it NaN.
+Defaults to None, which uses single-period flows (per quarter and not annualized
+with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Operating return on assets values.
+
+**Notes:**
+
+- FinancialModelingPrep key metrics, `operatingReturnOnAssets`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- FinancialModelingPrep divides by the total assets of the period, this method by the
+average of the opening and closing total assets, as the return on assets does.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["HD", "LOW", "TGT"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_operating_return_on_assets()
+```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |
+|:----|-------:|-------:|-------:|-------:|
+| HD  | 0.3235 | 0.3241 | 0.2836 | 0.2494 |
+| LOW | 0.2647 | 0.23   | 0.2703 | 0.2466 |
+| TGT | 0.1703 | 0.0718 | 0.105  | 0.0984 |
 
 ---
 
@@ -3408,8 +3869,8 @@ pd.DataFrame: Cash return on assets (Cash ROA) values.
 
 - The method retrieves historical data and calculates the cash ROA for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio
-values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio
+values over the given lag.
 
 **As an example:**
 
@@ -3485,7 +3946,7 @@ pd.DataFrame: Return on equity (ROE) values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ROE for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -3558,7 +4019,7 @@ pd.DataFrame: Return on invested capital (ROIC) values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ROIC for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -3675,10 +4136,10 @@ ratio is NaN for that period and for every trailing window that holds it.
 cover its operating assets has small net operating assets and an RNOA well above 1
 (Apple); net operating assets of zero or below make the ratio meaningless (it flips
 sign). Such periods are returned as calculated.
-- The first period has no opening balance and is NaN, so set an earlier start_date to
+- The first period has no opening balance and is NaN, so set an earlier start date to
 obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -3781,10 +4242,10 @@ fiscal 2024) has an unknown net financial expense rather than a zero one, so the
 ratio is NaN for that period and for every trailing window that holds it.
 - The interest on the lease obligations is part of the operating expenses for
 operating leases, so the cost of the leases in the Total Debt is understated.
-- The first period has no opening balance and is NaN, so set an earlier start_date to
+- The first period has no opening balance and is NaN, so set an earlier start date to
 obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -3881,10 +4342,10 @@ Practice," Review of Accounting Studies 6, 2001, pp. 109-154.
 counts as zero; a missing Total Debt or Total Shareholder Equity gives NaN. The ratio
 needs no interest data, so it is available for periods whose return on net operating
 assets and net borrowing cost are NaN for lack of interest rows.
-- The first period has no opening balance and is NaN, so set an earlier start_date to
+- The first period has no opening balance and is NaN, so set an earlier start date to
 obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -3912,7 +4373,7 @@ Which returns:
 ---
 
 ## get_income_quality_ratio
-Calculate the income quality ratio, a financial metric that measures the cash flow from operating activities relative to the net income of the company.
+Calculate the income quality ratio: the cash flow from operations against the net income, how much of the reported profit comes in as cash.
 
 The income quality ratio provides insights into the quality of a company's reported earnings. By comparing the cash flow from operating activities to the net income, this ratio helps assess whether a company's reported profits are backed by actual cash flow. A higher income quality ratio suggests higher earnings quality and a better ability to convert profits into cash flow.
 
@@ -3956,7 +4417,7 @@ pd.DataFrame: Income quality ratio values.
 
 - The method retrieves historical data and calculates the income quality ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -4026,7 +4487,7 @@ pd.DataFrame: Return on tangible assets (ROTA) values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ROTA for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -4099,7 +4560,7 @@ pd.DataFrame: Return on capital employed (ROCE) values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ROCE for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -4124,79 +4585,6 @@ Which returns:
 | CVX  | 0.0757 | 0.1787 | 0.1473 | 0.1332 | 0.0574 |
 | SHEL | 0.0722 | 0.1962 | 0.0989 | 0.1025 | 0.0958 |
 | XOM  | 0.0851 | 0.2134 | 0.143  | 0.1035 | 0.0901 |
-
----
-
-## get_net_income_per_ebt
-Calculate the net income per earnings before taxes (EBT), a profitability ratio that measures the net income generated for each dollar of EBT.
-
-The net income per earnings before taxes (EBT) ratio helps evaluate the extent to which a company's net income is generated from its operating activities before considering the impact of income taxes. It gives insights into how effectively a company generates profit relative to its taxable income.
-
-The formula is as follows:
-
-$$
-\text{Net Income per EBT} = \frac{\text{Net Income}}{\text{Net Income} + \text{Income Tax Expense}}
-$$
-
-Earnings before tax is reconstructed from the income statement as Net Income plus Income Tax Expense rather than read from the reported Income Before Tax line, so this can differ slightly from `get_tax_burden_ratio` when a company reports minority interests or discontinued operations below the tax line.
-
-**Also known as:** net income to pre-tax income.
-
-**Args:**
-
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
-the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. The window counts calendar periods,
-so a period without a report makes it NaN. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: Net income per earnings before taxes (EBT) values.
-
-**Notes:**
-
-- The method retrieves historical data and calculates the net income per EBT for each asset in
-the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using
-the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["SAP.DE", "SIE.DE", "ASML.AS"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.ratios.get_net_income_per_ebt()
-```
-
-Which returns:
-
-|         |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:--------|-------:|-------:|-------:|-------:|-------:|
-| ASML.AS | 0.8521 | 0.8529 | 0.8452 | 0.8184 | 0.8268 |
-| SAP.DE  | 0.7576 | 0.6123 | 0.7791 | 0.6593 | 0.7087 |
-| SIE.DE  | 0.7387 | 0.576  | 0.7535 | 0.7816 | 0.7935 |
 
 ---
 
@@ -4242,7 +4630,7 @@ pd.DataFrame: Free cash flow to operating cash flow ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -4311,8 +4699,8 @@ pd.DataFrame: Free cash flow margin values.
 
 - The method retrieves historical data and calculates the free cash flow
 margin for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio
-values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio
+values over the given lag.
 
 **As an example:**
 
@@ -4350,7 +4738,7 @@ $$
 \text{Tax Burden Ratio} = \frac{\text{Net Income}}{\text{Income Before Tax}}
 $$
 
-**Also known as:** tax efficiency ratio.
+**Also known as:** tax efficiency ratio, net income per EBT, net income to pre-tax income.
 
 **Args:**
 
@@ -4381,7 +4769,7 @@ pd.DataFrame: Tax burden ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -4405,144 +4793,6 @@ Which returns:
 | ACN  | 0.7619 | 0.7486 | 0.7527 | 0.7497 | 0.7483 |
 | CSCO | 0.7986 | 0.8159 | 0.8234 | 0.8436 | 0.9171 |
 | ORCL | 0.8782 | 0.9317 | 0.8915 | 0.8787 | 0.8662 |
-
----
-
-## get_EBT_to_EBIT
-Calculate the EBT to EBIT ratio, which shows how much of a company's earnings before interest and taxes (EBIT) is left after interest expense.
-
-A ratio close to 1 means interest takes little of the operating profit; a lower ratio means a heavier interest load. Taxes play no part in the ratio. Unlike `get_interest_burden_ratio`, which uses the reported income before tax and operating income, both figures here are rebuilt from net income, income tax expense and interest expense.
-
-The formula is as follows:
-
-$$
-\text{EBT to EBIT} = \frac{\text{Net Income} + \text{Income Tax Expense}}{\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense}}
-$$
-
-**Also known as:** EBT/EBIT, pre-tax income to EBIT.
-
-**Args:**
-
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
-the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. The window counts calendar periods,
-so a period without a report makes it NaN. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: EBT to EBIT ratio values.
-
-**Notes:**
-
-- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["HLT", "MAR", "CHH"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.ratios.get_EBT_to_EBIT()
-```
-
-Which returns:
-
-|     |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:----|-------:|-------:|-------:|-------:|-------:|
-| CHH | 0.8894 | 0.9085 | 0.8403 | 0.819  | 0.8331 |
-| HLT | 0.5865 | 0.8067 | 0.7838 | 0.7577 | 0.7697 |
-| MAR | 0.7375 | 0.8854 | 0.8567 | 0.8193 | 0.8075 |
-
----
-
-## get_EBIT_to_revenue
-Calculate the EBIT per Revenue, which is the ratio of a company's earnings before interest and taxes to its revenue, indicating how much profit a company generates from its operations before paying interest on debt and taxes on its earnings.
-
-The EBIT to Revenue ratio measures the company's ability to generate profit before financing costs and taxes relative to its revenue. EBIT is rebuilt from the bottom of the income statement (net income plus income tax expense plus interest expense), the same EBIT as in `get_EBT_to_EBIT`. It therefore includes non-operating income and expenses such as interest income, investment gains and other income, which is why it differs from the operating margin (`get_operating_margin`), which divides the reported operating income by revenue. A higher ratio indicates that a larger portion of the company's revenue is converted into profit before interest and taxes.
-
-The formula is as follows:
-
-$$
-\text{EBIT to Revenue} = \frac{\text{Net Income} + \text{Income Tax Expense} + \text{Interest Expense}}{\text{Revenue}}
-$$
-
-**Also known as:** EBIT margin.
-
-**Args:**
-
-- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
-the rounding of the Toolkit (4 unless set otherwise).
-- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
-- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
-- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
-the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
-- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
-combined with growth=True, standardizes the growth values instead of the raw
-values. Defaults to False.
-- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
-statement items) over, with balance sheet items averaged over the same number of
-period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
-with annual data a three-year cumulative figure. The window counts calendar periods,
-so a period without a report makes it NaN. Defaults to None, which uses
-single-period flows (per quarter and not annualized with quarterly data).
-- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
-on every column level, or the rows when no column has those names (such as the line
-items of a financial statement). Names that do not exist are logged, and when none
-exist the result is returned in full. Defaults to None, which keeps every column.
-
-**Returns:**
-
-pd.DataFrame: EBIT to Revenue ratio values.
-
-**Notes:**
-
-- The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
-
-**As an example:**
-
-```python
-from financetoolkit import Toolkit
-
-toolkit = Toolkit(
-    ["LMT", "GD", "NOC"],
-    api_key="FINANCIAL_MODELING_PREP_KEY",
-    start_date="2021-01-01",
-    end_date="2025-12-31",
-)
-
-toolkit.ratios.get_EBIT_to_revenue()
-```
-
-Which returns:
-
-|     |   2021 |   2022 |   2023 |   2024 |   2025 |
-|:----|-------:|-------:|-------:|-------:|-------:|
-| GD  | 0.1119 | 0.1123 | 0.1037 | 0.1034 | 0.1031 |
-| LMT | 0.1211 | 0.1107 | 0.1334 | 0.1021 | 0.0938 |
-| NOC | 0.2662 | 0.1733 | 0.0736 | 0.1374 | 0.1366 |
 
 ---
 
@@ -4589,8 +4839,8 @@ pd.DataFrame: Cash tax rate values.
 
 - The method retrieves historical data and calculates the cash tax rate for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -4662,8 +4912,8 @@ pd.DataFrame: Tax rate divergence values.
 
 - The method retrieves historical data and calculates the tax rate divergence for
 each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -4736,8 +4986,8 @@ pd.DataFrame: Gross profitability values.
 of Financial Economics 108(1), 2013, pp. 1-28.
 - The Quality Score (`Toolkit.models.get_quality_score`) uses the same measure as one
 of its profitability components.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -4766,7 +5016,7 @@ Which returns:
 ---
 
 ## get_operating_profitability
-Calculate the operating profitability of Fama and French (2015), the measure behind the profitability factor RMW (robust minus weak) of their five-factor model: the operating profit after interest that a company earns on its book equity.
+Calculate the operating profitability of Fama and French (2015): the operating profit after interest a company earns on its book equity, the measure behind their RMW (robust minus weak) factor.
 
 Fama and French find that companies with a robust operating profitability earn higher returns than those with a weak one, also after controlling for value, size and investment. Book equity follows their definition: the stockholders' equity (without minority interest) plus the balance sheet deferred taxes, minus the preferred stock.
 
@@ -4816,8 +5066,8 @@ Financial Economics 116(1), 2015, pp. 1-22.
 - Large buybacks shrink the book equity, which can make the ratio very large; the
 gross profitability and cash-based operating profitability scale by total assets
 instead.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -4846,7 +5096,7 @@ Which returns:
 ---
 
 ## get_cash_based_operating_profitability
-Calculate the cash-based operating profitability of Ball, Gerakos, Linnainmaa and Nikolaev (2016): operating profit with the working capital accruals taken out, so that it measures the operating profit received in cash, scaled by the total assets at the start of the year.
+Calculate the cash-based operating profitability of Ball, Gerakos, Linnainmaa and Nikolaev (2016): the operating profit received in cash, against the total assets.
 
 Ball et al. show that cash-based operating profitability predicts stock returns better than the profitability measures that include accruals, and that it subsumes the accrual anomaly: once the cash-based profitability is known, accruals no longer predict returns. The operating profit is that of Ball et al. (2015), with research and development added back as an investment rather than an expense of the period.
 
@@ -4896,9 +5146,9 @@ pp. 225-248.
 Critical Finance Review 11(2), 2022, pp. 207-264 (the CBOperProf signal and its
 lagged-assets variant). Wang (2020), SSRN working paper 3507251, Table A1.
 - The first period has no earlier balances to take the changes and the total assets
-from and is NaN, so set an earlier start_date to obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+from and is NaN, so set an earlier start date to obtain it.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -4973,8 +5223,8 @@ pd.DataFrame: Cash return on invested capital values.
 - CROIC is a practitioner measure (used by, among others, Morningstar); definitions
 of the invested capital differ, and this one matches the return on invested capital
 of the Finance Toolkit.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -5045,8 +5295,8 @@ pd.DataFrame: Free cash flow conversion values.
 
 - The ratio is used in the cash flow analysis of the CFA curriculum (Financial
 Reporting and Analysis) and by the rating agencies (S&P, Moody's).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -5117,8 +5367,8 @@ pd.DataFrame: Free cash flow to EBITDA values.
 
 - The ratio is part of the cash flow analysis of the rating agencies (S&P Global
 Ratings' corporate methodology, Moody's) and of the CFA curriculum.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -5192,8 +5442,8 @@ Review 86(1), 2011, pp. 209-236. Sloan, R. G., "Do Stock Prices Fully Reflect
 Information in Accruals and Cash Flows about Future Earnings?," The Accounting Review
 71(3), 1996, pp. 289-315 (the accruals scaled by total assets, see
 `toolkit.models.get_accruals_ratio`).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -5222,7 +5472,7 @@ Which returns:
 ---
 
 ## collect_solvency_ratios
-Calculates and collects all Solvency Ratios based on the provided data.
+Collect all the solvency ratios of every ticker in one table: whether each company can carry its debt and meet its long-term obligations.
 
 **Args:**
 
@@ -5254,8 +5504,8 @@ pd.DataFrame: Solvency ratios calculated based on the specified parameters.
 **Notes:**
 
 - The method calculates various solvency ratios for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -5346,7 +5596,7 @@ pd.DataFrame: Debt to assets ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5413,7 +5663,7 @@ pd.DataFrame: Asset coverage ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5441,7 +5691,9 @@ Which returns:
 ---
 
 ## get_debt_to_equity_ratio
-Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt. This ratio is also known as the Gearing Ratio.
+Calculate the debt to equity ratio, a solvency ratio that measures the proportion of a company's equity that is financed by debt.
+
+This ratio is also known as the Gearing Ratio.
 
 The debt to equity ratio, for short the D/E ratio, indicates the relative contribution of debt and equity to a company's capital structure. It helps assess the level of financial risk a company carries due to its debt obligations. A higher ratio implies a higher reliance on debt to finance the business, which could increase risk but also potentially lead to higher returns for shareholders.
 
@@ -5484,7 +5736,7 @@ pd.DataFrame: Debt to equity ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5555,7 +5807,7 @@ pd.DataFrame: Interest coverage ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5628,7 +5880,7 @@ pd.DataFrame: Equity multiplier values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5666,7 +5918,7 @@ $$
 \text{Debt Service Coverage Ratio} = \frac{\text{Operating Income} + \text{Depreciation and Amortization}}{\text{Interest Expense} + \text{Short Term Debt} \cdot \text{Window Years}}
 $$
 
-The short-term debt is the principal due over the next year, so it is scaled to the length of the window the earnings and interest cover: a quarter (0.25) with quarterly data, a year with yearly data and the trailing multiple of either with trailing (e.g. trailing=4 on quarterly data compares a year of earnings with a year of principal).
+The short-term debt is the principal due over the next year, so it is scaled to the length of the window the earnings and interest cover: a quarter (0.25) with quarterly data, a year with yearly data and the trailing multiple of either with a trailing window (e.g. four quarters compare a year of earnings with a year of principal).
 
 **Also known as:** DSCR, debt service ratio.
 
@@ -5699,7 +5951,7 @@ pd.DataFrame: Debt service coverage ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5727,7 +5979,7 @@ Which returns:
 ---
 
 ## get_free_cash_flow_yield
-Calculates the free cash flow yield ratio, which measures the free cash flow relative to the market capitalization of the company.
+Calculate the free cash flow yield: the free cash flow a company generates against its market capitalization, the cash return on its share price.
 
 The free cash flow yield ratio is a measure of how efficiently a company generates free cash flow relative to its market value. It provides insights into whether the company's valuation is reasonable compared to the amount of cash it generates.
 
@@ -5775,7 +6027,7 @@ pd.DataFrame: Free cash flow yield ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5803,7 +6055,7 @@ Which returns:
 ---
 
 ## get_net_debt_to_ebitda_ratio
-Calculates the net debt to EBITDA ratio, which measures the net debt of the company relative to its EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
+Calculate the net debt to EBITDA ratio: how many years of EBITDA (earnings before interest, taxes, depreciation and amortization) it would take to repay the debt net of cash.
 
 The net debt to EBITDA ratio is a measure of a company's ability to manage its debt obligations in relation to its earnings and cash flow. A lower ratio indicates better financial health and a stronger ability to manage debt.
 
@@ -5846,7 +6098,7 @@ pd.DataFrame: Net debt to EBITDA ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5874,7 +6126,7 @@ Which returns:
 ---
 
 ## get_net_debt_to_equity_ratio
-Calculates the net debt to equity ratio, also known as net gearing, which measures the debt of the company net of its cash relative to its equity.
+Calculate the net debt to equity ratio (net gearing): the debt net of cash against the equity, how much a company relies on borrowed money.
 
 Net gearing is the debt to equity ratio after deducting the cash the company could repay its debt with, the way European and UK companies and their lenders usually report leverage. A ratio of 0.5 means the debt net of cash is half of the equity; a negative ratio means the company holds more cash than debt (a net cash position).
 
@@ -5915,7 +6167,7 @@ pd.DataFrame: Net debt to equity ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -5943,7 +6195,7 @@ Which returns:
 ---
 
 ## get_gross_debt_to_ebitda_ratio
-Calculates the gross debt to EBITDA ratio, which measures the total (gross) debt of the company relative to its EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
+Calculate the gross debt to EBITDA ratio: how many years of EBITDA (earnings before interest, taxes, depreciation and amortization) it would take to repay the total debt.
 
 This differs from the Net-Debt to EBITDA Ratio in that it uses total (gross) debt rather than net debt (total debt minus cash and cash equivalents). Gross debt to EBITDA is a more conservative leverage measure since it does not assume that a company's cash balance would actually be used to pay down debt, which matters when comparing companies with restricted cash, cash earmarked for other purposes, or when assessing gross refinancing risk rather than net economic leverage.
 
@@ -5984,7 +6236,7 @@ pd.DataFrame: Gross debt to EBITDA ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -6053,7 +6305,7 @@ pd.DataFrame: Cash flow coverage ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -6122,7 +6374,7 @@ pd.DataFrame: Capital expenditure coverage ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -6191,7 +6443,7 @@ pd.DataFrame: Dividend paid and capex coverage ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -6260,7 +6512,7 @@ pd.DataFrame: Debt to capital ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -6284,6 +6536,229 @@ Which returns:
 | AMGN | 0.8325 | 0.9141 | 0.912  | 0.9109 | 0.8631 |
 | BMY  | 0.5588 | 0.5668 | 0.5844 | 0.7575 | 0.7181 |
 | GILD | 0.559  | 0.5433 | 0.5234 | 0.5812 | 0.5244 |
+
+---
+
+## get_long_term_debt_to_capitalization_ratio
+Calculate the long-term debt to capitalization ratio, the share of a company's permanent capital (long-term debt plus equity) that is financed with long-term debt.
+
+Unlike the debt to capital ratio, which counts all debt, it leaves out the short-term debt and the current portion of the long-term debt, so it shows how the company funds itself for the long run. It lies between 0 and 1 while the equity is positive.
+
+The formula is as follows:
+
+$$
+\text{Long-Term Debt to Capitalization} = \frac{\text{Long Term Debt}}{\text{Long Term Debt} + \text{Total Equity}}
+$$
+
+The equity is the total equity, including minority interest, as for the debt to capital ratio. With trailing, both balances are averaged over the trailing period ends.
+
+**Also known as:** long-term debt to capital, LT debt to capitalization.
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Long-term debt to capitalization ratio values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `longTermDebtToCapitalRatio`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["T", "VZ", "TMUS"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_long_term_debt_to_capitalization_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| T    | 0.451  | 0.5468 | 0.5171 | 0.4963 | 0.5319 |
+| TMUS | 0.4981 | 0.4895 | 0.5246 | 0.5458 | 0.5782 |
+| VZ   | 0.6329 | 0.6034 | 0.5948 | 0.5469 | 0.5689 |
+
+---
+
+## get_debt_to_market_cap_ratio
+Calculate the debt to market capitalization ratio, the total debt against the market value of the equity.
+
+The debt to equity ratio compares the debt with the book value of the equity, which buybacks and write-offs can make small or negative; the market value of the equity is what the shareholders' claim is worth, so this ratio is the leverage at market values that capital structure and cost of capital calculations use.
+
+The formula is as follows:
+
+$$
+\text{Debt to Market Cap} = \frac{\text{Total Debt}}{\text{Market Capitalization}}
+$$
+
+The market capitalization is the one of get_market_cap: the close at the end of each fiscal period (or of each day with daily values) times the weighted average (diluted) shares.
+
+**Also known as:** debt to market value of equity, market debt to equity, D/E at market value.
+
+**Args:**
+
+- <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading day
+against the balance sheet of the latest period that has ended on or before that
+day (also when it ended before the start date), so no figures are used before
+their period closes. Defaults to False.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Debt to market capitalization ratio values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `debtToMarketCap`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- FinancialModelingPrep divides by the basic weighted average shares; the basic shares
+(not diluted) give its definition.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["F", "GM", "TSLA"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_debt_to_market_cap_ratio()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:-----|-------:|-------:|-------:|-------:|-------:|
+| F    | 1.6648 | 3.0091 | 3.0676 | 4.041  | 3.2099 |
+| GM   | 1.2826 | 2.3648 | 2.4941 | 2.1731 | 1.6465 |
+| TSLA | 0.0074 | 0.0134 | 0.0111 | 0.0096 | 0.0053 |
+
+---
+
+## get_solvency_ratio
+Calculate the solvency ratio, the cash earnings (net income plus the non-cash depreciation and amortization) against all liabilities.
+
+The solvency ratio shows how much of its total obligations, short and long term, a company could pay from a year of cash earnings. A higher ratio is safer; around 0.2 is often named as a healthy level, though it differs widely by industry.
+
+The formula is as follows:
+
+$$
+\text{Solvency Ratio} = \frac{\text{Net Income} + \text{Depreciation and Amortization}}{\text{Total Liabilities}}
+$$
+
+The depreciation and amortization come from the cash flow statement. The ratio compares a year of earnings with the liabilities, so quarterly data defaults to the trailing twelve months; the liabilities are those at the end of the period.
+
+**Also known as:** cash flow to total liabilities (with net income plus depreciation as the cash flow).
+
+**Args:**
+
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses the trailing
+twelve months (4 quarters) with quarterly data and single years with annual data.
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Solvency ratio values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `solvencyRatio`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["DUK", "SO", "NEE"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_solvency_ratio()
+```
+
+Which returns:
+
+|     |   2021 |   2022 |   2023 |   2024 |   2025 |
+|:----|-------:|-------:|-------:|-------:|-------:|
+| DUK | 0.0799 | 0.0656 | 0.0696 | 0.0801 | 0.0787 |
+| NEE | 0.0818 | 0.0816 | 0.1136 | 0.0983 | 0.0942 |
+| SO  | 0.067  | 0.0756 | 0.0861 | 0.0891 | 0.0888 |
 
 ---
 
@@ -6327,7 +6802,7 @@ pd.DataFrame: Preferred dividend coverage ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 - This ratio is only meaningful for companies that have preferred stock
 outstanding. It is NaN when no preferred dividends are reported separately in
 the cash flow statement, which also happens for some companies that do pay them.
@@ -6401,7 +6876,7 @@ pd.DataFrame: Interest paid to interest expense ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values over the given lag.
 
 **As an example:**
 
@@ -6472,8 +6947,8 @@ pd.DataFrame: EBITDA interest coverage values.
 
 - S&P Global Ratings, "Corporate Methodology: Ratios And Adjustments," April 1, 2019
 (key ratios: EBITDA to interest).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -6544,8 +7019,8 @@ pd.DataFrame: (EBITDA - CapEx) interest coverage values.
 
 - Moody's Investors Service, "Automobile Manufacturer Industry," rating methodology,
 June 2017 ((EBITDA - CapEx) / Interest Expense).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -6616,8 +7091,8 @@ pd.DataFrame: Cash interest coverage values.
 
 - CFA Institute, "Financial Reporting and Analysis," CFA Program Curriculum
 (cash flow statement analysis: interest coverage).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -6692,8 +7167,8 @@ pd.DataFrame: FFO to debt values.
 - S&P Global Ratings, "Corporate Methodology: Ratios And Adjustments," April 1, 2019
 (core ratios: FFO to debt; FFO is EBITDA minus cash interest paid minus cash tax paid).
 - S&P Global Ratings, "Corporate Methodology," 2013 (financial risk profile table).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -6768,8 +7243,8 @@ pd.DataFrame: DCF to debt values.
 - S&P Global Ratings, "Corporate Methodology: Ratios And Adjustments," April 1, 2019
 (supplementary ratios: DCF to debt; DCF is free operating cash flow minus dividends
 minus share buybacks).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -6839,8 +7314,8 @@ pd.DataFrame: Degree of operating leverage values.
 
 - CFA Institute, "Corporate Issuers," CFA Program Curriculum (measures of leverage:
 degree of operating, financial and total leverage).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -6912,8 +7387,8 @@ pd.DataFrame: Degree of financial leverage values.
 
 - CFA Institute, "Corporate Issuers," CFA Program Curriculum (measures of leverage:
 degree of operating, financial and total leverage).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -6983,8 +7458,8 @@ pd.DataFrame: Degree of total leverage values.
 
 - CFA Institute, "Corporate Issuers," CFA Program Curriculum (measures of leverage:
 degree of operating, financial and total leverage).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -7012,7 +7487,7 @@ Which returns:
 ---
 
 ## collect_valuation_ratios
-Calculates and collects all Valuation Ratios based on the provided data.
+Collect all the valuation ratios of every ticker in one table: how the market values each company against its earnings, book value, cash flow and revenue.
 
 **Args:**
 
@@ -7046,8 +7521,8 @@ pd.DataFrame: Valuation ratios calculated based on the specified parameters.
 **Notes:**
 
 - The method calculates various valuation ratios for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -7118,7 +7593,7 @@ $$
 \text{Earnings per Share} \;(\text{EPS}) = \frac{\text{Net Income} - \left|\text{Preferred Dividends Paid}\right|}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
 $$
 
-The preferred dividends are only deducted when include_dividends is True; with the default, EPS is net income divided by the weighted average (diluted) shares.
+The preferred dividends are only deducted when that is requested; by default, EPS is net income divided by the weighted average (diluted) shares.
 
 **Also known as:** EPS, net income per share.
 
@@ -7154,7 +7629,7 @@ pd.DataFrame: Earnings per share (EPS) values.
 **Notes:**
 
 - The method retrieves historical data and calculates the EPS for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the EPS values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the EPS values over the given lag.
 
 **As an example:**
 
@@ -7225,8 +7700,8 @@ pd.DataFrame: Revenue per share values.
 
 - The method retrieves historical data and calculates the revenue per share for each asset in
 the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the revenue per share values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the revenue per share values
+over the given lag.
 
 **As an example:**
 
@@ -7304,7 +7779,7 @@ pd.DataFrame: Price earnings ratio (P/E) values.
 **Notes:**
 
 - The method retrieves historical data and calculates the P/E ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the P/E ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the P/E ratio values over the given lag.
 
 **As an example:**
 
@@ -7346,29 +7821,31 @@ $$
 \text{CAPE} \;(t) = \frac{\text{Share Price} \;(t)}{\text{Average of Real EPS} \;(s)} \;\text{over the years}\; s = t - \text{years} + 1 \;\text{to}\; t
 $$
 
-The earnings per share are those of the price earnings ratio (`get_price_to_earnings_ratio`): net income (less preferred dividends with include_dividends) over the weighted average (diluted) shares of each fiscal year. With quarterly data, each quarter averages the trailing twelve month earnings per share of that quarter and of the same quarter in each earlier year, so every quarter of earnings enters once. The share price is the traded close at the end of each fiscal period (or the filing day with point_in_time), the same as for the price earnings ratio, so with years=1 and inflation_adjusted=False the ratio equals the price earnings ratio wherever the earnings are positive.
+The earnings per share are those of the price earnings ratio (`get_price_to_earnings_ratio`): net income (less preferred dividends when they are deducted) over the weighted average (diluted) shares of each fiscal year. With quarterly data, each quarter averages the trailing twelve month earnings per share of that quarter and of the same quarter in each earlier year, so every quarter of earnings enters once. The share price is the traded close at the end of each fiscal period (or the filing day with point-in-time data), the same as for the price earnings ratio, so over one year and without the inflation adjustment the ratio equals the price earnings ratio wherever the earnings are positive.
 
-The consumer price index is the monthly all items index of `country` (toolkit.economics.get_consumer_price_index with period="monthly": the Bank for International Settlements, with the latest months of the Bureau of Labor Statistics for the United States, and Eurostat, the ONS or the Statistics Bureau of Japan for their countries), taken in the month each fiscal period ends (the latest published month for a period that ends after it). The monthly index of Japan (Statistics Bureau of Japan) starts in January 2015, so with years=10 its values start in about 2024. The United States index is used for every company unless another country is given, so choose the country of the currency the earnings are in: with convert_currency the statements are in the listing currency, so the currency the shares trade in (e.g. country="Netherlands" for ASML.AS), and otherwise the currency of the statements.
+The consumer price index is the monthly all items index of the chosen country (toolkit.economics.get_consumer_price_index at a monthly period: the Bank for International Settlements, with the latest months of the Bureau of Labor Statistics for the United States, and Eurostat, the ONS or the Statistics Bureau of Japan for their countries), taken in the month each fiscal period ends (the latest published month for a period that ends after it). The monthly index of Japan (Statistics Bureau of Japan) starts in January 2015, so over ten years its values start in about 2024. The United States index is used for every company unless another country is given, so choose the country of the currency the earnings are in: with currency conversion the statements are in the listing currency, so the currency the shares trade in (e.g. the Netherlands for ASML.AS), and otherwise the currency of the statements.
 
-Every year of the window must be available, as in Campbell and Shiller (1998), so the first `years` - 1 years after the first statement (4 x `years` - 1 quarters with quarterly data) are NaN: choose a start_date that many years before the first ratio of interest. The FinancialModelingPrep plan can limit the history to five years of statements; years=5 is the shortest window Graham and Dodd recommend. An average real EPS of zero or below gives NaN, as the ratio has no meaning for a company that lost money over the cycle.
+Every year of the window must be available, as in Campbell and Shiller (1998), so the first years of the window minus one after the first statement (four times as many quarters minus one with quarterly data) are NaN: choose a start date that many years before the first ratio of interest. The FinancialModelingPrep plan can limit the history to five years of statements; five years is the shortest window Graham and Dodd recommend. An average real EPS of zero or below gives NaN, as the ratio has no meaning for a company that lost money over the cycle.
 
 A high CAPE relative to the company's own history or its peers means the market prices the company well above its average earnings power, which in Campbell and Shiller (1998) foreshadowed lower returns over the following ten years for the market as a whole.
 
 **Also known as:** Shiller P/E, P/E10, Graham and Dodd P/E, normalized P/E, CAPE ratio.
 
-References:
+**References:**
 
-- Graham, B. and Dodd, D. (1934). Security Analysis. McGraw-Hill, New York.
-- Campbell, J. Y. and Shiller, R. J. (1998). Valuation Ratios and the Long-Run Stock Market Outlook. The Journal of Portfolio Management, 24(2), 11-26.
+- paper | Graham, B. and Dodd, D. (1934). Security Analysis. McGraw-Hill, New York.
+- paper | Campbell, J. Y. and Shiller, R. J. (1998). Valuation Ratios and the Long-Run Stock Market Outlook. The Journal of Portfolio Management, 24(2), 11-26.
 
 **Args:**
 
-- <u>years (int, optional):</u> The number of years of earnings to average. Defaults to 10.
+- <u>years (int, optional):</u> The number of years of earnings to average, at least 1. Defaults to 10.
 - <u>inflation_adjusted (bool, optional):</u> Whether to express the earnings of every year
 in the prices of the period of the ratio with the consumer price index.
 Defaults to True.
 - <u>country (str, optional):</u> The country whose consumer price index adjusts the
-earnings for inflation. Defaults to "United States".
+earnings for inflation. Options are the countries for which
+toolkit.economics.get_consumer_price_index returns a monthly index. Defaults to
+"United States".
 - <u>include_dividends (bool, optional):</u> Whether to deduct preferred dividends from net income.
 Defaults to False.
 - <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
@@ -7432,7 +7909,7 @@ $$
 \text{Price Earnings to Growth Ratio} \;(\text{PEG}) = \frac{\text{Price Earnings Ratio} \;\left(\frac{P}{E}\right)}{\text{EPS Growth Rate} \cdot 100}
 $$
 
-The growth rate is the growth of the (diluted) earnings per share on the previous year, or of EBITDA when use_ebitda_growth_rate is True, multiplied by 100 so that it enters in percent. With quarterly data both the P/E and the growth use trailing twelve month figures, and the growth compares them with those of four quarters earlier.
+The growth rate is the growth of the (diluted) earnings per share on the previous year, or of EBITDA when the EBITDA growth rate is chosen, multiplied by 100 so that it enters in percent. With quarterly data both the P/E and the growth use trailing twelve month figures, and the growth compares them with those of four quarters earlier.
 
 A PEG around 1 is the traditional rule of thumb for a growth stock priced in line with its growth. This historical PEG uses a single period of earnings growth, so it swings widely, explodes when earnings barely grow and turns negative when they fall, which is why practitioners prefer forward or multi-year growth (`get_forward_price_earnings_growth_ratio`) and leave negative values out of comparisons.
 
@@ -7466,7 +7943,7 @@ pd.DataFrame: Price earnings to growth (PEG) ratio values.
 **Notes:**
 
 - The method retrieves historical data and calculates the PEG ratio for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the PEG ratio values using the specified `lag`.
+- When growth is requested, the method calculates the growth of the PEG ratio values over the given lag.
 
 **As an example:**
 
@@ -7494,7 +7971,9 @@ Which returns:
 ---
 
 ## get_dividend_adjusted_price_to_earnings_growth_ratio
-Calculate the dividend-adjusted price earnings to growth (PEGY) ratio, the PEG ratio with the dividend yield added to the earnings growth, as Peter Lynch proposed in One Up On Wall Street (1989, chapter 13). A company that pays out much of its earnings grows them more slowly, and the PEG ratio counts that against it; the PEGY ratio credits the dividend as part of the return, which suits mature dividend payers.
+Calculate the dividend-adjusted price earnings to growth (PEGY) ratio, the PEG ratio with the dividend yield added to the earnings growth, as Peter Lynch proposed in One Up On Wall Street (1989, chapter 13).
+
+A company that pays out much of its earnings grows them more slowly, and the PEG ratio counts that against it; the PEGY ratio credits the dividend as part of the return, which suits mature dividend payers.
 
 The formula is as follows:
 
@@ -7534,8 +8013,8 @@ pd.DataFrame: Dividend-adjusted price earnings to growth (PEGY) ratio values.
 **Notes:**
 
 - A company without dividends has a dividend yield of 0, so its PEGY ratio equals its PEG ratio.
-- If `growth` is set to True, the method calculates the growth of the PEGY ratio values using the
-specified `lag`.
+- When growth is requested, the method calculates the growth of the PEGY ratio values over the
+given lag.
 
 **As an example:**
 
@@ -7563,7 +8042,7 @@ Which returns:
 ---
 
 ## get_forward_price_earnings_ratio
-Calculate the forward price earnings ratio (forward P/E), a valuation ratio that compares the current stock price to the analyst consensus (average) EPS estimate for a future period, instead of the trailing EPS used by the regular P/E ratio.
+Calculate the forward price earnings ratio (forward P/E): the share price against the analyst consensus EPS estimate for a future period instead of the trailing EPS.
 
 The formula is as follows:
 
@@ -7575,7 +8054,7 @@ Where the latest stock price is the most recent traded close, used for every est
 
 The forward P/E is the standard valuation multiple in equity research because prices look ahead, but it rests on consensus estimates, which tend to be revised as results come in. Consensus EPS is usually on the adjusted basis companies guide on, while the trailing P/E (`get_price_to_earnings_ratio`) uses reported diluted EPS, so for companies with large amortization or restructuring charges the forward P/E looks much lower than the trailing one without any change in earnings power.
 
-Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
+Note that this requires an API key set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
 
 **Also known as:** forward P/E, projected P/E.
 
@@ -7632,7 +8111,7 @@ Which returns:
 ---
 
 ## get_forward_price_earnings_growth_ratio
-Calculate the forward price earnings to growth (forward PEG) ratio, a valuation metric that measures the forward P/E ratio relative to the growth implied by the analyst consensus (average) EPS estimate versus the company's most recently reported actual EPS.
+Calculate the forward price earnings to growth (forward PEG) ratio: the forward P/E against the EPS growth the analyst consensus expects from the last reported EPS.
 
 The formula is as follows:
 
@@ -7648,7 +8127,7 @@ The growth rate is the annualized growth from the most recently reported EPS to 
 
 On quarterly data both EPS figures cover a year: the estimate is the sum of the estimates of the period and the next three quarters, the trailing EPS the sum of the last four reported quarters, and Years runs from the end of the latest reported quarter to the end of the estimated window.
 
-Note that this requires an `api_key` to be set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
+Note that this requires an API key set on the Toolkit and a Premium FMP subscription. Analyst estimates are fetched once per Toolkit instance and cached across calls to this (or the other forward-looking ratio) method - never on initialization or on any other ratio.
 
 **Also known as:** forward PEG, PEG on forward growth.
 
@@ -7745,8 +8224,8 @@ pd.DataFrame: Book value per share values.
 
 - The method retrieves historical data and calculates the book value per share for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the book value per share values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the book value per share values
+over the given lag.
 
 **As an example:**
 
@@ -7819,8 +8298,8 @@ pd.DataFrame: Price to book ratio values.
 
 - The method retrieves historical data and calculates the price to book ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the price to book ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the price to book ratio values
+over the given lag.
 
 **As an example:**
 
@@ -7890,8 +8369,8 @@ pd.DataFrame: Interest debt per share values.
 
 - The method retrieves historical data and calculates the interest debt per share ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the interest debt per share values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the interest debt per share values
+over the given lag.
 
 **As an example:**
 
@@ -7965,8 +8444,8 @@ outflow.
 
 - The method retrieves historical data and calculates the capex per share ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the capex per share values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the capex per share values
+over the given lag.
 
 **As an example:**
 
@@ -7993,6 +8472,316 @@ Which returns:
 
 ---
 
+## get_operating_cash_flow_per_share
+Calculate the operating cash flow per share, the cash a company generates from its operations per outstanding share.
+
+Cash flow from operations is less affected by accruals and non-cash charges than net income, so the operating cash flow per share is a check on the earnings per share: a company whose earnings per share runs well ahead of its operating cash flow per share for years books profits that do not turn into cash. It is the denominator of the price to cash flow ratio.
+
+The formula is as follows:
+
+$$
+\text{Operating Cash Flow per Share} = \frac{\text{Cash Flow from Operations}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
+$$
+
+**Also known as:** cash flow per share, CFPS, operating cash flow per share.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Operating cash flow per share values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `operatingCashFlowPerShare`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- FinancialModelingPrep divides by the basic weighted average shares; the basic shares
+(not diluted) give its definition.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["AAPL", "MSFT", "GOOGL"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_operating_cash_flow_per_share()
+```
+
+Which returns:
+
+|       |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:------|--------:|--------:|--------:|--------:|--------:|
+| AAPL  |  6.1689 |  7.4821 |  6.9908 |  7.6748 |  7.4298 |
+| GOOGL |  6.7622 |  6.953  |  7.9976 | 10.0666 | 13.4679 |
+| MSFT  | 10.0868 | 11.8084 | 11.7214 | 15.872  | 18.2401 |
+
+---
+
+## get_free_cash_flow_per_share
+Calculate the free cash flow per share, the cash a company generates after its capital expenditure per outstanding share.
+
+The free cash flow is what is left for the shareholders and lenders after the investments that keep and grow the business, so the free cash flow per share is the amount per share that could be paid out, used for buybacks or to pay down debt. It is the denominator of the price to free cash flow ratio.
+
+The formula is as follows:
+
+$$
+\text{Free Cash Flow per Share} = \frac{\text{Free Cash Flow}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
+$$
+
+**Also known as:** FCF per share, FCFPS.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Free cash flow per share values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `freeCashFlowPerShare`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- FinancialModelingPrep divides by the basic weighted average shares; the basic shares
+(not diluted) give its definition.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["NVDA", "AMD", "AVGO"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_free_cash_flow_per_share()
+```
+
+Which returns:
+
+|      |   2021 |   2022 |   2023 |   2024 |     2025 |
+|:-----|-------:|-------:|-------:|-------:|---------:|
+| AMD  | 2.62   | 1.9828 | 0.6898 | 1.4692 |   4.1167 |
+| AVGO | 3.1051 | 3.8563 | 4.1295 | 4.0632 |   5.5458 |
+| NVDA | 0.3208 | 0.1519 | 1.0834 | 2.4534 | nan      |
+
+---
+
+## get_cash_per_share
+Calculate the cash per share, the cash and short-term investments (marketable securities) a company holds per outstanding share.
+
+Comparing the cash per share with the share price shows which part of the price is backed by cash; set against the debt per share (see get_interest_debt_per_share) it shows whether the cash covers the debt.
+
+The formula is as follows:
+
+$$
+\text{Cash per Share} = \frac{\text{Cash and Cash Equivalents} + \text{Short Term Investments}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
+$$
+
+The cash and short-term investments are added from their two rows, as for the enterprise value, so a missing combined row never leaves the cash out. With trailing, the cash and the shares are averaged over the trailing period ends, as for the book value per share.
+
+**Also known as:** cash and short-term investments per share.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Cash per share values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `cashPerShare`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- FinancialModelingPrep divides by the basic weighted average shares; the basic shares
+(not diluted) give its definition.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["META", "GOOGL", "AMZN"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_cash_per_share()
+```
+
+Which returns:
+
+|       |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:------|--------:|--------:|--------:|--------:|--------:|
+| AMZN  |  9.3251 |  6.8727 |  8.2711 |  9.4396 | 11.3632 |
+| GOOGL | 10.3036 |  8.6452 |  8.7184 |  7.6851 | 10.3715 |
+| META  | 16.7884 | 15.077  | 24.8775 | 29.7686 | 31.6985 |
+
+---
+
+## get_tangible_book_value_per_share
+Calculate the tangible book value per share, the common equity without goodwill and other intangible assets per outstanding share.
+
+Goodwill and acquired intangibles cannot be sold separately and are written off first when a company gets into trouble, so the tangible book value per share is the more conservative measure of what each share owns. It is the denominator of the price to tangible book ratio and the usual book value measure for banks and insurers.
+
+The formula is as follows:
+
+$$
+\text{Tangible Book Value} = \text{Total Shareholder Equity} - \text{Preferred Stock} - \text{Goodwill and Intangible Assets}
+$$
+
+$$
+\text{Tangible Book Value per Share} = \frac{\text{Tangible Book Value}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
+$$
+
+The tangible book value is the one of get_price_to_tangible_book_ratio. It is negative when the goodwill and intangibles exceed the common equity (common after large acquisitions or buybacks) and is returned as it is. With trailing, the balances and the shares are averaged over the trailing period ends, as for the book value per share.
+
+**Also known as:** TBVPS, tangible equity per share, tangible book per share.
+
+**Args:**
+
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Tangible book value per share values.
+
+**Notes:**
+
+- FinancialModelingPrep ratios, `tangibleBookValuePerShare`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- FinancialModelingPrep divides by the basic weighted average shares; the basic shares
+(not diluted) give its definition.
+- CFA Institute, "Equity Valuation: Applications and Processes," CFA Program
+Curriculum (price to book value: adjusting book value for intangible assets).
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["JPM", "BAC", "WFC"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_tangible_book_value_per_share()
+```
+
+Which returns:
+
+|     |    2021 |    2022 |    2023 |    2024 |    2025 |
+|:----|--------:|--------:|--------:|--------:|--------:|
+| BAC | 20.6039 | 21.5216 | 24.0366 | 25.929  | 27.5915 |
+| JPM | 66.9391 | 68.7101 | 80.2192 | 90.3605 | 99.9227 |
+| WFC | 32.7057 | 32.6104 | 35.6424 | 36.788  | 41.4046 |
+
+---
+
 ## get_dividend_yield
 Calculate the dividend yield ratio, a valuation ratio that measures the amount of dividends distributed per share of stock relative to the stock's price.
 
@@ -8004,7 +8793,7 @@ $$
 \text{Dividend Yield} = \frac{\text{Dividends per Share}}{\text{Share Price}}
 $$
 
-The dividends per share are those paid over a year: each fiscal year with annual data, the trailing four fiscal quarters with quarterly data and, with show_daily, the 365 calendar days up to each day. The share price is the close on the last trading day of the fiscal period (or the day), the same close as the price-to-earnings ratio of that period, and the year of dividends ends on that same day (the filing day with point_in_time, so no dividend after the price date is counted). So for a fiscal year ending in June the column 2024 holds the dividends paid from July 2023 through June 2024 against the close of June 2024. A period outside the financial statements uses the calendar period of its label, and a period that has not ended yet the year of dividends up to the last close, against that close. The dividends are FinancialModelingPrep's split-adjusted dividends on their ex-dividend dates.
+The dividends per share are those paid over a year: each fiscal year with annual data, the trailing four fiscal quarters with quarterly data and, with daily values, the 365 calendar days up to each day. The share price is the close on the last trading day of the fiscal period (or the day), the same close as the price-to-earnings ratio of that period, and the year of dividends ends on that same day (the filing day with point-in-time data, so no dividend after the price date is counted). So for a fiscal year ending in June the column 2024 holds the dividends paid from July 2023 through June 2024 against the close of June 2024. A period outside the financial statements uses the calendar period of its label, and a period that has not ended yet the year of dividends up to the last close, against that close. The dividends are FinancialModelingPrep's split-adjusted dividends on their ex-dividend dates.
 
 **Also known as:** annual dividend yield, income yield.
 
@@ -8043,8 +8832,8 @@ pd.DataFrame: Dividend yield values.
 
 - The method retrieves historical data and calculates the dividend yield ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the dividend yield values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the dividend yield values
+over the given lag.
 
 **As an example:**
 
@@ -8119,8 +8908,8 @@ pd.DataFrame: Weighted dividend yield values.
 
 - The method retrieves historical data and calculates the weighted dividend yield ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the weighted dividend yield values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the weighted dividend yield values
+over the given lag.
 
 **As an example:**
 
@@ -8195,8 +8984,8 @@ pd.DataFrame: Price to cash flow ratio values.
 
 - The method retrieves historical data and calculates the price to cash flow ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the price to cash flow ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the price to cash flow ratio values
+over the given lag.
 
 **As an example:**
 
@@ -8271,8 +9060,8 @@ pd.DataFrame: Price to free cash flow ratio values.
 
 - The method retrieves historical data and calculates the price to free cash flow ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the price to free cash flow ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the price to free cash flow ratio values
+over the given lag.
 
 **As an example:**
 
@@ -8347,8 +9136,8 @@ pd.DataFrame: Price to sales ratio values.
 
 - The method retrieves historical data and calculates the price to sales ratio for each asset
 in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the price to sales ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the price to sales ratio values
+over the given lag.
 
 **As an example:**
 
@@ -8376,7 +9165,7 @@ Which returns:
 ---
 
 ## get_market_cap
-Calculates the market capitalization of the company.
+Calculate the market capitalization: the market value of a company's shares, the share price times the number of shares outstanding.
 
 Market capitalization, often referred to as "market cap," is the total value of a company's outstanding shares of stock in the stock market. It is calculated by multiplying the share price at the end of each period by the weighted average (diluted) number of shares outstanding in that period. The share price is the close as traded, adjusted for splits but not for dividends, as are the prices of every price-based ratio (P/E, P/B, the enterprise value multiples and the dividend, earnings and free cash flow yields).
 
@@ -8386,9 +9175,9 @@ $$
 \text{Market Capitalization} = \text{Share Price} \cdot \text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}
 $$
 
-Market cap is a point-in-time value, so the price is the close on the last trading day on or before the end of each fiscal period (or of each day with show_daily) and never an average: for a company whose fiscal year ends in, for example, September, the price of the year is the September close, matching the shares of that fiscal year. With show_daily, each day uses the shares of the latest period that has ended.
+Market cap is a point-in-time value, so the price is the close on the last trading day on or before the end of each fiscal period (or of each day with daily values) and never an average: for a company whose fiscal year ends in, for example, September, the price of the year is the September close, matching the shares of that fiscal year. With daily values, each day uses the shares of the latest period that has ended.
 
-When the Toolkit analyses the tickers as a basket (Toolkit(basket=True)), a "Total" row (a column with show_daily) adds up their market caps, for example to compare a group of companies with a country (see get_market_cap_to_gdp); the total of a period adds the market caps at each ticker's own fiscal period end. The total of a period is left empty when a ticker has no market cap in it, as the sum of the others would understate the basket. With share, each ticker is its share of that total (a decimal, the Total is 1). Market caps are summed in the currency the tickers are listed in, so a basket of tickers listed in different currencies is refused.
+When the Toolkit analyses the tickers as a basket, a "Total" row (a column with daily values) adds up their market caps, for example to compare a group of companies with a country (see get_market_cap_to_gdp); the total of a period adds the market caps at each ticker's own fiscal period end. The total of a period is left empty when a ticker has no market cap in it, as the sum of the others would understate the basket. With the share option, each ticker is its share of that total (a decimal, the Total is 1). Market caps are summed in the currency the tickers are listed in, so a basket of tickers listed in different currencies is refused.
 
 - Basket Market Capitalization = Sum of the Market Capitalizations of the Tickers
 - Share of the Basket = Market Capitalization / Basket Market Capitalization
@@ -8450,7 +9239,7 @@ Which returns:
 ---
 
 ## get_market_cap_to_gdp
-Calculates the market capitalization to Gross Domestic Product (GDP) ratio of the tickers as one basket: their total market cap divided by a country's nominal GDP in US dollars.
+Calculate the market capitalization to Gross Domestic Product (GDP) ratio of the tickers as one basket: their total market cap against a country's nominal GDP in US dollars.
 
 This is the Buffett indicator, which Warren Buffett called "probably the best single measure of where valuations stand at any given moment" (Fortune, 2001): the value of a country's whole stock market against the annual output of its economy. Its classic form divides the total US market (the Wilshire 5000) by US GDP, which is why the United States is the default country. A basket of tickers is a part of a market, so its ratio is the market value of that basket as a share of an economy's annual output, for example the largest technology companies against the GDP of China. Market cap is a stock (a value at a moment) and GDP a flow (the output of a year), so the ratio compares a value with a year of income rather than two values.
 
@@ -8460,14 +9249,15 @@ $$
 \text{Market Cap to GDP} = \frac{\text{Basket Market Capitalization}}{\text{Nominal GDP}} \;(\text{last complete year})
 $$
 
-The basket market cap is the sum of the market caps of the tickers, as get_market_cap returns it for a basket Toolkit (the traded close times the weighted average diluted shares), so the tickers must be listed in US dollars. The GDP is the nominal GDP in current US dollars of the Global Macro Database. GDP is annual and comes without publication dates, so each date (or period) is divided by the GDP of the calendar year before the year it falls in, the last complete year: the close of 9 November 2026 by the GDP of 2025, the 2025 value by the GDP of 2024. The first estimate of a year is published in the first months of the next year, so in those months the ratio uses a GDP that was about to be published.
+The basket market cap is the sum of the market caps of the tickers, as `get_market_cap` returns it for a basket Toolkit (the traded close times the weighted average diluted shares), so the tickers must be listed in US dollars. The GDP is the nominal GDP in current US dollars of the Global Macro Database. GDP is annual and comes without publication dates, so each date (or period) is divided by the GDP of the calendar year before the year it falls in, the last complete year: the close of 9 November 2026 by the GDP of 2025, the 2025 value by the GDP of 2024. The first estimate of a year is published in the first months of the next year, so in those months the ratio uses a GDP that was about to be published.
 
 **Also known as:** Buffett indicator, market cap to GDP, stock market capitalization to GDP, basket market cap to GDP.
 
 **Args:**
 
-- <u>country (str, optional):</u> The country whose GDP the basket is divided by, as named in
-toolkit.economics.get_gross_domestic_product. Defaults to "United States".
+- <u>country (str, optional):</u> The country whose GDP the basket is divided by. Options are the
+countries of toolkit.economics.get_gross_domestic_product (the Global Macro Database), by
+the names used there. Defaults to "United States".
 - <u>show_daily (bool, optional):</u> Whether to show daily values: the close of each trading
 day against the shares of the latest period that has ended and the GDP of the
 last complete year. Defaults to False.
@@ -8489,7 +9279,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: The market cap to GDP ratio with the country as row (as column with
-show_daily).
+daily values).
 
 **As an example:**
 
@@ -8519,7 +9309,9 @@ Which returns:
 ---
 
 ## get_enterprise_value
-Calculates the Enterprise Value (EV) of a company. The Enterprise Value (EV) is a measure of a company's total value, often used as a more comprehensive alternative to market capitalization. It is calculated as the sum of a company's market capitalization, outstanding debt, minority interest, and preferred equity, minus the cash and cash equivalents.
+Calculate the enterprise value (EV): what it would cost to buy the whole company, its equity and its debt, net of the cash it holds.
+
+The Enterprise Value (EV) is a measure of a company's total value, often used as a more comprehensive alternative to market capitalization. It is calculated as the sum of a company's market capitalization, outstanding debt, minority interest, and preferred equity, minus the cash and cash equivalents.
 
 The formula is as follows:
 
@@ -8527,7 +9319,7 @@ $$
 \text{Enterprise Value} = \text{Market Capitalization} + \text{Total Debt} + \text{Minority Interest} + \text{Preferred Equity} - (\text{Cash and Cash Equivalents} + \text{Short Term Investments})
 $$
 
-Enterprise value is the price of the whole business, equity and debt together, which makes it the right numerator for multiples of operating results such as EV to EBITDA or EV to sales, and comparable across companies with different capital structures. Cash and marketable securities (short-term investments) are both deducted (Damodaran), since both are available to pay off the debt. Enterprise value is a point-in-time value: the market cap and the balance sheet items are taken at the end of each period, or on each day with show_daily, where each day uses the balance sheet of the latest period that has ended.
+Enterprise value is the price of the whole business, equity and debt together, which makes it the right numerator for multiples of operating results such as EV to EBITDA or EV to sales, and comparable across companies with different capital structures. Cash and marketable securities (short-term investments) are both deducted (Damodaran), since both are available to pay off the debt. Enterprise value is a point-in-time value: the market cap and the balance sheet items are taken at the end of each period, or on each day with daily values, where each day uses the balance sheet of the latest period that has ended.
 
 **Also known as:** EV, total enterprise value.
 
@@ -8860,7 +9652,7 @@ Which returns:
 ---
 
 ## get_dividend_payout_ratio
-Calculate the Dividend payout ratio, a financial metric that measures the proportion of earnings paid out as dividends to shareholders.
+Calculate the dividend payout ratio: the share of net income a company pays out to its shareholders as dividends.
 
 The payout ratio is a financial metric that helps investors assess the portion of a company's earnings that is being distributed to shareholders in the form of dividends. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
 
@@ -8927,18 +9719,20 @@ Which returns:
 
 ---
 
-## get_reinvestment_rate
-Calculate the Reinvestment rate, a financial metric that measures the proportion of earnings retained by the company.
+## get_retention_ratio
+Calculate the retention ratio, the share of net income the company keeps rather than pays out as dividends.
 
-The reinvestment rate is a financial metric that helps investors assess the portion of a company's earnings that is being retained by the company for future growth. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits.
+The retention ratio helps investors assess the portion of a company's earnings that is retained for future growth. It's a valuable indicator for dividend investors as it indicates the sustainability of dividend payments and the company's approach to distributing profits. Times the return on equity it gives the sustainable growth rate (`get_sustainable_growth_rate` of the Models module).
 
 The formula is as follows:
 
 $$
-\text{Reinvestment Rate} = 1 - \text{Dividend Payout Ratio}
+\text{Retention Ratio} = 1 - \text{Dividend Payout Ratio}
 $$
 
-**Also known as:** plowback ratio, retention rate.
+It is an equity measure, based on net income and dividends. Damodaran's reinvestment rate, the share of after-tax operating income reinvested in net capital expenditure and working capital, is a different measure: see `get_fundamental_growth_rate` of the Models module.
+
+**Also known as:** plowback ratio, retention rate, earnings retention ratio.
 
 **Args:**
 
@@ -8964,7 +9758,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: Reinvestment Rate values.
+pd.DataFrame: Retention Ratio values.
 
 **As an example:**
 
@@ -8978,21 +9772,21 @@ toolkit = Toolkit(
     end_date="2025-12-31",
 )
 
-toolkit.ratios.get_reinvestment_rate()
+toolkit.ratios.get_retention_ratio()
 ```
 
 Which returns:
 
-|      |    2021 |   2022 |   2023 |    2024 |   2025 |
-|:-----|--------:|-------:|-------:|--------:|-------:|
-| COST | -0.148  | 0.7437 | 0.8012 | -0.2272 | 0.7305 |
-| NKE  |  0.6962 | 0.6032 | 0.6195 |  0.2855 | 0.2255 |
-| V    |  0.7727 | 0.7859 | 0.7828 |  0.7864 | 0.7666 |
+|      |    2021 |   2022 |   2023 |    2024 |     2025 |
+|:-----|--------:|-------:|-------:|--------:|---------:|
+| COST | -0.148  | 0.7437 | 0.8012 | -0.2272 |   0.7305 |
+| NKE  |  0.6962 | 0.6032 | 0.6195 |  0.2855 | nan      |
+| V    |  0.7727 | 0.7859 | 0.7828 |  0.7864 |   0.7666 |
 
 ---
 
 ## get_tangible_asset_value
-Calculate the tangible asset value, a financial metric that represents the book value of a company's equity after deducting goodwill and other intangible assets such as patents, brands and customer relationships: what remains of its tangible assets once all liabilities are paid.
+Calculate the tangible asset value: the book value of a company's equity without goodwill and other intangible assets, what remains of its tangible assets once all liabilities are paid.
 
 The formula is as follows:
 
@@ -9054,7 +9848,9 @@ Which returns:
 ---
 
 ## get_net_current_asset_value
-Calculate the net current asset value, a conservative liquidation-value metric introduced by Benjamin Graham that represents the total value of a company's current assets minus *all* of its liabilities (not just its current liabilities). It approximates what would be left for shareholders if the company were liquidated, paying off every liability using only the current (most liquid) assets and ignoring any value from fixed/non-current assets.
+Calculate Benjamin Graham's net current asset value (NCAV): a company's current assets minus all of its liabilities, not just the current ones.
+
+It approximates what would be left for shareholders if the company were liquidated, paying off every liability using only the current (most liquid) assets and ignoring any value from fixed/non-current assets.
 
 The formula is as follows:
 
@@ -9062,7 +9858,7 @@ $$
 \text{Net Current Asset Value} = \text{Total Current Assets} - \text{Total Liabilities}
 $$
 
-**Also known as:** NCAV. Note that NCAV is related to, but distinct from, the Graham Number (`sqrt(22.5 * Earnings per Share * Book Value per Share)`, see `Toolkit.models.get_graham_number`) - both are Benjamin Graham value-investing metrics, but NCAV is a liquidation-value estimate while the Graham Number is a fair-value price estimate based on earnings and book value.
+**Also known as:** NCAV. Note that NCAV is related to, but distinct from, the Graham Number (the square root of 22.5 times Earnings per Share times Book Value per Share, see `Toolkit.models.get_graham_number`) - both are Benjamin Graham value-investing metrics, but NCAV is a liquidation-value estimate while the Graham Number is a fair-value price estimate based on earnings and book value.
 
 **Args:**
 
@@ -9115,8 +9911,95 @@ Which returns:
 
 ---
 
+## get_net_net_working_capital_per_share
+Calculate Benjamin Graham's net-net working capital per share, the current assets discounted to a rough liquidation value minus all liabilities, per share.
+
+Graham and Dodd (1934) estimate what a company's assets would fetch in a liquidation: cash at its full amount, receivables at about 75 to 90% and inventories at about 50 to 75% of their book value, while every liability has to be paid in full. Fixed assets are left out. A share price below the net-net working capital per share means the market values the company below what its current assets alone would return, Graham's "net-net" bargain. The defaults take the lower ends of the ranges, as FinancialModelingPrep's key metrics do; get_net_current_asset_value is the undiscounted total.
+
+The formula is as follows:
+
+$$
+\text{Net-Net Working Capital} = \text{Cash and Short Term Investments} + \text{Receivables Weight} \cdot \text{Net Receivables} + \text{Inventory Weight} \cdot \text{Inventory} - \text{Total Liabilities}
+$$
+
+$$
+\text{Net-Net Working Capital per Share} = \frac{\text{Net-Net Working Capital}}{\text{Weighted Average} \;(\text{Diluted}) \;\text{Shares}}
+$$
+
+The value is negative for most companies, whose liabilities exceed their current assets. With trailing, the balances and the shares are averaged over the trailing period ends, as for the book value per share.
+
+**Also known as:** Graham net-net, NNWC, net-net working capital, net-net value per share.
+
+**Args:**
+
+- <u>receivables_weight (float, optional):</u> The share of the net receivables counted.
+Defaults to 0.75.
+- <u>inventory_weight (float, optional):</u> The share of the inventory counted. Defaults
+to 0.5.
+- <u>diluted (bool, optional):</u> Whether to use diluted shares in the calculation. Defaults to True.
+- <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
+the rounding of the Toolkit (4 unless set otherwise).
+- <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
+- <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
+- <u>compound (bool, optional):</u> Whether the growth is the compound annual growth rate over
+the lag (e.g. lag=5 for the five-year CAGR) instead of the total change. Defaults to False.
+- <u>standardize (bool, optional):</u> Whether to standardize (Z-Score) the result. When
+combined with growth=True, standardizes the growth values instead of the raw
+values. Defaults to False.
+- <u>trailing (int, optional):</u> The number of periods to sum flows (income and cash flow
+statement items) over, with balance sheet items averaged over the same number of
+period ends. E.g. 4 with quarterly data gives the trailing twelve months (TTM) and 3
+with annual data a three-year cumulative figure. The window counts calendar periods,
+so a period without a report makes it NaN. Defaults to None, which uses
+single-period flows (per quarter and not annualized with quarterly data).
+- <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
+on every column level, or the rows when no column has those names (such as the line
+items of a financial statement). Names that do not exist are logged, and when none
+exist the result is returned in full. Defaults to None, which keeps every column.
+
+**Returns:**
+
+pd.DataFrame: Net-net working capital per share values.
+
+**Notes:**
+
+- Graham, B. and Dodd, D. (1934). "Security Analysis." McGraw-Hill, chapter 43
+(current-asset value and liquidating value).
+- FinancialModelingPrep key metrics, `grahamNetNet`, the reference definition, also
+exposed through OpenBB's fmp provider
+([https://site.financialmodelingprep.com/developer/docs](https://site.financialmodelingprep.com/developer/docs){:target="_blank"}).
+- FinancialModelingPrep divides by the basic weighted average shares; the basic shares
+(not diluted) give its definition.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
+
+**As an example:**
+
+```python
+from financetoolkit import Toolkit
+
+toolkit = Toolkit(
+    ["INTC", "WBA", "GME"],
+    api_key="FINANCIAL_MODELING_PREP_KEY",
+    start_date="2021-01-01",
+    end_date="2025-12-31",
+)
+
+toolkit.ratios.get_net_net_working_capital_per_share()
+```
+
+Which returns:
+
+|      |     2021 |     2022 |     2023 |     2024 |     2025 |
+|:-----|---------:|---------:|---------:|---------:|---------:|
+| GME  |  -0.2138 |   0.1853 |   0.6992 |  10.4258 | nan      |
+| INTC |  -7.6482 |  -9.8878 | -11.5047 | -14.1784 |  -8.6015 |
+| WBA  | -55.3362 | -56.9405 | -68.6223 | -66.2724 | nan      |
+
+---
+
 ## get_ev_to_ebit
-Calculate the enterprise value over earnings before interest and taxes (EBIT) ratio, which is a valuation metric that compares a company's total value (including debt and equity) relative to its earnings before interest and taxes.
+Calculate the enterprise value to EBIT ratio: the value of a company's operations, debt and equity, against its earnings before interest and taxes.
 
 The formula is as follows:
 
@@ -9124,7 +10007,15 @@ $$
 \text{Enterprise Value to EBIT Ratio} = \frac{\text{Enterprise Value}}{\text{EBIT}}
 $$
 
-EBIT is the reported operating income, the same operating profit that EV to EBITDA (`get_ev_to_ebitda_ratio`) adds depreciation and amortization to (Damodaran), so the two multiples differ only by the depreciation and amortization. The enterprise value is taken at the end of each period (or on each day with show_daily), while EBIT is summed over the trailing periods.
+EBIT is the reported operating income, the same operating profit that EV to EBITDA (`get_ev_to_ebitda_ratio`) adds depreciation and amortization to (Damodaran), so the two multiples differ only by the depreciation and amortization. The enterprise value is taken at the end of each period (or on each day with daily values), while EBIT is summed over the trailing periods.
+
+This is also Tobias Carlisle's Acquirer's Multiple: the enterprise value over operating earnings, which he defines as revenue minus the cost of goods sold, selling, general and administrative expenses and depreciation and amortization, the reported operating income. A low multiple marks a cheap company in the eyes of an acquirer.
+
+**Also known as:** EV/EBIT, Acquirer's Multiple, enterprise multiple on operating earnings.
+
+**References:**
+
+- paper | Carlisle, T. (2014). "Deep Value: Why Activist Investors and Other Contrarians Battle for Control of Losing Corporations." Wiley.
 
 **Args:**
 
@@ -9296,8 +10187,8 @@ pd.DataFrame: Buyback yield values.
 
 - The method retrieves historical data and calculates the buyback yield for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9371,8 +10262,8 @@ of Measuring Payout Yield: Implications for Empirical Asset Pricing," Journal of
 Finance 62(2), 2007, pp. 877-915.
 - The method retrieves historical data and calculates the shareholder yield for each
 asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9441,8 +10332,8 @@ pd.DataFrame: SBC-adjusted free cash flow values.
 
 - The method retrieves historical data and calculates the SBC-adjusted free cash flow
 for each asset in the Toolkit instance.
-- If `growth` is set to True, the method calculates the growth of the values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the values
+over the given lag.
 
 **As an example:**
 
@@ -9513,8 +10404,8 @@ pd.DataFrame: Free cash flow payout ratio values.
 
 - Damodaran, A., "Investment Valuation," 3rd edition, Wiley, 2012 (dividends and
 free cash flow to equity).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9590,8 +10481,8 @@ pd.DataFrame: EV to invested capital values.
 - Koller, T., Goedhart, M. and Wessels, D., "Valuation: Measuring and Managing the
 Value of Companies," 7th edition, Wiley, 2020 (invested capital and the
 EV-to-invested-capital multiple).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9666,8 +10557,8 @@ pd.DataFrame: Price to tangible book values.
 
 - CFA Institute, "Equity Valuation: Applications and Processes," CFA Program
 Curriculum (price to book value: adjusting book value for intangible assets).
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9742,9 +10633,9 @@ pd.DataFrame: Net share issuance values.
 - Pontiff, J. and A. Woodgate, "Share Issuance and Cross-Sectional Returns," Journal
 of Finance 63(2), 2008, pp. 921-945.
 - The first period has no shares a year earlier and is NaN, so set an earlier
-start_date to obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+start date to obtain it.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9819,9 +10710,9 @@ pd.DataFrame: Composite equity issuance values.
 - Daniel, K. and S. Titman, "Market Reactions to Tangible and Intangible
 Information," Journal of Finance 61(4), 2006, pp. 1605-1643.
 - The prices and statements reach about a year before the start date, so with the
-five-year window the first years are NaN; set an earlier start_date to obtain them.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+five-year window the first years are NaN; set an earlier start date to obtain them.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9903,9 +10794,9 @@ pd.DataFrame: Net external financing values.
 Financing Activities, Analysts' Forecasts and Stock Returns," Journal of Accounting
 and Economics 42(1-2), 2006, pp. 53-85.
 - The first period has no total assets at the start of the window and is NaN, so set
-an earlier start_date to obtain it.
-- If `growth` is set to True, the method calculates the growth of the ratio values
-using the specified `lag`.
+an earlier start date to obtain it.
+- When growth is requested, the method calculates the growth of the ratio values
+over the given lag.
 
 **As an example:**
 
@@ -9934,22 +10825,74 @@ Which returns:
 ---
 
 ## get_factor_analysis
-Factor analysis (predictive power) of the ratios: whether the tickers that score high on a ratio go on to return more than those that score low. Per period, the information coefficient (IC) is the Spearman rank correlation between the ratio of the tickers at the end of the period and their return over the following horizon: 1 means the ratio ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
+Factor analysis (predictive power) of the ratios: whether the tickers that score high on a ratio go on to return more than those that score low.
 
-The summary has a row per ratio and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the ratio from one period to the next. With detail, it returns one of those parts per period (or per quantile) for a single ratio.
+Per period, the information coefficient (IC) is the Spearman rank correlation between the ratio of the tickers at the end of the period and their return over the following horizon: 1 means the ratio ranks the later returns perfectly, -1 in reverse and 0 that it says nothing about them. The IC measures skill in Grinold and Kahn's fundamental law of active management, $$\text{IR} \approx \text{IC} \times \sqrt{\text{breadth}}$$: a small but consistent IC across many tickers and periods gives a high information ratio.
 
-The ratios are calculated daily from the closing price where they can be (show_daily) and otherwise per statement period. Statement figures apply from the end of each fiscal period, or with point_in_time from the day they were filed, never earlier, so no day uses figures that were not known yet. The returns use the dividend and split adjusted close and start at the close of the period the ratio belongs to. Each ticker keeps its own history: a ticker without a ratio or a return in a period is left out of that period only.
+The summary has a row per ratio and horizon with the mean IC, its standard deviation, the IC information ratio (mean divided by standard deviation), the t-statistic of the mean with its p-value, the skewness and excess kurtosis of the IC, the share of periods with a positive IC, the number of periods, the top minus bottom spread (the mean forward return of the highest quantile minus that of the lowest), the annualized alpha and the beta of the factor-weighted long-short portfolio against the equally weighted tickers, the mean turnover of the top and bottom quantiles and the mean rank autocorrelation of the ratio from one period to the next. With detail, it returns one part of the analysis per period, quantile or group for a single ratio.
+
+The formula is as follows:
+
+$$
+\operatorname{IC}(t) = \text{Spearman rank correlation of} \;f(i,\; t) \;\text{and} \;R(i,\; t,\; t + h) \;\text{over the tickers}\; i,\;\; \text{with } f \text{ the factor and } R \text{ the forward return over the horizon } h
+$$
+
+- Demeaned return: R(i, t) − mean R(j, t) over the tickers j (of the group of i)
+
+$$
+\text{Portfolio weight:}\;\; w(i,\; t) = \frac{f(i,\; t) - \text{mean} \;f(t)}{\Sigma_{j} \left|f(j,\; t) - \text{mean} \;f(t)\right|}
+$$
+
+$$
+\text{Portfolio return:}\;\; R_{F}(t) = \Sigma_{i} w(i,\; t) \cdot R(i,\; t,\; t + h)
+$$
+
+$$
+\text{Alpha and beta:}\;\; R_{F}(t) = \alpha + \beta \cdot R_{U}(t) + \epsilon(t),\;\; \text{with}\;\; R_{U}(t) = \text{mean} \;R(i,\; t,\; t + h)
+$$
+
+$$
+\text{Annualized Alpha} = (1 + \alpha)^{\frac{\text{periods per year}}{h}} - 1
+$$
+
+$$
+\text{Per period:}\;\; (1 + \text{mean return})^{\frac{1}{h}} - \frac{1 \;\text{and standard error}}{\sqrt{h}}
+$$
+
+$$
+\text{Standard error of a quantile} = \text{standard deviation over the periods} \;/ \sqrt{\text{periods}}
+$$
+
+The ratios are calculated daily from the closing price where they can be (daily values) and otherwise per statement period. Statement figures apply from the end of each fiscal period, or with point-in-time data from the day they were filed, never earlier, so no day uses figures that were not known yet. The returns use the dividend and split adjusted close and start at the close of the period the ratio belongs to. Each ticker keeps its own history: a ticker without a ratio or a return in a period is left out of that period only.
+
+**References:**
+
+- paper | Grinold, R.C. and Kahn, R.N. (2000). "Active Portfolio Management." 2nd ed. McGraw-Hill, for the information coefficient.
+- paper | Qian, E., Hua, R. and Sorensen, E. (2007). "Quantitative Equity Portfolio Management." Chapman & Hall/CRC, for the factor-weighted portfolio and the demeaned and group-neutral returns.
+- paper | Jensen, M.C. (1968). "The Performance of Mutual Funds in the Period 1945-1964." Journal of Finance, 23(2), for the alpha.
+- paper | MacKinlay, A.C. (1997). "Event Studies in Economics and Finance." Journal of Economic Literature, 35(1), for the event returns.
+- library | Referenced against alphalens' [factor_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L28){:target="_blank"}
+- library | Referenced against alphalens' [mean_information_coefficient](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L80){:target="_blank"}
+- library | Referenced against alphalens' [mean_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L461){:target="_blank"}
+- library | Referenced against alphalens' [factor_weights](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L131){:target="_blank"}
+- library | Referenced against alphalens' [factor_returns](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L210){:target="_blank"}
+- library | Referenced against alphalens' [factor_alpha_beta](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L265){:target="_blank"}
+- library | Referenced against alphalens' [quantile_turnover](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L575){:target="_blank"}
+- library | Referenced against alphalens' [factor_rank_autocorrelation](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L620){:target="_blank"}
+- library | Shares similar logic as alphalens' [average_cumulative_return_by_quantile](https://github.com/stefan-jansen/alphalens-reloaded/blob/v0.4.4/src/alphalens/performance.py#L758){:target="_blank"}
 
 **Args:**
 
 - <u>metrics (str &#124; list[str], optional):</u> A ratio method name, e.g.
-"get_price_to_earnings_ratio", a list of them, or a collection: "valuation",
-"profitability", "solvency", "liquidity", "efficiency" or "all". Defaults to
-"valuation", the price and enterprise value multiples, yields and the market
-cap. Per-share figures and currency amounts are not in the collections, as
+"get_price_to_earnings_ratio", a list of them, or a collection. Options for the collections
+are: "valuation" (the price and enterprise value multiples, yields and the market cap),
+"profitability" (the profitability ratios), "solvency" (the solvency ratios), "liquidity" (the
+liquidity ratios), "efficiency" (the efficiency ratios), "all" (every collection). Defaults to
+"valuation". Per-share figures and currency amounts are not in the collections, as
 their level depends on the share count or company size.
-- <u>period (str, optional):</u> The frequency at which the ratios are evaluated: daily,
-weekly, monthly, quarterly or yearly. Defaults to "monthly".
+- <u>period (str, optional):</u> The frequency at which the ratios are evaluated. Options are: "daily"
+(daily values), "weekly" (weekly values), "monthly" (monthly values), "quarterly" (quarterly
+values), "yearly" (yearly values). Defaults to "monthly".
 - <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
 returns cover. Defaults to None, which uses about a period, a quarter and a
 year ahead (1, 3 and 12 months for monthly).
@@ -9957,14 +10900,39 @@ year ahead (1, 3 and 12 months for monthly).
 period. Defaults to 5.
 - <u>periods_apart (int, optional):</u> The number of periods between the dates the
 quantile turnover and the rank autocorrelation compare. Defaults to 1.
-- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single ratio
-instead of the summary: "information_coefficient" (per period and horizon),
+- <u>detail (str &#124; None, optional):</u> Returns one part of the analysis of a single ratio instead of the
+summary. Options are: "information_coefficient" (the IC per period and horizon),
+"information_coefficient_by_month" (the mean IC per calendar month),
+"information_coefficient_by_year" (the mean IC per calendar year),
+"group_information_coefficient" (the IC statistics within each group, needs group),
 "quantile_returns" (the mean forward return per quantile and horizon),
-"quantile_turnover" (per period and quantile) or "rank_autocorrelation" (per
-period). Defaults to None.
+"quantile_returns_by_date" (the mean forward return per quantile and horizon, per period),
+"quantile_return_statistics" (the mean forward return, its standard error and both per single
+period), "quantile_statistics" (the range, mean and count of the factor values in each
+quantile), "quantile_turnover" (the turnover per period and quantile),
+"rank_autocorrelation" (the rank autocorrelation per period), "factor_weights" (the weights of
+the factor-weighted long-short portfolio per period and ticker), "factor_returns" (its return
+per period and horizon), "cumulative_returns" (the growth of 1 in it and in each quantile),
+"event_returns" (the mean price path of each quantile from the longest horizon before to the
+longest horizon after the periods it is formed). Defaults to None.
 - <u>column (str &#124; None, optional):</u> Not used by the ratios, which have one value per
 ticker; it exists for the modules whose metrics have several outputs. Defaults
 to None.
+- <u>group (str &#124; dict &#124; None, optional):</u> The group of each ticker for the group options:
+"sector" or "industry" (or another company profile item) from the company profiles
+of Financial Modeling Prep, or a dictionary of tickers and their groups. Defaults to
+None.
+- <u>demeaned (bool, optional):</u> Whether to compare the forward returns with the mean of
+the tickers in each period, or with group with the mean of the ticker's group:
+a group-neutral analysis, in which the IC is group-adjusted and the
+factor-weighted portfolio neutral within each group. Without group the IC
+stays the same, as subtracting one mean from every ticker keeps their ranks.
+Defaults to False.
+- <u>binning (str, optional):</u> How the tickers are sorted into quantiles per period. Options are:
+"quantile" (equally sized), "equal_width" (bins of equal width between the lowest and highest
+value), "zero_aware" (half of the quantiles for the negative and half for the zero and positive
+values, for a signal centred on zero; needs an even number of quantiles), "group" (equally sized
+within each group, needs group). Defaults to "quantile".
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 **kwargs: Parameters passed to the ratios that take them, e.g. trailing=4 or
@@ -9991,8 +10959,19 @@ information ratio.
 - A ratio that returns no data (e.g. one missing a statement line item), or that
 fewer than three tickers have in every period (e.g. the preferred dividend
 coverage ratio), is left out of a collection with a warning.
-- Based on alphalens (Quantopian) and on Grinold and Kahn (2000), Active Portfolio
-Management.
+- The groups from the company profiles are today's sector or industry, applied
+to every period.
+- The factor-weighted portfolio is long-short: its weights sum to zero and their
+absolute values to one. A horizon longer than one period makes its returns
+overlap too, so its alpha and beta are averages rather than tests.
+- The cumulative returns split the capital over as many portfolios as the horizon
+has periods, started on consecutive periods and each rebalanced once per
+horizon; a value shows when its holding period ends, so the series starts at 1.
+- Where it differs from alphalens: its top minus bottom
+spread is half of the one here (a gross exposure of one rather than two), it
+drops a period and ticker without every horizon's return where each horizon
+here uses its own, and its event returns average the single-period returns at
+each offset where these are the price paths rebased to the period itself.
 
 Also known as: predictive power, information coefficient, factor testing, alpha signal
 
@@ -10017,11 +10996,11 @@ toolkit.ratios.get_factor_analysis(
 
 Which returns:
 
-|                                              |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   p-Value |   Positive Share |   Observations |   Top Minus Bottom |   Quantile Turnover |   Rank Autocorrelation |
-|:---------------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|-----------------:|---------------:|-------------------:|--------------------:|-----------------------:|
-| ('get_price_to_earnings_ratio', '12 Months') |    0.0505 |                  0.2917 |                 0.173  |        1.7981 |    0.075  |           0.5741 |            108 |             0.0854 |              0.0872 |                 0.9499 |
-| ('get_price_to_book_ratio', '12 Months')     |    0.1163 |                  0.2959 |                 0.393  |        4.0845 |    0.0001 |           0.6759 |            108 |             0.1699 |              0.0476 |                 0.978  |
-| ('get_return_on_equity', '12 Months')        |    0.0423 |                  0.3551 |                 0.1191 |        1.1915 |    0.2363 |           0.5    |            100 |             0.065  |              0.0517 |                 0.9671 |
+|                                              |   Mean IC |   IC Standard Deviation |   IC Information Ratio |   t-Statistic |   P-Value |   IC Skewness |   IC Kurtosis |   Positive Share |   Observations |   Top Minus Bottom |   Annualized Alpha |   Beta |   Quantile Turnover |   Rank Autocorrelation |
+|:---------------------------------------------|----------:|------------------------:|-----------------------:|--------------:|----------:|--------------:|--------------:|-----------------:|---------------:|-------------------:|-------------------:|-------:|--------------------:|-----------------------:|
+| ('get_price_to_earnings_ratio', '12 Months') |    0.0513 |                  0.2917 |                 0.1758 |        1.8271 |    0.0705 |       -0.6639 |        0.1266 |           0.5741 |            108 |             0.0852 |            -0.0921 | 0.5705 |              0.0872 |                 0.9499 |
+| ('get_price_to_book_ratio', '12 Months')     |    0.123  |                  0.3142 |                 0.3916 |        4.0697 |    0.0001 |       -0.25   |       -0.4529 |           0.6759 |            108 |             0.1688 |            -0.0322 | 0.2882 |              0.0301 |                 0.989  |
+| ('get_return_on_equity', '12 Months')        |    0.0356 |                  0.3525 |                 0.1009 |        1.0093 |    0.3153 |        0.3158 |       -0.1381 |           0.49   |            100 |             0.0194 |            -0.0313 | 0.1369 |              0.0494 |                 0.9665 |
 
 ---
 

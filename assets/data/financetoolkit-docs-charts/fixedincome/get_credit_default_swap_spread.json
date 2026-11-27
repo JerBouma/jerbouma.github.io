@@ -1,0 +1,1 @@
+{"charts":{"get_credit_default_swap_spread":{"title":"Credit Default Swap Spread","type":"bar","x":["1Y","3Y","5Y","7Y","10Y"],"series":[{"name":"Corporate","data":[0.0061,0.0075,0.0091,0.0104,0.011]}],"format":"percent","subtitle":"Implied by corporate bond spreads","xname":"Maturity"}}}

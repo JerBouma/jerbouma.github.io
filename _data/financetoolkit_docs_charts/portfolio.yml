@@ -86,3 +86,38 @@ get_money_weighted_return:
   format: percent
   title: Money-Weighted Return
   subtitle: Annualized internal rate of return of each position's cash flows
+
+get_gross_leverage:
+  chart: none
+  reason: The example portfolio holds only long positions, so its gross leverage is 1 on every day
+
+get_position_timing:
+  chart: hbar
+  columns: [Average Holding Period]
+  sort: desc
+  format: number
+  title: Average Holding Period
+  subtitle: In days, per position
+
+get_return_contributions:
+  chart: bar
+  columns: [ASML, MSFT, NVDA, AMZN]
+  stack: true
+  format: percent
+  title: Return Contributions
+  subtitle: Each position's part of the portfolio's yearly return
+
+get_trade_statistics:
+  chart: none
+  reason: Counts, amounts and ratios on different scales, which the table shows best
+
+get_trades:
+  chart: none
+  reason: A list of trades with their dates, prices and results, which the table shows
+
+get_turnover:
+  chart: bar
+  columns: [Turnover]
+  format: percent
+  title: Turnover
+  subtitle: The value traded as a share of the value held, per year

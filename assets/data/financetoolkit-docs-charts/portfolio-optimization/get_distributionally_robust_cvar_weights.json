@@ -1,0 +1,1 @@
+{"charts":{"get_distributionally_robust_cvar_weights":{"title":"Distributionally Robust Mean-CVaR Weights","type":"hbar","x":["JNJ","XOM","MSFT","AAPL"],"series":[{"name":"Weight","data":[0.4117,0.2759,0.2543,0.0581]}],"format":"percent"}}}

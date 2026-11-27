@@ -1,0 +1,1 @@
+{"index":"","columns":["Weight","Expected Return","Gini Mean Difference","Gini Mean Difference Ratio"],"rows":[["AAPL",0.0563,0.1932,0.0185,0.0342],["MSFT",0.307,0.2017,0.0174,0.0384],["JNJ",0.1846,0.0987,0.0112,0.0231],["XOM",0.4521,0.2911,0.0187,0.0545],["Portfolio",1.0,0.2226,0.0113,0.0662]],"total":5}

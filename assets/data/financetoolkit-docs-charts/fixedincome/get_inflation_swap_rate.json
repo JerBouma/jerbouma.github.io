@@ -1,0 +1,1 @@
+{"charts":{"get_inflation_swap_rate":{"title":"Inflation Swap Rates","type":"line","x":["5","7","10","20","30"],"series":[{"name":"Zero-Coupon Inflation Swap Rate","data":[0.0217,0.0215,0.0215,0.0242,0.0211]},{"name":"Year-on-Year Inflation Swap Rate","data":[0.0216,0.0215,0.0215,0.0234,0.022]}],"format":"percent","xname":"Years to maturity"}}}

@@ -1,1 +1,1 @@
-{"index":"","columns":["Coefficient","Std. Error"],"rows":[["Intercept",-0.0146,0.0006],["KRE",0.5291,0.0485],["Benchmark",0.3949,0.1133]],"total":3}
+{"index":"","columns":["Coefficient","Standard Error"],"rows":[["Intercept",-0.0146,0.0006],["KRE",0.5291,0.0485],["Benchmark",0.3949,0.1133]],"total":3}

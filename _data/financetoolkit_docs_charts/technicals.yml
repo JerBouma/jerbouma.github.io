@@ -82,16 +82,6 @@ get_moving_average:
   zoom: 252
   title: Moving Average
 
-get_kaufman_adaptive_moving_average:
-  chart: ta
-  price: "^STOXX50E"
-  price_name: Euro Stoxx 50
-  format: amount
-  overlays:
-    - {column: "^STOXX50E", name: "KAMA", color: "#f97316"}
-  zoom: 252
-  title: Kaufman Adaptive Moving Average
-
 get_volume_weighted_average_price:
   chart: ta
   price: "SPY"
@@ -195,22 +185,6 @@ get_stochastic_oscillator:
   zoom: 126
   title: Stochastic Oscillator
   subtitle: Above 80 is usually read as overbought, below 20 as oversold
-
-get_stochastic_relative_strength_index:
-  chart: ta
-  ticker: "NVDA"
-  price: "NVDA"
-  price_name: Nvidia
-  lower:
-    series:
-      - {column: "Stochastic RSI %K", color: "#38bdf8"}
-      - {column: "Stochastic RSI %D", color: "#f97316"}
-    levels: [20, 80]
-    min: 0
-    max: 100
-    format: number
-  zoom: 126
-  title: Stochastic RSI
 
 get_money_flow_index:
   chart: ta
@@ -400,18 +374,6 @@ get_percentage_volume_oscillator:
     levels: [0]
   zoom: 252
   title: Percentage Volume Oscillator
-
-get_percentage_price_oscillator:
-  chart: ta
-  price: "^STOXX50E"
-  price_name: Euro Stoxx 50
-  format: amount
-  lower:
-    series:
-      - {column: "^STOXX50E", name: "PPO", color: "#38bdf8"}
-    levels: [0]
-  zoom: 252
-  title: Percentage Price Oscillator
 
 get_true_strength_index:
   chart: ta
@@ -631,28 +593,6 @@ get_price_volume_trend:
   zoom: 252
   title: Price Volume Trend
 
-get_negative_volume_index:
-  chart: ta
-  price: "SPY"
-  price_name: SPY
-  lower:
-    series:
-      - {column: "SPY", name: "NVI", color: "#38bdf8"}
-    format: amount
-  zoom: 252
-  title: Negative Volume Index
-
-get_positive_volume_index:
-  chart: ta
-  price: "SPY"
-  price_name: SPY
-  lower:
-    series:
-      - {column: "SPY", name: "PVI", color: "#38bdf8"}
-    format: amount
-  zoom: 252
-  title: Positive Volume Index
-
 get_force_index:
   chart: ta
   price: "TLT"
@@ -786,7 +726,7 @@ get_factor_analysis:
     SE: f['Mean IC'] / f['t-Statistic']
   coef: Mean IC
   se: SE
-  p: p-Value
+  p: P-Value
   title: Information Coefficient
   subtitle: The mean rank correlation of each signal with the return that follows, with its 95% interval
 get_candlestick_patterns:
@@ -801,3 +741,1033 @@ get_indicator_summary:
   chart: none
   title: Indicator Summary
   reason: One reading per indicator on different scales
+
+# Cycle, volume and trend indicators, and the labels and weights for machine learning
+get_acceleration_bands:
+  chart: ta
+  price: "TSLA"
+  price_name: Tesla
+  overlays:
+    - {column: "Upper Band", color: "#818cf8"}
+    - {column: "Middle Band", color: "#f97316", dashed: true}
+    - {column: "Lower Band", color: "#818cf8"}
+  fill: [Upper Band, Lower Band]
+  zoom: 252
+  title: Acceleration Bands
+
+get_adaptive_price_zone:
+  chart: ta
+  price: "QQQ"
+  price_name: QQQ
+  overlays:
+    - {column: "Upper Band", color: "#818cf8"}
+    - {column: "Middle Band", color: "#f97316", dashed: true}
+    - {column: "Lower Band", color: "#818cf8"}
+  fill: [Upper Band, Lower Band]
+  zoom: 252
+  title: Adaptive Price Zone
+
+get_holt_winters_channel:
+  chart: ta
+  price: "GOOGL"
+  price_name: Alphabet
+  overlays:
+    - {column: "Upper Band", color: "#818cf8"}
+    - {column: "Middle Band", color: "#f97316", dashed: true}
+    - {column: "Lower Band", color: "#818cf8"}
+  fill: [Upper Band, Lower Band]
+  zoom: 252
+  title: Holt-Winters Channel
+
+get_standard_deviation_channel:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  overlays:
+    - {column: "Upper Band 2", color: "#818cf8", dashed: true}
+    - {column: "Upper Band 1", color: "#818cf8"}
+    - {column: "Linear Regression", color: "#f97316"}
+    - {column: "Lower Band 1", color: "#818cf8"}
+    - {column: "Lower Band 2", color: "#818cf8", dashed: true}
+  fill: [Upper Band 1, Lower Band 1]
+  zoom: 252
+  title: Standard Deviation Channel
+  subtitle: A linear regression line fitted over the whole period with bands one and two standard deviations away
+
+get_chande_kroll_stop:
+  chart: ta
+  price: "META"
+  price_name: Meta
+  overlays:
+    - {column: "High Stop", color: "#ef4444"}
+    - {column: "Low Stop", color: "#22c55e"}
+  zoom: 252
+  title: Chande Kroll Stop
+
+get_gann_hilo_activator:
+  chart: ta
+  price: "AMD"
+  price_name: AMD
+  derive:
+    Uptrend: "f['Gann HiLo Activator'].where(f['Trend Direction'] == 1)"
+    Downtrend: "f['Gann HiLo Activator'].where(f['Trend Direction'] == -1)"
+  overlays:
+    - {column: "Uptrend", color: "#22c55e"}
+    - {column: "Downtrend", color: "#ef4444"}
+  zoom: 252
+  title: Gann HiLo Activator
+
+get_guppy_multiple_moving_averages:
+  chart: ta
+  chart_expr: "guppy.xs('AAPL', level=1, axis='columns')"
+  price: "AAPL"
+  price_name: Apple
+  overlays:
+    - {column: "Short EMA 3", color: "#38bdf8"}
+    - {column: "Short EMA 5", color: "#38bdf8"}
+    - {column: "Short EMA 8", color: "#38bdf8"}
+    - {column: "Short EMA 10", color: "#38bdf8"}
+    - {column: "Short EMA 12", color: "#38bdf8"}
+    - {column: "Short EMA 15", color: "#38bdf8"}
+    - {column: "Long EMA 30", color: "#f97316"}
+    - {column: "Long EMA 35", color: "#f97316"}
+    - {column: "Long EMA 40", color: "#f97316"}
+    - {column: "Long EMA 45", color: "#f97316"}
+    - {column: "Long EMA 50", color: "#f97316"}
+    - {column: "Long EMA 60", color: "#f97316"}
+  zoom: 252
+  title: Guppy Multiple Moving Averages
+  subtitle: The short group (blue) follows the traders, the long group (orange) the investors
+
+get_heikin_ashi:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  overlays:
+    - {column: "Close", name: "Heikin-Ashi Close", color: "#22c55e"}
+    - {column: "Open", name: "Heikin-Ashi Open", color: "#ef4444"}
+  fill: [Heikin-Ashi Close, Heikin-Ashi Open]
+  fill_colors: ["#22c55e", "#ef4444"]
+  zoom: 252
+  title: Heikin-Ashi
+  subtitle: Shaded green where the Heikin-Ashi candle closes above its open, red where it closes below
+
+get_mesa_adaptive_moving_average:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  overlays:
+    - {column: "MAMA", color: "#38bdf8"}
+    - {column: "FAMA", color: "#f97316"}
+  zoom: 252
+  title: MESA Adaptive Moving Average
+
+get_midpoint:
+  chart: ta
+  price: "AMZN"
+  price_name: Amazon
+  overlays:
+    - {column: "AMZN", name: "Midpoint", color: "#f97316"}
+  zoom: 252
+  title: Midpoint
+
+get_price_transform:
+  chart: ta
+  price: "NVDA"
+  price_name: Nvidia
+  overlays:
+    - {column: "NVDA", name: "Weighted Close", color: "#f97316"}
+  zoom: 252
+  title: Weighted Close
+
+get_zigzag:
+  chart: ta
+  price: "SIUSD"
+  price_name: Silver
+  overlays:
+    - {column: "Zig Zag", color: "#f97316"}
+  zoom: 252
+  title: Zig Zag
+
+get_archer_moving_average_trends:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Long Run", bar: true, color: "#22c55e"}
+      - {column: "Short Run", bar: true, color: "#ef4444"}
+    min: 0
+    max: 1
+    format: number
+  zoom: 252
+  title: Archer Moving Average Trends
+
+get_archer_on_balance_volume:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "On-Balance Volume", color: "#a78bfa"}
+      - {column: "Fast Average", color: "#38bdf8"}
+      - {column: "Slow Average", color: "#f97316"}
+    format: compact
+  zoom: 252
+  title: Archer On-Balance Volume
+
+get_bet_sizes:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Bet Size", bar: true, signed: true}
+    levels: [0]
+    min: -1
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Bet Sizes
+
+get_bias:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Bias", color: "#a78bfa"}
+    levels: [0]
+    format: percent
+  zoom: 252
+  title: Bias
+
+get_brar:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AR", color: "#38bdf8"}
+      - {column: "BR", color: "#f97316"}
+    levels: [100]
+    format: number
+  zoom: 252
+  title: BRAR
+
+get_buying_selling_pressure:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Buying Pressure", color: "#22c55e"}
+      - {column: "Selling Pressure", color: "#ef4444"}
+    format: decimal
+  zoom: 252
+  title: Buying and Selling Pressure
+
+get_center_of_gravity_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Center of Gravity", color: "#38bdf8"}
+      - {column: "Trigger", color: "#f97316"}
+    format: decimal
+  zoom: 252
+  title: Center of Gravity Oscillator
+
+get_chaikin_volatility:
+  chart: ta
+  price: "NVDA"
+  price_name: Nvidia
+  lower:
+    series:
+      - {column: "NVDA", name: "Chaikin Volatility", color: "#a78bfa"}
+    levels: [0]
+    format: percent
+  zoom: 252
+  title: Chaikin Volatility
+
+get_correlation_trend_indicator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Correlation Trend Indicator", color: "#a78bfa"}
+    levels: [0]
+    min: -1
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Correlation Trend Indicator
+
+get_derivative_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Derivative Oscillator", bar: true, signed: true}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Derivative Oscillator
+
+get_detrended_synthetic_price:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Detrended Synthetic Price", color: "#a78bfa"}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Detrended Synthetic Price
+
+get_directional_movement_index:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "+DI", color: "#22c55e"}
+      - {column: "-DI", color: "#ef4444"}
+      - {column: "DX", color: "#94a3b8"}
+    min: 0
+    format: number
+  zoom: 252
+  title: Directional Movement Index
+
+get_dv_intermediate_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "DVI", color: "#a78bfa"}
+    levels: [0.5]
+    min: 0
+    max: 1
+    format: decimal
+  zoom: 252
+  title: DV Intermediate Oscillator
+  subtitle: Above 0.5 is usually read as overbought, below 0.5 as oversold
+
+get_efficiency_ratio:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Efficiency Ratio", color: "#a78bfa"}
+    min: 0
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Efficiency Ratio
+  subtitle: Close to 1 is a steady trend, close to 0 noise
+
+get_even_better_sinewave:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Even Better Sinewave", color: "#a78bfa"}
+    levels: [0]
+    min: -1
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Even Better Sinewave
+
+get_finite_volume_elements:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Finite Volume Elements", color: "#a78bfa"}
+    levels: [0]
+    format: number
+  zoom: 252
+  title: Finite Volume Elements
+
+get_fisher_transform:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Fisher Transform", color: "#38bdf8"}
+      - {column: "Trigger", color: "#f97316"}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Fisher Transform
+
+get_forecast_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Forecast Oscillator", color: "#a78bfa"}
+    levels: [0]
+    format: percent
+  zoom: 252
+  title: Forecast Oscillator
+
+get_hilbert_dominant_cycle_period:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Dominant Cycle Period", color: "#a78bfa"}
+    format: number
+  zoom: 252
+  title: Hilbert Dominant Cycle Period
+  subtitle: The length of the dominant cycle in trading days
+
+get_hilbert_dominant_cycle_phase:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Dominant Cycle Phase", color: "#a78bfa"}
+    format: number
+  zoom: 252
+  title: Hilbert Dominant Cycle Phase
+  subtitle: The phase of the dominant cycle in degrees
+
+get_hilbert_phasor_components:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "In Phase", color: "#38bdf8"}
+      - {column: "Quadrature", color: "#f97316"}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Hilbert Phasor Components
+
+get_hilbert_sine_wave:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Sine", color: "#38bdf8"}
+      - {column: "Lead Sine", color: "#f97316"}
+    levels: [0]
+    min: -1
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Hilbert Sine Wave
+
+get_hilbert_trend_mode:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Trend Mode", bar: true, color: "#a78bfa"}
+    min: 0
+    max: 1
+    format: number
+  zoom: 252
+  title: Hilbert Trend Mode
+  subtitle: 1 marks a trending market, 0 a market moving in cycles
+
+get_inertia:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Inertia", color: "#a78bfa"}
+    levels: [50]
+    format: number
+  zoom: 252
+  title: Inertia
+  subtitle: Above 50 is usually read as an uptrend, below 50 as a downtrend
+
+get_internal_bar_strength:
+  chart: ta
+  price: "QQQ"
+  price_name: QQQ
+  lower:
+    series:
+      - {column: "QQQ", name: "Internal Bar Strength", color: "#a78bfa"}
+    levels: [0.2, 0.8]
+    min: 0
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Internal Bar Strength
+  subtitle: A close near the low of the day (below 0.2) or near its high (above 0.8)
+
+get_inverse_fisher_transform_rsi:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Inverse Fisher RSI", color: "#a78bfa"}
+    levels: [-0.5, 0.5]
+    min: -1
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Inverse Fisher Transform of the RSI
+
+get_kdj_indicator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "K", color: "#38bdf8"}
+      - {column: "D", color: "#f97316"}
+      - {column: "J", color: "#a78bfa"}
+    levels: [20, 80]
+    format: number
+  zoom: 252
+  title: KDJ Indicator
+
+get_klinger_volume_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Klinger Volume Oscillator", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [0]
+    format: compact
+  zoom: 252
+  title: Klinger Volume Oscillator
+
+get_market_facilitation_index:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Market Facilitation Index", color: "#a78bfa"}
+    format: number
+  zoom: 252
+  title: Market Facilitation Index
+
+get_market_thermometer:
+  chart: ta
+  price: "GLD"
+  price_name: GLD
+  lower:
+    series:
+      - {column: "Thermometer", bar: true, color: "#38bdf8"}
+      - {column: "Thermometer Average", color: "#f97316"}
+    min: 0
+    format: decimal
+  zoom: 252
+  title: Market Thermometer
+
+get_premier_stochastic_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Premier Stochastic", color: "#a78bfa"}
+    levels: [-0.9, -0.2, 0.2, 0.9]
+    min: -1
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Premier Stochastic Oscillator
+
+get_pretty_good_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Pretty Good Oscillator", color: "#a78bfa"}
+    levels: [-3, 3]
+    format: decimal
+  zoom: 252
+  title: Pretty Good Oscillator
+  subtitle: Above 3 or below -3 is usually read as a breakout
+
+get_price_distance:
+  chart: ta
+  price: "KO"
+  price_name: Coca-Cola
+  lower:
+    series:
+      - {column: "KO", name: "Price Distance", bar: true, color: "#a78bfa"}
+    min: 0
+    format: decimal
+  zoom: 252
+  title: Price Distance
+
+get_price_volume:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Price Volume", bar: true, color: "#a78bfa"}
+    min: 0
+    format: compact
+  zoom: 252
+  title: Price Volume
+
+get_price_volume_rank:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Price Volume Rank", bar: true, color: "#a78bfa"}
+    min: 0
+    max: 4
+    format: number
+  zoom: 126
+  title: Price Volume Rank
+  subtitle: 1 is a rising price on rising volume, 4 a falling price on falling volume
+
+get_price_zone_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Price Zone Oscillator", color: "#a78bfa"}
+    levels: [-40, 0, 40]
+    format: number
+  zoom: 252
+  title: Price Zone Oscillator
+  subtitle: Above 40 is usually read as overbought, below -40 as oversold
+
+get_projection_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Projection Oscillator", color: "#a78bfa"}
+    levels: [0.2, 0.8]
+    min: 0
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Projection Oscillator
+
+get_psychological_line:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Psychological Line", color: "#a78bfa"}
+    levels: [25, 75]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Psychological Line
+  subtitle: Above 75 is usually read as overbought, below 25 as oversold
+
+get_qstick:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Qstick", bar: true, signed: true}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Qstick
+
+get_quantitative_qualitative_estimation:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "RSI Moving Average", color: "#38bdf8"}
+      - {column: "QQE", color: "#f97316"}
+    levels: [50]
+    format: number
+  zoom: 252
+  title: Quantitative Qualitative Estimation
+
+get_relative_volatility_index:
+  chart: ta
+  price: "JPM"
+  price_name: JPMorgan Chase
+  lower:
+    series:
+      - {column: "JPM", name: "Relative Volatility Index", color: "#a78bfa"}
+    levels: [50]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Relative Volatility Index
+
+get_relative_volume:
+  chart: ta
+  price: "NVDA"
+  price_name: Nvidia
+  lower:
+    series:
+      - {column: "NVDA", name: "Relative Volume", bar: true, color: "#a78bfa"}
+    levels: [1]
+    min: 0
+    format: decimal
+  zoom: 252
+  title: Relative Volume
+  subtitle: The day's volume against its average; above 1 is busier than usual
+
+get_schaff_trend_cycle:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Schaff Trend Cycle", color: "#a78bfa"}
+    levels: [25, 75]
+    min: 0
+    max: 100
+    format: number
+  zoom: 252
+  title: Schaff Trend Cycle
+
+get_signal_to_noise_ratio:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Signal-to-Noise Ratio", color: "#a78bfa"}
+    min: 0
+    format: decimal
+  zoom: 252
+  title: Signal-to-Noise Ratio
+
+get_squeeze_momentum:
+  chart: ta
+  price: "QQQ"
+  price_name: QQQ
+  lower:
+    series:
+      - {column: "Momentum", bar: true, signed: true}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Squeeze Momentum
+
+get_stochastic_momentum_index:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Stochastic Momentum Index", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [-40, 40]
+    format: number
+  zoom: 252
+  title: Stochastic Momentum Index
+  subtitle: Above 40 is usually read as overbought, below -40 as oversold
+
+get_swing_index:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Accumulative Swing Index", color: "#a78bfa"}
+    format: number
+  zoom: 252
+  title: Accumulative Swing Index
+
+get_swiss_army_knife_filter:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Swiss Army Knife Filter", color: "#a78bfa"}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Swiss Army Knife Filter
+
+get_td_sequential:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Buy Setup", bar: true, color: "#22c55e"}
+      - {column: "Sell Setup", bar: true, color: "#ef4444"}
+    levels: [9]
+    min: 0
+    format: number
+  zoom: 126
+  title: TD Sequential Setups
+  subtitle: A count that reaches 9 completes a buy (green) or sell (red) setup
+
+get_trend_detection_index:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "TDI", color: "#38bdf8"}
+      - {column: "Direction Indicator", color: "#f97316"}
+    levels: [0]
+    format: number
+  zoom: 252
+  title: Trend Detection Index
+
+get_ttm_trend:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "TTM Trend", bar: true, signed: true}
+    min: -1
+    max: 1
+    format: number
+  zoom: 252
+  title: TTM Trend
+  subtitle: 1 marks an uptrend, -1 a downtrend
+
+get_vertical_horizontal_filter:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Vertical Horizontal Filter", color: "#a78bfa"}
+    min: 0
+    format: decimal
+  zoom: 252
+  title: Vertical Horizontal Filter
+  subtitle: A higher value is a trending market, a lower one a market moving sideways
+
+get_volatility_based_momentum:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Volatility-Based Momentum", color: "#a78bfa"}
+    levels: [0]
+    format: decimal
+  zoom: 252
+  title: Volatility-Based Momentum
+
+get_volume_flow_indicator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Volume Flow Indicator", color: "#a78bfa"}
+    levels: [0]
+    format: number
+  zoom: 252
+  title: Volume Flow Indicator
+
+get_volume_index:
+  chart: ta
+  price: "SPY"
+  price_name: SPY
+  lower:
+    series:
+      - {column: "SPY", name: "Negative Volume Index", color: "#a78bfa"}
+    format: number
+  zoom: 252
+  title: Negative Volume Index
+
+get_volume_zone_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Volume Zone Oscillator", color: "#a78bfa"}
+    levels: [-0.4, 0, 0.4]
+    format: decimal
+  zoom: 252
+  title: Volume Zone Oscillator
+
+get_wavetrend_oscillator:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "WaveTrend", color: "#38bdf8"}
+      - {column: "Signal Line", color: "#f97316"}
+    levels: [-60, 60]
+    format: number
+  zoom: 252
+  title: WaveTrend Oscillator
+  subtitle: Above 60 is usually read as overbought, below -60 as oversold
+
+get_williams_accumulation_distribution:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Williams A/D", color: "#a78bfa"}
+    format: number
+  zoom: 252
+  title: Williams Accumulation/Distribution
+
+get_williams_fractal:
+  chart: bar
+  columns: [AAPL, MSFT]
+  format: number
+  title: Williams Fractals
+  subtitle: 1 marks the day that confirms a fractal
+
+get_liquidity_sweep:
+  chart: bar
+  columns: [AAPL, MSFT]
+  format: number
+  title: Liquidity Sweeps
+  subtitle: 1 is a sweep below the lows (bullish), -1 a sweep above the highs (bearish)
+
+get_event_filter:
+  chart: bar
+  columns: [AAPL, MSFT]
+  format: number
+  title: CUSUM Events
+  subtitle: 1 is a run of rising returns, -1 a run of falling returns
+
+get_fixed_horizon_labels:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Label", bar: true, signed: true}
+    min: -1
+    max: 1
+    format: number
+  zoom: 126
+  title: Fixed-Horizon Labels
+
+get_tail_set_labels:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Label", bar: true, signed: true}
+    min: -1
+    max: 1
+    format: number
+  zoom: 126
+  title: Tail-Set Labels
+  subtitle: 1 when Apple ranks among the best performers over the next day, -1 among the worst
+
+get_triple_barrier_labels:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Label", bar: true, signed: true}
+    min: -1
+    max: 1
+    format: number
+  zoom: 126
+  title: Triple-Barrier Labels
+
+get_trend_scanning_labels:
+  chart: ta
+  price: "MSFT"
+  price_name: Microsoft
+  lower:
+    series:
+      - {column: "t-Value", bar: true, signed: true}
+    levels: [0]
+    format: number
+  zoom: 252
+  title: Trend-Scanning t-Values
+  subtitle: The strength of the forward trend; its sign is the label
+
+get_matrix_flag_labels:
+  chart: ta
+  price: "MSFT"
+  price_name: Microsoft
+  lower:
+    series:
+      - {column: "Score", color: "#a78bfa"}
+    levels: [2.5]
+    format: decimal
+  zoom: 252
+  title: Matrix Flag Score
+  subtitle: A score above 2.5 labels a bull flag
+
+get_label_uniqueness:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "Average Uniqueness", color: "#a78bfa"}
+    min: 0
+    max: 1
+    format: decimal
+  zoom: 252
+  title: Average Label Uniqueness
+
+get_sample_weights:
+  chart: ta
+  price: "AAPL"
+  price_name: Apple
+  lower:
+    series:
+      - {column: "AAPL", name: "Sample Weight", bar: true, color: "#a78bfa"}
+    min: 0
+    format: decimal
+  zoom: 252
+  title: Sample Weights
+
+get_volume_profile:
+  chart: bar
+  chart_expr: "(lambda f: f.set_index(f['Low Price'].round(0).astype(int).astype(str) + '–' + f['High Price'].round(0).astype(int).astype(str)))(toolkit.technicals.get_volume_profile().xs('AAPL', level=1, axis='columns'))"
+  columns: [Up Volume, Down Volume]
+  colors: {Up Volume: "#22c55e", Down Volume: "#ef4444"}
+  stack: true
+  format: compact
+  xname: Price (USD)
+  title: Volume Profile
+  subtitle: The volume traded at a close in each price range, split into up and down days
+
+collect_cycle_indicators:
+  chart: none
+  title: Cycle Indicators
+  reason: Indicators on different scales; each has its own page with its chart

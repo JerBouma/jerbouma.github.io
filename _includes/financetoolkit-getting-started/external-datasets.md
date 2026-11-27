@@ -98,7 +98,7 @@ Which returns the balance sheets with the generic names from the normalisation f
 From here on, everything works as with the default data. The Extended DuPont Analysis splits the return on equity into five drivers: the interest burden, the tax burden, the operating margin, the asset turnover and the equity multiplier, which multiply into the ROE. To run it on the custom statements:
 
 ```python
-companies.models.get_extended_dupont_analysis()
+companies.models.get_dupont_analysis(method="extended")
 ```
 
 Which gives the five drivers and the return on equity per year, one tab per company:

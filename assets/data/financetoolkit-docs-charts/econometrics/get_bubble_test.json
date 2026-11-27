@@ -1,0 +1,1 @@
+{"charts":{"get_bubble_test":{"title":"GSADF Statistic","type":"bar","x":["NVDA","KO"],"series":[{"name":"GSADF Statistic","data":[1.5092,1.056]},{"name":"Critical Value 5%","data":[2.2071,2.2071]}],"format":"ratio","subtitle":"Against the 5% critical value; above it, the price went through an explosive episode"}}}

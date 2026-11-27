@@ -189,23 +189,6 @@ get_inverse_volatility_weights:
   format: percent
   title: Inverse Volatility Weights
 
-get_minimum_cvar_weights:
-  chart: hbar
-  drop: [Portfolio]
-  columns: [Weight]
-  sort: desc
-  format: percent
-  title: Minimum CVaR Weights
-
-get_minimum_drawdown_weights:
-  chart: hbar
-  drop: [Portfolio]
-  columns: [Weight]
-  sort: desc
-  format: percent
-  title: Minimum Drawdown Weights
-  subtitle: Weights that minimize the conditional drawdown at risk
-
 get_maximum_omega_weights:
   chart: hbar
   drop: [Portfolio]
@@ -213,15 +196,6 @@ get_maximum_omega_weights:
   sort: desc
   format: percent
   title: Maximum Omega Ratio Weights
-
-get_maximum_cvar_ratio_weights:
-  chart: hbar
-  drop: [Portfolio]
-  columns: [Weight]
-  sort: desc
-  format: percent
-  title: Maximum CVaR Ratio Weights
-  subtitle: Weights that maximize the excess return per unit of CVaR
 
 get_maximum_diversification_weights:
   chart: hbar
@@ -275,3 +249,163 @@ get_black_litterman_weights:
     cards: false
     format: percent
     subtitle: Returns implied by the market weights and after blending in the views
+
+get_asset_clusters:
+  chart: none
+  reason: A cluster number per asset, which the table shows
+
+get_codependence_matrix:
+  chart: heatmap
+  min: 0
+  max: 1
+  format: ratio
+  title: Distance Correlation
+  subtitle: How much every pair of assets moves together, from 0 (independent) to 1
+
+get_cokurtosis_matrix:
+  chart: heatmap
+  format: ratio
+  title: Cokurtosis with Apple Twice
+  subtitle: Fourth co-moments of the daily returns, standardized
+
+get_coskewness_matrix:
+  chart: heatmap
+  format: ratio
+  title: Coskewness with Apple
+  subtitle: Third co-moments of the daily returns, standardized
+
+get_covariance_estimate:
+  chart: heatmap
+  format: decimal
+  title: Gerber Covariance Matrix
+  subtitle: Annualized, from the co-movements beyond a threshold
+
+get_critical_line_weights:
+  chart: tabs
+  title: Corner Portfolios
+  tabs:
+  - label: Weights
+    chart: bar
+    columns: [AAPL, MSFT, JNJ, XOM]
+    stack: true
+    format: percent
+    subtitle: The weights of every corner portfolio of the efficient frontier
+  - label: Risk and Return
+    chart: scatter
+    xcol: Volatility
+    ycol: Expected Return
+    xformat: percent
+    yformat: percent
+    xname: Volatility
+    yname: Expected return
+    subtitle: Every corner portfolio on the efficient frontier
+
+get_distributionally_robust_cvar_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Distributionally Robust Mean-CVaR Weights
+
+get_entropy_pooling:
+  chart: tabs
+  title: Entropy Pooling
+  tabs:
+  - label: Expected Return
+    chart: bar
+    columns: [Prior Return, Posterior Return]
+    format: percent
+    subtitle: Annualized, from the history and after reweighting it to agree with the views
+  - label: Volatility
+    chart: bar
+    columns: [Prior Volatility, Posterior Volatility]
+    format: percent
+    subtitle: Annualized, from the history and after reweighting it to agree with the views
+
+get_estimation_uncertainty:
+  chart: coef
+  coef: Expected Return
+  low: Lower
+  high: Upper
+  format: percent
+  title: Expected Return Uncertainty
+  subtitle: The annualized expected return with its confidence interval from simulated histories
+
+get_expected_returns_estimate:
+  chart: bar
+  format: percent
+  title: Expected Return Estimates
+  subtitle: Annualized, a bar per estimator
+
+get_factor_attribution:
+  chart: bar
+  transpose: true
+  columns: [Mkt-RF, SMB, HML, RMW, CMA, Specific Return]
+  stack: true
+  format: percent
+  title: Factor Attribution
+  subtitle: The portfolio's monthly return from each factor and the specific return left over
+
+get_factor_loadings:
+  chart: bar
+  columns: [Mkt-RF, SMB, HML, RMW, CMA]
+  levels: [0]
+  format: ratio
+  title: Fama-French Factor Loadings
+  subtitle: The slope on each factor; 0 where the forward selection leaves a factor out
+
+get_factor_risk_contributions:
+  chart: bar
+  drop: [Other, Total]
+  columns: [Percentage Contribution]
+  format: percent
+  title: Factor Risk Contributions
+  subtitle: Each factor's share of the portfolio's volatility
+
+get_mean_risk_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Maximum Return to Gini Mean Difference Weights
+
+get_random_matrix_statistics:
+  chart: bar
+  columns: [Eigenvalue]
+  format: ratio
+  title: Eigenvalues of the Correlation Matrix
+  subtitle: The eigenvalues above the Marčenko-Pastur upper edge are signal, the rest noise
+
+get_return_contributions:
+  chart: bar
+  columns: [AAPL, MSFT, JNJ, XOM]
+  stack: true
+  format: percent
+  title: Return Contributions
+  subtitle: Each asset's part of the portfolio's yearly return
+
+get_schur_complementary_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Schur Complementary Allocation Weights
+
+get_stacking_weights:
+  chart: bar
+  drop: [Portfolio]
+  columns: [Weight, Maximum Diversification, Hierarchical Risk Parity, Minimum CVaR]
+  format: percent
+  title: Stacked Portfolio Weights
+  subtitle: The stacked weights next to those of three of the optimizers it combines
+
+get_worst_case_mean_variance_weights:
+  chart: hbar
+  drop: [Portfolio]
+  columns: [Weight]
+  sort: desc
+  format: percent
+  title: Worst-Case Mean-Variance Weights

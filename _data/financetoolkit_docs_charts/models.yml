@@ -14,7 +14,7 @@ get_factor_analysis:
     Standard Error: "f['IC Standard Deviation'] / np.sqrt(f['Observations'])"
   coef: Mean IC
   se: Standard Error
-  p: p-Value
+  p: P-Value
   format: ratio
   title: Mean Information Coefficient
   subtitle: Rank correlation with the return 12 months ahead, with its 95% interval
@@ -394,34 +394,6 @@ get_dupont_analysis:
     format: ratio
     subtitle: Total assets over equity
 
-get_extended_dupont_analysis:
-  chart: tabs
-  title: Extended DuPont Analysis
-  tabs:
-  - label: Return on Equity
-    chart: bar
-    transpose: true
-    columns: [Return on Equity]
-    format: percent
-    subtitle: The product of the five components
-  - label: Burdens
-    chart: line
-    transpose: true
-    columns: [Interest Burden Ratio, Tax Burden Ratio]
-    format: ratio
-    subtitle: Pre-tax income over EBIT, and net income over pre-tax income
-  - label: Operating Margin
-    chart: bar
-    transpose: true
-    columns: [Operating Profit Margin]
-    format: percent
-  - label: Turnover and Leverage
-    chart: line
-    transpose: true
-    columns: [Asset Turnover, Equity Multiplier]
-    format: ratio
-    subtitle: Revenue over assets, and assets over equity
-
 get_nissim_penman_decomposition:
   chart: tabs
   title: Nissim-Penman Decomposition
@@ -528,3 +500,135 @@ get_peer_comparison:
   format: percent
   title: Percentile Among Peers
   subtitle: Where the company ranks among its peers on each metric; 100% is the highest value
+
+get_accrual_quality:
+  chart: line
+  transpose: true
+  format: decimal
+  title: Accrual Quality
+  subtitle: Standard deviation of the accruals that cash flows do not explain; lower is better
+
+get_capitalized_research_and_development:
+  chart: tabs
+  title: Capitalized Research and Development
+  tabs:
+  - label: Expense and Amortization
+    chart: bar
+    transpose: true
+    columns: [Research and Development Expenses, Amortization of Research Asset]
+    format: usd
+    subtitle: The R&D expense replaced by the amortization of the research asset
+  - label: Adjusted ROIC
+    chart: bar
+    transpose: true
+    columns: [Adjusted Return on Invested Capital]
+    format: percent
+    subtitle: Return on invested capital with R&D capitalized over ten years
+
+get_cash_flow_return_on_investment:
+  chart: tabs
+  title: Cash Flow Return on Investment
+  tabs:
+  - label: CFROI
+    chart: bar
+    transpose: true
+    columns: [Cash Flow Return on Investment]
+    format: percent
+    subtitle: The internal rate of return of the gross investment over the asset life
+  - label: Cash Flow and Investment
+    chart: bar
+    transpose: true
+    columns: [Gross Cash Flow, Gross Investment]
+    format: usd
+    subtitle: The yearly gross cash flow against the gross investment that buys it
+
+get_earnings_attributes:
+  chart: tabs
+  title: Earnings Attributes
+  tabs:
+  - label: Persistence
+    ticker: Persistence
+    transpose: true
+    chart: line
+    format: ratio
+    subtitle: Slope of earnings per share on the year before; near 1 earnings shocks last
+  - label: Predictability
+    ticker: Predictability
+    transpose: true
+    chart: line
+    format: ratio
+    subtitle: Error of that regression; larger is less predictable
+  - label: Smoothness
+    ticker: Smoothness
+    transpose: true
+    chart: line
+    format: ratio
+    subtitle: Volatility of earnings over that of operating cash flow; larger is less smooth
+
+get_fundamental_growth_rate:
+  chart: tabs
+  title: Fundamental Growth Rate
+  tabs:
+  - label: Growth
+    chart: line
+    transpose: true
+    columns: [Fundamental Growth Rate, Reinvestment Rate, Return on Invested Capital]
+    format: percent
+    subtitle: The reinvestment rate times the return on invested capital
+  - label: Reinvestment
+    chart: bar
+    transpose: true
+    columns: [Net Operating Profit After Taxes, Reinvestment]
+    format: usd
+    subtitle: Net capital expenditure plus the change in working capital, against NOPAT
+
+get_graham_criteria:
+  chart: bar
+  chart_expr: 'toolkit.models.get_graham_criteria().loc["KO"]'
+  transpose: true
+  columns: [Criteria Met]
+  format: number
+  digits: 0
+  min: 0
+  max: 7
+  title: Graham Criteria Met
+  subtitle: Of the seven criteria for the defensive investor
+
+get_owner_earnings:
+  chart: bar
+  transpose: true
+  format: usd
+  title: Owner Earnings
+  subtitle: Net income plus depreciation, minus capital expenditure and the change in working capital
+
+get_return_on_incremental_invested_capital:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Return on Incremental Invested Capital
+  subtitle: Growth in after-tax operating profit over the capital invested to produce it
+  levels: [0]
+
+get_rule_of_40:
+  chart: bar
+  transpose: true
+  format: percent
+  title: Rule of 40 Score
+  subtitle: Revenue growth plus profit margin; 40% or more is seen as healthy
+  levels: [0.4]
+
+get_shumway_score:
+  chart: bar
+  transpose: true
+  columns: [Bankruptcy Probability]
+  format: percent
+  title: Shumway Bankruptcy Probability
+  subtitle: The hazard model's probability of bankruptcy within a year
+
+get_unlevered_beta:
+  chart: line
+  transpose: true
+  format: ratio
+  title: Unlevered Beta
+  subtitle: Beta without the financial leverage (Hamada); 1 is the market
+  levels: [1]

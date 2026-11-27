@@ -1,0 +1,1 @@
+{"charts":{"get_forward_start_option":{"title":"Forward-Start Call Price","type":"bar","x":["2026-01-30","2026-03-01","2026-03-31"],"series":[{"name":"NVDA","data":[7.6351,10.8773,13.393]},{"name":"AAPL","data":[7.3395,10.4915,12.9514]},{"name":"MSFT","data":[9.834,14.0922,17.4287]}],"format":"price","subtitle":"By expiration"}}}
