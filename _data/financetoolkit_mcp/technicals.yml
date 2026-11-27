@@ -1147,3 +1147,23 @@ get_zigzag:
     sensitivity: 0.1
     show_columns: SIUSD
     limit: -268
+get_archer_on_balance_volume:
+  question: How did Apple's on-balance volume move against its fast and slow averages in 2025, and was it in a long or short run according to Archer's On-Balance Volume?
+  tool: breadth
+  arguments:
+    tickers: AAPL
+    benchmark_ticker: "None"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: On-Balance Volume,Fast Average,Slow Average,Long Run,Short Run
+    limit: -250
+get_guppy_multiple_moving_averages:
+  question: How far apart were the short-term and long-term moving averages of Apple in 2025, according to the Guppy Multiple Moving Averages?
+  tool: overlap
+  arguments:
+    tickers: AAPL
+    benchmark_ticker: "None"
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: Short EMA 3,Long EMA 60,Short Group Spread,Long Group Spread,Group Spread
+    limit: -250
