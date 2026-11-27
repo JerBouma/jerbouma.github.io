@@ -481,7 +481,7 @@ module DocsMetricPages
     cards = [
       module_card,
       ["fas fa-comment-dots", "Ask It in Plain English", asked ? "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask the question above yourself." : "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask for any metric in plain English.", "/projects/financetoolkit/mcp"],
-      ["fab fa-python", "Build with Python", "Install the Finance Toolkit library and use this method and 700+ others in your own code.", "/projects/financetoolkit"],
+      ["fab fa-python", "Build with Python", "Install the Finance Toolkit library and use this method and 1100+ others in your own code.", "/projects/financetoolkit"],
     ]
     links = cards.map do |icon, title, text, url|
       %(<a class="docs-next__card" href="#{url}"><i class="#{icon}" aria-hidden="true"></i><span class="docs-next__title">#{title}</span><span class="docs-next__text">#{text}</span></a>)
