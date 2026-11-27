@@ -1,0 +1,1 @@
+{"charts":{"get_hurst_exponent":{"title":"Hurst Exponent","type":"hbar","x":["BTCUSD","EURUSD","GCUSD","Benchmark"],"series":[{"name":"Hurst Exponent","data":[0.5057,0.4718,0.4617,0.4396]}],"format":"ratio","subtitle":"0.5 is a random walk; above it trends persist, below it they reverse"}}}

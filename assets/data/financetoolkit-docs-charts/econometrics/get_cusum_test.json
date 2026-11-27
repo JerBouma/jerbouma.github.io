@@ -1,0 +1,1 @@
+{"charts":{"get_cusum_test":{"title":"CUSUM Statistic","type":"bar","x":["BA","AIR.PA"],"series":[{"name":"CUSUM Statistic","data":[0.6789,0.4353]},{"name":"Critical Value 5%","data":[1.36,1.36]}],"format":"ratio","subtitle":"Against the 5% critical value; above it, the parameters are not stable"}}}

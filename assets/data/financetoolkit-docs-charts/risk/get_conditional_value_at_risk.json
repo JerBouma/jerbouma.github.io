@@ -1,0 +1,1 @@
+{"charts":{"get_conditional_value_at_risk":{"title":"Conditional Value at Risk","type":"hbar","x":["COP","CVX","XOM","Benchmark"],"series":[{"name":"CVaR","data":[-0.0532,-0.0383,-0.0359,-0.0275]}],"format":"percent","subtitle":"Average daily return on the worst 5% of days"}}}

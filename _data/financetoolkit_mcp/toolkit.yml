@@ -50,14 +50,14 @@ get_revenue_product_segmentation:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_historical_data:
-  question: What were the daily closing prices of Caterpillar, Deere and United Rentals, and of SPY as the benchmark, on the last five trading days of 2025?
+  question: What were the daily closing prices of Caterpillar, Deere and United Rentals, and of SPY as the benchmark, in 2025?
   tool: market_data
   arguments:
     tickers: CAT,DE,URI
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     show_columns: Close
-    limit: -5
+    limit: -250
 get_intraday_data:
   question: What were the hourly closing prices of Nvidia and of SPY as the benchmark in the last five hours of trading on 31 December 2025?
   tool: market_data

@@ -1,0 +1,1 @@
+{"charts":{"get_two_stage_dividend_discount_model":{"title":"Two-Stage Dividend Discount Model Value","type":"bar","x":["JNJ","PEP","PG"],"series":[{"name":"Intrinsic Value","data":[296.771,294.596,201.276]}],"format":"price","subtitle":"Per share, five years of high growth, then stable growth"}}}

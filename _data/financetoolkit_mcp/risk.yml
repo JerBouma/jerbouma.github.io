@@ -76,13 +76,13 @@ get_ulcer_index:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
 get_garch:
-  question: What was the GARCH(1,1) conditional variance of Bitcoin and the S&P 500 over the last five days of 2025, fitted on their returns from 2021 to 2025?
+  question: What was the GARCH(1,1) conditional variance of Bitcoin and the S&P 500 in 2025, fitted on their returns from 2021 to 2025?
   tool: risk
   arguments:
     tickers: BTCUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -365
 get_garch_forecast:
   question: What variance does a GARCH(1,1) model of the S&P 500, fitted on its returns from 2021 to 2025, forecast for the first ten trading days of 2026?
   tool: risk
@@ -98,13 +98,13 @@ get_garch_parameters:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
 get_gjr_garch:
-  question: What was the GJR-GARCH conditional variance of Nvidia and the S&P 500 over the last five trading days of 2025, fitted on their returns in 2025?
+  question: What was the GJR-GARCH conditional variance of Nvidia and the S&P 500 in 2025, fitted on their returns in 2025?
   tool: risk
   arguments:
     tickers: NVDA
     start_date: "2025-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -249
 get_gjr_garch_forecast:
   question: What variance does a GJR-GARCH model of crude oil, fitted on its returns from 2021 to 2025, forecast for the first ten trading days of 2026?
   tool: risk
@@ -241,14 +241,14 @@ get_volatility:
     end_date: "2025-12-31"
     period: yearly
 get_har_rv_forecast:
-  question: What did the HAR-RV model, built on squared daily returns from 2021 to 2025, forecast for the next-day variance of SPY and QQQ on the last five trading days of 2025?
+  question: What did the HAR-RV model, built on squared daily returns from 2021 to 2025, forecast for the next-day variance of SPY and QQQ in 2025?
   tool: risk
   arguments:
     tickers: SPY,QQQ
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     estimator: squared_return
-    limit: -5
+    limit: -250
     benchmark_ticker: None
 get_amihud_illiquidity:
   question: How illiquid were Snap, Etsy, Lyft and the S&P 500 from 2021 to 2025, measured by the Amihud price impact per billion dollars traded?
@@ -297,13 +297,13 @@ get_coefficient_of_variation:
     end_date: "2025-12-31"
     period: yearly
 get_ewma_volatility:
-  question: How did the EWMA volatility of the dollar against the yen, the euro against the dollar and the S&P 500 move from 26 to 31 December 2025?
+  question: How did the EWMA volatility of the dollar against the yen, the euro against the dollar and the S&P 500 move in 2025?
   tool: risk
   arguments:
     tickers: USDJPY,EURUSD
     start_date: "2021-01-01"
     end_date: "2025-12-31"
-    limit: -5
+    limit: -301
 get_autocorrelation:
   question: Were the daily returns of SPY, QQQ and IWM autocorrelated over the first ten lags from 2021 to 2025?
   tool: risk

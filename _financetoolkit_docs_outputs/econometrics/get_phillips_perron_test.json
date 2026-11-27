@@ -1,0 +1,1 @@
+{"index":"","columns":["GCUSD","SIUSD"],"rows":[["Phillips-Perron Statistic",3.3901,4.5297],["P-Value",1.0,1.0],["Lags Used",23.0,23.0],["Observations",1300.0,1300.0],["Critical Value 1%",-3.4354,-3.4354],["Critical Value 5%",-2.8638,-2.8638],["Critical Value 10%",-2.568,-2.568],["Reject Unit Root (5%)",0.0,0.0]],"total":8}

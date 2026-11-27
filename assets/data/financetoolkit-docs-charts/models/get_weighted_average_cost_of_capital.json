@@ -1,0 +1,1 @@
+{"charts":{"get_weighted_average_cost_of_capital":{"title":"Weighted Average Cost of Capital","type":"bar","x":["2022","2023","2024","2025"],"series":[{"name":"T","data":[0.0453,0.0457,0.0358,0.0411]},{"name":"TMUS","data":[0.0469,0.0437,0.0447,0.0425]},{"name":"VZ","data":[0.0304,0.0407,0.036,0.0377]}],"format":"percent"}}}

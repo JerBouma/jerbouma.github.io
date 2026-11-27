@@ -1,0 +1,1 @@
+{"charts":{"get_hierarchical_risk_parity_weights":{"title":"Hierarchical Risk Parity Weights","type":"hbar","x":["XOM","JNJ","MSFT","AAPL"],"series":[{"name":"Weight","data":[0.42,0.3,0.1512,0.1288]}],"format":"percent"}}}

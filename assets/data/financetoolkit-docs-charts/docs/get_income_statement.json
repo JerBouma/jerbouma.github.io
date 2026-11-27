@@ -1,0 +1,1 @@
+{"charts":{"get_income_statement":{"title":"Revenue and Net Income","type":"bar","x":["2021","2022","2023","2024"],"series":[{"name":"Revenue","data":[46710000000.0,51217000000.0,51362000000.0,46309000000.0]},{"name":"Net Income","data":[6046000000.0,5070000000.0,5700000000.0,3219000000.0]}],"format":"compact"}}}

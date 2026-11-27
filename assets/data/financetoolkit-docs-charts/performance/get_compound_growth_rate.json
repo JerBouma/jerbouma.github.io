@@ -1,0 +1,1 @@
+{"charts":{"get_compound_growth_rate":{"title":"Compound Annual Growth Rate","type":"hbar","x":["ETHUSD","BTCUSD","Benchmark","^GSPC"],"series":[{"name":"CAGR","data":[0.3236,0.2438,0.1469,0.1312]}],"format":"percent","subtitle":"The constant yearly return that turns the first price into the last"}}}

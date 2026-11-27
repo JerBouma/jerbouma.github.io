@@ -1,0 +1,215 @@
+search_instruments:
+  chart: none
+  reason: A list of matching instruments, read as a table
+
+get_stock_screener:
+  chart: none
+  reason: A list of companies that pass the filters, read as a table
+
+get_stock_list:
+  chart: none
+  reason: A list of instruments, read as a table
+
+get_stock_shares_float:
+  chart: none
+  reason: A list of float figures for every listed company, too many to chart
+
+get_sectors_performance:
+  chart: tabs
+  title: Sector Performance
+  tabs:
+    - label: Cyclical
+      chart: line
+      derive:
+        Basic Materials: "(1 + f['Basic Materials'].fillna(0)).cumprod() - 1"
+        Consumer Cyclical: "(1 + f['Consumer Cyclical'].fillna(0)).cumprod() - 1"
+        Financial Services: "(1 + f['Financial Services'].fillna(0)).cumprod() - 1"
+        Real Estate: "(1 + f['Real Estate'].fillna(0)).cumprod() - 1"
+      columns: [Basic Materials, Consumer Cyclical, Financial Services, Real Estate]
+      format: percent
+      levels: [0]
+      subtitle: Cumulative return from the daily average change of each sector
+    - label: Sensitive
+      chart: line
+      derive:
+        Communication Services: "(1 + f['Communication Services'].fillna(0)).cumprod() - 1"
+        Energy: "(1 + f['Energy'].fillna(0)).cumprod() - 1"
+        Industrials: "(1 + f['Industrials'].fillna(0)).cumprod() - 1"
+        Technology: "(1 + f['Technology'].fillna(0)).cumprod() - 1"
+      columns: [Communication Services, Energy, Industrials, Technology]
+      format: percent
+      levels: [0]
+      subtitle: Cumulative return from the daily average change of each sector
+    - label: Defensive
+      chart: line
+      derive:
+        Consumer Defensive: "(1 + f['Consumer Defensive'].fillna(0)).cumprod() - 1"
+        Healthcare: "(1 + f['Healthcare'].fillna(0)).cumprod() - 1"
+        Utilities: "(1 + f['Utilities'].fillna(0)).cumprod() - 1"
+      columns: [Consumer Defensive, Healthcare, Utilities]
+      format: percent
+      levels: [0]
+      subtitle: Cumulative return from the daily average change of each sector
+
+get_biggest_gainers:
+  chart: hbar
+  columns: [Change %]
+  first: 10
+  sort: desc
+  format: percent
+  title: Biggest Gainers
+  subtitle: Price change of the day
+
+get_biggest_losers:
+  chart: hbar
+  columns: [Change %]
+  first: 10
+  sort: asc
+  format: percent
+  title: Biggest Losers
+  subtitle: Price change of the day
+
+get_most_active_stocks:
+  chart: none
+  reason: Ranked by trading volume, which the result does not include; the table lists them
+
+get_delisted_stocks:
+  chart: none
+  reason: A list of delisted companies, read as a table
+
+get_crypto_list:
+  chart: none
+  reason: A list of instruments, read as a table
+
+get_forex_list:
+  chart: none
+  reason: A list of currency pairs, read as a table
+
+get_commodity_list:
+  chart: none
+  reason: A list of instruments, read as a table
+
+get_etf_list:
+  chart: none
+  reason: A list of instruments, read as a table
+
+get_index_list:
+  chart: none
+  reason: A list of indices, read as a table
+
+get_index_constituents:
+  chart: none
+  expr: "constituents.loc[['AAPL', 'FNMA', 'LEHMQ', 'MER', 'WB'], ['Name', 'Date Added', 'Date Removed']]"
+  reason: A list of index members, read as a table
+
+get_index_constituent_changes:
+  chart: none
+  reason: A record of additions and removals, read as a table
+
+get_stock_news:
+  chart: none
+  reason: News headlines, read as text
+
+get_general_news:
+  chart: none
+  reason: News headlines, read as text
+
+get_press_releases:
+  chart: none
+  reason: Press releases, read as text
+
+get_crypto_news:
+  chart: none
+  reason: News headlines, read as text
+
+get_forex_news:
+  chart: none
+  reason: News headlines, read as text
+
+search_stock_news:
+  chart: none
+  reason: News headlines, read as text
+
+search_press_releases:
+  chart: none
+  reason: Press releases, read as text
+
+search_crypto_news:
+  chart: none
+  reason: News headlines, read as text
+
+search_forex_news:
+  chart: none
+  reason: News headlines, read as text
+
+get_ipo_calendar:
+  chart: none
+  reason: A calendar of listings, read as a table
+
+get_ipo_disclosures:
+  chart: none
+  reason: A list of filings, read as a table
+
+get_ipo_prospectuses:
+  chart: none
+  reason: A list of filings, read as a table
+
+get_stock_splits_calendar:
+  chart: none
+  reason: A calendar of splits, read as a table
+
+get_sector_performance:
+  chart: area
+  derive:
+    Energy: "(1 + f['Average Change'].fillna(0)).cumprod() - 1"
+  columns: [Energy]
+  format: percent
+  levels: [0]
+  title: Sector Performance
+  subtitle: Cumulative return from the daily average change of the sector
+
+get_industry_performance:
+  chart: area
+  derive:
+    Biotechnology: "(1 + f['Average Change'].fillna(0)).cumprod() - 1"
+  columns: [Biotechnology]
+  format: percent
+  levels: [0]
+  title: Industry Performance
+  subtitle: Cumulative return from the daily average change of the industry
+
+get_sector_pe:
+  chart: line
+  columns: [{PE Ratio: Energy}]
+  format: multiple
+  title: Sector P/E Ratio
+
+get_industry_pe:
+  chart: line
+  columns: [{PE Ratio: Biotechnology}]
+  format: multiple
+  title: Industry P/E Ratio
+
+get_industry_statistics:
+  chart: bar
+  expr: "cost_of_capital.loc[['Semiconductor', 'Software (System & Application)', 'Utility (General)', 'Total Market'], ['Beta', 'Cost of Equity', 'After-tax Cost of Debt', 'D/(D+E)', 'Cost of Capital']].round(4)"
+  columns: [Cost of Equity, After-tax Cost of Debt, Cost of Capital]
+  format: percent
+  title: Cost of Capital by Industry
+  subtitle: Cost of capital weighs the cost of equity and the after-tax cost of debt by D/(D+E)
+
+get_mergers_acquisitions_latest:
+  chart: none
+  reason: A list of deals, read as a table
+
+get_earnings_calendar:
+  chart: none
+  reason: A calendar of earnings dates, read as a table
+
+get_sec_filings_8k:
+  chart: none
+  reason: A list of filings, read as a table
+
+get_insider_trading_latest:
+  chart: none
+  reason: A list of insider transactions, read as a table

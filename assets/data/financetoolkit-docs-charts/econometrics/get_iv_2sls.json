@@ -1,0 +1,1 @@
+{"charts":{"get_iv_2sls":{"title":"IV (2SLS) Coefficient","type":"coef","x":["NVDA"],"coef":[1.2516],"low":[1.03718],"high":[1.46602],"p":[0.0],"format":"ratio","subtitle":"Second-stage estimate with its 95% confidence interval"}}}

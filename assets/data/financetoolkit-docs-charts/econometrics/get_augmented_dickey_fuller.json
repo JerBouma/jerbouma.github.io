@@ -1,0 +1,1 @@
+{"charts":{"get_augmented_dickey_fuller":{"title":"Augmented Dickey-Fuller Statistic","type":"bar","x":["EURUSD","USDJPY","GBPUSD"],"series":[{"name":"ADF Statistic","data":[-2.0711,-1.6878,-1.8861]},{"name":"Critical Value 5%","data":[-2.8637,-2.8637,-2.8637]}],"format":"ratio","subtitle":"Below the 5% critical value, the unit root is rejected"}}}

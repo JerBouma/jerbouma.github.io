@@ -1,0 +1,1 @@
+{"charts":{"get_vif":{"title":"Variance Inflation Factor","type":"bar","x":["AMZN","META","GOOGL"],"series":[{"name":"VIF","data":[2.0801,1.8235,1.4432]}],"format":"ratio","subtitle":"Above 5, and certainly 10, multicollinearity is usually taken to be a problem"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_structural_breaks":{"title":"Mean per Regime","type":"bar","x":["1960-12-31","1973-12-31","1983-12-31"],"series":[{"name":"Mean","data":[0.0282,0.0876,0.0285]}],"format":"percent","subtitle":"Average inflation rate between the breaks, by the year each regime starts"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_days_of_inventory_outstanding":{"title":"Days of Inventory Outstanding","type":"bar","x":["2021","2022","2023","2024"],"series":[{"name":"DECK","data":[92.864,105.297,96.625,84.2594]},{"name":"LULU","data":[111.215,121.754,126.114,116.91]},{"name":"NKE","data":[110.479,106.465,102.373,103.283]}],"format":"number","subtitle":"Days"}}}

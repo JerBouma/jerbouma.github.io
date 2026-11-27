@@ -1,0 +1,1 @@
+{"charts":{"get_capex_intensity":{"title":"Capex Intensity","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"INTC","data":[0.2371,0.394,0.4748,0.4509,0.2771]},{"name":"MSFT","data":[0.1227,0.1205,0.1326,0.1814,0.2291]},{"name":"TSM","data":[0.5351,0.4813,0.442,0.3303,0.3367]}],"format":"percent","subtitle":"Capital expenditure as a share of revenue"}}}

@@ -1,0 +1,1 @@
+{"index":"","columns":["BA","AIR.PA"],"rows":[["CUSUM Statistic",0.6789,0.4353],["P-Value",0.746,0.9914],["Observations",1254.0,1280.0],["Critical Value 1%",1.63,1.63],["Critical Value 5%",1.36,1.36],["Critical Value 10%",1.22,1.22],["Reject Stability (5%)",0.0,0.0]],"total":7}

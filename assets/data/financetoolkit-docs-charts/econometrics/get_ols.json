@@ -1,0 +1,1 @@
+{"charts":{"get_ols":{"title":"OLS Coefficients","type":"coef","x":["USO","Benchmark"],"coef":[0.4877,0.3659],"low":[0.453988,0.300632],"high":[0.521412,0.431168],"p":[0.0,0.0],"format":"ratio","subtitle":"Estimates with their 95% confidence interval"}}}

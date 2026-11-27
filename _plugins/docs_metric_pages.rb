@@ -334,13 +334,88 @@ module DocsMetricPages
     HTML
   end
 
+  # The example's full result as a scrollable table with a fixed header.
+  def full_output(site, key, fn_name)
+    path = File.join(site.source, "_financetoolkit_docs_outputs", key, "#{fn_name}.json")
+    return nil unless File.exist?(path)
+    data = JSON.parse(File.read(path))
+    rows = data["rows"]
+    # each column with one number of decimals (at most four), as a table of results reads
+    decimals = (1...(data["columns"].size + 1)).map do |i|
+      rows.map { |r| r[i].is_a?(Float) ? (r[i].to_s[/\.(\d+)\z/, 1] || "").sub(/\A0\z/, "").size : 0 }.max.to_i.clamp(0, 4)
+    end
+    cell = lambda do |v, d|
+      return "" if v.nil?
+      return CGI.escapeHTML(v.to_s) unless v.is_a?(Numeric)
+      whole, frac = format("%.#{d}f", v).split(".")
+      whole = whole.reverse.scan(/\d{1,3}/).join(",").reverse.then { |w| v.negative? ? "-#{w}" : w }
+      frac ? "#{whole}.#{frac}" : whole
+    end
+    head = "<th>#{CGI.escapeHTML(data['index'].to_s)}</th>" + data["columns"].map { |c| "<th>#{CGI.escapeHTML(c)}</th>" }.join
+    body = rows.map { |r| "<tr><th scope=\"row\">#{CGI.escapeHTML(r[0].to_s)}</th>" + r[1..].each_with_index.map { |v, i| "<td>#{cell.(v, decimals[i])}</td>" }.join + "</tr>" }
+    total = data["total"] || rows.size
+    count = total > rows.size ? "The first #{commas(rows.size)} of #{commas(total)} rows" : "#{commas(total)} rows"
+    %(<div class="docs-output"><table><thead><tr>#{head}</tr></thead><tbody>\n#{body.join("\n")}\n</tbody></table></div>\n<p class="docs-output__count">#{count}</p>)
+  end
+
+  def commas(n)
+    n.to_s.reverse.scan(/\d{1,3}/).join(",").reverse
+  end
+
+  # Where to go after the example: most visitors land on one method page from a search,
+  # so three cards point to the module (its guide and other methods), the MCP server
+  # and the Python library
+  def next_steps(key, asked)
+    cls = CLASSES[key]
+    module_card = if key == "toolkit"
+                    ["fas fa-book-open", "Finance Toolkit Documentation", "Every module, from ratios and models to risk and technical indicators.", cls[:url]]
+                  else
+                    ["fas fa-layer-group", "The #{cls[:name]} Module", "A guide to the module and every method in it.", cls[:url]]
+                  end
+    cards = [
+      module_card,
+      ["fas fa-comment-dots", "Ask It in Plain English", asked ? "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask the question above yourself." : "Connect the Finance Toolkit MCP to Claude or ChatGPT and ask for any metric in plain English.", "/projects/financetoolkit/mcp"],
+      ["fab fa-python", "Build with Python", "Install the Finance Toolkit library and use this method and 700+ others in your own code.", "/projects/financetoolkit"],
+    ]
+    links = cards.map do |icon, title, text, url|
+      %(<a class="docs-next__card" href="#{url}"><i class="#{icon}" aria-hidden="true"></i><span class="docs-next__title">#{title}</span><span class="docs-next__text">#{text}</span></a>)
+    end
+    %(<nav class="docs-next" aria-label="Next steps">\n#{links.join("\n")}\n</nav>\n\n)
+  end
+
+  # "Example · AAPL, MSFT · 2021 to 2025": the tickers or countries and the
+  # years of the docstring example, read from its code
+  def example_label(code)
+    names = code[/(?:(?:tickers|countries)\s*=\s*|\b[A-Z]\w*\(\s*)\[([^\]]*)\]/m, 1].to_s.scan(/["']([^"']+)["']/).flatten
+    names = names.first(4) + ["#{names.size - 4} more"] if names.size > 5
+    years = %w[start_date end_date].map { |k| code[/#{k}\s*=\s*["'](\d{4})/, 1] }
+    period = if years.all? then years.uniq.join(" to ")
+             elsif years[0] then "since #{years[0]}"
+             end
+    ["Example", names.join(", "), period].reject { |x| x.nil? || x.empty? }.map { |x| CGI.escapeHTML(x) }.join(" · ")
+  end
+
+  # Tabs (Chart and Table, Python and the MCP question): the first panel shows,
+  # the buttons switch (assets/js/docs-tabs.js). Panels hold Markdown.
+  def tabs(id, panels)
+    out = +%(<div class="docs-tabs" id="#{id}-tabs">\n<div class="docs-tabs__bar" role="tablist">)
+    panels.each_with_index do |(label, _), i|
+      out << %(<button type="button" role="tab" class="docs-tabs__tab#{' is-active' if i.zero?}" aria-selected="#{i.zero?}">#{CGI.escapeHTML(label)}</button>)
+    end
+    out << "</div>\n"
+    panels.each_with_index do |(_, body), i|
+      out << %(<div class="docs-tabs__panel" role="tabpanel" markdown="1"#{' hidden' unless i.zero?}>\n\n#{body.strip}\n\n</div>\n)
+    end
+    out << "</div>\n\n"
+  end
+
   # The same through the Finance Toolkit MCP: a question an analyst might ask,
   # from _data/financetoolkit_mcp/<module>.yml (with the tool call that
   # answers it).
   def mcp_question(site, key, fn_name)
     spec = site.data.dig("financetoolkit_mcp", key, fn_name)
     return "" unless spec
-    out = +"Or, after setting up the [Finance Toolkit MCP](/projects/financetoolkit/mcp), ask:\n{: .docs-boilerplate}\n\n"
+    out = +"With the [Finance Toolkit MCP](/projects/financetoolkit/mcp) set up, ask an AI assistant such as Claude or ChatGPT:\n{: .docs-boilerplate}\n\n"
     out << %(<div class="ca-q docs-mcp-question" id="mcp-question"><span class="ca-q__avatar"><i class="fas fa-user" aria-hidden="true"></i></span><p>#{CGI.escapeHTML(spec['question'].to_s.strip)}</p></div>\n\n)
   end
 
@@ -414,14 +489,41 @@ module DocsMetricPages
     # question asks for exactly what the example's first table shows, so it
     # sits between the code and "Which returns:"
     if has_example
-      out << "## #{name} in Python#{' or via the MCP' unless mcp.empty?}\n{: #python-example}\n\n"
-      out << "Install the [Finance Toolkit](/projects/financetoolkit) with:\n{: .docs-boilerplate}\n\n"
-      out << "```bash\npip install financetoolkit -U\n```\n\n"
-      out << "Then call `#{fn_name}` as shown below.\n{: .docs-boilerplate}\n\n" unless parts[:example].empty?
       code, returns, rest = parts[:example].partition(/^Which returns:/)
-      out << code.rstrip << "\n\n" unless code.strip.empty?
-      out << mcp
-      out << returns << rest << "\n\n" unless returns.empty?
+      result = returns.empty? ? "" : rest.strip
+      # the docstring shows the end of a long result; the page shows all of it
+      # (_scripts/financetoolkit_docs_charts.py runs the example in full)
+      full = full_output(site, key, fn_name) if mcp_key == fn_name
+      if full
+        code = code.sub(/(?:\.(?:tail|head)\(\d*\)|\.iloc\[(?:\[[^\]]*\]|[^\],\[]*)\])(\s*```\s*)\z/, '\1')
+        result = full
+      end
+      # the example sits in a card of its own under the description: a quiet
+      # label with what it runs on, the code and the question, then the result
+      out << %(<div class="docs-example" markdown="1">\n<p class="docs-example__label">#{example_label(code)}</p>\n\n)
+      # one lead-in with the install, the Python code, then the same question through
+      # the Finance Toolkit MCP right under it (no tabs: both are short)
+      unless code.strip.empty?
+        out << "Install the [Finance Toolkit](/projects/financetoolkit) with `pip install financetoolkit -U`, then call `#{fn_name}`:\n{: .docs-boilerplate}\n\n"
+        out << code.rstrip << "\n\n"
+      end
+      out << mcp.sub("With the [Finance Toolkit MCP]", code.strip.empty? ? "With the [Finance Toolkit MCP]" : "Or, with the [Finance Toolkit MCP]") unless mcp.empty?
+      unless result.empty?
+        out << "Which returns:\n\n"
+        # the chart (_data/financetoolkit_docs_charts/<module>.yml) with a Table button in its
+        # top right that lays the full table over it; ft-charts.js adds a Data (CSV) button
+        own = "/assets/data/financetoolkit-docs-charts/#{key}/#{fn_name}.json"
+        if mcp_key == fn_name && File.exist?(File.join(site.source, own))
+          out << %(<div class="ft-chart-box docs-result">\n<div class="ft-chart-actions" role="group" aria-label="This result">)
+          out << %(<button type="button" class="ft-chart-action" data-panel="table" aria-expanded="false" title="Every row of the result as a table"><i class="fas fa-table" aria-hidden="true"></i><span>Table</span></button></div>\n)
+          out << %(<div class="ft-chart" data-chart="#{fn_name}" data-src="#{own}?v=#{site.time.to_i}" role="figure" aria-label="#{CGI.escapeHTML(name)}"><div class="ft-chart__loading" aria-hidden="true"></div></div>\n)
+          out << %(<div class="ft-chart-panel docs-result__table" data-panel="table" hidden markdown="1">\n\n#{result}\n\n</div>\n</div>\n\n)
+        else
+          out << result << "\n\n"
+        end
+      end
+      out << "\n</div>\n\n"
+      out << next_steps(key, !mcp.empty?)
       out << own_data(fn_name, parameters) if key == "econometrics"
     end
     unless parameters.empty?
@@ -437,6 +539,9 @@ module DocsMetricPages
       out << "## #{related_heading(key, related.first[:group])}\n\n"
       out << %(<div class="ft-module-switcher docs-related">\n  #{pills.join("\n  ")}\n</div>\n\n)
     end
+    version = site.time.to_i
+    out << %(<script src="/assets/js/docs-tabs.js?v=#{version}" defer></script>\n) if out.include?("docs-tabs")
+    out << %(<script src="/assets/js/ft-charts.js?v=#{version}" defer></script>\n) if out.include?('class="ft-chart"')
     out
   end
 
@@ -463,7 +568,7 @@ module DocsMetricPages
 
   # the Portfolio class runs on its own transactions, so only its presets have an MCP question
   def examples_phrase(key)
-    key == "portfolio" ? "with an example and its parameters" : "showing how to use it with the MCP and in Python"
+    key == "portfolio" ? "with an example and its parameters" : "with what it measures, an example and the code"
   end
 
   def intro_hint(key)

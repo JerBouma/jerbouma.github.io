@@ -1,0 +1,1 @@
+{"charts":{"get_level_significance":{"title":"Percentile of the Latest Level","type":"bar","x":["United States","Germany","Japan"],"series":[{"name":"Percentile","data":[0.9377,0.6854,0.9907]}],"format":"percent","subtitle":"Share of the history below the latest long-term interest rate"}}}

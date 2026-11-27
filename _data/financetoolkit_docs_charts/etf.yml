@@ -1,0 +1,147 @@
+# Holdings and weightings as horizontal bars (fact-sheet style), fund-to-fund
+# matrices as heatmaps, statistics per fund as bars.
+
+get_holdings:
+  chart: hbar
+  columns: [Weight]
+  first: 15
+  sort: desc
+  format: percent
+  title: Largest Holdings
+  subtitle: QQQ, share of the fund's assets
+
+get_information:
+  chart: none
+  reason: Descriptive fields of each fund (name, issuer, identifiers, fees)
+
+get_country_weightings:
+  chart: tabs
+  title: Country Weightings
+  tabs:
+    - label: QQQ
+      chart: hbar
+      columns: [QQQ]
+      sort: desc
+      first: 10
+      format: percent
+      subtitle: Share of the fund's assets
+    - label: VTI
+      chart: hbar
+      columns: [VTI]
+      sort: desc
+      first: 10
+      format: percent
+      subtitle: Share of the fund's assets
+
+get_sector_weightings:
+  chart: tabs
+  title: Sector Weightings
+  tabs:
+    - label: QQQ
+      chart: hbar
+      columns: [QQQ]
+      sort: desc
+      format: percent
+      subtitle: Share of the fund's assets
+    - label: VTI
+      chart: hbar
+      columns: [VTI]
+      sort: desc
+      format: percent
+      subtitle: Share of the fund's assets
+
+get_profile:
+  chart: none
+  reason: Descriptive fields of each fund (issuer, asset class, fees, size, price)
+
+get_tracking:
+  chart: bar
+  transpose: true
+  columns: [Tracking Difference, Tracking Error]
+  format: percent
+  title: Tracking Difference and Tracking Error
+  subtitle: Against SPY, from monthly returns
+
+get_concentration:
+  chart: tabs
+  title: Concentration
+  tabs:
+    - label: Top 10 Weight
+      chart: bar
+      transpose: true
+      columns: [Top 10 Weight]
+      format: percent
+      subtitle: Share of the fund in its ten largest holdings
+    - label: Effective Number of Holdings
+      chart: bar
+      transpose: true
+      columns: [Effective Number of Holdings]
+      format: amount
+      subtitle: One divided by the Herfindahl-Hirschman Index
+
+get_overlap:
+  chart: heatmap
+  format: percent
+  min: 0
+  max: 1
+  scale: sequential
+  title: Holdings Overlap
+  subtitle: Share of the weight two funds hold in common
+
+get_active_share:
+  chart: heatmap
+  format: percent
+  min: 0
+  max: 1
+  scale: sequential
+  title: Active Share
+  subtitle: Share of one fund's weights that differs from the other's; 0 is identical, 100% shares nothing
+
+get_look_through_valuation:
+  chart: tabs
+  title: Look-Through Valuation
+  tabs:
+    - label: Multiples
+      chart: bar
+      rows: [Price-to-Earnings, Price-to-Book, Price-to-Sales, Price-to-Free-Cash-Flow]
+      format: multiple
+      subtitle: Weighted over the holdings with data
+    - label: Yield and Margin
+      chart: bar
+      rows: [Dividend Yield, Net Profit Margin]
+      format: percent
+      subtitle: Weighted over the holdings with data
+
+get_liquidity:
+  chart: tabs
+  title: Liquidity
+  tabs:
+    - label: Average Dollar Volume
+      chart: bar
+      transpose: true
+      columns: [Average Dollar Volume]
+      format: usd
+      subtitle: Average value traded per day
+    - label: Price Impact
+      chart: bar
+      transpose: true
+      columns: [Price Impact per $100 Million]
+      format: percent
+      subtitle: Estimated price move from trading $100 million
+
+get_contribution:
+  chart: hbar
+  columns: [Contribution]
+  drop: [Total]
+  sort: desc
+  format: percent
+  title: Contribution to Return by Sector
+  subtitle: Start weight times return, in the S&P 500
+
+get_return_excluding:
+  chart: bar
+  transpose: true
+  columns: [Return, Return Excluding]
+  format: percent
+  title: Return With and Without NVDA and MSFT
+  subtitle: The fund's return and the return of its other holdings

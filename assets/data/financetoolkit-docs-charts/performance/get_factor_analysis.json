@@ -1,0 +1,1 @@
+{"charts":{"get_factor_analysis":{"title":"Information Coefficient","type":"coef","x":["1 Month","12 Months"],"coef":[0.0175,0.1126],"low":[-0.0533846,0.0285625],"high":[0.0883846,0.196638],"p":[0.6288,0.0101],"format":"ratio","subtitle":"Mean rank correlation of the factor with the later return, per horizon, with its 95% interval"}}}

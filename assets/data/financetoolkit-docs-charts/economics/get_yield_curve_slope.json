@@ -1,0 +1,1 @@
+{"charts":{"get_yield_curve_slope":{"title":"Yield Curve Slope","type":"bar","x":["2021","2022","2023"],"series":[{"name":"United States","data":[0.0139,0.0071,-0.0122]},{"name":"Germany","data":[0.0018,0.008,-0.01]},{"name":"Japan","data":[0.0,0.0016,0.0049]}],"format":"percent","subtitle":"Ten-year yield less three-month rate; negative is an inverted curve"}}}

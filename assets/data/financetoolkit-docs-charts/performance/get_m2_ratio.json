@@ -1,0 +1,1 @@
+{"charts":{"get_m2_ratio":{"title":"Modigliani-Modigliani Measure (M2)","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"HD","data":[0.3901,-0.1634,0.0932,0.1084,-0.0718]},{"name":"LOW","data":[0.348,-0.1482,0.0955,0.0923,0.0056]}],"format":"percent","subtitle":"The return at the benchmark's volatility, per year"}}}

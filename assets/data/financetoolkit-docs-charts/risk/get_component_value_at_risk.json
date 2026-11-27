@@ -1,0 +1,1 @@
+{"charts":{"get_component_value_at_risk":{"title":"Component Value at Risk","type":"hbar","x":["VTI","AGG","GLD","VNQ","Portfolio"],"series":[{"name":"Component VaR","data":[-0.0081,-0.0008,-0.0005,-0.0015,-0.0109]}],"format":"percent","subtitle":"Each asset's share of the portfolio's Value at Risk; the parts add up to the Portfolio bar","highlight":4}}}

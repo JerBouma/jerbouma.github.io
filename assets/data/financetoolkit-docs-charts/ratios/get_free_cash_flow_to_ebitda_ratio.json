@@ -1,0 +1,1 @@
+{"charts":{"get_free_cash_flow_to_ebitda_ratio":{"title":"Free Cash Flow to EBITDA","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"MSFT","data":[0.6877,0.6659,0.5809,0.5623,0.4402]},{"name":"T","data":[0.5813,0.9228,0.4699,0.467,0.4316]},{"name":"VZ","data":[0.3957,0.2187,0.4619,0.4062,0.4133]}],"format":"percent"}}}

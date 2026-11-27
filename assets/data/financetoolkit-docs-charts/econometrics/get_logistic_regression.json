@@ -1,0 +1,1 @@
+{"charts":{"get_logistic_regression":{"title":"Logistic Regression Coefficient","type":"coef","x":["Benchmark"],"coef":[164.812],"low":[115.008],"high":[214.617],"p":[0.0],"format":"number","subtitle":"Log-odds of an up day per unit of return, with its 95% confidence interval"}}}

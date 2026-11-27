@@ -1,0 +1,1 @@
+{"charts":{"get_cash_return_on_invested_capital":{"title":"Cash Return on Invested Capital","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"CAT","data":[0.0885,0.0964,0.1776,0.153,0.1216]},{"name":"CMI","data":[0.1064,0.0642,0.1543,0.0155,0.118]},{"name":"DE","data":[0.0814,0.013,0.0521,0.0509,0.0362]}],"format":"percent"}}}

@@ -1,0 +1,1 @@
+{"charts":{"get_engle_granger_cointegration":{"title":"Engle-Granger Statistic","type":"bar","x":["KO \u00b7 PEP","PEP \u00b7 KO"],"series":[{"name":"Engle-Granger Statistic","data":[-1.0287,-2.0562]},{"name":"Critical Value 5%","data":[-3.341,-3.341]}],"format":"ratio","subtitle":"Per direction of the regression; below the 5% critical value, the pair is cointegrated"}}}

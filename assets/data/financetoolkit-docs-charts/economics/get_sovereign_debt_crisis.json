@@ -1,0 +1,1 @@
+{"charts":{"get_sovereign_debt_crisis":{"title":"Sovereign Debt Crises","type":"heatmap","x":["1999","2000","2001","2002","2003","2004","2005"],"y":["Argentina","Ecuador","Greece"],"values":[[0.0,0.0,1.0,0.0,0.0,0.0,1.0],[1.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0]],"format":"amount","subtitle":"Shaded in a year of crisis","min":0,"max":1,"scale":"sequential"}}}

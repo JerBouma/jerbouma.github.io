@@ -1,0 +1,1 @@
+{"index":"Asset","columns":["Weight","Marginal Contribution","Risk Contribution","Percentage Contribution"],"rows":[["AAPL",0.4,0.0353,0.0141,0.5368],["MSFT",0.3,0.0306,0.0092,0.3487],["JNJ",0.2,0.0082,0.0016,0.0625],["XOM",0.1,0.0137,0.0014,0.052],["Total",1.0,null,0.0263,1.0]],"total":5}

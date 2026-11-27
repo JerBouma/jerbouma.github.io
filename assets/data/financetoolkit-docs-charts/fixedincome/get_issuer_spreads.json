@@ -1,0 +1,1 @@
+{"charts":{"get_issuer_spreads":{"title":"Issuer Credit Spread Curves","type":"line","x":["2Y","5Y","10Y"],"series":[{"name":"APPLE INC","data":[0.0019,0.0027,0.0056]},{"name":"BOEING CO","data":[0.0072,0.0089,0.0103]},{"name":"INTEL CORPORATION","data":[0.0076,0.0114,0.0156]}],"format":"percent","subtitle":"Over Treasuries by maturity, a line per issuer"}}}

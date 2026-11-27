@@ -67,7 +67,8 @@
       var full = actions.offsetWidth;
       // the title keeps at least 300px next to the buttons, or the buttons fold away; only the
       // title shares a row with them, so the subtitle and tabs below use the full width
-      var collapse = box.clientWidth - full - 32 < 300;
+      // a docs result has only Table (and Data): those short buttons never fold away
+      var collapse = !box.classList.contains('docs-result') && box.clientWidth - full - 32 < 300;
       actions.classList.toggle('is-collapsed', collapse);
       if (!collapse) menu(false);
       if (head) head.style.paddingRight = (actions.offsetWidth + 16) + 'px';
@@ -144,15 +145,26 @@
         }
         case 'number': return v.toFixed(1);
         case 'amount': return Math.round(v).toLocaleString('en-US');
+        // large counts such as volumes: 1.2B, 340M, 12K
+        case 'compact': {
+          var a = Math.abs(v), sign = v < 0 ? '-' : '';
+          if (a >= 1e9) return sign + (a / 1e9).toFixed(a >= 1e10 ? 0 : 1) + 'B';
+          if (a >= 1e6) return sign + (a / 1e6).toFixed(a >= 1e7 ? 0 : 1) + 'M';
+          if (a >= 1e3) return sign + (a / 1e3).toFixed(a >= 1e4 ? 0 : 1) + 'K';
+          return sign + a.toFixed(0);
+        }
         case 'usd': {
-          var a = Math.abs(v);
+          // the sign before the dollar: -$5B
+          var a = Math.abs(v), sign = v < 0 ? '-$' : '$';
           if (a === 0) return '$0';
-          if (a >= 1e12) return '$' + (v / 1e12).toFixed(2) + 'T';
-          if (a >= 1e9) return '$' + (v / 1e9).toFixed(0) + 'B';
-          return '$' + (v / 1e6).toFixed(0) + 'M';
+          if (a >= 1e12) return sign + (a / 1e12).toFixed(2) + 'T';
+          if (a >= 1e9) return sign + (a / 1e9).toFixed(a >= 1e10 ? 0 : 1) + 'B';
+          if (a >= 1e6) return sign + (a / 1e6).toFixed(a >= 1e7 ? 0 : 1) + 'M';
+          if (a >= 1e3) return sign + (a / 1e3).toFixed(a >= 1e4 ? 0 : 1) + 'K';
+          return sign + a.toFixed(2);
         }
         case 'multiple': return v.toFixed(2) + 'x';
-        case 'price': return '$' + v.toFixed(2);
+        case 'price': return (v < 0 ? '-$' : '$') + (Math.abs(v) >= 1000 ? Math.round(Math.abs(v)).toLocaleString('en-US') : Math.abs(v).toFixed(2));
         case 'ratio': return v.toFixed(2);
         // small values such as daily variances or option Greeks: three significant digits
         case 'decimal': return v === 0 ? '0' : Math.abs(v) >= 1 ? v.toFixed(2) : String(Number(v.toPrecision(3)));
@@ -169,8 +181,8 @@
     var low = a.data.map(function (v, i) { return v === null || b.data[i] === null ? null : Math.min(v, b.data[i]); });
     var band = a.data.map(function (v, i) { return v === null || b.data[i] === null ? null : Math.abs(v - b.data[i]); });
     return [
-      { name: '_low', type: 'line', data: low, stack: 'cloud', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
-      { name: 'Cloud', type: 'line', data: band, stack: 'cloud', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.18)' }, tooltip: { show: false }, silent: true }
+      { name: '_low', type: 'line', data: low, stack: 'cloud', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+      { name: 'Cloud', type: 'line', data: band, stack: 'cloud', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.18)' }, tooltip: { show: false }, silent: true }
     ];
   }
 
@@ -182,7 +194,7 @@
     var isBar = spec.type === 'bar';
     var many = spec.x.length > 60;
     var series = spec.series.map(function (s, i) {
-      var isClose = spec.cloud && s.name === 'Close';
+      var isClose = (spec.cloud || spec.overlay) && s.name === 'Close';
       // a reference line (a threshold such as RSI 70): dashed, muted, no markers
       if (s.reference) {
         return { name: s.name, type: 'line', data: s.data, showSymbol: false, silent: true, z: 1,
@@ -195,14 +207,16 @@
         data: isBar && spec.highlight !== undefined && spec.series.length === 1
           ? s.data.map(function (v, j) { return j === spec.highlight ? { value: v, itemStyle: { color: PALETTE[2] } } : v; })
           : s.data,
-        showSymbol: !many && !isBar,
-        symbolSize: 6,
+        // dots: markers only, for a level that jumps (the Parabolic SAR)
+        showSymbol: s.dots || (!many && !isBar),
+        symbolSize: s.dots ? 3 : 6,
+        showAllSymbol: s.dots ? true : 'auto',
         smooth: false,
         connectNulls: false,
         // one series gets wide bars, several share the room of their category
         barMaxWidth: spec.series.filter(function (x) { return !x.reference; }).length === 1 ? 72 : 34,
         itemStyle: { color: isClose ? css('--text-primary', '#f8fafc') : (s.color || PALETTE[i % PALETTE.length]), borderRadius: isBar && !spec.stack ? [4, 4, 0, 0] : 0 },
-        lineStyle: { width: isClose ? 2.2 : 1.8, type: s.dashed ? 'dashed' : 'solid' },
+        lineStyle: { width: s.dots ? 0 : isClose ? 2.2 : 1.8, type: s.dashed ? 'dashed' : 'solid' },
         emphasis: { focus: 'series' },
         smooth: !!spec.smooth,
         // area: fill under the line, fading out (drawdowns, cumulative values)
@@ -228,8 +242,30 @@
         label: { color: muted, fontSize: 11, formatter: '{b}' },
         data: spec.markers.map(function (m) { return { name: m.label || '', xAxis: m.x }; }) };
     }
+    // zones: shaded ranges of the value axis with a meaning, such as the Altman Z-Score's
+    // distress zone; red, amber or green (tone) and labelled at their left edge
+    if (spec.zones && series.length) {
+      var tones = { bad: 'rgba(239, 68, 68, 0.10)', mid: 'rgba(245, 158, 11, 0.09)', good: 'rgba(34, 197, 94, 0.10)' };
+      var area = series[0].markArea || { silent: true, data: [] };
+      area.silent = true;
+      // an open edge reaches just past the data, so the zone fills the plot without stretching it
+      var vals = [];
+      spec.series.forEach(function (s) { if (!s.reference) s.data.forEach(function (v) { if (typeof v === 'number') vals.push(v); }); });
+      var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals), pad = (hi - lo || Math.abs(hi) || 1) * 0.08;
+      // bars grow from zero, so the axis always holds zero: an open edge reaches it too
+      if (isBar) { lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
+      var none = function (v) { return v === null || v === undefined; };
+      area.data = (area.data || []).concat(spec.zones.filter(function (z) {
+        return (none(z.from) || z.from < hi + pad) && (none(z.to) || z.to > lo - pad);
+      }).map(function (z) {
+        return [{ name: z.label || '', yAxis: none(z.from) ? Math.min(isBar && lo === 0 ? 0 : lo - pad, z.to) : z.from,
+                  itemStyle: { color: tones[z.tone] || tones.mid }, label: { color: muted, fontSize: 11, position: 'insideTopLeft' } },
+                { yAxis: none(z.to) ? Math.max(hi + pad, z.from) : z.to }];
+      }));
+      series[0].markArea = area;
+    }
     if (spec.cloud) series = cloudSeries(spec).concat(series);
-    var legendNames = spec.series.map(function (s) { return s.name; });
+    var legendNames = spec.series.filter(function (s) { return !s.reference; }).map(function (s) { return s.name; });
     // direct labels: a line chart of two to five series names each line at its end,
     // in its colour, instead of a legend to match colours against (FT, Datawrapper).
     // Phones keep the legend, where the names would take a third of the width.
@@ -237,6 +273,8 @@
     var direct = !isBar && !spec.stack && !spec.cloud && spec.legend !== true && spec.directLabels !== false &&
       lines.length >= 2 && lines.length <= 5 && window.innerWidth >= 700 && !lines.some(function (s) { return s.axis === 1; }) &&
       lines.every(function (s) { return s.data.length && s.data[s.data.length - 1] !== null && s.data[s.data.length - 1] !== undefined; });
+    // one series named like its tab: the tab already says it, no legend
+    var solo = lines.length === 1 && spec.label !== undefined && String(lines[0].name) === String(spec.label);
     var labelRoom = 0;
     if (direct) {
       series.forEach(function (se, i) {
@@ -253,8 +291,8 @@
       animationDuration: 600,
       color: PALETTE,
       textStyle: { fontFamily: 'inherit', color: text, fontSize: 13 },
-      grid: { left: 8, right: direct ? labelRoom : 28, top: direct ? 16 : 44, bottom: 12 + (spec.xname ? 26 : 0), containLabel: true },
-      legend: { show: !direct, data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
+      grid: { left: 8, right: direct ? labelRoom : 28, top: direct || solo ? 16 : 44, bottom: 12 + (spec.xname ? 26 : 0), containLabel: true },
+      legend: { show: !direct && !solo, data: legendNames, top: 0, left: 0, textStyle: { color: text, fontSize: 13 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll', pageTextStyle: { color: muted } },
       tooltip: {
         trigger: 'axis',
         backgroundColor: css('--masthead-bg', '#0f1115'),
@@ -526,8 +564,8 @@
           xAxis: { type: 'category', data: chart.x, boundaryGap: false, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: muted, fontSize: 12, interval: function (i) { return i === 0 || i === last; } } },
           yAxis: { type: 'value', show: false, scale: true },
           series: [
-            { name: '_low', type: 'line', data: low, stack: 'gap', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
-            { name: '_gap', type: 'line', data: band, stack: 'gap', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.14)' }, tooltip: { show: false }, silent: true }
+            { name: '_low', type: 'line', data: low, stack: 'gap', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+            { name: '_gap', type: 'line', data: band, stack: 'gap', stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(129, 140, 248, 0.14)' }, tooltip: { show: false }, silent: true }
           ].concat(lines)
         }, true);
       });
@@ -548,6 +586,8 @@
   function asCards(chart) {
     if (chart.cards !== undefined) return !!chart.cards;
     if (chart.type !== 'bar' || chart.stack || !chart.series || !chart.x) return false;
+    // a level to read the bars against (p-value 0.05, ratio 1) needs the axis, not cards
+    if (chart.series.some(function (s) { return s.reference; })) return false;
     var series = chart.series.filter(function (s) { return !s.reference; });
     if (!series.length || series.some(function (s) { return s.axis === 1; })) return false;
     if (chart.x.length * series.length > 6) return false;
@@ -658,7 +698,7 @@
           // highlight: index of a bar to set apart, e.g. the share price next to model values
           data: chart.series[0].data.map(function (v, i) { return i === chart.highlight ? { value: v, itemStyle: { color: PALETTE[2] } } : v; }).reverse(),
           itemStyle: { color: PALETTE[0], borderRadius: [0, 4, 4, 0] },
-          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return fmt(p.value); } }
+          label: { show: chart.labels !== false, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return fmt(p.value); } }
         }]
       }, true);
     }
@@ -750,7 +790,8 @@
         xAxis: { type: 'value', scale: true, splitNumber: 4, name: chart.xname, nameLocation: 'middle', nameGap: 28, nameTextStyle: { color: c.muted }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fx, hideOverlap: true } },
         yAxis: { type: 'value', scale: true, name: chart.yname, nameTextStyle: { color: c.muted, align: 'left' }, splitLine: { lineStyle: { color: c.grid } }, axisLabel: { color: c.muted, formatter: fy } },
         series: [{
-          type: 'scatter', symbolSize: 18,
+          // labels: false for a cloud of unnamed points (simulations): small dots, no names
+          type: 'scatter', symbolSize: chart.labels === false ? 9 : 18,
           // pos: where a point's name goes when it would cover a neighbour ('left', 'top', 'topleft', 'bottom', 'bottomleft')
           // points in the right-hand third carry their name on the left, so the plot
           // can use the full width instead of keeping a margin free for labels
@@ -766,7 +807,7 @@
             else if (pos) d.label = { position: pos };
             return d;
           }),
-          label: { show: true, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } },
+          label: { show: chart.labels !== false, position: 'right', color: c.text, fontSize: 12, formatter: function (p) { return p.data.name; } },
           // points close together: push their names apart instead of printing them over each other
           labelLayout: { moveOverlap: 'shiftY' },
           markLine: lines.length ? { silent: true, symbol: 'none', lineStyle: { type: 'dashed', width: 1.5, color: c.muted }, data: lines } : undefined
@@ -788,7 +829,11 @@
     var data = [];
     chart.values.forEach(function (row, i) { row.forEach(function (v, j) { if (v !== null) data.push([j, i, v]); }); });
     // cell labels: in the chart's format (e.g. percent), else two decimals
-    var cell = chart.format ? formatter(chart.format) : function (v) { return v.toFixed(chart.digits !== undefined ? chart.digits : 2); };
+    // 0/1 flags (a crisis year or not): the colour says it, no number in each cell
+    // a large grid (holdings by year) reads by colour; the values stay in the tooltip
+    var crowded = chart.x.length > 12 || chart.y.length > 15;
+    var binary = chart.values.every(function (row) { return row.every(function (v) { return v === null || v === 0 || v === 1; }); });
+    var cell = chart.digits !== undefined ? function (v) { return v.toFixed(chart.digits); } : chart.format ? formatter(chart.format) : function (v) { return v.toFixed(2); };
     function draw() {
       var c = axisColors();
       inst.setOption({
@@ -799,7 +844,7 @@
         xAxis: { type: 'category', data: chart.x, splitArea: { show: false }, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0, rotate: n > 6 ? 40 : 0 } },
         yAxis: { type: 'category', data: chart.y, inverse: true, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: c.text, fontSize: 12, interval: 0 } },
         visualMap: { min: chart.min !== undefined ? chart.min : -1, max: chart.max !== undefined ? chart.max : 1, calculable: false, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 120, textStyle: { color: c.muted }, inRange: { color: (function (c) { return chart.reverse ? c.slice().reverse() : c; })(chart.scale === 'sequential' ? ['rgba(148,163,184,0.15)', '#38bdf8'] : ['#f472b6', 'rgba(148,163,184,0.15)', '#38bdf8']) } },
-        series: [{ type: 'heatmap', data: data, label: { show: true, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return cell(p.data[2]); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]
+        series: [{ type: 'heatmap', data: data, label: { show: !binary && !crowded, color: css('--text-primary', '#f8fafc'), fontSize: 12, formatter: function (p) { return cell(p.data[2]); } }, itemStyle: { borderColor: css('--card-bg', '#1e293b'), borderWidth: 2, borderRadius: 4 } }]
       }, true);
     }
     draw();
@@ -822,8 +867,8 @@
     var mid = chart.center || 'median', outer = chart.range || '5–95%';
     function band(low, high, name, color, opacity, stack) {
       return [
-        { name: '_' + stack, type: 'line', data: low, stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
-        { name: name, type: 'line', data: high.map(function (v, i) { return v === null || low[i] === null ? null : v - low[i]; }), stack: stack, symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: color, opacity: opacity }, tooltip: { show: false }, silent: true }
+        { name: '_' + stack, type: 'line', data: low, stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, tooltip: { show: false }, silent: true },
+        { name: name, type: 'line', data: high.map(function (v, i) { return v === null || low[i] === null ? null : v - low[i]; }), stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: color, opacity: opacity }, tooltip: { show: false }, silent: true }
       ];
     }
     var c = axisColors(), series = [], legend = [];
@@ -881,6 +926,15 @@
     instances.push({ draw: draw });
   }
 
+
+  // tabs with their own subtitle: one line under the title that follows the active tab
+  function tabSubtitle(title, chart, specs) {
+    if (chart.subtitle || !specs.some(function (s) { return s.subtitle; })) return function () {};
+    var sub = document.createElement('p');
+    sub.className = 'ft-chart__subtitle';
+    title.insertAdjacentElement('afterend', sub);
+    return function (i) { sub.textContent = specs[i].subtitle || ''; sub.hidden = !specs[i].subtitle; };
+  }
 
   // Tab buttons that would wrap onto more lines become one dropdown with the same
   // choices; the buttons come back when there is room again
@@ -945,18 +999,143 @@
       return sub;
     });
     compactTabs(tabs);
+    var subtitle = tabSubtitle(title, chart, chart.panels);
     var drawn = [];
     function show(i) {
+      subtitle(i);
       subs.forEach(function (sub, j) { sub.hidden = j !== i; });
       Array.prototype.forEach.call(tabs.children, function (x, j) { x.classList.toggle('is-active', j === i); });
-      if (!drawn[i]) { drawn[i] = true; render(subs[i], Object.assign({}, chart.panels[i], { title: '' })); }
+      if (!drawn[i]) { drawn[i] = true; render(subs[i], Object.assign({}, chart.panels[i], { title: '', subtitle: '' })); }
     }
     Array.prototype.forEach.call(tabs.children, function (b, i) { b.addEventListener('click', function () { show(i); }); });
     show(0);
   }
 
+  // A technical analysis chart as the indicator is usually drawn: the price as
+  // candlesticks with the overlays on it (bands, averages, stops), and an
+  // indicator in its own panel underneath with its usual levels, on one time
+  // axis that zooms both. spec: x, ohlc ([open, close, low, high] per day),
+  // overlays [{name, data, color, dashed, dots}], fill [upper, lower] (the band
+  // between two overlays), lower {series [{name, data, bar, color}], levels,
+  // format, min, max}, zoom (the number of days shown at first).
+  function renderTa(box, chart) {
+    box.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'ft-chart__head';
+    var title = document.createElement('p');
+    title.className = 'ft-chart__title';
+    title.textContent = chart.title || '';
+    head.appendChild(title);
+    if (chart.subtitle) {
+      var sub = document.createElement('p');
+      sub.className = 'ft-chart__subtitle';
+      sub.textContent = chart.subtitle;
+      head.appendChild(sub);
+    }
+    box.appendChild(head);
+    var canvas = document.createElement('div');
+    canvas.className = 'ft-chart__canvas';
+    canvas.style.height = (chart.lower ? 600 : 440) + 'px';
+    box.appendChild(canvas);
+    var inst = initChart(canvas);
+    var UP = '#22c55e', DOWN = '#ef4444';
+    function draw() {
+      var text = css('--text-secondary', '#cbd5e1'), muted = css('--text-muted', '#94a3b8'), grid = css('--card-border', 'rgba(255,255,255,0.1)');
+      var fmt = formatter(chart.format), lowFmt = formatter(chart.lower && chart.lower.format || 'ratio');
+      var lower = chart.lower;
+      var grids = lower ? [{ left: 8, right: 16, top: 40, height: '48%', containLabel: true }, { left: 8, right: 16, top: '63%', bottom: 56, containLabel: true }]
+                        : [{ left: 8, right: 16, top: 40, bottom: 56, containLabel: true }];
+      var axisX = function (i) {
+        return { type: 'category', data: chart.x, gridIndex: i, boundaryGap: true, axisLine: { lineStyle: { color: grid } }, axisTick: { show: false },
+          axisLabel: { show: !lower || i === 1, color: muted, hideOverlap: true, fontSize: 12 }, axisPointer: { label: { show: false } } };
+      };
+      // the price as candlesticks (left out for indicators of a whole market, such as breadth)
+      var series = chart.ohlc ? [{
+        name: chart.priceName || 'Price', type: 'candlestick', data: chart.ohlc.map(function (d) { return d || ['-', '-', '-', '-']; }), xAxisIndex: 0, yAxisIndex: 0, barMaxWidth: 8,
+        itemStyle: { color: UP, color0: DOWN, borderColor: UP, borderColor0: DOWN }
+      }] : [];
+      var names = chart.ohlc ? [chart.priceName || 'Price'] : [];
+      (chart.overlays || []).forEach(function (o, i) {
+        var color = o.color || PALETTE[(i + 1) % PALETTE.length];
+        series.push({ name: o.name, type: 'line', data: o.data, xAxisIndex: 0, yAxisIndex: 0, symbol: 'circle',
+          showSymbol: !!o.dots, showAllSymbol: !!o.dots, symbolSize: o.dots ? 3 : 4, connectNulls: false, step: o.step ? 'end' : false,
+          itemStyle: { color: color }, lineStyle: { width: o.dots ? 0 : 1.6, color: color, type: o.dashed ? 'dashed' : 'solid' } });
+        names.push(o.name);
+      });
+      // the band between two overlays, shaded (Bollinger Bands, channels, the Ichimoku cloud)
+      if (chart.fill) {
+        var up = chart.overlays.filter(function (o) { return o.name === chart.fill[0]; })[0];
+        var dn = chart.overlays.filter(function (o) { return o.name === chart.fill[1]; })[0];
+        if (up && dn) {
+          // one colour for the band, or two (fill_colors): the first where fill[0] is on top
+          var colors = chart.fill_colors || [up.color || PALETTE[1], up.color || PALETTE[1]];
+          [0, 1].forEach(function (side) {
+            if (side === 1 && !chart.fill_colors) return;
+            var on = function (i) {
+              var a = up.data[i], b = dn.data[i];
+              if (a === null || b === null) return false;
+              return chart.fill_colors ? (side === 0 ? a >= b : a < b) : true;
+            };
+            var low = dn.data.map(function (v, i) { return on(i) ? Math.min(v, up.data[i]) : null; });
+            var width = dn.data.map(function (v, i) { return on(i) ? Math.abs(up.data[i] - v) : null; });
+            var stack = 'band' + side;
+            series.unshift(
+              { name: '_low' + side, type: 'line', data: low, stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 },
+              { name: '_band' + side, type: 'line', data: width, stack: stack, stackStrategy: 'all', symbol: 'none', lineStyle: { opacity: 0 }, areaStyle: { color: fade(colors[side], 0.14) }, silent: true, tooltip: { show: false }, xAxisIndex: 0, yAxisIndex: 0 });
+          });
+        }
+      }
+      var yAxes = [{ type: 'value', scale: true, gridIndex: 0, splitLine: { lineStyle: { color: grid } }, axisLabel: { color: muted, formatter: fmt, fontSize: 12 } }];
+      if (lower) {
+        yAxes.push({ type: 'value', scale: lower.min === undefined, min: lower.min, max: lower.max, gridIndex: 1, splitNumber: 3,
+          splitLine: { lineStyle: { color: grid } }, axisLabel: { color: muted, formatter: lowFmt, fontSize: 12 } });
+        lower.series.forEach(function (l, i) {
+          var color = l.color || PALETTE[(i + (chart.overlays || []).length + 1) % PALETTE.length];
+          var item = { name: l.name, type: l.bar ? 'bar' : 'line', data: l.data, xAxisIndex: 1, yAxisIndex: 1, symbol: 'none', connectNulls: false,
+            itemStyle: { color: color }, lineStyle: { width: 1.6, color: color } };
+          // a histogram above and below zero: positive bars green, negative red
+          if (l.bar && l.signed) item.data = l.data.map(function (v) { return v === null ? null : { value: v, itemStyle: { color: v >= 0 ? fade(UP, 0.7) : fade(DOWN, 0.7) } }; });
+          if (i === 0 && lower.levels) {
+            item.markLine = { silent: true, symbol: 'none', label: { show: true, position: 'end', color: muted, fontSize: 11, formatter: function (p) { return lowFmt(p.value); } },
+              lineStyle: { color: muted, type: 'dashed', width: 1 }, data: lower.levels.map(function (v) { return { yAxis: v }; }) };
+          }
+          series.push(item);
+          names.push(l.name);
+        });
+      }
+      // half the period at first on a phone, where a year of candles is too dense to read
+      var zoom = chart.zoom && canvas.clientWidth < 600 ? Math.round(chart.zoom / 2) : chart.zoom;
+      var start = zoom && chart.x.length > zoom ? 100 * (1 - zoom / chart.x.length) : 0;
+      inst.setOption({
+        animation: false,
+        textStyle: { fontFamily: 'inherit', color: text, fontSize: 13 },
+        legend: { data: names, top: 0, left: 0, textStyle: { color: text, fontSize: 12.5 }, icon: 'roundRect', itemWidth: 12, itemHeight: 8, type: 'scroll' },
+        tooltip: { trigger: 'axis', axisPointer: { type: 'cross', link: [{ xAxisIndex: 'all' }], lineStyle: { color: muted } },
+          backgroundColor: css('--masthead-bg', '#0f1115'), borderColor: grid, textStyle: { color: css('--text-primary', '#f8fafc'), fontSize: 12.5 },
+          valueFormatter: function (v) { return typeof v === 'number' ? fmt(v) : v; } },
+        axisPointer: { link: [{ xAxisIndex: 'all' }] },
+        grid: grids,
+        xAxis: lower ? [axisX(0), axisX(1)] : [axisX(0)],
+        yAxis: yAxes,
+        dataZoom: [
+          { type: 'inside', xAxisIndex: lower ? [0, 1] : [0], start: start, end: 100 },
+          { type: 'slider', xAxisIndex: lower ? [0, 1] : [0], start: start, end: 100, bottom: 8, height: 22, borderColor: grid,
+            textStyle: { color: muted }, fillerColor: 'rgba(56, 189, 248, 0.12)', dataBackground: { lineStyle: { color: muted }, areaStyle: { color: 'rgba(148,163,184,0.15)' } } }
+        ],
+        series: series
+      }, true);
+    }
+    draw();
+    instances.push({ instance: inst, draw: draw });
+    if ('ResizeObserver' in window) new ResizeObserver(function () { inst.resize(); }).observe(canvas);
+  }
+
   function render(box, chart) {
+    if (chart.type === 'ta') return renderTa(box, chart);
     if (chart.type === 'panels') return renderPanels(box, chart);
+    // tabs holding another kind of chart (coefficients, a scatter, horizontal bars...) draw as panels
+    if (chart.type === 'tabs' && chart.tabs.some(function (s) { return ['line', 'bar', 'area', 'fan', undefined].indexOf(s.type) < 0 || asCards(s); }))
+      return renderPanels(box, Object.assign({}, chart, { panels: chart.tabs }));
     if (asCards(chart)) return renderCards(box, chart);
     if (chart.type === 'dupont') return renderDupont(box, chart);
     if (chart.type === 'kpis') return renderKpis(box, chart);
@@ -997,9 +1176,11 @@
     box.appendChild(canvas);
     if (tabs) compactTabs(tabs);
 
+    var subtitle = specs.length > 1 ? tabSubtitle(title, chart, specs) : function () {};
     var instance = initChart(canvas);
     var current = 0;
-    function draw() { instance.setOption(specs[current].type === 'fan' ? fanOption(specs[current]) : option(specs[current]), true); }
+    subtitle(0);
+    function draw() { subtitle(current); instance.setOption(specs[current].type === 'fan' ? fanOption(specs[current]) : option(specs[current]), true); }
     draw();
     instances.push({ instance: instance, draw: draw });
     if (tabs) {
@@ -1167,6 +1348,14 @@
     if (box.ftShown) return;
     box.ftShown = true;
     var src = box.getAttribute('data-src') || DATA;
+    // a chart that carries its own data (the docs pages' example results)
+    if (src === 'inline') {
+      var spec = JSON.parse(box.querySelector('script[type="application/json"]').textContent);
+      loadScript(ECHARTS).then(function () { draw(box, spec); }).catch(function () {
+        box.innerHTML = '<p class="ft-chart__error">The chart could not be loaded.</p>';
+      });
+      return;
+    }
     start(src).then(function (data) {
       var id = box.getAttribute('data-chart');
       if (data.charts[id]) return draw(box, data.charts[id]);
@@ -1189,7 +1378,7 @@
   // the time they scroll into view without competing with the first paint
   window.addEventListener('load', function () {
     boxes.map(function (b) { return b.getAttribute('data-src') || DATA; })
-      .filter(function (src, i, all) { return all.indexOf(src) === i; })
+      .filter(function (src, i, all) { return src !== 'inline' && all.indexOf(src) === i; })
       .forEach(function (src) { start(src).catch(function () {}); });
   });
 

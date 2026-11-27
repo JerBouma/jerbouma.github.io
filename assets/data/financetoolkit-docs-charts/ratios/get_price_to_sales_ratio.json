@@ -1,0 +1,1 @@
+{"charts":{"get_price_to_sales_ratio":{"title":"Price to Sales","type":"line","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMD","data":[10.9289,4.3114,10.5618,7.9479,10.154]},{"name":"INTC","data":[2.6556,1.7282,3.903,1.6362,3.1027]},{"name":"NVDA","data":[21.5127,18.9229,24.9842,27.1083,null]}],"format":"multiple"}}}

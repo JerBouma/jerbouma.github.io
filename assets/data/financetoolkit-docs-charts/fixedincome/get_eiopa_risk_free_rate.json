@@ -1,0 +1,1 @@
+{"charts":{"get_eiopa_risk_free_rate":{"title":"EIOPA Risk-Free Rate Curve","type":"line","x":["1Y","10Y","30Y","60Y","150Y"],"series":[{"name":"Euro Area","data":[0.0327,0.0358,0.0351,0.0342,0.0335]},{"name":"United Kingdom","data":[0.0445,0.0501,0.0533,0.0447,0.0376]}],"format":"percent","subtitle":"By maturity, the last month of the example"}}}

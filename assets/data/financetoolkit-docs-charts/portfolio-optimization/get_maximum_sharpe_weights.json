@@ -1,0 +1,1 @@
+{"charts":{"get_maximum_sharpe_weights":{"title":"Maximum Sharpe Ratio Weights","type":"hbar","x":["XOM","MSFT","JNJ","AAPL"],"series":[{"name":"Weight","data":[0.4,0.3139,0.2561,0.03]}],"format":"percent"}}}
