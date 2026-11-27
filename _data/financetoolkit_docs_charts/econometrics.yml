@@ -352,7 +352,7 @@ get_engle_granger_cointegration:
 
 get_johansen_cointegration:
   chart: bar
-  columns: [Trace Statistic, Trace Critical Value 95%]
+  columns: [Trace Statistic, Trace Critical Value 5%]
   format: number
   title: Johansen Trace Statistic
   subtitle: Per number of cointegrating relations; above the 5% critical value, that rank is rejected

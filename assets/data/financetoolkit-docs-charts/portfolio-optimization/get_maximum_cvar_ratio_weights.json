@@ -1,1 +1,0 @@
-{"charts":{"get_maximum_cvar_ratio_weights":{"title":"Maximum CVaR Ratio Weights","type":"hbar","x":["XOM","MSFT","JNJ","AAPL"],"series":[{"name":"Weight","data":[0.5299,0.2779,0.1921,0.0]}],"format":"percent","subtitle":"Weights that maximize the excess return per unit of CVaR"}}}

@@ -154,13 +154,6 @@ get_coefficient_of_variation:
   title: Coefficient of Variation
   subtitle: Standard deviation of the daily returns divided by their mean, per year
 
-get_move_significance:
-  chart: bar
-  columns: [Volatility Multiple, VaR Multiple]
-  format: ratio
-  title: Move Significance
-  subtitle: The day's return as a multiple of the volatility and of the Value at Risk
-
 get_autocorrelation:
   chart: bar
   levels: [-0.0553, 0.0553]

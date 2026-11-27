@@ -1001,14 +1001,14 @@ get_outstanding_mortgage_rates:
     columns:
     - Below 3%
     - Below 4%
-    - Below 5%
-    - Below 6%
     subtitle: Share of outstanding mortgages with a rate below each level
-  - label: Average rate
+  - label: Average and market rate
     chart: line
     format: percent
     columns:
     - Average Rate
+    - Market Rate
+    subtitle: Average rate on outstanding mortgages against the rate on new ones
 
 get_real_yield_curve:
   chart: line

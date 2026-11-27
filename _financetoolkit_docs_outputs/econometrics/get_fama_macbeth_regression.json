@@ -1,1 +1,1 @@
-{"index":"","columns":["Risk Premium","Std. Error","t-Statistic","P-Value"],"rows":[["Intercept",0.0066,0.0058,1.1516,0.2542],["Benchmark",0.0101,0.008,1.266,0.2106]],"total":2}
+{"index":"","columns":["Risk Premium","Standard Error","t-Statistic","P-Value"],"rows":[["Intercept",0.0066,0.0058,1.147,0.2561],["Benchmark",0.0101,0.008,1.2684,0.2097]],"total":2}

@@ -1,0 +1,1 @@
+{"charts":{"get_max_pain":{"title":"Max Pain and Stock Price","type":"line","x":["2026-11-30","2026-12-02","2026-12-04","2026-12-07"],"series":[{"name":"Max Pain","data":[null,null,null,null],"dots":true},{"name":"Stock Price","data":[355.58,355.58,355.58,355.58]}],"format":"price","subtitle":"Strike where option holders lose the most at expiration, per expiration"}}}

@@ -1,1 +1,0 @@
-{"charts":{"get_mae":{"title":"Mean Absolute Error","type":"bar","x":["GLD \u00b7 IAU","GLD \u00b7 GLDM","IAU \u00b7 GLDM"],"series":[{"name":"MAE","data":[0.0002,0.0003,0.0003]}],"format":"percent","subtitle":"Between the daily returns of each pair"}}}

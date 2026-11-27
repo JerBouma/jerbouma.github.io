@@ -313,14 +313,6 @@ get_drawdown_table:
     start_date: "2021-01-01"
     end_date: "2025-12-31"
     top: 3
-get_move_significance:
-  question: How unusual were the moves of Nvidia and Coca-Cola on 27 January 2025, compared with their history since 2015?
-  tool: risk
-  arguments:
-    tickers: "NVDA,KO"
-    start_date: "2015-01-01"
-    end_date: "2025-01-27"
-    limit: -1
 get_factor_analysis:
   question: How well did volatility, maximum drawdown and the other risk metrics predict the 1- and 12-month returns of Apple, Microsoft, Alphabet, Amazon, Meta, Nvidia, JPMorgan Chase, Johnson & Johnson, Exxon Mobil, Procter & Gamble, Coca-Cola, Walmart, Visa, UnitedHealth, Home Depot and Chevron from 2016 to 2025?
   tool: risk

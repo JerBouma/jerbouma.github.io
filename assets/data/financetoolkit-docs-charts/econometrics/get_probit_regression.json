@@ -1,1 +1,0 @@
-{"charts":{"get_probit_regression":{"title":"Probit Regression Coefficient","type":"coef","x":["QQQ"],"coef":[78.0716],"low":[56.2376],"high":[99.9056],"p":[0.0],"format":"number","subtitle":"Estimate with its 95% confidence interval"}}}

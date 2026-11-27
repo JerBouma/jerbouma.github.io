@@ -1,0 +1,1 @@
+{"charts":{"get_model_free_implied_volatility":{"title":"Model-Free Implied Volatility","type":"bar","x":["^SPX"],"series":[{"name":"Model-Free Implied Volatility","data":[0.1814]}],"format":"percent","subtitle":"VIX method, interpolated to 30 days"}}}

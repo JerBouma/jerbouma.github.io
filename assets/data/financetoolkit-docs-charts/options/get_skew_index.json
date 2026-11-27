@@ -1,0 +1,1 @@
+{"charts":{"get_skew_index":{"title":"SKEW Index","type":"bar","x":["^SPX"],"series":[{"name":"SKEW Index","data":[106.553]}],"format":"number","subtitle":"100 means a normal distribution; higher means more tail risk on the downside"}}}

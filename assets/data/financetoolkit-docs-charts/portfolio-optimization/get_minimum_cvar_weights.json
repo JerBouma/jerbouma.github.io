@@ -1,1 +1,0 @@
-{"charts":{"get_minimum_cvar_weights":{"title":"Minimum CVaR Weights","type":"hbar","x":["JNJ","XOM","MSFT","AAPL"],"series":[{"name":"Weight","data":[0.5968,0.2209,0.1823,0.0]}],"format":"percent"}}}

@@ -1,1 +1,1 @@
-{"index":"Issuer","columns":["2Y","5Y","10Y","Bonds","Shortest","Longest"],"rows":[["APPLE INC",0.0019,0.0027,0.0056,43.0,1.2083,35.7083],["BOEING CO",0.0072,0.0089,0.0103,20.0,1.1889,37.4389],["INTEL CORPORATION",0.0076,0.0114,0.0156,35.0,1.2139,36.2139]],"total":3}
+{"index":"Issuer","columns":["2Y","5Y","10Y","Bonds","Shortest","Longest"],"rows":[["APPLE INC",0.001,0.0025,0.0054,43.0,1.2028,35.7028],["BOEING CO",0.0054,0.0081,0.0091,20.0,1.1833,37.4333],["INTEL CORPORATION",0.0042,0.0103,0.0156,35.0,1.2083,36.2083]],"total":3}

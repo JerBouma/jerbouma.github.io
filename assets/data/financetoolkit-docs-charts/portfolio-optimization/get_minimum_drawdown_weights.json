@@ -1,1 +1,0 @@
-{"charts":{"get_minimum_drawdown_weights":{"title":"Minimum Drawdown Weights","type":"hbar","x":["JNJ","XOM","MSFT","AAPL"],"series":[{"name":"Weight","data":[0.4314,0.2404,0.1761,0.1521]}],"format":"percent","subtitle":"Weights that minimize the conditional drawdown at risk"}}}
