@@ -1,5 +1,12 @@
 [
   {
+    "id": "xNzlKOg3I-Y",
+    "title": "Implied move, explained: how far options expect the S&P 500 to swing #StockMarket #Options #Shorts",
+    "published": "2026-11-26T17:31:10+00:00",
+    "description": "Search \"Finance Toolkit MCP\" to give your AI these numbers.\n\nThe implied move is the swing, up or down, that options price in by their expiry. It is the cost of a call plus a put at the current price (a straddle), divided by that price. Implied move = straddle price / share price.\n\nAt Wednesday 25 Nov 2026's close (US markets were shut on Thursday for Thanksgiving), a straddle on the S&P 500 fund SPY to 18 December cost $35 on a $717 fund: an implied move of 4.9%, a range of about $682 to $752. The window holds the 4 December jobs report and the Fed's 9 December decision, where traders expect the Fed to raise its interest rate after core PCE inflation came in at 3.3% (FXStreet). By 18 December, chips (SMH) are priced for 13.5%, oil (USO) 8.9%, the Nasdaq 100 (QQQ) 7.2% and long-term Treasuries (TLT) 2.5%. SPY's implied volatility (27.5%) is below its realized volatility (30.3%), and in the week to 20 November it fell 8.6%. The implied move tells you how big a swing the options expect and nothing about its direction, and it is an average that a shock can exceed.\n\nData: Finance Toolkit MCP (FinancialModelingPrep, Yahoo Finance). News: CNBC (17 Nov 2026), FXStreet (25 Nov 2026).\n\nhttps://www.jeroenbouma.com/projects/financetoolkit/mcp\n\nNot investment advice.\n\n#StockMarket #Options #Shorts",
+    "series": "finance"
+  },
+  {
     "id": "3ttw5rF-KJs",
     "title": "Implied growth rate, explained: what Nvidia's price still assumes #Nvidia #StockMarket #Shorts",
     "published": "2026-11-25T16:47:29+00:00",
