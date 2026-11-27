@@ -615,3 +615,17 @@ get_z_score:
     end_date: "2025-12-31"
     rolling: 30
     limit: -5
+get_berkowitz_test:
+  question: Did the one-day-ahead return distributions of a GARCH model match what happened to the Invesco QQQ Trust, the iShares 20+ Year Treasury Bond ETF (TLT) and SPDR Gold Shares (GLD) from 2019 to 2025, according to the Berkowitz test?
+  tool: econometrics
+  arguments:
+    tickers: QQQ,TLT,GLD
+    start_date: "2019-01-01"
+    end_date: "2025-12-31"
+get_hong_li_test:
+  question: Did the one-day-ahead return densities of a GARCH model have the right shape and dependence for the Invesco QQQ Trust, the iShares 20+ Year Treasury Bond ETF (TLT) and SPDR Gold Shares (GLD) from 2019 to 2025, according to the Hong-Li test?
+  tool: econometrics
+  arguments:
+    tickers: QQQ,TLT,GLD
+    start_date: "2019-01-01"
+    end_date: "2025-12-31"
