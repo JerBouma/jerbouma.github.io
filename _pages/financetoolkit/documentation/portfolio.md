@@ -600,7 +600,7 @@ pd.DataFrame: A DataFrame containing the portfolio performance metrics for the s
 
 **Raises:**
 
-ValueError: If an invalid or unsupported period is provided.
+InvalidArgumentError: If the period is not one of the options.
 ValueError: If there is an issue with collecting historical data or creating the portfolio performance.
 
 **Notes:**
@@ -760,8 +760,8 @@ returns, costs, and benchmarks, for the specified period.
 
 **Raises:**
 
-ValueError: If an invalid or unsupported period is provided or if there is an issue
-with creating the transaction performance metrics.
+InvalidArgumentError: If the period is not one of the options.
+ValueError: If there is an issue with creating the transaction performance metrics.
 
 **Notes:**
 

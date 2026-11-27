@@ -267,7 +267,7 @@ $$
 
 Losses, drawdowns, the Value at Risk and the Conditional Value at Risk are negative returns, as in the Risk module.
 
-**Also known as:** portfolio risk report, risk summary, risk metrics of weights.
+**Also known as:** portfolio risk report, risk summary, risk metrics of weights, VaR and CVaR of a weighted portfolio.
 
 **References:**
 

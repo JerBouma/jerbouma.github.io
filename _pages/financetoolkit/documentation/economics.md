@@ -896,7 +896,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Raises:**
 
-ValueError: If the commodity is not one of the supported names.
+InvalidArgumentError: If the commodity is not one of the supported names.
 
 **Returns:**
 
@@ -969,7 +969,7 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Raises:**
 
-ValueError: If the commodity is not one of the supported names.
+InvalidArgumentError: If the commodity is not one of the supported names.
 
 **Returns:**
 
@@ -6725,7 +6725,7 @@ A positive (upward-sloping) yield curve is the historical norm and reflects inve
 
 Both legs are decimal fractions (0.05 for 5%) whichever source is used, so the result is itself a decimal fraction (-0.0122 for an inversion of 1.22 percentage points), matching the convention used by get_misery_index and get_real_interest_rate.
 
-**Also known as:** term spread, 10Y-3M spread, curve inversion.
+**Also known as:** term spread, 10Y-3M spread, curve inversion, inverted yield curve.
 
 **Args:**
 

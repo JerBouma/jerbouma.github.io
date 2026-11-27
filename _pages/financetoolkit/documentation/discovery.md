@@ -110,8 +110,9 @@ applies no filter.
 - <u>dividend_higher (float &#124; None):</u> The minimum dividend of the stock, as an amount per share
 over the last annual period rather than as a yield. Defaults to None, which applies no filter.
 - <u>dividend_lower (float &#124; None):</u> The maximum dividend of the stock. Defaults to None, which applies no filter.
-- <u>sector (str &#124; None):</u> The sector to restrict the screen to, e.g. "Energy". Defaults to None, which applies no
-filter.
+- <u>sector (str &#124; None):</u> The sector to restrict the screen to. Options are: "Basic Materials", "Communication
+Services", "Consumer Cyclical", "Consumer Defensive", "Energy", "Financial Services", "Healthcare",
+"Industrials", "Real Estate", "Technology", "Utilities". Defaults to None, which applies no filter.
 - <u>industry (str &#124; None):</u> The industry to restrict the screen to, e.g. "Biotechnology". Defaults to None, which
 applies no filter.
 - <u>country (str &#124; None):</u> The country to restrict the screen to, as a two-letter code ("US")
@@ -1454,14 +1455,17 @@ Which returns:
 ## get_sector_performance
 Get the average daily price change of the companies in each sector of an exchange, as a decimal (0.0125 means +1.25%).
 
-Provide exactly one of a date (a snapshot across all sectors on that date) or a sector (the historical time series for one sector).
+Pass a date (a snapshot across all sectors on that date) or a sector (the historical time series for one sector), not both. Without either, it is the snapshot of the latest business day that has one, looking back up to five business days (a market holiday has none).
 
 **Also known as:** sector performance snapshot, sector performance history, sector trend.
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
-- <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy". Defaults to None.
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None,
+which uses the latest business day with a snapshot unless a sector is given.
+- <u>sector (str, optional):</u> The sector to retrieve the history for. Options are: "Basic Materials",
+"Communication Services", "Consumer Cyclical", "Consumer Defensive", "Energy", "Financial Services",
+"Healthcare", "Industrials", "Real Estate", "Technology", "Utilities". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to None,
 which uses the date a year ago.
 - <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to None, which
@@ -1509,13 +1513,14 @@ Which returns:
 ## get_industry_performance
 Get the average daily price change of the companies in each industry of an exchange, as a decimal (0.0125 means +1.25%).
 
-Provide exactly one of a date (a snapshot across all industries on that date) or an industry (the historical time series for one industry).
+Pass a date (a snapshot across all industries on that date) or an industry (the historical time series for one industry), not both. Without either, it is the snapshot of the latest business day that has one, looking back up to five business days (a market holiday has none).
 
 **Also known as:** industry performance snapshot, industry performance history, industry trend.
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None,
+which uses the latest business day with a snapshot unless an industry is given.
 - <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to None,
 which uses the date a year ago.
@@ -1564,14 +1569,17 @@ Which returns:
 ## get_sector_pe
 Get the price-to-earnings (P/E) ratio of the companies in each sector of an exchange, how richly each sector is valued.
 
-Provide exactly one of a date (a snapshot across all sectors on that date) or a sector (the historical time series for one sector).
+Pass a date (a snapshot across all sectors on that date) or a sector (the historical time series for one sector), not both. Without either, it is the snapshot of the latest business day that has one, looking back up to five business days (a market holiday has none).
 
 **Also known as:** sector P/E snapshot, sector P/E history, sector valuation trend.
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
-- <u>sector (str, optional):</u> The sector to retrieve the history for, e.g. "Energy". Defaults to None.
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None,
+which uses the latest business day with a snapshot unless a sector is given.
+- <u>sector (str, optional):</u> The sector to retrieve the history for. Options are: "Basic Materials",
+"Communication Services", "Consumer Cyclical", "Consumer Defensive", "Energy", "Financial Services",
+"Healthcare", "Industrials", "Real Estate", "Technology", "Utilities". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one sector. Defaults to None,
 which uses the date a year ago.
 - <u>end_date (str, optional):</u> The end of the history of one sector. Defaults to None, which
@@ -1619,13 +1627,14 @@ Which returns:
 ## get_industry_pe
 Get the price-to-earnings (P/E) ratio of the companies in each industry of an exchange, how richly each industry is valued.
 
-Provide exactly one of a date (a snapshot across all industries on that date) or an industry (the historical time series for one industry).
+Pass a date (a snapshot across all industries on that date) or an industry (the historical time series for one industry), not both. Without either, it is the snapshot of the latest business day that has one, looking back up to five business days (a market holiday has none).
 
 **Also known as:** industry P/E snapshot, industry P/E history, industry valuation trend.
 
 **Args:**
 
-- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None.
+- <u>date (str, optional):</u> The date to retrieve a snapshot for, e.g. "2024-02-01". Defaults to None,
+which uses the latest business day with a snapshot unless an industry is given.
 - <u>industry (str, optional):</u> The industry to retrieve the history for, e.g. "Biotechnology". Defaults to None.
 - <u>start_date (str, optional):</u> The start of the history of one industry. Defaults to None,
 which uses the date a year ago.

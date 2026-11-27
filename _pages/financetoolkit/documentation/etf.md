@@ -147,7 +147,7 @@ Get how every fund is allocated across countries, as decimals, the largest weigh
 
 Two funds tracking similar markets can differ considerably here, which matters for the currency and political risk the fund carries.
 
-Tickers that are not an ETF or fund return no data. They are not removed from the Toolkit instance.
+Tickers that are not an ETF or fund return no data, which is logged. They are not removed from the Toolkit instance.
 
 **Also known as:** country allocation, geographic exposure, country exposure.
 
@@ -197,7 +197,7 @@ Get how every fund is allocated across sectors, as decimals, the largest weights
 
 This shows whether a fund that looks broad is in fact concentrated in a few sectors, such as technology in many large-cap indices.
 
-Tickers that are not an ETF or fund return no data. They are not removed from the Toolkit instance.
+Tickers that are not an ETF or fund return no data, which is logged. They are not removed from the Toolkit instance.
 
 **Also known as:** sector allocation, sector exposure, sector breakdown.
 

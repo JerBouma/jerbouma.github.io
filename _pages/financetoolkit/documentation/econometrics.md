@@ -861,7 +861,7 @@ $$
 \text{P-Value} = 2 \cdot (1 - \Phi(\left|z\right|)) \;\text{for both statistics},\;\; \text{with } \Phi \text{ the standard normal CDF}
 $$
 
-**Also known as:** Lo-MacKinlay test, VR test.
+**Also known as:** Lo-MacKinlay test, VR test, random walk test, mean reversion test, trending or mean-reverting.
 
 **References:**
 
@@ -1963,8 +1963,8 @@ $$
 yearly). Defaults to "daily".
 - <u>column (str, optional):</u> The price column. Defaults to "Adj Close".
 - <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window for the
-mean and standard deviation of the z-score. Defaults to None, which uses the full
-sample.
+mean and standard deviation of the z-score, at least 2. Defaults to None, which
+uses the full sample.
 - <u>entry_z_score (float, optional):</u> The z-score at which a position is opened.
 Defaults to 2.0.
 - <u>exit_z_score (float, optional):</u> The z-score whose crossing on the way back closes
@@ -2179,8 +2179,8 @@ frequency.
 (RiskMetrics EWMA), "rolling" (rolling sample variance). Defaults to "ewma".
 - <u>method_b (str, optional):</u> The second (competing) volatility forecasting method. Options are:
 "ewma" (RiskMetrics EWMA), "rolling" (rolling sample variance). Defaults to "rolling".
-- <u>window (int, optional):</u> The rolling window size used by the rolling method. Defaults to
-22 (approximately one trading month).
+- <u>window (int, optional):</u> The rolling window size used by the rolling method, at least 2.
+Defaults to 22 (approximately one trading month).
 - <u>lambda_ (float, optional):</u> The decay factor used by the EWMA method. Defaults to 0.94.
 - <u>loss (str, optional):</u> The loss function to compare forecast errors with. Options are:
 "squared" (squared error), "absolute" (absolute error). Defaults to "squared".
@@ -2938,8 +2938,9 @@ Defaults to "daily".
 "gaussian" (rolling normal), "ewma" (RiskMetrics EWMA). Defaults to "garch".
 - <u>alpha (float &#124; None, optional):</u> The tail probability of the tail test. Defaults to None, which tests
 the whole density.
-- <u>window (int &#124; None, optional):</u> The number of returns of every window or GARCH fit. Defaults to
-None, which uses two years of observations with a minimum of 100 for "garch" (504 daily returns) and
+- <u>window (int &#124; None, optional):</u> The number of returns of every window or GARCH fit, at least 100
+for the GARCH model (a GARCH fit needs at least 100 returns) and 2 otherwise. Defaults to None,
+which uses two years of observations with a minimum of 100 for "garch" (504 daily returns) and
 a year with a minimum of 20 for "gaussian".
 - <u>lambda_ (float, optional):</u> The decay factor of model="ewma". Defaults to 0.94.
 - <u>refit_every (int, optional):</u> The number of returns between two GARCH fits. Defaults to 21.
@@ -3045,8 +3046,9 @@ Defaults to "daily".
 - <u>model (str, optional):</u> The density forecast. Options are: "garch" (GARCH-family model),
 "gaussian" (rolling normal), "ewma" (RiskMetrics EWMA). Defaults to "garch".
 - <u>lags (int, optional):</u> The number of lags of the portmanteau statistic. Defaults to 4.
-- <u>window (int &#124; None, optional):</u> The number of returns of every window or GARCH fit. Defaults to
-None, which uses two years of observations with a minimum of 100 for "garch" (504 daily returns) and
+- <u>window (int &#124; None, optional):</u> The number of returns of every window or GARCH fit, at least 100
+for the GARCH model (a GARCH fit needs at least 100 returns) and 2 otherwise. Defaults to None,
+which uses two years of observations with a minimum of 100 for "garch" (504 daily returns) and
 a year with a minimum of 20 for "gaussian".
 - <u>lambda_ (float, optional):</u> The decay factor of model="ewma". Defaults to 0.94.
 - <u>refit_every (int, optional):</u> The number of returns between two GARCH fits. Defaults to 21.
@@ -3167,8 +3169,8 @@ Defaults to "daily".
 "anatolyev_gerko" (Anatolyev-Gerko). Defaults to "pesaran_timmermann".
 - <u>forecast (str, optional):</u> The return forecast. Options are: "momentum" (the mean of the previous
 `window` returns), "autoregressive" (the rolling AR(1)). Defaults to "momentum".
-- <u>window (int &#124; None, optional):</u> The number of returns of every forecast window. Defaults to None,
-which uses a year of observations with a minimum of 20 (252 daily, 52 weekly and 20 monthly,
+- <u>window (int &#124; None, optional):</u> The number of returns of every forecast window, at least 2.
+Defaults to None, which uses a year of observations with a minimum of 20 (252 daily, 52 weekly and 20 monthly,
 quarterly or yearly returns).
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets tested. Defaults
 to False.
@@ -3273,10 +3275,12 @@ largest $$\vert t_{ij} \vert$$). Defaults to "max".
 - <u>n_bootstrap (int, optional):</u> The number of bootstrap resamples. Defaults to 1000.
 - <u>block_size (int &#124; None, optional):</u> The average block length of the stationary bootstrap. Defaults to
 None, which uses the cube root of the number of periods, rounded.
-- <u>window (int, optional):</u> The window of the "rolling" model. Defaults to 22 (about a month).
+- <u>window (int, optional):</u> The window of the "rolling" model, at least 2. Defaults to 22 (about a
+month).
 - <u>lambda_ (float, optional):</u> The decay factor of the "ewma" model. Defaults to 0.94.
-- <u>garch_window (int &#124; None, optional):</u> The number of returns of every GARCH fit. Defaults to None,
-which uses two years of observations with a minimum of 100 (504 daily returns).
+- <u>garch_window (int &#124; None, optional):</u> The number of returns of every GARCH fit, at least 100, as a
+GARCH fit on fewer returns is not reliable. Defaults to None, which uses two years of observations
+with a minimum of 100 (504 daily returns).
 - <u>refit_every (int, optional):</u> The number of returns between two GARCH fits. Defaults to 21.
 - <u>seed (int, optional):</u> The seed of the bootstrap. Defaults to 0.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets. Defaults to
@@ -3958,10 +3962,11 @@ $$
 
 - <u>independent_tickers (str &#124; list[str] &#124; None, optional):</u> The factor
 ticker(s), whose `column` values are broadcast identically to every
-entity at each date. Mutually exclusive with `independent_column`, one of the two is required. Defaults to None.
+entity at each date. Mutually exclusive with `independent_column`. Defaults to None,
+which uses the Benchmark unless `independent_column` is given.
 - <u>independent_column (str &#124; None, optional):</u> A different historical data
 column, taken per-entity from each of `dependent_tickers`' own data, to
-use as the regressor. Mutually exclusive with `independent_tickers`, one of the two is required. Defaults to None.
+use as the regressor. Mutually exclusive with `independent_tickers`. Defaults to None.
 - <u>dependent_tickers (str &#124; list[str] &#124; None, optional):</u> The panel of
 entity tickers to explain. Defaults to None, meaning every ticker in
 the `Toolkit` instance (other than `independent_tickers`, if given).
@@ -3991,8 +3996,8 @@ additional rows (only the Coefficient column is populated for those).
 
 **Raises:**
 
-ValueError: If both or neither of `independent_tickers`/
-`independent_column` are given, or (see `panel_data_model.
+ValueError: If both `independent_tickers` and `independent_column` are
+given, or (see `panel_data_model.
 get_fixed_effects`) if there are not enough observations for the
 requested fixed effects, or the fixed effects absorb the regressor: the
 common factor of `independent_tickers` is identical for every entity at
@@ -4754,7 +4759,7 @@ $$
 p = \text{the number of lags that minimises the AIC},\;\; \text{up to max\_lag (same default as the ADF test)}
 $$
 
-**Also known as:** ADF test, augmented Dickey-Fuller test, PP test, Z_t test, ZA test, structural break unit root test, stationarity test.
+**Also known as:** ADF test, augmented Dickey-Fuller test, PP test, Z_t test, ZA test, structural break unit root test, stationarity test, mean reversion test, random walk test, trending or mean-reverting.
 
 **References:**
 
@@ -5927,8 +5932,8 @@ yearly). Defaults to None, which uses "daily".
 returns (the changes of the series), "Adj Close" for the prices (the series as given
 with `Econometrics(data=...)`) or another price column such as "High". Defaults to
 "Return".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least 2.
+Defaults to None, which calculates one value over the full history of every asset.
 - <u>against (str &#124; None, optional):</u> What to correlate with: a ticker of the Toolkit (or a
 series of the data), such as "Benchmark" or "MSFT", or another column of the same
 ticker, such as "Low" with column="High". Defaults to None, which uses the
@@ -6020,8 +6025,8 @@ yearly). Defaults to None, which uses "daily".
 - <u>column (str, optional):</u> The historical data column the statistic is calculated on: "Adj Close"
 for the prices (the series as given with `Econometrics(data=...)`), "Close" for the
 traded prices or "Return" for the returns (the changes of the series). Defaults to "Adj Close".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least 1.
+Defaults to None, which calculates one value over the full history of every asset.
 - <u>percentile (float, optional):</u> The percentile as a decimal between 0 and 1. Defaults
 to 0.5, the median.
 - <u>method (str, optional):</u> The percentile definition. Options are: "linear" (Hyndman and
@@ -6105,7 +6110,7 @@ yearly). Defaults to None, which uses "daily".
 - <u>column (str, optional):</u> The historical data column the statistic is calculated on: "Adj Close"
 for the prices (the series as given with `Econometrics(data=...)`), "Close" for the
 traded prices or "Return" for the returns (the changes of the series). Defaults to "Adj Close".
-- <u>rolling (int &#124; None, optional):</u> The number of previous periods of a rolling window.
+- <u>rolling (int &#124; None, optional):</u> The number of previous periods of a rolling window, at least 1.
 Defaults to None, which ranks the latest value among every earlier one of every
 asset.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
@@ -6185,8 +6190,8 @@ yearly). Defaults to None, which uses "daily".
 - <u>column (str, optional):</u> The historical data column the statistic is calculated on: "Adj Close"
 for the prices (the series as given with `Econometrics(data=...)`), "Close" for the
 traded prices or "Return" for the returns (the changes of the series). Defaults to "Adj Close".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which scores the latest value against the mean and standard deviation of the
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least 2.
+Defaults to None, which scores the latest value against the mean and standard deviation of the
 full history of every asset.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
 Defaults to False.
@@ -6270,8 +6275,8 @@ yearly). Defaults to None, which uses "daily".
 - <u>column (str, optional):</u> The historical data column the statistic is calculated on: "Adj Close"
 for the prices (the series as given with `Econometrics(data=...)`), "Close" for the
 traded prices or "Return" for the returns (the changes of the series). Defaults to "Adj Close".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least 1.
+Defaults to None, which calculates one value over the full history of every asset.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
 Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -6353,8 +6358,8 @@ yearly). Defaults to None, which uses "daily".
 - <u>column (str, optional):</u> The historical data column the statistic is calculated on: "Adj Close"
 for the prices (the series as given with `Econometrics(data=...)`), "Close" for the
 traded prices or "Return" for the returns (the changes of the series). Defaults to "Adj Close".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least 2.
+Defaults to None, which calculates one value over the full history of every asset.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
 Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -6485,8 +6490,11 @@ Options are: "Return" (the returns, the changes of the series), "Adj Close" (the
 prices, the series as given with `Econometrics(data=...)`), "Close" (the traded
 prices). Defaults to None, which uses "Adj Close" for the share entropy, whose
 values must be positive, and "Return" for the others.
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least the
+shortest window with a value: order + 2 for the sample and approximate entropy (4 by
+default), (order - 1) * delay + 1 for the permutation and SVD entropy (3 by default),
+word_length for the Shannon entropy and 2 otherwise. Defaults to None, which
+calculates one value over the full history of every asset.
 - <u>order (int &#124; None, optional):</u> The template length m of the sample and approximate
 entropy or the number of values n of the permutation and SVD entropy. Defaults to
 None, which uses 2 for the sample and approximate and 3 for the permutation and
@@ -6600,8 +6608,8 @@ yearly). Defaults to None, which uses "daily".
 - <u>column (str, optional):</u> The historical data column that is encoded: "Return" for the
 returns (the changes of the series), "Adj Close" for the prices (the series as given
 with `Econometrics(data=...)`) or "Close" for the traded prices. Defaults to "Return".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least 2.
+Defaults to None, which calculates one value over the full history of every asset.
 - <u>encoding (str, optional):</u> The encoding. Options are: "binary" (1 for a positive and 0 for
 a negative value, values of 0 left out), "quantile" (the quantile of the value),
 "sigma" (the bucket of one standard deviation the value falls in). Defaults to
@@ -6698,8 +6706,8 @@ yearly). Defaults to None, which uses "daily".
 "Return" for the returns (the changes of the series), "Adj Close" for the prices
 (the series as given with `Econometrics(data=...)`) or "Close" for the traded
 prices. Defaults to "Return".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates the parameters over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least 4.
+Defaults to None, which calculates the parameters over the full history of every asset.
 - <u>include_benchmark (bool, optional):</u> Whether to include "Benchmark" among the assets.
 Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses

@@ -141,7 +141,7 @@ e.g. "get_volatility", a list of them, or a collection. Options for a collection
 (every risk metric with a value per ticker and period). Defaults to "anomalies". "all" adds the downside deviation, kurtosis, value at risk,
 conditional value at risk, tail ratio and Roll spread.
 - <u>period (str, optional):</u> The frequency at which the metrics are measured and evaluated.
-Options are: "daily", "weekly", "monthly", "quarterly", "yearly". Each metric is calculated
+Options are: "weekly", "monthly", "quarterly", "yearly". Each metric is calculated
 within each period from that period's daily returns, so use monthly or longer
 for enough returns per period. Defaults to "monthly".
 - <u>horizons (list[int] &#124; int &#124; None, optional):</u> The number of periods the forward
@@ -809,7 +809,7 @@ which uses the benchmark.
 5% worst days of the market.
 - <u>rolling (int, optional):</u> Use the daily returns of the last `rolling` periods instead of one
 period (e.g. period='monthly' and rolling=12 for a one-year window at every month end).
-Defaults to None.
+At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the MES over time. Defaults to False.
@@ -921,7 +921,7 @@ has to hold as equity. Defaults to 0.08, V-Lab's ratio for U.S. firms (5.5% for 
 firms, whose IFRS balance sheets report more liabilities).
 - <u>rolling (int, optional):</u> Estimate the beta from the daily returns of the last `rolling` periods
 instead of one period (e.g. period='monthly' and rolling=12 for a one-year beta at every
-month end). Defaults to None.
+month end). At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the results over time. Defaults to False.
@@ -1026,7 +1026,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Tail
 Ratio is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Tail Ratio values over time.
@@ -1107,7 +1107,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Skewness is
 calculated over a rolling window of this many periods across the full return history instead of
-per `period`. Defaults to None.
+per `period`. At least 3. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Skewness values over time.
@@ -1201,7 +1201,7 @@ single day only nests observations when intraday data was fetched.
 for a normal distribution). Defaults to False.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Kurtosis is
 calculated over a rolling window of this many periods across the full return history instead of
-per `period`. Defaults to None.
+per `period`. At least 4. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Kurtosis values over time.
@@ -1361,7 +1361,7 @@ Where Var is the sample variance (with n - 1 in the denominator) and the trading
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Variance is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Variance) instead of one value per `period`.
-Defaults to None.
+At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Variance values over time. Defaults to False.
@@ -1638,7 +1638,7 @@ $$
 
 The window sizes n of the rescaled range and the detrended fluctuation grow by 20% from 10 up to a tenth of the observations, so every size has at least ten windows.
 
-**Also known as:** generalized Hurst exponent, GHE, R/S analysis, rescaled range, DFA, detrended fluctuation analysis, multifractal Hurst exponent.
+**Also known as:** generalized Hurst exponent, GHE, R/S analysis, rescaled range, DFA, detrended fluctuation analysis, multifractal Hurst exponent, trending or mean-reverting, mean reversion, persistence, long memory.
 
 **References:**
 
@@ -1662,8 +1662,10 @@ exponent), "rescaled_range" (rescaled range), "detrended_fluctuation" (detrended
 analysis). Defaults to "generalized".
 - <u>period (str &#124; None, optional):</u> The data frequency. Options are: "daily", "weekly", "monthly", "quarterly",
 "yearly". Defaults to None, which uses "daily".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least the
+shortest window with a value: 5 for "generalized", and for the other methods the second
+smallest window size, 120 with the default window sizes. Defaults to None, which
+calculates one value over the full history of every asset.
 - <u>q (float &#124; list[float], optional):</u> The order of the moment of the generalized method,
 or a list of orders for a column per order. Defaults to 2.0.
 - <u>window_sizes (list[int] &#124; None, optional):</u> The window sizes of the rescaled range and
@@ -1757,8 +1759,9 @@ $$
 "petrosian" (Petrosian). Defaults to "higuchi".
 - <u>period (str &#124; None, optional):</u> The data frequency. Options are: "daily", "weekly", "monthly", "quarterly",
 "yearly". Defaults to None, which uses "daily".
-- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window. Defaults to
-None, which calculates one value over the full history of every asset.
+- <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window, at least kmax + 2
+for "higuchi" (12 by default) and 3 for the others. Defaults to None, which calculates
+one value over the full history of every asset.
 - <u>kmax (int, optional):</u> The largest step k of the Higuchi dimension. Defaults to 10.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -2036,7 +2039,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Partial Moment
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Partial Moment values over time.
@@ -2132,7 +2135,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Central Moment
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Central Moment values over time.
@@ -2222,7 +2225,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Worst Realization
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Worst Realization values over time.
@@ -2311,7 +2314,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Gini Mean Difference
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Gini Mean Difference values over time.
@@ -2405,7 +2408,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Tail Gini
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Tail Gini values over time.
@@ -2522,7 +2525,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Risk Range
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Risk Range values over time.
@@ -2626,7 +2629,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the L-moment
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the L-moment values over time.
@@ -2727,7 +2730,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the
 L-moment Convex Risk Measure is calculated over a rolling window of this many periods across the full return
-history instead of per `period`. Defaults to None.
+history instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the L-moment Convex Risk Measure values over time.
@@ -2821,7 +2824,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the
 Skewness-Kurtosis Ratio is calculated over a rolling window of this many periods across the full return
-history instead of per `period`. Defaults to None.
+history instead of per `period`. At least 4. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Skewness-Kurtosis Ratio values over time.
@@ -2925,7 +2928,7 @@ of all years. Defaults to False. Note that this requires intraday data when peri
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, CDaR is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period`. Defaults to None.
+of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CDaR values over time. Defaults to False.
@@ -3125,7 +3128,7 @@ the entirety of all years. Defaults to False. Note that this requires intraday d
 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the DaR is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period`, every window starting from a wealth of 1. Defaults to None.
+of per `period`, every window starting from a wealth of 1. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the DaR values over time. Defaults to False.
@@ -3223,7 +3226,7 @@ at the entirety of all years. Defaults to False. Note that this requires intrada
 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the EDaR is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period`, every window starting from a wealth of 1. Defaults to None.
+of per `period`, every window starting from a wealth of 1. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EDaR values over time. Defaults to False.
@@ -3333,7 +3336,7 @@ values. Defaults to False.
 measured on, or to sum them (absolute drawdowns). Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Maximum
 Drawdown is calculated over a rolling window of this many periods across the full return history
-instead of per `period` (e.g. the deepest decline of the last 252 days). Defaults to None.
+instead of per `period` (e.g. the deepest decline of the last 252 days). At least 2. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -4143,7 +4146,7 @@ intraday data when period = 'daily', since a single day only nests observations 
 was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Average
 Drawdown is calculated over a rolling window of this many periods across the full return history
-instead of per `period`, every window starting from a wealth of 1. Defaults to None.
+instead of per `period`, every window starting from a wealth of 1. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Average Drawdown values over time.
@@ -4366,7 +4369,7 @@ Where $$\Delta P_{t}$$ is the change of the Close, $$V_{t}$$ the Volume, $$\text
 "quarterly", "yearly". Defaults to "monthly".
 - <u>rolling (int, optional):</u> Regress on the days of the last `rolling` periods together instead of one
 period (e.g. period='monthly' and rolling=3 for a three-month lambda at every month end).
-Defaults to None.
+At least 2. Defaults to None.
 - <u>method (str, optional):</u> The measure. Options are: "kyle" (Kyle's lambda), "amihud" (Amihud's lambda),
 "hasbrouck" (Hasbrouck's lambda), "roll" (Roll Impact). Defaults to "kyle".
 - <u>scale (float &#124; None, optional):</u> A multiplier applied to the measure for readability. Defaults to
@@ -4608,7 +4611,7 @@ Where H, L and C are the daily High, Low and Close of two consecutive trading da
 - <u>rolling (int, optional):</u> Estimate the spread from the pairs of the last `rolling` periods together
 (method="edge"), or average the two-day spreads of the last `rolling` periods
 (method="corwin_schultz" and "abdi_ranaldo"), instead of one period (e.g. period='monthly' and
-rolling=3 for a three-month spread at every month end). Defaults to None.
+rolling=3 for a three-month spread at every month end). At least 2. Defaults to None.
 - <u>method (str, optional):</u> The estimator. Options are: "edge" (Ardia, Guidotti and Kroencke, from the
 Open, High, Low and Close), "corwin_schultz" (from the High and Low), "abdi_ranaldo" (from the
 Close, High and Low). Defaults to "edge".
@@ -4720,7 +4723,7 @@ Where H and L are the daily High and Low of two consecutive trading days t and t
 "weekly", "monthly", "quarterly", "yearly". Defaults to "monthly", as for the Corwin-Schultz spread.
 - <u>rolling (int, optional):</u> Average the two-day volatilities of the last `rolling` periods instead of
 one period (e.g. period='monthly' and rolling=3 for a three-month estimate at every month end).
-Defaults to None.
+At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the volatility over time. Defaults to False.
@@ -4805,7 +4808,7 @@ Where Volume is the number of shares traded on day t and Weighted Average Shares
 - <u>period (str, optional):</u> The period to sum the daily turnover over. Options are: "weekly", "monthly",
 "quarterly", "yearly". Defaults to "monthly", as in the paper.
 - <u>rolling (int, optional):</u> The mean of the turnover of the last `rolling` periods instead of the
-turnover per period (e.g. rolling=3 for the paper's three-month average). Defaults to None.
+turnover per period (e.g. rolling=3 for the paper's three-month average). At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the turnover over time. Defaults to False.
@@ -4902,7 +4905,7 @@ three factors Mkt-RF, SMB and HML), "capm" (the excess return of the benchmark).
 "fama_french".
 - <u>rolling (int, optional):</u> Regress on the daily returns of the last `rolling` periods instead of one
 period (e.g. period='monthly' and rolling=12 for a one-year window at every month end).
-Defaults to None.
+At least 2. Defaults to None.
 - <u>annualize (bool, optional):</u> Whether to scale the daily standard deviation of the residuals to a
 year (√252) instead of to the period. Defaults to False.
 - <u>region (str, optional):</u> The region whose Fama and French factors to use with model="fama_french".
@@ -5143,7 +5146,7 @@ single day only nests observations when intraday data was fetched.
 calculated over a rolling window of this many periods across the full return history instead
 of per `period` (e.g. a rolling 60-day VaR). Only available for the historic and GARCH
 methods (the number of returns of every fit, at least 100); see `get_var_backtest` for a rolling, out-of-sample VaR path under the other
-parametric distributions. Defaults to None.
+parametric distributions. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the VaR values over time. Defaults to False.
@@ -5317,7 +5320,7 @@ single day only nests observations when intraday data was fetched.
 calculated over a rolling window of this many periods across the full return history instead
 of per `period` (e.g. a rolling 60-day CVaR). Only available for the historic and GARCH
 methods (the number of returns of every fit, at least 100); see `get_acerbi_szekely_test` for a rolling, out-of-sample CVaR path under the
-other parametric distributions. Defaults to None.
+other parametric distributions. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the CVaR values over time. Defaults to False.
@@ -5449,7 +5452,7 @@ distributed returns) or "historic" (the empirical moment generating function of 
 to "gaussian".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, EVaR is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period`. Defaults to None.
+of per `period`. At least 2. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
 items of a financial statement). Names that do not exist are logged, and when none
@@ -5530,7 +5533,7 @@ the entirety of all years. Defaults to False. Note that this requires intraday d
 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the ERM is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period`. Defaults to None.
+of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ERM values over time. Defaults to False.
@@ -5621,7 +5624,7 @@ the entirety of all years. Defaults to False. Note that this requires intraday d
 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the HMCR is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period`. Defaults to None.
+of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the HMCR values over time. Defaults to False.
@@ -5717,7 +5720,7 @@ the entirety of all years. Defaults to False. Note that this requires intraday d
 'daily', since a single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the EQS is
 calculated over a rolling window of this many periods across the full return history instead
-of per `period`. Defaults to None.
+of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the EQS values over time. Defaults to False.
@@ -5885,7 +5888,7 @@ Where Marginal VaR measures each asset's risk *sensitivity*, Component VaR measu
 
 Component VaR is the basis of risk budgeting: a holding with a 20% weight that accounts for 45% of the portfolio VaR stands out immediately, and a component with the opposite sign of the portfolio VaR marks a holding that hedges the rest. The components always add up to the portfolio VaR, but the beta-based allocation is exact only for normally (elliptically) distributed returns and an approximation for the historical distribution used by default.
 
-**Also known as:** Component VaR, risk contribution.
+**Also known as:** Component VaR, risk contribution, portfolio VaR, portfolio value at risk.
 
 **References:**
 
@@ -6033,7 +6036,8 @@ empty result (with a logged error).
 - <u>window (int &#124; None, optional):</u> The rolling window (in number of return observations of
 `period`) used to estimate each VaR value. Defaults to None, which uses a year of observations
 with a minimum of 20 (252 daily, 52 weekly and 20 monthly, quarterly or yearly returns), and two
-years with a minimum of 100 for "garch" (504 daily, 104 weekly and 100 otherwise).
+years with a minimum of 100 for "garch" (504 daily, 104 weekly and 100 otherwise). At least 2;
+a window too short to hold an observation in the alpha tail logs a warning.
 - <u>test (str &#124; list[str], optional):</u> Which test(s) to run, one or a list of them. Options are: "kupiec"
 (Kupiec's test), "christoffersen" (Christoffersen's independence test), "conditional_coverage"
 (conditional coverage test), "duration" (duration test), "mcneil_frey" (McNeil-Frey test), "tick_loss"
@@ -6141,7 +6145,8 @@ empty result (with a logged error).
 - <u>window (int &#124; None, optional):</u> The rolling window (in number of return observations
 of `period`) used to estimate each VaR/CVaR value. Defaults to None, which uses a year of
 observations with a minimum of 20 (252 daily, 52 weekly and 20 monthly, quarterly or yearly
-returns), and two years with a minimum of 100 for "garch".
+returns), and two years with a minimum of 100 for "garch". At least 2; a window too short to
+hold an observation in the alpha tail logs a warning.
 - <u>refit_every (int, optional):</u> Only used with the "garch" method. The number of returns between
 two fits. Defaults to 21.
 - <u>garch_method (str, optional):</u> Only used with the GARCH method. The variance model of `get_garch`.
@@ -6758,6 +6763,8 @@ pd.DataFrame: The conditional variance of the next period per asset, indexed by 
 
 - Every asset is fitted on its own available returns, see `get_garch_parameters`.
 - The variance is that of a single period of the chosen `period`; its square root is the volatility.
+- A fit with a persistence of at least 1 - 10^-6 is treated as integrated, as IGARCH, so its curve is NaN:
+its unconditional variance Omega / (1 - P) is unbounded as the persistence P approaches 1.
 
 **As an example:**
 
@@ -6981,7 +6988,7 @@ With `rolling`, the result is the sample standard deviation of the last `rolling
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Volatility is calculated over a rolling window of this many periods (e.g. period='monthly'
 and rolling=6 gives the rolling 6-month Volatility) instead of one value per `period`.
-Only available for method="close_to_close". Defaults to None.
+Only available for method="close_to_close". At least 2. Defaults to None.
 - <u>method (str, optional):</u> The Volatility estimator, as described above. Options are: "close_to_close"
 (close-to-close), "parkinson" (Parkinson), "garman_klass" (Garman-Klass), "rogers_satchell"
 (Rogers-Satchell), "yang_zhang" (Yang-Zhang), "garman_klass_yang_zhang" (Garman-Klass Yang-Zhang),
@@ -7158,7 +7165,7 @@ Where Std is the sample standard deviation (with n - 1 in the denominator) over 
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Excess Volatility is calculated over a rolling window of this many periods (e.g.
 period='monthly' and rolling=6 gives the rolling 6-month Excess Volatility) instead of
-one value per `period`. Defaults to None.
+one value per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Excess Volatility values
@@ -7258,7 +7265,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Downside
 Deviation is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Downside Deviation values over
@@ -7347,7 +7354,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Upside Deviation
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Upside Deviation values over time.
@@ -7441,7 +7448,7 @@ Note that this requires intraday data when period = 'daily', since a
 single day only nests observations when intraday data was fetched.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the Volatility Skewness
 is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the Volatility Skewness values over time.

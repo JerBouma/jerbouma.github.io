@@ -2536,6 +2536,10 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 pd.DataFrame: A pandas DataFrame with the retrieved income statement data.
 
+**Raises:**
+
+InvalidArgumentError: If trailing is not a whole number of at least one period.
+
 **As an example:**
 
 ```python
@@ -2599,6 +2603,10 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: A pandas DataFrame with the retrieved cash flow statement data.
+
+**Raises:**
+
+InvalidArgumentError: If trailing is not a whole number of at least one period.
 
 **As an example:**
 

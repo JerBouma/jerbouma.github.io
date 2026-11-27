@@ -7838,7 +7838,7 @@ A high CAPE relative to the company's own history or its peers means the market 
 
 **Args:**
 
-- <u>years (int, optional):</u> The number of years of earnings to average. Defaults to 10.
+- <u>years (int, optional):</u> The number of years of earnings to average, at least 1. Defaults to 10.
 - <u>inflation_adjusted (bool, optional):</u> Whether to express the earnings of every year
 in the prices of the period of the ratio with the consumer price index.
 Defaults to True.

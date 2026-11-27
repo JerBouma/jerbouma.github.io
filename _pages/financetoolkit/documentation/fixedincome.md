@@ -2402,7 +2402,7 @@ $$
 
 A positive butterfly means the body yields more than the wings on average.
 
-**Also known as:** term spread, yield curve slope, 10Y-2Y spread, fly, 2s5s10s.
+**Also known as:** term spread, yield curve slope, 10Y-2Y spread, 2s10s, 2y-10y spread, inverted yield curve, curve inversion, fly, 2s5s10s.
 
 **Args:**
 
@@ -2945,8 +2945,8 @@ To first order, with $$D = (T - h) / (1 + z (T))$$ the modified duration (annual
 as "3M" or "1Y". Defaults to 0.25 (three months).
 - <u>maturities (list[float &#124; str] &#124; str &#124; None, optional):</u> The maturities of the
 bonds, in years or as labels such as "2Y" (a list or a comma-separated
-string). A maturity shorter than the horizon is NaN. Defaults to None, every
-maturity of the curve longer than the horizon.
+string), at least one longer than the horizon; a maturity shorter than the horizon
+is NaN. Defaults to None, every maturity of the curve longer than the horizon.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
 on every column level, or the rows when no column has those names (such as the line
@@ -3001,7 +3001,8 @@ The components are the eigenvectors of the covariance matrix of the yield change
 Defaults to "United States".
 - <u>period (str, optional):</u> The frequency of the curves. Options are: "daily", "weekly", "monthly". Defaults to
 "daily".
-- <u>components (int, optional):</u> The number of components. Defaults to 3.
+- <u>components (int, optional):</u> The number of components, at least 1 and at most the number of
+maturities of the curve. Defaults to 3.
 - <u>changes (bool, optional):</u> Whether to analyze the changes of the yields, the usual
 choice as yields themselves are not stationary, or their levels. Defaults to True.
 - <u>scores (bool, optional):</u> Whether to return the value of every component per date
@@ -3518,10 +3519,10 @@ US mortgage rates are quoted as a nominal annual rate compounded monthly, so the
 
 **Args:**
 
-- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
-- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+- <u>principal (float, optional):</u> The amount borrowed, above 0. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years, above 0. The rate stays the 30-year
 fixed mortgage rate for another term. Defaults to 30.
-- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>payments_per_year (int, optional):</u> The number of payments per year, at least 1. Defaults to 12.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -3589,13 +3590,13 @@ US mortgage rates are quoted as a nominal annual rate compounded monthly, so the
 
 **Args:**
 
-- <u>payment (float &#124; None, optional):</u> The payment per period. Defaults to None, the
+- <u>payment (float &#124; None, optional):</u> The payment per period, above 0. Defaults to None, the
 payment of a loan of principal at the first rate between the start and end date.
-- <u>principal (float, optional):</u> The loan whose payment at the first rate is used when
+- <u>principal (float, optional):</u> The loan, above 0, whose payment at the first rate is used when
 no payment is given. Defaults to 400,000.
-- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+- <u>years (float, optional):</u> The term of the loan in years, above 0. The rate stays the 30-year
 fixed mortgage rate for another term. Defaults to 30.
-- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>payments_per_year (int, optional):</u> The number of payments per year, at least 1. Defaults to 12.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the class.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -3650,10 +3651,10 @@ Where L is the principal, r = Rate / payments per year the rate per payment and 
 
 **Args:**
 
-- <u>principal (float, optional):</u> The amount borrowed. Defaults to 400,000.
-- <u>years (float, optional):</u> The term of the loan in years. The rate stays the 30-year
+- <u>principal (float, optional):</u> The amount borrowed, above 0. Defaults to 400,000.
+- <u>years (float, optional):</u> The term of the loan in years, above 0. The rate stays the 30-year
 fixed mortgage rate for another term. Defaults to 30.
-- <u>payments_per_year (int, optional):</u> The number of payments per year. Defaults to 12.
+- <u>payments_per_year (int, optional):</u> The number of payments per year, at least 1. Defaults to 12.
 - <u>date (str &#124; None, optional):</u> The date of the rate (YYYY-MM-DD). Defaults to None, the
 latest rate up to the end date.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -4850,8 +4851,8 @@ such as "1M", "3M" or "6M". Defaults to "3M".
 - <u>period (str, optional):</u> The frequency of the rates. Options are: "daily", "weekly", "monthly". Defaults to
 "daily".
 - <u>years (float, optional):</u> The horizon in years. Defaults to 10.
-- <u>steps_per_year (int, optional):</u> The steps per year. Defaults to 12.
-- <u>simulations (int, optional):</u> The number of simulated paths. Defaults to 10,000.
+- <u>steps_per_year (int, optional):</u> The steps per year, at least 1. Defaults to 12.
+- <u>simulations (int, optional):</u> The number of simulated paths, at least 1. Defaults to 10,000.
 - <u>seed (int &#124; None, optional):</u> The random seed, None for a different simulation
 every time. Defaults to 0.
 - <u>scheme (str, optional):</u> The simulation scheme. Options are: "euler" (an Euler scheme), "exact" (sampling the
@@ -4963,7 +4964,7 @@ Mercurio). Defaults to "hull_white".
 "receiver" (the right to receive it). Defaults to "payer".
 - <u>strike (float &#124; None, optional):</u> The fixed rate of the swaps (decimal). Defaults
 to None, the at-the-money forward swap rate of each expiry and tenor.
-- <u>fixed_frequency (int, optional):</u> The fixed payments per year. Defaults to 1.
+- <u>fixed_frequency (int, optional):</u> The fixed payments per year, at least 1. Defaults to 1.
 - <u>country (str, optional):</u> The country, see `get_government_bond_yield_curve`.
 Defaults to "United States".
 - <u>short_rate (str, optional):</u> The maturity of the yield used as the short rate,

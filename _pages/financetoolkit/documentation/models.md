@@ -2881,9 +2881,9 @@ As in the paper, the return on assets, the cash flow return on assets and the th
 
 **Args:**
 
-- <u>variance_periods (int, optional):</u> The number of yearly values the variances of
-G4 (return on assets) and G5 (revenue growth) are calculated over, of which at
-least three (or all, when fewer are asked for) must be available. With
+- <u>variance_periods (int, optional):</u> The number of yearly values (at least 2) the
+variances of G4 (return on assets) and G5 (revenue growth) are calculated over,
+of which at least three (or all, when fewer are asked for) must be available. With
 `trailing` the values are `trailing` periods apart (one a year with 4
 quarters); without it, one per period. Defaults to 5, the five years of the
 paper.
@@ -3226,8 +3226,10 @@ with ΔWC the increase in working capital (minus the Change in Working Capital o
 - <u>method (str, optional):</u> Options are: "dechow_dichev" (Dechow and Dichev, 2002), "mcnichols" (McNichols,
 2002, which adds the change in revenue and the property, plant and equipment). Defaults to
 "dechow_dichev".
-- <u>window (int, optional):</u> The number of years every regression is estimated on. Dechow
-and Dichev required at least 8 years per company. Defaults to 8.
+- <u>window (int, optional):</u> The number of years every regression is estimated on, at
+least one more than the coefficients it estimates: 5 for the Dechow and Dichev
+model and 7 for the McNichols model. Dechow and Dichev required at least 8 years
+per company. Defaults to 8.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -3306,8 +3308,8 @@ with EPS the net income from continuing operations (the earnings before extraord
 
 **Args:**
 
-- <u>window (int, optional):</u> The number of years of every window; the paper uses 10.
-Defaults to 10.
+- <u>window (int, optional):</u> The number of years of every window, at least 3 for the
+regression; the paper uses 10. Defaults to 10.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -3568,8 +3570,9 @@ minus the change in receivables in the estimation as well, which is meaningful w
 of one industry). Defaults to "time_series".
 - <u>min_observations (int, optional):</u> The fewest observations a regression is
 estimated on: earlier years of the company with "time_series", tickers with
-"cross_section". At least 3, the number of coefficients. Defaults to 10, the
-minimum estimation period of Dechow, Sloan and Sweeney (1995).
+"cross_section". At least the number of coefficients: 3, or 4 with an
+intercept. Defaults to 10, the minimum estimation period of Dechow, Sloan and
+Sweeney (1995).
 - <u>intercept (bool, optional):</u> Whether to add a constant to the regression, as
 Kothari, Leone and Wasley (2005) do, in both methods. It removes the average
 level of the accruals from the other coefficients at the cost of a degree of
@@ -4294,7 +4297,7 @@ Following Mauboussin and Callahan, the invested capital is lagged by a year: the
 
 **Args:**
 
-- <u>years (int, optional):</u> The number of years n the changes span. Defaults to 1.
+- <u>years (int, optional):</u> The number of years n the changes span, at least 1. Defaults to 1.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -4570,8 +4573,8 @@ The expense of the current year is not amortized yet, and that of n years ago is
 **Args:**
 
 - <u>amortization_years (int, optional):</u> The amortizable life n of the research asset in
-years. Damodaran uses 2 years for software, 3 to 5 for most industries and up to 10
-for pharmaceuticals (the life it takes to turn research into products). Defaults to 5.
+years, at least 1. Damodaran uses 2 years for software, 3 to 5 for most industries and up
+to 10 for pharmaceuticals (the life it takes to turn research into products). Defaults to 5.
 - <u>rounding (int, optional):</u> The number of decimals to round the results to. Defaults to None.
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the values. Defaults to False.
 - <u>lag (int &#124; list[int], optional):</u> The lag to use for the growth calculation. Defaults to 1.
@@ -4752,7 +4755,15 @@ $$
 $$
 
 $$
-\text{Enterprise Value} = \text{Sum of Present Value of Cash Flow Projections} + \frac{\text{Terminal Value}}{(1 + \text{Weighted Average Cost of Capital})^{\text{Periods}}}
+\text{Present Value of Cash Flows} = \sum_{t} \frac{\text{Cash Flow Projection}_{t}}{(1 + \text{Weighted Average Cost of Capital})^{t}} \;\text{for}\; t = 1 \;\text{to Periods}
+$$
+
+$$
+\text{Present Value of Terminal Value} = \frac{\text{Terminal Value}}{(1 + \text{Weighted Average Cost of Capital})^{\text{Periods}}}
+$$
+
+$$
+\text{Enterprise Value} = \text{Present Value of Cash Flows} + \text{Present Value of Terminal Value}
 $$
 
 $$
@@ -4787,7 +4798,8 @@ use for all tickers, or a list or dict that contains a weighted average cost of 
 ticker. Defaults to None, which uses the Weighted Average Cost of Capital of each company of the
 period valued, calculated over a year (the last 4 quarters with quarterly data, with a beta of
 their daily returns).
-- <u>periods (int, optional):</u> The number of periods to use for the cash flow projections. Defaults to 5.
+- <u>periods (int, optional):</u> The number of periods to use for the cash flow projections, at least 1.
+Defaults to 5.
 - <u>cash_flow_type (str, optional):</u> The type of cash flow to use for the cash flow projections. Both
 reported cash flows are after interest, so discounting them at the WACC and subtracting the debt
 counts the cost of debt twice. Options are: "Free Cash Flow to Firm", "Free Cash Flow" (as
@@ -4810,9 +4822,11 @@ exist the result is returned in full. Defaults to None, which keeps every column
 
 **Returns:**
 
-pd.DataFrame: DataFrame containing the intrinsic value and its components for each
-ticker, or for the historical valuation the intrinsic value per share for each
-ticker (rows) and period (columns).
+pd.DataFrame: DataFrame containing per ticker the Terminal Value, the Cash Flow
+Projection (the last projected cash flow), the Present Value of Cash Flows, the
+Present Value of Terminal Value, the Enterprise Value, the Equity Value and the
+Intrinsic Value, or for the historical valuation the intrinsic value per share for
+each ticker (rows) and period (columns).
 
 **Notes:**
 
@@ -4826,6 +4840,10 @@ warning.
 - The WACC must be greater than the perpetual growth rate; otherwise the terminal value is infinite
 and the valuation is not calculated. Within 2 percentage points of it the valuation is calculated
 with a warning, as a tenth of a percentage point on either rate then moves it by about 5%.
+- The cash flows are discounted at the end of each period and the Terminal Value at the end
+of the last projected period, so the Present Value of Cash Flows and the Present Value of
+Terminal Value add up to the Enterprise Value and show how much of it the terminal value
+carries.
 - The Total Debt, Cash and Cash Equivalents and Short Term Investments are those of the most
 recent period. Short Term Investments are added back with the cash, the same cash and marketable
 securities `get_enterprise_value_breakdown` deducts, and count as 0 when the balance sheet has no
@@ -5788,7 +5806,7 @@ The discount rate, one number or a number per ticker. Defaults to None,
 which uses the latest Weighted Average Cost of Capital of each company,
 calculated over a year (the last 4 quarters with quarterly data) whatever
 `trailing` the cash flows use, as the rate is a yearly one.
-- <u>periods (int, optional):</u> The number of projection periods. Defaults to 5.
+- <u>periods (int, optional):</u> The number of projection periods, at least 1. Defaults to 5.
 - <u>cash_flow_type (str, optional):</u> The cash flow to project. The reported cash flows are after interest
 (cash flows to equity), so that discounting them at the WACC and subtracting the debt counts the
 cost of debt twice. Options are: "Free Cash Flow to Firm" (see get_free_cash_flow_to_firm, the cash
@@ -5812,7 +5830,9 @@ pd.DataFrame: Per ticker the Share Price, the Cash Flow used, the Weighted
 Average Cost of Capital, the Perpetual Growth Rate, the Implied Growth Rate and,
 for comparison, the Historical Growth Rate (the compound annual growth of the
 cash flow as used, so summed over `trailing` periods where set, from the first
-to the latest reported period).
+to the latest reported period) with the Historical Growth Period it covers, the
+first and latest period such as "2021-2025" (or "2024Q1-2025Q3" with quarterly
+data).
 
 **Notes:**
 
@@ -5821,7 +5841,8 @@ has no implied growth rate and gives NaN.
 - The Historical Growth Rate counts four quarters as a year with quarterly data and
 is NaN when the first or latest cash flow is not positive. The years are those
 between the first and the latest cash flow on the calendar, and a trailing sum
-that includes a missing period is NaN rather than one over more periods.
+that includes a missing period is NaN rather than one over more periods. The
+Historical Growth Period is empty (NaN) where the Historical Growth Rate is.
 
 **As an example:**
 
@@ -5840,11 +5861,11 @@ toolkit.models.get_reverse_discounted_cash_flow(weighted_average_cost_of_capital
 
 Which returns:
 
-|      |   Share Price |   Cash Flow |   Weighted Average Cost of Capital |   Perpetual Growth Rate |   Implied Growth Rate |   Historical Growth Rate |
-|:-----|--------------:|------------:|-----------------------------------:|------------------------:|----------------------:|-------------------------:|
-| AAPL |        271.86 | 8.62639e+10 |                               0.09 |                   0.025 |                0.3068 |                   0.0545 |
-| MSFT |        483.62 | 7.0121e+10  |                               0.09 |                   0.025 |                0.328  |                   0.1183 |
-| NVDA |        186.5  | 5.98933e+10 |                               0.09 |                   0.025 |                0.4431 |                   1.0031 |
+|      |   Share Price |   Cash Flow |   Weighted Average Cost of Capital |   Perpetual Growth Rate |   Implied Growth Rate |   Historical Growth Rate | Historical Growth Period   |
+|:-----|--------------:|------------:|-----------------------------------:|------------------------:|----------------------:|-------------------------:|:---------------------------|
+| AAPL |        271.86 | 8.62639e+10 |                               0.09 |                   0.025 |                0.3068 |                   0.0545 | 2020-2025                  |
+| MSFT |        483.62 | 7.0121e+10  |                               0.09 |                   0.025 |                0.328  |                   0.1183 | 2020-2025                  |
+| NVDA |        186.5  | 5.98933e+10 |                               0.09 |                   0.025 |                0.4431 |                   1.0031 | 2020-2024                  |
 
 ---
 
@@ -5877,7 +5898,7 @@ calculated over a year (the last 4 quarters with quarterly data) whatever
 are averaged over; with `trailing`, the number of trailing sums, `trailing`
 calendar periods apart so that they do not overlap, counted back from the
 latest reported one. A sum that includes a missing period is left out of
-the average. Defaults to 5.
+the average. At least 1. Defaults to 5.
 - <u>trailing (int &#124; None, optional):</u> Sum the revenue, operating income, taxes and
 income before tax over this many periods (e.g. 4 quarters), so that the
 margin is applied to a year of revenue. The window counts calendar periods,
@@ -5950,20 +5971,20 @@ growth over the projection periods, one number or a number per ticker. Defaults
 to None, which uses the growth the company's reinvestment supports, as in
 `get_intrinsic_valuation`.
 - <u>growth_rate_volatility (float, optional):</u> The standard deviation of the growth
-rate. Defaults to 0.02.
+rate, 0 or more. Defaults to 0.02.
 - <u>perpetual_growth_rate (float &#124; dict[str, float] &#124; None, optional):</u> The expected
 growth after the projection periods. Defaults to None, which uses the company's
 growth kept within 0 and the long-run growth rate of 2.5% (2.5% where it has none).
-- <u>perpetual_growth_rate_volatility (float, optional):</u> Its standard deviation.
-Defaults to 0.005.
+- <u>perpetual_growth_rate_volatility (float, optional):</u> Its standard deviation, 0 or
+more. Defaults to 0.005.
 - <u>weighted_average_cost_of_capital (float &#124; dict[str, float] &#124; None, optional):</u>
 The expected discount rate. Defaults to None, which uses the latest Weighted
 Average Cost of Capital of each company, calculated over a year (the last 4
 quarters with quarterly data) whatever `trailing` the cash flows use, as the
 rate is a yearly one.
 - <u>weighted_average_cost_of_capital_volatility (float, optional):</u> Its standard
-deviation. Defaults to 0.01.
-- <u>periods (int, optional):</u> The number of projection periods. Defaults to 5.
+deviation, 0 or more. Defaults to 0.01.
+- <u>periods (int, optional):</u> The number of projection periods, at least 1. Defaults to 5.
 - <u>simulations (int, optional):</u> The number of simulations. Defaults to 10,000.
 - <u>cash_flow_type (str, optional):</u> The cash flow to project. The reported cash flows are after interest
 (cash flows to equity), so that discounting them at the WACC and subtracting the debt counts the

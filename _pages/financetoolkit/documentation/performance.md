@@ -123,7 +123,7 @@ Beta is read against 1, the benchmark's own beta: above 1 the asset tends to amp
 "monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
-period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Beta. Defaults to None.
+period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Beta. At least 2. Defaults to None.
 - <u>method (str, optional):</u> The estimator of the Beta. Options are:
 - "ols": the covariance over the benchmark variance (the formula above).
 - "blume": the adjusted Beta of Bloomberg, 0.67 x OLS Beta + 0.33 (Blume, 1971, 1975).
@@ -332,7 +332,7 @@ The CAPM here uses the benchmark's realised return of each period, so the result
 
 **See definition:** [https://en.wikipedia.org/wiki/Capital_asset_pricing_model](https://en.wikipedia.org/wiki/Capital_asset_pricing_model){:target="_blank"}
 
-**Also known as:** CAPM, expected return model.
+**Also known as:** CAPM, expected return model, required return for Jensen's alpha.
 
 **References:**
 
@@ -347,7 +347,7 @@ The CAPM here uses the benchmark's realised return of each period, so the result
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
-the full return history instead of per `period`. Defaults to None.
+the full return history instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -579,7 +579,7 @@ What is relevant to look at is the influence these factors have on each stock an
 
 The slopes are read as tilts: a positive HML slope is a value tilt and a negative one a growth tilt, a negative SMB slope marks a large-cap profile, and RMW and CMA show exposure to profitable and conservatively investing firms. With about 250 daily observations per year the slopes of the smaller factors are noisy, so only loadings that are large and persist across periods say much about a stock or fund. The R Squared shows how much of the daily excess return the factors explain; a low value leaves most of the return to stock-specific news.
 
-**Also known as:** Fama-French model, three-factor model, five-factor model, FF3, FF5.
+**Also known as:** Fama-French model, three-factor model, five-factor model, FF3, FF5, factor model alpha, multi-factor Jensen's alpha.
 
 **References:**
 
@@ -607,7 +607,7 @@ beta. Defaults to "United States".
 - <u>rolling (int &#124; None, optional):</u> The number of trading days of a rolling regression: the multi
 linear regression is fitted on the last `rolling` daily observations at every date instead of
 once per period, so the factor loadings show how the exposures move over time (e.g. 126 for
-the six months pyfolio uses). Only with the multi method. Defaults to None.
+the six months pyfolio uses). Only with the multi method. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
@@ -712,7 +712,7 @@ beta. Defaults to "United States".
 - <u>rolling (int &#124; None, optional):</u> The number of trading days of a rolling regression: the regression
 is fitted on the last `rolling` daily observations at every date instead of once per period, so
 the factor loadings show how the exposures move over time (e.g. 126 for the six months pyfolio
-uses). Defaults to None.
+uses). At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratio values. Defaults to False.
@@ -797,7 +797,7 @@ AGG and BIL.
 - <u>period (str, optional):</u> The return frequency. Options are: "daily", "weekly", "monthly",
 "quarterly", "yearly". Defaults to "monthly".
 - <u>rolling (int &#124; None, optional):</u> The number of periods of a rolling window to estimate
-the weights over, which adds the Out-of-Sample Selection Return. Defaults to None,
+the weights over, which adds the Out-of-Sample Selection Return. At least 2. Defaults to None,
 which uses every period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit.
@@ -894,7 +894,7 @@ Alpha. Only used when method="standard" or "annualized". Defaults to False.
 the full return history instead of per `period`. With the standard method Alpha is the rolling
 mean excess return over this many periods; with the Jensen method it is the window of the Beta,
 estimated from the period returns of the last `rolling` periods instead of from the daily
-returns within each period. Not used with the annualized method. Defaults to None.
+returns within each period. Not used with the annualized method. At least 2. Defaults to None.
 - <u>method (str, optional):</u> The Alpha. Options are: "standard" (the difference of the returns of
 each period), "annualized" (the Active Premium, the difference of the annualized returns
 over the whole date range, one value per ticker; `period` and `rolling` are then not used),
@@ -997,7 +997,7 @@ Where the benchmark volatility is the standard deviation of its daily returns wi
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the Beta component of the
 calculation. If set, Beta is estimated over a rolling window of this many periods across
-the full return history instead of per `period`. Defaults to None.
+the full return history instead of per `period`. At least 2. Defaults to None.
 - <u>modified (bool, optional):</u> Whether to return the modified Treynor ratio, the excess return
 divided by Beta times the benchmark volatility. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -1153,7 +1153,7 @@ This codebase does not track "N literal strategy trials" - there is no record of
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling period to use for the calculation. If you select
 period = 'monthly' and set rolling to 12 you obtain the rolling 12-month Sharpe Ratio.
-Defaults to None, which calculates the Sharpe ratio within each period.
+At least 2. Defaults to None, which calculates the Sharpe ratio within each period.
 - <u>method (str, optional):</u> Which Sharpe ratio to calculate, as described above. Options are:
 "standard" (the Sharpe ratio), "smart" (the Smart Sharpe ratio), "lo" (the annualized Sharpe
 ratio of Lo), "adjusted" (the Adjusted Sharpe Ratio), "probabilistic" (the Probabilistic
@@ -1333,7 +1333,7 @@ where SoR is the per-observation (adjusted) Sortino ratio, $$\gamma_{3}$$ the sk
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Sortino ratio is calculated over a rolling window of this many periods across the
-full return history instead of per `period`. Defaults to None.
+full return history instead of per `period`. At least 2. Defaults to None.
 - <u>method (str, optional):</u> Which Sortino ratio to calculate, as described above. Options are:
 "standard" (the Sortino ratio), "smart" (the Smart Sortino ratio), "adjusted" (divided by
 SQRT(2)), "probabilistic" (the probabilistic Sortino ratio), "probabilistic_adjusted" (the
@@ -1435,7 +1435,7 @@ quarterly=True, otherwise "yearly".
 decimal return, e.g. 0.02 for 2% a year. Defaults to 0.0.
 - <u>rolling (int &#124; None, optional):</u> The rolling window size to use for the calculation. If set, the
 ratio is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -1527,7 +1527,7 @@ As with the Sortino Ratio, the result is a ratio of the observations within the 
 quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The rolling window size to use for the calculation. If set, the
 ratio is calculated over a rolling window of this many periods across the full return history
-instead of per `period`. Defaults to None.
+instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -1612,7 +1612,7 @@ It measures the excess return earned per unit of drawdown pain: the depth and th
 "monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>rolling (int &#124; None, optional):</u> The number of trailing days whose highest value each day's drawdown
-is measured from. Defaults to None, which measures it from the highest value since the start of
+is measured from. At least 2. Defaults to None, which measures it from the highest value since the start of
 the period, as Martin (1987) defines the Ulcer Index.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
@@ -2109,12 +2109,12 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
+- <u>period (str, optional):</u> The period to use for the calculation. Options are: "weekly",
 "monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the M2 ratio is calculated over a rolling window of this many periods across the full
-return history instead of per `period`. Only for method="standard". Defaults to None.
+return history instead of per `period`. Only for method="standard". At least 2. Defaults to None.
 - <u>method (str, optional):</u> The risk matched, as described above. Options are: "standard" (the
 benchmark's total risk), "sortino" (its downside risk). Defaults to "standard".
 - <u>excess (str &#124; None, optional):</u> The M2 excess return over the benchmark. Options are: None (the
@@ -2204,7 +2204,7 @@ By default one Tracking Error is reported per `period`, computed from the daily 
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 Tracking Error is calculated over a rolling window of this many periods across the
-full return history instead of per `period`. Defaults to None.
+full return history instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2287,7 +2287,7 @@ By default it is computed from the daily returns within each period and is not a
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set,
 the Information Ratio is calculated over a rolling window of this many periods across
-the full return history instead of per `period`. Defaults to None.
+the full return history instead of per `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -2374,7 +2374,7 @@ Upside and downside capture (see `get_downside_capture_ratio`) are read together
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 36 you obtain the rolling three year Upside Capture
-Ratio of the monthly returns, Morningstar's figure. Defaults to None, which uses the daily
+Ratio of the monthly returns, Morningstar's figure. At least 2. Defaults to None, which uses the daily
 returns within each period.
 - <u>method (str, optional):</u> How the returns are averaged. Options are:
 - "geometric": the geometric average return per observation (Morningstar).
@@ -2472,7 +2472,7 @@ Where the down periods are the observations (days within each period) with a neg
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 36 you obtain the rolling three year Downside Capture
-Ratio of the monthly returns, Morningstar's figure. Defaults to None, which uses the daily
+Ratio of the monthly returns, Morningstar's figure. At least 2. Defaults to None, which uses the daily
 returns within each period.
 - <u>method (str, optional):</u> How the returns are averaged. Options are:
 - "geometric": the geometric average return per observation (Morningstar).
@@ -2893,7 +2893,10 @@ computes its Beta from the returns themselves and its Alpha from the excess retu
 excess returns for both.
 - Unlike the upside or downside Beta of `get_beta`, which regresses the returns themselves, these
 regressions use excess returns, so the Alphas are the CAPM (Jensen's) Alphas of each market.
-- Each side needs at least three days with returns in a period, otherwise its values are NaN.
+- Each side needs at least 20 days with returns in a period (about a trading month), otherwise its values
+are NaN: the Alpha is compounded over a year, which amplifies the Alpha of a few days to extremes. Weekly
+and monthly periods have fewer days per side, so they give no values (an empty result, which is logged);
+quarterly and yearly periods give values.
 - The Portfolio of a Portfolio's Toolkit is regressed on its own daily return series, as the market
 timing models do.
 - With growth, the method calculates the growth of the ratio values using the specified `lag`.
@@ -3115,7 +3118,7 @@ With one regressor this is the squared correlation with the benchmark. An R-squa
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
 period = 'monthly' and set rolling to 36 you obtain the rolling three year R-squared of the
-monthly returns. Defaults to None, which uses the daily returns within each period.
+monthly returns. At least 2. Defaults to None, which uses the daily returns within each period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -3198,7 +3201,7 @@ The ratio under this name is defined in quantstats (Ran Aroussi) and ffn (Philip
 "monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If you select
-period = 'monthly' and set rolling to 12 you obtain the rolling 12-month ratio. Defaults to None.
+period = 'monthly' and set rolling to 12 you obtain the rolling 12-month ratio. At least 2. Defaults to None.
 - <u>annualize (bool, optional):</u> Whether to annualize the ratio, multiplying it by the square root of the
 observations in a year. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -3549,7 +3552,7 @@ period or for the entire period. Thus whether to look at the Omega Ratio within 
 year (if period = 'yearly') or look at the entirety of all years. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the
 Omega Ratio is calculated over a rolling window of this many periods across the full
-return history instead of per `period`. Defaults to None.
+return history instead of per `period`. At least 2. Defaults to None.
 - <u>minimum_acceptable_return (float, optional):</u> The minimum acceptable return (MAR) used as
 the threshold between gains and losses. Defaults to 0.0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -3634,7 +3637,7 @@ Morningstar uses for its ratings.
 each period or of all months in the range. Defaults to True.
 - <u>rolling (int, optional):</u> The number of months in a rolling window, e.g. 36 for the
 three year MRAR at every month end. Overrides period and within_period.
-Defaults to None.
+At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit (4 unless set
 otherwise).
@@ -3720,7 +3723,7 @@ Morningstar uses for its ratings.
 each period or of all months in the range. Defaults to True.
 - <u>rolling (int, optional):</u> The number of months in a rolling window, e.g. 36 for the
 three year figure at every month end. Overrides period and within_period.
-Defaults to None.
+At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the rounding of the Toolkit (4 unless set
 otherwise).
@@ -4146,7 +4149,7 @@ returns within each period (e.g. each year if period = 'yearly') or from the ret
 of the periods themselves over the whole history. Defaults to True.
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, the
 Kelly Criterion is calculated over a rolling window of this many periods across the
-full return history instead of per `period`. Defaults to None.
+full return history instead of per `period`. At least 2. Defaults to None.
 - <u>method (str, optional):</u> The Kelly Criterion. Options are: "discrete" (Kelly's bet from the win
 rate and payoff ratio), "continuous" (average excess return over its variance). Defaults to
 "discrete".
@@ -4711,9 +4714,9 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns. Options are: "weekly", "monthly", "quarterly",
-"yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise
-"yearly".
+- <u>period (str, optional):</u> The data frequency for returns. Options are: "daily", "weekly", "monthly",
+"quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True,
+otherwise "yearly"; fewer than three returns in the date range are logged as a warning.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4766,9 +4769,9 @@ $$
 
 **Args:**
 
-- <u>period (str, optional):</u> The data frequency for returns. Options are: "weekly", "monthly", "quarterly",
-"yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True, otherwise
-"yearly".
+- <u>period (str, optional):</u> The data frequency for returns. Options are: "daily", "weekly", "monthly",
+"quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with quarterly=True,
+otherwise "yearly"; fewer than three returns in the date range are logged as a warning.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4859,7 +4862,7 @@ quarterly=True, otherwise "yearly".
 the residual standard deviation are estimated over a rolling window of this many periods
 across the full return history instead of per `period`, the residuals of each window from
 the regression over that window (see `performance_model.get_appraisal_ratio`).
-Defaults to None.
+At least 3. Defaults to None.
 - <u>method (str, optional):</u> The ratio, as described above. Options are: "appraisal" (Jensen's Alpha
 per unit of residual risk), "modified" (Jensen's Alpha per unit of Beta), "alternative"
 (Jensen's Alpha per unit of systematic risk). Defaults to "appraisal".
@@ -4953,7 +4956,7 @@ quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size to use for the calculation. If set, Beta and
 the standard deviations of the asset and the benchmark are estimated from the returns per
 `period` over a rolling window of this many periods across the full return history,
-instead of from the daily returns within each `period`. Defaults to None.
+instead of from the daily returns within each `period`. At least 2. Defaults to None.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>growth (bool, optional):</u> Whether to calculate the growth of the ratios. Defaults to False.
@@ -5688,7 +5691,7 @@ By default one MinTRL is reported per `period`, computed from the daily excess r
 "monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
 - <u>rolling (int, optional):</u> The rolling window size, in observations of `period`.
-Defaults to None, one value per period.
+At least 2. Defaults to None, one value per period.
 - <u>benchmark_sharpe_ratio (float, optional):</u> The benchmark Sharpe ratio SR*, on the scale
 of one observation (e.g. 1 / SQRT(252) for an annualized benchmark of 1 on daily
 returns). Defaults to 0.0, i.e. any skill at all.
@@ -6135,7 +6138,7 @@ Where N is the number of return differences and T the cumulative Student's t dis
 - <u>period (str, optional):</u> The period to use for the calculation. Options are: "daily", "weekly",
 "monthly", "quarterly", "yearly". Defaults to "quarterly" if the Toolkit is initialised with
 quarterly=True, otherwise "yearly".
-- <u>rolling (int &#124; None, optional):</u> The number of periods in each rolling window. Defaults to None, which
+- <u>rolling (int &#124; None, optional):</u> The number of periods in each rolling window. At least 2. Defaults to None, which
 uses the daily returns within each period.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).

@@ -138,12 +138,12 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -240,12 +240,12 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -343,12 +343,12 @@ Delta is read as the hedge ratio: a call with a delta of 0.6 moves about $0.60 f
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -449,12 +449,12 @@ The Dual Delta is the sensitivity of the option value to the strike price rather
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -561,12 +561,12 @@ Vega is quoted per volatility point: a vega of 0.25 means the option gains about
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -672,12 +672,12 @@ Theta is the cost of holding an option for one more calendar day, all else equal
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -780,12 +780,12 @@ Rho is reported unscaled, as the amount of money per share of the underlying tha
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -882,12 +882,12 @@ The Epsilon can be interpreted as follows:
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -995,12 +995,12 @@ The Lambda can be interpreted as follows:
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1088,12 +1088,12 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1186,12 +1186,12 @@ Gamma is largest for at-the-money options close to expiry, which is where a delt
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1281,12 +1281,12 @@ Note that the dual gamma of a call option and put option are equal to each other
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1381,12 +1381,12 @@ Note that the vanna of a call option and put option are equal to each other.
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1492,12 +1492,12 @@ The Charm can be interpreted as follows:
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1603,12 +1603,12 @@ The vomma can be interpreted as follows:
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1715,12 +1715,12 @@ Note that the vera of a call option and put option are equal to each other.
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1823,12 +1823,12 @@ The Veta can be interpreted as follows:
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -1912,12 +1912,12 @@ Where S is the stock price, K is the strike price, r is the risk free rate, q is
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -2006,12 +2006,12 @@ By default the stock price (the traded close), risk free rate, dividend yield an
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -2118,12 +2118,12 @@ Note that the speed of a call option and put option are equal to each other.
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -2215,12 +2215,12 @@ Note that the zomma of a call option and put option are equal to each other.
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -2319,12 +2319,12 @@ Note that the color of a call option and put option are equal to each other.
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -2418,12 +2418,12 @@ Note that the ultima of a call option and put option are equal to each other.
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -2491,7 +2491,7 @@ The ratio is the number of puts divided by the number of calls, and an unusually
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to use. Defaults to
 None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to use when
-no dates are given. Defaults to 6.
+no dates are given, at least 1. Defaults to 6.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2534,7 +2534,7 @@ Calculate the max pain strike of every expiry: the expiry price at which the opt
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to use. Defaults to
 None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to use when
-no dates are given. Defaults to 6.
+no dates are given, at least 1. Defaults to 6.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2588,7 +2588,7 @@ With positive exposure dealers buy dips and sell rallies, which dampens volatili
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to include. Defaults
 to None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to include
-when no dates are given. Defaults to 6.
+when no dates are given, at least 1. Defaults to 6.
 - <u>by_strike (bool, optional):</u> Whether to return the exposure per strike instead of
 the totals. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -2645,7 +2645,7 @@ Calculate the term structure of implied volatility: the at-the-money implied vol
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to use. Defaults to
 None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to use when
-no dates are given. Defaults to 10.
+no dates are given, at least 1. Defaults to 10.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2718,7 +2718,7 @@ For equities the risk reversal is usually negative: out-of-the-money puts are de
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to use. Defaults to
 None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to use when
-no dates are given. Defaults to 6.
+no dates are given, at least 1. Defaults to 6.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2775,6 +2775,10 @@ $$
 \text{Expected Range} = \text{Stock Price} \;\pm \;\text{Straddle Price}
 $$
 
+$$
+\text{Bid-Ask Spread} = \frac{\text{Call Ask} - \text{Call Bid} + \text{Put Ask} - \text{Put Bid}}{\text{Straddle Price}}
+$$
+
 The straddle pays the absolute move, so its price is the market's expected size of the move, regardless of direction. Around earnings the first expiry after the next earnings date is used, which gives the move the market prices for the earnings announcement (an expiry on the announcement day itself settles at that day's close, before the usual after-the-close announcement).
 
 **Also known as:** expected move, straddle move, earnings move, implied earnings move.
@@ -2784,7 +2788,7 @@ The straddle pays the absolute move, so its price is the market's expected size 
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to use. Defaults to
 None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to use when
-no dates are given. Defaults to 4.
+no dates are given, at least 1. Defaults to 4.
 - <u>around_earnings (bool, optional):</u> Whether to use the first expiry after the next
 earnings date instead. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -2797,13 +2801,24 @@ exist the result is returned in full. Defaults to None, which keeps every column
 **Returns:**
 
 pd.DataFrame: Per ticker and expiry the Days to Expiration, Straddle Strike,
-Straddle Price, Implied Move (as a fraction of the price) and the Lower and Upper
-Price of the expected range.
+Straddle Price, Bid-Ask Spread (as a fraction of the straddle price), Last Trade
+Legs, Implied Move (as a fraction of the price) and the Lower and Upper Price of
+the expected range.
 
 **Notes:**
 
 - The move up to an expiry after earnings also includes the ordinary daily moves
 until then; the closer the expiry is to the announcement, the purer the measure.
+- The prices are the middle of the bid and ask, or the last traded price of an option
+without a two-sided quote that is still held or traded. The Bid-Ask Spread shows
+how firmly the straddle is quoted (NaN when a leg has no two-sided quote) and the
+Last Trade Legs how many of the two legs (0, 1 or 2) are priced from their last
+trade, which can be days or weeks old.
+- A warning names the ticker, expiry and strike when a leg is priced from its last
+trade (with its last trade date and open interest) or when the bid-ask spread is
+wider than half the straddle (above 0.5), as the implied move then may not reflect
+the live market. Outside US market hours Yahoo Finance reports a bid and ask of 0,
+so every leg is priced from its last trade; one warning then names the expiries.
 - The stock price is the price of the underlying quoted with the live option chain
 (Yahoo Finance's regular market price), so both come from the same moment; when
 the chain quotes none, the traded Close of the last historical date is used. The
@@ -2823,10 +2838,10 @@ toolkit.options.get_implied_move(around_earnings=True)
 
 Which returns:
 
-|                        | Earnings Date   |   Days to Expiration |   Straddle Strike |   Straddle Price |   Implied Move |   Lower Price |   Upper Price |
-|:-----------------------|:----------------|---------------------:|------------------:|-----------------:|---------------:|--------------:|--------------:|
-| ('AAPL', '2027-02-19') | 2027-02-04      |                   95 |               350 |            38.2  |         0.1083 |        314.58 |        390.98 |
-| ('NVDA', '2026-11-18') | 2026-11-17      |                    2 |               155 |            13.05 |         0.0836 |        143.09 |        169.19 |
+|                        | Earnings Date   |   Days to Expiration |   Straddle Strike |   Straddle Price |   Bid-Ask Spread |   Last Trade Legs |   Implied Move |   Lower Price |   Upper Price |
+|:-----------------------|:----------------|---------------------:|------------------:|-----------------:|-----------------:|------------------:|---------------:|--------------:|--------------:|
+| ('AAPL', '2027-02-19') | 2027-02-04      |                   85 |               360 |           36.925 |           0.0447 |                 0 |         0.1038 |       318.655 |       392.505 |
+| ('NVDA', '2027-03-19') | 2027-02-24      |                  113 |               150 |           38.725 |           0.0374 |                 0 |         0.2594 |       110.575 |       188.025 |
 
 ---
 
@@ -2854,7 +2869,7 @@ Applied to the S&P 500 index options ("^SPX") over 30 days it approximates the V
 
 **Args:**
 
-- <u>days (int, optional):</u> The constant maturity in calendar days. Defaults to 30.
+- <u>days (int, optional):</u> The constant maturity in calendar days, at least 1. Defaults to 30.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -2921,7 +2936,7 @@ Both compare the implied figure with the realized one of the past, which is know
 
 **Args:**
 
-- <u>days (int, optional):</u> The horizon in calendar days of both volatilities.
+- <u>days (int, optional):</u> The horizon in calendar days of both volatilities, at least 1.
 Defaults to 30.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
@@ -3019,7 +3034,7 @@ The integrals of the paper are discretised as in the Cboe VIX methodology: the f
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to use. Defaults to
 None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to use when
-no dates are given. Defaults to 4.
+no dates are given, at least 1. Defaults to 4.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -3135,7 +3150,7 @@ $$P_{1}$$, $$P_{2}$$ and $$P_{3}$$ are the prices of R, $$R^{2}$$ and $$R^{3}$$,
 
 **Args:**
 
-- <u>days (int, optional):</u> The constant maturity in calendar days. Defaults to 30.
+- <u>days (int, optional):</u> The constant maturity in calendar days, at least 1. Defaults to 30.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
 Defaults to None, which uses the Toolkit's rounding.
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -3236,7 +3251,7 @@ with the forward price F and the boundary strike $$S^{*} = K_{0}$$, the highest 
 - <u>expiration_dates (list[str] &#124; None, optional):</u> The expiries to use, the maturities
 of the swaps. Defaults to None, the nearest `number_of_expirations` expiries.
 - <u>number_of_expirations (int, optional):</u> The number of nearest expiries to use when
-no dates are given. Defaults to 4.
+no dates are given, at least 1. Defaults to 4.
 - <u>strike (float &#124; None, optional):</u> The volatility strike of the swap as a decimal
 (0.25 for 25%), whose square is the variance strike. Defaults to None, which
 gives the fair strike only.
@@ -3327,7 +3342,7 @@ The profit and loss shows what the volatility the option was sold at earned agai
 
 **Args:**
 
-- <u>days (int, optional):</u> The trading days from the sale to expiration. Defaults to 63,
+- <u>days (int, optional):</u> The trading days from the sale to expiration, at least 1. Defaults to 63,
 about three months.
 - <u>start_date (str &#124; None, optional):</u> The date the option is sold, or the last
 trading day before it. Defaults to None, `days` trading days before the end
@@ -3335,12 +3350,13 @@ of the historical data, so the option expires on its last date.
 - <u>moneyness (float, optional):</u> The strike as a fraction of the stock price on the
 start date. Defaults to 1.0, at the money.
 - <u>volatility (float &#124; None, optional):</u> The volatility the option is sold and hedged
-at, such as an implied volatility, for every ticker. Defaults to None, the
-volatility of the year of daily returns up to the start date, which is known on
-that date.
+at, such as an implied volatility, for every ticker, 0 or above (at 0 the option
+is sold at its discounted intrinsic value and the delta is 0 or 1). Defaults to
+None, the volatility of the year of daily returns up to the start date, which is
+known on that date.
 - <u>put_option (bool, optional):</u> Whether the option is a put. Defaults to False.
 - <u>transaction_cost (float, optional):</u> The cost of a trade as a fraction of its value
-(0.001 is 10 basis points). Defaults to 0.0.
+(0.001 is 10 basis points), 0 or above. Defaults to 0.0.
 - <u>rebalancing_days (int, optional):</u> The trading days between rebalances. Defaults to
 1, daily.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -3355,6 +3371,11 @@ exist the result is returned in full. Defaults to None, which keeps every column
 pd.DataFrame: Per ticker the Start Date, Expiration Date, Stock Price, Strike Price,
 Volatility, Realized Volatility, Option Value, Payoff, Transaction Costs and Profit
 and Loss. The costs and the profit and loss are discounted to the start date.
+
+**Raises:**
+
+InvalidArgumentError: When the days or rebalancing days are below 1, the moneyness
+is not positive, or the volatility or transaction cost is negative.
 
 **Notes:**
 
@@ -3427,7 +3448,7 @@ FinancePy's simulate_hedge_paths reports the profit and loss at expiration rathe
 
 **Args:**
 
-- <u>days (int, optional):</u> The trading days to expiration. Defaults to 63, about three
+- <u>days (int, optional):</u> The trading days to expiration, at least 1. Defaults to 63, about three
 months.
 - <u>start_date (str &#124; None, optional):</u> The date of the stock price, volatility, risk
 free rate and dividend yield, or the last trading day before it. Defaults to
@@ -3435,16 +3456,18 @@ None, the last date of the historical data.
 - <u>moneyness (float, optional):</u> The strike as a fraction of the stock price. Defaults
 to 1.0, at the money.
 - <u>volatility (float &#124; None, optional):</u> The volatility the stock moves with, for every
-ticker. Defaults to None, the volatility of the year of daily returns up to the
-start date.
+ticker, 0 or above (at 0 every path grows at the risk free rate less the
+dividend yield). Defaults to None, the volatility of the year of daily returns
+up to the start date.
 - <u>implied_volatility (float &#124; None, optional):</u> The volatility the option is sold and
-hedged at. Defaults to None, the volatility the stock moves with.
+hedged at, 0 or above (at 0 the option is sold at its discounted intrinsic value
+and the delta is 0 or 1). Defaults to None, the volatility the stock moves with.
 - <u>put_option (bool, optional):</u> Whether the option is a put. Defaults to False.
 - <u>transaction_cost (float, optional):</u> The cost of a trade as a fraction of its value
-(0.001 is 10 basis points). Defaults to 0.0.
+(0.001 is 10 basis points), 0 or above. Defaults to 0.0.
 - <u>rebalancing_days (int, optional):</u> The trading days between rebalances. Defaults to
 1, daily.
-- <u>simulations (int, optional):</u> The number of simulated paths. Defaults to 10,000.
+- <u>simulations (int, optional):</u> The number of simulated paths, at least 1. Defaults to 10,000.
 - <u>seed (int &#124; None, optional):</u> The seed of the random numbers, None for a different
 draw on every call. Defaults to 0.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to.
@@ -3460,6 +3483,12 @@ pd.DataFrame: Per ticker the Stock Price, Strike Price, Volatility, Implied
 Volatility, Option Value, the Mean, Standard Deviation and 5% and 95% Quantiles of
 the Profit and Loss, the Mean Transaction Costs (both discounted to the start date)
 and the Approximate Standard Deviation.
+
+**Raises:**
+
+InvalidArgumentError: When the days or rebalancing days are below 1, the moneyness
+is not positive, the simulations are not a whole number of at least 1, or the
+volatility, implied volatility or transaction cost is negative.
 
 **Notes:**
 
@@ -3548,7 +3577,7 @@ False.
 share of the ticker's price: below 1 the option is in the money, above 1 out of the money. Defaults
 to 1.0, at the money.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
@@ -3565,7 +3594,8 @@ expiration dates as the columns.
 
 **Raises:**
 
-ValueError: If exchange_ratio is not positive or the second asset is not in the historical data.
+InvalidArgumentError: If exchange_ratio is not positive.
+ValueError: If the second asset is not in the historical data.
 
 **As an example:**
 
@@ -3659,11 +3689,12 @@ then left out of the rows). Defaults to None, which uses the benchmark.
 - <u>method (str, optional):</u> The approximation. Options are: "bjerksund_stensland" (Bjerksund and Stensland,
 2011, the more accurate), "kirk" (Kirk, 1995). Defaults to "bjerksund_stensland".
 - <u>strike_price_range (float):</u> The range of the strike prices around a spread of 0, as a share of the
-ticker's price, at most 0.5. Defaults to 0.25, which gives strikes from -25 to 25 for a price of 100.
+ticker's price, at most 0.5 (both approximations take the second asset's forward price plus the strike
+as a lognormal price, which lower strikes bring close to zero). Defaults to 0.25, which gives strikes from -25 to 25 for a price of 100.
 - <u>strike_step_size (float):</u> The step size of the strike prices. Defaults to 5, which gives the strikes
 -25, -20, ..., 20 and 25 for a price of 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -3684,8 +3715,9 @@ index and the expiration dates as the columns.
 
 **Raises:**
 
-ValueError: If strike_price_range is above 0.5, the method is not one of the two or the second asset
-is not in the historical data.
+InvalidArgumentError: If strike_price_range is not between 0 and 0.5, strike_step_size is not above 0 or
+the method is not one of the two.
+ValueError: If the second asset is not in the historical data.
 
 **As an example:**
 
@@ -3786,12 +3818,12 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -3973,13 +4005,13 @@ last date of the historical data.
 it will calculate the call option price.
 - <u>american_option (bool, optional):</u> Whether to value an American option, which can be exercised at every
 node, instead of a European option. Defaults to False.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
-- <u>time_to_expiration (float):</u> The number of years to use for the time to expiration. Defaults to 1 which equals
+- <u>time_to_expiration (float):</u> The number of years to use for the time to expiration, above 0. Defaults to 1 which equals
 one year.
-- <u>time_steps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
+- <u>time_steps (int):</u> The number of time steps to use for the binomial tree, from 1 to 1,000. Defaults to 10 which equals 10
 time steps. This will be evenly distributed over the time to expiration.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -4076,9 +4108,10 @@ The resulting output is a DataFrame containing the tickers and movements as the 
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>time_to_expiration (float):</u> The number of years to use for the time to expiration. Defaults to 1 which equals
+- <u>time_to_expiration (float):</u> The number of years to use for the time to expiration, above 0. Defaults to 1 which equals
 one year.
-- <u>time_steps (int):</u> The number of time steps to use for the binomial tree. Defaults to 10 which equals 10
+- <u>time_steps (int):</u> The number of time steps to use for the binomial tree, from 1 to 1,000, and at
+most 16 when listing every path (show_unique_combinations=False). Defaults to 10 which equals 10
 time steps. This will be evenly distributed over the time to expiration.
 - <u>risk_free_rate (float, optional):</u> The risk free rate shown with show_input_info; it does not affect the
 simulated prices. Defaults to None, which uses the Toolkit's risk-free rate on the pricing date: the
@@ -4157,12 +4190,12 @@ This method computes the Black-Scholes call and put price for each ticker, strik
 start from; a date without prices (a weekend or a holiday) uses the last trading day before it, and a
 ticker without a price on that day is left out with a warning. Defaults to None, which uses the
 last date of the historical data.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -4255,12 +4288,12 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The domestic risk free rate to use for the calculation. Defaults to
 None, which uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the
@@ -4369,12 +4402,12 @@ it will calculate the call option price.
 "asset-or-nothing" (the value of the stock). Defaults to "cash-or-nothing".
 - <u>cash_payout (float, optional):</u> The fixed cash amount paid out by a cash-or-nothing option when it
 expires in-the-money. Ignored for asset-or-nothing options. Defaults to 1.0.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -4538,6 +4571,8 @@ Where each formula holds on the side of S* (or of the boundary B(T)) where holdi
 
 A call on a stock without dividends is never exercised early and a put at a non-positive rate neither; these are worth the Black-Scholes price, floored at the exercise value. With Bjerksund-Stensland, a call whose cost of carry b is at least r is likewise worth the Black-Scholes price, and where the boundary I2 falls to or below the strike, a 1,000-step binomial tree prices the option instead. At zero days to expiration the value is the exercise value.
 
+Bjerksund-Stensland can undervalue an option when the risk-free rate or the cost of carry is negative: its flat boundaries can fall back to the European value while early exercise is worth more (with $$r = - 2 \%$$, $$q = - 3 \%$$, $$\sigma = 1 \%$$ and $$T = 1$$, an at-the-money put of 0.0854 against 0.1669 for a 10,000-step binomial tree). A warning names the tickers this applies to; QD+ prices them accurately.
+
 See: Barone-Adesi, G., & Whaley, R. E. (1987), "Efficient Analytic Approximation of American Option Values", The Journal of Finance, 42(2), 301-320; Ju, N., & Zhong, R. (1999), "An Approximate Formula for Pricing American Options", The Journal of Derivatives, 7(2), 31-40; Li, M. (2010), "Analytical Approximations for the Critical Stock Prices of American Options: A Performance Comparison", Review of Derivatives Research, 13(1), 75-99; Andersen, L., Lake, M., & Offengenden, D. (2016), "High-Performance American Option Pricing", Journal of Computational Finance, 20(1), 39-87; Kim, I. J. (1990), "The Analytic Valuation of American Options", The Review of Financial Studies, 3(4), 547-572; Brennan, M. J., & Schwartz, E. S. (1977), "The Valuation of American Put Options", The Journal of Finance, 32(2), 449-462; Bjerksund, P., & Stensland, G. (2002), "Closed Form Valuation of American Options", Working paper, NHH; Bjerksund, P., & Stensland, G. (1993), "Closed-Form Approximation of American Options", Scandinavian Journal of Management, 9, S87-S99, both as presented in Haug, E. G. (2007), "The Complete Guide to Option Pricing Formulas" (2nd ed.), sections 3.1.4 and 3.1.3.
 
 **Also known as:** BAW, quadratic approximation, American option price, early exercise premium, QD+, QdFp, BS2002, Bjerksund-Stensland approximation.
@@ -4568,12 +4603,12 @@ it will calculate the call option price.
 (Crank-Nicolson finite differences), "bjerksund_stensland" (Bjerksund-Stensland 2002, two flat trigger
 prices) and "bjerksund_stensland_1993" (Bjerksund-Stensland 1993, one flat trigger price). Defaults to
 "qd_plus".
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -4686,12 +4721,12 @@ last date of the historical data.
 it will calculate the call option price.
 - <u>beta (float, optional):</u> The elasticity $$\beta$$, between 0 and 1, where 1 is the Black-Scholes model. Defaults to
 0.5, the square-root process.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -4793,12 +4828,12 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current futures price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current futures price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -4926,12 +4961,12 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -4940,8 +4975,9 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None, which
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
-- <u>simulations (int, optional):</u> The number of simulated stock price paths. Defaults to 10,000.
-- <u>time_steps (int, optional):</u> The number of time steps used to build each simulated path. Defaults to 100.
+- <u>simulations (int, optional):</u> The number of simulated stock price paths, at least 1. Defaults to 10,000.
+- <u>time_steps (int, optional):</u> The number of time steps used to build each simulated path, at least 1.
+Defaults to 100.
 - <u>seed (int &#124; None, optional):</u> The seed used to initialize the random number generator, ensuring
 reproducible results; None draws new paths on every call. Defaults to 0.
 - <u>show_standard_error (bool, optional):</u> Whether to also return the standard error of each Monte Carlo
@@ -5158,8 +5194,8 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>barrier_percentage (float, optional):</u> The barrier level as a percentage of the current stock price.
-Defaults to 0.9 which equals 90% of the current stock price. A down barrier needs a value below 1
+- <u>barrier_percentage (float, optional):</u> The barrier level as a percentage of the current stock price,
+above 0. Defaults to 0.9 which equals 90% of the current stock price. A down barrier needs a value below 1
 and an up barrier a value above 1; otherwise the barrier is already breached.
 - <u>barrier_direction (str, optional):</u> The side of the barrier. Options are: "down" (below the stock
 price), "up" (above the stock price), "double" (barrier_percentage is then the lower and
@@ -5180,12 +5216,12 @@ barrier_percentage), on the same side of the stock price. Defaults to None, a ha
 - <u>monitoring (str, optional):</u> How often the barrier is checked. Options are: "continuous"
 (continuously), "daily" (252 times a year), "weekly" (52 times a year), "monthly" (12 times a year).
 Defaults to "continuous".
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -5211,11 +5247,11 @@ time to expiration as the columns.
 
 **Raises:**
 
-ValueError: If barrier_percentage puts the barrier at or beyond the current stock price for the
+InvalidArgumentError: If barrier_percentage is not above 0 or puts the barrier at or beyond the current stock price for the
 given barrier_direction (at or below 1 for "up", at or above 1 for "down", or outside the lower and
 upper barrier for "double"), since such a barrier is breached at the start and every price would
 be the rebate (knock-out) or the vanilla price (knock-in); or when a rebate is combined with a
-double, partial-time or soft barrier, or two of those are combined.
+double, partial-time or soft barrier, or two of those are combined, or monitoring is not one of its values.
 
 **As an example:**
 
@@ -5321,14 +5357,14 @@ it will calculate the call option price.
 - <u>method (str, optional):</u> The pricing method. Options are: "geometric" (the geometric average),
 "turnbull_wakeman" (Turnbull-Wakeman, arithmetic average), "curran" (Curran, arithmetic average),
 "monte_carlo" (Monte Carlo, arithmetic average). Defaults to "geometric".
-- <u>fixings (int &#124; None, optional):</u> The number of equally spaced fixings of the average, the last on the
+- <u>fixings (int &#124; None, optional):</u> The number of equally spaced fixings of the average, at least 1, the last on the
 expiration date. Defaults to None, which averages continuously.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -5337,9 +5373,10 @@ quote to continuous compounding. A rate passed here is used as given, as a conti
 - <u>dividend_yield (float, optional):</u> The dividend yield to use for the calculation. Defaults to None, which
 uses the dividend yield on the pricing date (the dividends of the 365 days up to it relative to its close,
 as the continuously compounded ln(1 + q)). A given value is used as a continuous yield.
-- <u>simulations (int, optional):</u> The number of simulated paths of the Monte Carlo method. Defaults to 10,000.
-- <u>time_steps (int, optional):</u> The fixings that approximate a continuous average with the Monte Carlo method
-(fixings, when given, take their place). Defaults to 100.
+- <u>simulations (int, optional):</u> The number of simulated paths of the Monte Carlo method, at least 1. Defaults
+to 10,000.
+- <u>time_steps (int, optional):</u> The fixings that approximate a continuous average with the Monte Carlo method,
+at least 1 (fixings, when given, take their place). Defaults to 100.
 - <u>seed (int &#124; None, optional):</u> The seed of the random number generator of the Monte Carlo method, which
 makes the results reproducible; None draws new paths on every call. Defaults to 0.
 - <u>show_input_info (bool, optional):</u> Whether to show the input information. Defaults to False.
@@ -5359,7 +5396,8 @@ expiration as the columns.
 
 **Raises:**
 
-ValueError: If method is not one of the methods or fixings is not a whole number of at least 1.
+InvalidArgumentError: If method is not one of the methods or fixings, simulations or time_steps is not a whole
+number of at least 1.
 
 **As an example:**
 
@@ -5468,14 +5506,14 @@ strike). Defaults to "fixed".
 - <u>lookback_period (float, optional):</u> The share of the life over which the extreme is watched, above 0 and
 at most 1: the start of the life for a floating strike and the end for a fixed strike. Defaults to 1,
 the whole life.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100. Not used for a
 floating strike.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100. Not used for a
 floating strike.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -5501,7 +5539,7 @@ floating strike) as the index and the time to expiration as the columns.
 
 **Raises:**
 
-ValueError: If strike_type is not "fixed" or "floating" or lookback_period is not above 0 and at most 1.
+InvalidArgumentError: If strike_type is not "fixed" or "floating" or lookback_period is not above 0 and at most 1.
 
 **As an example:**
 
@@ -5614,7 +5652,7 @@ last date of the historical data.
 "no-touch" (no-touch), "double-one-touch" (double one-touch), "double-no-touch" (double no-touch).
 Defaults to "one-touch".
 - <u>barrier_percentage (float, optional):</u> The barrier (the lower barrier of a double touch option) as a
-percentage of the current stock price. Defaults to 0.9, 90% of the current stock price.
+percentage of the current stock price, above 0. Defaults to 0.9, 90% of the current stock price.
 - <u>upper_barrier_percentage (float, optional):</u> The upper barrier of a double touch option as a percentage of
 the current stock price. Defaults to 1.1, 110% of the current stock price.
 - <u>payment (str, optional):</u> When a one-touch option pays. Options are: "expiration" (at expiration),
@@ -5625,7 +5663,7 @@ the current stock price. Defaults to 1.1, 110% of the current stock price.
 (continuously), "daily" (252 times a year), "weekly" (52 times a year), "monthly" (12 times a year).
 Defaults to "continuous".
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -5651,9 +5689,9 @@ columns.
 
 **Raises:**
 
-ValueError: If option_type, payment or monitoring is not one of its values, a touch option other than the
-one-touch is asked to pay at the hit, the barrier is at the current stock price or a double touch
-option's barriers do not lie on either side of it.
+InvalidArgumentError: If option_type, payment or monitoring is not one of its values, a touch option other
+than the one-touch is asked to pay at the hit, barrier_percentage is not above 0, the barrier is at the
+current stock price or a double touch option's barriers do not lie on either side of it.
 
 **As an example:**
 
@@ -5731,12 +5769,12 @@ ticker without a price on that day is left out with a warning. Defaults to None,
 last date of the historical data.
 - <u>choice_period (float, optional):</u> The share of the life after which the holder chooses between the call
 and the put, at least 0 and at most 1. Defaults to 0.5, halfway.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which equals
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which equals
 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that the
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that the
 strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -5762,7 +5800,7 @@ to expiration as the columns.
 
 **Raises:**
 
-ValueError: If choice_period is not at least 0 and at most 1.
+InvalidArgumentError: If choice_period is not at least 0 and at most 1.
 
 **As an example:**
 
@@ -5860,7 +5898,7 @@ forward-start option and more for a cliquet. Defaults to 1.
 - <u>performance (bool, optional):</u> Whether each period pays its return beyond the moneyness instead of the
 price difference. Defaults to False.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 days after the start date. Defaults to 30, which gives
+expirations 1 up to expiration_time_range - 1 days after the start date, so at least 2. Defaults to 30, which gives
 expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the calculation. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's
@@ -5886,7 +5924,7 @@ as the columns.
 
 **Raises:**
 
-ValueError: If start_period is not at least 0 and below 1, moneyness is not positive or periods is not
+InvalidArgumentError: If start_period is not at least 0 and below 1, moneyness is not positive or periods is not
 a positive whole number.
 
 **As an example:**
@@ -6492,7 +6530,7 @@ the density over, as a fraction of the forward price in each
 direction. Defaults to 0.5, i.e. from 50% to 150% of the forward
 price.
 - <u>number_of_strikes (int, optional):</u> The number of strikes in the
-evaluation grid. Defaults to 200.
+evaluation grid, at least 3. Defaults to 200.
 - <u>outlier_threshold (float, optional):</u> The number of median absolute
 deviations from the median implied volatility beyond which a quote
 is treated as an outlier and dropped before fitting. Defaults to
@@ -6747,12 +6785,12 @@ without prices (a weekend or a holiday) uses the last trading day before it. Def
 to None, which uses the last date of the historical data.
 - <u>put_option (bool, optional):</u> Whether to calculate the put option price. Defaults to False which means
 it will calculate the call option price.
-- <u>strike_price_range (float):</u> The percentage range to use for the strike prices. Defaults to 0.25 which
+- <u>strike_price_range (float):</u> The percentage range to use for the strike prices, between 0 and 1. Defaults to 0.25 which
 equals 25% and thus results in strike prices from 75 to 125 if the current stock price is 100.
-- <u>strike_step_size (float):</u> The step size to use for the strike prices. Defaults to 5 which means that
+- <u>strike_step_size (float):</u> The step size to use for the strike prices, above 0. Defaults to 5 which means that
 the strike prices will be 75, 80, 85, ..., 120 and 125 if the current stock price is 100.
 - <u>expiration_time_range (int):</u> The number of days to use for the time to expiration: the columns are the
-expirations 1 up to expiration_time_range - 1 calendar days after the start date. Defaults to 30,
+expirations 1 up to expiration_time_range - 1 calendar days after the start date, so at least 2. Defaults to 30,
 which gives expirations of 1 to 29 days.
 - <u>risk_free_rate (float, optional):</u> The risk free rate to use for the pricing. Defaults to None, which
 uses the Toolkit's risk-free rate on the pricing date: the 10-year Treasury yield unless the Toolkit's

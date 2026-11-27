@@ -37,7 +37,8 @@ Collect all the technical indicators of every ticker in one table: the breadth, 
 "intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
 "monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
 to "daily".
-- <u>window (int, optional):</u> The number of periods to use for the calculation. Defaults to 14.
+- <u>window (int, optional):</u> The number of periods to use for the calculation, at least 2 as
+the Commodity Channel Index and the Choppiness Index need two periods. Defaults to 14.
 The Bollinger Bands and their %B and BandWidth keep their own window of 20
 periods (with 2 standard deviations), as defined by Bollinger, and the indicators
 without a single window, such as the MACD, the True Strength Index, the Coppock
@@ -4092,7 +4093,9 @@ to "daily".
 Defaults to "Adj Close".
 - <u>minimum_window (int, optional):</u> The shortest forward window in prices, at least 3.
 Defaults to 5.
-- <u>maximum_window (int, optional):</u> The longest forward window in prices. Defaults to 20.
+- <u>maximum_window (int, optional):</u> The longest forward window in prices, at least the
+minimum window. A maximum window longer than the data leaves every date without a
+label, which is logged. Defaults to 20.
 - <u>rounding (int &#124; None, optional):</u> The number of decimals to round the results to. Defaults to None, which uses
 the rounding of the Toolkit (4 unless set otherwise).
 - <u>show_columns (str &#124; list[str] &#124; None):</u> The columns to keep, a name or a list of names, matched
@@ -4633,7 +4636,8 @@ Collect the momentum indicators of every ticker in one table: how fast and how s
 "intraday" (intraday prices), "daily" (daily prices), "weekly" (weekly prices),
 "monthly" (monthly prices), "quarterly" (quarterly prices), "yearly" (yearly prices). Defaults
 to "daily".
-- <u>window (int, optional):</u> The window size for calculating indicators.
+- <u>window (int, optional):</u> The window size for calculating indicators, at least 2 as
+the Commodity Channel Index and the Choppiness Index need two periods.
 Defaults to 14.
 - <u>close_column (str, optional):</u> The name of the column containing the close prices.
 Defaults to "Adj Close".
@@ -4976,7 +4980,7 @@ to "daily".
 - <u>close_column (str, optional):</u> The column in the historical data that represents
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
-- <u>window (int, optional):</u> The number of periods for calculating the CCI.
+- <u>window (int, optional):</u> The number of periods for calculating the CCI, at least 2.
 Defaults to 14.
 - <u>constant (float, optional):</u> Constant multiplier used in the CCI calculation.
 Defaults to 0.015.
@@ -7180,7 +7184,7 @@ to "daily".
 Defaults to "Adj Close", in which case the open, high and low prices are adjusted
 for dividends in the same way.
 - <u>window (int, optional):</u> Number of periods to consider for the Choppiness Index
-calculation. Defaults to 14.
+calculation, at least 2. Defaults to 14.
 - <u>range_method (str, optional):</u> The net range the summed True Range is divided by. Options are:
 "high_low" (the highest high minus the lowest low), "true_range" (the highest true high minus
 the lowest true low, TA-Lib's CHOPTR). Defaults to "high_low".
