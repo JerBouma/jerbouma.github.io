@@ -1,0 +1,1 @@
+{"charts":{"get_operating_return_on_assets":{"title":"Operating Return on Assets","type":"line","x":["2021","2022","2023","2024"],"series":[{"name":"HD","data":[0.3235,0.3241,0.2836,0.2494]},{"name":"LOW","data":[0.2647,0.23,0.2703,0.2466]},{"name":"TGT","data":[0.1703,0.0718,0.105,0.0984]}],"format":"percent","subtitle":"Operating income as a share of average total assets"}}}

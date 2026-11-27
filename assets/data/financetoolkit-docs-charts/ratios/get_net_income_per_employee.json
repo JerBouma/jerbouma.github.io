@@ -1,0 +1,1 @@
+{"charts":{"get_net_income_per_employee":{"title":"Net Income per Employee","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[614805.0,608555.0,602453.0,571561.0,674759.0]},{"name":"MSFT","data":[338514.0,329131.0,327425.0,386561.0,446632.0]},{"name":"NVDA","data":[433943.0,166743.0,1005410.0,2024440.0,null]}],"format":"compact"}}}

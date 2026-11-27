@@ -442,3 +442,157 @@ get_short_rate_simulation:
   xname: Years
   title: Simulated Short Rate
   subtitle: Percentiles of the simulated paths, the 5% to 95% range shaded
+
+get_asset_swap_spread:
+  chart: bar
+  x: Maturity
+  columns: [Par Asset Swap Spread, Market Value Asset Swap Spread]
+  format: percent
+  title: Asset Swap Spreads
+  subtitle: Per bond, by maturity, over the swap curve
+
+get_bucketed_delta:
+  chart: bar
+  stack: true
+  x: Maturity
+  columns: [2Y, 3Y, 5Y, 7Y, 10Y, 20Y, 30Y]
+  format: decimal
+  title: Bucketed Delta
+  subtitle: Price change per bond for a 1 basis point shift of each par curve point
+
+get_credit_default_swap_spread:
+  chart: bar
+  format: percent
+  xname: Maturity
+  title: Credit Default Swap Spread
+  subtitle: Implied by corporate bond spreads
+
+get_fitted_bond_curve:
+  chart: line
+  columns: [Zero Rate, Instantaneous Forward Rate]
+  format: percent
+  xname: Years to maturity
+  title: Fitted Treasury Curve
+  subtitle: Zero and forward rates of the curve fitted to bond prices
+
+get_forward_inflation_index:
+  chart: line
+  columns: [Forward CPI, Trend CPI]
+  format: number
+  title: Forward CPI
+  subtitle: The CPI level priced by the zero-coupon inflation swap, with and without seasonality
+
+get_forward_rate_agreement:
+  chart: bar
+  columns: [FRA Rate]
+  format: percent
+  title: Forward Rate Agreement Rates
+
+get_fx_forward_rates:
+  chart: tabs
+  title: FX Forward Rates
+  tabs:
+  - label: Per USD
+    chart: line
+    transpose: true
+    columns: [Euro Area, United Kingdom, Switzerland, Canada, Australia]
+    format: decimal
+    subtitle: Units of each currency per US dollar, spot and forward
+  - label: Japan
+    chart: line
+    transpose: true
+    columns: [Japan]
+    format: number
+    subtitle: Yen per US dollar, spot and forward
+
+get_i_spread:
+  chart: bar
+  x: Maturity
+  columns: [I-Spread, G-Spread]
+  format: percent
+  title: I-Spread and G-Spread
+  subtitle: Per bond, by maturity, over the swap curve and over Treasuries
+
+get_inflation_swap_rate:
+  chart: line
+  columns: [Zero-Coupon Inflation Swap Rate, Year-on-Year Inflation Swap Rate]
+  format: percent
+  xname: Years to maturity
+  title: Inflation Swap Rates
+
+get_instantaneous_forward_curve:
+  chart: line
+  columns: [Instantaneous Forward Rate, Zero Rate]
+  format: percent
+  xname: Years to maturity
+  title: Instantaneous Forward Curve
+
+get_rate_shift_ladder:
+  chart: bar
+  x: Maturity
+  columns: [-200bp, -50bp, +50bp, +200bp]
+  format: number
+  title: Price Change for Parallel Rate Shifts
+  subtitle: Per bond by maturity, per 100 of face value
+
+get_smith_wilson_curve:
+  chart: line
+  columns: [Zero Rate, Instantaneous Forward Rate]
+  format: percent
+  xname: Years to maturity
+  title: Smith-Wilson Curve
+  subtitle: Extrapolated towards the ultimate forward rate
+
+get_survival_curve:
+  chart: line
+  format: percent
+  xname: Maturity
+  title: Survival Probability by Rating
+
+get_swap_rate:
+  chart: line
+  columns: [Swap Rate]
+  format: percent
+  xname: Years to maturity
+  title: Swap Rate Curve
+
+get_swaption_price:
+  chart: line
+  format: percent
+  xname: Expiry (years)
+  title: Payer Swaption Price
+  subtitle: By expiry, a line per swap tenor in years, per unit of notional
+
+get_treasury_floating_rate_notes:
+  chart: bar
+  x: Maturity
+  columns: [Discount Margin]
+  format: percent
+  title: Floating Rate Note Discount Margin
+  subtitle: Per note, by maturity
+
+get_treasury_forward_prices:
+  chart: bar
+  x: Maturity
+  columns: [Carry]
+  format: decimal
+  title: Treasury Carry to the Forward Date
+  subtitle: Price minus forward price, per note by maturity
+
+get_treasury_futures_basis:
+  chart: bar
+  x: Maturity
+  columns: [Implied Repo Rate]
+  sort: desc
+  format: percent
+  title: Implied Repo Rate of Deliverable Notes
+  subtitle: Per deliverable note; the highest is the cheapest to deliver
+
+get_treasury_inflation_protected_securities:
+  chart: line
+  x: Maturity
+  columns: [Nominal Yield, Real Yield, Breakeven Inflation Rate]
+  dots: [Nominal Yield, Real Yield, Breakeven Inflation Rate]
+  format: percent
+  title: TIPS Real Yields and Breakeven Inflation
+  subtitle: Per TIPS, by maturity

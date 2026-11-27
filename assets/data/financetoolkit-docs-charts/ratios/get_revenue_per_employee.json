@@ -1,0 +1,1 @@
+{"charts":{"get_revenue_per_employee":{"title":"Revenue per Employee","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AMZN","data":[292178.0,333539.0,376908.0,409999.0,454901.0]},{"name":"COST","data":[680309.0,746559.0,766741.0,764123.0,807141.0]},{"name":"WMT","data":[249023.0,291090.0,308631.0,324279.0,null]}],"format":"compact"}}}

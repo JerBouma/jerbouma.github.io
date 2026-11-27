@@ -1,0 +1,1 @@
+{"charts":{"get_operating_cash_flow_per_share":{"title":"Operating Cash Flow per Share","type":"bar","x":["2021","2022","2023","2024","2025"],"series":[{"name":"AAPL","data":[6.1689,7.4821,6.9908,7.6748,7.4298]},{"name":"GOOGL","data":[6.7622,6.953,7.9976,10.0666,13.4679]},{"name":"MSFT","data":[10.0868,11.8084,11.7214,15.872,18.2401]}],"format":"price"}}}

@@ -878,3 +878,108 @@ get_asset_coverage_ratio:
     tickers: KMI,WMB,OKE
     start_date: "2021-01-01"
     end_date: "2025-12-31"
+get_capex_to_operating_cash_flow_ratio:
+  question: What share of their operating cash flow did TSMC, Intel and Microsoft spend on capital expenditure from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: TSM,INTC,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_cash_per_share:
+  question: How much cash per share did Meta, Alphabet and Amazon hold from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: META,GOOGL,AMZN
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_continuing_operations_profit_margin:
+  question: What was the profit margin from continuing operations of GE, Johnson & Johnson and Danaher from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: GE,JNJ,DHR
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_debt_to_market_cap_ratio:
+  question: How large was the debt of Ford, General Motors and Tesla compared with their market value from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: F,GM,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_free_cash_flow_per_share:
+  question: What was the free cash flow per share of Nvidia, AMD and Broadcom from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: NVDA,AMD,AVGO
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_intangibles_to_total_assets_ratio:
+  question: Which share of the assets of AbbVie, Pfizer and Merck was goodwill and other intangibles from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: ABBV,PFE,MRK
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_long_term_debt_to_capitalization_ratio:
+  question: How much of the long-term capital of AT&T, Verizon and T-Mobile was long-term debt from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: T,VZ,TMUS
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_net_income_per_employee:
+  question: How much net income did Apple, Microsoft and Nvidia earn per employee from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: AAPL,MSFT,NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_net_net_working_capital_per_share:
+  question: What was Graham's net-net working capital per share of Intel, Walgreens and GameStop from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: INTC,WBA,GME
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_operating_cash_flow_per_share:
+  question: What was the operating cash flow per share of Apple, Microsoft and Alphabet from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: AAPL,MSFT,GOOGL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_operating_return_on_assets:
+  question: What operating return on assets did Home Depot, Lowe's and Target make from 2021 to 2025?
+  tool: profitability
+  arguments:
+    tickers: HD,LOW,TGT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_retention_ratio:
+  question: What share of their earnings did Costco, Visa and Nike keep rather than pay out as dividends from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: COST,V,NKE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_revenue_per_employee:
+  question: How much revenue did Walmart, Amazon and Costco generate per employee from 2021 to 2025?
+  tool: efficiency
+  arguments:
+    tickers: WMT,AMZN,COST
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_solvency_ratio:
+  question: What was the solvency ratio of Duke Energy, Southern Company and NextEra Energy from 2021 to 2025?
+  tool: solvency
+  arguments:
+    tickers: DUK,SO,NEE
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+get_tangible_book_value_per_share:
+  question: What was the tangible book value per share of JPMorgan Chase, Bank of America and Wells Fargo from 2021 to 2025?
+  tool: valuation
+  arguments:
+    tickers: JPM,BAC,WFC
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"

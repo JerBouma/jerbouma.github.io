@@ -1,0 +1,1 @@
+{"charts":{"get_exchange_option":{"title":"Exchange Option Price","type":"bar","x":["2026-01-30","2026-03-01","2026-03-31"],"series":[{"name":"AAPL","data":[6.7664,9.5415,11.659]},{"name":"MSFT","data":[9.5013,13.351,16.2696]}],"format":"price","subtitle":"The right to receive the ticker for the benchmark, by expiration"}}}

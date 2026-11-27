@@ -1,0 +1,1 @@
+{"index":"Ticker","columns":["v0","kappa","theta","sigma","rho","Feller Ratio","RMSE","Quotes","Expirations","At Bound"],"rows":[["AAPL",0.0667,9.6301,0.099,2.1835,-0.6306,0.3999,0.0158,366.0,7.0,""],["MSFT",0.1801,20.0,0.1405,3.4202,-0.5924,0.4805,0.0215,450.0,7.0,"kappa"]],"total":2}
