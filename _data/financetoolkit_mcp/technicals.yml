@@ -502,3 +502,648 @@ get_chandelier_exit:
     start_date: "2025-01-01"
     end_date: "2025-12-31"
     limit: -250
+
+# Indicators added in v2.4.0
+get_acceleration_bands:
+  question: Where did Tesla trade within its Acceleration Bands in 2025?
+  tool: volatility
+  arguments:
+    tickers: TSLA
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: TSLA
+get_adaptive_price_zone:
+  question: How did the Adaptive Price Zone of the Invesco QQQ ETF move with its price in 2025?
+  tool: volatility
+  arguments:
+    tickers: QQQ
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: QQQ
+get_archer_moving_average_trends:
+  question: On which days in 2025 did the Archer moving average trends signal a long or a short run for Apple?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_bet_sizes:
+  question: How large a position did the reserve method of bet sizing take in Apple on each day of 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    method: reserve
+    show_columns: AAPL
+    limit: -250
+get_bias:
+  question: How far did Apple and Microsoft trade above or below their moving averages in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_brar:
+  question: What did the BRAR sentiment indicator of Apple show in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_buying_selling_pressure:
+  question: How did the buying and selling pressure on Apple's stock develop in 2025?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_center_of_gravity_oscillator:
+  question: How did Ehlers' Center of Gravity Oscillator of Apple and its trigger line move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_chaikin_volatility:
+  question: Did the daily trading range of Nvidia and AMD widen or narrow in 2025, measured by Chaikin's Volatility?
+  tool: volatility
+  arguments:
+    tickers: NVDA,AMD
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_chande_kroll_stop:
+  question: Where were the Chande Kroll stops of Meta Platforms in 2025?
+  tool: volatility
+  arguments:
+    tickers: META
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: META
+get_correlation_trend_indicator:
+  question: How strongly did the prices of Apple and Microsoft trend in 2025, according to the Correlation Trend Indicator?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_derivative_oscillator:
+  question: How did the Derivative Oscillator of Apple and Microsoft move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_detrended_synthetic_price:
+  question: How did Ehlers' Detrended Synthetic Price of Apple and Microsoft cycle in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_directional_movement_index:
+  question: How did the directional movement of Apple (+DI, -DI and DX) develop in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_dv_intermediate_oscillator:
+  question: Was Apple overbought or oversold in 2025 according to the DV Intermediate Oscillator?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_efficiency_ratio:
+  question: How efficiently did the prices of Apple and Microsoft move in 2025, measured by Kaufman's Efficiency Ratio?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_even_better_sinewave:
+  question: What did Ehlers' Even Better Sinewave of Apple and Microsoft show in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_finite_volume_elements:
+  question: Was money flowing into or out of Apple and Microsoft in 2025, judging by their Finite Volume Elements?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_fisher_transform:
+  question: How did the Fisher Transform of Apple and its trigger line move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_fixed_horizon_labels:
+  question: Label every day of 2025 for Apple, Microsoft, Nvidia and Amazon by whether their return over the next five days beat or trailed its average.
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT,NVDA,AMZN
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    horizon: 5
+    relative_to: mean
+    limit: -245
+    show_columns: Label
+get_forecast_oscillator:
+  question: How far did Apple and Microsoft trade from their linear regression forecasts in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_gann_hilo_activator:
+  question: Was AMD in an uptrend or a downtrend in 2025 according to the Gann HiLo Activator?
+  tool: overlap
+  arguments:
+    tickers: AMD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AMD
+    limit: -250
+get_heikin_ashi:
+  question: What did Apple's Heikin-Ashi candles look like in 2025?
+  tool: overlap
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+get_hilbert_dominant_cycle_period:
+  question: How long was the dominant cycle in the prices of Apple and Microsoft in 2025, according to the Hilbert Transform?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_hilbert_dominant_cycle_phase:
+  question: What was the phase of the dominant cycle in Apple's and Microsoft's prices in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_hilbert_phasor_components:
+  question: What were the in-phase and quadrature components of Apple's price in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_hilbert_sine_wave:
+  question: How did the Hilbert sine wave and lead sine of Apple move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_hilbert_trend_mode:
+  question: Were Apple and Microsoft trending or moving in cycles in 2025, according to the Hilbert Trend Mode?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_holt_winters_channel:
+  question: How did Alphabet trade within its Holt-Winters channel in 2025?
+  tool: overlap
+  arguments:
+    tickers: GOOGL
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: GOOGL
+    limit: -250
+get_inertia:
+  question: Did Apple and Microsoft show upward or downward inertia in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_internal_bar_strength:
+  question: Where in its daily range did the Invesco QQQ ETF close on each day of 2025, compared with the SPDR S&P 500 ETF?
+  tool: momentum
+  arguments:
+    tickers: QQQ
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+    benchmark_ticker: SPY
+get_inverse_fisher_transform_rsi:
+  question: How did the Inverse Fisher Transform of the RSI of Apple and Microsoft move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_kdj_indicator:
+  question: What did the KDJ indicator of Apple show in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_klinger_volume_oscillator:
+  question: How did the Klinger Volume Oscillator of Apple move against its signal line in 2025?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_liquidity_sweep:
+  question: On which days in 2025 did Apple or Microsoft show a liquidity sweep?
+  tool: overlap
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    signals_only: true
+get_market_facilitation_index:
+  question: How much did the price of Apple and Microsoft move per unit of volume in 2025, measured by the Market Facilitation Index?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_market_thermometer:
+  question: How hot or quiet was the market for the SPDR Gold Shares ETF in 2025, according to Elder's Market Thermometer?
+  tool: volatility
+  arguments:
+    tickers: GLD
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: GLD
+get_matrix_flag_labels:
+  question: Did Microsoft's price form a bull flag at any point in 2025, with a matrix flag score of at least 2.5?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    threshold: 2.5
+    show_columns: MSFT
+    limit: -250
+get_mesa_adaptive_moving_average:
+  question: How did the MESA Adaptive Moving Average of Apple and its following average move in 2025?
+  tool: overlap
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_midpoint:
+  question: What was the midpoint of Amazon's 14-day high-low range in 2025?
+  tool: overlap
+  arguments:
+    tickers: AMZN
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    method: high_low
+    limit: -250
+get_premier_stochastic_oscillator:
+  question: How did the Premier Stochastic Oscillator of Apple and Microsoft move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_pretty_good_oscillator:
+  question: Did Apple or Microsoft break out in 2025 according to the Pretty Good Oscillator?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_price_distance:
+  question: How far did the prices of Coca-Cola and PepsiCo travel within each trading day of 2025?
+  tool: volatility
+  arguments:
+    tickers: KO,PEP
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_price_transform:
+  question: What was Nvidia's weighted close on each day of 2025?
+  tool: overlap
+  arguments:
+    tickers: NVDA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    method: weighted_close
+    limit: -250
+get_price_volume:
+  question: What was the daily price times volume of Apple and Microsoft in 2025?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_price_volume_rank:
+  question: Did volume confirm the price moves of Apple and Microsoft in 2025, according to the Price Volume Rank?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_price_zone_oscillator:
+  question: Was Apple or Microsoft overbought or oversold in 2025 according to the Price Zone Oscillator?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_projection_oscillator:
+  question: Where did Apple and Microsoft trade within their projection bands in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_psychological_line:
+  question: On what share of recent days did Apple and Microsoft close higher in 2025, measured by the Psychological Line?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_qstick:
+  question: Did Apple and Microsoft tend to close above or below their opens in 2025, according to the Qstick indicator?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_quantitative_qualitative_estimation:
+  question: What did the Quantitative Qualitative Estimation (QQE) of Apple show in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_relative_volatility_index:
+  question: Was volatility in JPMorgan Chase and Goldman Sachs rising on up days or on down days in 2025, according to the Relative Volatility Index?
+  tool: volatility
+  arguments:
+    tickers: JPM,GS
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+get_relative_volume:
+  question: How did the daily trading volume of Nvidia and Tesla in 2025 compare with their average volume?
+  tool: breadth
+  arguments:
+    tickers: NVDA,TSLA
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_schaff_trend_cycle:
+  question: How did the Schaff Trend Cycle of Apple and Microsoft move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_signal_to_noise_ratio:
+  question: How large was the trend of Apple and Microsoft compared with their noise in 2025, measured by the signal-to-noise ratio?
+  tool: volatility
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_squeeze_momentum:
+  question: When was the Invesco QQQ ETF in a volatility squeeze in 2025, and which way did its momentum point?
+  tool: volatility
+  arguments:
+    tickers: QQQ
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: QQQ
+get_standard_deviation_channel:
+  question: Where did Apple trade within its standard deviation channel, one and two standard deviations around a linear regression, in 2025?
+  tool: volatility
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    num_std_dev: [1, 2]
+    show_columns: AAPL
+    limit: -250
+get_stochastic_momentum_index:
+  question: How did the Stochastic Momentum Index of Apple and its signal line move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_swing_index:
+  question: How did Apple's Swing Index and Accumulative Swing Index develop in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_swiss_army_knife_filter:
+  question: What did Ehlers' Swiss Army Knife Filter of Apple and Microsoft show in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_tail_set_labels:
+  question: On each day of 2025, which of Apple, Microsoft, Nvidia, Amazon, Alphabet, Meta, Tesla, Broadcom, Oracle and AMD ranked among the best or worst performers over the next day?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT,NVDA,AMZN,GOOGL,META,TSLA,AVGO,ORCL,AMD
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -249
+    show_columns: Label
+get_td_sequential:
+  question: What were Apple's TD Sequential setup and countdown counts in 2025?
+  tool: overlap
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+get_trend_detection_index:
+  question: Was Apple trending in 2025 according to the Trend Detection Index?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_trend_scanning_labels:
+  question: Label each day of 2025 for Microsoft by its strongest forward trend, with its t-value, return and holding period.
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: MSFT
+    limit: -231
+get_triple_barrier_labels:
+  question: 'Label each day of 2025 for Apple with the triple-barrier method: which barrier the price hit first, its return and how long it took.'
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -240
+get_ttm_trend:
+  question: Were Apple and Microsoft in an uptrend or a downtrend in 2025 according to the TTM Trend?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_vertical_horizontal_filter:
+  question: Were Apple and Microsoft trending or moving sideways in 2025, according to the Vertical Horizontal Filter?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_volatility_based_momentum:
+  question: How did the volatility-based momentum of Apple and Microsoft move in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_volume_flow_indicator:
+  question: Was volume flowing into or out of Apple and Microsoft in 2025, according to the Volume Flow Indicator?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2020-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_volume_index:
+  question: How did the Negative Volume Index of the SPDR S&P 500 and iShares Russell 2000 ETFs develop in 2025?
+  tool: breadth
+  arguments:
+    tickers: SPY,IWM
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+    show_columns: SPY,IWM
+get_volume_profile:
+  question: At which price levels did Apple's stock trade the most volume in 2025?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+get_volume_zone_oscillator:
+  question: Was Apple or Microsoft overbought or oversold in 2025 according to the Volume Zone Oscillator?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_wavetrend_oscillator:
+  question: How did Apple's WaveTrend Oscillator move against its signal line in 2025?
+  tool: momentum
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2024-01-01"
+    end_date: "2025-12-31"
+    show_columns: AAPL
+    limit: -250
+get_williams_accumulation_distribution:
+  question: How did the Williams Accumulation/Distribution of Apple and Microsoft develop in 2025?
+  tool: breadth
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    limit: -250
+get_williams_fractal:
+  question: On which days in 2025 did Apple or Microsoft confirm an up fractal, using Bill Williams' fractals?
+  tool: overlap
+  arguments:
+    tickers: AAPL,MSFT
+    start_date: "2025-01-01"
+    end_date: "2025-12-31"
+    signals_only: true
+    show_columns: Up Fractal
+get_zigzag:
+  question: Where were the turning points of silver's price in 2025, using a Zig Zag with a 10% sensitivity?
+  tool: overlap
+  arguments:
+    tickers: SIUSD
+    start_date: "2021-01-01"
+    end_date: "2025-12-31"
+    sensitivity: 0.1
+    show_columns: SIUSD
+    limit: -268
