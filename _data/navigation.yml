@@ -1535,6 +1535,10 @@ financetoolkit-docs-risk:
         url: /projects/financetoolkit/docs/risk#get_volatility--rogers-satchell
       - title: "Yang-Zhang Volatility"
         url: /projects/financetoolkit/docs/risk#get_volatility--yang-zhang
+      - title: "Garman-Klass Yang-Zhang Volatility"
+        url: /projects/financetoolkit/docs/risk#get_volatility--garman-klass-yang-zhang
+      - title: "Compounded Volatility"
+        url: /projects/financetoolkit/docs/risk#get_volatility--compounded
       - title: Idiosyncratic Volatility
         url: /projects/financetoolkit/docs/risk#get_idiosyncratic_volatility
       - title: "Upside Deviation"
@@ -1695,6 +1699,10 @@ financetoolkit-docs-performance:
     children:
       - title: "Sharpe Ratio"
         url: /projects/financetoolkit/docs/performance#get_sharpe_ratio
+      - title: "Smart Sharpe Ratio"
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio--smart
+      - title: "Lo Annualized Sharpe Ratio"
+        url: /projects/financetoolkit/docs/performance#get_sharpe_ratio--lo
       - title: "Adjusted Sharpe Ratio"
         url: /projects/financetoolkit/docs/performance#get_sharpe_ratio--adjusted
       - title: "Probabilistic Sharpe Ratio (PSR)"

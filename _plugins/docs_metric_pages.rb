@@ -246,6 +246,15 @@ module DocsMetricPages
     items.join("\n") + "\n{: .docs-refs}\n\n"
   end
 
+  # A function and its variant pages share one docstring; "refs" in
+  # _data/docs_variants.yml keeps the sources that belong to one page (lines
+  # containing any of the given texts). Without it, every source stays.
+  def pick_references(refs, keep)
+    return refs if keep.nil? || refs.to_s.empty?
+    lines = refs.lines.select { |l| l.start_with?("- ") && keep.any? { |k| l.include?(k) } }
+    lines.empty? ? "" : "**References:**\n\n" + lines.join
+  end
+
   def references_section(refs)
     return "" if refs.to_s.empty?
     "## References\n{: #references}\n\n" + references_list(refs)
@@ -850,14 +859,15 @@ module DocsMetricPages
   def variant_text(description, matches, intro = nil)
     lines = description.lines.map(&:rstrip)
     math = lines.each_index.select { |i| lines[i].strip == "$$" }
-    pieces_started = nil
     pieces = Array(matches).filter_map do |m|
+      # { text: ... } is the website's own sentence, e.g. what the letters in a formula stand for
+      next ["text", m["text"].strip, false] if m.is_a?(Hash)
       i = lines.index { |l| l.include?(m) }
       next unless i
       open_at = math.select { |j| j < i }
       if open_at.size.odd? # inside a formula block: the whole block
         close = math.find { |j| j > i }
-        next ["formula", lines[open_at.last..close].join("\n")]
+        next ["formula", lines[open_at.last..close].join("\n"), false]
       end
       text = lines[i]
       nxt = (i + 1...lines.size).find { |j| !lines[j].strip.empty? }
@@ -865,19 +875,22 @@ module DocsMetricPages
         close = math.find { |j| j > nxt }
         text += "\n\n" + lines[nxt..close].join("\n")
       end
-      text = text.sub(/\A- `"[^"]+"` - /) { "" }
-                 .sub(/\A[A-Z][\w-]* \(\w+=\w+\): /, "")
-                 .sub(/\A- (.+\(\d{4}\)\..*)\z/m, 'Source: \1')
-      # a docstring bullet reads "- `"parkinson"` - uses the daily trading range…"; the
-      # variant's name goes in front ("Parkinson Volatility uses…")
-      text = "#{intro} #{text}" if intro && pieces_started.nil?
-      pieces_started = true
-      ["text", text.sub(/\A[a-z]/, &:upcase)]
+      bullet = text.start_with?("- ") && !text.match?(/\A- (paper|library) \| /)
+      text = text.sub(/\A- (?:paper \| )?(.+\(\d{4}\)\..*)\z/m, 'Source: \\1')
+                 .sub(/\A- (?:`"[^"]+"`|[A-Z][\w-]*(?: [A-Z][\w-]*)*) - /, "")
+                 .sub(/\A- /, "")
+                 .sub(/\A[A-Z][\w-]*(?: \(\w+=\w+\))?: /, "")
+      ["text", text, bullet]
+    end
+    # a docstring bullet reads "- Parkinson - uses the daily trading range…"; the
+    # variant's name goes in front ("Parkinson Volatility uses…")
+    if intro && (at = pieces.index { |_, _, bullet| bullet } || pieces.index { |kind, _, _| kind == "text" })
+      pieces[at][1] = "#{intro} #{pieces[at][1]}"
     end
     out = []
-    pieces.each do |kind, text|
+    pieces.each do |kind, text, _|
       out << "The formula is as follows:" if kind == "formula" && !out.last.to_s.rstrip.end_with?(":", "$$")
-      out << text
+      out << text.sub(/\A[a-z]/, &:upcase)
     end
     out.join("\n\n")
   end
@@ -901,7 +914,7 @@ module DocsMetricPages
     return text if siblings.empty?
     links = siblings.map { |t, u| "[#{t}](#{u})" }
     list = links.size > 1 ? "#{links[0..-2].join(', ')} and #{links[-1]}" : links[0]
-    text + "\n\nThe same function with another argument gives the #{list}, each on its own page."
+    text + "\n\nThe same function with another argument gives the #{list}, #{links.size > 1 ? 'each ' : ''}on its own page."
   end
 
   def variant_example(example, fn_name, argument, drop = [])
@@ -918,10 +931,10 @@ module DocsMetricPages
     text = variant_text(parts[:description], variant["match"], variant["intro"])
     call = "`#{fn_name}` with `#{variant['argument']}`"
     text += "\n\nIn the Finance Toolkit this is #{call}" +
-            (base ? "; the [#{base[:title]}](#{base[:url]}) page has the function's full description." : ".")
+            (base ? ", the same function as [#{base[:title]}](#{base[:url]})." : ".")
     example = variant["example"] ? variant["example"].strip : variant_example(parts[:example], fn_name, variant["argument"], variant["drop"])
     example += "\n\nWhich returns:\n\n#{variant['output'].strip}" if variant["output"]
-    { :description => text, :arguments => parts[:arguments], :example => example, :references => parts[:references] }
+    { :description => text, :arguments => parts[:arguments], :example => example, :references => pick_references(parts[:references], variant["refs"]) }
   end
 
   def generate(site)
@@ -967,7 +980,8 @@ module DocsMetricPages
         elsif variant
           siblings = functions.keys.select { |a| a.start_with?("#{anchor}--") }
                               .map { |a| [functions[a][:title], urls[a]] }
-          parts = parts.merge(:description => focus_text(parts[:description], variant, siblings))
+          parts = parts.merge(:description => focus_text(parts[:description], variant, siblings),
+                              :references => pick_references(parts[:references], variant["refs"]))
         end
         # a function alone in its sidebar group falls back to its neighbours in
         # the whole class, so every page links onwards

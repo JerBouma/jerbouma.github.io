@@ -18,13 +18,17 @@
 #   cut       [from, until] pairs: the lines from the one containing "from" up to
 #             the one containing "until" go (until left out: to the end)
 #   trim      sentences that go, from where the text is found to the line's end
+#   refs      optional, on both: the References lines kept on this page (lines
+#             containing one of these texts); [] keeps none, left out keeps all
 # and the page links to the variant pages instead.
 performance:
   get_sharpe_ratio:
+    refs: ["Return.excess", "rolling_sharpe", "[SharpeRatio]", "empyrical", "quantstats' [sharpe]"]
     cut: [["The plain Sharpe ratio only looks at", "**See definition:**"]]
     trim: [" The variants are also known as"]
   get_sharpe_ratio--adjusted:
     argument: 'method="adjusted"'
+    refs: ["AdjustedSharpeRatio"]
     output: |
       | Date   |     SPY |     TLT |     GLD |   BTCUSD |
       |:-------|--------:|--------:|--------:|---------:|
@@ -33,9 +37,13 @@ performance:
       | 2023   |  1.5603 |  0.0303 |  0.6773 |   2.2952 |
       | 2024   |  1.4902 | -0.8125 |  1.3636 |   1.6766 |
       | 2025   |  0.7315 |  0.0595 |  2.3471 |  -0.0457 |
-    match: ['- `"adjusted"`']
+    match:
+      - 'The Sharpe ratio is calculated as the difference'
+      - '- The Adjusted Sharpe Ratio'
+      - text: 'Where SR is the Sharpe ratio and S and K are the skewness and the non-excess (raw) kurtosis of the same returns, so K - 3 is the excess kurtosis.'
   get_sharpe_ratio--probabilistic:
     argument: 'method="probabilistic"'
+    refs: ["probabilistic_", "ProbSharpeRatio", "RiskLabAI"]
     output: |
       | Date   |    SPY |    TLT |    GLD |   BTCUSD |
       |:-------|-------:|-------:|-------:|---------:|
@@ -45,9 +53,13 @@ performance:
       | 2024   | 0.9277 | 0.2083 | 0.9094 |   0.955  |
       | 2025   | 0.7707 | 0.5236 | 0.9876 |   0.4818 |
     drop: [annualize] # a probability can't be annualized
-    match: ['- `"probabilistic"`']
+    match:
+      - 'The Sharpe ratio is calculated as the difference'
+      - '- The Probabilistic Sharpe Ratio'
+      - text: 'Where $$\widehat{\text{SR}}$$ is the observed Sharpe ratio, $$\text{SR}^{*}$$ the benchmark Sharpe ratio, $$\gamma_{3}$$ the skewness and $$\gamma_{4}$$ the non-excess (raw) kurtosis of the same returns, n the number of return observations and $$\Phi$$ the standard normal CDF.'
   get_sharpe_ratio--deflated:
     argument: 'method="deflated"'
+    refs: ["calc_deflated_sharpe_ratio", "calc_expected_max_sharpe"]
     output: |
       | Date   |    SPY |    TLT |    GLD |   BTCUSD |
       |:-------|-------:|-------:|-------:|---------:|
@@ -57,17 +69,53 @@ performance:
       | 2024   | 0.7162 | 0.0751 | 0.6649 |   0.6449 |
       | 2025   | 0.4231 | 0.2867 | 0.9137 |   0.0894 |
     drop: [annualize] # a probability can't be annualized
-    match: ['- `"deflated"`']
+    match:
+      - 'The Sharpe ratio is calculated as the difference'
+      - '- The Deflated Sharpe Ratio'
+      - 'Where $$\widehat{\text{SR}}$$ is the observed'
+      - 'This codebase does not track'
 
+  get_sharpe_ratio--smart:
+    argument: 'method="smart"'
+    output: |
+      | Date   |     SPY |     TLT |     GLD |   BTCUSD |
+      |:-------|--------:|--------:|--------:|---------:|
+      | 2021   |  1.899  | -0.353  | -0.4621 |   0.8861 |
+      | 2022   | -0.8239 | -1.8071 | -0.1615 |  -1.2981 |
+      | 2023   |  1.511  |  0.0258 |  0.6742 |   2.2391 |
+      | 2024   |  1.4387 | -0.7609 |  1.3107 |   1.5804 |
+      | 2025   |  0.6222 |  0.0573 |  2.2128 |  -0.0421 |
+    refs: ["smart_sharpe", "autocorr_penalty"]
+    match:
+      - 'The Sharpe ratio is calculated as the difference'
+      - '- The Smart Sharpe ratio'
+      - 'where n is the number of excess returns'
+  get_sharpe_ratio--lo:
+    argument: 'method="lo"'
+    output: |
+      | Date   |     SPY |     TLT |     GLD |   BTCUSD |
+      |:-------|--------:|--------:|--------:|---------:|
+      | 2021   |  2.5624 | -0.4458 | -0.5225 |   0.9326 |
+      | 2022   | -0.9054 | -2.2717 | -0.1534 |  -1.3831 |
+      | 2023   |  1.5743 |  0.0316 |  0.6227 |   1.9402 |
+      | 2024   |  1.5828 | -0.8154 |  1.4043 |   1.6421 |
+      | 2025   |  1.0755 |  0.067  |  3.0685 |  -0.0553 |
+    refs: []
+    drop: [annualize] # always annualized
+    match:
+      - 'The Sharpe ratio is calculated as the difference'
+      - '- The annualized Sharpe ratio of Lo'
+      - 'where q is the number of observations in a year'
 risk:
   get_volatility:
+    refs: []
     cut:
-      - ['- `"parkinson"`', "The formula is as follows (with"]
+      - ["- Parkinson - ", "The formula for the close-to-close"]
       - ["Parkinson Variance}", "With `rolling`"]
-      - ["For more information about the range-based"]
-    trim: [" The `method` parameter selects", " The range-based estimators take", " The range-based estimators are also known as"]
+    trim: [" One of five range-based estimators", " The range-based estimators take", " The range-based estimators are also known as"]
   get_volatility--parkinson:
     argument: 'method="parkinson"'
+    refs: ["Parkinson, M.", "TTR (R)"]
     output: |
       | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
       |:-------|---------:|---------:|--------:|--------:|------------:|
@@ -77,9 +125,14 @@ risk:
       | 2024   |   0.0597 |   0.5585 |  0.0973 |  0.1479 |      0.0989 |
       | 2025   |   0.0744 |   0.4548 |  0.1491 |  0.1911 |      0.152  |
     intro: Parkinson Volatility
-    match: ['- `"parkinson"`', 'Parkinson Variance}', '- Parkinson, M. (1980)']
+    match:
+      - 'Volatility measures the amount of dispersion'
+      - '- Parkinson - '
+      - text: 'The Volatility is the square root of this daily variance, scaled to the period in the same way as the close-to-close Volatility (with 252 trading days a year, or 365 for a ticker that trades every day such as a cryptocurrency), with H and L the daily High and Low and Mean the average over the days in the period:'
+      - 'Parkinson Variance}'
   get_volatility--garman-klass:
     argument: 'method="garman_klass"'
+    refs: ["Garman, M.B.", "TTR (R)"]
     output: |
       | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
       |:-------|---------:|---------:|--------:|--------:|------------:|
@@ -89,9 +142,14 @@ risk:
       | 2024   |   0.0603 |   0.5686 |  0.0975 |  0.1492 |      0.0997 |
       | 2025   |   0.0744 |   0.468  |  0.1437 |  0.1913 |      0.1441 |
     intro: Garman-Klass Volatility
-    match: ['- `"garman_klass"`', 'Garman-Klass Variance}', '- Garman, M.B.']
+    match:
+      - 'Volatility measures the amount of dispersion'
+      - '- Garman-Klass - '
+      - text: 'The Volatility is the square root of this daily variance, scaled to the period in the same way as the close-to-close Volatility (with 252 trading days a year, or 365 for a ticker that trades every day such as a cryptocurrency), with H, L, O and C the daily High, Low, Open and Close and Mean the average over the days in the period:'
+      - '{Garman-Klass Variance} ='
   get_volatility--rogers-satchell:
     argument: 'method="rogers_satchell"'
+    refs: ["Rogers, L.C.G.", "TTR (R)"]
     output: |
       | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
       |:-------|---------:|---------:|--------:|--------:|------------:|
@@ -101,9 +159,14 @@ risk:
       | 2024   |   0.0599 |   0.5701 |  0.0993 |  0.1479 |      0.1015 |
       | 2025   |   0.0745 |   0.4753 |  0.1391 |  0.1878 |      0.1392 |
     intro: Rogers-Satchell Volatility is
-    match: ['- `"rogers_satchell"`', '{Rogers-Satchell Variance} =', '- Rogers, L.C.G.']
+    match:
+      - 'Volatility measures the amount of dispersion'
+      - '- Rogers-Satchell - '
+      - text: 'The Volatility is the square root of this daily variance, scaled to the period in the same way as the close-to-close Volatility (with 252 trading days a year, or 365 for a ticker that trades every day such as a cryptocurrency), with H, L, O and C the daily High, Low, Open and Close and Mean the average over the days in the period:'
+      - '{Rogers-Satchell Variance} ='
   get_volatility--yang-zhang:
     argument: 'method="yang_zhang"'
+    refs: ["Yang, D.", "Rogers, L.C.G.", "TTR (R)"]
     output: |
       | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
       |:-------|---------:|---------:|--------:|--------:|------------:|
@@ -113,14 +176,53 @@ risk:
       | 2024   |   0.0604 |   0.5645 |  0.1227 |  0.1606 |      0.1315 |
       | 2025   |   0.0771 |   0.4676 |  0.1736 |  0.2071 |      0.1864 |
     intro: Yang-Zhang Volatility is
-    match: ['- `"yang_zhang"`', 'Yang-Zhang Variance}', 'k = 0.34', '- Yang, D.']
+    match:
+      - 'Volatility measures the amount of dispersion'
+      - '- Yang-Zhang - '
+      - text: 'The Volatility is the square root of this daily variance, scaled to the period in the same way as the close-to-close Volatility (with 252 trading days a year, or 365 for a ticker that trades every day such as a cryptocurrency), with H, L, O and C the daily High, Low, Open and Close, $$C_{- 1}$$ the previous Close, Mean the average and Var the sample variance over the days in the period:'
+      - '{Yang-Zhang Variance} ='
+      - 'k = \frac{0.34}'
+      - '{Rogers-Satchell Variance} ='
+  get_volatility--garman-klass-yang-zhang:
+    argument: 'method="garman_klass_yang_zhang"'
+    output: |
+      | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+      |:-------|---------:|---------:|--------:|--------:|------------:|
+      | 2021   |   0.0536 |   0.9747 |  0.1136 |  0.158  |      0.1321 |
+      | 2022   |   0.1036 |   0.6604 |  0.2065 |  0.1703 |      0.2329 |
+      | 2023   |   0.0739 |   0.4633 |  0.1208 |  0.1485 |      0.1328 |
+      | 2024   |   0.0612 |   0.5686 |  0.1219 |  0.1624 |      0.1311 |
+      | 2025   |   0.077  |   0.468  |  0.1743 |  0.2101 |      0.1861 |
+    refs: ["Garman, M.B.", "Yang, D.", "TTR (R)"]
+    intro: Garman-Klass Yang-Zhang Volatility is
+    match:
+      - 'Volatility measures the amount of dispersion'
+      - '- Garman-Klass Yang-Zhang - '
+      - text: "The Volatility is the square root of this daily variance, scaled to the period in the same way as the close-to-close Volatility (with 252 trading days a year, or 365 for a ticker that trades every day such as a cryptocurrency), with H, L, O and C the daily High, Low, Open and Close, $$C_{- 1}$$ the previous Close and Mean the average over the days in the period:"
+      - '{Garman-Klass Yang-Zhang Variance} ='
+  get_volatility--compounded:
+    argument: 'method="compounded"'
+    output: |
+      | Date   |   EURUSD |   BTCUSD |   ^GSPC |   GCUSD |   Benchmark |
+      |:-------|---------:|---------:|--------:|--------:|------------:|
+      | 2021   |   0.0526 |   1.5198 |  0.1685 |  0.1377 |      0.1695 |
+      | 2022   |   0.094  |   0.2548 |  0.1976 |  0.1571 |      0.2013 |
+      | 2023   |   0.0768 |   1.1812 |  0.1635 |  0.156  |      0.1658 |
+      | 2024   |   0.0553 |   1.2632 |  0.1565 |  0.1954 |      0.1574 |
+      | 2025   |   0.0824 |   0.4111 |  0.2203 |  0.3236 |      0.2317 |
+    refs: ["backtesting.py"]
+    match:
+      - 'Volatility measures the amount of dispersion'
+      - 'The compounded Volatility keeps the close-to-close returns'
+      - '{Compounded Volatility} ='
 fixedincome:
   get_federal_reserve_rates:
     cut:
       - ["The overnight bank funding rate (OBFR) is", "The New York Fed publishes"]
       - ["SOFR is the US dollar reference rate", "See source:"]
   get_government_bond_yield:
-    cut: [["Short-term (short_term=True):", "**Also known as:**"]]
+    cut: [["Short-term: short-term interest rates", "**Also known as:**"]]
+    trim: ["The two maturities are described below."]
   get_federal_reserve_rates--sofr:
     argument: 'rate="SOFR"'
     output: |
@@ -286,7 +388,7 @@ fixedincome:
       | 2023-10 | -0.0001 |          0.0546 |    0.0397 |
       | 2023-11 |  0.0002 |          0.0541 |    0.0397 |
       | 2023-12 |  0.0005 |          0.0532 |    0.0393 |
-    match: ['Short-term (short_term=True):']
+    match: ['Short-term: short-term interest rates', 'https://data.oecd.org/interest/short-term-interest-rates.htm']
     example: |
       ```python
       from financetoolkit import FixedIncome
